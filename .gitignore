@@ -1,4 +1,5 @@
 .DS_Store
 composer.lock
+storages/maps/*.json
 heart/vendor/*
 heart/appdata/config/db.php
