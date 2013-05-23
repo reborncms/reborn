@@ -77,8 +77,13 @@ class Helper
 							->orderBy('created_at', 'desc')
 							->take($count)
 							->get();
+		$com = array();
 							
 		foreach ($comments as $comment) {
+			if ($comment->name == null) {
+				$user = \Sentry::getUserProvider()->findById($comment->user_id);
+				$comment->name = $user->first_name.' '.$user->last_name;
+			}
 			$comment->content_title = self::getContentTitle($comment->content_id, $comment->module, $comment->content_title_field);
 			$com[] = $comment;
 		}

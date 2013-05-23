@@ -35,7 +35,7 @@
 				<h2>{{ t('label.last_post') }}</h2>
 				<ul>
 				{{ if($last_post->isEmpty()) }}
-					<li><span class="empty-list">Blog post is empty now</span></li>
+					<li><span class="empty-list">{{ t('label.last_post_empty') }}</span></li>
 				{{ else }}
 				{{ loop($last_post as $post) }}
 					<li>
@@ -43,7 +43,7 @@
 							<span class="month">{{ Date $post->created_at as m }}</span>
 						</span>
 						<h3>
-							<a href="rbUrl('blog/'.$post->slug)" target="_black">{{ $post->title }}</a>
+							<a href="{{ rbUrl('blog/'.$post->slug) }}" target="_black">{{ $post->title }}</a>
 						</h3>
 					</li>
 				{{ endloop }}
@@ -56,15 +56,23 @@
 		{{ if(!isset($last_comment)) }}
 		<div class="dashboard-wg hide-on-640">
 			<div id="last-comment">
+				{= \Module::load('Comment') =}
+				{= $last_comments = \Comment\Lib\Helper::getLatestComments(5) =}
 				<h2>{{ t('label.last_comment') }}</h2>
 				<ul>
-					<li>
-						<span class="commenter">Yan Naing</span>
-						is comment on
-						<span class="date">12/12/2013</span>
-						for
-						<span class="cmt-title">Myanmar Links is Empty Now</span>
-					</li>
+					{{ if (empty($last_comments)) }}
+						<li><span class="empty-list">{{ t('label.last_comment_empty') }}</span></li>
+					{{ else }}
+						{{ loop($last_comments as $comment) }}
+							<li>
+								<span class="commenter">{{ $comment->name }}</span>
+								is comment on
+								<span class="date">{{ Date $comment->created_at as Y-m-d }}</span>
+								for
+								<span class="cmt-title">{{ $comment->content_title }}</span>
+							</li>
+						{{ endloop }}
+					{{ endif }}
 				</ul>
 			</div> <!-- end of div#last-post -->
 		</div> <!-- end of div.dashboard-wg -->
