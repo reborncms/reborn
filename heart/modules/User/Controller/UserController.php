@@ -57,6 +57,7 @@ class UserController extends \PublicController
 
 		if (\Input::isPost()) {
 			if (\Security::CSRFvalid()) {
+				$redirect = \Input::server('HTTP_REFERER');
 				$rule = array(
 			        'email' => 'required|valid_email',
 			        'password' => 'required|mixLength:6',
@@ -77,7 +78,7 @@ class UserController extends \PublicController
 
 				    if ($user = Sentry::authenticate($login)) {
 				    	\Flash::success(\Translate::get('user::user.login.success'));
-				        return \Redirect::to('/');
+				        return \Redirect::to($redirect);
 				    } else {
 				    	\Flash::error(\Translate::get('user::user.login.fail'));
 				    }
@@ -86,6 +87,8 @@ class UserController extends \PublicController
 				\Flash::error(\Translate::get('user::user.csrf'));
 			}
 		}
+
+		
 
 		$this->template->title(\Translate::get('user::user.title.login'))
 			->breadcrumb(\Translate::get('user::user.title.login'))
@@ -100,9 +103,10 @@ class UserController extends \PublicController
 	public function logout()
 	{
 		if(!Sentry::check()) return \Redirect::to('login');
+		$redirect = \Input::server('HTTP_REFERER');
 		Sentry::logout();
 		\Flash::success(\Translate::get('user::user.logout'));
-		return \Redirect::to("/");
+		return \Redirect::to($redirect);
 	}
 
 	public function edit()
