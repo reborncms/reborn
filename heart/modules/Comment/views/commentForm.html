@@ -34,7 +34,7 @@
 				<a href="{{ rbUrl('user/logout') }}" id="logout_link">{{ t('comment::comment.label.logout') }}</a>
 			</div>	
 		{{ endif }}
-			{{ Security::CSRField() }}
+			{{ Security::CSRField('comment') }}
 			{{ Form::hidden('d0ntF1ll') }}
 			{{ Form::hidden('parent_id', '') }}
 			{{ Form::hidden('module', $module) }}

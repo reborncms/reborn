@@ -38,10 +38,14 @@ class Security
      *
      * @return string
      **/
-    public static function CSRField()
+    public static function CSRField($key = null)
     {
-        $csrf_key = Config::get('app.security.csrf_key');
-        $token =  self::CSRFtoken();
+        if (is_null($key)) {
+            $csrf_key = Config::get('app.security.csrf_key');
+        } else {
+            $csrf_key = $key.'_'.Config::get('app.security.csrf_key');
+        }
+        $token =  self::CSRFtoken($key);
         return Form::hidden($csrf_key, $token);
     }
 
@@ -50,13 +54,18 @@ class Security
      *
      * @return string
      **/
-    protected static function CSRFtoken()
+    protected static function CSRFtoken($key = null)
     {
-        $csrf_key = Config::get('app.security.csrf_key');
+        if (is_null($key)) {
+            $csrf_key = Config::get('app.security.csrf_key');
+        } else {
+            $csrf_key = $key.'_'.Config::get('app.security.csrf_key');
+        }
+        
         $csrf_expire = Config::get('app.security.csrf_expiration');
         $session = Registry::get('app')->session;
         $expiretime = time() - $session->getMetadataBag()->getCreated();
-        if ($session->has($csrf_key) && $expiretime < $csrf_expire) {
+        if ($session->has($csrf_key) && ($expiretime < $csrf_expire)) {
             return $session->get($csrf_key);
         }
         else {
@@ -73,10 +82,14 @@ class Security
      *
      * @return boolean
      **/
-    public static function CSRFvalid()
+    public static function CSRFvalid($key = null)
     {
         $session = Registry::get('app')->session;
-        $csrf_key = Config::get('app.security.csrf_key');
+        if (is_null($key)) {
+            $csrf_key = Config::get('app.security.csrf_key');
+        } else {
+            $csrf_key = $key.'_'.Config::get('app.security.csrf_key');
+        }
         if ($session->has($csrf_key) && $session->get($csrf_key) == \Input::get($csrf_key)) {
             return true;
         } else {
