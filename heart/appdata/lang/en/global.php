@@ -64,6 +64,7 @@ return array(
 	'unique_title'		=> 'The field :label must be unique, but :value has already been used',
 	'f_fatal_error'		=> 'Sorry, Our site is currently upgrade......',
 	'login_fail'		=> 'Error occured to login!',
+	'csrf_fail'			=> 'Security Key doesn\'t match!',
 
 	// Success Msg
 	'welcome_ap'		=> 'Your login is successfully %s!',
