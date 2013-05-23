@@ -17,7 +17,8 @@ class TagInstaller extends \Reborn\Module\AbstractInstaller
 		\Schema::table('tags_relationship', function($table)
 		{
 			$table->create();
-			$table->integer('tags_id');
+			$table->increments('id');
+			$table->integer('tag_id');
 			$table->integer('object_id');
 			$table->string('object_name', 32);
 		});
