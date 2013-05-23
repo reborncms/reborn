@@ -1,0 +1,51 @@
+<div class="media_wrap">
+
+	<table id="m_table">
+		<tr>
+			<td>{{ Translate::get('media::file.lbl.linkUrl') }}</td>
+			<td> : {{ rbUrl('media/thumb/'.$fileData->id.'/') }}</td>
+		</tr>
+		<tr>
+			<td>{{ Translate::get('media::media.name') }}</td>
+			<td> : {{ $fileData->name }}</td>
+		</tr>
+		<tr>
+			<td>{{ Translate::get('media::file.lbl.altText') }}</td>
+			<td> : {{ $fileData->alt_text }}</td>
+		</tr>
+		<tr>
+			<td>{{ Translate::get('media::media.desc') }}</td>
+			<td> : {{ $fileData->description }}</td>
+		</tr>
+		<tr>
+			<td>{{ Translate::get('media::folder.lbl.name') }}</td>
+			{{ if(!isset($fileData->folder)) }}
+				<td> : --{{ Translate::get('media::media.none') }}--</td>
+			{{ else }}
+				<td> : {{ $fileData->folder->name }}</td>
+			{{ endif }}
+
+		</tr>
+		<tr>
+			<td>{{ Translate::get('media::file.lbl.uploader') }}</td>
+			<td> : {{ $fileData->user->first_name }}&nbsp;{{ $fileData->user->last_name }} </td>
+		</tr>
+		<tr>
+			<td>{{ Translate::get('media::file.lbl.type') }}</td>
+			<td> : {{ $fileData->mime_type }}</td>
+		</tr>
+		<tr>
+			<td>{{ Translate::get('media::file.lbl.size') }}</td>
+			<td> : {{ $fileData->filesize }}</td>
+		</tr>
+		<tr>
+			<td>{{ Translate::get('media::file.lbl.width') }}</td>
+			<td> : {{ $fileData->width }}</td>
+		</tr>
+		<tr>
+			<td>{{ Translate::get('media::file.lbl.height') }}</td>
+			<td> : {{ $fileData->height }}</td>
+		</tr>
+	</table>
+
+</div> <!-- end of media_wrap -->

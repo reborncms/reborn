@@ -1,0 +1,63 @@
+{{ $header }}
+
+<div id="m_ck_wrap">
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#link').bind('change', function(){
+				$('img#img_preview').remove();
+				var img = "<img src='"+$(this).val()+"' id='img_preview'>"
+				$('div#link_img_wrap').append(img);
+				$('div#link_img_preview').show();
+			});
+		});
+	</script>
+
+	{{ $btnsBar }}
+
+	<div id="link_wrap" class="form">
+		<div class="form-block">
+			{{ Form::label('Image Link'); }}
+			<div class="form-right-block">
+				{{ Form::input('link', '', 'text', array('class' => 'xx-large')) }}
+				<p>Insert image link. <span>(eg. http://www.domain.com/image/name/)</span></p>
+			</div> <!-- end of form-right-block -->
+		</div> <!-- end of form-block -->
+
+	</div> <!-- end of link_wrap -->
+
+	<div id="link_img_preview" style="display: none;">
+		<div id="link_img_wrap" class="f-left">
+
+		</div> <!-- end of link_img_wrap -->
+
+		<div id="form_wrap" class="f-left form">
+			<div class="form-block">
+				{{ Form::label('Alt Text') }}
+				<div class="form-right-block">
+					{{ Form::input('alt_text', '', 'text', array('class' => 'xx-large')) }}
+				</div> <!-- end of form-right-block -->
+			</div> <!-- end of form-bock -->
+			<div class="form-block">
+				{{ Form::label('Dimension') }}
+				<div class="form-right-block overflow">
+					{{ Form::input('width', '', 'text', array('class' => 'small', 'placeholder' => 'width')) }}
+					{{ Form::input('height', '', 'text', array('class' => 'small', 'placeholder' => 'height')) }}
+				</div> <!-- end of form-right-block -->
+			</div> <!-- end of form-bock -->
+			<div class="form-block">
+				{{ Form::label('Align','align') }}
+				<div class="form-right-block">
+					{= $float = array('left' => 'Left', 'right' => 'Right', 'auto' => 'None') =}
+				</div> <!-- end of form-right-block -->
+			</div> <!-- end of form-bock -->
+			<div class="form-block form-action">
+				<button id="link_insert" class="button button-green">Insert</button>
+			</div> <!-- end of form-block -->
+		</div> <!-- end of form_wrap -->
+
+	</div> <!-- end of link_img_preview -->
+
+</div> <!-- end of m_ck_wrapper -->
+
+{{ $footer }}

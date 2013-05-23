@@ -1,0 +1,72 @@
+<div class="media_wrap">
+
+{{ js('media.js', 'media') }}
+
+	<div id="m_ajax_error" style="display: none"></div> <!-- end of m_ajax_error -->
+
+	{= $url = (isset($fData)) ? 'editFolder/'.$fData->id : 'createFolder' =}
+	{{ Form::start('admin/media/' . $url, '', false, array('class' => 'form')) }}
+	{{ Security::CSRField() }}
+	{{ if (isset($fData)) }}
+		{{ Form::hidden('id', $fData->id) }}
+		{{ Form::hidden('orName', $fData->name) }}
+		{{ Form::hidden('orSlug', $fData->slug) }}
+	{{ endif }}
+		<div class="form-block">
+			{{ Form::label(Translate::get('media::folder.lbl.name'), 'name') }}
+			<div class="form-right-block">
+				{= $name = (isset($fData->name)) ? $fData->name : '' =}
+				{{ Form::input('name', $name, 'text', array('class' => 'medium rounded-corner required')) }}
+				{= $display = isset($errors['name']) ? 'auto' : 'none' =}
+				<span class="msg error" style="display: {{ $display }};">
+					{{ Translate::get('media::media.require') }}
+				</span>
+				<p>{{ Translate::get('media::folder.info.nameInfo') }}</p>
+			</div> <!-- end of form-right-block -->
+		</div> <!-- end of form-block -->
+
+		<div class="form-block">
+			{{ Form::label(Translate::get('media::folder.lbl.slug'), 'slug') }}
+			<div class="form-right-block">
+				{= $slug = (isset($fData->slug)) ? $fData->slug : '' =}
+				{{ Form::input('slug', $slug, 'text', array('class' => 'medium rounded-corner required')) }}
+				{= $display = isset($errors['slug']) ? 'auto' : 'none' =}
+				<span class="msg error" style="display: {{ $display }}">
+					{{ Translate::get('media::media.require') }}
+				</span> <!-- end of msg -->
+				<p>{{ Translate::get('media::folder.info.slugInfo') }}</p>
+			</div> <!-- end of form-right-block -->
+		</div> <!-- end of form-block -->
+
+		<div class="form-block">
+			{{ Form::label(Translate::get('media::media.desc'), 'description') }}
+			<div class="form-right-block">
+				{= $desc = (isset($fData->description)) ? $fData->description : '' =}
+				{{ Form::textarea('description', $desc) }}
+				<p>{{ Translate::get('media::folder.info.descInfo') }}</p>
+			</div> <!-- end of form-right-block -->
+		</div> <!-- end of form-block -->
+
+		<div class="form-block">
+			{{ Form::label(Translate::get('media::media.choFol'), 'folderId') }}
+			<div class="form-right-block">
+				{= $folderId = (isset($fData->folder_id)) ? $fData->folder_id : $folder_id =}
+				<select name="folder_id" class="medium required" id="folder_id">
+					<option value="0">{{ \Translate::get('media::media.none') }}</option>
+					{{ Media\Lib\Helper::folderTree($allFolders, 0, 0, $folderId) }}
+	            </select>
+	            <span class="msg error" style="display: none;">
+					{{ Translate::get('media::media.msg.warning.required') }}
+				</span>
+	            <p>Choose folder</p>
+			</div> <!-- end of form-right-block -->
+		</div> <!-- end of form-block -->
+
+		<div class="form-block form-action">
+			{= $value = (isset($fData)) ? Translate::get('media::media.update') : Translate::get('media::media.submit') =}
+			{{ Form::input('submit', $value, 'submit', array('class' => 'button button-green', 'id' =>'ajax_submit')) }}
+			<span class="loading" style="display: none;"></span>
+		</div> <!-- end of form-aciton -->
+
+	{{ Form::end() }}
+</div> <!-- end of media_wrap -->

@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	{{ css('reborn.css', 'all') }}
+	{{ css('style.css', 'all', 'media') }}
+
+	{{ js('jquery.min.js') }}
+	{{ js('plugins/jquery-plugins.js') }}
+	{{ js('plugins/jquery-ui.min.js') }}
+	{{ js('plugins/jquery.colorbox.js') }}
+	{{ js('reborn.js') }}
+	{{ js('media.js', 'media') }}
+	{{ js('wysiwyg.js', 'media') }}
+
+	<script type="text/javascript">
+		var ADMIN = '{{ $adminUrl }}',
+			SITEURL = '{{ rbUrl() }}';
+	</script>
+</head>
+<body>
