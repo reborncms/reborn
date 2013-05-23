@@ -1,7 +1,7 @@
 <div id="user-container">
 
 	{{ Form::start("user/register", 'user_registration_form', false, array('class' => 'form')) }}
-  {{ Security::CSRField() }}
+  {{ Security::CSRField('user') }}
 
   <div class="form-block">
       <label for="">{{ Form::label('Username', 'username') }}<span class="required"></span></label>

@@ -56,7 +56,7 @@ class UserController extends \PublicController
 		if(Sentry::check()) return \Redirect::to('user');
 
 		if (\Input::isPost()) {
-			if (\Security::CSRFvalid()) {
+			if (\Security::CSRFvalid('user')) {
 				$redirect = \Input::server('HTTP_REFERER');
 				$rule = array(
 			        'email' => 'required|valid_email',
@@ -116,7 +116,7 @@ class UserController extends \PublicController
 		$user = Sentry::getUser();
 
 		if (\Input::isPost()) {
-			if (\Security::CSRFvalid()) {
+			if (\Security::CSRFvalid('user')) {
 				$editUser = Sentry::getUserProvider()->findById(\Input::get('id'));
 
 				if($user->id == $editUser->id ) {
@@ -180,7 +180,7 @@ class UserController extends \PublicController
 		if(Sentry::check()) return \Redirect::to('user');
 
 		if (\Input::isPost()) {		
-			if (\Security::CSRFvalid()) {
+			if (\Security::CSRFvalid('user')) {
 				$v = $this->validate();
 				if ($v->fail()) {
 					$errors = $v->getErrors();
@@ -288,7 +288,7 @@ class UserController extends \PublicController
 
 		if (\Input::isPost()) {
 
-			if (\Security::CSRFvalid()) {
+			if (\Security::CSRFvalid('user')) {
 				$rule = array(
 			        'email' => 'required|valid_email',
 			    );
@@ -347,7 +347,7 @@ class UserController extends \PublicController
 		if(Sentry::check()) return \Redirect::to('user');
 
 		if (\Input::isPost()) {
-			if (\Security::CSRFvalid()) {
+			if (\Security::CSRFvalid('user')) {
 				$rule = array(
 			        'new_password' => 'required|minLength:6',
 			    );

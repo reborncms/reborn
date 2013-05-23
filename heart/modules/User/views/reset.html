@@ -1,7 +1,7 @@
 <div id="user-container">
 
 	{{ Form::start("user/passwordReset/".$emailEncode."/".$hash) }}
-	{{ Security::CSRField() }}
+	{{ Security::CSRField('user') }}
 
 		<div class="block">
 			{{ Form::label('Enter new password', 'new_password') }}

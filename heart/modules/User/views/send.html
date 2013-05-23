@@ -1,7 +1,7 @@
 <div id="user-container">
 
 	{{ Form::start("user/resetPassword") }}
-	{{ Security::CSRField() }}
+	{{ Security::CSRField('user') }}
 
 		{{ Form::label('Enter your email address to reset password', 'email') }}
 		<div class="block">

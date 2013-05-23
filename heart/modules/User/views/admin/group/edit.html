@@ -1,7 +1,7 @@
 <div id="user-container">
 
 	{{ Form::start("$adminUrl/user/group/edit/$group->id", 'group_edit_form', false, array('class' => 'form')) }}
-  {{ Security::CSRField() }}
+  {{ Security::CSRField('user') }}
 
 		<div class="form-block">
     		<label for="">{{ Form::label('Name', 'name') }}<span class="required"></span></label>

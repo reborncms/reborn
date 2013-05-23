@@ -1,7 +1,7 @@
 <div id="user-container">
 
 	{{ Form::start("$adminUrl/user/create", 'user_create_form', false, array('class' => 'form')) }}
-  {{ Security::CSRField() }}
+  {{ Security::CSRField('user') }}
 
     <div class="form-block">
       <label for="">{{ Form::label('Display Name', 'display_name') }}<span class="required"></span></label>

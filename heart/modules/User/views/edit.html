@@ -1,7 +1,7 @@
 <div class="legents">
 	<div class="form_wrapper">
 	{{ Form::start("user/edit", 'user', false, array('class' => 'forms')) }}
-	{{ Security::CSRField() }}
+	{{ Security::CSRField('user') }}
 
 	<div class="form-block">
         <label for="">{{ Form::label('Username', 'username') }}<span class="required"></span></label>

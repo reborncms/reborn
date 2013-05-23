@@ -26,7 +26,7 @@ class GroupController extends \AdminController
 	public function create()
 	{
 		if (\Input::isPost()) {
-			if (\Security::CSRFvalid()) {
+			if (\Security::CSRFvalid('user')) {
 				if ($v->fail()) {
 					$errors = $v->getErrors();
 					$this->template->set('errors', $errors);
@@ -59,7 +59,7 @@ class GroupController extends \AdminController
 		$groupPermission = $group->getPermissions();
 
 		if (\Input::isPost()) {
-			if (\Security::CSRFvalid()) {
+			if (\Security::CSRFvalid('user')) {
 				if ($v->fail()) {
 					$errors = $v->getErrors();
 					$this->template->set('errors', $errors);

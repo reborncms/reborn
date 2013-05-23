@@ -51,7 +51,7 @@ class UserController extends \AdminController
 	{
 		if (\Input::isPost()) {
 			$v = $this->validate();
-			if (\Security::CSRFvalid()) {
+			if (\Security::CSRFvalid('user')) {
 				if ($v->fail()) {
 					$errors = $v->getErrors();
 					$this->template->set('errors', $errors);
@@ -110,7 +110,7 @@ class UserController extends \AdminController
 		if (\Input::isPost()) {
 			$v = $this->validate();
 
-			if (\Security::CSRFvalid()) {
+			if (\Security::CSRFvalid('user')) {
 				if ($v->fail()) {
 					$errors = $v->getErrors();
 					$this->template->set('errors', $errors);

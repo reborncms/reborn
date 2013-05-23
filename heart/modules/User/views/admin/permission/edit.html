@@ -4,7 +4,7 @@
 </section>
 <section class="item">
 {{ Form::start("$adminUrl/user/permission/edit/$group->id") }}
-{{ Security::CSRField() }}
+{{ Security::CSRField('user') }}
 <table class="stripe">
 	<thead>
 		<tr>

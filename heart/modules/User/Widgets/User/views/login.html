@@ -3,7 +3,7 @@
 
 	<div class="widget-body">
 		{{ Form::start("user/login") }}
-			{{ Security::CSRField() }}
+			{{ Security::CSRField('user') }}
 			{{ Form::email('email', '', array('placeholder' => 'Email')) }}
 			{{ Form::password('password', '', array('placeholder' => 'Password')) }}
 			{{ Form::submit('submit', 'Login', array('class' => 'widget-login', 'class' => 'btn')) }}

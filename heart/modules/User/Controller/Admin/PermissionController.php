@@ -46,7 +46,7 @@ class PermissionController extends \AdminController
 		$permission_modules = \User\Model\PermissionModel::getall();
 
 		if (\Input::isPost()) {
-			if (\Security::CSRFvalid()) {
+			if (\Security::CSRFvalid('user')) {
 				$modules = \Input::get('modules');
 
 				if (!is_null($modules)) {
