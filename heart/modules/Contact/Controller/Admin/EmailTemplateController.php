@@ -55,7 +55,7 @@ class EmailTemplateController extends \AdminController
 	{
 		$template =new \stdClass;
 		if (\Input::isPost()) {
-			if (! \Security::CSRFvalid()) {
+			if (! \Security::CSRFvalid('contact')) {
 				\Flash::warning(\Translate::get('contact::contact.wait_template'));
 				return \Redirect::toAdmin('contact/email-template/create');
 			} else {
@@ -127,7 +127,7 @@ class EmailTemplateController extends \AdminController
 	{
 		$template = Etemplate::find($id);
 		if (\Input::isPost()) {
-			if (! \Security::CSRFvalid()) {
+			if (! \Security::CSRFvalid('contact')) {
 				\Flash::warning(\Translate::get('contact::contact.wait_template'));
 				return \Redirect::toAdmin('contact/email-template');
 			} else {

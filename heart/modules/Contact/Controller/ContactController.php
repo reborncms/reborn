@@ -30,7 +30,7 @@ class ContactController extends \PublicController
 			$widget = \Input::get('widget');
 			if ($v->valid()) {
 
-				if (\Security::CSRField()) {
+				if (\Security::CSRFvalid('contact')) {
 
 					$data = \Input::get('*');
 

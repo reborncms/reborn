@@ -55,7 +55,7 @@ class SendMailController extends \AdminController
 
 				} else{
 
-					if (\Security::CSRField()) {
+					if (\Security::CSRFvalid('contact')) {
 
 						$data['name'] = \Setting::get('site_title');
 						$data['from'] = \Setting::get('sever_mail');
