@@ -1,0 +1,40 @@
+# SetEnv RB_ENV production
+
+<IfModule mod_rewrite.c>
+
+    # Make sure directory listing is disabled
+	#don't access folder
+	Options +FollowSymLinks -Indexes
+	RewriteEngine on
+
+    # Send request via index.php (again, not if its a real file or folder)
+	#RewriteCond %{REQUEST_FILENAME} !-f
+	#RewriteCond %{REQUEST_FILENAME} !-d
+	#RewriteRule !\.(css|jpg)$ index.php
+	RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [QSA,L]
+
+   # deal with php5-cgi first
+	<IfModule mod_fcgid.c>
+		#RewriteRule ^(.*)$ index.php?/$1 [QSA,L]
+		#RewriteRule !\.(css|img|jpg)$ /index.php
+	</IfModule>
+
+	<IfModule !mod_fcgid.c>
+
+		# for normal Apache installations
+		<IfModule mod_php5.c>
+			# RewriteRule ^(.*)$ index.php/$1 [L]
+			# RewriteRule !\.(css|img|jpg)$ /index.php/$1 [L]
+		</IfModule>
+
+		# for Apache FGCI installations
+		<IfModule !mod_php5.c>
+			# RewriteRule ^(.*)$ index.php?/$1 [QSA,L]
+			# RewriteRule !\.(css|img|jpg)$ /index.php?/$1 [QSA,L]
+		</IfModule>
+
+	</IfModule>
+
+</IfModule>
+
