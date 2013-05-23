@@ -113,7 +113,7 @@ input, select {
   format("opentype"); /* IE */
 }
 
-body {	background: url(../img/light_honeycomb.png) repeat left top; }
+body {	background: url(../img/black_lozenge.png) repeat left top; }
 
 div#login-container {
 	width: 343px;
@@ -124,21 +124,19 @@ div#login-container {
 }
 
 div#login-header {
-	background: url(../img/login-header.png) no-repeat center left transparent;
+	background-color: #7b0000;
 	width: 343px;
 	height: 67px;
 	position: relative;
+	padding:5px 0px;
 }
 
 div#login-header h1 {
-	background: url(../img/reborncms.png) no-repeat center left transparent;
-	width: 189px;
-	height: 42px;
+	background: url(../img/login_header.png) no-repeat center transparent;
+	width: 343px;
+	height: 67px;
 	text-indent: -9999px;
-	position: absolute;
 	display: block;
-	top: 13px;
-	left: 30px;
 }
 
 div#login-box {
