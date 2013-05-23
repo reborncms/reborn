@@ -1,0 +1,4 @@
+.DS_Store
+composer.lock
+heart/vendor/*
+heart/appdata/config/db.php
