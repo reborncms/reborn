@@ -1,0 +1,54 @@
+<h3>{{ t('comment::comment.label.post_comment') }}</h3>
+<div id="comment_form_wrapper">
+	<div id="reply_info"></div>
+	{{ Form::start('comment/post', 'comment_form') }}
+		{{ if (!\Sentry::check()) }}
+			<div class="field_wrapper">
+				<div class="form_label">
+					{{ Form::label('Name', 'name') }}
+				</div>
+				<div class="form_field">
+					{{ Form::input('name', '', 'text', array('required' => 'required')) }}
+				</div>
+			</div> <!-- end of field_wrapper -->
+			<div class="field_wrapper">
+				<div class="form_label">
+					{{ Form::label('Email', 'email') }}
+				</div>
+				<div class="form_field">
+					{{ Form::email('email', '', array('required' => 'required')) }}
+				</div>
+			</div> <!-- end of field_wrapper -->
+			<div class="field_wrapper">
+				<div class="form_label">
+					{{ Form::label('Website', 'url') }}
+				</div>
+				<div class="form_field">
+					{{ Form::url('url', '') }}
+				</div>
+			</div> <!-- end of field_wrapper -->
+		{{ else }}
+			{= $user = \Sentry::getUser() =}
+			<div id="login_info">
+				{{ t('comment::comment.label.post_comment_as') }} {{ $user->first_name . ' ' . $user->last_name }}.
+				<a href="{{ rbUrl('user/logout') }}" id="logout_link">{{ t('comment::comment.label.logout') }}</a>
+			</div>	
+		{{ endif }}
+			{{ Security::CSRField() }}
+			{{ Form::hidden('d0ntF1ll') }}
+			{{ Form::hidden('parent_id', '') }}
+			{{ Form::hidden('module', $module) }}
+			{{ Form::hidden('content_id', $content_id) }}
+			<div class="field_wrapper">
+				<div class="form_label">
+					{{ Form::label('Message', 'message') }}
+				</div>
+				<div class="form_field">
+					{{ Form::textarea('message', '') }}
+				</div>	
+			</div>
+			<div class="form_action">
+				{{ Form::submit('comment_submit', 'Submit') }}
+			</div>
+	{{ Form::end() }}
+</div> <!-- end of comment_form_wrapper -->

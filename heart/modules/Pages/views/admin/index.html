@@ -1,0 +1,71 @@
+<div id="page_index_wrapper">
+	<div class="alert" id="ajax-alert"><a href="#" class="close">&times;</a></div>
+	<div id="page_list">
+		<ol class="sortable">
+			{{ loop($pages as $page) }}
+				<li id="page_{{ $page['id'] }}" class="parents">
+					{{ Pages\Lib\Helper::page_structure($page) }}
+					{{ if(isset($page['children'])) }}
+						{{ Pages\Lib\Helper::generate_children($page['children']) }}
+					{{ endif }}
+				</li>
+			{{ endloop }}
+		</ol> <!-- end of sortable -->
+	</div> <!-- end of page_list -->
+</div> <!-- end of page_index_wrapper -->
+<script type="text/javascript" charset="utf-8">
+	
+	$('#ajax-alert').hide();
+
+	$('ol.sortable').nestedSortable({
+		disableNesting: 'no-nest',
+		forcePlaceholderSize: true,
+		handle: 'div',
+		helper:	'clone',
+		forceHelperSize: true,
+		items: 'li',
+		opacity: .6,
+		placeholder: 'placeholder',
+		revert: 250,
+		tabSize: 25,
+		tolerance: 'pointer',
+		toleranceElement: '> div',
+		stop:function(event, ui){
+			post = {};
+			post.order = $('ol.sortable').nestedSortable("toHierarchy");
+			$.post(SITEURL+ADMIN+'/pages/order',post,function(data){
+
+				$('#content-wrapper').html(data);
+
+				if($('.page_expand').siblings('ol').show()){
+					$('.page_expand').removeClass('icon-circleplus');
+					$('.page_expand').addClass('icon-circleminus');
+				}
+				else {
+					$('.page_expand').addClass('icon-circleplus');
+					$('.page_expand').removeClass('icon-circleminus');
+				}
+
+				$('#ajax-alert').animate({opacity: 1.0},4000).fadeOut('slow');
+				
+				$('#ajax-alert > a.close').live('click', function(){
+					$('#message-area').fadeOut('slow');
+					return false;
+				});
+
+				$('#ajax-alert').prepend("Page Sorting completed!");
+				$('#ajax-alert').addClass('alert-success');
+				$('#ajax-alert').show();
+				
+			});
+		}
+	});
+
+	$('ol.sortable li:has(ol)').prepend('<i class="icon-circleplus icon-grey page_expand"></i>');
+ 
+	$('.page_expand').click(function(){
+		$(this).siblings('ol').slideToggle();
+		$(this).toggleClass('icon-circleplus');
+		$(this).toggleClass('icon-circleminus');
+	});
+</script>

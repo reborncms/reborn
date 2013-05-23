@@ -1,0 +1,82 @@
+#internal_menu {
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+
+#internal_menu a {
+	float: left;
+	padding:10px 20px;
+	border-right: 1px solid #F2F2F2;
+	background: #C9C9C9;
+}
+
+.edit_user_info {
+	float: right;
+	color: #838383;
+	font-size: 10px;
+	background: #DBDBDB;
+	padding: 1px 5px;
+}
+
+.comment_message {
+	clear:both;
+}
+
+.comment_content_info {
+	margin-top: 15px;
+	font-style: oblique;
+	color:#929292;
+	clear:both;
+}
+
+#re-form textarea {
+	width:90%;
+	display:block;
+	margin:15px;
+}
+
+#re-form input[type=submit] {
+	float:right;
+	margin-right: 5%;
+}
+
+.ajax-error {
+	text-align: center;
+	color: red;
+	font-size: 15px;
+}
+
+#parent_msg {
+	width: 85%;
+	margin-top: 10px;
+	margin-left: 10px;
+	border-left: 5px solid #CFCECE;
+	padding-left: 10px;
+	color: #5F5F5F;
+} 
+
+#sel_multi_action {
+	border: 1px solid #dbdbdb;
+	display: inline-block;
+	padding: 10px 8px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	border-radius: 4px;
+	color: #696969;
+	outline: 0; /* Hide Chrome Default */
+	outline: thin dotted \9; /* IE6-9 */
+}
+
+.multiaction {
+	float:left;
+}
+
+.pagination {
+	float: right;
+	margin-right: 17px;
+}
+
+.com_read_more {
+	float:right;
+}

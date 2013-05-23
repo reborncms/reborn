@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+
+		{{ include:metadata }}
+
+		{{ if($wysiwyg) }}
+			{{ include:wysiwyg }}
+		{{ endif }}
+
+	</head>
+	<body>
+
+	<noscript>
+		Reborn CMS Admin Panel required javascript. Please enable javascript from your browser.
+	</noscript>
+
+		<div id="main-container">
+			<div id="dashboard-head-wrap">
+				<div id="dashboard-header">
+
+					<h1>
+						<a href="{{ rbUrl() }}" target="_blank">
+							{{ $siteTitle }}
+							<span class="view-site">[ {{ t('label.view_site') }} ]</span>
+						</a>
+					</h1>
+
+					<div id="dashboard-user-meta">
+						<ul>
+							<li>{{ gravatar($user->email, 22) }}</li>
+							<li><h2 class="dashboard-username">{{ $user->first_name.' '.$user->last_name }}</h2></li>
+							<li class="dashboard-dropdown">
+								<span id="dropdown"></span>
+								<ul id="dashboard-user-properties">
+									<li><a href="{{ adminUrl("user/edit/$user->id") }}"><i class="icon-setting icon-grey"></i>Edit Profile</a></li>
+									<li><a href="{{ adminUrl('logout') }}"><i class="icon-exit icon-grey"></i>Logout</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div> <!-- end of div#user-meta -->
+
+				</div> <!-- end of div#dashboard-header -->
+			</div> <!-- end of div#dashboard-head-wrap -->
+
+			<!-- start of message area -->
+			<div id="message-area">
+			{{ flash() }}
+			</div>
+			<!-- end of message area -->
+
+			<div id="dashboard-navigation">
+				<h1 id="reborncms"><a href="{{ adminUrl() }}">Reborn CMS</a></h1>
+				<ul>
+					{{ $adminMenus->generate() }}
+				</ul>
+			</div> <!-- end of div#dashboard-navigation -->
+
+			<div id="dashboard-area">
+
+				<div id="dashboard-wrapper" class="clearfix">
+
+					<h2 id="welcome"><span>Welcome to Reborn CMS -</span>
+						{{ $module['description'] }}
+					</h2>
+
+					{{ if(isset($modToolbar)) }}
+					<div id="toolbar">
+						{{ loop($modToolbar as $btn) }}
+						<a class="shortcut tipsy-tip" title="{{ $btn['info'] }}" href="{{ adminUrl($btn['url']) }}" id="{{ isset($btn['id']) ? $btn['id'] : '' }}">
+						{{ $btn['name'] }}
+						</a>
+						{{ endloop }}
+					</div> <!-- end of div#toolbar -->
+					{{ endif }}
+
+					<div id="content-wrapper">
+
+					{{ $layoutBody }}
+
+					</div> <!-- end of div#content-wrapper -->
+
+					<div id="dashboard-footer" class="clearfix">
+						{{ include:footer }}
+					</div> <!-- end of div#dashboard-footer -->
+
+				</div> <!-- end of div#dashboard-wrapper -->
+
+			</div> <!-- end of div#dashboard-area -->
+		</div> <!-- end of div#main-container -->
+
+	{{ $footerStyle }}
+	{{ $footerScript }}
+
+	</body>
+</html>

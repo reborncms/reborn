@@ -1,0 +1,262 @@
+<div id="accordion">
+
+	<div class="accordion-block">
+		<h3 class="accordion-bar">{{ t('module::module.addon_mods') }}</h3>
+		<div class="accordion-inner">
+			<ul class="module-lists">
+
+				<li>
+					<div class="modules-header clear">
+
+						<span class="mod-detail">
+						&nbsp;
+						</span> <!-- end of span.mod-detail -->
+
+						<span class="mod-name">
+						{{ t('module::module.name_label') }}
+						</span> <!-- end of span.mod-name -->
+
+						<span class="mod-desc">
+						{{ t('module::module.desc_label') }}
+						</span> <!-- end of span.mod-desc -->
+
+						<span class="mod-version">
+						{{ t('module::module.version_label') }}
+						</span> <!-- end of span.mod-version -->
+
+						<span class="mod-action">
+						{{ t('label.actions') }}
+						</span> <!-- end of span.mod-action -->
+
+					</div> <!-- end of div.modules-header -->
+				</li>
+
+				{{ if(! empty($modules['addons']) ) }}
+					{{ loop($modules['addons'] as $key => $module) }}
+
+					<li>
+						<div class="module-data clear">
+							<span class="mod-detail">
+								<a href="mod-{{ $module['name'] }}" class="tipsy-tip" title="Detail View"><i class="icon-add" ></i></a>
+							</span> <!-- end of span.mod-detail -->
+
+							<span class="mod-name">
+							{{ if(!$module['installed']) }}
+								{{ $module['name'] }}<span class="label label-info">{{ t('module::module.brandnew_label') }}</span>
+							{{ else }}
+								{{ $module['name'] }}
+							{{ endif }}
+							</span> <!-- end of span.mod-name -->
+
+							<span class="mod-desc">
+							{{ $module['description'] }}
+							</span> <!-- end of span.mod-desc -->
+
+							<span class="mod-version">
+							{{ $module['version'] }}
+							</span> <!-- end of span.mod-version -->
+
+							<span class="mod-action">
+							{% $slug = $module['name'].'/'.$module['uri'] %}
+
+							{{ if($module['installed']) }}
+								{{ if($module['enabled']) }}
+									<a href="{{ adminUrl("module/disable/$slug") }}" class="ico-button button-yellow tipsy-tip" title="Disable">
+										<i class="icon-cross2 icon-white"></i>
+									</a>
+								{{ else }}
+									<a href="{{ adminUrl("module/enable/$slug") }}" class="ico-button button-blue tipsy-tip" title="Enable">
+										<i class="icon-tick2 icon-white"></i>
+									</a>
+								{{ endif }}
+
+								{{ if($module['upgradeRequire']) }}
+									<a href="{{ adminUrl("module/upgrade/$slug") }}" class="ico-button button-green tipsy-tip" title="Upgrade">
+										<i class="ico-button button-red tipsy-tip"></i>
+									</a>
+								{{ endif }}
+							{{ else }}
+								<a href="{{ adminUrl("module/install/$slug") }}" class="ico-button button-green tipsy-tip" title="Install">
+									<i class="icon-add2 icon-white"></i>
+								</a>
+							{{ endif }}
+								<a href="{{ adminUrl("module/delete/$slug") }}" class="ico-button button-red tipsy-tip" title="Delete">
+									<i class="icon-trash2 icon-white"></i>
+								</a>
+							</span> <!-- end of span.mod-action -->
+
+						</div> <!-- end of div.module-data -->
+
+						<div class="module-author clear" id="mod-{{ $slug }}">
+
+						{{ if(! empty($module['author'])) }}
+							{{ if(!empty($module['author_url'])) }}
+								{% $author = '<a target="_blank" href="'.$module['author_url'].'">'.$module['author'].'</a>' %}
+							{{ else }}
+								{% $author = $module['author'] %}
+							{{ endif }}
+						{% printf(t('module::module.mod_author'), $author) %}
+						{{ endif }}
+
+						{{ if(! empty($module['authorUrl']) ) }}
+
+							{% $mod_url = '<a target="_blank" href="'.$module['authorUrl'].'">'.$module['authorUrl'].'</a>' %}
+							{% printf(t('module::module.mod_website'), $mod_url) %}
+
+						{{ endif }}
+						</div> <!-- end of div.module-author -->
+					</li>
+
+					{{ endloop }}
+				{{ else }}
+
+					<li>
+						<div id="no-index-data">
+						{{ t('module::module.no_have_mods') }}
+						</div>
+					</li>
+
+				{{ endif }}
+			</ul> <!-- end of ul.module-lists -->
+		</div> <!-- end of .accordion-inner -->
+	</div> <!-- end of .accordion-block -->
+
+
+	<div class="accordion-block">
+		<h3 class="accordion-bar">{{ t('module::module.core_mods') }}</h3>
+		<div class="accordion-inner">
+			<ul class="module-lists">
+
+				<li>
+					<div class="modules-header clear">
+
+						<span class="mod-detail">
+						&nbsp;
+						</span> <!-- end of span.mod-detail -->
+
+						<span class="mod-name">
+						{{ t('module::module.name_label') }}
+						</span> <!-- end of span.mod-name -->
+
+						<span class="mod-desc">
+						{{ t('module::module.desc_label') }}
+						</span> <!-- end of span.mod-desc -->
+
+						<span class="mod-version">
+						{{ t('module::module.version_label') }}
+						</span> <!-- end of span.mod-version -->
+
+						<span class="mod-action">
+						{{ t('label.actions') }}
+						</span> <!-- end of span.mod-action -->
+
+					</div> <!-- end of div.modules-header -->
+				</li>
+
+				{{ if(! empty($modules['cores']) ) }}
+					{{ loop($modules['cores'] as $key => $module) }}
+
+					<li>
+						<div class="module-data clear">
+							<span class="mod-detail">
+								<a href="mod-{{ $module['name'] }}" class="tipsy-tip" title="Detail View"><i class="icon-add" ></i></a>
+							</span> <!-- end of span.mod-detail -->
+
+							<span class="mod-name">
+							{{ if(!$module['installed']) }}
+								{{ $module['name'] }}<span class="label label-info">{{ t('module::module.brandnew_label') }}</span>
+							{{ else }}
+								{{ $module['name'] }}
+							{{ endif }}
+							</span> <!-- end of span.mod-name -->
+
+							<span class="mod-desc">
+							{{ $module['description'] }}
+							</span> <!-- end of span.mod-desc -->
+
+							<span class="mod-version">
+							{{ $module['version'] }}
+							</span> <!-- end of span.mod-version -->
+
+							<span class="mod-action">
+							{% $slug = $module['name'].'/'.$module['uri'] %}
+							{{ if($module['installed']) }}
+								{{ if($module['enabled']) }}
+									<a href="{{ adminUrl("module/disable/$slug") }}" class="ico-button button-yellow tipsy-tip" title="Disable">
+										<i class="icon-cross2 icon-white"></i>
+									</a>
+								{{ else }}
+									<a href="{{ adminUrl("module/enable/$slug") }}" class="ico-button button-blue tipsy-tip" title="Enable">
+										<i class="icon-tick2 icon-white"></i>
+									</a>
+								{{ endif }}
+
+								{{ if($module['upgradeRequire']) }}
+									<a href="{{ adminUrl("module/upgrade/$slug") }}" class="ico-button button-green tipsy-tip" title="Upgrade">
+										<i class="ico-button button-red tipsy-tip"></i>
+									</a>
+								{{ endif }}
+							{{ else }}
+								<a href="{{ adminUrl("module/install/$slug") }}" class="ico-button button-green tipsy-tip" title="Install">
+									<i class="icon-add2 icon-white"></i>
+								</a>
+							{{ endif }}
+							</span> <!-- end of span.mod-action -->
+
+						</div> <!-- end of div.module-data -->
+
+						<div class="module-author clear" id="mod-{{ $slug }}">
+
+						{{ if(! empty($module['author'])) }}
+							{{ if(!empty($module['author_url'])) }}
+								{% $author = '<a target="_blank" href="'.$module['author_url'].'">'.$module['author'].'</a>' %}
+							{{ else }}
+								{% $author = $module['author'] %}
+							{{ endif }}
+						{% printf(t('module::module.mod_author'), $author) %}
+						{{ endif }}
+
+						{{ if(! empty($module['authorUrl']) ) }}
+
+							{% $mod_url = '<a target="_blank" href="'.$module['authorUrl'].'">'.$module['authorUrl'].'</a>' %}
+							{% printf(t('module::module.mod_website'), $mod_url) %}
+
+						{{ endif }}
+						</div> <!-- end of div.module-author -->
+					</li>
+
+					{{ endloop }}
+				{{ else }}
+
+					<li>
+						<div id="no-index-data">
+						{{ t('module::module.no_have_mods') }}
+						</div>
+					</li>
+
+				{{ endif }}
+			</ul> <!-- end of ul.module-lists -->
+		</div> <!-- end of .accordion-inner -->
+	</div> <!-- end of .accordion-block -->
+
+
+<script type="text/javascript">
+	// Accordion
+	$("#accordion").accordion({ header: "h3", active: 1, collapsible: true, autoHeight: false, icons:{header:"sc-arrow-r",headerSelected:"sc-arrow-d"} });
+
+	// Detail View
+	$(".mod-detail > a").live('click', function(e){
+		e.preventDefault();
+		var href = $(this).attr('href');
+		var bdHide = $(this).parent().parent();
+
+		$('div#'+href).slideToggle();
+		$(bdHide).toggleClass('bd-hide');
+
+		$('div.ui-accordion-content-active').css('height', 'auto');
+	});
+
+	// Upload View ColorBox
+	//$('#upload-mod').colorbox({inline:true, width:"50%"});
+
+</script>

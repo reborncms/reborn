@@ -1,0 +1,39 @@
+<div class="blog_single_wrapper">
+	<h2 class="blog_title">{{ $blog['title'] }}</h2>
+	<div class="blog_meta">
+
+		<span class="author">
+			<a href="{{ rbUrl('blog/author/'.$blog['author']['id']) }}">
+				{{ $blog['author']['first_name'].' '.$blog['author']['last_name'] }}
+			</a>
+		</span>
+
+		<span class="category">
+			<a href="{{ rbUrl('blog/category/'.$blog['category']['slug']) }}">
+				{{ $blog['category']['name'] }}
+			</a>
+		</span>
+
+		<span class="tags">
+			{{ loop($blog['tags'] as $tag) }}
+				<a href="{{ rbUrl('blog/tag/'.$tag) }}">
+					{{ $tag }}
+				</a>
+			{{ endloop }}
+		</span>
+		
+		<span class="date">
+			{= $date = date_create($blog['created_at']) =}
+			{{ date_format($date, 'Y-m-d h:i a') }}
+			
+		</span>
+
+	</div> <!-- end of blog_meta -->
+	<div class="blog_body">{{ html_entity_decode($blog['body']) }}</div>
+</div>
+<!-- call comments -->
+{= 
+	$id = $blog['id'];
+	$status = $blog['comment_status'];
+=}
+{{ action:comment/show/$id/blog/$status }}

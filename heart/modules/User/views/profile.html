@@ -1,0 +1,5 @@
+<h2>Hello World, {{ $user['name'] }}</h2>
+
+<p>Your Mail Address is <a href="mailto:{{ $user['email'] }}">{{ $user['email'] }}</a></p>
+
+<a href="{{ \Uri::create('user/logout/') }}">Logout</a>

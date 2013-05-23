@@ -1,0 +1,25 @@
+<div id="user-container">
+
+	{{ Form::start("user/passwordReset/".$emailEncode."/".$hash) }}
+	{{ Security::CSRField() }}
+
+		<div class="block">
+			{{ Form::label('Enter new password', 'new_password') }}
+			{{ Form::password('new_password', '') }}
+			{{ if(isset($errors['new_password'])) }}
+			<span class="er">{{ $errors['new_password'] }}</span>
+			{{ endif }}
+		</div>
+
+		<div class="block">
+			{{ Form::label('Confirm new password', 'conf_new_password') }}
+			{{ Form::password('conf_new_password', '') }}
+			{{ if(isset($errors['conf_new_password'])) }}
+			<span class="er">{{ $errors['conf_new_password'] }}</span>
+			{{ endif }}
+		</div>
+
+		{{ Form::submit('submit', 'Reset', array('id' => 'password-reset', 'class' => 'btn')) }}
+
+	{{ Form::end() }}
+</div>

@@ -1,0 +1,9 @@
+<div id="filter-bar">
+	{{ Form::start(adminUrl('blog/search'), 'filter-form',false, array('class' => 'form')) }}
+		{{ Form::label('Filter Search :','term') }}
+		{{ Form::input('term','','text', array('id' => 'filter-box','class' => 'small thin', 'placeholder' => 'Search')) }}
+	{{ Form::end() }}
+</div>
+<div id="data_table_wrapper">
+	{{ $data_table }}
+</div>

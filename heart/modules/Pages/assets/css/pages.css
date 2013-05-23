@@ -1,0 +1,73 @@
+
+#page_slug_input {
+	border:none;
+	background: none;
+	padding: 0px;
+	font-family: podkova, Arial, sans-serif;
+	font-size: 13px;
+	color: #919191;
+}
+
+#page_slug_input:hover {
+	box-shadow: none;
+}
+
+.form .form-block {
+	border:none;
+}
+
+.tab-menu li a, .form label {
+	font-family: podkova, Arial, sans-serif;
+	font-size: 13px;
+	color: #919191;
+}
+
+#tab-contents {
+	background-color: white;
+	padding: 10px;
+	border-radius: 3px;
+	border: 1px solid #CDCDCD;
+}
+
+.ico-button, .form-action input {
+	margin-right: 6px;
+}
+
+.label a {
+	color:#fff;
+}
+
+.sortable {
+	width:90%;
+}
+
+.index_page_title{
+	float:left;
+	width:100%;
+}
+
+.index_page_title span.label {
+	font-size: 10px;
+	letter-spacing: 1px;
+	line-height: 1.2em;
+	min-height: 5px;
+	min-width: 20px;
+	padding: 1px 5px;
+	margin-left: 10px;
+	position: relative;
+	top:-3px;
+}
+
+.page_actions {
+	float:right;
+}
+
+.page_actions a {
+	margin-left:10px;
+}
+
+.page_actions a:hover {
+	opacity:0.5;
+}
+
+

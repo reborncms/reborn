@@ -1,0 +1,165 @@
+<div id="main-form-wrapper">
+	<div id="form-wrapper">
+		<div id="form-left">
+			{{ if(count($tags) > 0) }}
+				{{ Form::start(ADMIN_URL.'/tag/delete') }}
+				<table class="stripe">
+					<thead>
+						<tr>
+							<th width="10%">{{ Form::checkbox('action_to_all', '', array('class' => 'check-all')) }}</th>
+							<th width="60%">{{ Translate::get('tag::tag.title') }}</th>
+							<th width="30%">{{ Translate::get('label.actions') }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{= $a = 1 =}
+						{{ loop($tags as $tag) }}
+						<tr>
+							<td class="check-box">{{ Form::checkbox('action_to[]', $tag->id, array('id' => 'action'.$a)) }}</td>
+							<td>{{ $tag->name }}</td>
+							<td>
+								<a href="{{ adminUrl('tag/edit/'.$tag->id) }}" title = "Edit" class="ico-button button-green tipsy-tip" id="tag-edit"><i class="icon-edit icon-white"></i></a>
+								<a href="{{ adminUrl('tag/delete/'.$tag->id) }}" title = "Delete" class="ico-button button-red confirm_delete tipsy-tip"><i class="icon-trash2 icon-white"></i></a>
+							</td>
+						</tr>
+						{= $a++ =}
+						{{ endloop }}
+					</tbody>
+				</table> <!-- end of stripe -->
+				<div class="button-wrapper" id="delete_select">
+					{{ Form::submit('submit_delete', 'Delete Selected', array('class' => 'confirm_delete button button-red', 'disabled' => 'disabled')) }}
+					{{ Form::end() }}
+				</div>
+				{{ $pagination }}
+			{{ else }}
+				<div id="no-index-data">
+					{{ Translate::get('tag::tag.no_tag_list') }}
+			</div>
+			{{ endif }}
+		</div> <!-- end of form-left -->
+		<div id="form-right">
+			<div id="option-control" class="r-m-c">
+
+				<a kind="click" href="javascript:void(0);">
+					<span class="tt"></span>
+					<span>{{ Translate::get('tag::tag.title_create') }}</span>
+				</a>
+
+			</div> <!-- end of div.r-container#option-control -->
+			{{ $form }}
+		</div> <!-- end of form-right -->
+	</div> <!-- end of form-wrapper -->
+</div> <!-- end of main-form-wrapper -->
+<style type="text/css">
+	#delete_select { margin-bottom: 10px;}
+	.c-a-b { margin-bottom: 10px;}
+	.tag-name, .tg-box-del { cursor: pointer; }
+	.tag-name { color: #612FAA;}
+	.tg-name {
+		border: 1px solid #CDCDCD;
+		-webkit-border-radius: 13px;
+		-moz-border-radius: 13px;
+		-ms-border-radius: 13px;
+		border-radius: 13px;
+		color: #565656;
+		padding: 5px 12px;
+		width: 135px;
+	}
+	.tag-edit-box { margin-top: 10px;}
+	.tag-edit-form { position: relative;}
+	.loading { position: absolute; left: 129px; top: -3px; }
+	.tg-box-save { padding: 3px 10px; margin: 0 10px 0 20px;}
+	.tg-box-del { color: #F44646;}
+	span.helper { font-size: 10px; font-style: oblique; font-weight: normal;}
+</style>
+
+<script type="text/javascript">
+	$('#tag-edit').colorbox({
+		innerWidth: 400,
+		onComplete: function() {
+			$.colorbox.resize();
+			$('form#tag-create').live('submit', function(e){
+				e.preventDefault();
+				var form_data = $(this).serialize();
+				var form_url = $(this).attr('action');
+				$.post(form_url, form_data, function(obj){
+					var data = jQuery.parseJSON(obj);
+					if(data.status == 'ok') {
+						$('#msg-box').addClass('msg-success');
+						$('#msg-box').html(data.msg);
+						window.location.reload();
+						$.colorbox.close();
+					} else {
+						$('#msg-box').addClass('msg-error');
+						$('#msg-box').html(data.msg);
+						console.log(data.msg);
+						$.colorbox.resize();
+					}
+				});
+			});
+		}
+	});
+	/*$('.tag-name').live('click', function(){
+		var parentTd = $(this).parent();
+			tagId = $(this).attr('data-id'),
+			tagName = $(this).attr('data-name');
+		
+		var formTemplate = '<div class="tag-edit-box" id="tgbox-'+tagId+'">' +
+							'<form action="'+SITEURL+ADMIN+'/tag/edit/'+tagId+'" method="post" class="tag-edit-form">' +
+								'<input type="text" value="'+tagName+'" name="title" id="tag-title'+tagId+'" class="tg-name">' +
+								'<button id="edit-tag-btn" class="button button-green tg-box-save" data-id="'+tagId+'">Save</button>' +
+								'<span class="tg-box-del">Cancel</span>' +
+							'</form>' +
+						'</div>';
+
+		var haveEle = document.getElementById('tgbox-'+tagId);
+
+		if(null != haveEle) {
+			$(haveEle).remove();
+		}
+		else {
+			$(parentTd).append(formTemplate);
+		}
+	});
+	
+	$('.tg-box-del').live('click', function() {
+		var parentDiv = $(this).parent().parent();
+		$(parentDiv).remove();
+	});
+	
+	// Ajax Save Function
+	$('#edit-tag-btn').live('click', function(e){
+		e.preventDefault();
+		var ID = $(this).attr('data-id'),
+			eBox = $('div#tgbox-'+ID),
+			fieldName = $(eBox).parent().find('span.tag-name'),
+			fieldSlug = $(eBox).parent().parent().find('td.tag-slug');
+			
+		$.ajax({
+			url: SITEURL+ADMIN+'/tag/edit/'+ID,
+			type: 'POST',
+			data:{title: $('#tag-title'+tagId).val()},
+			beforeSend: function() {
+				$('div#tgbox-'+ID+' .tag-edit-form').append('<span id="waiting" class="loading"></span>');
+			},
+			complete: function() {
+				$('#waiting').remove();
+			},
+			success: function(data){
+				var result = jQuery.parseJSON(data);
+				console.log(result);
+				if(result.status == 'success') {
+					$(fieldName).html(result.name).attr('data-name',result.name);
+					$(fieldSlug).html(result.slug);
+					var tem  = '<div class="alert alert-success">'+result.msg+'<a class="close" href="#">×</a></div>';
+					$('#message-area').html(tem).animate({opacity: 1.0},4000).fadeOut('slow');
+					$(eBox).fadeOut('slow').remove();
+				} else {
+					var tem  = '<div class="alert alert-error">'+result.msg+'<a class="close" href="#">×</a></div>';
+					$('#message-area').html(tem).animate({opacity: 1.0},4000).fadeOut('slow');
+				}
+			}
+		});
+	})*/
+	
+</script>

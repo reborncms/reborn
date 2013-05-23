@@ -1,0 +1,15 @@
+<div class="widget widget-twitter-share-btn">
+	<h2 class="widget-title">{{ $title }}</h2>
+	<div class="widget-body">
+		<script>
+			if(!window.__twttrlr) {
+				document.write('<script src="http://platform.twitter.com/widgets.js"><\/script>');
+			}
+		</script>
+		{{ if($type == 'share') }}
+		<div>
+			<a href="http://twitter.com/share" class="twitter-share-button" data-url="{{ $url }}" data-text="{{ $text }}">Tweet</a>
+		</div>
+		{{ endif }}
+	</div>
+</div>

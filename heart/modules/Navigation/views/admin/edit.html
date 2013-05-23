@@ -1,0 +1,103 @@
+<div id="nav-link-edit">
+
+<div id="message-wrap">
+
+</div>
+
+	{{ Form::start(adminUrl("navigation/edit/$link->id"),'nav', false, array('class' => 'form', 'id' => 'link-edit-form')) }}
+	<div class="c-a-b">
+
+		<div>
+			<span>{{ t('navigation::navigation.labels.title') }}<span class="required"></span></span>
+		</div>
+
+
+		{{ Form::input('title', isset($link->title) ? $link->title : '', 'text', array('class' => 'large thin')) }}
+
+
+	</div> <!-- end of div.c-a-b -->
+
+	<div class="c-a-b">
+
+		<div>
+			<span>{{ t('navigation::navigation.labels.type') }}<span class="required"></span></span>
+		</div>
+
+		{{ Form::select('type', $type, isset($link->link_type) ? $link->link_type : 'uri',  array('class' => 'large thin', 'id' => 'type_select_edit')) }}
+
+
+		<div id="urie" class="nav-type-wrap-e" style="{= echo ($link->link_type != 'uri') ? 'display:none' : '' =}">
+
+			{{ Form::input('uri', isset($link->uri) ? $link->uri : '', 'text', array('class' => 'large thin', 'placeholder' => 'Input uri segment')) }}
+
+		</div> <!-- end of div#uri.nav-type-wrap -->
+
+		<div id="pagee" class="nav-type-wrap-e" style="{= echo ($link->link_type != 'page') ? 'display:none' : '' =}">
+
+			{{ Form::select('page', $pageSelect, isset($link->page) ? $link->page : '', array('class' => 'large thin')) }}
+
+		</div> <!-- end of div#page.nav-type-wrap -->
+
+		<div id="modulee" class="nav-type-wrap-e" style="{= echo ($link->link_type != 'module') ? 'display:none' : '' =}">
+
+			{{ Form::select('module', $moduleSelect, isset($link->module) ? $link->module : '', array('class' => 'large thin')) }}
+
+		</div> <!-- end of div#module.nav-type-wrap -->
+
+		<div id="urle" class="nav-type-wrap-e" style="{= echo ($link->link_type != 'url') ? 'display:none' : '' =}">
+
+			{{ Form::input('url', isset($link->urlStr) ? $link->urlStr : 'http://', 'text', array('class' => 'large thin', 'placeholder' => 'Input URL with http://')) }}
+
+		</div> <!-- end of div#url.nav-type-wrap -->
+
+	</div> <!-- end of div.c-a-b -->
+
+	<div style="display: none">
+	{{ Form::hidden('parent', is_null($link->parent_id) ? '0' : $link->parent_id) }}
+	{{ Form::hidden('link_id', is_null($link->id) ? '0' : $link->id) }}
+	{{ Form::hidden('order', is_null($link->link_order) ? '0' : $link->link_order) }}
+	{{ Form::hidden('current_group', is_null($link->navigation_id) ? '0' : $link->navigation_id) }}
+	</div>
+
+	<div class="c-a-b">
+
+		<div>
+			<span>{{ t('navigation::navigation.labels.group') }}</span>
+		</div>
+		{{ Form::select('group', $groupSelect, isset($link->navigation_id) ? $link->navigation_id : $defaultGroup, array('class' => 'large thin')) }}
+
+	</div> <!-- end of div.c-a-b -->
+
+	<div class="c-a-b">
+
+		<div>
+			<span>{{ t('navigation::navigation.labels.target') }}</span>
+		</div>
+
+		{=
+			$target_array = array('' => t('navigation::navigation.labels.target_normal'), '_blank' => t('navigation::navigation.labels.target_new_win'));
+		=}
+
+		{{ Form::select('target', $target_array, isset($link->target) ? $link->target : '', array('class' => 'large thin')) }}
+
+	</div> <!-- end of div.c-a-b -->
+
+	<div class="c-a-b">
+
+		<div>
+			<span>{{ t('navigation::navigation.labels.class') }}</span>
+		</div>
+
+		{{ Form::input('class', isset($link->class) ? $link->class : '', 'text', array('class' => 'large thin')) }}
+
+	</div> <!-- end of div.c-a-b -->
+
+	<div class="c-a-b">
+
+		{{ Form::submit('add', t('navigation::navigation.link.edit'), array('class' => 'button button-green', 'id' => 'edit-link-btn')) }}
+
+	</div> <!-- end of div.c-a-b -->
+
+	{{ \Form::end() }}
+
+</div> <!-- end of div.nav-link-edit -->

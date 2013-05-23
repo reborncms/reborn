@@ -1,0 +1,12 @@
+<div class="widget widget-google-doc-viewer">
+	<h2 class="widget-title">{{ $title }}</h2>
+	<div class="widget-body">
+		<iframe
+			src="http://docs.google.com/viewer?url={{ $gdoc_url }}&embedded=true"
+			width="{{ $gdoc_width }}"
+			height="{{ $gdoc_height }}"
+			style="{{ $gdoc_style }}"
+		>
+		</iframe>
+	</div>
+</div>

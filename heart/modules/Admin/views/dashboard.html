@@ -1,0 +1,93 @@
+<div id="upper-area">
+	<div id="dashboard-links">
+
+		<ul id="quick-links">
+
+			<li>
+				<a href="{{ adminUrl('user/create') }}" class="quick-btn q-user">
+					<span><i class="ico-user"></i></span>Add new User
+				</a>
+			</li>
+			<li>
+
+				<a href="{{ adminUrl('blog/create') }}" class="quick-btn q-blog"><span><i class="ico-blog"></i></span>Add new Blog Post</a>
+			</li>
+			<li>
+
+				<a href="{{ adminUrl('pages/create') }}" class="quick-btn q-page"><span><i class="ico-page"></i></span>Add new Page</a>
+			</li>
+			<li>
+
+				<a href="{{ adminUrl('module') }}" class="quick-btn q-module"><span><i class="ico-module"></i></span>Module Manager</a>
+			</li>
+		</ul> <!-- end of ul#quick-links -->
+
+	</div> <!-- end of div#dashboard-links -->
+
+</div> <!-- end of div#upper-area -->
+
+<div id="box-area" class="clearfix">
+	<div id="box-left">
+
+		{{ if(isset($last_post)) }}
+		<div class="dashboard-wg hide-on-640">
+			<div id="last-post">
+				<h2>{{ t('label.last_post') }}</h2>
+				<ul>
+				{{ if($last_post->isEmpty()) }}
+					<li><span class="empty-list">Blog post is empty now</span></li>
+				{{ else }}
+				{{ loop($last_post as $post) }}
+					<li>
+						<span class="date">{{ Date $post->created_at as d }}
+							<span class="month">{{ Date $post->created_at as m }}</span>
+						</span>
+						<h3>
+							<a href="rbUrl('blog/'.$post->slug)" target="_black">{{ $post->title }}</a>
+						</h3>
+					</li>
+				{{ endloop }}
+				{{ endif }}
+				</ul>
+			</div> <!-- end of div#last-post -->
+		</div> <!-- end of div.dashboard-wg -->
+		{{ endif }}
+
+		{{ if(!isset($last_comment)) }}
+		<div class="dashboard-wg hide-on-640">
+			<div id="last-comment">
+				<h2>{{ t('label.last_comment') }}</h2>
+				<ul>
+					<li>
+						<span class="commenter">Yan Naing</span>
+						is comment on
+						<span class="date">12/12/2013</span>
+						for
+						<span class="cmt-title">Myanmar Links is Empty Now</span>
+					</li>
+				</ul>
+			</div> <!-- end of div#last-post -->
+		</div> <!-- end of div.dashboard-wg -->
+		{{ endif }}
+
+	</div> <!-- end of div#box-left -->
+
+	<div id="box-right">
+
+		<div class="dashboard-wg">
+			<div id="activity-log">
+				<h2>{{ t('label.user_last_login') }}</h2>
+				<ul>
+
+				{{ loop($last_login as $user) }}
+				{= $url = rbUrl('user/profile/'.$user->id) =}
+					<li>
+						{{ sprintf(t('label.last_login_text'), $url, $user->fullname, $user->last_login) }}
+					</li>
+				{{ endloop }}
+				</ul>
+			</div> <!-- end of div#activity-log -->
+		</div> <!-- end of div.dashboard-wg -->
+	</div> <!-- end of div#box-right -->
+
+</div> <!-- end of div#box-area -->

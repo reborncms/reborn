@@ -1,0 +1,6 @@
+{{ Form::start("user/login", false, 'login', array('class' => 'form-inline')) }}
+{{ Security::CSRField() }}
+{{ Form::input('email', '', 'text', array('class' => 'input-small', 'placeholder' => 'Email')) }}
+{{ Form::password('password', '', array('class' => 'input-small', 'placeholder' => 'Password')) }}
+{{ Form::submit('submit', 'Login', array('class' => 'widget-login btn')) }}
+{{ Form::end() }}

@@ -1,0 +1,18 @@
+body {
+	font-family: Ubuntu, Arial, sans-serif;
+	font-size: 13px;
+	line-height: 1.5em;
+}
+
+p {
+	font-family: Ubuntu, Arial, sans-serif;
+	font-size: 13px;
+	line-height: 1.5em;
+}
+
+a {
+	text-decoration: none;
+	outline: none;
+}
+
+li { list-style: none; }

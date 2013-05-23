@@ -1,0 +1,19 @@
+<div id="user-container">
+
+	{{ Form::start("user/resetPassword") }}
+	{{ Security::CSRField() }}
+
+		{{ Form::label('Enter your email address to reset password', 'email') }}
+		<div class="block">
+			{{ Form::email('email', '', array('id' => 'email')) }}
+
+			{{ if(isset($errors['email'])) }}
+			<span class="er">{{ $errors['email'] }}</span>
+			{{ endif }}
+		</div>
+
+		{{ Form::submit('submit', 'Send', array('id' => 'send', 'class' => 'btn')) }}
+
+	{{ Form::end() }}
+
+</div>

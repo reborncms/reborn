@@ -1,0 +1,55 @@
+<div class="modules-wrap clearfix">
+
+	<div class="switchs clearfix">
+	{{ if(! empty($news) ) }}
+		{{ loop( $news as $k => $m ) }}
+		{= $slug = $m['name'].'/'.$m['uri'] =}
+
+		{{ if($m['enabled']) }}
+		{= $class = "mod-on" =}
+		{= $status = 'Enable' =}
+		{{ else }}
+		{= $class = "mod-off" =}
+		{= $status = 'Disable' =}
+		{{ endif }}
+
+		<div class="sw-mod">
+			<h4 class="{{ $class }}">{{ $m['name'] }} <span>V [ {{ $m['version'] }} ]</span></h4>
+			<div class="mod-body clearfix">
+				<div class="mod-desc">
+					{{ $m['description'] }}
+				</div> <!-- end of div.mod-desc -->
+				<div class="mod-body-left">
+					<div class="mod-author">
+						Developed by : {{ $m['author'] }}
+					</div> <!-- end of div.mod-author -->
+					<div class="mod-url">
+						Website : <a href="{{ $m['authorUrl'] }}" target="_blank"> {{ $m['authorUrl'] }}</a>
+					</div> <!-- end of div.mod-url -->
+				</div> <!-- end of div.mod-body-left -->
+				<div class="mod-body-right">
+					<p>Module is {{ $status }}</p>
+				</div> <!-- end of div.mod-body-right -->
+			</div> <!-- end of div.mod-body -->
+
+			<div class="mod-actions clearfix">
+
+				<a href="{{ adminUrl("module/install/$slug") }}" class="ico-button button-green tipsy-tip" title="Click to Install">
+					<i class="icon-tick2 icon-white"></i>
+				</a>
+
+				{{ ifnot($m['isCore']) }}
+				<a href="{{ adminUrl("module/delete/$slug") }}"
+				class="button button-red tipsy-tip" title="Click to Delete">
+					<i class="icon-trash2 icon-white"></i>
+				</a>
+				{{ endif }}
+
+			</div> <!-- end of div.mod-actions -->
+
+		</div> <!-- end of div.sw-mod -->
+		{{ endloop }}
+	{{ endif }}
+	</div> <!-- end of div.switchs -->
+
+</div> <!-- end of div.modules-wrap -->

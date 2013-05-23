@@ -1,0 +1,8 @@
+<div id="user-login-nav">
+	<p>Holla, {{ $data['gravy'] }} {{ $data['name'] }} </p>
+	<ul class="user-widget">
+		<li><a href="{{ \Uri::create('admin/') }}">Dashboard</a></li>
+		<li><a href="{{ \Uri::create('user/edit/') }}">Edit Profile</a></li>
+		<li><a href="{{ \Uri::create('user/logout/') }}">Logout</a></li>
+	</ul>
+</div>

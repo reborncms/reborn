@@ -1,0 +1,40 @@
+{
+    "name": "reborncms/reborncms",
+    "description": "The PHP 5.3 CMS",
+    "keywords": ["cms, content_manager"],
+    "homepage": "http://reborncms.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Reborn CMS Development Team",
+            "email": "reborncms@gmail.com"
+        },
+        {
+            "name": "Myanmar Links Professional Web Development Team",
+            "email": "info@myanmarlinks.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "pimple/pimple": "1.*",
+        "symfony/http-foundation": ">=2.1,<2.3-dev",
+        "symfony/console": "2.2.*@dev",
+        "monolog/monolog": "dev-master",
+        "illuminate/database": "4.0.*@dev",
+        "cartalyst/sentry": "2.0.*@dev",
+        "swiftmailer/swiftmailer": "4.3.*@dev",
+        "tijsverkoyen/akismet": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "Reborn": "heart/reborn/src"
+        },
+        "files": [
+            "heart/reborn/src/helpers.php"
+        ]
+    },
+    "config": {
+            "vendor-dir": "heart/vendor"
+    },
+    "minimum-stability": "dev"
+}

@@ -1,0 +1,42 @@
+<section class="title">
+	<h4>{{ $group->name }}</h4>
+	<p>Set permission for this usergroup. If you set empty check for permission, usergroup will not have access permission for follow module.</p>
+</section>
+<section class="item">
+{{ Form::start("$adminUrl/user/permission/edit/$group->id") }}
+{{ Security::CSRField() }}
+<table class="stripe">
+	<thead>
+		<tr>
+			<th width=20px ></th>
+			<th>Modules</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{ loop($permission_modules as $module) }}
+		<tr>
+			{= $check = false; =}
+			
+			{{ loop($groupPermissions as $permission => $v ) }}
+				{{ if($module->uri == $permission) }}
+					{= $check = true; break; =}
+				{{ endif }}
+			{{ endloop }}
+
+		{{ if($check) }}
+			<td>{{ Form::checkbox("modules[$module->uri]", 1, array('checked' => 'checked')) }}</td>
+		{{ else }}
+			<td>{{ Form::checkbox("modules[$module->uri]", 1) }}</td>
+		{{ endif }}
+			<td>{{ $module->name }}</td>
+		</tr>
+		{{ endloop }}
+		
+	</tbody>
+</table>
+<div class="buttons float-right padding-top">
+	{{ Form::submit('submit', 'Edit', array('id' => 'edit', 'class' => 'button button-green')) }}
+	<a href="{{ \Uri::create("$adminUrl/user/permission/") }}" class="button button-red">Cancel</a>
+</div>
+{{ Form::end() }}
+</section>

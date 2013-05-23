@@ -1,0 +1,86 @@
+<div class="media_wrap" id="{{ (isset($folder_id)) ? $folder_id : 0 }}">
+
+	{{ if(isset($folderPagi)) }}
+
+	<div id="m_pagi_area">
+		<ul id="m_pagi" class="overflow">
+			<li class="m_pagi_home f-left"><a href="{{ adminUrl('media') }}">Home</a></li>
+			{{ loop($folderPagi as $pagi) }}
+			<li class="f-left"><span class="sep f-left"></span><a href="{{ adminUrl('media/explode/' . $pagi->id) }}">{{ $pagi->name }}</a></li>
+			{{ endloop }}
+			<li class="f-left" id="m_current"><span class="sep f-left"></span><a href="javascript:void(0);">{{ $currentFolder->name }}</a></li>
+		</ul> <!-- end of m_pagi -->
+	</div> <!-- end of m_pagi_area -->
+
+	{{ endif }}
+
+	{{ if(count($folders) <= 0 and count($files) <= 0) }}
+	<div id="no-index-data">
+		This folder contain no folders or files.
+	</div><!-- end of no-index-data -->
+	{{ endif }}
+
+	{{ if(isset($folders) and count($folders) > 0) }}
+
+		<div id="m_folder_area">
+
+			<ul id="m_folder_list" class="overflow">
+
+				{{ loop($folders as $folder) }}
+
+					<li class="drop_zone overflow relative" folder-id = "{{ $folder->id }}">
+						<a href="{{ rbUrl('admin/media/editFolder/' . $folder->id) }}" title="Edit" class="ico-button button-green absolute m_edit">
+							<i class="icon-edit icon-white"></i>
+						</a>
+						<a href="{{ rbUrl('admin/media/deleteFolder/' . $folder->id) }}" title="Delete" class="ico-button button-red absolute m_confirm_delete"><i class="icon-trash2 icon-white"></i></a>
+						<a href="{{ rbUrl('admin/media/explode/' . $folder->id) }}" class="explorer">
+							<div class="m_thumb_area"></div>
+							<p class="overflow">{{ $folder->name }}</p>
+						</a>
+
+					</li> <!-- end of drop_zone -->
+				{{ endloop }}
+				<div class="clear"></div>
+			</ul> <!-- end of m_folder_list -->
+
+		</div> <!-- end of m_folder_area -->
+
+	{{ endif }}
+
+	{{ if(isset($files) and count($files) > 0) }}
+
+		<div id="m_file_area">
+
+			<ul id="m_file_list">
+
+				{{ loop($files as $file) }}
+
+					<li class="relative" file-id = "{{ $file->id }}">
+						<a href="{{ rbUrl('admin/media/showFileData/' . $file->id) }}" title="View" class="ico-button button-blue absolute m_view"><i class="icon-view2 icon-white"></i></a>
+						<a href="{{ rbUrl('admin/media/editFile/' . $file->id) }}" title="Edit" class="ico-button button-green absolute m_edit">
+							<i class="icon-edit icon-white"></i>
+						</a>
+						<a href="{{ rbUrl('admin/media/deleteFile/' . $file->id) }}" title="Delete" class="ico-button button-red absolute m_confirm_delete"><i class="icon-trash2 icon-white"></i></a>
+
+						{{ if($file->width != 0) }}
+							<div class="dragger m_img_thumb overflow">
+								<img src="{{ rbUrl('media/thumb/' . $file->id . '/90/') }}" alt="{{ $file->alt_text }}">
+							</div> <!-- end of m_img_thumb -->
+							<p class="overflow">{{ $file->name }}</p>
+						{{ else }}
+							<div class="dragger files_icon {{ $file->extension }}"></div>
+							<p class="overflow">{{ $file->name }}</p>
+						{{ endif }}
+
+
+					</li> <!-- end of drop_zone -->
+
+				{{ endloop }}
+				<div class="clear"></div>
+			</ul> <!-- end of m_folder_list -->
+			<div class="clear"></div>
+		</div> <!-- end of m_file_area -->
+
+	{{ endif }}
+
+</div> <!-- end of media_wrap -->

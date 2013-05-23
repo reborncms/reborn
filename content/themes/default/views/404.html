@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="robots" content="INDEX,FOLLOW" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="author" content="Reborn Development Team" />
+	<title>{{ setting('site_title') }} | {{ $layoutTitle }}</title>
+
+	<link rel="shortcut icon" type="image/x-icon" href="{{ assetPath('img') }}favicon.ico">
+
+	{{ css("style.css") }}
+
+</head>
+<body>
+
+	<div class="wrapper black-bg" id="header">
+		<div class="container clearfix">
+			<h1 id="logo">
+				<a href="{{ rbUrl() }}">{{ setting('site_title') }}</a>
+			</h1>
+			<nav>
+				{{ nav:header }}
+			</nav>
+		</div> <!-- end of .container -->
+	</div> <!-- end of #header -->
+
+	<div class="wrapper clearfix" id="main-content">
+		<div class="container">
+
+			{{ flash() }}
+
+			<div id="breadcrumb">
+				<a href="{{ rbUrl() }}">Home</a>
+				<span>Page Not Found</span>
+			</div>
+
+			<div id="content">
+
+				<div class="err-404">
+					<h2>Result Not Found</h2>
+					<p>404 Page</p>
+				</div> <!-- end of .err-404 -->
+
+			</div> <!-- end of #content -->
+
+			<div id="sidebar">
+
+				{{ include:sidebar }}
+
+			</div> <!-- end of #sidebar -->
+
+		</div> <!-- end of .container -->
+	</div> <!-- end of #main-content -->
+
+	<div class="wrapper" id="footer">
+		{{ include:footer }}
+	</div> <!-- end of #footer -->
+
+</body>
+</html>

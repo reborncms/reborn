@@ -1,0 +1,36 @@
+	<meta charset="UTF-8">
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta http-equiv="content-script-type" content="text/javascript" />
+	<meta http-equiv="content-style-type" content="text/css" />
+	<meta name="robots" content="INDEX,FOLLOW" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<meta name="author" content="Reborn CMS Development Team" />
+	<meta name="description" content="RebornCMS Dashboard" />
+	<meta name="keywords" content="reborn, cms, dashboard" />
+	<base href="{{ rbUrl() }}" />
+
+	<link rel="shortcut icon" type="image/x-icon" href="{{ assetPath('img') }}/favicon.ico">
+
+	{{ $metadata }}
+
+	<title>{{ \Setting::get('site_title') .' - '. $layoutTitle }}</title>
+
+	{{ css('plugins/tipsy.css') }}
+	{{ css('plugins/colorbox/colorbox.css') }}
+	{{ css('reborn.css') }}
+	{{ css('dashboard.css') }}
+
+	{{ $headerStyle }}
+
+	<script type="text/javascript">
+		var ADMIN = '{{ $adminUrl }}',
+			SITEURL = '{{ rbUrl() }}';
+	</script>
+
+	{{ js('jquery.min.js') }}
+	{{ js('plugins/jquery-ui.min.js') }}
+	{{ js('plugins/jquery.colorbox.js') }}
+	{{ js('plugins/jquery-plugins.js') }}
+	{{ js('reborn.js') }}
+
+	{{ $headerScript }}

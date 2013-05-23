@@ -1,0 +1,10 @@
+<div class="widget widget-blog-category">
+	<h2 class="widget-title">{{ $title }}</h2>
+	<div class="widget-body">
+		<ul>
+			{{ loop($categories as $cat) }}
+			<li><a href="{{ rbUrl('blog/category/'.$cat->slug ) }}" >{{ $cat->name }}</a></li>
+			{{ endloop }}
+		</ul>
+	</div>
+</div>

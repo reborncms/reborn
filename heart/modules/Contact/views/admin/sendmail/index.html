@@ -1,0 +1,49 @@
+{{ Form::start(adminUrl('contact/send-mail'),'',true,array('class'=>'form')) }}
+	{{ Security::CSRField() }}
+		
+		<div class="form-block first-block">
+			{{ Form::label(\Translate::get('label.email').'<span class="required"></span>', 'email') }}
+			<div class="form-right-block">
+				{{ Form::input('email', isset($mail->email) ? $mail->email : '', 'text', array('placeholder' => 'email@example.com')) }}
+				{{ if(isset($errors['email'])) }}
+					<span class="msg error">{{ $errors['email'] }}</span>
+				{{ endif }}
+			</div> <!-- end of form-right-block -->
+		</div> <!-- end of form block -->
+		
+		<div class="form-block first-block">
+			{{ Form::label(\Translate::get('contact::contact.labels.subject').'<span class="required"></span>', 'subject') }}
+			<div class="form-right-block">
+				{{ Form::input('subject', isset($mail->subject) ? $mail->subject :'', 'text', array('placeholder' => 'Subject')) }}
+				{{ if(isset($errors['subject'])) }}
+					<span class="msg error">{{ $errors['subject'] }}</span>
+				{{ endif }}
+			</div> <!-- end of form-right-block -->
+		</div> <!-- end of form block -->
+
+		<div class="form-block first-block">
+			{{ Form::label(\Translate::get('contact::contact.labels.message').'<span class="required"></span>', 'message') }}
+			<div class="form-right-block">
+				{{ Form::textarea('message', isset($mail->message) ? $mail->message :'',array('placeholder' => 'Message','cols'=>'30')) }}
+				{{ if(isset($errors['message'])) }}
+					<span class="msg error">{{ $errors['message'] }}</span>
+				{{ endif }}
+			</div> <!-- end of form-right-block -->
+		</div> <!-- end of form block -->
+
+		<div class="form-block first-block">
+			{{ Form::label(\Translate::get('contact::contact.labels.attachment'), 'attachment') }}
+			<div class="form-right-block">
+				{{ Form::file('attachment',array()) }}
+				{{ if(isset($errors['attachment'])) }}
+					<span class="msg error">{{ $errors['attachment'] }}</span>
+				{{ endif }}
+			</div> <!-- end of form-right-block -->
+		</div> <!-- end of form block -->
+
+		<div class="form-block form-action button-wrapper">
+			{{ Form::submit('submit', \Translate::get('contact::contact.labels.send'), array('id' => 'create', 'class' => 'button button-green')) }}
+			<a href="{{ \Uri::create("$adminUrl/contact") }}" title="{{ Translate::get('global.cancel') }}" class="tipsy-tip">{{ Translate::get('global.cancel') }}</a>
+		</div>
+
+	{{ Form::end() }}

@@ -1,0 +1,38 @@
+{{ if (\Setting::get('comment_enable') == 'enable') }}
+<div id="comment_area">
+{{ if ($total_comments > 0) }}
+	{{ if ($total_comments == 1) }}
+		<h3>{{ t('comment::comment.message.single_comment') }}</h3>
+	{{ else }}
+		<h3>{{ sprintf(t('comment::comment.message.multi_comment'), $total_comments) }}</h3>
+	{{ endif }}
+	<ul class="comments_wrapper" style="list-style:none;">
+		{{ loop ($comments as $comment) }}
+			{{ Comment\Lib\Helper::single_comment($comment) }}
+			{{ if (isset($comment['children'])) }}
+				{{ Comment\Lib\Helper::get_children($comment['children']) }}
+			{{ endif }}
+		{{ endloop }}
+	</ul><!-- end of comments_wrapper -->
+{{ else }}
+	{{ if ($status == 'open') }}
+		<h3>{{ t('comment::comment.message.no_comment') }}</h3>
+	{{ endif }}
+{{ endif }}
+{{ $comment_form }}
+</div> <!-- end of comment_area -->
+<script type="text/javascript">
+
+	function setParentId(value) {
+		var author_name = 'comment_' + value + '_author_name';
+		var au_name = document.getElementById(author_name).innerHTML
+		document.getElementById('parent_id').value = value;
+		document.getElementById('reply_info').innerHTML = "<i>Reply " + au_name + "'s comment.</i>";
+	}
+
+ 	//var msg_box_height = document.getElementsByClassName('comment_message').clientHeight;
+
+ 	//console.log(msg_box_height);
+	
+</script>
+{{ endif }}

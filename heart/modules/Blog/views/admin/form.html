@@ -1,0 +1,194 @@
+{{ Form::start('admin/blog/'.$method, 'blog-create', true, array('class' => 'form blog_form')) }}
+    {{ Security::CSRField() }}
+    {{ Form::hidden('id', isset($blog->id) ? $blog->id : '', array('id' => 'post_id')) }}
+    <div id="main-form-wrapper">
+        <div id="form-wrapper">
+            <div id="form-left">
+                <div id="autosave-msg"></div>
+                <div class="form-block first-block" id="title-slug">
+                    <p id="autosave-msg"></p>
+                    {{ Form::label(\Translate::get('blog::blog.title').'<span class="required"></span>','title') }}
+                    <div class="form-right-block">
+                        {{ if(isset($val_errors['title'])) }}
+                            <span class="msg error">{{ $val_errors['title'] }}</span>
+                        {{ endif }}
+                        {{ Form::input('title', isset($blog->title) ? $blog->title : '' ,'text',array('class' => 'xx-large thin', 'id' => 'form_title')) }}
+                    </div> <!-- end of form-right-block -->
+                </div> <!-- end of form-block -->
+
+                <div class="form-block first-block" id="title-slug">
+                    {{ Form::label(\Translate::get('blog::blog.slug').'<span class="required"></span>','slug') }}
+                    <div class="form-right-block">
+                        {{ if(isset($val_errors['slug'])) }}
+                            <span class="msg error">{{ $val_errors['slug'] }}</span>
+                        {{ endif }}
+                        {{ Form::input('slug', isset($blog->slug) ? $blog->slug : '','text',array('class' => 'xx-large thin', 'id' => 'form_slug')) }}
+                    </div> <!-- end of form-right-block -->
+                </div> <!-- end of form block -->
+
+                <div class="form-block">
+                    {{ if(isset($val_errors['body'])) }}
+                        <span class="msg error">{{ $val_errors['body'] }}</span>
+                    {{ endif }}
+                    {{ Form::textarea('body', isset($blog->body) ? $blog->body : '', array('class' => '', 'id' => 'wysiwyg-adv')) }}
+                </div> <!-- end of form-block -->
+
+                <div class="form-block">
+                    {{ Form::label(\Translate::get('blog::blog.excerpt'), 'form_excerpt') }}
+                    <div class="form-right-block">
+                        {{ Form::textarea('excerpt', isset($blog->excerpt) ? $blog->excerpt : '', array('style' => 'width:90%')) }}
+                    </div> <!-- end of form-right-block -->
+                </div> <!-- end of form block -->
+            </div> <!-- end of form-left -->
+        <!-- ***** END of LEFT Wrapper ***** -->
+            <div id="form-right">
+                <div id="option-control" class="r-m-c selected">
+                    <a kind="click" href="javascript:void(0);">
+                        <span class="tt"></span>
+                        <span>{{ \Translate::get('blog::blog.post_settings') }}</span>
+                    </a>
+                </div> <!-- end of div.r-container#option-control -->
+
+                <div class="r-container">
+
+                    <a href="javascript:void(0);" class="r-i-b">
+                        <div>
+                            <i class="icon-grey icon-archive"></i>
+                            <span>{{ \Translate::get('blog::blog.category') }}</span>
+                        </div>
+                    </a>
+
+                    <div class="r-i-b-h">
+                        <div id="category_select">
+                            {{ Form::select('category_id', Blog\Lib\Helper::catList(), isset($blog->category_id) ? $blog->category_id : 1, array('class' => 'xx-large')) }}
+                        </div>
+                        <a href="{{ ADMIN_URL.'/blog/category/create' }}" id="add-new-cat" title="Add new Category" class="tipsy-tip c-edit-box"><i class="icon-circleplus icon-grey"></i>{{ Translate::get('blog::blog.add_new_cat') }}</a>
+                    </div>
+                </div> <!-- end of div.r-container -->
+
+                <div class="r-container">
+
+                    <a href="javascript:void(0);" class="r-i-b">
+                        <div>
+                            <i class="icon-grey icon-tag"></i>
+                            <span>{{ Translate::get('blog::blog.tag') }}</span>
+                        </div>
+                    </a>
+
+                    <div class="r-i-b-h">
+                        {{ Form::input('blog_tag', isset($blog->tags) ? $blog->tags : '', 'text', array('class' => 'thin large', 'id' => 'tags')) }}
+                        <p>{{ Translate::get('blog::blog.tag_help') }}</p>
+                    </div>
+
+                </div> <!-- end of div.r-container -->
+
+                {{ if(Sentry::getUser()->hasAccess('admin')) }}
+
+                <div class="r-container">
+
+                    <a href="javascript:void(0);" class="r-i-b">
+                        <div>
+                            <i class="icon-grey icon-user"></i>
+                            <span>{{ Translate::get('blog::blog.author') }}</span>
+                        </div>
+                    </a>
+                    
+                    <div class="r-i-b-h">
+                        {{ Form::select('author_id', $authors, isset($blog->author_id) ? $blog->author_id : '0', array('class' => 'thin xx-large')) }}
+                    </div>
+
+                </div> <!-- end of div.r-container -->
+
+                {{ endif }}
+
+                {{ if($method == 'create' or $blog->created_at >= date('Y-m-d h:1:s') or $blog->status == 'draft') }}
+                <div class="r-container">
+
+                    <a href="javascript:void(0);" class="r-i-b">
+                        <div>
+                            <i class="icon-grey icon-time"></i>
+                            <span>{{ Translate::get('blog::blog.schedule') }}</span>
+                        </div>
+                    </a>
+
+                    <div class="r-i-b-h" id="schdule_opt">
+
+                        {{ Form::radioGroup('sch_type', array('auto' => Translate::get('blog::blog.auto_schedule'), 'manual' => Translate::get('blog::blog.manual_schedule')), 'auto') }}
+                        {{ if(isset($blog->created_at)) }}
+                            <span class="sch-data">
+                                {{ $blog->created_at }}
+                            </span>
+                        {{ endif }}
+                        
+                        <div id="manual-sch">
+                            {{ Form::input('date',isset($blog->created_at) ? $blog->created_at : '', 'text', array('class' => 'thin xx-large', 'id' => 'datepicker')) }}                        
+                        </div>
+                    </div>
+                </div> <!-- end of div.r-container -->
+                {{ endif }}
+
+                <div class="r-container">
+
+                    <a href="javascript:void(0);" class="r-i-b">
+                        <div>
+                            <i class="icon-grey icon-comment"></i>
+                            <span>{{ Translate::get('blog::blog.comment_status') }}</span>
+                        </div>
+                    </a>
+
+                    <div class="r-i-b-h">
+                        {{ Form::select('comment_status', array('open' => Translate::get('blog::blog.open'), 'close' => Translate::get('blog::blog.close')), isset($blog->comment_status) ? $blog->comment_status : 'open', array('class' => 'thin xx-large')) }}
+                    </div>
+
+                </div> <!-- end of div.r-container -->
+
+                <div class="r-container">
+                    <a href="javascript:void(0);" class="r-i-b">
+                        <div>
+                            <i class="icon-grey icon-media"></i>
+                            <span>{{ Translate::get('blog::blog.featured') }}</span>
+                        </div>
+                    </a>
+
+                    <div class="r-i-b-h">
+                        {{ if ($method == 'edit' and $blog->attachment != null) }}
+                            <div id="featured_preview">
+                                <img id='featured_image' src='{{ $blog->attachment }}'>
+                            </div>
+                            {{ Form::hidden('featured_id', $blog->attachment) }}
+                            <a href="{{ adminUrl('media/featureImage') }}" id="featured_add_btn" style="display:none"><i class="icon-circleplus icon-grey"></i>{{ Translate::get('blog::blog.add_featured_img') }}</a>
+                            <a href="javascript:void(0);" id="featured_remove_btn"><i class="icon-circleminus icon-grey"></i>{{ Translate::get('blog::blog.remove_featured_img') }}</a>
+                        {{ else }}
+                            <div id="featured_preview"></div>
+                            {{ Form::hidden('featured_id') }}
+                            <a href="{{ adminUrl('media/featureImage') }}" id="featured_add_btn"><i class="icon-circleplus icon-grey"></i>{{ Translate::get('blog::blog.add_featured_img') }}</a>
+                            <a href="javascript:void(0);" id="featured_remove_btn" style="display:none"><i class="icon-circleminus icon-grey"></i>{{ Translate::get('blog::blog.remove_featured_img') }}</a>
+                        {{ endif }}
+                    </div>
+
+                </div> <!-- end of div.r-container -->
+
+            </div> <!-- end of form-right -->
+
+            <div class="form-block form-action button-wrapper">
+
+                {{ if ($method == 'create' || $blog->status == 'draft') }} 
+                    {= 
+                        $save_button_val = Translate::get('global.publish');
+                        $draft_button_val = Translate::get('global.save_draft');
+                    =}
+                {{ else }}
+                    {= 
+                        $save_button_val = Translate::get('global.save');
+                        $draft_button_val = Translate::get('global.unpublish'); 
+                    =}
+                {{ endif }}
+
+                {{ Form::submit('publish', $save_button_val, array('class' => 'button button-green')) }}
+                {{ Form::submit('save_draft', $draft_button_val, array('class' => 'button')) }}
+                
+            </div> <!-- end of form-block -->
+
+        </div> <!-- end of div#form-wrapper -->
+    </div> <!-- end of div#main-form-wrapper -->
+{{ Form::end() }}

@@ -1,0 +1,60 @@
+<h3>{{ Translate::get('contact::contact.m_detail') }}</h3>
+<br>
+<dl>
+	<dt>
+		{{ Translate::get('contact::contact.labels.subject') }}
+	</dt>
+	<dd>
+		- {{ $mail->subject }}
+	</dd>
+	<br>
+	<dt>
+		{{ Translate::get('label.name') }}
+	</dt>
+	<dd>
+		
+		- {{$mail->name}}
+	</dd>
+	<br>
+	<dt>
+		{{ Translate::get('label.email') }}
+	</dt>
+	<dd>
+		- <a href="mailto:{{$mail->email}}">{{$mail->email}}</a>
+	</dd>
+	<br>
+	<dt>
+		{{ Translate::get('contact::contact.labels.ip') }}
+	</dt>
+	<dd>
+		- {{$mail->ip}}
+	</dd>
+	<br>
+	<dt>
+		{{ Translate::get('contact::contact.labels.send_at') }}
+	</dt>
+	<dd>
+		- {{$mail->created_at}}
+	</dd>
+	<br>
+	{{ if($mail->attachment) }}
+	<dt>
+		{{ Translate::get('contact::contact.labels.attachment') }}
+	</dt>
+	<dd> - {{ $mail->attachment }} </dd>
+	<br>
+	{{ endif }}
+	<dt>
+		{{ Translate::get('contact::contact.labels.message') }}
+	</dt>
+	<dd>
+		- {{$mail->message}}
+	</dd>
+</dl>
+<hr>
+<div class="contact-right">
+	<a href="{{ \Uri::create("$adminUrl/contact") }}" title="{{ Translate::get('contact::contact.labels.back') }}" class="button button-blue tipsy-tip"><i class="icon-undo icon-white"></i>{{ Translate::get('contact::contact.labels.back') }}</a>
+	<a href="{{ \Uri::create("$adminUrl/contact/send-mail/index") }}{{ $mail->id }}" title="{{ Translate::get('contact::contact.labels.reply') }}" class="button button-green tipsy-tip"><i class="icon-redo icon-white"></i>{{ Translate::get('contact::contact.labels.reply') }}</a>
+	<a href="{{ \Uri::create("$adminUrl/contact/delete/") }}{{ $mail->id }}" title="{{ Translate::get('global.delete') }}" class="ico-button button-red tipsy-tip confirm_delete"><i class="icon-trash2 icon-white"></i></a>
+</div><!--- end of f-right -->
+<hr>

@@ -1,0 +1,62 @@
+{{ if(count($templates) > 0) }}
+
+<script type="text/javascript">
+	$(function(){
+		$('.email-template').on('click', function() {
+			var url = $(this).attr('href');
+
+			$(this).colorbox({
+				width:"80%", 
+				height:"80%",
+				iframe:true,
+				href: url + "/ax-viewer"
+			});
+		});
+		
+	});
+</script>
+{{ Form::start(ADMIN_URL.'/contact/email-template/delete') }}
+<table class="stripe">
+	<thead>
+		<tr>
+			<th width="5%">{{ Form::checkbox('action_to_all', '', array('class' => 'check-all')) }}</th>
+			<th>{{ Translate::get('label.name') }}</th>
+			<th>{{ Translate::get('label.email') }}</th>
+			<th width="120">{{ Translate::get('label.action') }}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{= $a = 1 =}
+		{{ loop($templates as $template) }}
+		<tr>
+			{{ if($template->detemp == 0)}}
+			<td class="checkbox">{{ Form::checkbox('action_to[]', $template->id, array('id' => 'action'.$a)) }}</td>
+			{= $a++ =}
+			{{ else }}
+			<td></td>
+			{{ endif }}
+			<td>{{ $template->name }}</td>
+			<td>{{ $template->description }}</td>
+			<td>
+				<a href="{{ \Uri::create("$adminUrl/contact/email-template/view/") }}{{$template->id}}" title="{{ Translate::get('contact::contact.labels.view') }}" class="ico-button button-blue tipsy-tip email-template"><i class="icon-view2 icon-white"></i></a>
+				<a href="{{ \Uri::create("$adminUrl/contact/email-template/edit") }}{{ $template->id }}" title="{{ Translate::get('global.edit') }}" class="ico-button button-green tipsy-tip"><i class="icon-edit icon-white"></i></a>
+				<a href="{{ \Uri::create("$adminUrl/contact/email-template/duplicate") }}{{ $template->id }}" title="{{ Translate::get('contact::contact.labels.duplicate') }}" class="ico-button button-orange tipsy-tip"><i class="icon-duplicate icon-white"></i></a>
+				{{ if($template->detemp == 0)}}
+				<a href="{{ \Uri::create("$adminUrl/contact/email-template/delete/") }}{{ $template->id }}" title="{{ Translate::get('global.delete') }}" class="ico-button button-red tipsy-tip confirm_delete"><i class="icon-trash2 icon-white"></i></a>
+				{{ endif }}
+			</td>
+
+		</tr>
+		{{ endloop }}
+	</tbody>
+</table>
+<div class="button-wrapper" id="delete_select">
+		{{ Form::submit('submit_delete', 'Delete Selected', array('class' => 'confirm_delete button button-red', 'disabled' => 'disabled')) }}
+		{{ Form::end() }}
+	</div>
+{{ $pagination }}
+{{ else }}
+	<div id="no-index-data">
+		{{ Translate::get('contact::contact.no_template') }}
+	</div>
+{{ endif }}

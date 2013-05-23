@@ -1,0 +1,25 @@
+<div id="user-container">
+
+	{{ Form::start("user/login") }}
+	{{ Security::CSRField() }}
+		<div class="block">
+		{{ Form::label('Email', 'email') }}
+		{{ Form::email('email', '', array('id' => 'email', 'placeholder' => 'Enter your email')) }}
+		{{ if(isset($errors['email'])) }}
+		<span class="er">{{ $errors['email'] }}</span>
+		{{ endif }}
+		</div>
+
+		<div class="block">
+		{{ Form::label('Password', 'password') }}
+		{{ Form::password('password', '', array('id' => 'password')) }}
+		{{ if(isset($errors['password'])) }}
+		<span class="er">{{ $errors['password'] }}</span>
+		{{ endif }}
+		</div>
+
+		{{ Form::submit('submit', 'Login', array('id' => 'login', 'class' => 'btns default_btn')) }}
+		<a href="{{ \Uri::create("/user/register") }}">Create a new account</a>
+
+	{{ Form::end() }}
+</div>

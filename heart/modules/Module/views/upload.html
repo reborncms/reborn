@@ -1,0 +1,29 @@
+<div id="module-uploader">
+
+	<h3>{{ t('module::module.upload_title') }}</h3>
+
+	<p>{{ t('module::module.upload_desc') }}</p>
+
+	<form id="upload" action="{{ adminUrl('module/upload') }}" method="POST" enctype="multipart/form-data">
+
+		<fieldset>
+
+			<div style="display:none">
+				{{ Security::CSRField() }}
+			</div>
+
+			<input type="file" id="fileselect" name="fileselect" />
+
+			<div id="submitbutton">
+				<button type="submit" class="button button-green" id="mod_submit">
+					{{ t('module::module.upload_btn') }}
+				</button>
+
+				<div id="progress"></div>
+			</div>
+
+		</fieldset>
+
+	</form>
+
+</div>

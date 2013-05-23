@@ -1,0 +1,30 @@
+<div id="user-container">
+
+	{{ Form::start("$adminUrl/user/group/create", 'group_create_form', false, array('class' => 'form')) }}
+  {{ Security::CSRField() }}
+
+		<div class="form-block">
+    		<label for="">{{ Form::label('Name', 'name') }}<span class="required"></span></label>
+      
+  			<div class="form-right-block">
+    			{{ Form::input('name', '', 'text', array('id' => 'name', 'placeholder' => 'Enter group name')) }}
+    			<span class="msg error">**This field is required.</span>
+    			<p>e.g. Administrator</p>     
+			</div> <!-- end of form-right-block -->
+        </div> <!-- end of form block -->
+
+        <div class="form-block ckeck-block">
+      		<label for="checkbox">{{ Form::label('Admin Permission', 'is_admin') }}</label>
+      		<div class="form-right-block clearfix">
+        		<label for="ckeckbox" class="inline-label">
+         			{{ Form::checkbox('is_admin', 1, array('id'=>'ckeckbox')) }}
+       			</label>
+     		</div> <!-- end of form-right-block -->
+   		</div> <!-- end of form block -->
+
+   		{{ Form::submit('submit', 'Create', array('id' => 'create', 'class' => 'button button-green')) }}
+		<a href="{{ \Uri::create("$adminUrl/user/group") }}" class="button button-red">Cancel</a>
+
+		
+	{{ Form::end() }}
+</div>

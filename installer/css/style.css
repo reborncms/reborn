@@ -1,0 +1,174 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}
+body{line-height:1;}
+ol,ul{list-style:none;}
+blockquote,q{quotes:none;}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}
+table{border-collapse:collapse;border-spacing:0;}
+
+
+/** Reborn Installer Style **/
+body { color: #545454;}
+a { color: #7B0000; }
+
+.container {
+	width: 960px;
+	margin: 0 auto;
+}
+
+.btn {
+	display: inline-block;
+    padding: 6px 20px;
+    margin-bottom: 0;
+    font-size: 16px;
+    line-height: 1.5em;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    *zoom: 1;
+    border: none;
+    background: -moz-linear-gradient(center top , rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%) repeat-x scroll 0 0 #94B133;
+    border: 1px solid #94B133;
+    text-decoration: none;
+}
+.btn-red {
+	background: -moz-linear-gradient(center top , rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%) repeat-x scroll 0 0 #D65234;
+	border: 1px solid #D65234;
+}
+.btn:hover {
+	color: #cfcfcf;
+}
+.info {
+	border: 1px solid #900;
+	padding: 10px;
+	color: #f00;
+}
+
+table {
+	width: 100%;
+	font-size: 12px;
+}
+
+table th, table td {
+	padding: 8px 5px;
+	border: 1px solid #d8d8d8;
+}
+table th {
+	text-align: left;
+	font-size: 14px;
+	background: #f1f1f1;
+}
+table tr.fail td {
+	color: #f00;
+}
+table tr.ok td {
+	color: #0CA00B;
+}
+
+table.access {
+	width: 60%;
+	float: left;
+}
+
+h2 {
+	padding-bottom: 10px;
+	color: #7B0000;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #efefef;
+}
+
+form {
+	padding: 20px;
+}
+legend {
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #419FA5;
+	color: #4AABB2;
+}
+label {
+	width: 35%;
+	float: left;
+	display: block;
+	padding-top: 8px;
+	color: #636363;
+	font-size: 14px;
+}
+input {
+	width: 60%;
+	float: right;
+	padding: 10px;
+	border: 1px solid #cdcdcd;
+	color: #636363;
+}
+input:hover, input:focus {
+	border: 1px solid #999;
+}
+input[type=submit] {
+	width: auto;
+	float: none;
+}
+
+.row {
+	margin-bottom: 10px;
+	border-bottom: 1px dotted #efefef;
+	padding-bottom: 10px;
+	display  : block;
+	*zoom    : 1;
+	*display : inline-block;
+}
+.row:after {
+	clear:both;
+	content:".";
+	display:block;
+	font-size:0;
+	height:0;
+	visibility:hidden;
+}
+
+.clear {
+	clear: both;
+}
+
+.btn-area {
+	margin-top: 20px;
+}
+
+#header {
+	height: 60px;
+	background: #333;
+}
+#header h1 a {
+	display: block;
+	color: #fff;
+	text-decoration: none;
+	font-size: 28px;
+	padding: 15px 0;
+}
+#header h1 a span {
+	font-size: 18px;
+	color: #efefef;
+}
+#content {
+	margin: 20px 0;
+}
+.extension {
+	float: right;
+	width: 32%;
+	padding: 12px;
+	border: 1px solid #cdcdcd;
+}
+.left {
+	float: left;
+	width: 48%;
+}
+.right {
+	float: right;
+	width: 48%;
+}

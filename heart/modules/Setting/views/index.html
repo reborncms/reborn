@@ -1,0 +1,56 @@
+<style type="text/css">
+	#setting-title {
+		padding-bottom: 10px;
+	}
+	.form .form-right-block label {
+		margin-right: 15px;
+	}
+	.form input[type="radio"], .form input[type="checkbox"] {
+		float: none;
+		margin: 0 5px 0 0;
+	}
+	#keygen { color: #882020; cursor: pointer; margin-left: 20px;}
+</style>
+<h3 id="setting-title">{{ $title }}</h3>
+
+{{ Form::start(adminUrl('setting/save'), 'setting', false, array('class' => 'form')) }}
+
+	{{ Form::hidden('type', $type) }}
+
+	{{ loop($settings as $set) }}
+
+	<div class="form-block">
+		<label for="{{ $set['slug'] }}">{{ $set['name'] }}
+
+			{{ if($set['require']) }}
+			<span class="required"></span>
+			{{ endif }}
+		</label>
+
+		<div class="form-right-block">
+			{{ SettingHelper::field($set) }}
+			<p>{{ $set['desc'] }}</p>
+		</div> <!-- end of form-right-block -->
+	</div> <!-- end of form block -->
+
+	{{ endloop }}
+
+	<div class="form-block form-action">
+		<button type="submit" class="button button-green">{{ t('global.save') }}</button>
+	</div> <!-- end of form block -->
+
+{{ Form::end() }}
+
+<script type="text/javascript">
+
+	//Generate Spam Filter Key
+	$('#spam_filter').after('<span id="keygen">Auto Generate</span>');
+
+	//Generate Spam Filter Key
+	$('#keygen').live('click', function(){
+		var key = Reborn.keyGenerate(32);
+		$('#spam_filter').val(key);
+		$('#spam_filter').focus();
+	});
+
+</script>

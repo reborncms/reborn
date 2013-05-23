@@ -1,0 +1,32 @@
+{{ if(count($group) > 0) }}
+<table class="stripe">
+	<thead>
+		<tr>
+			<th>Group Name</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{= $i = 1 =}
+	{{ loop($group as $g) }}
+		<tr>
+			<td>{{ $g->name }}</td>
+			<td>
+			{{ if($g->id == 1) }}
+				This group has Admin access to everything. 
+			{{ else }}
+				<a href="{{ \Uri::create("$adminUrl/user/permission/edit/") }}{{ $g->id }}" class="button button-blue">Edit Permission</a>
+			{{ endif }}
+			</td>
+		</tr>
+		{= $i++ =}
+	{{ endloop }}
+	</tbody>
+</table>
+{{ else }}
+	<p class="empty">Still No Group, please create one to be able to set perssmion.</p>
+{{ endif }}
+
+<br >
+
+<a href="{{ \Uri::create("$adminUrl/user/") }}" class="button">Back to Users</a>

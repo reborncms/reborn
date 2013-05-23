@@ -1,0 +1,49 @@
+<div class="modules-wrap clearfix">
+
+	<div class="switchs clearfix">
+	{{ if(! empty($system) ) }}
+		{{ loop( $system as $k => $m ) }}
+		{= $slug = $module['name'].'/'.$module['uri'] =}
+
+		{{ if($module['enabled']) }}
+		{= $class = "mod-on" =}
+		{= $status = 'Enable' =}
+		{{ else }}
+		{= $class = "mod-off" =}
+		{= $status = 'Disable' =}
+		{{ endif }}
+
+		<div class="sw-mod">
+			<h4 class="{{ $class }}">{{ $m['name'] }} <span>V [ {{ $m['version'] }} ]</span></h4>
+			<div class="mod-body clearfix">
+				<div class="mod-desc">
+					{{ $m['description'] }}
+				</div> <!-- end of div.mod-desc -->
+				<div class="mod-body-left">
+					<div class="mod-author">
+						Developed by : {{ $m['author'] }}
+					</div> <!-- end of div.mod-author -->
+					<div class="mod-url">
+						Website : {{ $m['authorUrl'] }}
+					</div> <!-- end of div.mod-url -->
+				</div> <!-- end of div.mod-body-left -->
+				<div class="mod-body-right">
+					<p>Module is {{ $status }}</p>
+				</div> <!-- end of div.mod-body-right -->
+			</div> <!-- end of div.mod-body -->
+
+			<div class="mod-actions clearfix">
+				{{ if($m['upgradeRequire']) }}
+				<a href="{{ adminUrl("module/upgrade/$slug") }}"
+				class="button button-blue tipsy-tip" title="Need To Upgrade">
+					<i class="icon-cloud-upload icon-white"></i>
+				</a>
+				{{ endif }}
+			</div> <!-- end of div.mod-actions -->
+
+		</div> <!-- end of div.sw-mod -->
+		{{ endloop }}
+	{{ endif }}
+	</div> <!-- end of div.switchs -->
+
+</div> <!-- end of div.modules-wrap -->

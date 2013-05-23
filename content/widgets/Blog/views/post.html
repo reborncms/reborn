@@ -1,0 +1,10 @@
+<div class="widget widget-blog-post">
+	<h2 class="widget-title">{{ $title }}</h2>
+	<div class="widget-body">
+		<ul>
+			{{ loop($posts as $post) }}
+				<li><a href="{{ rbUrl('blog/'.$post->slug ) }}" >{{ $post->title }}</a></li>
+			{{ endloop }}
+		</ul>
+	</div>
+</div>

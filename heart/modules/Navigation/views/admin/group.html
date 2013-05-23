@@ -1,0 +1,71 @@
+<div id="main-form-wrapper">
+
+	<div id="form-wrapper">
+
+		<div id="form-left">
+
+			<table class="stripe">
+				<thead>
+					<tr>
+						<th width="7%">#</th>
+						<th>Name</th>
+						<th>Slug</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{ loop($groups as $g) }}
+					<tr>
+						<td>{{ $g->id }}</td>
+						<td>{{ $g->title }}</td>
+						<td>{{ $g->slug }}</td>
+					</tr>
+					{{ endloop }}
+				</tbody>
+			</table>
+
+		</div> <!-- end of #form-left -->
+
+		<div id="form-right">
+
+			<div id="option-control" class="r-m-c">
+
+				<a kind="click" href="javascript:void(0);">
+					<span class="tt"></span>
+					<span>{{ t('navigation::navigation.group.add') }}</span>
+				</a>
+
+			</div> <!-- end of div.r-container#option-control -->
+
+			<div class="r-container nav-add-box" style="display:none">
+
+				{{ Form::start(adminUrl('navigation/group-create') , 'nav_group', false, array('class' => 'form', 'id' => 'nav-link-add')) }}
+
+				<div style="display:none">
+					{{ Security::CSRField() }}
+				</div>
+
+				<div class="c-a-b">
+
+					<div>
+						<span>{{ t('navigation::navigation.labels.group') }}</span>
+					</div>
+
+					{{ Form::input('group', '', 'text', array('class' => 'xx-large thin')) }}
+
+				</div> <!-- end of div.c-a-b -->
+
+				<div class="c-a-b">
+
+				{{ Form::button('add', t('navigation::navigation.group.add'), 'submit', array('class' => 'button button-green', 'id' => 'add-new-gp-btn')) }}
+
+				</div> <!-- end of div.c-a-b -->
+
+				{{ Form::end() }}
+
+			</div> <!-- end of #nav-group-add-box -->
+
+		</div> <!-- end of #form-right -->
+
+	</div> <!-- end of #form-wrapper -->
+
+</div> <!-- end of #main-form-wrapper -->

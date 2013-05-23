@@ -1,0 +1,17 @@
+<div class="widget widget-user" >
+	<h2 class="widget-title">{{ $title }}</h2>
+
+	<div class="widget-body">
+		{{ Form::start("user/login") }}
+			{{ Security::CSRField() }}
+			{{ Form::email('email', '', array('placeholder' => 'Email')) }}
+			{{ Form::password('password', '', array('placeholder' => 'Password')) }}
+			{{ Form::submit('submit', 'Login', array('class' => 'widget-login', 'class' => 'btn')) }}
+			
+			<p>
+				<a href="{{ \Uri::create("/user/register") }}">Create a new account</a> <br/>
+				<a href="{{ \Uri::create("/user/resetpassword") }}">Forget Password?</a>
+			</p>
+		{{ Form::end() }}
+	</div>
+</div>

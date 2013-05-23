@@ -1,0 +1,211 @@
+<div id="main-form-wrapper">
+
+	<div id="form-wrapper">
+
+		<div id="form-left">
+
+			<div id="accordion">
+
+				{{ if(count($links) > 0) }}
+
+				{{ loop($links as $group => $lists) }}
+
+				<div class="accordion-block">
+
+					<h3 class="accordion-bar">
+						{{ sprintf(t('navigation::navigation.group.title'),$groups[$group]->title) }}
+					</h3>
+
+					<div class="accordion-inner">
+
+					{{ if(count($lists) > 0) }}
+
+						<div class="nav-wrap" id="{{ $groups[$group]->id }}">
+
+							<ol class="sortable ui-sortable">
+
+							{{ loop($lists as $list) }}
+
+								<li id="link_{{ $list['id'] }}">
+
+									<div class="draggable_wrap">
+										<div class="nav_title">{{ $list['title'] }}</div>
+										<div class="nav_actions">
+
+											<a href="{{ adminUrl("navigation/edit/".$list['id']) }}" class="link-edit tipsy-tip" title="{{ t('global.edit') }}">
+												<i class="icon-edit icon-black"></i>
+											</a>
+											<a href="{{ adminUrl("navigation/delete/".$list['id']) }}" class="confirm_delete tipsy-tip" title="{{ t('global.delete') }}">
+												<i class="icon-trash2 icon-black"></i>
+											</a>
+										</div>
+									</div> <!-- end of draggable_wrap -->
+
+									{{ if(! empty($list['child'])) }}
+										<ol>
+										{{ Navigation\Lib\Helper::tree_builder($list) }}
+										</ol>
+									</li>
+									{{ else }}
+									</li>
+									{{ endif }}
+
+							{{ endloop }}
+							</ol>
+
+						</div> <!-- end of nav-wrap -->
+
+					{{ else }}
+
+						<div id="no-index-data">
+
+							{{ t('navigation::navigation.link.no_links') }}
+
+						</div>
+
+					{{ endif }}
+
+					</div> <!-- end of .accordion-inner -->
+
+				</div> <!-- end of .accordion-block -->
+
+				{{ endloop }}
+
+				{{ else }}
+
+					<div id="no-index-data">
+						{{ t('navigation::navigation.group.no_have') }}
+					</div>
+
+				{{ endif }}
+
+			</div> <!-- end of #accordion -->
+
+		</div> <!-- end of div#form-left -->
+<!-- ***** End of LEFT SIDE ***** -->
+		<div id="form-right">
+
+			<div id="option-control" class="r-m-c">
+
+				<a kind="click" href="javascript:void(0);">
+					<span class="tt"></span>
+					<span>{{ t('navigation::navigation.link.add') }}</span>
+				</a>
+
+			</div> <!-- end of div.r-container#option-control -->
+
+			<div class="r-container nav-add-box" style="display:none">
+
+			 {{ Form::start(adminUrl('/navigation/create') , 'nav', false, array('class' => 'form', 'id' => 'nav-link-add')) }}
+
+				<div style="display:none">
+					{{ Security::CSRField() }}
+				</div>
+				<div class="c-a-b">
+
+					<div>
+						<span>{{ t('navigation::navigation.labels.title') }}<span class="required"></span></span>
+					</div>
+
+
+					{{ Form::input('title', '', 'text', array('class' => 'xx-large thin')) }}
+
+				</div> <!-- end of div.c-a-b -->
+
+				<div class="c-a-b">
+
+					<div>
+						<span>{{ t('navigation::navigation.labels.type') }}<span class="required"></span></span>
+					</div>
+
+					<select name="type" id="type_selected" class="thin xx-large">
+						<option value="uri" selected="selected">
+							{{ t('navigation::navigation.labels.uri') }}
+						</option>
+						<option value="page">
+							{{ t('navigation::navigation.labels.page') }}
+						</option>
+						<option value="module">
+							{{ t('navigation::navigation.labels.module') }}
+						</option>
+						<option value="url">
+							{{ t('navigation::navigation.labels.url') }}
+						</option>
+					</select>
+
+					<div id="uri" class="nav-type-wrap">
+
+						{{ Form::input('uri', '', 'text', array('class' => 'xx-large thin', 'placeholder' => 'Input uri segment')) }}
+
+					</div> <!-- end of div#uri.nav-type-wrap -->
+
+					<div id="page" class="nav-type-wrap" style="display:none;">
+
+						{{ Form::select('page', $pageSelect, '', array('class' => 'xx-large thin')) }}
+
+					</div> <!-- end of div#page.nav-type-wrap -->
+
+					<div id="module" class="nav-type-wrap" style="display:none;">
+
+						{{ Form::select('module', $moduleSelect, '', array('class' => 'xx-large thin')) }}
+
+					</div> <!-- end of div#module.nav-type-wrap -->
+
+					<div id="url" class="nav-type-wrap" style="display:none;">
+
+						{{ Form::input('url', 'http://', 'text', array('class' => 'xx-large thin', 'placeholder' => 'Input URL with http://')) }}
+
+					</div> <!-- end of div#url.nav-type-wrap -->
+
+				</div> <!-- end of div.c-a-b -->
+
+				<div class="c-a-b">
+
+					<div>
+						<span>{{ t('navigation::navigation.labels.group') }}</span>
+					</div>
+					{{ Form::select('group', $groupSelect, $defaultGroup, array('class' => 'xx-large thin')) }}
+
+				</div> <!-- end of div.c-a-b -->
+
+				<div class="c-a-b">
+
+					<div>
+						<span>{{ t('navigation::navigation.labels.target') }}</span>
+					</div>
+
+					{=
+						$target_array = array('' => t('navigation::navigation.labels.target_normal'), '_blank' => t('navigation::navigation.labels.target_new_win'));
+					=}
+
+					{{ Form::select('target', $target_array, null, array('class' => 'xx-large thin')) }}
+
+				</div> <!-- end of div.c-a-b -->
+
+				<div class="c-a-b">
+
+					<div>
+						<span>{{ t('navigation::navigation.labels.class') }}</span>
+					</div>
+
+					{{ Form::input('class', '', 'text', array('class' => 'xx-large thin')) }}
+
+				</div> <!-- end of div.c-a-b -->
+
+				<div class="c-a-b">
+
+				{{ Form::button('add', t('navigation::navigation.link.add'), 'submit', array('class' => 'button button-green', 'id' => 'add-new-cat-btn')) }}
+
+				</div> <!-- end of div.c-a-b -->
+
+			{{ Form::end() }}
+
+			</div> <!-- end of div.r-container -->
+
+		</div> <!-- end of div#form-right -->
+
+		<div class="form-block"></div>
+
+	</div> <!-- end of div#form-wrapper -->
+
+</div> <!-- end of div#main-form-wrapper -->

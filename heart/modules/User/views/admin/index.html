@@ -1,0 +1,36 @@
+
+{{ if(count($users) > 0) }}
+<table class="stripe">
+	<thead>
+		<tr>
+			<!-- <th>ID</th> -->
+			<th></th>
+			<th>Display Name</th>
+			<th>Group</th>
+			<th>Mail Address</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+	{{ loop($users as $u) }}
+			<tr>
+				<!-- <td>{{ $u->id }}</td> -->
+				<td width=32>{{ gravatar($u->email, 42, $u->first_name) }}</td>
+				<td>{{ $u->first_name }} {{ $u->last_name }}</td>
+				<td>{{ $u->group }}</td>
+				<td><a href="mailto:{{ $u->email }}">{{ $u->email }}</a></td>
+				<td>
+					<a href="{{ \Uri::create("$adminUrl/user/edit/") }}{{ $u->id }}" class="ico-button button-green tipsy-tip" original-title="Edit"><i class="icon-edit icon-white"></i></a>
+					
+					{{ if($currentUser->id != $u->id) }}
+					<a href="{{ \Uri::create("$adminUrl/user/delete/") }}{{ $u->id }}" class="ico-button button-red tipsy-tip confirm_delete" original-title="Delete"><i class="icon-trash2 icon-white"></i></a>
+					{{ endif }}
+					
+				</td>
+			</tr>
+	{{ endloop }}
+	</tbody>
+</table>
+{{ else }}
+	<p class="empty">No Users Found!</p>
+{{ endif }}

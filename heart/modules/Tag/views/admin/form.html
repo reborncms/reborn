@@ -1,0 +1,27 @@
+{{ if(!isset($method)) }}
+	{= $method = 'create' =}
+{{ endif }}
+<div class="r-container tag-add-box">
+	{{ Form::start(ADMIN_URL.'/tag/'.$method, 'tag-create', false, array('class' => 'form')) }}
+	<div class="c-a-b">
+		<span id="msg-box"></span>
+		<div>
+			<span>{{ Translate::get('tag::tag.title') }}<span class="required"></span></span>
+		</div>
+
+		{{ Form::input('name', isset($tag->name) ? $tag->name : '', 'text', array('class' => 'xx-large thin')) }}
+
+	</div> <!-- end of div.c-a-b -->
+
+	<div class="c-a-b">
+		{{ if($method == 'edit') }}
+			{{ Form::hidden('id', isset($tag->id) ? $tag->id : '') }}
+		{{ endif }}
+		
+		{{ Form::submit('add-new-cat-btn', 'Save', array('class' => 'button button-green')) }}
+
+	</div> <!-- end of div.c-a-b -->
+
+{{ Form::end() }}
+
+</div> <!-- end of div.r-container -->

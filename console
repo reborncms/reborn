@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+
+// Define Directory Sperator
+define('DS', DIRECTORY_SEPARATOR);
+
+// Define Base Dir Path
+define('BASE', __DIR__ . DS);
+
+// load Reborn CMS start file
+require_once __DIR__.'/heart/reborn/src/start.php';
+
+require_once __DIR__.'/heart/vendor/autoload.php';
+
+use Reborn\Console\Command;
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+$application->add(new Command);
+$application->run();

@@ -1,0 +1,63 @@
+#themes-wrapper p { font-family: Tahoma, Helvetica, sans-serif; }
+
+div#active-theme {
+	margin-bottom: 20px;
+	overflow: hidden;
+	border-bottom: 2px solid #efefef;
+	padding-bottom: 20px;
+}
+
+img.screenshot {
+	padding: 5px;
+	background: #ffffff;
+	border: 1px solid #efefef;
+}
+
+div#active-theme img.screenshot {
+	float: left;
+}
+
+div#active-theme h2, div#active-theme h3, div#active-theme p {
+	margin-left: 390px;
+	margin-bottom: 10px;
+	font-weight: normal;
+}
+
+div#active-theme h3 { font-size: 18px; }
+div#active-theme p { font-size: 14px; }
+
+div#active-theme p.tag {
+	font-style: oblique;
+	font-size: 14px;
+}
+
+div#list-themes img.screenshot {
+	width: 250px;
+	height: 250px;
+}
+
+div#list-themes ul {
+	overflow: hidden;
+	margin: 0px;
+}
+
+div#list-themes li {
+	width: 30%;
+	float: left;
+	height: auto;
+	margin-right: 22px;
+	padding-bottom: 20px;
+}
+
+div#list-themes h2, div#list-themes h3, div#list-themes p, div#list-themes a {
+	margin-bottom: 10px;
+	font-weight: normal;
+}
+
+div#list-themes h2 { font-size: 16px; }
+div#list-themes h3 { font-size: 14px; }
+div#list-themes p { font-size: 12px; }
+div#list-themes p.tag {
+	font-style: oblique;
+	font-size: 14px;
+}

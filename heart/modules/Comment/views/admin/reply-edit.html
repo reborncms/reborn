@@ -1,0 +1,41 @@
+<div id="re-form-wrapper">
+	<h4>
+		{{ if ($comment->user_id != null) }}
+
+			{= 
+				$user = Sentry::getUserProvider()->findById($comment->user_id);
+				$author = $user->first_name . ' ' . $user->last_name; 
+			=}
+
+		{{ else }}
+			{= $author = $comment->name =}
+		{{ endif }}
+		{{ if ($method == 'reply') }}
+			Reply to {{ $author }}'s comment
+			{= $btn_val = 'Reply' =}
+		{{ else }}
+			Edit {{ $author }}'s comment
+			{= $btn_val = 'Edit' =}
+		{{ endif }}
+	</h4>
+
+	<div class="alert-show alert-show-error" id="ajax-form-error"></div>
+
+	{{ if ($method == 'reply') }}
+		<div id="parent_msg">{{ $comment->value }}</div>
+	{{ endif }}
+
+	{{ Form::start(adminUrl('comment/'.$method),'re-form', false, array('class' => 'form')) }}
+	
+		{{ Form::hidden('id', isset($comment->id) ? $comment->id : '') }}
+
+		{{ if ($method == 'edit') }}
+			{{ Form::textarea('message', isset($comment->value) ? $comment->value : '') }}
+		{{ else }}
+			{{ Form::textarea('message') }}
+		{{ endif }}
+
+		{{ Form::submit('reply-edit-btn', $btn_val, array('class' => 'button button-blue')) }}
+		
+	{{ Form::end() }}
+</div>

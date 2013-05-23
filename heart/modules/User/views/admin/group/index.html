@@ -1,0 +1,27 @@
+{{ if(count($group) > 0) }}
+<table class="stripe">
+	<thead>
+		<tr>
+			<th width=20>ID</th>
+			<th>Name</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{= $i = 1 =}
+	{{ loop($group as $g) }}
+		<tr>
+			<td>{{ $g->id }}</td>
+			<td>{{ $g->name }}</td>
+			<td>
+				<a href="{{ \Uri::create("$adminUrl/user/group/edit/") }}{{ $g->id }}" class="ico-button button-green tipsy-tip" original-title="Edit"><i class="icon-edit icon-white"></i></a>
+				<a href="{{ \Uri::create("$adminUrl/user/group/delete/") }}{{ $g->id }}" class="ico-button button-red tipsy-tip confirm_delete" original-title="Delete"><i class="icon-trash2 icon-white"></i></a>
+			</td>
+		</tr>
+		{= $i++ =}
+	{{ endloop }}
+	</tbody>
+</table>
+{{ else }}
+	<p class="empty">No Group Found!</p>
+{{ endif }}

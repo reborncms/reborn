@@ -1,0 +1,144 @@
+{{ if ($method == 'edit' ) }}
+	{= $status = (isset($page['status'])) ? $page['status'] : '' =}
+{{ endif }}
+
+{{ Form::start('admin/pages/'.$method,'page_form',false, array('class' => 'form')) }}
+	{{ Security::CSRField() }}
+	<div id="main-form-wrapper">
+		<div id="form-wrapper">
+			<div id="form-left">
+				<div class="form-block">
+					{{ Form::label(Translate::get('pages::pages.labels.page_title').'<span class="required"></span>', 'title') }}
+					<div class="form-right-block">
+						<span class="msg error">
+							{{ if(isset($errors['title'])) }}
+								{{ $errors['title'] }}
+							{{ endif }}
+						</span>
+						{{ Form::input('title', isset($page['title']) ? $page['title'] : '','text', array('class' => 'thin xx-large','required' => 'required','id' => 'form_title')) }}
+					</div> <!-- end of form-right-block --> 
+				</div> <!-- end of form block -->
+				<div class="form-block">
+					{{ Form::label(Translate::get('pages::pages.labels.page_slug').'<span class="required"></span>', 'slug') }}
+					<div class="form-right-block">
+						<span class="msg error" id="slug_error" style="display:block;">
+							{{ if(isset($errors['slug'])) }}
+								{{ $errors['slug'] }}
+							{{ endif }}
+						</span>
+						{{ Form::input('slug', isset($page['slug']) ? $page['slug'] : '','text', array('class' => 'thin xx-large','required' => 'required','id' => 'form_slug')) }}
+					</div>
+				</div>
+				<div class="form-block">
+					{{ Form::textarea('content', isset($page['content']) ? $page['content'] : '', array('id' => 'wysiwyg-adv')) }}
+				</div>
+			</div> <!-- end of form-left -->
+			<div id="form-right">
+				<div id="option-control" class="r-m-c selected">
+					<a kind="click" href="javascript:void(0);">
+						<span class="tt"></span>
+						<span>{{ Translate::get('pages::pages.labels.page_settings') }}</span>
+					</a>
+				</div> <!-- end of div.r-container#option-control -->
+
+				<div class="r-container">
+					<a href="javascript:void(0);" class="r-i-b">
+						<div>
+							<i class="icon-grey icon-layout"></i>
+							<span>{{ Translate::get('pages::pages.labels.page_layout') }}</span>
+						</div>
+					</a>
+					<div class="r-i-b-h">
+						{{ Form::select('page_layout', $layoutList, isset($page['page_layout']) ? $page['page_layout'] : 'default', array('class' => 'xx-large')) }}
+					</div>
+				</div> <!-- end of div.r-container -->
+
+				<div class="r-container">
+					<a href="javascript:void(0);" class="r-i-b">
+						<div>
+							<i class="icon-grey icon-tag"></i>
+							<span>{{ Translate::get('pages::pages.labels.page_meta_data') }}</span>
+						</div>
+					</a>
+					<div class="r-i-b-h">
+						{{ Form::label(Translate::get('pages::pages.labels.meta_title'), 'meta_title') }}
+						{{ Form::input('meta_title', isset($page['meta_title']) ? $page['meta_title'] : '','text', array('class' => 'thin xx-large')) }}
+						{{ Form::label(Translate::get('pages::pages.labels.meta_keywords'), 'meta_keyword') }}
+						{{ Form::input('meta_keyword', isset($page['meta_keyword']) ? $page['meta_keyword'] : '','text', array('class' => 'thin xx-large')) }}
+						{{ Form::label(Translate::get('pages::pages.labels.meta_description'), 'meta_description') }}
+						{{ Form::textarea('meta_description', isset($page['meta_description']) ? $page['meta_description'] : '', array('style' => 'width:211px;')) }}
+					</div>
+				</div> <!-- end of page meta r-container -->
+				<div class="r-container">
+
+					<a href="javascript:void(0);" class="r-i-b">
+						<div>
+							<i class="icon-grey icon-comment"></i>
+							<span>{{ Translate::get('pages::pages.labels.comment_status') }}</span>
+						</div>
+					</a>
+					<div class="r-i-b-h">
+						{{ Form::select('comments_enable',array('0' => 'Close', '1' => 'Open'), isset($page['comment_enable']) ? $page['comment_enable'] : 0, array('class' => 'xx-large')) }}
+					</div>
+				</div> <!-- end of div.r-container -->
+				<div class="r-container page_design_wrapper">
+					<a href="#add_design" title="Page Design" class="design r-i-b">
+						<div>
+							<i class="icon-grey icon-css"></i>
+							<span>{{ Translate::get('pages::pages.labels.design') }}</span>
+						</div>
+					</a>
+				</div> <!-- end of design -->
+			</div> <!-- end of form-right -->
+
+			<div style="display:none;" id="design_wrapper">
+				<div id='add_design' style='padding:10px; background:#fff;'>
+					<div class="tabs">
+						<ul class="tab-menu">
+							<li><a href="#tab-css">CSS</a></li>
+							<li><a href="#tab-js">Javascript</a></li>
+						</ul>
+						<div id="tab-contents">
+							<div id="tab-css">
+								{{ Form::textarea('css', isset($page['css']) ? $page['css'] : '',array('id' => 'page-css')) }}
+							</div> 
+							<div id="tab-js">
+								{{ Form::textarea('js', isset($page['js']) ? $page['js'] : '',array('id' => 'page-js')) }}
+							</div> 
+						</div> 
+					</div>
+				</div> <!-- end of add_design -->
+			</div> <!-- end of design_wrapper -->
+
+			<div class="form-block form-action button-wrapper">
+
+				{{ Form::hidden('parent_id', isset($page['parent_id']) ? $page['parent_id'] : '') }}
+
+				{{ if($method == 'edit') }}
+					{{ Form::hidden('id', isset($page['id']) ? $page['id'] : '') }}
+					{{ Form::hidden('status', $status) }}
+				{{ endif }}
+
+				{{ if($method == 'create' || $status == 'draft') }}
+
+					{= 
+						$save_button_val = 'Publish';
+						$draft_button_val = 'Save as Draft'; 
+					=}
+
+				{{ else }}
+
+					{= 
+						$save_button_val = 'Save';
+						$draft_button_val = 'Unpublish'; 
+					=}
+					
+				{{ endif }}
+
+				{{ Form::submit('page_save', $save_button_val, array('class' => 'button button-green')) }}
+				{{ Form::submit('page_save', $draft_button_val, array('class' => 'button')) }}
+				<a href="{{ rbUrl('pages/preview') }}" class="button button-blue" id="post_preview_btn">Preview</a>
+			</div> <!-- end of form block -->
+		</div> <!-- end of form-wrapper -->
+	</div> <!-- end of main-form-wrapper -->
+{{ Form::end() }}

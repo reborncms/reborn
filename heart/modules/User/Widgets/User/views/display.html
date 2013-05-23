@@ -1,0 +1,12 @@
+<div class="widget widget-user" >
+	<h2 class="widget-title">{{ $title }}</h2>
+
+	<div class="widget-body">
+		Welcome, {{ $name }}
+		<ul class="user-widget">
+			<li><a href="{{ \Uri::create('admin/') }}">Dashboard</a></li>
+			<li><a href="{{ \Uri::create('user/edit/') }}">Edit Profile</a></li>
+			<li><a href="{{ \Uri::create('user/logout/') }}">Logout</a></li>
+		</ul>
+	</div>
+</div>

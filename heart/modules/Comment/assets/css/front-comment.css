@@ -1,0 +1,51 @@
+.single_comment {
+	border: 1px solid #cecece;
+	padding: 10px;
+	overflow : hidden;
+	margin-bottom: 15px;
+	clear:both;
+}
+
+.author_info {
+	float:left;
+	text-align: center;
+	margin-right: 15px;
+	color: #747171;
+}
+
+.author_info a {
+	color: #747171;
+	text-decoration: none;
+}
+
+.comment_body {
+	overflow:auto;
+}
+
+.comment_date {
+	float:left;
+	color: #747171;
+}
+
+.reply_link {
+	float:right;
+	color: #747171;
+	text-decoration: none;
+}
+
+.comment_message {
+	clear:both;
+}
+
+#comment_form input[type=text], input[type=email], input[type=url]{
+	border: 1px solid #CECECE;
+	padding: 8px;
+	width: 250px;
+}
+
+#comment_form textarea {
+	border: 1px solid #CECECE;
+	padding: 10px;
+	width: 500px;
+	height: 200px;
+}

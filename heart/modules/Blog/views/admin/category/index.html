@@ -1,0 +1,67 @@
+<div id="main-form-wrapper">
+	<div id="form-wrapper">
+		<div id="form-left">
+			<div id="category_list">
+				<ol class="sortable">
+					{{ loop($categories as $category) }}
+						<li id="cat_{{ $category['id'] }}">
+							{{ Blog\Lib\Helper::catStructure($category) }}
+							{{ if(isset($category['children'])) }}
+								{{ Blog\Lib\Helper::generateChildren($category['children']) }}
+							{{ endif }}
+						</li>
+					{{ endloop }}
+				</ol>
+			</div> <!-- end of category_list -->
+		</div> <!-- end of form-left -->
+
+		<div id="form-right">
+
+			<div id="option-control" class="r-m-c">
+
+				<a kind="click" href="javascript:void(0);">
+					<span class="tt"></span>
+					<span>{{ Translate::get('blog::blog.add_new_cat') }}</span>
+				</a>
+
+			</div> <!-- end of div.r-container#option-control -->
+
+			<div class="r-container cat-add-box">
+				{{ $category_form }}
+			</div> <!-- end of div.r-container -->
+		</div> <!-- end of form-right -->
+	</div> <!-- end of form-wrapper -->
+</div> <!-- end of main-form-wrapper -->
+<script type="text/javascript">
+
+	$('ol.sortable li ol').hide();
+
+	$('ol.sortable').nestedSortable({
+		disableNesting: 'no-nest',
+		forcePlaceholderSize: true,
+		handle: 'div',
+		helper:	'clone',
+		items: 'li',
+		opacity: .6,
+		placeholder: 'placeholder',
+		revert: 250,
+		tabSize: 25,
+		tolerance: 'pointer',
+		toleranceElement: '> div',
+		stop:function(event, ui) {
+			post = {};
+			post.order = $('ol.sortable').nestedSortable("toHierarchy");
+			$.post(SITEURL+ADMIN+'/blog/category/order',post, function(data){
+				//var current = ui.item;
+			});
+		}
+	});
+
+	$('ol.sortable li:has(ol)').prepend('<i class="icon-circleplus icon-grey page_expand"></i>');
+ 
+	$('.page_expand').click(function(){
+		$(this).siblings('ol').slideToggle();
+		$(this).toggleClass('icon-circleplus');
+		$(this).toggleClass('icon-circleminus');
+	});
+</script>

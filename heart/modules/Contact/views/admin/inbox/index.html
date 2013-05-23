@@ -1,0 +1,44 @@
+{{ if(count($mails) > 0) }}
+{{ Form::start(ADMIN_URL.'/contact/delete') }}
+<table class="stripe">
+	<thead>
+		<tr>
+			<th width="5%">{{ Form::checkbox('action_to_all', '', array('class' => 'check-all')) }}</th>
+			<th>{{ Translate::get('label.name') }}</th>
+			<th>{{ Translate::get('label.email') }}</th>
+			<th>{{ Translate::get('contact::contact.labels.subject') }}</th>
+			<th width="100">{{ Translate::get('label.action') }}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{= $a=1 =}
+		{{ loop($mails as $mail) }}
+		<tr>
+			<td class="checkbox">{{ Form::checkbox('action_to[]', $mail->id, array('id' => 'action'.$a)) }}</td>
+			<td>{{ $mail->name }}</td>
+			<td>{{ $mail->email }}</td>
+			<td>{{ $mail->subject }}
+				{{ if(($mail->read_mail) == 0) }}
+					<span class="label label-success">{{ Translate::get('contact::contact.labels.new') }}</span>	 
+				{{ endif}}
+			</td>
+			<td>
+				<a href="{{ \Uri::create("$adminUrl/contact/detail/") }}{{$mail->id}}" title="{{ Translate::get('contact::contact.labels.detail') }}" class="ico-button button-blue tipsy-tip"><i class="icon-view2 icon-white"></i></a>
+				<a href="{{ \Uri::create("$adminUrl/contact/send-mail/index") }}{{ $mail->id }}" title="{{ Translate::get('contact::contact.labels.reply') }}" class="ico-button button-green tipsy-tip"><i class="icon-redo icon-white"></i></a>
+				<a href="{{ \Uri::create("$adminUrl/contact/delete/") }}{{ $mail->id }}" title="{{ Translate::get('global.delete') }}" class="ico-button button-red tipsy-tip confirm_delete"><i class="icon-trash2 icon-white"></i></a>
+			</td>
+			{= $a++ =}
+		</tr>
+		{{ endloop }}
+	</tbody>
+</table>
+	<div class="button-wrapper" id="delete_select">
+		{{ Form::submit('submit_delete', 'Delete Selected', array('class' => 'confirm_delete button button-red', 'disabled' => 'disabled')) }}
+		{{ Form::end() }}
+	</div>
+	{{ $pagination }}
+{{ else }}
+	<div id="no-index-data">
+		{{ Translate::get('contact::contact.no_mail') }}
+	</div>
+{{ endif }}
