@@ -99,7 +99,7 @@
 			 {{ Form::start(adminUrl('/navigation/create') , 'nav', false, array('class' => 'form', 'id' => 'nav-link-add')) }}
 
 				<div style="display:none">
-					{{ Security::CSRField() }}
+					{{ Security::CSRField('navi') }}
 				</div>
 				<div class="c-a-b">
 

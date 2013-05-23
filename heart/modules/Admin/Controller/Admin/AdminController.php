@@ -39,7 +39,7 @@ class AdminController extends \AdminController
 
 		if (\Input::isPost())
 		{
-			if (\Security::CSRFValid('rbam')) {
+			if (\Security::CSRFvalid('rbam')) {
 				if ($v->valid()) {
 					$login = array(
 				        'email'    => \Input::get('email'),

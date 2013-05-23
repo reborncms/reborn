@@ -92,7 +92,7 @@ class NavigationController extends \AdminController
 	{
 		if(\Input::isPost()) {
 			// check for a valid CSRF token
-			if ( ! \Security::CSRFvalid()) {
+			if ( ! \Security::CSRFvalid('navi')) {
 				\Flash::error('navigation::navigation.message.csrf_error');
 			} else {
 				$v = $this->validation();
@@ -256,7 +256,7 @@ class NavigationController extends \AdminController
 			return \Redirect::toAdmin('navigation/group');
 		}
 
-		if ( ! \Security::CSRFvalid()) {
+		if ( ! \Security::CSRFvalid('navigp')) {
 			\Flash::error(t('navigation::navigation.message.csrf_error'));
 			return \Redirect::toAdmin('navigation/group');
 		}

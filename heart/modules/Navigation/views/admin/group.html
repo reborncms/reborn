@@ -41,7 +41,7 @@
 				{{ Form::start(adminUrl('navigation/group-create') , 'nav_group', false, array('class' => 'form', 'id' => 'nav-link-add')) }}
 
 				<div style="display:none">
-					{{ Security::CSRField() }}
+					{{ Security::CSRField('navigp') }}
 				</div>
 
 				<div class="c-a-b">
