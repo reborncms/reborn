@@ -1,5 +1,7 @@
 .DS_Store
 composer.lock
+TODO.md
+Changelog.md
 storages/maps/*.json
 heart/vendor/*
 heart/appdata/config/db.php

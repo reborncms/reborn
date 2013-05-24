@@ -2,7 +2,6 @@
 
 namespace Reborn\MVC\Controller;
 
-use Reborn\MVC\Controller\Controller;
 use Reborn\Cores\Setting;
 use Reborn\Config\Config;
 use Reborn\Http\Redirect;
@@ -94,7 +93,8 @@ class AdminController extends Controller
         } else {
             $user = Sentry::getUser();
 
-            if ( ! $user->hasAccess('admin')) {
+            // We are check user hasAccess Admin (Group Permission)
+            if ( ! $user->hasAccess('Admin')) {
                 Sentry::logout();
                 \Flash::error(t('global.not_ap_access'));
                 return Redirect::to(ADMIN_URL.'/login');
@@ -149,27 +149,6 @@ class AdminController extends Controller
         }
         // Set the copyright date
         $this->template->copyRight = $copyright;
-
-        // Set Main Stylesheet for Admin Panel
-        /*$styles = array('plugins/tipsy.css',
-                        'plugins/colorbox/colorbox.css',
-                        //'reborn_2.css',
-                        //'metro/metro.css',
-                        //'metro/table.css',
-                        //'metro/form.css',
-                        //'metro/button.css',
-                        //'dashboard.css'
-                    );*/
-        //$this->template->style($styles);
-
-        // Set Main JS for Admin Panel
-        $js = array('jquery.min.js',
-                    'plugins/jquery-ui.min.js',
-                    'plugins/jquery.colorbox.js',
-                    'plugins/jquery-plugins.js',
-                    'reborn.js'
-                );
-        //$this->template->script($js);
     }
 
     /**
