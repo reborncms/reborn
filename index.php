@@ -24,8 +24,18 @@ $app = new Reborn\Cores\Application();
 
 // Check Reborn is already installed or not
 if ($app->installed()) {
+
 	// Start the Application
-	$app->start();
+	// If ENV is production, Don't show our Exceptional Error for user
+	try
+    {
+    	$app->start();
+    }
+    catch (Exception $e)
+    {
+        echo "Something is wrong. Please contact with Administrator.";
+        exit;
+    }
 } else {
 	$app->install();
 }

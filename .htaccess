@@ -1,4 +1,4 @@
-# SetEnv RB_ENV production
+# SetEnv REBORN_ENV production
 
 <IfModule mod_rewrite.c>
 

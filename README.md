@@ -25,7 +25,7 @@ Reborn is MIT License. You can see detail of license at license.txt
 
 ### Requirements
 
-* PHP Version 5.3.6 or greater
+* PHP Version 5.3.4 or greater
 * MySQL Version 5.x or greater
 * Web Server - Apache running on *nix platform
 * apache mod_rewrite - To remove the index.php from the URL and beautiful URI
