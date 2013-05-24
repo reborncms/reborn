@@ -3,14 +3,14 @@
 	<div class="widget-body">
 		
 		{{ Form::start('contact','',true,array('class'=>'contact-form')) }}
-		{{ Security::CSRField() }}
+		{{ Security::CSRField('contact') }}
 			
 			<div class="contact-form-block">
 				{{ Form::label('Name <span class="required"></span>', 'name') }}
 				<div class="form-field-block">
 					{{ Form::input('name', isset($mail->name) ? $mail->name : '', 'text', array('placeholder' => 'Your Name')) }}
 					{{ if(isset($errors['name'])) }}
-						<!-- <span class="field-error">{{ $errors['name'] }}</span> -->
+						
 						{{ \Flash::error($errors['name']) }}
 					{{ endif }}
 				</div> 
