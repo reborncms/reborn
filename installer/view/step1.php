@@ -70,7 +70,7 @@
 					$msg = 'PHP Version match.';
 					$class= "ok";
 				} else {
-					$msg = 'Need PHP Version 5.3.6';
+					$msg = 'Need PHP Version 5.3.4';
 					$class= "fail";
 				}
 			?>

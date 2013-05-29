@@ -11,8 +11,21 @@ namespace Reborn\Util;
 class Html
 {
 
+	/**
+	 * Single(< />) tag lists
+	 *
+	 * @var array
+	 **/
 	protected static $singleTags = array('input', 'hr', 'img', 'base', 'link', 'meta');
 
+	/**
+	 * HTML Anchor Tag. (<a>Title</a>)
+	 *
+	 * @param string $url
+	 * @param string $text a tag's text (<a>$text</a>)
+	 * @param array $options
+	 * @return string
+	 **/
 	public static function a($url, $text = null, $options = array())
 	{
 		if ('@admin' == substr($url, 0, 6)) {
@@ -30,6 +43,32 @@ class Html
 		return static::tag('a', $text, $options);
 	}
 
+	/**
+	 * HTML Anchor Tag for mailto. (<a href="mailto:">Title</a>)
+	 *
+	 * @param string $address
+	 * @param string $text a tag's text (<a>$text</a>)
+	 * @param array $options
+	 * @return string
+	 **/
+	public static function mailto($address, $text = null, $options = array())
+	{
+		$options['href'] = 'mailto:'.$address;
+
+		if (is_null($text)) {
+			$text = $address;
+		}
+
+		return static::tag('a', $text, $options);
+	}
+
+	/**
+	 * HTML Unorder List Tag. (<ul>)
+	 *
+	 * @param array $lists_array
+	 * @param array $options
+	 * @return string
+	 **/
 	public static function ul($lists_array, $options = array())
 	{
 		$lists = static::li($lists_array);
@@ -37,6 +76,13 @@ class Html
 		return static::tag('ul', "\n".$lists."\n", $options);
 	}
 
+	/**
+	 * HTML Order List Tag. (<ol>)
+	 *
+	 * @param array $lists_array
+	 * @param array $options
+	 * @return string
+	 **/
 	public static function ol($lists_array, $options = array())
 	{
 		$lists = static::li($lists_array);
@@ -44,6 +90,13 @@ class Html
 		return static::tag('ol', "\n".$lists."\n", $options);
 	}
 
+	/**
+	 * HTML List Tag. (<li>)
+	 *
+	 * @param array $lists_array
+	 * @param array $options
+	 * @return string
+	 **/
 	public static function li($list_array, $options = array())
 	{
 		$list = '';
@@ -54,16 +107,38 @@ class Html
 		return $list;
 	}
 
+	/**
+	 * HTML base Tag. (<base href="#">)
+	 *
+	 * @param string $href
+	 * @return string
+	 **/
 	public static function base($href)
 	{
 		return static::tag('base', '', array('href' => $href) );
 	}
 
+	/**
+	 * HTML Header Tag. (<ul>)
+	 *
+	 * @param string $head (h1, h2, h3, h4, h5 or h6)
+	 * @param string $content
+	 * @param array $options
+	 * @return string
+	 **/
 	public static function header($head = 'h1', $content, $options = array())
 	{
 		return static::tag($head, $content, $options);
 	}
 
+	/**
+	 * HTML Tag generate.
+	 *
+	 * @param string $tag_name
+	 * @param string $content
+	 * @param array $options
+	 * @return string
+	 **/
 	public static function tag($tag_name, $content = '', $options = array())
 	{
 		$tag = '<'.$tag_name.' '.self::buildAttrs($options);
@@ -75,6 +150,12 @@ class Html
 		}
 	}
 
+	/**
+	 * Build tag attribute string from given array
+	 *
+	 * @param array $options
+	 * @return string
+	 **/
 	protected static function buildAttrs($options = array())
 	{
 		$attrs = '';

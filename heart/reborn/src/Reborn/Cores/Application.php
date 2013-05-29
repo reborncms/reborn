@@ -184,6 +184,18 @@ class Application extends \Pimple
             $this->end($response);
 
             exit(1);
+        } catch(\Exception $e) {
+
+            if (ENV == 'production') {
+                $handler = new ErrorHandler();
+                $response = new Response($handler->exceptionHandler($e), 503);
+            } else {
+                $view = new \Reborn\MVC\View\View(Config::get('template.cache_path'));
+                $content = $view->render(APP.'views'.DS.'production-error.php');
+                $response = new Response($content, 503);
+            }
+
+            $this->end($response);
         }
     }
 
