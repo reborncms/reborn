@@ -186,7 +186,7 @@ class Application extends \Pimple
             exit(1);
         } catch(\Exception $e) {
 
-            if (ENV == 'production') {
+            if (ENV != 'production') {
                 $handler = new ErrorHandler();
                 $response = new Response($handler->exceptionHandler($e), 503);
             } else {

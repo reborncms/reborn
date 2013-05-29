@@ -26,16 +26,7 @@ $app = new Reborn\Cores\Application();
 if ($app->installed()) {
 
 	// Start the Application
-	// If ENV is production, Don't show our Exceptional Error for user
-	try
-    {
-    	$app->start();
-    }
-    catch (Exception $e)
-    {
-        echo "Something is wrong. Please contact with Administrator.";
-        exit;
-    }
+    $app->start();
 } else {
 	$app->install();
 }
