@@ -68,15 +68,11 @@ class MediaController extends \PublicController
         $cacheImg = static::$cachePath.'reborn-'.$w.'-'.$h.'-'.$file->filename;
 
         $expire = 3600;
+        $headers = array();
 
-        $response = new \Symfony\Component\HttpFoundation\Response();
-
-        if ($expire) {
-            $response->setPublic();
-            $response->headers->add(array(
-                'Pragma' => 'public',
-                'Expires' => gmdate('D, d M Y H:i:s', time()+$expire) . 'GMT',
-                ));
+         if ($expire) {
+            $headers['Pragma'] = 'public';
+            $headers['Expires'] = gmdate('D, d M Y H:i:s', time()+$expire) . 'GMT';
         }
 
         if (! \File::is($cacheImg) OR (filemtime($cacheImg) < filemtime($filePath))) {
@@ -92,21 +88,18 @@ class MediaController extends \PublicController
             AND (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == filemtime($cacheImg))
             AND $expire) {
 
-            $response->headers->set('Last-Modified', gmdate('D, d M Y H:i:s',
-            filemtime($cacheImg) . ' GMT', true, 304));
+            $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', 
+                                filemtime($cacheImg)) . ' GMT';
         }
-        $response->headers->add(array(
-                'content-type' => $file->mime_type,
-                'Last-Modified' => gmdate('D, d M Y H:i:s', filemtime($cacheImg)) . 'GMT',
-                )
-            );
 
-        $response->send();
+        $headers['Cache-Control'] = 'public';
+        $headers['Content-Type'] = $file->mime_type;
 
-        ob_clean();
-        flush();
-        readfile($cacheImg);
-        exit;
+        return \Symfony\Component\HttpFoundation\StreamedResponse::create(function() use($cacheImg){
+            ob_clean();
+            flush();
+            readfile($cacheImg);
+        }, 200, $headers)->send();
     }
 
     public function download ($id)
