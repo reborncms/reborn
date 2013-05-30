@@ -28,8 +28,10 @@
    		</div> <!-- end of form block -->
     {{ endif }}
 
-		{{ Form::submit('submit', 'Edit', array('id' => 'edit', 'class' => 'button button-green')) }}
-		<a href="{{ \Uri::create("$adminUrl/user/group") }}" class="button button-red">Cancel</a>
+    <div class="form-button">
+		  {{ Form::submit('submit', 'Edit', array('id' => 'edit', 'class' => 'button button-green')) }}
+		  <a href="{{ \Uri::create("$adminUrl/user/group") }}" class="button button-red">Cancel</a>
+    </div>
 
 	{{ Form::end() }}
 </div>
