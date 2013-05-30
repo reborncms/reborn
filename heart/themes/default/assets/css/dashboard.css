@@ -288,8 +288,10 @@ ul.dashboard-second-level li.active span.arrow {
 	z-index: 5;
 }
 
-div#dashboard-navigation ul li.active a, div#dashboard-navigation ul li:hover a {
-	background: url(../img/dashboard-navi-bg.png) repeat-x left top transparent;
+div#dashboard-navigation ul li.active a,
+div#dashboard-navigation ul li.am_is_open a,
+div#dashboard-navigation ul li:hover a {
+	background: url(../img/dashboard-navi-bg.png) repeat-x left top #957070;
 	cursor: pointer;
 }
 

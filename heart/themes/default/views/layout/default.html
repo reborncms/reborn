@@ -28,12 +28,12 @@
 
 					<div id="dashboard-user-meta">
 						<ul>
-							<li>{{ gravatar($user->email, 22) }}</li>
-							<li><h2 class="dashboard-username">{{ $user->first_name.' '.$user->last_name }}</h2></li>
+							<li>{{ gravatar($login_user->email, 22) }}</li>
+							<li><h2 class="dashboard-username">{{ $login_user->first_name.' '.$login_user->last_name }}</h2></li>
 							<li class="dashboard-dropdown">
 								<span id="dropdown"></span>
 								<ul id="dashboard-user-properties">
-									<li><a href="{{ adminUrl("user/edit/$user->id") }}"><i class="icon-setting icon-grey"></i>Edit Profile</a></li>
+									<li><a href="{{ adminUrl("user/edit/$login_user->id") }}"><i class="icon-setting icon-grey"></i>Edit Profile</a></li>
 									<li><a href="{{ adminUrl('logout') }}"><i class="icon-exit icon-grey"></i>Logout</a></li>
 								</ul>
 							</li>

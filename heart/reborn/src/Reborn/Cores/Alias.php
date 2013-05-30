@@ -38,6 +38,7 @@ class Alias
             'File' => 'Reborn\Filesystem\File',
             'Flash' => 'Reborn\Util\Flash',
             'Hash' => 'Reborn\Util\Hash',
+            'Html' => 'Reborn\Util\Html',
             'Pagination' => 'Reborn\Util\Pagination',
             'RbException' => 'Reborn\Exception\RbException',
             'Request' => 'Reborn\Http\Request',
@@ -54,6 +55,7 @@ class Alias
             'Security' => 'Reborn\Util\Security',
             'Sentry' => 'Reborn\Connector\Sentry\Sentry',
             'Setting' => 'Reborn\Cores\Setting',
+            'Str' => 'Reborn\Util\Str',
             'Translate' => 'Reborn\Translate\TranslateManager',
             'Uri' => 'Reborn\Http\Uri',
             'Validation' => 'Reborn\Form\Validation',
@@ -62,7 +64,7 @@ class Alias
         );
 
     /**
-     * Construct method is final, don't allown to override these method.
+     * Construct method is final, don't allow to override these method.
      *
      */
     final function __construct() {}

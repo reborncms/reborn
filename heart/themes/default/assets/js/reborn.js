@@ -31,22 +31,6 @@ jQuery(function($) {
 			$(this).parent().fadeOut('slow');
 		});
 
-		// Dashboard Tab Setting
-		$('ul#quick-links li a').on('click', function(){
-			var url = $(this).attr('href'),
-				first = url.substring(0, 1);
-			if(first == '#') {
-				$('ul#quick-links li a').removeClass('quick-active');
-				$(this).addClass('quick-active');
-				$('#update-area div').hide();
-				$(url).show();
-				return false;
-			}
-			else {
-				return true;
-			}
-		});
-
 		/* Toggle Navigation for User Profile */
 		$("li.dashboard-dropdown").click(function(){
 			$("#dashboard-user-meta").toggleClass("open");
@@ -70,8 +54,11 @@ jQuery(function($) {
 
 		// Admin Menu has child function
 		$('.am_has_child > a:not(.am_has_child ul li a)').live('click', function(){
-			var child = $(this).parent().find('ul');
+			var child = $(this).parent().find('ul'),
+				parentLi = $(this).parent();
+
 			$(child).slideToggle();
+			$(parentLi).toggleClass('am_is_open');
 			return false;
 		}); // end of Admin Menu hass child
 

@@ -121,7 +121,7 @@ class AdminController extends Controller
 
         // Set the current User
         $user = Sentry::getUser();
-        $this->template->user = $user;
+        $this->template->login_user = $user;
 
         // Set the Site Title
         $this->template->siteTitle = \Setting::get('site_title');

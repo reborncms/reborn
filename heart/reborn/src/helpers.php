@@ -511,3 +511,28 @@ if (! function_exists('setting')) {
         return \Setting::get($key);
 	}
 }
+
+/**
+ * Cycle is like a
+ * https://docs.djangoproject.com/en/dev/ref/templates/builtins/#std:templatetag-cycle.
+ * Cycle among the given strings or variables each time this tag is encountered.
+ * Within a loop, cycles among the given strings each time through the loop.
+ *
+ * @param string
+ * @return string
+ **/
+if (! function_exists('cycle')) {
+	function cycle()
+	{
+		static $i;
+
+		if (func_num_args() === 0) {
+			$i = 0;
+			return null;
+		}
+
+		$args = func_get_args();
+		$key = $i++ % count($args);
+		return $args[$key];
+	}
+}

@@ -16,7 +16,7 @@ class Html
 	 *
 	 * @var array
 	 **/
-	protected static $singleTags = array('input', 'hr', 'img', 'base', 'link', 'meta');
+	protected static $singleTags = array('input', 'hr', 'br', 'img', 'base', 'link', 'meta');
 
 	/**
 	 * HTML Anchor Tag. (<a>Title</a>)
@@ -129,6 +129,29 @@ class Html
 	public static function header($head = 'h1', $content, $options = array())
 	{
 		return static::tag($head, $content, $options);
+	}
+
+	/**
+	 * HTML br Tag. (<br />)
+	 *
+	 * @param int $repeat
+	 * @param array $options
+	 * @return string
+	 **/
+	public static function br($repeat = 1, $options = array())
+	{
+		return str_repeat(static::tag('br', '', $options), $repeat);
+	}
+
+	/**
+	 * HTML nbsp Tag. ($nbsp;)
+	 *
+	 * @param int $repeat
+	 * @return string
+	 **/
+	public static function nbsp($repeat = 1)
+	{
+		return str_repeat('&nbsp;', $repeat);
 	}
 
 	/**

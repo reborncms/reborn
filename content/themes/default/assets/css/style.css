@@ -293,6 +293,7 @@ input[type=file] {
 }
 input[type=submit] {
 	width: auto;
+	padding: 10px 20px;
 }
 span.required:before {
 	content: '*';
