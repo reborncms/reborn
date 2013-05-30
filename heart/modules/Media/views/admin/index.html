@@ -63,8 +63,9 @@
 						<a href="{{ rbUrl('admin/media/deleteFile/' . $file->id) }}" title="Delete" class="ico-button button-red absolute m_confirm_delete"><i class="icon-trash2 icon-white"></i></a>
 
 						{{ if($file->width != 0) }}
-							<div class="dragger m_img_thumb overflow">
-								<img src="{{ rbUrl('media/thumb/' . $file->id . '/90/') }}" alt="{{ $file->alt_text }}">
+							{= $imgLink = rbUrl('media/thumb/' . $file->id . '/90/') =}
+							<div class="dragger m_img_thumb overflow" style="background: url({{ $imgLink }}) center;">
+								
 							</div> <!-- end of m_img_thumb -->
 							<p class="overflow">{{ $file->name }}</p>
 						{{ else }}

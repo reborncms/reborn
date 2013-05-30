@@ -293,9 +293,13 @@ ul#m_folder_list li:hover > a.ico-button, ul#m_file_list li:hover > a.ico-button
 /* ===== ===== Files ===== ===== */
 div.m_img_thumb{
 	height: 90px;
-	height: 60px;
 	cursor: move;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-ms-border-radius: 2px;
+	border-radius: 2px;
 }
+ul#m_file_list li { height: 120px; }
 div.files_icon{
 	width: 44px;
 	height: 60px;
