@@ -1,7 +1,7 @@
 <?php
 
 namespace Media\Lib;
-//
+
 /**
  * This Class will handle images.
  *
@@ -78,7 +78,7 @@ class ImageHandler
 
         $this->newImage = @imagecreatetruecolor($size['width'], $size['height']);
 
-        $createdImg = $this->createImg();
+        $createdImg = $this->createImg($size['width'], $size['height']);
 
         @imagecopyresampled($this->newImage, $createdImg, 0, 0, 0, 0,
             $size['width'], $size['height'], $this->width, $this->height);
@@ -126,7 +126,7 @@ class ImageHandler
 
     }
 
-    private function createImg()
+    private function createImg($w = null, $h = null)
     {
         $ext = strtolower(substr(strrchr($this->file, '.'), 1));
 
@@ -136,11 +136,11 @@ class ImageHandler
                 $img = @imagecreatefromjpeg($this->file);
                 break;
             case 'png':
-                @imagecolortransparent($this->newImage, @imagecolorallocate(
-                    $this->newImage, 0, 0, 0));
-                @imagealphablending($this->newImg, false);
-                @imagesavealpha($this->newImg, true);
-                $img = @imagecreatefrompng($this->file);
+                @imagealphablending($this->newImage, false);
+                @imagesavealpha($this->newImage, true);
+                $transparent = imagecolorallocatealpha($this->newImage, 255, 255, 255, 0);
+                imagefilledrectangle($this->newImage, 0, 0,$w, $h, $transparent);
+                $img = imagecreatefrompng($this->file);
                 break;
             case 'gif':
                 @imagecolortransparent($this->newImage, @imagecolorallocate(
