@@ -2,15 +2,15 @@
 
 	{{ Form::start("$adminUrl/user/edit/$user->id", 'user_edit_form', false, array('class' => 'form')) }}
   {{ Security::CSRField('user') }}
-
+    {{ Form::hidden('id', $user->id) }}
 		<div class="form-block">
 			<label for="">{{ Form::label('Display Name', 'display_name') }}<span class="required"></span></label>
 			
 			<div class="double-field-block">
 				{{ Form::input('first_name', $user->first_name, 'text', array('id' => 'first_name', 'placeholder' => 'First Name', 'class' => 'left-input')) }}
 				{{ Form::input('last_name', $user->last_name, 'text', array('id' => 'last_name', 'placeholder' => 'Last Name', 'class' => 'right-input')) }}
-        {{ if ((isset($errors['first_name'])) AND (isset($errors['last_name']))) }}
-          <span class="msg error">**This field is required.</span>
+        {{ if ((isset($errors['first_name'])) or (isset($errors['last_name']))) }}
+          <span class="msg error">**You must enter your first name and last name.</span>
         {{ endif }}
 				<p>e.g. John Doe</p>
 			</div> <!-- end of form-right-block -->
@@ -65,13 +65,10 @@
 
 
       <div class="form-block">
-        <label for="">{{ Form::label('Username', 'username') }}<span class="required"></span></label>
+        <label for="">{{ Form::label('Username', 'username') }}</label>
       
         <div class="form-right-block">
           {{ Form::input('username', $usermeta->username, 'text', array('id' => 'user-username', 'placeholder' => 'Enter your Username')) }}
-          {{ if(isset($errors['password'])) }}
-            <span class="msg error">{{ $errors['password'] }}</p>
-          {{ endif }}
           <p>Username must not include space, or special characters.</p>     
       </div> <!-- end of form-right-block -->
 
@@ -113,6 +110,19 @@
         <div class="form-right-block">
           {{ Form::input('twitter', $usermeta->twitter, 'text', array('id' => 'user-twitter')) }}
           <p>Enter this user's twitter username</p>     
+        </div> <!-- end of form-right-block -->
+    </div> <!-- end of form block -->
+
+    <div class="form-block ckeck-block">
+          <label for="checkbox">{{ Form::label('Can access to Dashboard?', 'admin_access') }}</label>
+          <div class="form-right-block clearfix">
+            <label for="ckeckbox" class="inline-label">
+              {{ if($adminAccess) }}
+                {{ Form::checkbox('admin_access', 1, array('checked' => 'checked', 'id'=>'ckeckbox')) }}
+              {{ else }}
+                {{ Form::checkbox('admin_access', 1, array('id'=>'ckeckbox')) }}
+              {{ endif }}
+            </label>
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 		

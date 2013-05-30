@@ -10,7 +10,7 @@ class UserController extends \PublicController
 {
 	public function before()
 	{
-		$this->template->header = \Translate::get('user::user.title.user');
+		$this->template->header = t('user::user.title.user');
 	}
 
 	public function index()
@@ -22,8 +22,8 @@ class UserController extends \PublicController
 		$data['name'] = $user->first_name.' '.$user->last_name;
 		$data['email'] = $user->email;
 
-		$this->template->title(\Translate::get('user::user.title.profile'))
-					->breadcrumb(\Translate::get('user::user.title.profile'))
+		$this->template->title(t('user::user.title.profile'))
+					->breadcrumb(t('user::user.title.profile'))
 					->set('user', $data)
 					->setPartial('index');
 	}
@@ -40,8 +40,8 @@ class UserController extends \PublicController
 		$data['name'] = $user->first_name.' '.$user->last_name;
 		$data['email'] = $user->email;
 
-		$this->template->title(\Translate::get('user::user.title.profile'))
-					->breadcrumb(\Translate::get('user::user.title.profile'))
+		$this->template->title(t('user::user.title.profile'))
+					->breadcrumb(t('user::user.title.profile'))
 					->set('user', $data)
 					->setPartial('profile');
 	}
@@ -68,30 +68,53 @@ class UserController extends \PublicController
 						$errors = $v->getErrors();
 						$this->template->set('errors', $errors);
 				} else {
-					$email = \Input::get('email');
-					$password = \Input::get('password');
+					try
+					{
+						$email = \Input::get('email');
+						$password = \Input::get('password');
+						$remember = \Input::get('remember');
+						is_null($remember) ? $remember = false : $remember = true;
 
-			    	$login = array(
-				        'email'    => $email,
-				        'password' => $password
-				    );
+				    	$login = array(
+					        'email'    => $email,
+					        'password' => $password
+					    );
 
-				    if ($user = Sentry::authenticate($login)) {
-				    	\Flash::success(\Translate::get('user::user.login.success'));
-				        return \Redirect::to($redirect);
-				    } else {
-				    	\Flash::error(\Translate::get('user::user.login.fail'));
-				    }
+					    if ($user = Sentry::authenticate($login, $remember)) {
+					    	$name = $user->first_name.' '.$user->last_name;
+					    	\Flash::success(sprintf(t('user::user.login.success'), $name));
+					        return \Redirect::to($redirect);
+					    } else {
+					    	\Flash::error(t('user::user.login.fail'));
+					    }
+					}
+					catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
+					{
+						\Flash::error(t('user::user.login.fail'));
+					}
+					catch (\Cartalyst\Sentry\Users\UserNotActivatedException $e)
+					{
+						\Flash::error(t('user::user.login.activate'));
+					}
+					catch (\Cartalyst\Sentry\Throttling\UserSuspendedException $e)
+					{
+						$time = $throttle->getSuspensionTime();
+					    \Flash::error(sprintf(t('user::user.login.suspended'), $time));
+					}
+					catch (\Cartalyst\Sentry\Throttling\UserBannedException $e)
+					{
+					    \Flash::error(t('user::user.login.banned'));
+					}
 				}
 			} else {
-				\Flash::error(\Translate::get('user::user.csrf'));
+				\Flash::error(t('user::user.csrf'));
 			}
 		}
 
 		
 
-		$this->template->title(\Translate::get('user::user.title.login'))
-			->breadcrumb(\Translate::get('user::user.title.login'))
+		$this->template->title(t('user::user.title.login'))
+			->breadcrumb(t('user::user.title.login'))
 			->setPartial('login');
 	}
 
@@ -105,7 +128,7 @@ class UserController extends \PublicController
 		if(!Sentry::check()) return \Redirect::to('login');
 		$redirect = \Input::server('HTTP_REFERER');
 		Sentry::logout();
-		\Flash::success(\Translate::get('user::user.logout'));
+		\Flash::success(t('user::user.logout'));
 		return \Redirect::to($redirect);
 	}
 
@@ -120,6 +143,7 @@ class UserController extends \PublicController
 				$editUser = Sentry::getUserProvider()->findById(\Input::get('id'));
 
 				if($user->id == $editUser->id ) {
+
 					$v = $this->validate();
 					if ($v->fail()) {
 						$errors = $v->getErrors();
@@ -128,35 +152,31 @@ class UserController extends \PublicController
 						$email = \Input::get('email');
 						$first_name = \Input::get('first_name');
 						$last_name = \Input::get('last_name');
-						$password = \Input::get('password');
-						$confpass = \Input::get('confpass');
 
-				    	$user->email = $email;
-				    	$user->first_name = $first_name;
-				    	$user->last_name = $last_name;
+						try {
+							$user->email = $email;
+					    	$user->first_name = $first_name;
+					    	$user->last_name = $last_name;
 
-				    	if(($password != '') AND ($confpass != '')) {				
-							if($password == $confpass) {
-								$user->password = $password;
-							} else {
-								\Flash::error(\Translate::get('user::user.password.fail'));
-								return \Redirect::to('user/edit');
+							if (self::setPassword($user)) {
+								if ($user->save()) {
+							    	$usermeta = self::saveMeta('edit', $user->id);
+									$usermeta->save();
+									
+							        \Flash::success(t('user::user.profile.success'));
+							        return \Redirect::to('user');
+							    } else {
+							        \Flash::error(t('user::user.profile.fail'));
+							    }	
 							}
+						} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
+						   \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
 						}
-
-					    if ($user->save()) {
-					    	$usermeta = self::saveMeta('edit', $user->id);
-							$usermeta->save();
-							
-					        \Flash::success(\Translate::get('user::user.profile.success'));
-					        return \Redirect::to('user');
-					    } else {
-					        \Flash::error(\Translate::get('user::user.profile.fail'));
-					    }	
 					}
 				}
+			} else {
+				\Flash::error(t('user::user.csrf'));
 			}
-			\Flash::error(\Translate::get('user::user.csrf'));
 		}
 
 		$usermeta = UserMeta::where('user_id', '=', $user->id)->get();
@@ -164,8 +184,8 @@ class UserController extends \PublicController
 			$usermeta = $u;
 		}
 
-		$this->template->title(\Translate::get('user::user.profile.title'))
-			->breadcrumb(\Translate::get('user::user.profile.title'))
+		$this->template->title(t('user::user.profile.title'))
+			->breadcrumb(t('user::user.profile.title'))
 			->set('user', $user)
 			->set('usermeta', $usermeta)
 			->setPartial('edit');
@@ -193,7 +213,7 @@ class UserController extends \PublicController
 					$confpass = \Input::get('confpass');
 
 					if ($password !== $confpass) {
-						\Flash::error(\Translate::get('user::user.password.fail'));
+						\Flash::error(t('user::user.password.fail'));
 					} else {
 						
 						try 
@@ -222,34 +242,30 @@ class UserController extends \PublicController
 								'to'		=> $email,
 								'from'		=> \Setting::get('site_mail'),
 								'name'		=> \Setting::get('site_title'),
-								'subject'	=> \Translate::get('user::user.activate.subject'),
+								'subject'	=> t('user::user.activate.subject'),
 								'body'		=> 'Please active your account by using think link: '.$activationLink,
 							);
 
 						    // sent mail to register user
 						    $mail = Mailer::send($config);
 
-						    \Flash::success(\Translate::get('user::user.activate.check'));
+						    \Flash::success(t('user::user.activate.check'));
 							return \Redirect::to('user/activate');
 
 						}
-						catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
+						catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 						{
-						    \Flash::error('Login field required.');
-						}
-						catch (Cartalyst\Sentry\Users\UserExistsException $e)
-						{
-						    \Flash::error('User already exists.');
+						    \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
 						}
 					}
 				}
 			} else {
-				\Flash::error(\Translate::get('user::user.csrf'));
+				\Flash::error(t('user::user.csrf'));
 			}
 		}
 
-		$this->template->title(\Translate::get('user::user.title.registration'))
-			->breadcrumb(\Translate::get('user::user.title.registration'))
+		$this->template->title(t('user::user.title.registration'))
+			->breadcrumb(t('user::user.title.registration'))
 			->setPartial('register');
 	}
 
@@ -259,24 +275,28 @@ class UserController extends \PublicController
 	* @param $email string
 	* @param $activationCode string
 	*/
-	public function activate($emailEncode, $activationCode)
+	public function activate($emailEncode = null, $activationCode = null)
 	{
 		if(Sentry::check()) return \Redirect::to('user');
 
-		$email = base64_decode($emailEncode);
-		$user = Sentry::getUserProvider()->findByLogin($email);
+		try {
 
-		// Attempt user activation
-	    if ($user->attemptActivation($activationCode)) {
-	       	\Flash::success(\Translate::get('user::user.activate.success'));
-	        return \Redirect::to('user/login');
-	    } else {
-	       \Flash::error(\Translate::get('user::user.activate.fail'));
-	    }
-		
-		$this->template->title(\Translate::get('user::user.title.activate'))
-			->breadcrumb(\Translate::get('user::user.title.activate'))
-			->setPartial('activate');
+			$email = base64_decode($emailEncode);
+			$user = Sentry::getUserProvider()->findByLogin($email);
+
+			// Attempt user activation
+		    if ($user->attemptActivation($activationCode)) {
+		       	\Flash::success(t('user::user.activate.success'));
+		    } else {
+		       \Flash::error(t('user::user.activate.fail'));
+		    } 
+		} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
+    		\Flash::error(t('user::user.auth.dunexist'));
+    		return \Redirect::to('user/register');
+		} catch (\Cartalyst\SEntry\Users\UserAlreadyActivatedException $e) {
+			\Flash::error(t('user::user.auth.activated'));
+		}
+		return \Redirect::to('user/login');		
 	}
 
 	/**
@@ -305,7 +325,7 @@ class UserController extends \PublicController
 					    $resetCode = $user->getResetPasswordCode();
 					    $emailEncode = base64_encode($email);
 
-						$link = rbUrl().'user/passwordreset/'.$emailEncode.'/'.$resetCode;
+						$link = rbUrl().'user/password-reset/'.$emailEncode.'/'.$resetCode;
 
 					    // Now you can send this code to your user via email for example.
 					    $config = array(
@@ -318,16 +338,16 @@ class UserController extends \PublicController
 
 					    $mail = Mailer::send($config);
 
-					    \Flash::success(\Translate::get('Password RestCode Successfully sent!'));
+					    \Flash::success(t('Password RestCode Successfully sent!'));
 						return \Redirect::to('/');
 					}
-					catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+					catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 					{
-					    \Flash::error('User was not found.');
+					    \Flash::error(t('user::user.auth.dunexist'));
 					}
 				}
 			} else {
-				\Flash::error(\Translate::get('user::user.csrf'));
+				\Flash::error(t('user::user.csrf'));
 			}
 		}
 
@@ -381,14 +401,15 @@ class UserController extends \PublicController
 						    	\Flash::error('The provided password reset code is Invalid');
 						    }
 						}
-						catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+						catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 						{
-						    \Flash::error('User was not found.');
+						    \Flash::error(t('user::user.auth.dunexist'));
+    						return \Redirect::to('user/register');
 						}
 					}
 				}
 			} else {
-				\Flash::error(\Translate::get('user::user.csrf'));
+				\Flash::error(t('user::user.csrf'));
 			}
 		}
 
@@ -422,14 +443,44 @@ class UserController extends \PublicController
 		return $user;
 	}
 
+	/**
+	 * Change Password if the user edit password
+	 *
+	 * @param $user
+	 * 
+	 **/
+	protected function setPassword($user)
+	{
+		$password = \Input::get('password');
+		$confpass = \Input::get('confpass');
+
+		if ($password) {
+			$passwordRule = array(
+				'password' => 'required|minLength:6',
+			);
+			$validatePassword = new \Reborn\Form\Validation(\Input::get('*'), $passwordRule);
+
+			if ($validatePassword->fail()) {
+				$errors = $validatePassword->getErrors();
+				\Flash::error($errors);
+			} else {
+				if ($password) {
+					if($password == $confpass) {
+						$user->password = $password;
+					} else {
+						\Flash::error(t('user::user.password.fail'));
+					}
+				}
+			}
+		}		
+	}
+
 	protected function validate()
 	{
 		$rule = array(
 	        'email' => 'required|valid_email',
-	        'password' => 'required|minLength:6',
 	        'first_name' =>'required|minLength:2|maxLength:15',
 	        'last_name' => 'required|minLength:2|maxLength:15',
-	        'username' => 'required|minLength:4|maxLength:15',
 	    );
 
 		$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);

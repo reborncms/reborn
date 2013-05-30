@@ -18,8 +18,14 @@
 		{{ endif }}
 		</div>
 
+		<div class="block">
+		{{ Form::label('Remember me', 'remember') }}
+		{{ Form::checkbox('remember', 1) }}
+		</div>
+
 		{{ Form::submit('submit', 'Login', array('id' => 'login', 'class' => 'btns default_btn')) }}
 		<a href="{{ \Uri::create("/user/register") }}">Create a new account</a>
+		<a href="{{ \Uri::create("/user/reset-password") }}">Forget Password?</a>
 
 	{{ Form::end() }}
 </div>

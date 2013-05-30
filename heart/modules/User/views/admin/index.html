@@ -22,7 +22,7 @@
 				<td>
 					<a href="{{ \Uri::create("$adminUrl/user/edit/") }}{{ $u->id }}" class="ico-button button-green tipsy-tip" original-title="Edit"><i class="icon-edit icon-white"></i></a>
 					
-					{{ if($currentUser->id != $u->id) }}
+					{{ if (($currentUser->id != $u->id) AND ($u->id != 1)) }}
 					<a href="{{ \Uri::create("$adminUrl/user/delete/") }}{{ $u->id }}" class="ico-button button-red tipsy-tip confirm_delete" original-title="Delete"><i class="icon-trash2 icon-white"></i></a>
 					{{ endif }}
 					

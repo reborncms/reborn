@@ -62,13 +62,10 @@
    		</div> <!-- end of form block -->
 
     <div class="form-block">
-        <label for="">{{ Form::label('Username', 'username') }}<span class="required"></span></label>
+        <label for="">{{ Form::label('Username', 'username') }}</label>
       
         <div class="form-right-block">
           {{ Form::input('username', '', 'text', array('id' => 'user-username', 'placeholder' => 'Enter your Username')) }}
-          {{ if(isset($errors['password'])) }}
-            <span class="msg error">{{ $errors['password'] }}</p>
-          {{ endif }}
           <p>Username must not include space, or special characters.</p>     
       </div> <!-- end of form-right-block -->
 
@@ -113,6 +110,15 @@
           <p>Enter this user's twitter username</p>     
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
+
+    <div class="form-block ckeck-block">
+          <label for="checkbox">{{ Form::label('Can access to Dashboard?', 'admin_access') }}</label>
+          <div class="form-right-block clearfix">
+            <label for="ckeckbox" class="inline-label">
+              {{ Form::checkbox('admin_access', 1, array('id'=>'ckeckbox')) }}
+            </label>
+        </div> <!-- end of form-right-block -->
+      </div> <!-- end of form block -->
 
 		<div class="block">
 		{{ Form::submit('submit', 'Create', array('id' => 'edit', 'class' => 'button button-green')) }}

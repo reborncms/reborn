@@ -1,6 +1,6 @@
 <div id="user-container">
 
-	{{ Form::start("user/passwordReset/".$emailEncode."/".$hash) }}
+	{{ Form::start("user/password-reset/".$emailEncode."/".$hash) }}
 	{{ Security::CSRField('user') }}
 
 		<div class="block">

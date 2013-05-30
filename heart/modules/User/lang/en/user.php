@@ -21,16 +21,21 @@ return array(
 
 	'auth' => array(
 		'noequalpass' => 'Password doesn\'t match, please type again',
-		'userexist' => 'User already exists',
+		'userexist' => 'Email %s is already registered, please try with another email.',
 		'loginrequire' => 'Login field required',
+		'activated' => 'Your account is already activated. Please try login.',
+		'dunexist' => 'User was not found. Please Register to create your account.',
 	),
 
 	'login' => array(
-		'success' => 'Successfully Login! Welcome',
-		'fail' => 'Failed to Login, pleaes try again',
+		'success' => 'Welcome back, %s.',
+		'fail' => 'Invalid Email or Password. Please try again.',
+		'suspended' => 'Your account is suspended for %s minutes.',
+		'banned' => 'Your account is banned.',
+		'activate' => 'You need to activate your account to login.',
 	),
 
-	'logout' => 'Successfully Logout!',
+	'logout' => 'You are successfully logout',
 
 	'create' => array(
 		'success' => 'User successfully created',
@@ -47,8 +52,8 @@ return array(
 	),
 
 	'delete' => array(
-		'success' => 'User successfully deleted',
-		'fail'	=> 'Failed to delete user',
+		'success' => 'User successfully deleted.',
+		'fail'	=> 'Failed to delete user.',
 	),
 
 	'profile' => array(

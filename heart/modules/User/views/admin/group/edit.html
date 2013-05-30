@@ -13,18 +13,20 @@
 			</div> <!-- end of form-right-block -->
         </div> <!-- end of form block -->
 
+      {{ if ($group->id != 1) }}
         <div class="form-block ckeck-block">
       		<label for="checkbox">{{ Form::label('Admin Permission', 'is_admin') }}</label>
       		<div class="form-right-block clearfix">
         		<label for="ckeckbox" class="inline-label">
-         			{{ if(isset($permission['admin'])) }}
-						{{ Form::checkbox('is_admin', 1, array('checked' => 'checked', 'id'=>'ckeckbox')) }}
-					{{ else }}
-						{{ Form::checkbox('is_admin', 1, array('id'=>'ckeckbox')) }}
-					{{ endif }}
+         			{{ if($permission) }}
+						    {{ Form::checkbox('is_admin', 1, array('checked' => 'checked', 'id'=>'ckeckbox')) }}
+					    {{ else }}
+						    {{ Form::checkbox('is_admin', 1, array('id'=>'ckeckbox')) }}
+					    {{ endif }}
        			</label>
      		</div> <!-- end of form-right-block -->
    		</div> <!-- end of form block -->
+    {{ endif }}
 
 		{{ Form::submit('submit', 'Edit', array('id' => 'edit', 'class' => 'button button-green')) }}
 		<a href="{{ \Uri::create("$adminUrl/user/group") }}" class="button button-red">Cancel</a>

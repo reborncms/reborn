@@ -15,7 +15,9 @@
 			<td>{{ $g->name }}</td>
 			<td>
 				<a href="{{ \Uri::create("$adminUrl/user/group/edit/") }}{{ $g->id }}" class="ico-button button-green tipsy-tip" original-title="Edit"><i class="icon-edit icon-white"></i></a>
-				<a href="{{ \Uri::create("$adminUrl/user/group/delete/") }}{{ $g->id }}" class="ico-button button-red tipsy-tip confirm_delete" original-title="Delete"><i class="icon-trash2 icon-white"></i></a>
+				{{ if($g->id != 1) }}
+					<a href="{{ \Uri::create("$adminUrl/user/group/delete/") }}{{ $g->id }}" class="ico-button button-red tipsy-tip confirm_delete" original-title="Delete"><i class="icon-trash2 icon-white"></i></a>
+				{{ endif }}
 			</td>
 		</tr>
 		{= $i++ =}

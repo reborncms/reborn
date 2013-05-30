@@ -6,11 +6,12 @@
 			{{ Security::CSRField('user') }}
 			{{ Form::email('email', '', array('placeholder' => 'Email')) }}
 			{{ Form::password('password', '', array('placeholder' => 'Password')) }}
-			{{ Form::submit('submit', 'Login', array('class' => 'widget-login', 'class' => 'btn')) }}
-			
+			{{ Form::checkbox('remember', 1) }}
+			{{ Form::label('Remember me', 'remember') }}
+			<p>{{ Form::submit('submit', 'Login', array('class' => 'widget-login', 'class' => 'btn')) }}</p>
 			<p>
 				<a href="{{ \Uri::create("/user/register") }}">Create a new account</a> <br/>
-				<a href="{{ \Uri::create("/user/resetpassword") }}">Forget Password?</a>
+				<a href="{{ \Uri::create("/user/reset-password") }}">Forget Password?</a>
 			</p>
 		{{ Form::end() }}
 	</div>
