@@ -245,16 +245,23 @@ div#m_folder_area div#m_file_area{
 ul#m_folder_list li, ul#m_file_list li {
 	width: 90px;
 	height: 90px;
-	float: left;
+	display: inline-block;
 	padding: 10px;
 	margin: 0 5px;
 }
+ul#m_file_list li {
+	float: left;
+}
 ul#m_folder_list li:hover, ul#m_file_list li:hover{
-	background: #dedede;
+	background: #fbfbfb;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	-ms-border-radius: 2px;
 	border-radius: 2px;
+	-webkit-box-shadow: 0 0 5px #e0e0e0, 0 0 6px #fff inset;
+	-moz-box-shadow: 0 0 5px #e0e0e0, 0 0 6px #fff inset;
+	-ms-box-shadow: 0 0 5px #e0e0e0, 0 0 6px #fff inset;
+	box-shadow: 0 0 5px #e0e0e0, 0 0 6px #fff inset;
 }
 div.m_thumb_area{
 	width: 80px;
@@ -272,6 +279,7 @@ ul#m_folder_list li a p, ul#m_file_list li p{
 	line-height: 1.3em;
 	margin-top: 5px;
 	height: 30px;
+	overflow: hidden;
 }
 ul#m_folder_list li a.ico-button, ul#m_file_list li a.ico-button{
 	display: none;

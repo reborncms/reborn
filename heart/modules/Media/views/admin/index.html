@@ -24,25 +24,24 @@
 
 		<div id="m_folder_area">
 
-			<ul id="m_folder_list" class="overflow">
+			<ul id="m_folder_list">
 
 				{{ loop($folders as $folder) }}
 
-					<li class="drop_zone overflow relative" folder-id = "{{ $folder->id }}">
+					<li class="drop_zone relative" folder-id = "{{ $folder->id }}">
 						<a href="{{ rbUrl('admin/media/editFolder/' . $folder->id) }}" title="Edit" class="ico-button button-green absolute m_edit">
 							<i class="icon-edit icon-white"></i>
 						</a>
 						<a href="{{ rbUrl('admin/media/deleteFolder/' . $folder->id) }}" title="Delete" class="ico-button button-red absolute m_confirm_delete"><i class="icon-trash2 icon-white"></i></a>
 						<a href="{{ rbUrl('admin/media/explode/' . $folder->id) }}" class="explorer">
 							<div class="m_thumb_area"></div>
-							<p class="overflow">{{ $folder->name }}</p>
+							<p>{{ $folder->name }}</p>
 						</a>
 
 					</li> <!-- end of drop_zone -->
 				{{ endloop }}
-				<div class="clear"></div>
 			</ul> <!-- end of m_folder_list -->
-
+			<div class="clear"></div>
 		</div> <!-- end of m_folder_area -->
 
 	{{ endif }}
@@ -51,7 +50,7 @@
 
 		<div id="m_file_area">
 
-			<ul id="m_file_list">
+			<ul id="m_file_list" class="clearfix">
 
 				{{ loop($files as $file) }}
 
@@ -64,7 +63,7 @@
 
 						{{ if($file->width != 0) }}
 							{= $imgLink = rbUrl('media/thumb/' . $file->id . '/90/') =}
-							<div class="dragger m_img_thumb overflow" style="background: url({{ $imgLink }}) center;">
+							<div class="dragger m_img_thumb overflow" style="background: url({{ $imgLink }}) center no-repeat">
 								
 							</div> <!-- end of m_img_thumb -->
 							<p class="overflow">{{ $file->name }}</p>
