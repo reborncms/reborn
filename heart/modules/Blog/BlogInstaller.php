@@ -37,8 +37,8 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
 		});
 
 		\DB::table('blog_categories')->insert(array(
-			'name' 			=> 'Blog',
-    		'slug' 			=> 'blog',
+			'name' 			=> 'Default',
+    		'slug' 			=> 'default',
     		'description' 	=> 'default category',
     		'parent_id' 	=> 0,
     		'order'			=> 0

@@ -25,7 +25,7 @@
 								<span class="label label-info">{{ Translate::get('blog::blog.'.$blog->status) }}</span>
 							</a>
 						{{ endif }}
-						{{ if ($blog->created_at >= date('Y-m-d H:i:s')) }}
+						{{ if ($blog->created_at > date('Y-m-d H:i:s')) }}
 						<span class="label schedule_label">Scheduled</span>
 						{{ endif }}
 					</span>

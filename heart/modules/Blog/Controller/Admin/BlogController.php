@@ -230,7 +230,7 @@ class BlogController extends \AdminController
 			$author = \Input::get('author_id');
 		}
 
-		if (\Input::get('save_draft') == null) {
+		if (\Input::get('publish') != null) {
 			$status = 'live';
 		} else {
 			$status = 'draft';

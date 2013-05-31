@@ -133,6 +133,7 @@
 
 #filter-bar label {
 	width:auto;
+	margin-right: 12px;
 }
 
 #filter-bar #filter-submit {
