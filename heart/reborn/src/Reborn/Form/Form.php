@@ -33,7 +33,7 @@ class Form
             $action = Uri::create($action);
         }
         $id = (!isset($attrs['id'])) ? ' id = "'.$name.'"' : '';
-        $enctype = ($file == true) ? "enctype='multipart/form-data'" : "";
+        $enctype = ($file == true) ? " enctype='multipart/form-data'" : "";
 
         return '<form name="'.$name.'"'.$method.' action="'.$action.'"'.$id.$attr.$enctype.'>';
     }
