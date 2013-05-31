@@ -1,7 +1,7 @@
 <?php
 
 namespace Theme\Controller\Admin;
-use Theme\Model\Theme as Theme;
+Use \Theme\Model\Theme as Theme;
 
 class ThemeController extends \AdminController
 {
@@ -11,7 +11,7 @@ class ThemeController extends \AdminController
 
 	public function index()
 	{
-		$themes = \Theme\Model\ThemeModel::all();
+		$themes = Theme::all();
 		$active = \Setting::get('public_theme');
 
 		$this->template->title(\Translate::get('theme::theme.title'))
@@ -23,7 +23,7 @@ class ThemeController extends \AdminController
 
 	public function activate($name)
 	{
-		$themes = \Theme\Model\ThemeModel::all();
+		$themes = ThemeModel::all();
 
 		if (array_key_exists($name, $themes)) {
 			\Setting::set('public_theme', $name);
@@ -36,7 +36,7 @@ class ThemeController extends \AdminController
 
 	public function delete($name)
 	{
-		$themes = \Theme\Model\ThemeModel::all();
+		$themes = Theme::all();
 
 		if (array_key_exists($name,$themes)) {
 			if (is_dir(THEMES.$name)) {

@@ -2,9 +2,8 @@
 
 namespace Theme\Model;
 
-class ThemeModel extends \Model
+class Theme
 {
-
     /**
      * Get all themes from associated directories
      *
@@ -15,21 +14,17 @@ class ThemeModel extends \Model
         $themes = array();
         $results = scandir(THEMES);
 
-        foreach ($results as $result) 
-        {
+        foreach ($results as $result) {
             if ($result === '.' or $result === '..') continue;
             
-            if (is_dir(THEMES . '/' . $result)) 
-            {
+            if (is_dir(THEMES . '/' . $result)) {
                 $themes[] = $result;
             }
         }
 
-        foreach ( $themes as $key => $value )
-        {   
+        foreach ( $themes as $key => $value ) {   
             $themeinfo[$value] = self::load_info($value);
         }
-
         return $themeinfo;
     }
 
@@ -41,18 +36,12 @@ class ThemeModel extends \Model
      */
     protected static function load_info($theme = null)
     {
-        if ($theme === null)
-        {
-            $theme = $this->active;
-        }
+        if ($theme === null) $theme = $this->active;
 
-        if (is_array($theme))
-        {
+        if (is_array($theme)) {
             $path = $theme['path'];
             $name = $theme['name'];
-        }
-        else
-        {
+        } else {
             $path = THEMES.$theme;
             $name = $theme;
             $theme = array(
@@ -61,21 +50,17 @@ class ThemeModel extends \Model
             );
         }
 
-        if ( ! $path)
-        {
+        if (!$path) {
             throw new \ThemeException(sprintf('Could not find theme "%s".', $theme));
         }
 
-        if(\File::is($path.DS.'info.php'))
-        {
+        if(\File::is($path.DS.'info.php')) {
             $file = $path.DS.'info.php';
         }
         
         $info = require $file;
-        
         $screenshot = is_file($path.DS.'screenshot.png') ? $path.DS.'screenshot.png' : '';
         $info['screenshot'] = str_replace(array(BASE, DS), array('', '/'), $screenshot);
-
         return $info;
     }
 
