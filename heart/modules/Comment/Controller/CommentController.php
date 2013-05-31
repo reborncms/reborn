@@ -26,6 +26,12 @@ class CommentController extends \PublicController
 			return $this->notFound();
 		}
 
+		if ($status === 1) {
+			$status = 'open';
+		} else if ($status === 0) {
+			$status = 'close';
+		}
+
 		$comment_form = '';
 
 		$restructured = array();

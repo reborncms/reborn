@@ -264,7 +264,7 @@ class PagesController extends \AdminController
                     'plugins/codemirror/codemirror.css'
                 ))
                 ->script(array(
-                    'modules/form.js',
+                    'form.js',
                     'plugins/jquery.colorbox.js',
                     'plugins/codemirror/codemirror.js',
                     'plugins/codemirror/css.js',
