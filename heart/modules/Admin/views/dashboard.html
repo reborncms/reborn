@@ -45,6 +45,7 @@
 						<h3>
 							<a href="{{ rbUrl('blog/'.$post->slug) }}" target="_black">{{ $post->title }}</a>
 						</h3>
+						<div class="blog-author"><i class="icon-user"></i><a href="{{ rbUrl('user/profile/'.$post->author->id) }}">{{ $post->author->first_name.' '.$post->author->last_name }}</a></div>
 					</li>
 				{{ endloop }}
 				{{ endif }}
@@ -65,10 +66,11 @@
 					{{ else }}
 						{{ loop($last_comments as $comment) }}
 							<li>
+								<span class="date label">{{ Date $comment->created_at as Y-m-d }}</span>
 								<span class="commenter">{{ $comment->name }}</span>
-								is comment on
-								<span class="date">{{ Date $comment->created_at as Y-m-d }}</span>
-								for
+								commented at
+								<span class="cmt-module">{{ ucfirst($comment->module) }}</span>
+								on
 								<span class="cmt-title">{{ $comment->content_title }}</span>
 							</li>
 						{{ endloop }}

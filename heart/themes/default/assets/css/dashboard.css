@@ -447,6 +447,7 @@ a.quick-btn:hover {
     border-bottom: 1px solid #D9D9D9;
 	color: #626262;
 	font-size: 16px;
+	font-family: "Titillium Web", Arial, sans-serif;
 	font-weight: normal;
 	padding: 8px 10px;
 	line-height: normal;
@@ -454,6 +455,7 @@ a.quick-btn:hover {
 
 .dashboard-wg h3 {
 	font-size: 1.25em;
+	font-family: "Titillium Web", Arial, sans-serif;
 	color: #626262;
 }
 
@@ -489,7 +491,7 @@ div#last-post ul li span.date {
 	color: #696969;
 	font-size: 1.2em;
 	border: 1px solid #D5D5D5;
-	width: 75px;
+	width: 65px;
 	text-align: center;
 	padding-top: 9px;
 	background: #efefef;
@@ -499,19 +501,24 @@ div#last-post ul li span.date .month {
 	display: block;
 	border-top: 1px solid #D5D5D5;
 	margin-top: 8px;
-	padding: 14px 0;
+	padding: 10px 0;
 	font-size: 1.5em;
 	background: #fff;
 }
 div#last-post h3 {
-	margin: 5px 0 0 90px;
+	margin: 5px 0 0 80px;
+}
+div#last-post .blog-author {
+	margin-top: 10px;
+	margin-left: 10px;
+	float: left;
 }
 div#last-post .empty-list {
 	padding: 20px 0;
 }
 div#last-comment .commenter,
-div#last-comment .date,
-div#last-comment .cmt-title {
+div#last-comment .cmt-title,
+div#last-comment .cmt-module {
 	color: #064;
 }
 

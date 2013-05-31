@@ -18,7 +18,7 @@ class AdminController extends \AdminController
 		$last_login = User::take(5)->orderBy('last_login', 'desc')->get();
 
 		if (\Module::isEnabled('Blog')) {
-			$last_post = Blog::take(5)->orderBy('created_at', 'desc')->get();
+			$last_post = Blog::with('author')->take(5)->orderBy('created_at', 'desc')->get();
 			$this->template->set('last_post', $last_post);
 		}
 
