@@ -49,6 +49,13 @@ class Parser
     protected $data = array();
 
     /**
+     * Saving data for no parse content
+     *
+     * @var array
+     **/
+    protected $noparse = array();
+
+    /**
      * Add (register) new parser handler for the parser.
      * example :
      * <code>
@@ -86,6 +93,8 @@ class Parser
 
     public function parseString($template)
     {
+        $template = $this->handleUnParse($template);
+
         // First step is handle by the add handlers (from the active theme)
         foreach ($this->addHandlers as $name => $handler) {
 
@@ -118,6 +127,8 @@ class Parser
 
         // Handle for echo
         $template = $this->handleEcho($template);
+
+        $template = $this->handleReParse($template);
 
         return $template;
     }
@@ -162,6 +173,49 @@ class Parser
     protected function parsePHPTag($template)
     {
         return str_replace( array("<?","?>"), array("&lt;?","?&gt;"), $template );
+    }
+
+    /**
+     * Handler for noparse string replace
+     *
+     * @param string $template
+     * @return string
+     **/
+    protected function handleUnParse($template)
+    {
+        if (preg_match_all('/<noparse>(.*)<\/noparse>/', $template, $match)) {
+            $i = 1;
+            foreach ($match[0] as $k => $m) {
+                $key = $this->getNoParseMarker($i);
+                $this->noparse[$key] = $match[1][$k];
+                $template = str_replace($m, $key, $template);
+                $i++;
+            }
+        }
+
+        return $template;
+    }
+
+    /**
+     * Handler for replace noparse key with their value
+     *
+     * @param string $template
+     * @return string
+     **/
+    protected function handleReParse($template)
+    {
+        return str_replace(array_keys($this->noparse), array_values($this->noparse), $template);
+    }
+
+    /**
+     * Get no parse key string
+     *
+     * @param string $prefix
+     * @return string
+     **/
+    protected function getNoParseMarker($prefix)
+    {
+        return $prefix.'_noparse_'.\Reborn\Util\Str::random(6);
     }
 
     /**

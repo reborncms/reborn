@@ -6,7 +6,7 @@ return array(
 	 * Skip Setting
 	 * Don't show at setting panel
 	 */
-	'skip' => array('admin_theme'),
+	'skip' => array('admin_theme', 'public_theme'),
 
 	/**
 	 * Default Module Setting
@@ -63,7 +63,7 @@ return array(
 	/**
 	 * Public Theme Setting
 	 */
-	'public_theme' => array(
+	/*'public_theme' => array(
 			'type' => 'select',
 			'require' => false,
 			'class' => 'full',
@@ -76,7 +76,7 @@ return array(
 
 				return $theme;
 			}
-		),
+		),*/
 
 	/**
 	 * Admin Panel Url Setting

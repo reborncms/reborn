@@ -536,3 +536,24 @@ if (! function_exists('cycle')) {
 		return $args[$key];
 	}
 }
+
+/**
+ * Helper Function is_home() for Theme Developer.
+ *
+ * @return boolean
+ **/
+if (! function_exists('is_home')) {
+	function is_home()
+	{
+		$home_page = \Setting::get('home_page');
+		$uri = \Uri::segments();
+
+		if ( empty($uri) ) {
+			return true;
+		} elseif ( $home_page == $uri[0] ) {
+			return true;
+		}
+
+		return false;
+	}
+}

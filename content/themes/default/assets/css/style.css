@@ -295,6 +295,9 @@ input[type=submit] {
 	width: auto;
 	padding: 10px 20px;
 }
+input[type=submit].btn:hover {
+	border: none;
+}
 span.required:before {
 	content: '*';
 	color: #f00;

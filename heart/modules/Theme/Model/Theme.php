@@ -16,13 +16,13 @@ class Theme
 
         foreach ($results as $result) {
             if ($result === '.' or $result === '..') continue;
-            
+
             if (is_dir(THEMES . '/' . $result)) {
                 $themes[] = $result;
             }
         }
 
-        foreach ( $themes as $key => $value ) {   
+        foreach ( $themes as $key => $value ) {
             $themeinfo[$value] = self::load_info($value);
         }
         return $themeinfo;
@@ -51,13 +51,13 @@ class Theme
         }
 
         if (!$path) {
-            throw new \ThemeException(sprintf('Could not find theme "%s".', $theme));
+            throw new \RbException(sprintf('Could not find theme "%s".', $theme));
         }
 
         if(\File::is($path.DS.'info.php')) {
             $file = $path.DS.'info.php';
         }
-        
+
         $info = require $file;
         $screenshot = is_file($path.DS.'screenshot.png') ? $path.DS.'screenshot.png' : '';
         $info['screenshot'] = str_replace(array(BASE, DS), array('', '/'), $screenshot);
