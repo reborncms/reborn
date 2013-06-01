@@ -35,7 +35,7 @@ class TagController extends \AdminController
 					   ->set('form', $form)
 					   ->setPartial('admin/index')
 					   ->style('form.css')
-					   ->script('modules/form.js')
+					   ->script('form.js')
 					   ->script('plugins/jquery.colorbox.js');
 	}
 
