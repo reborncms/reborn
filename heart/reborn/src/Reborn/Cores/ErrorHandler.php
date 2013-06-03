@@ -40,9 +40,16 @@ class ErrorHandler
 
         \Log::debug($message);
 
-        require APP.'views'.DS.'exception.php';
+        if (ENV == 'production') {
+            $view = new \Reborn\MVC\View\View(\Config::get('template.cache_path'));
+            $content = $view->render(APP.'views'.DS.'production-error.php');
+            //echo $content;
+        } else {
+            $content = require APP.'views'.DS.'exception.php';
+        }
 
-        return true;
+        $res = new \Reborn\Http\Response($content, 503);
+        return $res->send();
     }
 
     protected function getClass($t)
