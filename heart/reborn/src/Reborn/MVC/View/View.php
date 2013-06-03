@@ -199,6 +199,19 @@ class View implements ArrayAccess
     }
 
     /**
+     * Render the Module partial file
+     *
+     * @param string $file Partial file name
+     * @return string|null
+     **/
+    protected function partialFile($file)
+    {
+        // Trim the space
+        $file = trim($file, ' ');
+        return $this->template->partialRender($file);
+    }
+
+    /**
      * This method will make inner call the view from the module action.
      *
      * example : View file is blog single view.

@@ -20,6 +20,7 @@ class Parser
      **/
     protected $handlers = array(
             'include'       => 'handleInclude',
+            'partial'       => 'handlePartial',
             'action'        => 'handleAction',
             'loop'          => 'handleLoop',
             'if'            => 'handleIf',
@@ -229,6 +230,21 @@ class Parser
         $pattern = '/\{\{\s*(include):(.*)\s*\}\}/';
 
         $d = preg_replace($pattern, '<?php echo $this->includeFile("$2")$3; ?>', $template);
+
+        return $d;
+    }
+
+    /**
+     * Handle the Module Parial Render
+     *
+     * @param string $template
+     * @return string
+     **/
+    protected function handlePartial($template)
+    {
+        $pattern = '/\{\{\s*(partial):(.*)\s*\}\}/';
+
+        $d = preg_replace($pattern, '<?php echo $this->partialFile("$2")$3; ?>', $template);
 
         return $d;
     }
