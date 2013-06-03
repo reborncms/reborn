@@ -119,21 +119,21 @@ class CommentController extends \PublicController
 					$save = $comment->save();
 					if ($save) {
 						if (\Sentry::check()) {
-							\Flash::success(t('comment::comment.message.success'));
+							\Flash::success(t('comment::comment.message.success.comment_submit'));
 						} else {
 							\Flash::success(t('comment::comment.message.wait_approve'));
 						}
 					} else {
-						\Flash::error(t('comment::comment.message.error'));
+						\Flash::error(t('comment::comment.message.error.comment_submit'));
 					}	
 				} else {		
 					//validation Error
-					\Flash::error('Validation Error!!!');
+					\Flash::error(t('comment::comment.message.error.validation'));
 					$this->template->set('comment_errors', $val->getErrors);
 					$this->template->set('comment_info', \Input::get('*'));
 				}
 			} else {
-				\Flash::error("You are probably a bot.");
+				\Flash::error(t('comment::comment.message.error.bot'));
 			}
 		}
 

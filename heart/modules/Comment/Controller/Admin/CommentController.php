@@ -10,6 +10,8 @@ class CommentController extends \AdminController
 {
 	private  $adminurl;
 
+	protected static $child_comment;
+
 	public function before() 
 	{
 		$this->menu->activeParent('content');
@@ -22,7 +24,8 @@ class CommentController extends \AdminController
 			$this->template->partialOnly();
 		}
 
-		$this->template->style('comment.css', 'comment');
+		$this->template->style('comment.css', 'comment')
+					   	->script('comment.js', 'comment');
 		
 	}
 
@@ -118,9 +121,27 @@ class CommentController extends \AdminController
 			$comment->status = ($comment->status == 'approved') ? 'pending' : 'approved';
 		}
 
+		if ($comment->status == 'approved' and $comment->parent_id != 0) {
+			$parent_status = Comment::where('id', $comment->parent_id)->pluck('status');
+			if ($parent_status != 'approved') {
+				\Flash::error(sprintf(t('comment::comment.message.error.parent_not_approved'), $comment->parent_id));
+				return \Redirect::to(adminUrl('comment'));
+			}
+		}
+
 		$save = $comment->save();
 
 		if ($save) {
+			$child_ele = self::getChild($id);
+			if ($child_ele != null) {
+				foreach ($child_ele as $child) {
+					$child_com = Comment::find($child);
+					if ($child_com->status != 'spam') {
+						$child_com->status = $comment->status;
+						$child_com->save();
+					}
+				}
+			}
 			if ($spam) {
 				\Flash::warning(t('comment::comment.message.warning.approve_spam'));
 			} else {
@@ -132,6 +153,28 @@ class CommentController extends \AdminController
 
 		return \Redirect::to(adminUrl('comment'));
 
+	}
+
+
+	/**
+	 * Get child comments
+	 *
+	 * @return void
+	 **/
+	protected function getChild($id) {
+
+		$child_ele = Comment::where('parent_id', $id)->get();
+
+		if (count($child_ele) > 0) {
+			foreach($child_ele as $ele) {
+				static::$child_comment[] = $ele->id;
+				$grand_child = Comment::where('parent_id', $ele->id)->get()->count();
+				if ($grand_child > 0) {
+					self::getChild($ele->id);
+				}
+			}
+		}
+		return static::$child_comment;
 	}
 
 	/**
@@ -214,6 +257,14 @@ class CommentController extends \AdminController
 					$comment->status = $method;
 					$save = $comment->save();
 					if ($save) {
+						$child_ele = self::getChild($id);
+						if ($child_ele != null) {
+							foreach ($child_ele as $child) {
+								$child_com = Comment::find($child);
+								$child_com->status = $comment->status;
+								$child_com->save();
+							}
+						}
 						$comments[] = $id;
 					}
 				}
@@ -242,6 +293,14 @@ class CommentController extends \AdminController
 
 		foreach ($ids as $id) {
 			if ($comment = Comment::find($id)) {
+				$child_ele = self::getChild($id);
+				if ($child_ele != null) {
+					foreach ($child_ele as $child) {
+						$child_com = Comment::find($child);
+						$child_com->delete();
+						$comments[] = (int)$child;
+					}
+				}
 				$comment->delete();
 				$comments[] = $id;
 			}

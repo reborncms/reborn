@@ -1,3 +1,18 @@
+<script type="text/javascript">
+
+/*function insertJquery() {
+	if (typeof(jQuery) == "undefined") {
+		var insertTag = document.createElement("script");
+		insertTag.src = "{{ GLOBAL_URL }}js/jquery.min.js";
+		insertTag.type = "text/javascript";
+		document.getElementsByTagName("head")[0].appendChild(insertTag);
+	}
+}
+
+window.onload = insertJquery;*/
+
+</script>
+
 {{ if (\Setting::get('comment_enable') == 'enable') }}
 <div id="comment_area">
 {{ if ($total_comments > 0) }}
@@ -21,6 +36,7 @@
 {{ endif }}
 {{ $comment_form }}
 </div> <!-- end of comment_area -->
+
 <script type="text/javascript">
 
 	function setParentId(value) {

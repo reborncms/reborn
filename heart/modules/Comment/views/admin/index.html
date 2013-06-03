@@ -17,7 +17,7 @@
 	<a href="{{ adminUrl('comment/filter/pending') }}">{{ t('comment::comment.label.pending') }}</a>
 	<a href="{{ adminUrl('comment/filter/spam') }}">{{ t('comment::comment.label.spam') }}</a>
 </div><!-- end of internal_menu -->
-
+<div id="note_msg" style="color:red; margin-bottom:10px;">{{ t('comment::comment.message.warning.muti-action-note') }}</div>
 {{ if(count($comments) > 0) }}
 <div id="data_table_wrapper">
 	{{ Form::start(adminUrl('comment/multiaction', 'multi_action_form')) }}
@@ -25,9 +25,10 @@
 		<thead>
 			<tr>
 				<th width="3%">{{ Form::checkbox('action_to_all', '', array('class' => 'check-all')) }}</th>
+				<th width="3%">ID</th>
 				<th width="10%">{{ t('label.author') }}</th>
 				<th width="15%">{{ t('comment::comment.label.author_email') }}</th>
-				<th width="44%">{{ t('comment::comment.label.message') }}</th>
+				<th width="42%">{{ t('comment::comment.label.message') }}</th>
 				<th width="5%">{{ t('comment::comment.label.status') }}</th>
 				<th width="13%">{{ t('label.actions') }}</th>
 			</tr>
@@ -55,6 +56,7 @@
 			{{ endif }}
 			<tr>
 				<td>{{ Form::checkbox('action_to[]', $comment->id) }}</td>
+				<td>#{{ $comment->id }}</td>
 				<td>
 					{{ if (!empty($url)) }}
 						<a href="{{ $url }}">{{ $name }}</a>
@@ -113,7 +115,7 @@
 					{{ if ($comment->status != 'spam') }}
 						<a href="{{ adminUrl('comment/change-status/'.$comment->id.'/spam') }}" title="{{ t('comment::comment.label.mark_as_spam') }}" class="ico-button button-orange tipsy-tip"><i class="icon-disabled icon-white"></i></a>
 					{{ endif }}
-					<a href="{{ adminUrl('comment/delete/'.$comment->id) }}" title="{{ t('global.delete') }}" class="ico-button button-red confirm_delete tipsy-tip"><i class="icon-trash2 icon-white"></i></a>
+					<a href="{{ adminUrl('comment/delete/'.$comment->id) }}" title="{{ t('global.delete') }}" class="ico-button button-red confirm_delete_comment tipsy-tip"><i class="icon-trash2 icon-white"></i></a>
 				</td>
 			</tr>
 			{{ endloop }}	
@@ -137,93 +139,3 @@
 		{{ sprintf(t('comment::comment.no_comment'), $list_type) }}
 	</div>
 {{ endif }}
-
-<script type="text/javascript">
-jQuery(function(){
-	$('.comment-reply-btn, .comment-edit-btn').colorbox({
-		width:"45%",
-		onComplete : function(){
-			$('#reply-edit-btn').on('click', function(e){
-				e.preventDefault();
-				var form_action = $('#re-form').attr('action');
-				var form_val = $('#re-form').serialize();
-				$.post(form_action, form_val, function(data){
-					if(data == "true") {
-						window.location.reload();
-						$.colorbox.close();
-					} else {
-						var error_msg = "Sorry something went wrong. Please try again.";
-						$('#ajax-form-error').html(error_msg);
-					}
-				});
-			})
-		}
-	});
-
-	$('#sel_multi_action').on('change', function(){
-		var sel_val = $(this).val();
-		var btn = $('#multi_action_btn');
-		btn.attr('class', 'button');
-
-		if( $('input[name="action_to[]"]:checked, .check-all:checked').length >= 1 && $('#sel_multi_action').val() != 'none'){
-			$(".button-wrapper .button").removeAttr('disabled');
-		} else {
-			$(".button-wrapper .button").attr('disabled', 'disabled');
-		}
-
-		switch (sel_val) {
-			case "approved" :
-				btn.addClass('button-green');
-			break;
-
-			case "pending" :
-				btn.addClass('button-yellow');
-			break;
-
-			case "spam" :
-				btn.addClass('button-orange');
-			break;
-
-			case "delete" :
-				btn.addClass('button-red');
-				btn.addClass('confirm_delete');
-			break;
-
-			default :
-				btn.attr('class', 'button');
-				btn.attr('disabled', 'disabled');
-		}
-	});
-
-	$('input[name="action_to[]"], .check-all').live('click', function () {
-
-		if( $('input[name="action_to[]"]:checked, .check-all:checked').length >= 1 && $('#sel_multi_action').val() != 'none'){
-			$(".button-wrapper .button").removeAttr('disabled');
-		} else {
-			$(".button-wrapper .button").attr('disabled', 'disabled');
-		}
-
-	});
-
-	$('.comment_message').each(function(){
-		var height = $(this).height();
-		if (height > 100) {
-			$(this).height(100).css('overflow', 'hidden').after('<a href="#" class="com_read_more">( Read More )</a>');
-		};
-	});
-
-	$('.com_read_more').click(function(e){
-		e.preventDefault();
-		$(this).toggleClass('hide');
-		if ($(this).hasClass('hide')) {
-			$(this).siblings('.comment_message').css('height', 'auto');	
-			$(this).text('( Hide )');
-		} else {
-			$(this).siblings('.comment_message').css('height', '100px');	
-			$(this).text('( Read More )');
-		}
-		
-	});
-	
-});
-</script>
