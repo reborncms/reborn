@@ -23,7 +23,7 @@ class ThemeController extends \AdminController
 
 	public function activate($name)
 	{
-		$themes = ThemeModel::all();
+		$themes = Theme::all();
 
 		if (array_key_exists($name, $themes)) {
 			\Setting::set('public_theme', $name);
