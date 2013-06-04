@@ -7,6 +7,7 @@
 	<div id="main-form-wrapper">
 		<div id="form-wrapper">
 			<div id="form-left">
+				<div id="autosave-msg"></div>
 				<div class="form-block">
 					{{ Form::label(Translate::get('pages::pages.labels.page_title').'<span class="required"></span>', 'title') }}
 					<div class="form-right-block">
@@ -114,8 +115,9 @@
 
 				{{ Form::hidden('parent_id', isset($page['parent_id']) ? $page['parent_id'] : '') }}
 
+				{{ Form::hidden('id', isset($page['id']) ? $page['id'] : '', array('id' => 'post_id')) }}
+
 				{{ if($method == 'edit') }}
-					{{ Form::hidden('id', isset($page['id']) ? $page['id'] : '') }}
 					{{ Form::hidden('status', $status) }}
 				{{ endif }}
 
@@ -137,7 +139,7 @@
 
 				{{ Form::submit('page_save', $save_button_val, array('class' => 'button button-green')) }}
 				{{ Form::submit('page_save', $draft_button_val, array('class' => 'button')) }}
-				<a href="{{ rbUrl('pages/preview') }}" class="button button-blue" id="post_preview_btn">Preview</a>
+				<!-- <a href="{{ rbUrl('pages/preview') }}" class="button button-blue" id="post_preview_btn">Preview</a> -->
 			</div> <!-- end of form block -->
 		</div> <!-- end of form-wrapper -->
 	</div> <!-- end of main-form-wrapper -->

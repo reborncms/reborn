@@ -26,10 +26,11 @@ return array(
     ),
     'messages' => array(
         'success' => array(
-            'add' => 'New Page Successfully added',
-            'edit' => "Successfully edited the page",
-            'delete' => "Successfully deleted the page",
+            'add'           => 'New Page Successfully added',
+            'edit'          => "Successfully edited the page",
+            'delete'        => "Successfully deleted the page",
             'status_update' => "Successfully updated page status",
+            'autosave_on'   => 'Your post is autosave at %s.',
         ),
         'error' => array(
             'add' => 'Sorry, Page cannot be added. Something went wrong',

@@ -49,9 +49,7 @@ class PagesController extends \AdminController
 
             if ($validation->valid()) {
                 if (\Security::CSRFvalid()) {
-                    $page = self::setValues('create');
-                    //get parent id
-                    $page_insert = $page->save();
+                    $page_insert = self::saveValues('create');
 
                     if ($page_insert) {
                         \Flash::success(t('pages::pages.messages.success.add'));
@@ -70,7 +68,7 @@ class PagesController extends \AdminController
             $page = \Input::get('*');
             $this->template->set('page',$page);
         }
-        self::form_elements();
+        self::formElements();
         $this->template->title('Create Page')
                     ->set('method','create')
                     ->setPartial('admin/form');
@@ -89,8 +87,7 @@ class PagesController extends \AdminController
             if ($validation->valid()) {
                 if (\Security::CSRFvalid()) {
                     //get parent id
-                    $page = self::setValues('edit', \Input::get('id'));
-                    $page_insert = $page->save();
+                    $page_insert = self::saveValues('edit', \Input::get('id'));
 
                     if ($page_insert) {
                         \Flash::success(t('pages::pages.messages.success.edit'));
@@ -108,7 +105,7 @@ class PagesController extends \AdminController
         } else {
             $page = Pages::find($id)->toArray();
         }
-        self::form_elements();
+        self::formElements();
         $this->template->title('Edit Page')
                     ->set('method','edit')
                     ->set('page', $page)
@@ -123,7 +120,7 @@ class PagesController extends \AdminController
     public function duplicate($id)
     {
         $page = Pages::find($id)->toArray();
-        self::form_elements();
+        self::formElements();
         $this->template->title('Add new Page')
                     ->set('method','create')
                     ->set('page', $page)
@@ -135,7 +132,7 @@ class PagesController extends \AdminController
      *
      * @return object
      **/
-    protected function setValues($method, $id = null)
+    protected function saveValues($method, $id = null)
     {
         if ($method == 'create') {
             $page = new Pages;
@@ -167,7 +164,41 @@ class PagesController extends \AdminController
         $page->status = $status;
         $page->author_id = $current_user->id; //get author_id
 
-        return $page;
+        $page_save = $page->save();
+
+        if ($page_save) {
+            return $page->id;
+        } else {
+            return $page_save;
+        }
+    }
+
+    /**
+     * Autosave Page
+     *
+     * @return json
+     **/
+    public function autosave()
+    {
+        $ajax = $this->request->isAjax();
+        if ($ajax) {
+            if (\Input::isPost()) {
+                if ((\Input::get('title') == '') and (\Input::get('slug') == '') and (\Input::get('content') == '')) {
+                    return json_encode(array('status' => 'no_save'));
+                } else {
+                    if (\Input::get('id') == '') {
+                        $save = self::saveValues('create');
+                    } else {
+                        $save = self::saveValues('edit', \Input::get('id'));
+                    }
+
+                    if ($save) {
+                        return json_encode(array('status' => 'save', 'post_id' => $save, 'time' => sprintf(t('pages::pages.messages.success.autosave_on'), date('d - M - Y H:i A', time()))));
+                    }
+                }
+            }
+        }
+        return \Redirect::to(adminUrl('pages'));
     }
 
     /**
@@ -255,7 +286,7 @@ class PagesController extends \AdminController
         return $list;
     }
 
-    protected function form_elements()
+    protected function formElements()
     {
         $layout_list = self::layoutList();
         $this->template->useWysiwyg()
@@ -278,7 +309,7 @@ class PagesController extends \AdminController
      *
      * @return void
      **/
-    public function check_slug()
+    public function checkSlug()
     {
         $slug = \Input::get('slug');
         if ($slug == "") {
@@ -317,7 +348,7 @@ class PagesController extends \AdminController
             $page->parent_id = null;
             $page->uri = $page->slug;
             if (isset($page_order['children'])) {
-                self::order_child($page_order['children'],$id);
+                self::orderChild($page_order['children'],$id);
             }
             $order_save = $page->save();
             $order++;
@@ -334,7 +365,7 @@ class PagesController extends \AdminController
      * @return void
      * @author
      **/
-    protected function order_child ($children,$parent_id)
+    protected function orderChild ($children,$parent_id)
     {
         $order = 0;
         foreach ($children as $child) {
@@ -347,7 +378,7 @@ class PagesController extends \AdminController
             $page->uri = $new_uri;
             $page->save();
             if (isset($child['children'])) {
-                self::order_child($child['children'],$id);
+                self::orderChild($child['children'],$id);
             }
             $order++;
         }

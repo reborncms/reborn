@@ -30,4 +30,29 @@ jQuery(function(){
 
 	$('.parents ol').hide();
 
+	// Post Auto Save Function
+		function postAutoSave() {
+			$.ajax({
+				url: SITEURL+ADMIN+"/pages/autosave",
+				type: 'POST',
+				data:$('#page_form').serialize(),
+				success: function(data){
+					var result = jQuery.parseJSON(data);
+					if(result.status != 'no_save') {
+						$('#post_id').val(result.post_id);
+						$('#autosave-msg').html(result.time);
+					}
+				}
+			});
+		};
+		
+		// Autosave at 1 min
+		if(document.getElementById('page_form'))
+		{
+			setInterval(function () {
+				postAutoSave();
+			}, 60000);
+		}
+
+
 });

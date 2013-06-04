@@ -54,3 +54,10 @@
 	padding: 0 10px 10px 34px;
 	display: none;
 }
+
+#autosave-msg { 
+    height:37px;
+    margin-top:-49px; 
+    text-align: center; 
+    color: #DE31AA; 
+}
