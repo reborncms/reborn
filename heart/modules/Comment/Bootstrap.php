@@ -12,7 +12,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
-		$menu->add('Comment', 'Comment', $modUri, 'content', 27);
+		$menu->add('Comment', 'Comment', $modUri, 'content', '', 35);
 		
 	}
 

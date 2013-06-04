@@ -9,7 +9,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
-		$menu->add('blog', 'Blog', $modUri, 'content', 32);
+		$menu->add('blog', 'Blog', $modUri, 'content', '', 27);
 	}
 
 	public function settings()
