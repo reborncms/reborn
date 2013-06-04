@@ -91,12 +91,24 @@ class TranslateManager
      * Load the language file
      * If you will use language file, first you need to load the these file
      *
+     * <code>
+     *  // Load lang navigation file from naviagtion module.
+     *  Trnaslate::load('navigation::navigation');
+     *  // Now you can call lang string
+     *  Translate::get('navigation::navigation.title');
+     *
+     *  // This is need very long string for lang string at somethime.
+     *  // So we use subname for lang file
+     *  Translate::load('navigation::navigation', 'nav')
+     *  Translate::get('nav.title');
+     *
      * @param string $resource Resource File name
+     * @param string $subname SubName for Resource File. This is shortcut name
      * @param string $locale This is optional
      * @param string $type Loader type
      * @return boolean
      */
-    public static function load($resource, $locale = null, $type = 'file')
+    public static function load($resource, $subname = null, $locale = null, $type = 'file')
     {
         $locale = is_null($locale) ? static::$locale : $locale;
 
@@ -111,6 +123,9 @@ class TranslateManager
             $data = $class->load($resource);
 
             if ($data) {
+                if (! is_null($subname) ) {
+                    static::$caches[$locale][$subname] = $data;
+                }
                 static::$caches[$locale][$resource] = $data;
                 return true;
             }
