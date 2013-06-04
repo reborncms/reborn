@@ -1,7 +1,9 @@
 <h2 class="page_title">{{ $page->title }}</h2>
 <p>{{ htmlspecialchars_decode($page->content) }}</p>
+{{ if (\Module::isEnabled('Comment')) }}
 {= 
 	$id = $page->id;
 	$status = $page->comments_enable;
 =}
 {{ action:comment/show/$id/pages/$status }}
+{{ endif }}

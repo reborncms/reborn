@@ -232,8 +232,10 @@ class BlogController extends \AdminController
 
 		if (\Input::get('publish') != null) {
 			$status = 'live';
-		} else {
+		} else if (\Input::get('save_draft') != null) {
 			$status = 'draft';
+		} else {
+			$status = null;
 		}
 
 		//if excerpt is empty get some part from body
@@ -250,12 +252,17 @@ class BlogController extends \AdminController
 		$blog->body = \Input::get('body');
 		$blog->author_id = $author;
 		$blog->comment_status = \Input::get('comment_status');
-		$blog->status = $status;
-		
-		if (\Input::get('sch_type') == 'manual') {
-			$blog->created_at = new \DateTime(\Input::get('date'));
-		} else {
-			$blog->created_at = new \DateTime();
+		if ($status != null and $blog->status == null) {
+			$blog->status = $status;
+		}
+		if (\Input::get('sch_type') != null) {
+			if (\Input::get('sch_type') == 'manual') {
+				$blog->created_at = new \DateTime(\Input::get('date'));
+			} else {
+				if ($method == 'create') {
+					$blog->created_at = new \DateTime();
+				}
+			}
 		}
 		
 		if ($method == 'edit') {

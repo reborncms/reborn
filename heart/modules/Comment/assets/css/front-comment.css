@@ -37,7 +37,7 @@
 	clear:both;
 }
 
-#comment_form input[type=text], input[type=email], input[type=url]{
+#comment_form input[type=text], #comment_form input[type=email], #comment_form input[type=url] {
 	border: 1px solid #CECECE;
 	padding: 8px;
 	width: 250px;
@@ -48,4 +48,9 @@
 	padding: 10px;
 	width: 500px;
 	height: 200px;
+}
+
+.com_read_more {
+	float: right;
+	font-size: 11px;
 }
