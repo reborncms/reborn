@@ -21,10 +21,6 @@
 				},
 				success: function(data) {
 					$('#data_table_wrapper').html(data);
-					/*var data = jQuery.parseJSON(data);
-					$('#content-wrapper').html(data.result);
-					$('#filter-box').val(data.term);
-					$('#filter-form').append('<span id="result-count">'+data.total+'</span>');*/
 				}
 			});
 		};
@@ -42,24 +38,6 @@
 		$('#fiter-form').submit(function(e){
 			e.preventDefault();
 		});
-
-		// Search the Post
-		/*$('#filter-submit').live('click', function(e){
-			e.preventDefault();
-			var form = $('#filter-form'),
-				url = $(form).attr('action');
-				
-			ajaxSearch(form, url);
-		});*/
-		
-		// Ajax Pagination at Search Result
-		/*$('#ajax-pagi a').live('click', function(e){
-			e.preventDefault();
-			var form = $('#filter-form'),
-				url = $(this).attr('href');
-				
-			ajaxSearch(form, url);
-		});*/
 		
 		/* ========== End of Search Function List ============== */
 		
@@ -86,63 +64,7 @@
 				postAutoSave();
 			}, 60000);
 		}
-		
-
-		// URL Auto Generate
-		Reborn.slugGenerator('#form_title', '#form_slug');
-
-		// Right-Side Panel Open
-		$('#option-control > a').on('click', function(){
-			$('#option-control').toggleClass('selected');
-			var oOrc = $('#option-control').hasClass('selected');
-			if(oOrc) {
-				$('.r-container').slideDown(700);
-			} else {
-				$('.r-container').slideUp(700);
-			}
-		});
-
-		// Right-Side Block open
-		$('a.r-i-b').on('click', function(){
-			var wrapper =  $(this).parent();
-			var box = $(wrapper).find('.r-i-b-h');
-			$(wrapper).toggleClass('select-box');
-			$(box).slideToggle(700);
-		});
-
-		// Add New Category Box Open
-		/*$('#add-new-cat').on('click', function(){
-			$('#new-cat-box').fadeToggle(700, "linear");
-		});
-		
-		var originalParent = $('#new-cat-parent').val();
-		
-		Reborn.slugGenerator('#new-cat-name', '#new-cat-slug');
-		
-		// Ajax New category added
-		$('#add-new-cat-ajax-bt').on('click', function(e){
-			e.preventDefault();
-			var catName = $('#new-cat-name').val(),
-				catSlug = $('#new-cat-slug').val(),
-				catParent = $('#new-cat-parent').val();
-			$.ajax({
-				url: SITEURL+ADMIN+'/blog/category/add_cat/',
-				type: 'POST',
-				data: { new_cat_name: catName, new_cat_slug: catSlug, parent_level: catParent },
-				success: function(data) {
-					var data = jQuery.parseJSON(data);
-					console.log(data);
-					var opt = '<option value="'+data.id+'" selected="selected">'+data.name+'</option>';
-					$('#cat_selected').append(opt);
-					var value = '';
-					$('#new-cat-box').fadeToggle(700, "linear");
-					$('#new-cat-name').val(value);
-					$('#new-cat-slug').val(value);
-					$('#new-cat-parent').val(originalParent);
-				}
-			});
-		});*/
-		
+				
 		// Tag Input
 		if(document.getElementById('tags')) {
 			$('#tags').tagsInput({
@@ -204,24 +126,6 @@
 				
 				Reborn.slugGenerator('#form_title', '#form_slug');
 				
-				/*var id = $(this).attr('data-id'),
-					name = $(this).attr('data-name'),
-					slug = $(this).attr('data-slug'),
-					desc = $(this).attr('data-desc'),
-					parent = $(this).attr('data-parent'),
-					level = $(this).attr('data-level'),
-					selectedItem = document.getElementById('edit_selected');
-				$('#edit_id').val(id);
-				$('#edit_title').val(name);
-				$('#edit_slug').val(slug);
-				$('#edit_desc').val(desc);
-				if(level != 0) {
-					level = level - 1;
-				}
-				selectItemByValue(selectedItem, parent+'|'+level);
-				
-				$('form#blog-cat-edit').removeAttr('action');
-				*/
 				$('form#blog-cat-edit').on('submit', function(e) {
 					
 					var form_data = $(this).serialize();

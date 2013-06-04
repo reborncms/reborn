@@ -37,9 +37,11 @@ class CategoryController extends \AdminController
 						->setPartial('admin/category/index')
 						->set('categories', $categories)
 						->set('category_form', $category_form)
+						->style('form.css')
 						->script(array(
 							'plugins/jquery.ui.touch-punch.min.js',
-							'plugins/jquery.mjs.nestedSortable.js'
+							'plugins/jquery.mjs.nestedSortable.js',
+							'form.js'
 						));
 	}
 

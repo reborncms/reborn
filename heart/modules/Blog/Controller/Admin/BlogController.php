@@ -205,10 +205,13 @@ class BlogController extends \AdminController
 			$authors[$user->id] = $user->first_name . ' ' . $user->last_name;
 		}
 		$this->template->set('authors', $authors);
-		$this->template->style('plugins/jquery.tagsinput_custom.css')
+		$this->template->style(array(
+							'plugins/jquery.tagsinput_custom.css',
+							'form.css'))
 					   ->script(array(
 						 	'plugins/jquery-ui-timepicker-addon.js',
-						 	'plugins/jquery.tagsinput.min.js'))
+						 	'plugins/jquery.tagsinput.min.js',
+						 	'form.js'))
 					   ->useWysiwyg();
 	}
 
@@ -269,7 +272,6 @@ class BlogController extends \AdminController
 			$blog->updated_at = new \DateTime();
 		}
 		$blog->attachment = \Input::get('featured_id');
-		//attachment
 		//type
 
 		$blog_save = $blog->save();
@@ -341,7 +343,7 @@ class BlogController extends \AdminController
 	/**
 	 * Autosave Posts
 	 *
-	 * @return void
+	 * @return json
 	 **/
 	public function autosave() 
 	{
