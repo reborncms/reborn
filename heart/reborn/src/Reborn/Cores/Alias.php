@@ -30,6 +30,7 @@ class Alias
             'Config' => 'Reborn\Config\Config',
             'AdminController' => 'Reborn\MVC\Controller\AdminController',
             'PublicController' => 'Reborn\MVC\Controller\PublicController',
+            'PrivateController' => 'Reborn\MVC\Controller\PrivateController',
             'Controller' => 'Reborn\MVC\Controller\Controller',
             'DB' => 'Reborn\Connector\DB\DBManager',
             'Dir' => 'Reborn\Filesystem\Directory',

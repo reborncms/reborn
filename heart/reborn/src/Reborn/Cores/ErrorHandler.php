@@ -48,8 +48,7 @@ class ErrorHandler
             $content = require APP.'views'.DS.'exception.php';
         }
 
-        $res = new \Reborn\Http\Response($content, 503);
-        return $res->send();
+        return new \Reborn\Http\Response($content, 503);
     }
 
     protected function getClass($t)

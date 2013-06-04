@@ -145,12 +145,6 @@ class Menu
 			$icon = null;
 		}
 
-		/*if (!is_null ($icon)) {
-
-		} else {
-			//$icon =
-		}*/
-
 		if (is_null($parent)) {
 			$this->items[$order][$name] = array(
 					'title' => $title,
@@ -174,10 +168,12 @@ class Menu
 		}
 
 		foreach ($this->items as $k => $val) {
-			if (!empty($val['child'])) {
-				usort($this->items[$k]['child'], array($this, 'sorting'));
+			$name = array_keys($val)[0];
+			if (!empty($this->items[$k][$name]['child'])) {
+				usort($this->items[$k][$name]['child'], array($this, 'sorting'));
 			}
 		}
+
 
 		ksort($this->items);
 	}

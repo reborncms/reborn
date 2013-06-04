@@ -2,6 +2,7 @@
 
 namespace Reborn\MVC\Controller;
 
+use Reborn\Http\Redirect;
 use Reborn\Connector\Sentry\Sentry;
 
 class PrivateController extends PublicController
