@@ -168,7 +168,8 @@ class Menu
 		}
 
 		foreach ($this->items as $k => $val) {
-			$name = array_keys($val)[0];
+			$name = array_keys($val);
+			$name = $name[0];
 			if (!empty($this->items[$k][$name]['child'])) {
 				usort($this->items[$k][$name]['child'], array($this, 'sorting'));
 			}

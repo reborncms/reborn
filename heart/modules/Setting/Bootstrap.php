@@ -13,7 +13,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
-		$menu->add('setting_system', 'System', $modUri.'/system', 'settings');
+		$menu->add('setting_system', 'System', $modUri.'/system', 'settings', '', 10);
 		$settings = \Setting::getFromModules();
 
 		if (isset($settings['modules'])) {
