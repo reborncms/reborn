@@ -83,19 +83,23 @@ class SimpleEvent implements \Reborn\Event\EventInterface
      *
      * @param string $name Name of event
      * @param array $params Paramater array for callback event (optional)
-     * @return void
+     * @return mixed
      */
     public function call($name, $params = array())
     {
+        $result = array();
+
         $params = (array)$params;
 
         if (isset($this->events[$name])) {
             foreach ($this->events[$name] as $call) {
                 if (is_callable($call['callback'])) {
-                    call_user_func_array($call['callback'], $params);
+                    $result[] = call_user_func_array($call['callback'], $params);
                 }
             }
         }
+
+        return $result;
     }
 
 } // END class SimpleEvent
