@@ -36,15 +36,49 @@ class Helper {
 	public static function getTemplate($data,$template)
 	{
 		$t = Etemplate::where('slug', '=', \Setting::get($template))->first();
+
 		if ($t == null) {
 		    $t = Etemplate::where('slug','=' ,'contact')->first();
        	}
         $temp = $t->body;
        	
-        foreach ($data as $key => $value) {
-        	$temp = str_replace('{{'.$key.'}}', $value, $temp);
-        }
+       	$temp = static::decodeHtml($data,$temp);
         
-        return html_entity_decode($temp);
+        return $temp;
+        
+	}
+
+	/**
+	 * Choose Template from Email Template
+	 *
+	 * @package Contact\Lib\Helper
+	 * @author RebronCMS Development Team
+	 **/
+	public static function selectTemplate($data,$slug)
+	{
+		$t = Etemplate::where('slug', '=', $slug)->first();
+
+		if ($t == null) {
+		    $t = Etemplate::where('slug','=' ,'contact')->first();
+       	}
+        $temp = $t->body;
+       	
+       	$temp = static::decodeHtml($data,$temp);
+        
+        return $temp;
+	}
+
+	/**
+	 * HTML Decode
+	 *
+	 * @package Contact\Lib\Helper
+	 * @author RebronCMS Development Team
+	 **/
+	public static function decodeHtml($data,$form)
+	{
+		 foreach ($data as $key => $value) {
+        	$form = str_replace('{{'.$key.'}}', $value, $form);
+        }
+        return html_entity_decode($form);
 	}
 }
