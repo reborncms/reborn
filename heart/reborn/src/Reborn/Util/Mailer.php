@@ -26,7 +26,7 @@ class Mailer
 			'body'		=> '',	// Body for sending Mail
 			'part'		=> '',	// Alternative body for sending Mail
 			'transport'	=> array(
-				'type'		=>	'mail', // transoprt service for Mail ('smtp','sendmail','mail')
+				'type'		=>	'', // transoprt service for Mail ('smtp','sendmail','mail')
 				'host'		=>	'', // host name for mail sever ( only for smtp mail sever )
 				'port'		=>	0,	// port for mail sever ( only for smtp mail sever )
 				'username'	=>	'', // username for sever auth ( only for smtp mail sever )
@@ -120,10 +120,23 @@ class Mailer
 		$config = array_replace_recursive(static::$config, $config);
 
 		$transport = $config['transport'];
+		if (empty($transport['type'])) {
+			
+			$transport['type'] = \Setting::get('transport_mail');
+			$transport['host'] = \Setting::get('smtp_host');
+			$transport['port'] = \Setting::get('smtp_port');
+			$transport['username'] = \Setting::get('smtp_username');
+			$transport['password'] = \Setting::get('smtp_password');
+			$transport['mailpath'] = \Setting::get('sendmail_path');
 
+		}
+		
 		$tran = static::transport($transport);
+		
 		if ($tran == null) {
-			return static::$error['notSupportType'];
+			
+			$result['fail'] = static::$error['notSupportType'];
+			return $result;
 		}
 		
 		$mailer = \Swift_Mailer::newInstance($tran);
@@ -186,6 +199,7 @@ class Mailer
 		} elseif ($transport['type'] == 'sendmail') {
 			$tran = \Swift_SendmailTransport::newInstance($transport['mailpath']);
 		}
+		
 		return $tran;
 	}
 

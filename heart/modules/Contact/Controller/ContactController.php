@@ -50,14 +50,7 @@ class ContactController extends \PublicController
 							'fieldName'=> 'attachment',
 							'value'		=> $attach,
 							),
-						'transport'	=> array(
-							'type'		=>	\Setting::get('transport_mail'), 
-							'host'		=>	\Setting::get('smtp_host'),
-							'port'		=>	\Setting::get('smtp_port'),	
-							'username'	=>	\Setting::get('smtp_username'),
-							'password'	=>	\Setting::get('smtp_password'),
-							'mailpath'	=>	\Setting::get('sendmail_path'),
-							),
+						
 						'attachmentConfig'=> array(
 							'savePath'		=> UPLOAD.'contact_attachment',
 							'createDir'	=> true,
