@@ -120,18 +120,26 @@ class Theme
      *
      * @param string $name Theme name, if you set this value is null
      *                      return info from active theme
+     * @param boolean $frontend_only Only theme from frontend theme path
      * @return array
      **/
-    public function info($name = null)
+    public function info($name = null, $frontend_only = false)
     {
         $theme = is_null($name) ? $this->theme : $name;
 
-        if(File::is($this->path.$theme.DS.'info.php')) {
-            return require $this->path.$theme.DS.'info.php';
+        if ($frontend_only) {
+            if(File::is(THEME.$theme.DS.'info.php')) {
+                return require THEME.$theme.DS.'info.php';
+            }
+        } else {
+            if(File::is($this->path.$theme.DS.'info.php')) {
+                return require $this->path.$theme.DS.'info.php';
+            }
         }
 
         throw new FileNotFoundException("info.php", 'theme '.$theme);
     }
+
 
     /**
      * Find the Widgets from theme
