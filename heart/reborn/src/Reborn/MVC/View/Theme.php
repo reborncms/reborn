@@ -128,8 +128,8 @@ class Theme
         $theme = is_null($name) ? $this->theme : $name;
 
         if ($frontend_only) {
-            if(File::is(THEME.$theme.DS.'info.php')) {
-                return require THEME.$theme.DS.'info.php';
+            if(File::is(THEMES.$theme.DS.'info.php')) {
+                return require THEMES.$theme.DS.'info.php';
             }
         } else {
             if(File::is($this->path.$theme.DS.'info.php')) {
