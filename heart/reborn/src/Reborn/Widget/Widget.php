@@ -127,6 +127,33 @@ class Widget
 	}
 
 	/**
+	 * Static method for Widget Property get method.
+	 *
+	 * @param string $name
+	 * @return array
+	 */
+	public static function propertiesFrom($name)
+	{
+		$ins = \Registry::get('app')->widget;
+
+		$ins->getProperty($name);
+	}
+
+	/**
+	 * Get the Widget Properties.
+	 * widget peroperties are 'name', 'description', 'author',...
+	 *
+	 * @param string $name
+	 * @return array
+	 */
+	public function getProperty($name)
+	{
+		$class = $this->getClass($name);
+
+		$class->getProperties();
+	}
+
+	/**
 	 * Run the widget.
 	 *
 	 * @param string $name

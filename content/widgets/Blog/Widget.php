@@ -7,6 +7,7 @@ class Widget extends \Reborn\Widget\AbstractWidget
 
 	protected $properties = array(
 			'name' => 'Blog Module Widget',
+			'sub' => array('posts' => 'Blog Post', 'archve' => 'Blog Archive')
 			'author' => 'Reborn CMS Development Team'
 		);
 
