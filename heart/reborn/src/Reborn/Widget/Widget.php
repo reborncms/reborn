@@ -136,7 +136,7 @@ class Widget
 	{
 		$ins = \Registry::get('app')->widget;
 
-		$ins->getProperty($name);
+		return $ins->getProperty($name);
 	}
 
 	/**
@@ -150,7 +150,7 @@ class Widget
 	{
 		$class = $this->getClass($name);
 
-		$class->getProperties();
+		return $class->getProperties();
 	}
 
 	/**

@@ -6,8 +6,13 @@ class Widget extends \Reborn\Widget\AbstractWidget
 {
 
 	protected $properties = array(
-			'name' => 'Blog Module Widget',
-			'sub' => array('posts' => 'Blog Post', 'archve' => 'Blog Archive')
+			'name' 			=> 'Blog Module Widget',
+			'sub' 			=> array(
+				'posts' 	=> 'Blog Post', 
+				'archive' 	=> 'Blog Archive',
+				'category' 	=> 'Blog Category',
+				'tagCloud'	=> 'Blog Tag Cloud',
+			),
 			'author' => 'Reborn CMS Development Team'
 		);
 
@@ -18,7 +23,6 @@ class Widget extends \Reborn\Widget\AbstractWidget
 	public function delete() {}
 
 	public function form() {}
-
 
 	/**
 	 * Query the Blog Posts
