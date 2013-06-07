@@ -164,7 +164,7 @@ class Pagination
 			function JumpToPage()
 			{
 				var pagi_num = document.forms['JumpForm'].page_num.value;
-				var goLink = '".static::$url."' + pagi_num;
+				var goLink = '".static::$url."page-' + pagi_num;
 				if(pagi_num > ".static::$num_links.") {
 					alert('Invalid page number');
 				} else {

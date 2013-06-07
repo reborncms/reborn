@@ -248,7 +248,7 @@ class Form
 
         $id = (!isset($attrs['id'])) ? ' id = "'.$name.'"' : '';
 
-        return '<button name="'.$name.'" type="'.$type.'"'.$attr.'>'.$id.$text.'</button>';
+        return '<button name="'.$name.'" type="'.$type.'"'.$attr.$id.'>'.$text.'</button>';
     }
 
     /**
