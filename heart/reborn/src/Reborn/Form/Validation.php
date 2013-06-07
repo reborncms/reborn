@@ -3,6 +3,7 @@
 namespace Reborn\Form;
 
 use Reborn\Config\Config;
+use Reborn\Connector\DB\DBManager as DB;
 
 /**
  * Validation class for Reborn
@@ -51,9 +52,10 @@ class Validation
      * 13) - url [Input value is Valid URL]
      * 14) - ip [Input value is Valid IP address]
      * 15) - between [Input value is Between first and last value eg:between:5,7]
-     * 16) - equal [Input valis is Equal with given value or field name eg:equal:9]
-     * 17) - color [Input valis is valid 6-digits color hexadecimal code eg:#efefef]
-     * 18) - patterm [Input valis is valid regex pattern eg:"/\d{4}-\d{2}-\d{2}/"]
+     * 16) - equal [Input value is Equal with given value or field name eg:equal:9]
+     * 17) - color [Input value is valid 6-digits color hexadecimal code eg:#efefef]
+     * 18) - patterm [Input value is valid regex pattern eg:"/\d{4}-\d{2}-\d{2}/"]
+     * 19) - unique [Input value is unique in mysql database. eg: unique:tablename.keyname]
      *
      * @var array
      **/
@@ -75,7 +77,8 @@ class Validation
                 'between',
                 'equal',
                 'color',
-                'pattern'
+                'pattern',
+                'unique'
             );
 
     /**
@@ -260,23 +263,45 @@ class Validation
      **/
     protected function setError($rule, $key, $arg, $addedRule = false)
     {
-        if ($addedRule) {
-            $msg = $this->addedMethods[$rule]['msg'];
+        // Check messsageFor{RuleName} method.
+        $messageMethod = 'messageFor'.ucfirst($rule);
+
+        if ( method_exists($this, $messageMethod) ) {
+            $this->errors[$key] = $this->{$messageMethod}($key, $arg);
         } else {
-            \Translate::load('validation');
-            $msg = \Translate::get('validation.'.$rule);
+            if ($addedRule) {
+                $msg = $this->addedMethods[$rule]['msg'];
+            } else {
+                \Translate::load('validation');
+                $msg = \Translate::get('validation.'.$rule);
+            }
+            $parseMsg = str_replace('{key}', $key, $msg);
+            $parseMsg = str_replace('{'.$rule.'}', $arg, $parseMsg);
+            $this->errors[$key] = $parseMsg;
         }
+    }
+
+    /* =============== Some of Message Setter Method Lists =================== */
+
+    protected function messageForBetween($key, $args)
+    {
+        \Translate::load('validation');
+        $msg = \Translate::get('validation.between');
+        $args = explode(',', $arg);
 
         $parseMsg = str_replace('{key}', $key, $msg);
 
-        if ('between' == $rule) {
-            $args = explode(',', $arg);
-            $parseMsg = str_replace(array('{first}', '{last}'), $args, $parseMsg);
-        } else {
-            $parseMsg = str_replace('{'.$rule.'}', $arg, $parseMsg);
-        }
+        return str_replace(array('{first}', '{last}'), $args, $parseMsg);
+    }
 
-        $this->errors[$key] = $parseMsg;
+    protected function messageForUnique($key, $args)
+    {
+        $value = $this->inputs[$key];
+
+        \Translate::load('validation');
+        $msg = \Translate::get('validation.unique');
+
+        return str_replace(array('{key}', '{value}'), array(ucfirst($key), $value), $msg);
     }
 
 

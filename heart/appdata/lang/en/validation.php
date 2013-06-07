@@ -19,6 +19,7 @@ return array(
 	'between'		=> "The {key} must be between {first} and {last}.",
 	'equal'			=> "The {key} must be equal with {equal}",
 	'color'			=> "The {key} must be 6-digits color hexadecimal code",
-	'pattern'		=> "The {key} format is invalid"
+	'pattern'		=> "The {key} format is invalid",
+	'unique'		=> "This {key} field must be unique. {value} is already exists in database."
 
 );
