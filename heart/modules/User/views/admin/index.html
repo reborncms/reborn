@@ -1,4 +1,3 @@
-
 {{ if(count($users) > 0) }}
 <table class="stripe">
 	<thead>
@@ -31,6 +30,9 @@
 	{{ endloop }}
 	</tbody>
 </table>
+	{{ if(isset($pagination)) }}
+		{{ $pagination }}
+	{{ endif }}
 {{ else }}
 	<p class="empty">No Users Found!</p>
 {{ endif }}

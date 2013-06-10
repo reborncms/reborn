@@ -15,8 +15,20 @@ class UserController extends \AdminController
 	}
 
 	public function index()
-	{		
-		$users = User::all();
+	{	
+		$options = array(
+		    'total_items'       => User::all()->count(),
+		    'url'               => ADMIN_URL.'/user/index',
+		    'items_per_page'    => 10,
+		    'uri_segment'		=> 4
+		);
+
+		$pagination = \Pagination::create($options);
+
+		$users = User::skip(\Pagination::offset())
+						->take(\Pagination::limit())
+						->get();
+
 		$currentUser = Sentry::getUser();
 
 		foreach($users as $u) {
@@ -31,6 +43,7 @@ class UserController extends \AdminController
 		$this->template->title(t('user::user.title.usermod'))
 					->breadcrumb(t('user::user.title.profile'))
 					->set('users', $users)
+					->set('pagination', $pagination)
 					->set('currentUser', $currentUser)
 					->setPartial('admin/index');
 	}
