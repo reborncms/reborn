@@ -3,6 +3,8 @@
 namespace Theme\Controller\Admin;
 Use \Theme\Model\Theme as Theme;
 
+use Reborn\Util\Uploader as Upload;
+
 class ThemeController extends \AdminController
 {
 	public function before() {
@@ -58,47 +60,79 @@ class ThemeController extends \AdminController
 
 	public function upload()
 	{
-		\Flash::error("Theme upload is still on progress!");
-		return \Redirect::to(ADMIN_URL.'/theme');
+		if (\Input::isPost()) {
+			$tmp_path = STORAGES.'tmp'.DS;
+			$extract_path = THEMES;
 
-		// Still need to write unzip for theme upload, dun use it before it's ok
-		if (\Input::isPost()) 
-		{
 			$config = array(
-				'savePath' => CONTENT."uploads".DS."tmp".DS,
-			    'allowedExt' => array('zip')
+				'savePath' => $tmp_path,
+				'createDir' => true,
+				'allowedExt' => array('zip')
 			);
 
-			\Uploader::initialize('files', $config);
+			if (\Security::CSRFvalid('theme')) {
+				$v = \Validation::create(
+					array('file' => \Input::file('file')),
+					array('file' => 'required')
+				);
 
-			// if there are any valid files
-			if (\Uploader::isSuccess()) {
+				if ($v->valid()) {
 
-			    // save them according to the config
-			    \Uploader::upload('files');
+					if (Upload::isSuccess()) {
+						Upload::initialize('file', $config);
 
-			    $zip = \Upload::get_files();
-			    $zip_path = $zip[0]['saved_to'].$zip[0]['saved_as'];
+						$data = Upload::upload('file');
+						$data[0]['status'] = 'success';
+					} else {
+						$v = Upload::errors();
+						$data[0]['status'] = 'fail';
+						$error = '';
+						foreach ($v[0] as $k => $s) {
+							if (is_int($k)) {
+								$error .= $s.' ';
+							}
+						}
+						$data[0]['errors'] = $error;
 
-			    $unzip = new \Unzip();
-		    	$unzip->allow(array('xml', 'html', 'css', 'js', 'png', 'gif', 'jpeg', 'jpg', 'swf', 'ico', 'php'));
+						\Flash::error($error);
 
-		    	$unzip->extract($zip_path, CONTENTPATH.'themes/', true)
-					? \Session::set_flash('success', \Lang::get('theme.upload_success'))
-					: \Session::set_flash('error', $unzip->error_string());
-				
-				@unlink($zip_path);
-				\Response::redirect(ADMIN.'/themes');
+						return \Redirect::toAdmin('theme/upload');
+					}
+
+					try {
+						$zip_file = $tmp_path.$data[0]['savedName'];
+
+						$filename = str_replace('.zip', '', $data[0]['savedName']);
+
+						// create object
+						$zip = new \ZipArchive() ;
+
+						// open archive
+						if ($zip->open($zip_file) !== TRUE) {
+							\Flash::error(sprintf(t('theme::theme.unzip_error'),$filename));
+							\File::delete($zip_file);
+							return \Redirect::toAdmin('theme/upload');
+						}
+
+						// extract contents to destination directory
+						$zip->extractTo($extract_path);
+
+						// close archive
+						$zip->close();
+
+						\File::delete($zip_file);
+						\Flash::success(sprintf(t('theme::theme.upload_success'),$filename));
+						return \Redirect::toAdmin('theme');
+					} catch (\Exception $e) {
+						\Flash::error($e);
+						return \Redirect::toAdmin('theme/upload');
+					}
+				} else {
+					\Flash::error(implode("\n\r", $v->getErrors()));
+				}
+			} else {
+				\Flash::error(t('theme::theme.csrf_error'));
 			}
-
-			foreach (\Upload::get_errors() as $file)
-			{
-			    \Session::set_flash('error', $file['errors']);
-				\Response::redirect(ADMIN.'/themes');
-			}
-
-			\Session::set_flash('error', \Lang::get('theme.upload_error'));
-			\Response::redirect(ADMIN.'/themes');
 		}
 
 		$this->template->title(\Translate::get('theme::theme.title'))

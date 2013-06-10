@@ -22,15 +22,15 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 	public function moduleToolbar()
 	{
-		/*$mod_toolbar = array(
+		$mod_toolbar = array(
 			'add'	=> array(
 				'url'	=> 'theme/upload',
 				'name'	=> 'Upload a New Theme',
 				'info'	=> 'Upload a new Theme',
 				'class'	=> 'add'
 			)
-		);*/
-		$mod_toolbar = array();
+		);
+
 		return $mod_toolbar;
 	}
 

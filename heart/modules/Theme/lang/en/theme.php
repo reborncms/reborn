@@ -18,4 +18,8 @@ return array(
 		'success'			=> 'A new theme is successfully uploaded!',
 		'error'				=> 'Error while uploading a new theme, please try again!',
 	),
+
+	'unzip_error'			=> 'Error occuring to extract file %s.',
+	'upload_success'		=> 'New theme "%s" is successfully uploaded.',
+	'csrf_error'			=> 'CSRF Token does not match!',
 );
