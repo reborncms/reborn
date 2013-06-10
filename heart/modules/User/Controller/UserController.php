@@ -239,11 +239,11 @@ class UserController extends \PublicController
 						    
 						    // create config to mail user activation code
 						    $config = array(
-								'to'		=> $email,
+								'to'		=> array($email),
 								'from'		=> \Setting::get('site_mail'),
 								'name'		=> \Setting::get('site_title'),
 								'subject'	=> t('user::user.activate.subject'),
-								'body'		=> 'Please active your account by using think link: '.$activationLink,
+								'body'		=> 'Please active your account by using think link: <a>'.$activationLink.'</a>',
 							);
 
 						    // sent mail to register user
