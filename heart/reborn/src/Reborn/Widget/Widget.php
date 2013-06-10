@@ -154,6 +154,58 @@ class Widget
 	}
 
 	/**
+	 * Get the Widget Options
+	 *
+	 * @param string $name
+	 * @return array
+	 */
+	public function getOptions($name)
+	{
+		if (strpos($name, '::')) {
+
+			$s = explode('::', $name);
+
+			$name = $s[0];
+
+			$sub_name = $s[1];
+
+		}
+
+		$class = $this->getClass($name);
+
+		$options = $class->options();
+
+		if (isset($sub_name)) {
+			
+			if (isset($options[$sub_name])) {
+
+				return $options[$sub_name];
+
+			}
+			return;
+		
+		} else {
+
+			return $options;
+
+		}
+		
+	}
+
+	/**
+	 * Static method to Get the Widget Options
+	 *
+	 * @param string $name
+	 * @return array
+	 */
+	public static function options($name)
+	{
+		$ins = \Registry::get('app')->widget;
+		
+		return $ins->getOptions($name);	
+	}
+
+	/**
 	 * Run the widget.
 	 *
 	 * @param string $name
