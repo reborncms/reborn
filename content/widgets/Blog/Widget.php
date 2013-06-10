@@ -8,10 +8,22 @@ class Widget extends \Reborn\Widget\AbstractWidget
 	protected $properties = array(
 			'name' 			=> 'Blog Module Widget',
 			'sub' 			=> array(
-				'posts' 	=> 'Blog Post', 
-				'archive' 	=> 'Blog Archive',
-				'category' 	=> 'Blog Category',
-				'tagCloud'	=> 'Blog Tag Cloud',
+				'posts' 	=> array(
+					'title' => 'Blog Post',
+					'description' => 'Latest Blog Posts which is posted last days',
+				),
+				'archive' 	=> array(
+					'title' =>'Blog Archive',
+					'description' => 'Blog by Year and month',
+				),
+				'category' 	=> array(
+					'title' => 'Blog Category',
+					'description' => 'Blog Category List',
+				),
+				'tagCloud'	=> array(
+					'title' => 'Blog Tag Cloud',
+					'description' => 'Blog Tag Cloud',
+				),
 			),
 			'author' => 'Reborn CMS Development Team'
 		);
@@ -22,7 +34,45 @@ class Widget extends \Reborn\Widget\AbstractWidget
 
 	public function delete() {}
 
-	public function form() {}
+	public function options() 
+	{
+		return array(
+			'posts' => array(
+				'title' => array(
+					'label' 	=> 'Title',
+					'type'		=> 'text',
+					'info'		=> 'Leave it blank if you don\'t want to show your widget title',
+				),
+				'limit' 	=> array(
+					'label' 	=> 'Number of Posts',
+					'type'		=> 'text',
+				),
+			),
+			'archive' => array(
+				'title' => array(
+					'label' 	=> 'Title',
+					'type'		=> 'text',
+					'info'		=> 'Leave it blank if you don\'t want to show your widget title',
+				),
+			),
+
+			'category' 	=> array(
+				'title' => array(
+					'label' 	=> 'Title',
+					'type'		=> 'textarea',
+					'info'		=> 'Leave it blank if you don\'t want to show your widget title',
+				),
+				'show_type' 	=> array(
+					'label'		=> 'Show Type',
+					'type'		=> 'select',
+					'options'	=> array(
+						'cat'	=> 'Category',
+						'post'	=> 'Blog Posts',
+					)
+				),
+			),
+		);
+	}
 
 	/**
 	 * Query the Blog Posts
@@ -35,7 +85,7 @@ class Widget extends \Reborn\Widget\AbstractWidget
 			return null;
 		}
 
-		$title = $this->get('title', 'Latest Posts');
+		$title = $this->get('title', 'Latest Blog Posts');
 
 		$limit = $this->get('limit', 5);
 		$offset = $this->get('offset', 0);
