@@ -8,11 +8,13 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 	public function boot()
 	{
 		\Translate::load('theme::theme');
+		\Translate::load('theme::editor');
 	}
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
 		$menu->add('theme', 'Themes', $modUri, 'appearance', $order = 35);
+		$menu->add('theme-editor', 'Editor', $modUri.'/editor', 'appearance', $order = 35);
 	}
 
 	public function settings()

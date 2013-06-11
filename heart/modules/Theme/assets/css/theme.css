@@ -61,3 +61,40 @@ div#list-themes p.tag {
 	font-style: oblique;
 	font-size: 14px;
 }
+
+/* Theme Editor */
+
+.themeEditor {
+	width: 100%;
+}
+
+.themeEditor #form-left {
+	width: 75%;
+	float: left;
+}
+
+.themeEditor #form-right {
+	width: 20%;
+	float: right;
+}
+
+#textEditor {
+	width: 100%; 
+	overflow-y: 
+	scroll; height:500px;
+	font-family: Consolas, Monaco, Courier;
+}
+
+
+#themeFiles {
+	margin-top: 20px;
+}
+
+#themeFiles li { 
+	margin-bottom: 20px;
+	list-style: disc;
+}
+
+#themeFiles li a {
+	font-size: 14px;
+}
