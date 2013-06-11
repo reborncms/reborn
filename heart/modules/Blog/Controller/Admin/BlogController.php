@@ -255,7 +255,7 @@ class BlogController extends \AdminController
 		$blog->body = \Input::get('body');
 		$blog->author_id = $author;
 		$blog->comment_status = \Input::get('comment_status');
-		if ($status != null and $blog->status == null) {
+		if ($status != null) {
 			$blog->status = $status;
 		}
 		if (\Input::get('sch_type') != null) {
