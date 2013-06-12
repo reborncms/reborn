@@ -31,6 +31,22 @@ class Plugins
     }
 
     /**
+     * By using this method, can get files by name.
+     * **! Warnging !**
+     * Using this method is not good.
+     *
+     * @param String $name File name
+     * @return Object 
+     * @author RebornCMS Development Team
+     **/
+    public static function getFileByName ($name)
+    {
+        $result = MFiles::where('name', '=', $name)->get();
+
+        return $result;
+    }
+
+    /**
      * Get all files or folers or files and folders by folder slug
      *
      * @param String $slug Slug of folder (none = media home page)
