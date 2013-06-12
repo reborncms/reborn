@@ -150,7 +150,7 @@ div#progress_wrap{
 	margin-left: 15px;
 }
 div.m_progress{
-	width: 100%;
+	/*width: 100%;*/
 	background-color: #F7F7F7;
 	background-image: -moz-linear-gradient(center top , #F5F5F5, #F9F9F9);
 	background-repeat: repeat-x;
