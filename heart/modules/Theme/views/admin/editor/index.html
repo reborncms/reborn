@@ -1,14 +1,13 @@
 <div id="main-form-wrapper">
 	<div id="form-wrapper" class="themeEditor clearfix">
+
 		<div id="form-left">			
 			<h3>Edit "{{ basename($currentFile) }}"</h3>
 			{{ Form::start("$adminUrl/theme/editor/save", 'theme_upload', true, array('class' => 'form')) }}
 			{{ Security::CSRField('editor') }}
 			<div class="form-block">
 			  	
-			    <textarea name="content" id="textEditor">
-			    	{{ $content }}
-			    </textarea>
+			    <textarea name="content" id="textEditor">{{ $content }}</textarea>
 			    
 			</div> <!-- end of form block -->
 
@@ -18,15 +17,40 @@
 
 			{{ Form::end() }}
 		</div> <!-- end of form-left -->
-		<div id="form-right">
-			<h3>Files in your Theme</h3>
-			<ul id="themeFiles">
+
+		<div id="form-right" class="themeFiles">
 			{{ if ($files) }}
-				{{ loop($files as $file) }}
-				<li><a href={{ adminUrl('theme/editor/edit/'.$file['extension'].'/'.$file['filename']) }}>{{ $file['basename'] }}</a></li>
+				{{ loop($files as $file => $extension) }}
+
+					{{ if($file == 'css') }}
+						<h6>Styles</h6>
+						<ul>
+						{{ loop($extension as $css) }}
+							<li><a href={{ adminUrl('theme/editor/edit/'.$css['extension'].'/'.$css['filename']) }}>{{ $css['basename'] }}</a></li>
+						{{ endloop }}
+						</ul>
+					{{ endif }}
+
+					{{ if($file == 'js') }}
+						<h6>Scripts</h6>
+						<ul>
+						{{ loop($extension as $css) }}
+							<li><a href={{ adminUrl('theme/editor/edit/'.$css['extension'].'/'.$css['filename']) }}>{{ $css['basename'] }}</a></li>
+						{{ endloop }}
+						</ul>
+					{{ endif }}
+
+					{{ if($file == 'template') }}
+						<h6>Templates</h6>
+						<ul>
+						{{ loop($extension as $css) }}
+							<li><a href={{ adminUrl('theme/editor/edit/'.$css['extension'].'/'.$css['filename']) }}>{{ $css['basename'] }}</a></li>
+						{{ endloop }}
+						</ul>
+					{{ endif }}
+				
 				{{ endloop }}
 			{{ endif }}
-			</ul>
 
 		</div> <!-- end of form-right -->
 	</div> <!-- end of form-wrapper -->

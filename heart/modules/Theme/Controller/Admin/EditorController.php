@@ -21,11 +21,16 @@ class EditorController extends \AdminController
 			$editableFiles[] = pathinfo($f);
 		}
 
+		$themeFile = self::getThemeFile($editableFiles);
+
+		$content = htmlentities(file_get_contents($currentFile));
+
 		$this->template->title(\Translate::get('theme::editor.title'))
 					->breadcrumb(\Translate::get('theme::editor.title'))
 					->setPartial('admin/editor/index')
 					->set('currentFile', $currentFile)
-					->set('files', $editableFiles);
+					->set('content', $content)
+					->set('files', $themeFile);
 	}
 
 	public function edit($ext = null, $file = null)
@@ -52,6 +57,7 @@ class EditorController extends \AdminController
 			return \Redirect::to(adminUrl('theme/editor'));	
 		}
 
+		$themeFile = self::getThemeFile($editableFiles);
 		$content = htmlentities(file_get_contents($currentFile));
 
 		$this->template->title(\Translate::get('theme::editor.title'))
@@ -59,7 +65,28 @@ class EditorController extends \AdminController
 					->setPartial('admin/editor/index')
 					->set('currentFile', $currentFile)
 					->set('content', $content)
-					->set('files', $editableFiles);
+					->set('files', $themeFile);
+	}
+
+	/**
+	* Get all css, js and template files from current theme
+	*
+	* @param $editableFiles array
+	* @return object
+	*/
+	protected function getThemeFile($editableFiles)
+	{
+		foreach ($editableFiles as $eF) {
+			if ($eF['extension'] == "css") {
+				$themeFile->css[] = $eF;
+			} elseif ($eF['extension'] == "js") {
+				$themeFile->js[] = $eF;
+			} else {
+				$themeFile->template[] = $eF;
+			}
+		}
+
+		return $themeFile;
 	}
 
 	/**

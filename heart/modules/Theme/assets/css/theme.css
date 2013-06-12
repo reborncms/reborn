@@ -86,15 +86,15 @@ div#list-themes p.tag {
 }
 
 
-#themeFiles {
-	margin-top: 20px;
+.themeFiles ul {
+	margin-bottom: 20px;
 }
 
-#themeFiles li { 
-	margin-bottom: 20px;
+.themeFiles ul li { 
+	margin-bottom: 10px;
 	list-style: disc;
 }
 
-#themeFiles li a {
-	font-size: 14px;
+.themeEditor h6 {
+	margin-bottom: 10px;
 }
