@@ -310,7 +310,7 @@ if(! function_exists('img'))
  **/
 if(! function_exists('assetPath'))
 {
-	function assetPath($type, $module = null)
+	function assetPath($type = null, $module = null)
 	{
 		$theme = Registry::get('app')->view->getTheme();
 		$asset = new Reborn\MVC\View\Asset($theme->getThemePath());
@@ -326,7 +326,7 @@ if(! function_exists('assetPath'))
 				return $asset->getImgPath($module);
 				break;
 			default :
-				return null;
+				return $asset->getAssetPath($module);
 				break;
 		}
 	}

@@ -61,6 +61,24 @@ class Asset
 	}
 
 	/**
+	 * Get the assets folder's URL path by given module or active theme.
+	 * example:
+	 * <code>
+	 * 		// return the active theme's css path
+	 * 		// eg: active theme = default
+	 * 		// output = http://localhost/reborn/content/themes/default/assets/
+	 * 		$this->asset->getAssetPath();
+	 * </code>
+	 *
+	 * @param string|null $module Module name
+	 * @return string
+	 **/
+	public function getAssetPath($module = null)
+	{
+		return $this->findPath(null, $module);
+	}
+
+	/**
 	 * Get the css folder's URL path by given module or active theme.
 	 * example:
 	 * <code>
@@ -255,17 +273,21 @@ class Asset
 	/**
 	 * Get the asset folder path by asset type (css, js, img).
 	 *
-	 * @param string $type Asset type
+	 * @param string|null $type Asset type
 	 * @param string|null $module Module name
 	 * @return string
 	 **/
-	protected function findPath($type, $module = null)
+	protected function findPath($type = null, $module = null)
 	{
 		if (!is_null($module)) {
 			list($real, $url) = $this->getModuelAssetPath($module);
 
-			$urlPath = $url.$type.'/';
+			$urlPath = $url;
 		} else {
+			$urlPath = $this->path;
+		}
+
+		if (!is_null($type)) {
 			$urlPath = $this->path.$type.'/';
 		}
 
