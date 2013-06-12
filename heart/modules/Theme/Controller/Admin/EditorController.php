@@ -6,6 +6,14 @@ class EditorController extends \AdminController
 {
 	public function before() {
 		$this->template->style('theme.css','theme');
+		$this->template->style(array(
+	                    'plugins/codemirror/codemirror.css'
+	                ))
+	                ->script(array(
+	                    'plugins/codemirror/codemirror.js',
+	                    'plugins/codemirror/css.js',
+	                    'plugins/codemirror/javascript.js'
+	                ));
 	}
 
 	public function index()
@@ -15,18 +23,18 @@ class EditorController extends \AdminController
 		$files = self::listFiles($themePath);		
 
 		foreach ($files as $f) {
-			if (basename($f) == 'style.css') {
+			if (basename($f) == 'default.html') {
 			    $currentFile = $f;
 			}
 			$editableFiles[] = pathinfo($f);
 		}
 
 		$themeFile = self::getThemeFile($editableFiles);
-
 		$content = htmlentities(file_get_contents($currentFile));
+		$currentFile = pathinfo($currentFile);
 
-		$this->template->title(\Translate::get('theme::editor.title'))
-					->breadcrumb(\Translate::get('theme::editor.title'))
+		$this->template->title(t('theme::editor.title'))
+					->breadcrumb(t('theme::editor.title'))
 					->setPartial('admin/editor/index')
 					->set('currentFile', $currentFile)
 					->set('content', $content)
@@ -36,10 +44,6 @@ class EditorController extends \AdminController
 	public function edit($ext = null, $file = null)
 	{
 		if ($ext == null or $file == null) return \Redirect::to(adminUrl('theme/editor'));
-
-		if (\Input::isPost()) {
-
-		}
 
 		$themePath = THEMES.\Setting::get('public_theme');
 		$files = self::listFiles($themePath);		
@@ -54,14 +58,30 @@ class EditorController extends \AdminController
 
 		if (!file_exists($currentFile)) {
 			\Flash::error('There is no such file in your current theme folder.');
-			return \Redirect::to(adminUrl('theme/editor'));	
+			return \Redirect::toAdmin('theme/editor');	
+		}
+
+		if (\Input::isPost()) {
+			if (\Security::CSRFvalid('editor')) {
+
+				$text = stripslashes(\Input::get('content'));			
+				$fileOpen = fopen($currentFile,"w");
+				if (fputs($fileOpen, html_entity_decode($text, ENT_QUOTES))) {
+					fclose($fileOpen);
+					\Flash::success(t('theme::editor.success'));
+				}
+				else{
+					\Flash::error(t('theme::editor.error'));
+				}
+			}
 		}
 
 		$themeFile = self::getThemeFile($editableFiles);
-		$content = htmlentities(file_get_contents($currentFile));
+		$content = file_get_contents($currentFile);
+		$currentFile = pathinfo($currentFile);
 
-		$this->template->title(\Translate::get('theme::editor.title'))
-					->breadcrumb(\Translate::get('theme::editor.title'))
+		$this->template->title(t('theme::editor.title'))
+					->breadcrumb(t('theme::editor.title'))
 					->setPartial('admin/editor/index')
 					->set('currentFile', $currentFile)
 					->set('content', $content)

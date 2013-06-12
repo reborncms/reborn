@@ -78,14 +78,6 @@ div#list-themes p.tag {
 	float: right;
 }
 
-#textEditor {
-	width: 100%; 
-	overflow-y: 
-	scroll; height:500px;
-	font-family: Consolas, Monaco, Courier;
-}
-
-
 .themeFiles ul {
 	margin-bottom: 20px;
 }
@@ -97,4 +89,23 @@ div#list-themes p.tag {
 
 .themeEditor h6 {
 	margin-bottom: 10px;
+}
+
+.CodeMirror {
+	border: 1px solid #BCBCBC;
+	-webkit-box-shadow: 0 0 2px rgba(215,91,251,0.2);
+	-moz-box-shadow: 0 0 2px rgba(215,91,251,0.2);
+	-ms-box-shadow: 0 0 2px rgba(215,91,251,0.2);
+	box-shadow: 0 0 2px rgba(215,91,251,0.2);
+	background: #fff;
+}
+
+.CodeMirror .CodeMirror-scroll {
+	height: 500px;
+	font-family: Consolas, Monaco, "Courier New";
+	overflow-y: auto; 
+}
+
+.CodeMirror-wrap pre {
+	line-height: 1.5em !important;
 }
