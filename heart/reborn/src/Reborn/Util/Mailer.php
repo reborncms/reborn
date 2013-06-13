@@ -117,6 +117,10 @@ class Mailer
 	 **/
 	public static function send($config = array())
 	{
+
+		if (isset($config['to']) && !is_array($config['to'])) {
+			$config['to'] = array($config['to']);
+		}
 		$config = array_replace_recursive(static::$config, $config);
 
 		$transport = $config['transport'];
