@@ -1,16 +1,16 @@
-<div id="twitter-box">
-	<div id="twitter" style="display: block;" class="twitted">
-		<h2></h2>
+<div class="widget widget-twitter-feed">
+	<h2 class="widget-title">{{ $title }}</h2>
+	<div id="twitter" class="widget-body twitted" style="display: block;">
 		<ul id="twitter_update_list" style="display: block; ">
 			<li>Twitter feed loading ...</li>
 		</ul>
 		<span id="twitter-arrow"></span>
 		<p class="profileLink">
-			<a href="http://twitter.com/reborncms">Follow @{{ $username }} on Twitter</a>
-		</p>
-	</div> <!-- end of #twitter -->
+			<a href="http://twitter.com/{{ $username }}">Follow @{{ $username }} on Twitter</a>
+		</p>		
+	</div>
 </div>
 
 <!-- Twitter WIdget -->
 <script src="http://twitter.com/javascripts/blogger.js" type="text/javascript"></script>
-<script src="https://api.twitter.com/1/statuses/user_timeline/RebornCms.json?callback=twitterCallback2&count=5" type="text/javascript"></script>
+<script src="https://api.twitter.com/1/statuses/user_timeline/{{ $username }}.json?callback=twitterCallback2&count={{ $limit }}" type="text/javascript"></script>
