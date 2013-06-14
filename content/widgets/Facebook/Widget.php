@@ -6,7 +6,8 @@ class Widget extends \Reborn\Widget\AbstractWidget
 {
 
 	protected $properties = array(
-			'name' => 'Facebook Like Button Widget',
+			'name' => 'Facebook Like Button',
+			'description' => 'Facebook Like Button Widget',
 			'author' => 'Nyan Lynn Htut'
 		);
 
@@ -18,13 +19,22 @@ class Widget extends \Reborn\Widget\AbstractWidget
 
 	public function form() {}
 
+	public function options()
+	{
+		return array(
+	        'fb_url' => array(
+	            'label'		=> 'Widget Title',
+	            'type'		=> 'text',
+	            'info'		=> 'Title Text for Facebook Widget Box',
+	        ),
+	    );
+	}
+
 	public function render()
 	{
 		$data = array();
 
-		$data['title'] = $this->get('', 'Facebook Like Button');
-
-		$data['fb_url'] = $this->get('url');
+		$data['fb_url'] = $this->get('url', \Uri::current());
 		$data['fb_send'] = $this->get('send', "true");
 		$data['fb_font'] = $this->get('font', "arial");
 		// support - arial, lucida grande, segoe ui, tahoma, trebuchet ms, verdana

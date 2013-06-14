@@ -6,7 +6,8 @@ class Widget extends \Reborn\Widget\AbstractWidget
 {
 
 	protected $properties = array(
-			'name' => 'Google Doc Viewer Widget',
+			'name' => 'Google Doc Viewer',
+			'description' => 'Google Document Viewer Widget',
 			'author' => 'Nyan Lynn Htut'
 		);
 
@@ -17,6 +18,42 @@ class Widget extends \Reborn\Widget\AbstractWidget
 	public function delete() {}
 
 	public function form() {}
+
+	public function options()
+	{
+		return array(
+	        'title' => array(
+	            'label'		=> 'Title',
+	            'type'		=> 'text',
+	            'info'		=> 'Title for Google Doc Viewer',
+	        ),
+	        'url' => array(
+	            'label'		=> 'Document Url',
+	            'type'		=> 'text',
+	            'info'		=> 'Document Url for Google Doc Viewer',
+	        ),
+	        'url' => array(
+	            'label'		=> 'Document Url',
+	            'type'		=> 'text',
+	            'info'		=> 'Document Url for Google Doc Viewer',
+	        ),
+	        'width' => array(
+	            'label'		=> 'Width',
+	            'type'		=> 'text',
+	            'info'		=> 'Width for Google Doc Viewer',
+	        ),
+	        'height' => array(
+	            'label'		=> 'Height',
+	            'type'		=> 'text',
+	            'info'		=> 'Height for Google Doc Viewer',
+	        ),
+	        'style' => array(
+	            'label'		=> 'Style',
+	            'type'		=> 'text',
+	            'info'		=> 'CSS Style for Google Doc Viewer. eg: border="display:none;"',
+	        )
+	    );
+	}
 
 	public function render()
 	{
