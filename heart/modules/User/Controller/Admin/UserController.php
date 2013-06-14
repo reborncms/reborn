@@ -65,7 +65,7 @@ class UserController extends \AdminController
 		if (\Input::isPost()) {
 			if (\Security::CSRFvalid('user')) {
 				$rule = array(
-			        'email' => 'required|valid_email',
+			        'email' => 'required|email',
 			        'password' => 'required|minLength:6',
 			        'first_name' =>'required|minLength:2|maxLength:15',
 			        'last_name' => 'required|minLength:2|maxLength:15',
@@ -140,7 +140,7 @@ class UserController extends \AdminController
 			if (\Security::CSRFvalid('user')) {
 				
 				$rule = array(
-			        'email' => 'required|valid_email',
+			        'email' => 'required|email',
 			        'first_name' =>'required|minLength:2|maxLength:15',
 			        'last_name' => 'required|minLength:2|maxLength:15',
 			    );
@@ -171,13 +171,16 @@ class UserController extends \AdminController
 					    	$usermeta = self::saveMeta('edit', $user->id);
 						    $usermeta->save();
 
-					    	$group = Sentry::getGroupProvider()->findById($group);
-					    	$user->removeGroup($group);
-						    $groups = Sentry::getGroupProvider()->findById($groups);
-						    $user->addGroup($groups);
+						    if ($group !== $groups) {
+						    	$group = Sentry::getGroupProvider()->findById($group);
+						    	$user->removeGroup($group);
+						    	$groups = Sentry::getGroupProvider()->findById($groups);
+						    	$user->addGroup($groups);
+						    }
 
 						    \Flash::success(t('user::user.edit.success'));
-					        return \Redirect::toAdmin('user');
+						    return \Redirect::toAdmin('user');
+
 					    } else {
 					    	\Flash::error(t('user::user.edit.fail'));
 					    }

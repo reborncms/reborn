@@ -59,7 +59,7 @@ class UserController extends \PublicController
 			if (\Security::CSRFvalid('user')) {
 				$redirect = \Input::server('HTTP_REFERER');
 				$rule = array(
-			        'email' => 'required|valid_email',
+			        'email' => 'required|email',
 			        'password' => 'required|mixLength:6',
 			    );
 				$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
@@ -310,7 +310,7 @@ class UserController extends \PublicController
 
 			if (\Security::CSRFvalid('user')) {
 				$rule = array(
-			        'email' => 'required|valid_email',
+			        'email' => 'required|email',
 			    );
 				$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
 
@@ -478,7 +478,7 @@ class UserController extends \PublicController
 	protected function validate()
 	{
 		$rule = array(
-	        'email' => 'required|valid_email',
+	        'email' => 'required|email',
 	        'first_name' =>'required|minLength:2|maxLength:15',
 	        'last_name' => 'required|minLength:2|maxLength:15',
 	    );
