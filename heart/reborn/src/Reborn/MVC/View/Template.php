@@ -526,8 +526,9 @@ class Template
 
         $modPath = $this->getModulePath($module);
 
-        if (file_exists($this->path.strtolower($module).DS.$filename)) {
-            $file = $this->path.$module.DS.$filename;
+        $modFormTheme = strtolower($module);
+        if (file_exists($this->path.$modFormTheme.DS.$filename)) {
+            $file = $this->path.$modFormTheme.DS.$filename;
         } elseif (file_exists($modPath.$filename)) {
             $file = $modPath.$filename;
         } elseif(file_exists($this->path.$this->partialFolder.DS.$filename)) {
