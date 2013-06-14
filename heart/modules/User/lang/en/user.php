@@ -64,6 +64,8 @@ return array(
 
 	'csrf' => 'Error occur for security reason!',
 
+	'resentPass' => 'Password RestCode Successfully sent!',
+
 	'activate' => array(
 		'subject' => 'Activate Your Account',
 		'check' => 'Check your mail for activaion code',

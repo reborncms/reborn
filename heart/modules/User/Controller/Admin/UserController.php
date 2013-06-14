@@ -171,7 +171,7 @@ class UserController extends \AdminController
 					    	$usermeta = self::saveMeta('edit', $user->id);
 						    $usermeta->save();
 
-						    if ($group !== $groups) {
+						    if ((int)$group !== $groups) {
 						    	$group = Sentry::getGroupProvider()->findById($group);
 						    	$user->removeGroup($group);
 						    	$groups = Sentry::getGroupProvider()->findById($groups);

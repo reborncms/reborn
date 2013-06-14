@@ -338,7 +338,7 @@ class UserController extends \PublicController
 
 					    $mail = Mailer::send($config);
 
-					    \Flash::success(t('Password RestCode Successfully sent!'));
+					    \Flash::success(t('user::user.resentPass'));
 						return \Redirect::to('/');
 					}
 					catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
