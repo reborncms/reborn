@@ -9,7 +9,17 @@ class Widget extends \Reborn\Widget\AbstractWidget
 
 	protected $properties = array(
 			'name' => 'User Login Block',
-			'author' => 'K'
+			'author' => 'K',
+			'sub' 			=> array(
+				'header' 	=> array(
+					'title' => 'User Header Navigation Login',
+					'description' => 'User login and action panel for header',
+				),
+				'sidebar' 	=> array(
+					'title' =>'User Sidebar Login',
+					'description' => 'Sidebar Userpanel with Login',
+				),
+			),
 		);
 
 	public function save() {}
@@ -18,21 +28,41 @@ class Widget extends \Reborn\Widget\AbstractWidget
 
 	public function delete() {}
 
-	public function form() {}
+	public function options() 
+	{
+		return array(
+			'header' => array(
+				'title' => array(
+					'label' 	=> 'Title',
+					'type'		=> 'text',
+					'info'		=> 'Leave it blank if you don\'t want to show your widget title',
+				),
+			),
+			'sidebar' => array(
+				'title' => array(
+					'label' 	=> 'Title',
+					'type'		=> 'text',
+					'info'		=> 'Leave it blank if you don\'t want to show your widget title',
+				),
+			),
+		);
+	}
 
-	public function nav()
+	public function header()
 	{
 		if(Sentry::check()) {
 			$user = Sentry::getUser();
+			$title = $this->get('title', '');
+
 			$name = $user->first_name.' '.$user->last_name;
 			$gravy = gravatar($user->email, 42, $user->first_name);
 			return $this->show(array('name' => $name, 'gravy' => $gravy), 'navdisplay');
 		} else {
-			return $this->show('', 'navlogin');
+			return $this->show(array('title' => $title), 'navlogin');
 		}
 	}
 
-	public function render()
+	public function sidebar()
 	{
 		if(Sentry::check()) {
 			$user = Sentry::getUser();
@@ -41,7 +71,7 @@ class Widget extends \Reborn\Widget\AbstractWidget
 			$name = $user->first_name.' '.$user->last_name;
 			return $this->show(array('name' => $name, 'title' => $title));
 		} else {
-			$title = "User Login";
+			$title = $this->get('title', '');
 			return $this->show(array('title' => $title), 'login');
 		}
 	}
