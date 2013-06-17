@@ -56,8 +56,9 @@ class Widget extends \Reborn\Widget\AbstractWidget
 
 			$name = $user->first_name.' '.$user->last_name;
 			$gravy = gravatar($user->email, 42, $user->first_name);
-			return $this->show(array('name' => $name, 'gravy' => $gravy), 'navdisplay');
+			return $this->show(array('name' => $name, 'gravy' => $gravy, 'title' => $title), 'navdisplay');
 		} else {
+			$title = $this->get('title', '');
 			return $this->show(array('title' => $title), 'navlogin');
 		}
 	}
@@ -67,7 +68,7 @@ class Widget extends \Reborn\Widget\AbstractWidget
 		if(Sentry::check()) {
 			$user = Sentry::getUser();
 			
-			$title = "User Panel";
+			$title = $this->get('title', '');
 			$name = $user->first_name.' '.$user->last_name;
 			return $this->show(array('name' => $name, 'title' => $title));
 		} else {
