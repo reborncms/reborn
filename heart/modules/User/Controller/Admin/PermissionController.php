@@ -6,8 +6,8 @@ use User\Model\Group as Group;
 
 class PermissionController extends \AdminController
 {
-	public function before() 
-	{	
+	public function before()
+	{
 		$this->menu->activeParent('user_management');
 		$this->template->header = \Translate::get('user::permission.title');
 		if(!Sentry::check()) return \Redirect::to('login');
@@ -49,13 +49,31 @@ class PermissionController extends \AdminController
 			if (\Security::CSRFvalid('user')) {
 				$modules = \Input::get('modules');
 
+				$actions = \Input::get('modules_actions');
+
 				if (!is_null($modules)) {
+					$module_lists = array();
 					foreach ($modules as $k => $v) {
 						$modules[$k] = 1;
 						foreach ($permission_modules as $m) {
 							if(empty($modules[$m->uri])) {
 								$modules[$m->uri] = 0;
 							}
+							$module_lists[$m->uri] = $m->uri;
+						}
+					}
+
+					// Add Module Actions Permission
+					if (!is_null($actions)) {
+						foreach ($group->permissions as $k => $v){
+							if (!array_key_exists($k, $actions)
+								and !array_key_exists($k, $module_lists)) {
+								$modules[$k] = 0;
+							}
+						}
+
+						foreach ($actions as $k => $v) {
+							$modules[$k] = (int) $v;
 						}
 					}
 
@@ -71,7 +89,7 @@ class PermissionController extends \AdminController
 				}
 			} else {
 				\Flash::error(\Translate::get('user::user.csrf'));
-			}			
+			}
 		}
 
 		$groupPermissions = $group->getPermissions();
@@ -81,6 +99,7 @@ class PermissionController extends \AdminController
 				->set('groupPermissions', $groupPermissions)
 				->set('permission_modules', $permission_modules)
 				->set('group', $group)
+				->script('users.js', 'user', 'footer')
 				->setPartial('admin/permission/edit');
 	}
 }

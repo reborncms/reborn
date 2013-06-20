@@ -60,6 +60,7 @@ return array(
 	'permission_denied'	=> 'You have no permission for this job.',
 	'error_ap'			=> 'Error occuring!',
 	'not_ap_access'		=> 'You have not permission to access admin panel',
+	'not_module_access'	=> 'You have not permission to access %s module',
 	'nav_link_type'		=> 'The field :value must not be empty.',
 	'unique_title'		=> 'The field :label must be unique, but :value has already been used',
 	'f_fatal_error'		=> 'Sorry, Our site is currently upgrade......',

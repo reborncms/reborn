@@ -90,6 +90,14 @@ abstract class AbstractInfo
 	protected $allowToChangeUriPrefix = false;
 
 	/**
+	 * Variable for Module Actions Roles list.
+	 * Module Action permission will be decided on this role.
+	 *
+	 * @var array
+	 **/
+	protected $roles = array();
+
+	/**
 	 * Get the All Module Info
 	 *
 	 * @return array
@@ -114,6 +122,7 @@ abstract class AbstractInfo
 				'uri' => $uri, //$this->uriPrefix,
 				'path' => $path.DS, // Module path
 				'name' => $this->name, // Name of $this module
+				'roles' => $this->roles, // Module Action roles
 				'isCore' => $isCore, // Module is Core Module or not
 				'version' => $this->version, // Version no. string of $this module
 				'description' => $this->description, // Description of $this module

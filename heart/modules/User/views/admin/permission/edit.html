@@ -10,13 +10,14 @@
 		<tr>
 			<th width=20px ></th>
 			<th>Modules</th>
+			<th>Module Actions</th>
 		</tr>
 	</thead>
 	<tbody>
 		{{ loop($permission_modules as $module) }}
-		<tr>
+		<tr id="{{ $module->uri }}">
 			{= $check = false; =}
-			
+
 			{{ loop($groupPermissions as $permission => $v ) }}
 				{{ if($module->uri == $permission) }}
 					{= $check = true; break; =}
@@ -24,14 +25,17 @@
 			{{ endloop }}
 
 		{{ if($check) }}
-			<td>{{ Form::checkbox("modules[$module->uri]", 1, array('checked' => 'checked')) }}</td>
+			<td class="module-role">{{ Form::checkbox("modules[$module->uri]", 1, array('checked' => 'checked', 'data-module' => $module->uri)) }}</td>
 		{{ else }}
-			<td>{{ Form::checkbox("modules[$module->uri]", 1) }}</td>
+			<td class="module-role">{{ Form::checkbox("modules[$module->uri]", 1, array('data-module' => $module->uri)) }}</td>
 		{{ endif }}
 			<td>{{ $module->name }}</td>
+			<td class="action_roles">
+				{{ module_action_permission_ui($module->name, $groupPermissions) }}
+			</td>
 		</tr>
 		{{ endloop }}
-		
+
 	</tbody>
 </table>
 <div class="buttons form-button">
@@ -40,3 +44,14 @@
 </div>
 {{ Form::end() }}
 </section>
+
+<style type="text/css">
+	.ckeck-group-block {
+		padding: 2px;
+		border: none;
+		width: 90%;
+	}
+	.ckeck-group-block .inline-label {
+		margin-right: 10px;
+	}
+</style>

@@ -10,6 +10,8 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		\Translate::load('user::user');
 		\Translate::load('user::permission');
 		\Translate::load('user::group');
+
+		require __DIR__.DS."helpers.php";
 	}
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)

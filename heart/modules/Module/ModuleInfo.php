@@ -22,4 +22,11 @@ class ModuleInfo extends \Reborn\Module\AbstractInfo
 
 	protected $uriPrefix = 'module';
 
+	protected $roles = array(
+						'module.upload' => 'Module Upload',
+						'module.install' => 'Module Install',
+						'module.disable' => 'Module Disable',
+						'module.enable' => 'Module Enable',
+						);
+
 }

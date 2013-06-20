@@ -38,15 +38,15 @@ class AdminController extends Controller
 
         parent::__construct();
 
+        \Translate::load('label');
+        \Translate::load('global');
+        \Translate::load('navigation');
+
         $this->checkAuthentication();
 
         $this->module = \Registry::get('app')->request->module;
 
         $this->varSetter();
-
-        \Translate::load('label');
-        \Translate::load('global');
-        \Translate::load('navigation');
     }
 
     /**
@@ -97,7 +97,13 @@ class AdminController extends Controller
             if ( ! $user->hasAccess('Admin')) {
                 Sentry::logout();
                 \Flash::error(t('global.not_ap_access'));
-                return Redirect::to(ADMIN_URL.'/login');
+                return Redirect::toAdmin('login');
+            }
+
+            // Check for Module Access
+            if (!$user->hasAccess(strtolower($this->request->module))) {
+                \Flash::error(sprintf(t('global.not_module_access'), $this->request->module));
+                return Redirect::toAdmin();
             }
 
             return true;
