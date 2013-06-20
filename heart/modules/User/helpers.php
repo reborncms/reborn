@@ -34,3 +34,14 @@ function module_action_permission_ui($module, $permission)
 
 	return $result;
 }
+
+function user_has_access($role)
+{
+	$user = \Sentry::getUser();
+
+	if (is_null($user)) {
+		return false;
+	}
+
+	return $user->hasAccess($role);
+}

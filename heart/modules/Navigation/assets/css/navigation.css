@@ -72,10 +72,19 @@ p.notice { color: #EB1D68; font-family: Arial, Helvetica, sans-serif;}
 .success { color: #5ca719; background: #dae7cf;}
 .fail, .error { color: #f33c3c; background: #f3d1d1;}
 
+.no-access {
+	padding: 40px 20px;
+	color: #ff0000;
+	text-shadow: 0 0 0 rgba(0, 0, 0, 0.6);
+	font-size: 1.8em;
+	text-align: center;
+	background: #f9f9f9;
+}
+
 /** Media Screen less than 900px ( For Tablet - Mobile ) **/
 @media only screen and (max-width: 900px) {
 	#form-wrapper { width: 350px; margin-right: 300px; padding-left: 10px; }
-	
+
 	#form-right {
 		float: right;
 		width: 278px;

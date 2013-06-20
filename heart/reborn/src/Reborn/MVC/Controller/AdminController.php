@@ -94,7 +94,7 @@ class AdminController extends Controller
             $user = Sentry::getUser();
 
             // We are check user hasAccess Admin (Group Permission)
-            if ( ! $user->hasAccess('Admin')) {
+            if ( ! $user->hasAccess('admin')) {
                 Sentry::logout();
                 \Flash::error(t('global.not_ap_access'));
                 return Redirect::toAdmin('login');

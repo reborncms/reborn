@@ -135,6 +135,12 @@ class NavigationController extends \AdminController
 
 	public function edit($id)
 	{
+		if (!user_has_access('nav.edit')) {
+			return $this->template->set('make', 'editing')
+								->set('type', 'link')
+								->partialOnly()
+								->setPartial('admin/noaccess')->render();
+		}
 		$link = Links::find($id);
 
 		switch($link->type) {

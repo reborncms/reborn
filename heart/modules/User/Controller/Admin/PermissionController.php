@@ -66,6 +66,9 @@ class PermissionController extends \AdminController
 					// Add Module Actions Permission
 					if (!is_null($actions)) {
 						foreach ($group->permissions as $k => $v){
+							if ($k == 'admin') {
+								continue;
+							}
 							if (!array_key_exists($k, $actions)
 								and !array_key_exists($k, $module_lists)) {
 								$modules[$k] = 0;
