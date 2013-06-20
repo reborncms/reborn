@@ -15,7 +15,7 @@ class UserController extends \AdminController
 	}
 
 	public function index()
-	{	
+	{
 		$options = array(
 		    'total_items'       => User::all()->count(),
 		    'url'               => ADMIN_URL.'/user/index',
@@ -98,7 +98,7 @@ class UserController extends \AdminController
 						        'permissions' => array(),
 						        'activated' => 1,
 						        'permissions' => array(
-						            'Admin' => $adminPanelAccess,
+						            'admin' => $adminPanelAccess,
 						        )
 						    ));
 
@@ -129,7 +129,7 @@ class UserController extends \AdminController
 	}
 
 	public function edit($uri)
-	{		
+	{
 		$user = Sentry::getUserProvider()->findById($uri);
 		$usergroup = $user->getGroups();
 		foreach ($usergroup as $group) {
@@ -138,7 +138,7 @@ class UserController extends \AdminController
 
 		if (\Input::isPost()) {
 			if (\Security::CSRFvalid('user')) {
-				
+
 				$rule = array(
 			        'email' => 'required|email',
 			        'first_name' =>'required|minLength:2|maxLength:15',
@@ -191,7 +191,7 @@ class UserController extends \AdminController
 			} else {
 				\Flash::error(t('user::user.csrf'));
 			}
-		}		
+		}
 
 		$usermeta = UserMeta::where('user_id', '=', $user->id)->get();
 		foreach ($usermeta as $u) {
@@ -221,7 +221,7 @@ class UserController extends \AdminController
 	public function delete($uri)
 	{
 	    $user = Sentry::getUserProvider()->findById($uri);
-	    
+
 	    $user->delete();
 	    $usermeta = UserMeta::find($uri);
 	    $usermeta->delete();
@@ -248,7 +248,7 @@ class UserController extends \AdminController
 		$user->website = \Input::get('website');
 		$user->facebook = \Input::get('facebook');
 		$user->twitter = \Input::get('twitter');
-		
+
 		return $user;
 	}
 
@@ -256,7 +256,7 @@ class UserController extends \AdminController
 	 * Change Password if the user edit password
 	 *
 	 * @param $user
-	 * 
+	 *
 	 **/
 	protected function setPassword($user)
 	{
@@ -283,7 +283,7 @@ class UserController extends \AdminController
 					}
 				}
 			}
-		}		
+		}
 	}
 
 	public function after($response)
