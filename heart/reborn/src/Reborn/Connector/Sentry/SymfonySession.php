@@ -20,7 +20,7 @@ class SymfonySession implements SessionInterface
 	{
 		$this->store = \Registry::get('app')->session;
 
-		if (isset($this->key))
+		if (!is_null($key))
 		{
 			$this->key = $key;
 		}

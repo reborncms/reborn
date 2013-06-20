@@ -236,7 +236,9 @@ class Menu
 	{
 		foreach ($this->modules as $name => $mod) {
 			if (Module::isEnabled($name)) {
-				Module::adminMenu($this, $name);
+				if (user_has_access(strtolower($name))) {
+					Module::adminMenu($this, $name);
+				}
 			}
 		}
 	}
