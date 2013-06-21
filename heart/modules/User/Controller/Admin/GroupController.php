@@ -41,7 +41,7 @@ class GroupController extends \AdminController
 						$group = Sentry::getGroupProvider()->create(array(
 					        'name'        => $groupName,
 					        'permissions' => array(
-					            'Admin' => $is_admin,
+					            'admin' => $is_admin,
 					        )
 					    ));
 
@@ -81,7 +81,7 @@ class GroupController extends \AdminController
 					try {
 					    $group->name = $groupName;
 					    $group->permissions = array(
-					        'Admin' => $is_admin
+					        'admin' => $is_admin
 					    );
 
 					    if ($group->save()) {
@@ -101,7 +101,7 @@ class GroupController extends \AdminController
 			}
 		}
 
-		$adminAccess = array_key_exists('Admin', $groupPermission) ?  true : false;
+		$adminAccess = array_key_exists('admin', $groupPermission) ?  true : false;
 
 		$this->template->title(sprintf(t('user::group.edit.title'), $group->name))
 			->breadcrumb(sprintf(t('user::group.edit.title'), $group->name))
