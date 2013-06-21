@@ -23,7 +23,7 @@ $('ol.sortable').nestedSortable({
 });
 
 //Link Type Change Event
-$('#type_selected').live('change', function(){
+$('#type_selected').on('change', function(){
 
 	var box = $(this).val(),
 		showBox = $('#' + box);

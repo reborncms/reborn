@@ -25,7 +25,7 @@ function module_action_permission_ui($module, $permission)
 		} else {
 			$attr = $id;
 		}
-		$result .= '<label class="inline-label" for="newsletter">';
+		$result .= '<label class="inline-label" for="'.$attr['id'].'">';
 		$result .= \Form::checkbox("modules_actions[$key]", 1, $attr);
 		$result .= $role.'</label>';
 	}
@@ -35,13 +35,26 @@ function module_action_permission_ui($module, $permission)
 	return $result;
 }
 
-function user_has_access($role)
+function user_has_access($role, $redirect_to = null)
 {
-	$user = \Sentry::getUser();
+	if (!\Sentry::check()) {
 
-	if (is_null($user)) {
+		if (!is_null($redirect_to)) {
+			return \Redirect::to($redirect_to);
+		}
+
 		return false;
 	}
 
-	return $user->hasAccess($role);
+	$user = \Sentry::getUser();
+
+	if ($user->hasAccess($role)) {
+		return true;
+	}
+
+	if (!is_null($redirect_to)) {
+		return \Redirect::to($redirect_to);
+	}
+
+	return false;
 }
