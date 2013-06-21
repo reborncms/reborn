@@ -238,6 +238,11 @@ class Router
         $action = $route->action;
         $params = $route->params;
 
+        // Prevent Direct call the callByMethod
+        if ('callByMethod' === $action) {
+            throw new HttpNotFoundException("Request Method is not callable method!");
+        }
+
         // Set the active at request
         $this->request->module = $module;
         $this->request->controller = $controller;
@@ -276,8 +281,9 @@ class Router
             $reflect->getMethod('before')->invoke($controllerClass);
 
             // Call the action method
-            $response = $reflect->getMethod($action)
-                                    ->invokeArgs($controllerClass, (array)$params);
+            $args = array($action, $params);
+            $response = $reflect->getMethod('callByMethod')
+                                    ->invokeArgs($controllerClass, (array)$args);
 
             // Call the Controller class's after method.
             $response = $reflect->getMethod('after')

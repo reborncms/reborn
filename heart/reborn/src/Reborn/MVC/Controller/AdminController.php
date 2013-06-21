@@ -100,12 +100,6 @@ class AdminController extends Controller
                 return Redirect::toAdmin('login');
             }
 
-            // Check for Module Access
-            if (!$user->hasAccess(strtolower($this->request->module))) {
-                \Flash::error(sprintf(t('global.not_module_access'), $this->request->module));
-                return Redirect::toAdmin();
-            }
-
             return true;
         }
 
