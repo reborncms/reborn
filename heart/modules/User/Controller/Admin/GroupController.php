@@ -15,6 +15,7 @@ class GroupController extends \AdminController
 
 	public function index()
 	{
+		if (!user_has_access('user.group')) return $this->notFound();
 		$group = Group::all();
 
 		$this->template->title(\Translate::get('user::group.title'))
@@ -25,6 +26,7 @@ class GroupController extends \AdminController
 
 	public function create()
 	{
+		if (!user_has_access('user.group.create')) return $this->notFound();
 		if (\Input::isPost()) {
 			if (\Security::CSRFvalid('user')) {
 				$v = $this->validate();
@@ -61,6 +63,7 @@ class GroupController extends \AdminController
 
 	public function edit($uri)
 	{
+		if (!user_has_access('user.group.edit')) return $this->notFound();
 		$group = Sentry::getGroupProvider()->findById($uri);
 		$groupPermission = $group->getPermissions();
 
@@ -109,6 +112,7 @@ class GroupController extends \AdminController
 
 	public function delete($uri)
 	{
+		if (!user_has_access('user.group.delete')) return $this->notFound();
 		$group = Sentry::getGroupProvider()->findById($uri);
 
 	    if ($group->delete()) {

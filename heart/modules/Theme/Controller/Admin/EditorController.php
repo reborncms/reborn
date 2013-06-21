@@ -4,7 +4,8 @@ namespace Theme\Controller\Admin;
 
 class EditorController extends \AdminController
 {
-	public function before() {
+	public function before() 
+	{
 		$this->template->style('theme.css','theme');
 		$this->template->style(array(
 	                    'plugins/codemirror/codemirror.css'
@@ -18,6 +19,7 @@ class EditorController extends \AdminController
 
 	public function index()
 	{	
+		if (!user_has_access('theme.editor')) return $this->notFound();
 		$themePath = THEMES.\Setting::get('public_theme');
 
 		$files = self::listFiles($themePath);		
@@ -43,6 +45,7 @@ class EditorController extends \AdminController
 
 	public function edit($ext = null, $file = null)
 	{
+		if (!user_has_access('theme.editor')) return $this->notFound();
 		if ($ext == null or $file == null) return \Redirect::to(adminUrl('theme/editor'));
 
 		$themePath = THEMES.\Setting::get('public_theme');

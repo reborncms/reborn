@@ -8,7 +8,8 @@ use User\Model\UserMeta as UserMeta;
 
 class UserController extends \AdminController
 {
-	public function before() {
+	public function before() 
+	{
 		$this->menu->activeParent('user_management');
 		$this->template->header = t('user::user.title.usermod');
 		if(!Sentry::check()) return \Redirect::to(adminUrl('login'));
@@ -62,6 +63,8 @@ class UserController extends \AdminController
 
 	public function create()
 	{
+		if (!user_has_access('user.create')) return $this->notFound();
+
 		if (\Input::isPost()) {
 			if (\Security::CSRFvalid('user')) {
 				$rule = array(
@@ -130,6 +133,8 @@ class UserController extends \AdminController
 
 	public function edit($uri)
 	{
+		if (!user_has_access('user.edit')) return $this->notFound();
+
 		$user = Sentry::getUserProvider()->findById($uri);
 		$usergroup = $user->getGroups();
 		foreach ($usergroup as $group) {
@@ -162,7 +167,7 @@ class UserController extends \AdminController
 				    	$user->first_name = $first_name;
 				    	$user->last_name = $last_name;
 				    	$user->permissions = array(
-						    'Admin' => $adminPanelAccess,
+						    'admin' => $adminPanelAccess,
 						);
 
 						self::setPassword($user);
@@ -200,7 +205,7 @@ class UserController extends \AdminController
 
 		$groups = Group::all();
 
-		$adminAccess['dashboard'] = array_key_exists('Admin', $user->getPermissions()) ?  true : false;
+		$adminAccess['dashboard'] = array_key_exists('admin', $user->getPermissions()) ?  true : false;
 		$adminAccess['superUser'] = array_key_exists('superuser', $user->getPermissions()) ?  true : false;
 
 		$this->template->title(t('user::user.title.edit'))
@@ -220,6 +225,8 @@ class UserController extends \AdminController
 	 */
 	public function delete($uri)
 	{
+		if (!user_has_access('user.delete')) return $this->notFound();
+
 	    $user = Sentry::getUserProvider()->findById($uri);
 
 	    $user->delete();

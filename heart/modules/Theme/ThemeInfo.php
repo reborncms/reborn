@@ -25,4 +25,11 @@ class ThemeInfo extends \Reborn\Module\AbstractInfo
 	protected $allowToChangeUriPrefix = false;
 
 	protected $useAsDefaultModule = true;
+
+	protected $roles = array(
+		'theme.upload' => 'Upload',
+		'theme.activate' => 'Activate',
+		'theme.delete' => 'Delete',
+		'theme.editor' => 'Editor',
+	);
 }

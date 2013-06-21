@@ -12,11 +12,7 @@
 		<tr>
 			<td>{{ $g->name }}</td>
 			<td>
-			{{ if($g->id == 1) }}
-				This group has Admin access to everything. 
-			{{ else }}
 				<a href="{{ \Uri::create("$adminUrl/user/permission/edit/") }}{{ $g->id }}" class="button button-blue">Edit Permission</a>
-			{{ endif }}
 			</td>
 		</tr>
 		{= $i++ =}

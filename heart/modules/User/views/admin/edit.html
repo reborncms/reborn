@@ -117,7 +117,7 @@
           <label for="checkbox">{{ Form::label('Can access to Dashboard?', 'admin_access') }}</label>
           <div class="form-right-block clearfix">
             <label for="ckeckbox" class="inline-label">
-              {{ if($adminAccess) }}
+              {{ if($adminAccess['dashboard']) }}
                 {{ Form::checkbox('admin_access', 1, array('checked' => 'checked', 'id'=>'ckeckbox')) }}
               {{ else }}
                 {{ Form::checkbox('admin_access', 1, array('id'=>'ckeckbox')) }}

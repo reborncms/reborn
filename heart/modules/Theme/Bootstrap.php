@@ -14,7 +14,9 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
 		$menu->add('theme', 'Themes', $modUri, 'appearance', $order = 35);
-		$menu->add('theme-editor', 'Editor', $modUri.'/editor', 'appearance', $order = 36);
+		if (user_has_access('theme.editor')) {
+			$menu->add('theme-editor', 'Editor', $modUri.'/editor', 'appearance', $order = 36);
+		}
 	}
 
 	public function settings()

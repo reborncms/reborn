@@ -25,6 +25,8 @@ class ThemeController extends \AdminController
 
 	public function activate($name)
 	{
+		if (!user_has_access('theme.activate')) return $this->notFound();
+
 		$themes = Theme::all();
 
 		if (array_key_exists($name, $themes)) {
@@ -38,6 +40,8 @@ class ThemeController extends \AdminController
 
 	public function delete($name)
 	{
+		if (!user_has_access('theme.delete')) return $this->notFound();
+
 		$themes = Theme::all();
 
 		if (array_key_exists($name,$themes)) {
@@ -60,6 +64,8 @@ class ThemeController extends \AdminController
 
 	public function upload()
 	{
+		if (!user_has_access('theme.upload')) return $this->notFound();
+
 		if (\Input::isPost()) {
 			$tmp_path = STORAGES.'tmp'.DS;
 			$extract_path = THEMES;

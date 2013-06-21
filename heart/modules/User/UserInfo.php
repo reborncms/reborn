@@ -26,4 +26,16 @@ class UserInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = true;
 
+	protected $roles = array(
+		'user.create' => 'Create',
+		'user.edit' => 'Edit',
+		'user.delete' => 'Delete',
+		'user.group' => 'Groups',
+		'user.group.create' => 'Create Group',
+		'user.group.edit' => 'Edit Group',
+		'user.group.delete' => 'Delete Group',
+		'user.permission' => 'Permission',
+		'user.permission.edit' => 'Edit Permission',
+	);
+
 }

@@ -19,6 +19,7 @@ class PermissionController extends \AdminController
 	*/
 	public function index()
 	{
+		if (!user_has_access('user.permission')) return $this->notFound();
 		$group = Group::all();
 
 		$this->template->title(\Translate::get('user::permission.title'))
@@ -34,8 +35,7 @@ class PermissionController extends \AdminController
 	*/
 	public function edit($groupid)
 	{
-		if ($groupid == 1) return \Redirect::to('admin/user/permission');
-
+		if (!user_has_access('user.permission.edit')) return $this->notFound();
 		$group = Sentry::getGroupProvider()->findById($groupid);
 
 		if ( !$group ) {
