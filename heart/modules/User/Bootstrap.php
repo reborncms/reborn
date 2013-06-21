@@ -34,7 +34,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 		if( $uri != 'permission' )
 		{
-			if( $uri == 'group' ) {
+			if( $uri == 'group' and user_has_access('user.group.create') ) {
 				$mod_toolbar = array(
 					'add_group'	=> array(
 						'url'	=> 'user/group/create',
@@ -44,14 +44,18 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 					)
 				);
 			} else {
-				$mod_toolbar = array(
-					'add'	=> array(
-						'url'	=> 'user/create',
-						'name'	=> 'Create User',
-						'info'	=> 'Create a new user',
-						'class'	=> 'add'
-					),
-				);
+				if (user_has_access('user.create')) {
+					$mod_toolbar = array(
+						'add'	=> array(
+							'url'	=> 'user/create',
+							'name'	=> 'Create User',
+							'info'	=> 'Create a new user',
+							'class'	=> 'add'
+						),
+					);
+				} else {
+					$mod_toolbar = array();
+				}
 			}
 		}
 		else {
