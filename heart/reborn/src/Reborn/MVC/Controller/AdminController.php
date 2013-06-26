@@ -59,6 +59,29 @@ class AdminController extends Controller
     }
 
     /**
+     * Call the Action Method
+     *
+     * @return void
+     **/
+    public function callByMethod($method, $params)
+    {
+        if (! method_exists($this, $method)) {
+            return $this->notFound();
+        }
+
+        if (\Sentry::check()) {
+            $user = \Sentry::getUser();
+
+            // Check for Module Access
+            if (!$user->hasAccess(strtolower($this->request->module))) {
+                return $this->notFound();
+            }
+        }
+
+        return call_user_func_array(array($this, $method), (array)$params);
+    }
+
+    /**
      * Get the Admin Panel Link
      *
      * @return string

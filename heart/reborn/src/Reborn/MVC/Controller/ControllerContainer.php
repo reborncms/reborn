@@ -172,14 +172,14 @@ class ControllerContainer
             return $this->notFound();
         }
 
-        if (\Sentry::check()) {
+        /*if (\Sentry::check()) {
             $user = \Sentry::getUser();
 
             // Check for Module Access
             if (!$user->hasAccess(strtolower($this->request->module))) {
                 return $this->notFound();
             }
-        }
+        }*/
 
         return call_user_func_array(array($this, $method), (array)$params);
     }
