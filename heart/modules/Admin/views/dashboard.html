@@ -4,39 +4,21 @@
 		<ul id="quick-links">
 
 			<li>
-				<a href="{{ adminUrl('user/create') }}" class="btn btn-ico btn-black tipsy-tip" title="Add new User">
-					<i class="icon-users icon-white"></i>
+				<a href="{{ adminUrl('user/create') }}" class="quick-btn q-user">
+					<span><i class="ico-user"></i></span>Add new User
 				</a>
 			</li>
 			<li>
-				<a href="{{ adminUrl('blog/create') }}" class="btn btn-ico btn-blue tipsy-tip" title="Add new Blog" data-gravity="n">
-					<i class="icon-edit icon-white"></i>
-				</a>
+
+				<a href="{{ adminUrl('blog/create') }}" class="quick-btn q-blog"><span><i class="ico-blog"></i></span>Add new Blog Post</a>
 			</li>
 			<li>
-				<a href="{{ adminUrl('pages/create') }}" class="btn btn-ico btn-sky tipsy-tip" title="Add new Page">
-					<i class="icon-file-add icon-white"></i>
-				</a>
+
+				<a href="{{ adminUrl('pages/create') }}" class="quick-btn q-page"><span><i class="ico-page"></i></span>Add new Page</a>
 			</li>
 			<li>
-				<a href="#" class="btn btn-ico btn-lavender tipsy-tip" title="Comment Manager" data-gravity="n">
-					<i class="icon-comment icon-white"></i>
-				</a>
-			</li>
-			<li>
-				<a href="#" class="btn btn-ico btn-purple tipsy-tip" title="Mail">
-					<i class="icon-mail icon-white"></i>
-				</a>
-			</li>
-			<li>
-				<a href="#" class="btn btn-ico btn-green tipsy-tip" title="Media Manager" data-gravity="n">
-					<i class="icon-img icon-white"></i>
-				</a>
-			</li>
-			<li>
-				<a href="{{ adminUrl('module') }}" class="btn btn-ico tipsy-tip" title="Module Manager">
-					<i class="icon-puzzle icon-white"></i>
-				</a>
+
+				<a href="{{ adminUrl('module') }}" class="quick-btn q-module"><span><i class="ico-module"></i></span>Module Manager</a>
 			</li>
 		</ul> <!-- end of ul#quick-links -->
 
@@ -49,33 +31,21 @@
 
 		{{ if(isset($last_post)) }}
 		<div class="dashboard-wg hide-on-640">
-			<div class="block" id="last-post">
-				<h3>
-					<a href="{{ adminUrl('blog') }}">
-						<i class="icon-edit icon-white"></i>{{ t('label.last_post') }}
-					</a>
-				</h3>
+			<div id="last-post">
+				<h2>{{ t('label.last_post') }}</h2>
 				<ul>
 				{{ if($last_post->isEmpty()) }}
 					<li><span class="empty-list">{{ t('label.last_post_empty') }}</span></li>
 				{{ else }}
 				{{ loop($last_post as $post) }}
 					<li>
-						<span class="date">{{ Date $post->created_at as Y-m-d }}</span>
-						<span class="blog-author">
-							<i class="icon-user icon-white"></i>
-							<a href="{{ rbUrl('user/profile/'.$post->author->id) }}">
-								{{ $post->author->first_name.' '.$post->author->last_name }}
-							</a>
-						</span>
-						<a href="{{ rbUrl('blog/'.$post->slug) }}" target="_black">{{ $post->title }}</a>
-						<!-- <span class="date">{{ Date $post->created_at as d }}
+						<span class="date">{{ Date $post->created_at as d }}
 							<span class="month">{{ Date $post->created_at as m }}</span>
 						</span>
 						<h3>
 							<a href="{{ rbUrl('blog/'.$post->slug) }}" target="_black">{{ $post->title }}</a>
 						</h3>
-						<div class="blog-author"><i class="icon-user"></i><a href="{{ rbUrl('user/profile/'.$post->author->id) }}">{{ $post->author->first_name.' '.$post->author->last_name }}</a></div> -->
+						<div class="blog-author"><i class="icon-user"></i><a href="{{ rbUrl('user/profile/'.$post->author->id) }}">{{ $post->author->first_name.' '.$post->author->last_name }}</a></div>
 					</li>
 				{{ endloop }}
 				{{ endif }}
@@ -86,10 +56,10 @@
 
 		{{ if(!isset($last_comment)) }}
 		<div class="dashboard-wg hide-on-640">
-			<div class="block block-dark" id="last-comment">
+			<div id="last-comment">
 				{= \Module::load('Comment') =}
 				{= $last_comments = \Comment\Lib\Helper::getLatestComments(5) =}
-				<h3><a href="{{ adminUrl('comment') }}"><i class="icon-comments icon-white"></i>{{ t('label.last_comment') }}</a></h3>
+				<h2>{{ t('label.last_comment') }}</h2>
 				<ul>
 					{{ if (empty($last_comments)) }}
 						<li><span class="empty-list">{{ t('label.last_comment_empty') }}</span></li>
@@ -115,8 +85,8 @@
 	<div id="box-right">
 
 		<div class="dashboard-wg">
-			<div class="block block-blue" id="activity-log">
-				<h3><i class="icon-users icon-white"></i>{{ t('label.user_last_login') }}</h3>
+			<div id="activity-log">
+				<h2>{{ t('label.user_last_login') }}</h2>
 				<ul>
 
 				{{ loop($last_login as $user) }}

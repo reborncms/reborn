@@ -19,11 +19,11 @@ return array(
 	 * Menu Icon Name
 	 */
 	'icons' => array(
-			'content' => 'icon-archive',
-			'media' => 'icon-img',
-			'appearance' => 'icon-color',
+			'content' => 'icon-content',
+			'media' => 'icon-media',
+			'appearance' => 'icon-layout',
 			'user_management' => 'icon-users',
-			'utilities' => 'icon-tools',
+			'utilities' => 'icon-star',
 			'settings' => 'icon-setting',
 		),
 
