@@ -1,0 +1,264 @@
+.nav {
+	display  : block;
+	*zoom    : 1;
+	*display : inline-block;
+
+	&:after {
+		clear:both;
+		content:"";
+		display:block;
+	}
+
+	ul {
+		display: block;
+		float: left;
+		margin: 0;
+
+		li {
+			list-style: none;
+			float: left;
+			display: inline-block;
+
+			a {
+				padding: 10px 18px;
+				display: block;
+				color: @black_light_color;
+				font-size: 14px;
+
+				&:hover, &:active {
+					color: @black_dark_color;
+					outline: none;
+				}
+			}
+		}
+	}
+
+	&.nav-red {
+		.bg(@red_color);
+
+		ul {
+			li {
+				a {
+					color: @black_color;
+					&:hover, &:active {
+						color: @white_color;
+					}
+				}
+			}
+		}
+	}
+	&.nav-green {
+		.bg(@green_color);
+
+		ul {
+			li {
+				a {
+					color: @black_light_color;
+					&:hover, &:active {
+						color: @white_color;
+					}
+				}
+			}
+		}
+	}
+	&.nav-blue {
+		.bg(@blue_color);
+
+		ul {
+			li {
+				a {
+					color: @black_light_color;
+					&:hover, &:active {
+						color: @white_color;
+					}
+				}
+			}
+		}
+	}
+	&.nav-black {
+		.bg(@black_color);
+
+		ul {
+			li {
+				a {
+					color: @gray_light_color;
+					&:hover, &:active {
+						color: @white_color;
+					}
+				}
+			}
+		}
+	}
+	&.nav-dark {
+		.bg(@dark_color);
+
+		ul {
+			li {
+				a {
+					color: @cyan_color;
+					&:hover, &:active {
+						color: @cyan_light_color;
+					}
+				}
+			}
+		}
+	}
+}
+
+/** Pagination Style **/
+.pagination {
+	width: auto;
+
+	ul {
+		margin-left: 0;
+
+		li {
+			float: left;
+			list-style: none;
+			margin-right: 8px;
+
+			a {
+				padding: 8px 12px;
+				display: block;
+				color: @dark_color;
+				border: 1px solid @gray_white_color;
+
+				&.active, &:hover, &:active {
+					border: 1px solid @gray_color;
+					.bg(@gray_white_color);
+				}
+			}
+
+			&.separator {
+				color: @dark_color;
+				padding: 9px;
+			}
+		}
+	}
+
+	&.pagi-sticky {
+		ul {
+			li {
+				margin-right: 0px;
+
+				a {
+					border-left: none;
+
+					&.active, &:hover, &:active {
+						border: 1px solid @gray_white_color;
+						border-left: none;
+					}
+				}
+
+				&.separator {
+					border-right: 1px solid @gray_white_color;
+				}
+
+				&:first-child {
+					a {
+						border-left: 1px solid @gray_white_color;
+					}
+				}
+			}
+		}
+	}
+
+	&.pagi-red {
+		ul {
+			li {
+				a {
+					border: 1px solid @red_color;
+
+					&.active, &:hover, &:active {
+						border: 1px solid @red_dark_color;
+						.bg(@red_light_color);
+						color: @white_color;
+					}
+				}
+
+				&.separator {
+					color: @red_color;
+				}
+			}
+		}
+	}
+
+	&.pagi-green {
+		ul {
+			li {
+				a {
+					border: 1px solid @green_color;
+					color: @green_dark_color;
+
+					&.active, &:hover, &:active {
+						border: 1px solid @green_dark_color;
+						.bg(@green_light_color);
+						color: @white_color;
+					}
+				}
+
+				&.separator {
+					color: @green_color;
+				}
+			}
+		}
+	}
+
+	&.pagi-blue {
+		ul {
+			li {
+				a {
+					border: 1px solid @blue_color;
+					color: @blue_dark_color;
+
+					&.active, &:hover, &:active {
+						border: 1px solid @blue_dark_color;
+						.bg(@blue_light_color);
+						color: @white_color;
+					}
+				}
+
+				&.separator {
+					color: @blue_color;
+				}
+			}
+		}
+	}
+
+	&.pagi-bar {
+		ul {
+			float: left;
+			padding-left: 10px;
+			/*background: -moz-radial-gradient(circle, green 10%, transparent 10%);
+			background-size: 10px 10px;*/
+			background: repeating-linear-gradient(0deg, #FFFFFF, #FFFFFF 5px, @tomato_color 5px, @tomato_color 30px) repeat scroll 0 0 transparent;
+
+			li {
+
+				a {
+					border: none;
+					color: @white_color;
+
+					&.active, &:hover, &:active {
+						color: @khaki_color;
+						.bg(@orange_dark_color);
+						border: none;
+						.shadow_inset(0px, 0px, 2px, #95311E);
+					}
+
+					&.pagi_pre:hover, &.pagi_next:hover {
+						color: @khaki_color;
+						.bg(none);
+						.shadow_inset(0px, 0px, 0px, transparent);
+					}
+				}
+
+				&.separator {
+					color: @white_color;
+					border: none;
+					padding: 8px;
+				}
+			}
+		}
+	}
+}

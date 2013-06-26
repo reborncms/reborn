@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+
+		{{ include:metadata }}
+
+		{{ if($wysiwyg) }}
+			{{ include:wysiwyg }}
+		{{ endif }}
+
+	</head>
+	<body>
+
+	<noscript>
+		Reborn CMS Admin Panel required javascript. Please enable javascript from your browser.
+	</noscript>
+
+		<div id="main-container">
+			<header id="header-wrapper">
+
+				<div id="logo">
+					<h1>
+						<a href="{{ rbUrl() }}" target="_blank">
+							{{ $siteTitle }}
+							<span class="view-site">[ {{ t('label.view_site') }} ]</span>
+						</a>
+					</h1>
+				</div> <!-- end of #logo -->
+
+				<div id="header-right-panel">
+					<ul>
+						<li>{{ gravatar($login_user->email, 22) }}</li>
+						<li><h2 class="dashboard-username">{{ $login_user->first_name.' '.$login_user->last_name }}</h2></li>
+						<li class="dashboard-dropdown">
+							<span id="dropdown"></span>
+							<ul id="dashboard-user-properties" class="no-list">
+								<li><a href="{{ adminUrl("user/edit/$login_user->id") }}"><i class="icon-setting icon-white"></i>Edit Profile</a></li>
+								<li><a href="{{ adminUrl('logout') }}"><i class="icon-logout icon-white"></i>Logout</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div> <!-- end of #header-right-panel -->
+
+			</header> <!-- end of #header-wrapper -->
+<!-- *********** END OF HEADER AREA **************** -->
+
+			<!-- start of message area -->
+			<div id="message-area">
+			{{ flash() }}
+			</div>
+			<!-- end of message area -->
+
+			<section id="content-wrapper">
+
+				<aside id="sidebar" class="">
+
+					<div id="nav-panel">
+						<span
+							class="icon-list icon-white icon-16 tipsy-tip"
+							title="Navigation Toggle"
+							data-gravity="w"
+							data-target="#sidebar"
+							id="nav-toggle">
+						</span>
+						<h1 id="reborn"><a href="{{ adminUrl() }}">Reborn CMS</a></h1>
+						<ul id="admin-nav">
+							{{ $adminMenus->generate() }}
+						</ul>
+					</div> <!-- end of #nav-panel -->
+
+				</aside>
+
+				<div id="content-panel" class="container">
+
+					<h2 id="welcome"><span>Welcome to Reborn CMS -</span>
+						{{ $module['description'] }}
+					</h2>
+
+					{{ if(isset($modToolbar) and (!empty($modToolbar))) }}
+					<div id="toolbar">
+						{{ loop($modToolbar as $btn) }}
+						<a class="shortcut btn btn-dark tipsy-tip"
+							title="{{ $btn['info'] }}"
+							href="{{ adminUrl($btn['url']) }}"
+							id="{{ isset($btn['id']) ? $btn['id'] : '' }}">
+						{{ $btn['name'] }}
+						</a>
+						{{ endloop }}
+					</div> <!-- end of div#toolbar -->
+					{{ endif }}
+
+					<div id="content-container">
+
+						{{ $layoutBody }}
+
+					</div> <!-- end of #content-container -->
+
+				</div> <!-- end of #content-panel -->
+
+			</section> <!-- end of #content-wrapper -->
+
+			<div id="dashboard-footer-wrapper" class="clearfix">
+				<div id="dashboard-footer">
+					{{ include:footer }}
+				</div>
+			</div> <!-- end of div#dashboard-footer -->
+
+		</div> <!-- end of div#main-container -->
+
+	{{ $footerStyle }}
+	{{ $footerScript }}
+
+	</body>
+</html>

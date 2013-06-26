@@ -1,0 +1,125 @@
+
+.badge {
+	width: 100px;
+	float: left;
+	margin: 10px;
+	text-align: center;
+
+	div, .badge-default {
+		width: 100px;
+		height: 100px;
+		display: block;
+		margin-bottom: 10px;
+
+		.bg(@gray_white_color);
+		.radius_all(50px);
+	}
+
+	p {
+		color: #3d3d3d;
+		font-weight: bold;
+	}
+
+	.badge-green {
+		.bg(@green_color);
+	}
+	.badge-red {
+		.bg(@orange_dark_color);
+	}
+	.badge-blue {
+		.bg(@blue_color);
+	}
+	.badge-dark {
+		.bg(@blue_dark_color);
+	}
+	.badge-black {
+		.bg(@black_light_color);
+	}
+	.badge-darksky {
+		.bg(@dark_sky_color);
+	}
+	.badge-sky {
+		.bg(@sky_color);
+	}
+	.badge-purple {
+		.bg(@purple_color);
+	}
+	.badge-purple-dark {
+		.bg(@purple_dark_color);
+	}
+	.badge-lavender {
+		.bg(@lavender_color);
+	}
+	.badge-lavender-dark {
+		.bg(@lavender_dark_color);
+	}
+	.badge-tomato {
+		.bg(@tomato_color);
+	}
+	.badge-teal {
+		.bg(@teal_color);
+	}
+	.badge-khaki {
+		.bg(@khaki_color);
+	}
+	.badge-olive {
+		.bg(@olive_color);
+	}
+	.badge-lime {
+		.bg(@lime_color);
+	}
+	.badge-salmon {
+		.bg(@salmon_color);
+	}
+}
+
+.badge.badge-octagon {
+
+	div {
+		.radius_all( 0px );
+		position: relative;
+
+		&:before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			border-bottom: 29px solid transparent;
+			border-left: 29px solid white;
+			border-right: 29px solid white;
+			width: 42px; height: 0;
+		}
+
+		&:after {
+			content: "";
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			border-top: 29px solid transparent;
+			border-left: 29px solid white;
+			border-right: 29px solid white;
+			width: 42px; height: 0;
+		}
+	}
+}
+
+.badge.badge-square {
+
+	div {
+		.radius_all( 0px );
+	}
+}
+
+.col {
+	.badge {
+		margin: auto;
+	}
+}
+
+.badge-collection {
+	margin: 20px 0;
+
+	.badge {
+		margin-right: 35px;
+	}
+}

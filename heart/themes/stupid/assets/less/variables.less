@@ -1,0 +1,178 @@
+// Body Variables
+@body_font : "Open Sans", Zawgyi-One, Tahoma, Helvetica, Sans-Serif;
+@body_font_size : 13px;
+
+// Selection Variables
+@selection_bg_color: #387CBC;
+@selection_text_color: #ffffff;
+
+// Heading Variables
+@h_font : "Open Sans", Zawgyi-One, Verdana, Helvetica, Sans-Serif;
+@h_weight : 900;
+@h_small_weight : normal;
+@h_color : #4e4e4e;
+@h_small_color : #919191;
+@h_margin : 0;
+@h_padding : 0;
+@h_line_height : 1.5em;
+@h1_size : 28px;
+@h1_small_size : 22px;
+@h2_size : 26px;
+@h2_small_size : 20px;
+@h3_size : 20px;
+@h3_small_size : 18px;
+@h4_size : 18px;
+@h4_small_size : 14px;
+@h5_size : 16px;
+@h6_size : 14px;
+
+// Paragraph Variables
+@p_font : "Open Sans", Zawgyi-One, Verdana, Helvetica, Sans-Serif;
+@p_font_size : 13px;
+@p_small_size : 11px;
+@p_weight: normal;
+@p_margin: 0 0 10px;
+@p_padding: 0;
+@p_line_height : 1.7em;
+@p_color : #4e4e4e;
+@p_small_color : #919191;
+
+// Link Variables
+@link_color : #1570A6;
+@link_hover_color : #39546D;
+@link_active_color : #39546D;
+@link_outline : none;
+@link_hover_outline : none;
+@link_active_outline : none;
+@link_decoration : none;
+@link_hover_decoration : none;
+@link_active_decoration : none;
+
+// List Style Variables
+@list_color : #4e4e4e;
+@list_second_color : #4e4e4e;
+@list_margin : 0 0 9px 25px;
+@list_sub_margin : 0 0 0 25px;
+@list_padding : 0 0 0 0;
+@list_sub_padding : 0 0 0 0;
+@list_ul_style : disc;
+@list_ul_sub_style : circle;
+@list_ol_style : decimal;
+@list_ol_sub_style : lower-alpha;
+@list_li_line_height : 18px;
+
+// Defination List Variables
+@dl_margin : 0 0 18px 0;
+@dl_padding : 0;
+@dl_color : @p_color;
+@dl_size : 13px;
+@dl_family : @body_font;
+@dl_weight : normal;
+@dl_align : left;
+@dt_dd_line_height : 1.5em;
+@dt_weight: bold;
+@dt_color: @dl_color;
+@dt_size: 16px;
+@dt_margin: 0px;
+@dt_padding: 0px;
+@dd_margin: 0 0 0 10px;
+@dd_padding: 0px;
+
+// Image Variables
+@img_border : #F2F2F2;
+@img_bg : #FEFEFE;
+@caption_color : #939393;
+@caption_size : 12px;
+@caption_font : "Open Sans", Zawgyi-One, Verdana, Helvetica, Sans-Serif;;
+
+// Pre, Code Variables
+@pre_line_height : 1.7em;
+@pre_font : "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
+
+// Icon Font Variable
+@icon_font : "PulsarJS";
+
+
+// Color Variables
+@white_color: #ffffff;
+
+@light_color: #f9f9f9;
+
+@red_color: #E53738;
+@red_dark_color: #C1392B;
+@red_light_color: #E44D3C;
+
+@orange_color: #fe5f04;
+@orange_light_color: #F9792F;
+@orange_dark_color: #e44d26;
+
+@green_color: #27AE61;
+@green_light_color: #2ECD71;
+@green_dark_color: #13783e;
+
+@cyan_color: #18A187;
+@cyan_light_color: #19BD9B;
+
+@blue_color: #3D8DCC;
+@blue_light_color: #3598db;
+@blue_dark_color: #0b3e78;
+
+@dark_color: #2d3e50;
+@dark_light_color: #344A61;
+
+@gray_color: #7e8c8d;
+@gray_light_color: #95A5A5;
+@gray_white_color: #dddddd;
+
+@black_color: #292929;
+@black_dark_color: #131313;
+@black_light_color: #48494E;
+
+@sky_color: #80bde0;
+@dark_sky_color: #6181b6;
+
+@lavender_color: #9b8dc2;
+@lavender_dark_color: #695b8e;
+
+@purple_color: #d07caf;
+@purple_dark_color: #8c5e7a;
+
+@tomato_color: #ff6347;
+@teal_color: #008080;
+@khaki_color: #f0e68c;
+@olive_color: #808000;
+@lime_color: #00ff00;
+@salmon_color: #fa8072;
+
+
+// Layout Variables
+
+// For 960px (Normal Layout)
+@4layoutLength: 4;
+@4col: 220px;
+@4colGap: 20px;
+@4layout: (@4layoutLength * @4col) + (@4colGap * (@4layoutLength - 1));
+
+@3layoutLength: 3;
+@3col: 300px;
+@3colGap: 20px;
+@3layout: (@3layoutLength * @3col) + (@3colGap * (@3layoutLength - 1));
+
+// For 1200px (Large Layout)
+@4colLarge: 270px;
+@4colGapLarge: 30px;
+@4layoutLarge: (@4layoutLength * @4colLarge) + (@4colGapLarge * (@4layoutLength - 1));
+
+@3colLarge: 370px;
+@3colGapLarge: 30px;
+@3layoutLarge: (@3layoutLength * @3colLarge) + (@3colGapLarge * (@3layoutLength - 1));
+
+
+// For 768px-979px (Small Layout)
+@4colSmall: 172px;
+@4colGapSmall: 20px;
+@4layoutSmall: (@4layoutLength * @4colSmall) + (@4colGapSmall * (@4layoutLength - 1));
+
+@3colSmall: 236px;
+@3colGapSmall: 20px;
+@3layoutSmall: (@3layoutLength * @3colSmall) + (@3colGapSmall * (@3layoutLength - 1));

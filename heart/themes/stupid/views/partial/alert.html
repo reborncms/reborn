@@ -1,0 +1,25 @@
+{{ if($s = flash('fail')) }}
+	<div class="alert alert-error">
+
+		{{ loop($s as $se) }}
+			{{ $se }}
+		{{ endloop }}
+		<a href="#" class="close">&times;</a>
+	</div>
+{{ elseif($s = flash('success')) }}
+	<div class="alert alert-success">
+
+		{{ loop($s as $se) }}
+			{{ $se }}
+		{{ endloop }}
+		<a href="#" class="close">&times;</a>
+	</div>
+{{ elseif($s = flash('info')) }}
+	<div class="alert alert-info">
+
+		{{ loop($s as $se) }}
+			{{ $se }}
+		{{ endloop }}
+		<a href="#" class="close">&times;</a>
+	</div>
+{{ endif }}

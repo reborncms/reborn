@@ -1,0 +1,142 @@
+form :-moz-placeholder {
+  color: #848484;
+}
+form ::-webkit-input-placeholder {
+  color: #848484;
+}
+
+form {
+	.form-block:before {
+		display: table;
+		content: "";
+	}
+	.form-block {
+		background: #ffffff;
+		margin-bottom: 5px;
+	}
+	.form-block:after {
+		clear:both;
+		content:".";
+		display:block;
+		font-size:0;
+		height:0;
+		visibility:hidden;
+	}
+	.form-action {
+		margin-left: 15%;
+		text-align: left;
+		margin-top: 15px;
+	}
+	.form-action input, .form-action a {
+		margin-right: 15px;
+	}
+	.form-right-block {
+		margin-left: 15%;
+		text-align: left;
+	}
+}
+
+label {
+	width: 15%;
+	display: block;
+	float: left;
+	padding-top: 8px;
+	text-align: left;
+}
+
+input,
+textarea {
+	border: 1px solid #A4BECC;
+	padding: 8px;
+	color: #696969;
+}
+input[type="text"],
+input[type="password"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+textarea {
+	width: 250px;
+}
+textarea {
+	resize: none;
+	height: 150px;
+}
+textarea.v-resize {
+	resize: vertical;
+}
+textarea.h-resize {
+	resize: horizontal;
+}
+
+select {
+	border: 1px solid #A4BECC;
+	padding: 4px 10px 3px 5px;
+	color: #696969;
+	width: 269px;
+
+	background-color: #FCFCFC;
+}
+select option {
+	padding: 4px;
+}
+
+input[disabled], input.disabled,
+select[disabled], select.disabled,
+textarea[disabled], textarea.disabled,
+input[readonly],
+select[readonly],
+textarea[readonly] {
+	background-color: #f5f5f5;
+	border-color: #ddd;
+	cursor: not-allowed;
+}
+
+input.full-width, textarea.full-width, select.full-width {
+	width: 100%;
+}
+
+input.mini, textarea.mini, select.mini {
+	width: 10%;
+}
+input.small, textarea.small, select.small {
+	width: 25%;
+}
+input.medium, textarea.medium, select.medium {
+	width: 50%;
+}
+input.large, textarea.large, select.large {
+	width: 75%;
+}
+input.xx-large, textarea.xx-large, select.xx-large {
+	width: 90%;
+}
+input.thin, select.thin {
+	padding: 4px 8px;
+}
+
+input.error, textarea.error, select.error {
+	border: 1px solid @red_color;
+	color: #E53738;
+}
+
+input.success, textarea.success, select.success {
+	border: 1px solid @green_color;
+	color: #27AE61;
+}
+
+input:focus, textarea:focus, select:focus {
+	border: 1px solid #55B5E8;
+	color: #696969;
+	outline: none;
+}
+
+span.error {
+	color: @red_color;
+	margin-left: 10px;
+}
+
+input[type=submit], input[type=button], input[type="reset"] {
+	width: auto;
+}
+

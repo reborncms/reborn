@@ -1,0 +1,282 @@
+// Button Styles
+button, .btn, .btn-ico, .btn-ico-text {
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    display: inline-block;
+    padding: 6px 20px;
+    margin-bottom: 0;
+    font-size: 13px;
+    font-family: @p_font;
+    line-height: 1.5em;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    *zoom: 1;
+    border: none;
+    .bg(@gray_color);
+    .radius_all(2px);
+    .shadow_inset(0, 1px, 0, rgba(255, 255, 255, 0.2));
+}
+button:hover, button:active, button-active,
+.btn-ico:hover, .btn-ico:active, .btn-ico-active,
+.btn:hover, .btn:active, .btn-active,
+.btn-ico-text:hover, .btn-ico-text:active, .btn-ico-text-active {
+    .bg(@gray_light_color);
+    .font_color(@white_color);
+}
+
+button.btn-ico {
+    height: 25px;
+}
+
+// Button Color
+.btn-red {
+    .bg(@red_dark_color);
+}
+.btn-red:hover, .btn-red:active, .btn-red.btn-active {
+    .bg(@red_color);
+}
+
+.btn-blue {
+    .bg(@blue_color);
+}
+.btn-blue:hover, .btn-blue:active, .btn-blue.btn-active {
+    .bg(@blue_light_color);
+}
+
+.btn-green {
+    .bg(@green_color);
+}
+.btn-green:hover, .btn-green:active, .btn-green.btn-active {
+     .bg(@green_light_color);
+}
+
+.btn-orange {
+    .bg(@orange_color);
+}
+.btn-orange:hover, .btn-orange:active, .btn-orange.btn-active {
+    .bg(@orange_light_color);
+}
+
+.btn-dark {
+    .bg(@dark_color);
+}
+.btn-dark:hover, .btn-dark:active, .btn-dark.btn-active {
+    .bg(@dark_light_color);
+}
+
+.btn-cyan {
+    .bg(@cyan_color);
+}
+.btn-cyan:hover, .btn-cyan:active, .btn-cyan.btn-active {
+    .bg(@cyan_light_color);
+}
+
+.btn-sky {
+    .bg(@sky_color);
+}
+.btn-sky:hover, .btn-sky:active, .btn-sky.btn-active {
+    .bg(@dark_sky_color);
+}
+
+.btn-lavender {
+    .bg(@lavender_color);
+}
+.btn-lavender:hover, .btn-lavender:active, .btn-lavender.btn-active {
+    .bg(@lavender_dark_color);
+}
+
+.btn-purple {
+    .bg(@purple_color);
+}
+.btn-purple:hover, .btn-purple:active, .btn-purple.btn-active {
+    .bg(@purple_dark_color);
+}
+
+.btn-black {
+    .bg(@black_light_color);
+}
+.btn-black:hover, .btn-black:active, .btn-black.btn-active {
+    .bg(@black_color);
+}
+
+// Disable Mode
+button[disabled],.btn-disabled,
+input[type=submit][disabled], input[type=reset][disabled],
+input[type=button][disabled],
+button[disabled]:hover,.btn-disabled:hover,
+input[type=submit][disabled]:hover, input[type=reset][disabled]:hover,
+input[type=button][disabled]:hover
+{
+    .bg(@gray_white_color);
+    .font_color(@gray_color);
+    opacity: 0.8;
+    cursor: default;
+    text-shadow: none;
+}
+
+// Button Size
+.btn-large {
+    width: 200px;
+}
+.btn-square {
+    .square(50px);
+}
+.btn-mini {
+    width: 35px;
+}
+.btn-medium {
+    width: 120px;
+}
+.btn-full {
+    width: auto;
+    display: block;
+    margin: 20px;
+    padding: 15px;
+    font-size: 30px;
+}
+.btn-full [class^="icon-"] {
+    font-size: 40px;
+    height: 40px;
+    margin-right: 15px;
+}
+
+// Icon Button
+.btn-ico [class^="icon-"] {
+    color: @white_color;
+    margin-right: 0;
+}
+
+// Icon Button with Text
+.btn-ico-text [class^="icon-"] {
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    padding-right: 10px;
+    margin-left: -10px;
+    margin-right: 10px;
+    .shadow_inset(-1px, 0, 0, rgba(255, 255, 255, 0.2));
+    color: @white_color;
+}
+
+// Button Horizontal Group
+.btns-group {
+    display: inline-block;
+    position: relative;
+    font-size: 0;
+
+    .btn {
+        border-left: 1px solid rgba(255, 255, 255, 0.2);
+        border-right: 1px solid rgba(0, 0, 0, 0.2);
+        position: relative;
+        font-size: @p_font_size;
+        .radius_all(0);
+
+        &:first-child {
+            .radius (2px, 0, 0, 2px);
+        }
+
+        &:last-child {
+            .radius (0, 2px, 2px, 0);
+        }
+    }
+}
+
+// Button Vertical Group
+.btns-vertical-group {
+    display: inline-block;
+    position: relative;
+    font-size: 0;
+
+    .btn {
+        margin: 0 !important;
+        display: block;
+        font-size: @p_font_size;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        .radius_all(0);
+
+        &:first-child {
+            .radius (2px, 2px, 0, 0);
+        }
+
+        &:last-child {
+            .radius (0, 0, 2px, 2px);
+            border-bottom: none;
+        }
+    }
+}
+
+
+
+/** Block Style **/
+
+.block, .block-gray {
+    width: 290px;
+    display: block;
+    .bg(@gray_color);
+
+    h3 {
+        color: #ffffff;
+        padding: 10px 15px;
+        font-family: "Open Sans";
+        text-align: left;
+        font-weight: normal;
+        .bg(@gray_light_color);
+
+        [class^="icon-"] {
+            margin-right: 8px;
+            font-size: 1.8em;
+        }
+    }
+
+    p {
+        padding: 15px;
+        color: #ffffff;
+        text-align: justify;
+    }
+}
+
+.block-cyan {
+    .bg(@cyan_color);
+
+    h3 {
+        .bg(@cyan_light_color);
+    }
+}
+
+.block-dark {
+    .bg(@dark_color);
+
+    h3 {
+        .bg(@dark_light_color);
+    }
+}
+
+.block-blue {
+    .bg(@blue_color);
+
+    h3 {
+        .bg(@blue_light_color);
+    }
+}
+
+.block-red {
+    .bg(@red_color);
+
+    h3 {
+        .bg(@red_light_color);
+    }
+}
+
+.block-green {
+    .bg(@green_color);
+
+    h3 {
+        .bg(@green_light_color);
+    }
+}
+
+.col {
+    .block, .block-gray {
+        width: auto;
+        margin: 0 auto;
+    }
+}

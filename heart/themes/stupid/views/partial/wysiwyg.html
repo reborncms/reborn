@@ -1,0 +1,63 @@
+{{ js('ckeditor/ckeditor.js') }}
+{{ js('ckeditor/adapters/jquery.js') }}
+
+<script type="text/javascript">
+	var instance;
+
+	function update_instance()
+	{
+		instance = CKEDITOR.currentInstance;
+	}
+</script>
+
+<script type="text/javascript">
+
+(function($) {
+	$(function()
+	{
+		$('textarea#wysiwyg-simple').ckeditor({
+			skin : 'rb',
+			toolbar: [
+				['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
+			  ],
+			width: '97%',
+			height: 100,
+			dialog_backgroundCoverColor: '#000',
+		});
+
+		$('textarea#wysiwyg-simple2').ckeditor({
+			skin : 'rb',
+			toolbar: [
+				['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-', 'Source']
+			  ],
+			width: '97%',
+			height: 200,
+			dialog_backgroundCoverColor: '#000',
+		});
+
+		$('textarea#wysiwyg-adv').ckeditor({
+			skin : 'rb',
+			theme : 'reborn',
+			toolbar: [
+				['Maximize'],
+				['Image', 'Smiley'],
+				['Undo','Redo','-','Find','Replace'],
+				['Bold','Italic', 'Underline','Strike'],
+				['Link','Unlink'],
+				['Subscript','Superscript', 'NumberedList','BulletedList','Blockquote'],
+
+				['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+				['ShowBlocks', 'RemoveFormat', 'Source','rbmedia'],
+			],
+			extraPlugins: 'rbmedia',
+			resize_dir: 'vertical',
+			width: '97%',
+			height: 400,
+			dialog_backgroundCoverColor: '#000',
+			removePlugins: 'elementspath',
+		});
+	});
+})(jQuery);
+
+
+</script>

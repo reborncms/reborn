@@ -1,0 +1,92 @@
+// Mixims for HTML tag
+.hr_tag(@top:#919191, @bottom:#F5F5F5) {
+    margin: 18px 0;
+    border: 0;
+    border-top: 1px solid @top;
+    border-bottom: 1px solid @bottom;
+}
+
+
+// Custom Mixims
+.wh (@w; @h) {
+	width: @w;
+	height: @h;
+}
+.square (@size) {
+	.wh(@size, @size)
+}
+.pos (@l; @t)
+{
+	background-position: @l @t;
+}
+
+.bg (@color) {
+    background: @color;
+}
+.bd (@weight:1px, @color:#5d6a6b) {
+    border: @weight solid @color;
+}
+.font_color (@color: #ffffff) {
+    color: @color;
+}
+
+.icon_font {
+    font-family: "PulsarJS";
+    color: #ffffff;
+    line-height: 0.8em;
+    vertical-align: middle;
+    font-size: 28px;
+}
+
+.mg (@px: 10px) {
+    margin: @px;
+}
+
+.mge (@y:10px, @x:10px)
+{
+    margin: @y @x;
+}
+
+.pd (@px: 10px) {
+    padding: @px;
+}
+
+.pde (@y:10px, @x:10px)
+{
+    padding: @y @x;
+}
+
+.shadow_inset (@x:0px, @y:1px, @blur:0px, @color:#efefef) {
+    -webkit-box-shadow: inset @x @y @blur @color;
+       -moz-box-shadow: inset @x @y @blur @color;
+            box-shadow: inset @x @y @blur @color;
+}
+
+.shadow_inset_all(@x:0px, @y:1px, @blur:0px, @color:#efefef) {
+    -webkit-box-shadow: inset @x @y @blur @color, inset -@x @y @blur @color;
+       -moz-box-shadow: inset @x @y @blur @color, inset -@x @y @blur @color;
+            box-shadow: inset @x @y @blur @color, inset -@x @y @blur @color;
+}
+
+.radius (@a, @b, @c, @d) {
+	-webkit-border-radius: @a @b @c @d;
+	   -moz-border-radius: @a @b @c @d;
+            border-radius: @a @b @c @d;
+}
+
+.radius_all(@a) {
+	.radius(@a, @a, @a, @a);
+}
+
+.box_sizing(@model) {
+    -webkit-box-sizing: @model;
+       -moz-box-sizing: @model;
+            box-sizing: @model;
+}
+
+.image_circle_border(@bd: @gray_white_color, @pad:4px; @bg: @white_color) {
+    .radius_all(50%);
+    border: 1px solid @bd;
+    background: @bg;
+    padding: @pad;
+}

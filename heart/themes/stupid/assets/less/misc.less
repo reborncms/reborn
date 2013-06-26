@@ -1,0 +1,197 @@
+/**
+ * This is miscellaneous styles collection.
+ *
+ * (1) Breadcrumbs
+ * (2) Message Box
+ * (3) Search Box
+
+/** Breadcrumbs Style **/
+
+.breadcrumb {
+	font-size: 14px;
+	padding: 10px 10px;
+	width: auto;
+
+	a {
+		padding: 5px 20px 5px 5px;
+		background: url(../img/breadcrumb-arrow.png) right center no-repeat transparent;
+		color: #878787;
+		display: inline-block;
+
+		&:hover, &:active, &.active {
+			color: @black_color;
+		}
+	}
+
+	span {
+		padding-left: 5px;
+		color: #878787;
+	}
+
+	&.breadcrumb-icon {
+		a {
+
+			i {
+				font-size: 24px;
+				color: #878787;
+				width: 20px;
+				height: 20px;
+				margin-right: 0;
+
+				&:hover, &:active, &.active {
+					color: @black_color;
+				}
+			}
+		}
+	}
+
+	&.white-text {
+		a {
+			color: @white_color;
+
+			&:hover, &:active, &.active {
+				color: @khaki_color;
+			}
+		}
+
+		span {
+			color: @white_color;
+		}
+
+		&.breadcrumb-icon {
+			a {
+				i {
+					color: @white_color;
+
+					&:hover, &:active, &.active {
+						color: @khaki_color;
+					}
+				}
+			}
+		}
+	}
+}
+
+/** Message Box **/
+.msg-box, .alert {
+	padding: 12px 10px;
+	display: block;
+	position: relative;
+	color: @white_color;
+	margin: 10px 0;
+	background: @gray_light_color;
+
+	&.msg-error, &.alert-error {
+		background: @red_color;
+	}
+
+	&.msg-success, &.alert-success {
+		background: @green_light_color;
+	}
+
+	&.msg-info, &.alert-info {
+		background: @blue_light_color;
+	}
+
+	&.msg-warning, &.alert-warning {
+		background: @orange_color;
+	}
+
+	.msg-close {
+		color: @white_color;
+		position: absolute;
+		width: 14px;
+		height: 14px;
+		display: block;
+		top: 50%;
+		right: 7px;
+		margin-top: -7px;
+
+		a {
+			color: @white_color;
+			display: block;
+			font-size: 13px;
+
+			&:after {
+				content: 'x';
+			}
+		}
+	}
+}
+
+/** Search Box **/
+.search-box {
+	input[type=text], input[type=search] {
+		display: none;
+		width: 150px;
+	}
+
+	input[type=submit], button {
+		.square(25px);
+		.mg(10px);
+		.icon_font();
+		display: inline-block;
+		text-indent: -9999px;
+
+		&:after {
+			content: "H";
+		}
+	}
+}
+
+/* Label Styles */
+.label {
+	padding: 4px 8px;
+	color: @white_color;
+	text-shadow:none;
+	.radius_all(2px);
+	.bg(@gray_color);
+
+	&.label-success {
+		.bg(@green_color);
+	}
+
+	&.label-error {
+		.bg(@red_color);
+	}
+
+	&.label-info {
+		.bg(@blue_color);
+	}
+
+	&.label-warning {
+		.bg(@orange_color);
+	}
+}
+
+/* Alert Style */
+/*
+.alert {
+	padding: 6px 34px 6px 23px;
+	margin-bottom: 20px;
+	max-width: 97%;
+	font-size: 13px;
+	position: relative;
+	.radius_all(2px);
+	text-shadow: 0 1px 0 rgba(95, 95, 95, 0.3);
+
+	background-color: @gray_color;
+	color: @white_color;
+
+	.alert-success {
+		.bg(@green_color);
+	}
+
+	.alert-error {
+		.bg(@red_color);
+	}
+
+	.alert-info {
+		.bg(@blue_color);
+	}
+
+	.alert-warning {
+		.bg(@orange_color);
+	}
+}
+*/

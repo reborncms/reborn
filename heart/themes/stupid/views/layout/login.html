@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+		{{ include:metadata }}
+
+		{{ css("login.css") }}
+
+	</head>
+	<body>
+
+		<div id="login-container">
+			<div id="login-header">
+				<h1>RebornCMS</h1>
+			</div> <!-- end of div#login-header -->
+			<div id="login-box">
+
+				<div id="msg-area">
+					{{ flash() }}
+				</div>
+
+				{{ $layoutBody }}
+
+			</div> <!-- end of div#login-box -->
+
+			<span class="login-register">Powered by <a href="{{ $rebornUrl }}" target="_blank">RebornCMS</a></a></span>
+		</div> <!-- end of div#login-container -->
+
+		{{ js("login.js") }}
+
+	</body>
+</html>

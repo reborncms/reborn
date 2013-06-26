@@ -1,0 +1,169 @@
+
+@media (min-width: 768px) and (max-width: 979px) {
+	.container {
+		width: auto;
+		padding: 0 10px;
+  	}
+
+  	.four-col {
+		width: @4layoutSmall;
+		margin: auto;
+
+		.col {
+			display: inline-block;
+			float: left;
+			margin-left: @4colGapSmall;
+			width: @4colSmall;
+
+			&:first-child {
+				margin-left: 0;
+			}
+
+			&.plus-2 {
+				width: (@4colSmall * 2) + (@4colGapSmall);
+			}
+			&.plus-3 {
+				width: (@4colSmall * 3) + (@4colGapSmall * 2);
+			}
+			&.full-col {
+				width: @4layoutSmall;
+			}
+		}
+	}
+
+	.three-col {
+		width: @3layoutSmall;
+		margin: auto;
+
+		.col {
+			display: inline-block;
+			float: left;
+			margin-left: @3colGapSmall;
+			width: @3colSmall;
+
+			&:first-child {
+				margin-left: 0;
+			}
+
+			&.plus-2 {
+				width: (@3colSmall * 2) + (@3colGapSmall);
+			}
+			&.full-col {
+				width: @3layoutSmall;
+			}
+		}
+	}
+
+	/** App Style **/
+	.block {
+		width: auto;
+	}
+}
+
+
+@media (max-width: 768px) {
+	.container {
+		width: auto;
+		padding: 0 10px;
+  	}
+
+  	.four-col {
+		width: 100%;
+		margin: auto;
+
+		.col {
+			display: inline-block;
+			float: none;
+			margin-left: 0;
+			width: 100%;
+
+			&:first-child {
+				margin-left: 0;
+			}
+
+			&.plus-2 {
+				width: 100%;
+			}
+			&.plus-3 {
+				width: 100%;
+			}
+			&.full-col {
+				width: 100%;
+			}
+		}
+	}
+
+	.three-col {
+		width: 100%;
+		margin: auto;
+
+		.col {
+			display: inline-block;
+			float: none;
+			margin-left: 0;
+			width: 100%;
+
+			&:first-child {
+				margin-left: 0;
+			}
+
+			&.plus-2 {
+				width: 100%;
+			}
+			&.full-col {
+				width: 100%;
+			}
+		}
+	}
+
+	#sidebar {
+  		width: 60px;
+
+  		#nav-toggle {
+  			display: none;
+  		}
+
+  		#reborn {
+  			width: 40px;
+  		}
+
+  		#nav-panel ul li > a {
+  			font-size: 0;
+  		}
+
+  		#nav-panel ul ul.dashboard-second-level {
+			position: absolute;
+			z-index: 999;
+			left: 60px;
+			top: -1px;
+			min-width: 180px;
+			border-top: 1px solid #393939;
+
+			li a {
+				font-size: 1em;
+			}
+		}
+  	}
+
+  	#content-panel {
+  		margin-left: 60px;
+  	}
+
+  	#dashboard-footer {
+  		margin-left: 60px;
+  	}
+
+}
+
+
+@media (max-width: 480px) {
+  	.container {
+		width: auto;
+		padding: 0 10px;
+  	}
+
+  	#welcome span {
+  		display: none;
+  	}
+
+}
