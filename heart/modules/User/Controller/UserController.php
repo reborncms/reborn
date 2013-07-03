@@ -158,17 +158,14 @@ class UserController extends \PublicController
 					    	$user->first_name = $first_name;
 					    	$user->last_name = $last_name;
 
-							if (self::setPassword($user)) {
-								if ($user->save()) {
-							    	$usermeta = self::saveMeta('edit', $user->id);
-									$usermeta->save();
-									
-							        \Flash::success(t('user::user.profile.success'));
-							        return \Redirect::to('user');
-							    } else {
-							        \Flash::error(t('user::user.profile.fail'));
-							    }	
-							}
+							if ($user->save()) {
+						    	$usermeta = self::saveMeta('edit', $user->id);
+								$usermeta->save();
+								
+						        \Flash::success(t('user::user.profile.success'));
+						        return \Redirect::to('user');
+						    }
+
 						} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
 						   \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
 						}
@@ -189,6 +186,65 @@ class UserController extends \PublicController
 			->set('user', $user)
 			->set('usermeta', $usermeta)
 			->setPartial('edit');
+	}
+
+	/**
+	 * Edit profile for logged in Student
+	 *
+	 */
+	public function changePassword()
+	{
+		if(!Sentry::check()) return \Redirect::to('login');
+
+		if (\Input::isPost()) {
+			if (\Security::CSRFvalid('password')) {
+
+				$rule = array(
+			        'newPassword' => 'required|minLength:6',
+			    );
+				$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+
+				if ($v->fail()) {
+						$errors = $v->getErrors();
+						$this->template->set('errors', $errors);
+				} else {
+					try {
+					    $user = Sentry::getUser();
+
+					    $oldPassword = \Input::get('oldPassword');
+					    $newPassword = \Input::get('newPassword');
+					    $confPassword = \Input::get('confPassword');
+
+					    if($user->checkPassword($oldPassword)) {
+
+					       if ($newPassword == $confPassword) {
+					       	 	$user->password = $newPassword;
+					       	 	if ($user->save()) {
+					       	 		\Flash::success('Password successfully changed.');
+					       	 		return \Redirect::to('user/profile');
+					       	 	} else {
+					       	 		\Flash::error('Error while changing password.');
+					       	 	}
+					       		
+					       } else {
+					       		\Flash::error('Password does not match.');
+					       }
+					    } else {
+					        \Flash::error('Old Password does not match.');
+					    }
+					} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
+					    \Flash::error('User does not exit');
+					}
+				}
+			} else {
+				\Flash::error('CSRF Key does not match.');
+			}			
+		}
+
+		$this->template->title('Change Password')
+			->breadcrumb('Profile', rbUrl('user/profile'))
+			->breadcrumb('Change Password')
+			->setPartial('change-password');	
 	}
 
 	/**

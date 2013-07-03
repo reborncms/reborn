@@ -95,35 +95,6 @@
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
-    <hr>
-
-    <div class="input_group">
-		<div class="form_title">
-			{{ Form::label('New Password', 'password') }}
-		</div>
-		<div class="form_input">
-			{{ if(isset($errors['password'])) }}
-			<p class="er">{{ $errors['password'] }}</p>
-			{{ endif }}
-			{{ Form::password('password', '', array('class' => 'input_box')) }}
-			<div class="form_inform">
-				<a original-title="Enter Password if you wants to change" class="info_icon" href="#"></a>
-			</div> <!-- end of form_inform -->
-		</div>
-	</div> <!-- end of input_group -->
-
-	<div class="input_group">
-		<div class="form_title">
-			{{ Form::label('Confirm Password', 'confpass') }}
-		</div>
-		<div class="form_input">
-			{{ Form::password('confpass', '', array('class' => 'input_box')) }}
-			<div class="form_inform">
-				<a original-title="Type the same password again" class="info_icon" href="#"></a>
-			</div> <!-- end of form_inform -->
-		</div>
-	</div> <!-- end of input_group -->
-
 	<div class="input_group">
 		<div class="form_input">
 			{{ Form::hidden('id', $user->id )}}
