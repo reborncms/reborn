@@ -63,8 +63,6 @@
 					</div>
 			    </div> <!-- end of m_preview_area -->
 
-
-
 			</div> <!-- end of m_option_pane -->
 
 			<div id="media_body" class="f-left">
@@ -74,7 +72,7 @@
 						<div class="m_images">
 							<div class="m_img_wrap overflow">
 
-								<img src="{{rbUrl('media/thumb/'.$file->id.'/70/')}}" alt="{{$file->alt_text}}" onclick="javascript:imgPreview({{$file->id}}, '{{$file->name}}', '{{$file->alt_text}}', {{$file->width}}, {{$file->height}});">
+								<img src="{{rbUrl('media/thumb/'.$file->id.'/70/')}}" alt="{{$file->alt_text}}" title="{{ $file->name }}" onclick="javascript:imgPreview({{$file->id}}, '{{$file->name}}', '{{$file->alt_text}}', {{$file->width}}, {{$file->height}});">
 
 							</div> <!-- end of m_img_wrap -->
 						</div>
