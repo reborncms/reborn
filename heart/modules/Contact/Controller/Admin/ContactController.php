@@ -50,7 +50,7 @@ class ContactController extends \AdminController
 	 **/
 	public function detail($id)
 	{
-
+		if (!user_has_access('contact.view')) return $this->notFound();
 		$mail = Mail::where('id', '=', $id)->first();
 		
 		if (count($mail) == 0) return $this->notFound();
@@ -74,6 +74,7 @@ class ContactController extends \AdminController
 	 **/
 	public function delete($id = 0)
 	{
+		if (!user_has_access('contact.delete')) return $this->notFound();
 		$ids = ($id) ? array($id) : \Input::get('action_to');
 
 		$mails = array();

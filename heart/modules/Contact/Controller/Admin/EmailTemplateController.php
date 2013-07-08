@@ -53,6 +53,7 @@ class EmailTemplateController extends \AdminController
 	 **/
 	public function create()
 	{
+		if (!user_has_access('contact.template.add')) return $this->notFound();
 		$template =new \stdClass;
 		if (\Input::isPost()) {
 			if (! \Security::CSRFvalid('contact')) {
@@ -125,6 +126,7 @@ class EmailTemplateController extends \AdminController
 	 **/
 	public function edit($id = null)
 	{
+		if (!user_has_access('contact.template.edit')) return $this->notFound();
 		$template = Etemplate::find($id);
 		if (\Input::isPost()) {
 			if (! \Security::CSRFvalid('contact')) {
@@ -184,6 +186,7 @@ class EmailTemplateController extends \AdminController
 	 **/
 	public function delete($id = 0)
 	{
+		if (!user_has_access('contact.template.delete')) return $this->notFound();
 		$ids = ($id) ? array($id) : \Input::get('action_to');
 
 		$templates = array();

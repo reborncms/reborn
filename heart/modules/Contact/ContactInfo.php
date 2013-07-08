@@ -26,4 +26,13 @@ class ContactInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = false;
 
+	protected $roles = array(
+		'contact.view' => 'View',
+		'contact.reply' => 'Reply',
+		'contact.delete' => 'Delete',
+		'contact.template.add' => 'Template Create',
+		'contact.template.edit' => 'Template Edit',
+		'contact.template.delete' => 'Template Delete',
+	);
+
 }

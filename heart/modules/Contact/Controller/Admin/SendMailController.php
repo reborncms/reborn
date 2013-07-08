@@ -25,6 +25,7 @@ class SendMailController extends \AdminController
 	 **/
 	public function index($id = null)
 	{
+		if (!user_has_access('contact.reply')) return $this->notFound();
 		$mail =new \stdClass;
 		$reply = Mail::where('id', '=', $id)->first();
 		if($reply){
