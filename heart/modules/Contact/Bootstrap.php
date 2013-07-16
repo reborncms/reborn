@@ -13,7 +13,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
 		$menu->add('email', 'Email', '#', null,'icon-mail', 27);
-		$menu->add('contact', 'Contact',$modUri, 'email', null, 27);
+		$menu->add('contact', 'Inbox',$modUri, 'email', null, 27);
 		$menu->add('reply', 'Send Email',$modUri.'/send-mail', 'email', null, 27);
 		$menu->add('etemplate', 'Email Templates',$modUri.'/email-template', 'email', null, 27);
 		/*$menu->add('cform', 'Contact Form',$modUri.'/contact-form', 'email', null, 27);*/

@@ -33,7 +33,7 @@
 	</tbody>
 </table>
 	<div class="button-wrapper" id="delete_select">
-		{{ Form::submit('submit_delete', 'Delete Selected', array('class' => 'confirm_delete button button-red', 'disabled' => 'disabled')) }}
+		{{ Form::submit('submit_delete', Translate::get('global.delete_selected') , array('class' => 'confirm_delete button button-red', 'disabled' => 'disabled')) }}
 		{{ Form::end() }}
 	</div>
 	{{ $pagination }}
