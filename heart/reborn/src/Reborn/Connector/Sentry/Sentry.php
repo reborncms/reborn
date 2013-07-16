@@ -55,7 +55,8 @@ class Sentry {
 			$groupProvider,
 			$throttleProvider,
 			$session,
-			$cookie
+			$cookie,
+			\Input::ip()
 		);
 	}
 

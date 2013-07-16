@@ -31,13 +31,17 @@
 									<div class="draggable_wrap">
 										<div class="nav_title">{{ $list['title'] }}</div>
 										<div class="nav_actions">
-
+											{{ if(user_has_access('nav.edit')) }}
 											<a href="{{ adminUrl("navigation/edit/".$list['id']) }}" class="link-edit tipsy-tip" title="{{ t('global.edit') }}">
 												<i class="icon-edit icon-black"></i>
 											</a>
+											{{ endif }}
+
+											{{ if(user_has_access('nav.delete')) }}
 											<a href="{{ adminUrl("navigation/delete/".$list['id']) }}" class="confirm_delete tipsy-tip" title="{{ t('global.delete') }}">
 												<i class="icon-trash2 icon-black"></i>
 											</a>
+											{{ endif }}
 										</div>
 									</div> <!-- end of draggable_wrap -->
 
@@ -83,6 +87,9 @@
 
 		</div> <!-- end of div#form-left -->
 <!-- ***** End of LEFT SIDE ***** -->
+
+		{{ if(user_has_access('nav.create')) }}
+
 		<div id="form-right">
 
 			<div id="option-control" class="r-m-c">
@@ -203,6 +210,8 @@
 			</div> <!-- end of div.r-container -->
 
 		</div> <!-- end of div#form-right -->
+
+		{{ endif }}
 
 		<div class="form-block"></div>
 

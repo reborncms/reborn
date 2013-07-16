@@ -148,15 +148,19 @@ class Helper
 
 					$output .=	'<div class="nav_actions">';
 
-					$output .= '<a href="'.adminUrl('navigation/edit/'.$link['id']);
-					$output .= '" title="'.t('global.edit').'" class="link-edit tipsy-tip">';
-					$output .= '<i class="icon-edit icon-black"></i>';
-					$output .= '</a>';
+					if(user_has_access('nav.edit')) {
+						$output .= '<a href="'.adminUrl('navigation/edit/'.$link['id']);
+						$output .= '" title="'.t('global.edit').'" class="link-edit tipsy-tip">';
+						$output .= '<i class="icon-edit icon-black"></i>';
+						$output .= '</a>';
+					}
 
-					$output .= '<a href="'.adminUrl('navigation/delete/'.$link['id']);
-					$output .= '" title="'.t('global.delete').'" class="confirm_delete tipsy-tip">';
-					$output .= '<i class="icon-trash2 icon-black"></i>';
-					$output .= '</a>';
+					if(user_has_access('nav.delete')) {
+						$output .= '<a href="'.adminUrl('navigation/delete/'.$link['id']);
+						$output .= '" title="'.t('global.delete').'" class="confirm_delete tipsy-tip">';
+						$output .= '<i class="icon-trash2 icon-black"></i>';
+						$output .= '</a>';
+					}
 
 					$output .= '</div></div> <!-- end of draggable_wrap -->';
 

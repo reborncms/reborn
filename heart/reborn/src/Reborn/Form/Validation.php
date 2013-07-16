@@ -418,5 +418,17 @@ class Validation
         return preg_match($pattern, $value);
     }
 
+    protected function validUnique($value, $table_key)
+    {
+        list($table, $key) = explode('.', $table_key);
+
+        $result = DB::table($table)->where($key, $value)->first();
+
+        if (is_null($result)) {
+            return true;
+        }
+        return false;
+    }
+
 
 } // END class Validation

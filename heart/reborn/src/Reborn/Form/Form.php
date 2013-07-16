@@ -96,6 +96,19 @@ class Form
     }
 
     /**
+     * Text Input
+     *
+     * @param string $name Text input name
+     * @param mixed $value Value of text input
+     * @param array $attrs Attributes
+     * @return string
+     **/
+    public static function text($name, $value = null, $attrs = array())
+    {
+        return static::input($name, $value, 'text', $attrs);
+    }
+
+    /**
      * Password Input
      *
      * @param string $name Password input name

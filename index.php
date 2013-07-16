@@ -30,3 +30,6 @@ if ($app->installed()) {
 } else {
 	$app->install();
 }
+
+// Clear the $app.
+unset($app);
