@@ -299,7 +299,7 @@ class UserController extends \PublicController
 								'from'		=> \Setting::get('site_mail'),
 								'name'		=> \Setting::get('site_title'),
 								'subject'	=> t('user::user.activate.subject'),
-								'body'		=> 'Please active your account by using think link: <a>'.$activationLink.'</a>',
+								'body'		=> 'Please active your account by using following link: <br /><a href="'.$activationLink.'">'.$activationLink.'</a>',
 							);
 
 						    // sent mail to register user
