@@ -12,9 +12,10 @@ require_once __DIR__.'/heart/reborn/src/start.php';
 
 require_once __DIR__.'/heart/vendor/autoload.php';
 
-use Reborn\Console\Command;
+use Reborn\Console\ModuleCommand;
+use Reborn\Cores\Version;
 use Symfony\Component\Console\Application;
 
-$application = new Application();
-$application->add(new Command);
+$application = new Application(Version::getAppName(), Version::getVersion());
+$application->add(new ModuleCommand);
 $application->run();

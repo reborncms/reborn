@@ -34,6 +34,26 @@ class Version
     //const REBORN_FEED = 'http://www.reborncms.com/blog/rss';
 
     /**
+     * Get the Reborn CMS Version
+     *
+     * @return string
+     **/
+    public static function getVersion()
+    {
+        return static::FULL;
+    }
+
+    /**
+     * Get the Application Name
+     *
+     * @return string
+     **/
+    public static function getAppName()
+    {
+        return static::NAME;
+    }
+
+    /**
      * Compare the Given Version and Current Version of Reborn CMS.
      *
      * @param string $version Version of the given to compare with current version.

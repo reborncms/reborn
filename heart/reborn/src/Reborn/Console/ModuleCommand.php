@@ -11,16 +11,16 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Console class for Reborn
+ * ModuleCommand class for Reborn
  *
  * @package Reborn\Console
  * @author Myanmar Links Professional Web Development Team
  **/
-class Command extends SfCommand
+class ModuleCommand extends SfCommand
 {
 	protected function configure()
     {
-        $this->setName('module')
+        $this->setName('module:generate')
             ->setDescription('Module generate from console');
     }
 
