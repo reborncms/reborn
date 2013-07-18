@@ -23,7 +23,8 @@
         "illuminate/database": "4.0.*@dev",
         "cartalyst/sentry": "2.0.*@dev",
         "swiftmailer/swiftmailer": "4.3.*@dev",
-        "tijsverkoyen/akismet": "dev-master"
+        "tijsverkoyen/akismet": "dev-master",
+        "dflydev/markdown": "1.0.*@dev"
     },
     "autoload": {
         "psr-0": {
