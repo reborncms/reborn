@@ -557,3 +557,33 @@ if (! function_exists('is_home')) {
 		return false;
 	}
 }
+
+/**
+ * Transform Markdown to HTML with dflydev\markdown.
+ *
+ * @param string $text Markdown Text String
+ * @return string
+ **/
+if (! function_exists('markdown')) {
+	function markdown($text)
+	{
+    	$markdownParser = new dflydev\markdown\MarkdownParser();
+
+    	return $markdownParser->transformMarkdown($text);
+	}
+}
+
+/**
+ * Transform MarkdownExtra to HTML with dflydev\markdown.
+ *
+ * @param string $text Markdown Text String
+ * @return string
+ **/
+if (! function_exists('markdown_extra')) {
+	function markdown_extra($text)
+	{
+    	$markdownParser = new dflydev\markdown\MarkdownExtraParser();
+
+    	return $markdownParser->transformMarkdown($text);
+	}
+}
