@@ -247,6 +247,7 @@ class Router
         $this->request->module = $module;
         $this->request->controller = $controller;
         $this->request->action = $action;
+        $this->request->params = $params;
 
         if (!Module::isEnabled($module)) {
             return $this->notFound();

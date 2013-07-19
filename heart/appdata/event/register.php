@@ -30,5 +30,11 @@ return array(
 		array(
 				'name' => 'reborn.controller.process.ending',
 				'callback' => ''
+			),
+		array(
+				'name' => 'reborn.app.profiling',
+				'callback' => function ($response) {
+					return Registry::get('app')->profiler->output($response);
+				}
 			)
 	);

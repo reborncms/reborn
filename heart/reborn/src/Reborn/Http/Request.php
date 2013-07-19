@@ -39,6 +39,13 @@ class Request extends \Symfony\Component\HttpFoundation\Request
     public $action;
 
     /**
+     * Variable for current uri's params
+     *
+     * @var array
+     **/
+    public $params;
+
+    /**
      * Set the request is inner request.
      * This is use for View's Action calling process.
      *

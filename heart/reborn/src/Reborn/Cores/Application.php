@@ -78,6 +78,10 @@ class Application extends \Pimple
             return new Widget();
         });
 
+        $this['profiler'] = $this->share( function() {
+            return new Profiler();
+        });
+
         // Set the Application Object into the Registry
         Registry::set('app', $this);
     }
@@ -204,6 +208,11 @@ class Application extends \Pimple
             $this['session']->start();
         }
 
+        // Start the Profiler
+        if (('dev' == ENV) and Config::get('dev.profiler')) {
+            $this['profiler']->start();
+        }
+
         // Start the Database initialize
         DB::initialize();
 
@@ -235,7 +244,7 @@ class Application extends \Pimple
     {
         $response->prepare($this['request']);
 
-        if(PROFILER) {
+        /*if(PROFILER) {
             $time = Profiler::getTime();
             $mem = Profiler::getMemory();
 
@@ -248,12 +257,22 @@ class Application extends \Pimple
             $content = str_replace('</body>', $profiler, $content);
         } else {
             $content = $response->getContent();
+        }*/
+
+        //$response->setContent($content);
+
+        // Stop the Profiler
+        if (('dev' == ENV) and Config::get('dev.profiler')) {
+            $this['profiler']->stop();
+            // Call the Event Name App Profiling
+            if (Event::has('reborn.app.profiling')) {
+                $result = Event::call('reborn.app.profiling', $response->getContent());
+                $response->setContent($result[0]);
+            }
         }
 
-        $response->setContent($content);
-
         // Call the Event Name App Ending
-        Event::call('reborn.app.ending');
+        Event::call('reborn.app.ending', $response);
 
         return $response->send();
     }
