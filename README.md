@@ -18,6 +18,7 @@ Thanks for opensource packages.
 * [Monolog](http://github.com/Seldaek/monolog)
 * [Pimple](http://pimple.sensiolabs.org)
 * [tijsverkoyen/akismet](https://github.com/tijsverkoyen/Akismet)
+* [dflydev/markdown](https://github.com/dflydev/dflydev-markdown‎)
 
 ### License
 
