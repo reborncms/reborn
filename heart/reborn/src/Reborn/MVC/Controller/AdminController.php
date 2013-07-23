@@ -154,8 +154,8 @@ class AdminController extends Controller
         $this->template->rebornUrl = \Reborn\Cores\Version::URL;
 
         // Set the Reborn Usage
-        $this->template->usageTime = \Reborn\Cores\Profiler::getTime();
-        $this->template->usageMem = \Reborn\Cores\Profiler::getMemory();
+        //$this->template->usageTime = \Reborn\Cores\Profiler::getTime();
+        //$this->template->usageMem = \Reborn\Cores\Profiler::getMemory();
 
         // Set the active module
         $toolbar = \Module::moduleToolbar($this->module);

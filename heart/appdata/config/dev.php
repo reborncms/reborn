@@ -7,6 +7,6 @@ return array(
 		 *
 		 * Type is boolean
 		 */
-		'profiler' => true,
+		'profiler' => false,
 
 	);

@@ -14,9 +14,9 @@ class Profiler
 {
 
     /**
-     * undocumented class variable
+     * Profiler lists array
      *
-     * @var string
+     * @var array
      **/
     protected $profilers = array();
 
