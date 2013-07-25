@@ -67,6 +67,36 @@ class Presentation
 	}
 
 	/**
+	 * Convert the model from this object to Array
+	 *
+	 * @return array
+	 **/
+	public function toArray()
+	{
+		return $this->model->toJson();
+	}
+
+	/**
+	 * Convert the model from this object to Json String
+	 *
+	 * @return string
+	 **/
+	public function toJson()
+	{
+		return json_encode($this->toArray());
+	}
+
+	/**
+	 * Magic method __toString
+	 *
+	 * @return string (Json String)
+	 */
+	public function __toString()
+	{
+		return $this->toJson();
+	}
+
+	/**
 	 * PHP's magic method to get the object variable
 	 *
 	 * @param string $name Property name

@@ -94,4 +94,27 @@ class Collection implements Iterator, ArrayAccess
         return isset($this->items[$this->pos]);
     }
 
+    public function __toString()
+    {
+        return $this->toJson();
+    }
+
+    public function toArray()
+    {
+        if (is_null($this->items)) {
+            return array();
+        }
+
+        return array_map(function($val)
+                {
+                    return $val->toArray();
+
+                }, $this->items);
+    }
+
+    public function toJson()
+    {
+        return json_encode($this->toArray());
+    }
+
 } // END class Collection implements Iterator, ArrayAccess, Countable
