@@ -48,6 +48,8 @@ class Alias
             'Input' => 'Reborn\Http\Input',
             'Log' => 'Reborn\Connector\Log\LogManager',
             'Module' => 'Reborn\Module\ModuleManager',
+            'Presenter' => 'Reborn\Presenter\Presentation',
+            'PresenterCollection' => 'Reborn\Presenter\Collection',
             'Registry' => 'Reborn\Cores\Registry',
             'Route' => 'Reborn\Route\Route',
             'Router' => 'Reborn\Route\Router',
