@@ -16,7 +16,7 @@ class Presentation
 	 *
 	 * @var object|array
 	 **/
-	protected $model;
+	protected $modelObj;
 
 	/**
 	 * Model Key's name.
@@ -45,7 +45,7 @@ class Presentation
 	 **/
 	public function setModel($model)
 	{
-		$this->{$this->model_key} = $this->model = $model;
+		$this->{$this->model_key} = $this->modelObj = $model;
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Presentation
 			return $this->{$name}();
 		}
 
-		return $this->model->{$name};
+		return $this->modelObj->{$name};
 	}
 
 	/**
@@ -89,8 +89,8 @@ class Presentation
 	 **/
 	public function __call($name, $args = array())
 	{
-		if (method_exists($this->model, $name)) {
-			return call_user_func_array(array($this->model, $name), $args);
+		if (method_exists($this->modelObj, $name)) {
+			return call_user_func_array(array($this->modelObj, $name), $args);
 		}
 
 		throw new \RbException('Presenter Error: '.get_called_class().'::'.$name.' method does not exist');
