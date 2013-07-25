@@ -77,6 +77,54 @@ class Request extends \Symfony\Component\HttpFoundation\Request
     }
 
     /**
+     * Check the request format is JSON request
+     *
+     * @return boolean
+     **/
+    public function isJson()
+    {
+        $format = $this->getRequestFormat();
+
+        return ('json' === $format);
+    }
+
+    /**
+     * Check the request format is XML request
+     *
+     * @return boolean
+     **/
+    public function isXml()
+    {
+        $format = $this->getRequestFormat();
+
+        return ('xml' === $format);
+    }
+
+    /**
+     * Check the request format is HTML request
+     *
+     * @return boolean
+     **/
+    public function isHtml()
+    {
+        $format = $this->getRequestFormat();
+
+        return ('html' === $format);
+    }
+
+    /**
+     * Check the request format is CSV request
+     *
+     * @return boolean
+     **/
+    public function isCsv()
+    {
+        $format = $this->getRequestFormat();
+
+        return ('csv' === $format);
+    }
+
+    /**
      * Get the Base URL
      *
      * @return string

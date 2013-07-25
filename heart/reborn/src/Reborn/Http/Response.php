@@ -10,13 +10,5 @@ namespace Reborn\Http;
  **/
 class Response extends \Symfony\Component\HttpFoundation\Response
 {
-    /**
-     * Check the request is Ajax or not
-     *
-     * @return bool
-     **/
-    public function isAjax()
-    {
-        return $this->isXmlHttpRequest();
-    }
+
 } // END Request class

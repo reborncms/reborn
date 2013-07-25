@@ -56,6 +56,15 @@ class ControllerContainer
      */
     protected $Etag = false;
 
+    /**
+     * Variable for Request Format.
+     *
+     * ?_format=html
+     *
+     * @var string
+     **/
+    protected $format = 'html';
+
     public function __construct()
     {
         $this->creator();
@@ -129,6 +138,18 @@ class ControllerContainer
         $this->session = $reg['session'];
         $this->template = $reg['view']->getTemplate();
         $this->theme = $reg['view']->getTheme();
+
+        if ($this->request->isJson()) {
+            $this->format = 'json';
+        }
+
+        if ($this->request->isXml()) {
+            $this->format = 'xml';
+        }
+
+        if ($this->request->isCsv()) {
+            $this->format = 'csv';
+        }
     }
 
     /**
