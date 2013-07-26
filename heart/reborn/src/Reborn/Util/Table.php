@@ -67,6 +67,20 @@ class Table
 	 **/
 	protected $object;
 
+	/**
+	 * Action buttons type name
+	 * Support Type name are
+	 *  - icon [Icon only] eg: <a href="#"><i class="icon-class"></i></a>
+	 *  - icon-text [Icon and Text] eg: <a href="#"><i class="icon-class"></i>TextLabel</a>
+	 *  - text-icon [Text and Icon] eg: <a href="#">TextLabel<i class="icon-class"></i></a>
+	 *  - text [Text Only] eg: <a href="#">TextLabel</a>
+	 *
+	 * Default value is text
+	 *
+	 * @var string
+	 **/
+	protected $buttonType = 'text';
+
 
 	/**
 	 * Static method for Table Instance
@@ -88,6 +102,7 @@ class Table
 	 *  - class [String] Class name for table tag
 	 *  - id [String] Id name for table tag
 	 *  - object [Object] Data Object
+	 *  - btn_type [String] Action Button Type Name
 	 *
 	 * @param array $options
 	 * @return Reborn\Util\Table
@@ -117,11 +132,16 @@ class Table
 		if (isset($options['use_tfoot'])) {
 			$this->useTFoot = (boolean) $options['use_tfoot'];
 		}
+
+		if (isset($options['btn_type'])) {
+			$this->setBtnType($options['btn_type']);
+		}
 	}
 
 	/**
 	 * Set the Data Object.
 	 *
+	 * @param Object $obj Model object
 	 * @return Reborn\Util\Table
 	 **/
 	public function setObject($obj)
@@ -136,21 +156,42 @@ class Table
 	/**
 	 * Set the Table tag's class value
 	 *
+	 * @param string $classes Tabel class [css] string
 	 * @return Reborn\Util\Table
 	 **/
 	public function setTableClass($classes)
 	{
 		$this->table_class = $classes;
+
+		return $this;
 	}
 
 	/**
 	 * Set the Table tag's id value
 	 *
+	 * @param string $id Tabel id string
 	 * @return Reborn\Util\Table
 	 **/
 	public function setTableId($id)
 	{
 		$this->table_id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Set the Action Button Type
+	 *
+	 * @param string $type Action Button Type
+	 * @return Reborn\Util\Table
+	 **/
+	public function setBtnType($type)
+	{
+		if (in_array($type, array('text', 'icon-text', 'text-icon', 'icon'))) {
+			$this->buttonType = $type;
+		}
+
+		return $this;
 	}
 
 	/**
@@ -160,12 +201,12 @@ class Table
 	 * $actions = array(
 	 * 					'edit' => array(
 	 * 								'title' => 'Edit',
-	 * 								'btn-color' => 'blue',
+	 * 								'btn-class' => 'blue',
 	 * 								'url' => rbUrl('blog/edit'), // adminUrl('blog/edit')
 	 * 								'icon' => 'icon-edit'),
 	 * 					'delete' => array(
 	 * 								'title' => 'Delete',
-	 * 								'btn-color' => 'red',
+	 * 								'btn-class' => 'red',
 	 * 								'url' => rbUrl('blog/delete'), // adminUrl('blog/delete')
 	 * 								'icon' => 'icon-delete')
 	 * 				);
@@ -194,7 +235,7 @@ class Table
 	{
 		$act = array();
 		$act['title'] = isset($options['title']) ? $options['title'] : ucfirst($name);
-		$act['btn_color'] = isset($options['btn-color']) ? 'button-'.$options['btn-color'] : '';
+		$act['btn_class'] = isset($options['btn-class']) ? $options['btn-class'] : '';
 		$act['icon'] = isset($options['icon']) ? $options['icon'] : '';
 
 		if (isset($options['url'])) {
@@ -325,9 +366,6 @@ class Table
 	 **/
 	protected function renderTableHeader()
 	{
-		$total_head = count($this->header);
-		$total_cols = count($this->cols);
-
 		$head_row = "\t<thead>\n\t\t<tr class=\"table-head\">";
 
 		if ($this->checkAll) {
@@ -351,9 +389,6 @@ class Table
 	 **/
 	protected function renderTableFooter()
 	{
-		$total_head = count($this->header);
-		$total_cols = count($this->cols);
-
 		$foot_row = "\t<tfoot>\n\t\t<tr class=\"table-footer\">";
 
 		if ($this->checkAll) {
@@ -468,13 +503,51 @@ class Table
 		$cols = '';
 
 		foreach ($this->cols as $k => $col) {
-
 			$cols .= "\n\t\t\t<td>";
-			$cols .= $obj->{$col['key']};
+
+			if (isset($col['type']) and ('date' == $col['type'])) {
+				$cols .= $this->getObjectAttributeDateTime($obj, $col['key'], $col['format']);
+			} else {
+				$cols .= $this->getObjectAttribute($obj, $col['key']);
+			}
+
 			$cols .= '</td>';
 		}
 
 		return $cols;
+	}
+
+	/**
+	 * Get the Object's attribute value
+	 *
+	 * @param Object $obj ModelObject
+	 * @param string $key Object's key name
+	 * @return string
+	 **/
+	protected function getObjectAttribute($obj, $key)
+	{
+		if (false === strpos($key, '.')) {
+			return $obj->{$key};
+		}
+
+		$keys = explode('.', $key, 2);
+
+		return $this->getObjectAttribute($obj->{$keys[0]}, $keys[1]);
+	}
+
+	/**
+	 * Get the Object's datetime attribute value
+	 *
+	 * @param Object $obj ModelObject
+	 * @param string $key Object's key name
+	 * @param string $format Datetime format string
+	 * @return string
+	 **/
+	protected function getObjectAttributeDateTime($obj, $key, $format)
+	{
+		$date = $obj->{$key};
+
+		return rbDate($date, $format);
 	}
 
 	/**
@@ -487,6 +560,7 @@ class Table
 	{
 		$row = "\n\t\t\t<td class=\"td-actions\">";
 		foreach ($this->actions as $action) {
+
 			if (!is_null($obj->{$action['key']})) {
 				$action['url'] = str_replace('[r]', $obj->{$action['key']}, $action['url']);
 			}
@@ -515,12 +589,38 @@ class Table
 		}
 
 		$btn .= 'title="'.$attrs['title'].'" ';
-		$btn .= 'class="ico-button '.$attrs['btn_color'].' tipsy-tip">';
+		$btn .= 'class="'.$attrs['btn_class'].' tipsy-tip">';
 		$btn .= "\n\t\t\t\t\t";
-		$btn .= '<i class="'.$attrs['icon'].' icon-white"></i>';
+		$btn .= $this->getButtonData($attrs);
 		$btn .= "\n\t\t\t\t</a>";
 
 		return $btn;
+	}
+
+	/**
+	 * Get Action Button Inner Data
+	 *
+	 * @param array $attrs Button attributes array
+	 * @return string
+	 **/
+	protected function getButtonData($attrs)
+	{
+		switch ($this->buttonType) {
+			case 'text':
+				return $attrs['title'];
+				break;
+
+			case 'icon-text':
+				return '<i class="'.$attrs['icon'].'"></i>'.$attrs['title'];
+
+			case 'text-icon':
+				return $attrs['title'].'<i class="'.$attrs['icon'].'"></i>';
+
+			case 'icon':
+			default:
+				return '<i class="'.$attrs['icon'].'"></i>';
+				break;
+		}
 	}
 
 }
