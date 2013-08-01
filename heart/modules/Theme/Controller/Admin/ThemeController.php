@@ -127,7 +127,7 @@ class ThemeController extends \AdminController
 						$zip->close();
 
 						\File::delete($zip_file);
-						\Flash::success(sprintf(t('theme::theme.upload_success'),$filename));
+						\Flash::success(sprintf(t('theme::theme.upload.success'),$filename));
 						return \Redirect::toAdmin('theme');
 					} catch (\Exception $e) {
 						\Flash::error($e);

@@ -5,7 +5,7 @@ return array(
 		'admin' 	=> 'User Admin',
 
 		'save'		=> 'Successfully saved permissions',
-		'fail'		=> 'Erro while updating group permissions, please try again',
+		'fail'		=> 'Error while updating group permissions, please try again',
 
 		'delete'	=> 'Delete',
 		'cancel'	=> 'Cancel',

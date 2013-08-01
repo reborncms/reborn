@@ -20,6 +20,5 @@ return array(
 	),
 
 	'unzip_error'			=> 'Error occuring to extract file %s.',
-	'upload_success'		=> 'New theme "%s" is successfully uploaded.',
 	'csrf_error'			=> 'CSRF Token does not match!',
 );
