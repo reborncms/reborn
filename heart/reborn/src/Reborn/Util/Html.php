@@ -119,6 +119,18 @@ class Html
 	}
 
 	/**
+	 * HTML meta Tag. (<meta name="keywords" content="Reborncms, Myanmar, CMS" >)
+	 *
+	 * @param string $name Meta tag name
+	 * @param string $content Meta tag content
+	 * @return string
+	 **/
+	public static function meta($name, $content)
+	{
+		return static::tag('meta', '', array('name' => $name, 'content' => $content));
+	}
+
+	/**
 	 * HTML Header Tag. (<ul>)
 	 *
 	 * @param string $head (h1, h2, h3, h4, h5 or h6)
