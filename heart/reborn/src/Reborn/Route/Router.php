@@ -331,7 +331,7 @@ class Router
     protected function checkCSRF()
     {
         if (Input::isPost()) {
-            if ( Security::CSRFvalid() and (rbUrl() == Input::server('HTTP_REFERER')) ) {
+            if ( Security::CSRFvalid() ) {
                 return true;
             } else {
                 throw new TokenNotMatchException('Request Token doesn\'t match!');
