@@ -42,11 +42,6 @@ class SettingController extends \AdminController
 			return \Redirect::toAdmin('setting/system');
 		}
 
-		if (!\Security::CSRFvalid('rbset')) {
-			\Flash::error(t('global.csrf_fail'));
-			return \Redirect::toAdmin('setting/system');
-		}
-
 		if (\Input::get('type') == 'system') {
 			$fields = $this->settings['system'];
 		} else {

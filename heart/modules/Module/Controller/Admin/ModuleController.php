@@ -148,68 +148,65 @@ class ModuleController extends \AdminController
 				'allowedExt' => array('zip')
 			);
 
-			if (\Security::CSRFvalid()) {
-				$v = \Validation::create(array('file' => \Input::file('fileselect')),
+
+			$v = \Validation::create(array('file' => \Input::file('fileselect')),
 										array('file' => 'required'));
 
-				if ($v->valid()) {
-					// Start the Upload File
-					Upload::initialize('fileselect', $config);
+			if ($v->valid()) {
+				// Start the Upload File
+				Upload::initialize('fileselect', $config);
 
-					if (Upload::isSuccess()) {
-						$data = Upload::upload('fileselect');
-						$data[0]['status'] = 'success';
-					} else {
-						$v = Upload::errors();
-						$data[0]['status'] = 'fail';
-						$error = '';
-						foreach ($v[0] as $k => $s) {
-							if (is_int($k)) {
-								$error .= $s.' ';
-							}
-						}
-						$data[0]['errors'] = $error;
-
-						\Flash::error($error);
-
-						return \Redirect::toAdmin('module/upload');
-					}
-
-					try {
-						$zip_file = $tmp_path.$data[0]['savedName'];
-
-						$filename = str_replace('.zip', '', $data[0]['savedName']);
-
-						// create object
-						$zip = new \ZipArchive() ;
-
-						// open archive
-						if ($zip->open($zip_file) !== TRUE) {
-							\Flash::error(sprintf(t('module::module.unzip_error'),$filename));
-							\File::delete($zip_file);
-							return \Redirect::toAdmin('module/upload');
-						}
-
-						// extract contents to destination directory
-						$zip->extractTo($extract_path);
-
-						// close archive
-						$zip->close();
-
-						\File::delete($zip_file);
-						\Flash::success(sprintf(t('module::module.upload_success'),$filename));
-
-						return \Redirect::toAdmin('module/upload');
-					} catch (\Exception $e) {
-						\Flash::error($e);
-
-						return \Redirect::toAdmin('module/upload');
-					}
+				if (Upload::isSuccess()) {
+					$data = Upload::upload('fileselect');
+					$data[0]['status'] = 'success';
 				} else {
-					\Flash::error(implode("\n\r", $v->getErrors()));
+					$v = Upload::errors();
+					$data[0]['status'] = 'fail';
+					$error = '';
+					foreach ($v[0] as $k => $s) {
+						if (is_int($k)) {
+							$error .= $s.' ';
+						}
+					}
+					$data[0]['errors'] = $error;
+
+					\Flash::error($error);
+
+					return \Redirect::toAdmin('module/upload');
+				}
+
+				try {
+					$zip_file = $tmp_path.$data[0]['savedName'];
+
+					$filename = str_replace('.zip', '', $data[0]['savedName']);
+
+					// create object
+					$zip = new \ZipArchive() ;
+
+					// open archive
+					if ($zip->open($zip_file) !== TRUE) {
+						\Flash::error(sprintf(t('module::module.unzip_error'),$filename));
+						\File::delete($zip_file);
+						return \Redirect::toAdmin('module/upload');
+					}
+
+					// extract contents to destination directory
+					$zip->extractTo($extract_path);
+
+					// close archive
+					$zip->close();
+
+					\File::delete($zip_file);
+					\Flash::success(sprintf(t('module::module.upload_success'),$filename));
+
+					return \Redirect::toAdmin('module/upload');
+				} catch (\Exception $e) {
+					\Flash::error($e);
+
+					return \Redirect::toAdmin('module/upload');
 				}
 			} else {
-				\Flash::error(t('module::module.csrf_error'));
+				\Flash::error(implode("\n\r", $v->getErrors()));
 			}
 		}
 

@@ -17,8 +17,6 @@
 
 	{{ Form::hidden('type', $type) }}
 
-	{{ Security::CSRField('rbset') }}
-
 	{{ loop($settings as $set) }}
 
 	<div class="form-block">

@@ -91,44 +91,40 @@ class NavigationController extends \AdminController
 	public function create()
 	{
 		if(\Input::isPost()) {
-			// check for a valid CSRF token
-			if ( ! \Security::CSRFvalid('navi')) {
-				\Flash::error('navigation::navigation.message.csrf_error');
-			} else {
-				$v = $this->validation();
 
-				if ($v->valid()) {
+			$v = $this->validation();
 
-					$link = new Links();
+			if ($v->valid()) {
 
-					$link->title = \Input::get('title');
-					$link->navigation_id = \Input::get('group');
-					$link->link_type = \Input::get('type');
-					$link->url = $this->getUrl();
-					$link->parent_id = 0;
-					$link->link_order = Links::getLinkOrder(\Input::get('group'));
-					$link->class = \Input::get('class');
-					$link->target = \Input::get('target');
-					//$this->permission = \Input::get('permission');
+				$link = new Links();
 
-					if ($link->save()) {
-						\Cache::deleteFolder('Navigation');
-						$msg = \Translate::get('navigation::navigation.message.create_success');
-						\Flash::success($msg);
+				$link->title = \Input::get('title');
+				$link->navigation_id = \Input::get('group');
+				$link->link_type = \Input::get('type');
+				$link->url = $this->getUrl();
+				$link->parent_id = 0;
+				$link->link_order = Links::getLinkOrder(\Input::get('group'));
+				$link->class = \Input::get('class');
+				$link->target = \Input::get('target');
+				//$this->permission = \Input::get('permission');
 
-						return \Redirect::toAdmin('navigation');
-					} else {
-						$msg = \Translate::get('navigation::navigation.message.create_error');
-						\Flash::error($msg);
+				if ($link->save()) {
+					\Cache::deleteFolder('Navigation');
+					$msg = \Translate::get('navigation::navigation.message.create_success');
+					\Flash::success($msg);
 
-						return \Redirect::toAdmin('navigation');
-					}
+					return \Redirect::toAdmin('navigation');
 				} else {
-					$errors = $v->getErrors();
-					\Flash::error(implode("\n\r", $errors));
+					$msg = \Translate::get('navigation::navigation.message.create_error');
+					\Flash::error($msg);
 
 					return \Redirect::toAdmin('navigation');
 				}
+			} else {
+				$errors = $v->getErrors();
+				\Flash::error(implode("\n\r", $errors));
+
+				return \Redirect::toAdmin('navigation');
 			}
 		}
 	}
