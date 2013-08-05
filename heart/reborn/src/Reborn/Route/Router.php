@@ -6,9 +6,12 @@ use ReflectionClass;
 use Reborn\Cores\Registry;
 use Reborn\Filesystem\File;
 use Reborn\Http\Uri;
+use Reborn\Http\Input;
 use Reborn\Util\Str;
+use Reborn\Util\Security;
 use Reborn\Module\ModuleManager as Module;
 use Reborn\Exception\HttpNotFoundException;
+use Reborn\Exception\TokenNotMatchException;
 
 /**
  * Router Class for Reborn
@@ -97,6 +100,11 @@ class Router
         // Search from the Route Collection
         foreach ($routes as $route) {
             if ($route->match(implode('/', Uri::segments()))) {
+
+                // Check CSRF protection
+                $this->checkCSRF();
+
+                // Route with callback function.
                 if($route->closure instanceof \Closure) {
                     return call_user_func_array($route->closure,
                                                 $route->params);
@@ -108,6 +116,10 @@ class Router
 
         // If not found in Route Controller, find the controller
         if ($route = $this->detectController($uri)) {
+
+            // Check CSRF protection
+            $this->checkCSRF();
+
             return $this->callbackController($route);
         } else {
             // We call the 404.
@@ -309,5 +321,23 @@ class Router
         if (is_readable($path.'routes.php')) {
             require $path.'routes.php';
         }
+    }
+
+    /**
+     * Check the CSRF Token from Request.
+     *
+     * @return boolean|throw TokenNotMatchException
+     **/
+    protected function checkCSRF()
+    {
+        if (Input::isPost()) {
+            if ( Security::CSRFvalid() and (rbUrl() == Input::server('HTTP_REFERER')) ) {
+                return true;
+            } else {
+                throw new TokenNotMatchException('Request Token doesn\'t match!');
+            }
+        }
+
+        return true;
     }
 }

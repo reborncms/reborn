@@ -10,13 +10,15 @@ use Reborn\MVC\View\ViewManager;
 use Reborn\Config\Config;
 use Reborn\Filesystem\File;
 use Reborn\Widget\Widget;
+use Reborn\Util\Security;
 use Reborn\Event\EventManager as Event;
 use Reborn\Cache\CacheManager as Cache;
 use Reborn\Connector\Log\LogManager as Log;
 use Reborn\Connector\DB\DBManager as DB;
 use Reborn\Module\ModuleManager as Module;
-use Reborn\Exception\RbException as RbException;
-use Reborn\Exception\HttpNotFoundException as HttpNotFoundException;
+use Reborn\Exception\RbException;
+use Reborn\Exception\HttpNotFoundException;
+use Reborn\Exception\TokenNotMatchException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\Session\Session as Session;
@@ -181,6 +183,12 @@ class Application extends \Pimple
 
             // Send response to the end method
             $this->end($response);
+        } catch(TokenNotMatchException $e) {
+            // For CSRF Fail
+            \Translate::load('global');
+            \Flash::error(t('global.csrf_fail'));
+
+            return \Redirect::to(\Input::server('REDIRECT_URL'));
         } catch(HttpNotFoundException $e) {
             $view = new \Reborn\MVC\View\View(Config::get('template.cache_path'));
             $content = $view->render(APP.'views'.DS.'404.php');
@@ -244,22 +252,8 @@ class Application extends \Pimple
     {
         $response->prepare($this['request']);
 
-        /*if(PROFILER) {
-            $time = Profiler::getTime();
-            $mem = Profiler::getMemory();
-
-            $profiler = "<div id=\"rb_profiler\">";
-            $profiler .= "Reborn CSM is rendered in $time and Memory $mem useage";
-            $profiler .= "</div>\n</body>";
-
-            $content = $response->getContent();
-
-            $content = str_replace('</body>', $profiler, $content);
-        } else {
-            $content = $response->getContent();
-        }*/
-
-        //$response->setContent($content);
+        // Inject the CSRF Token to Response
+        $response = $this->injectCSRFToken($response);
 
         // Stop the Profiler
         if (('dev' == ENV) and Config::get('dev.profiler')) {
@@ -361,6 +355,26 @@ class Application extends \Pimple
     public function __get($key)
     {
         return isset($this[$key]) ? $this[$key] : null;
+    }
+
+    /**
+     * Inject CSRF Token
+     *
+     * @param Reborn\Http\Response $response Response Object
+     * @return string
+     **/
+    protected function injectCSRFToken($response)
+    {
+        $token = Security::CSRField();
+
+        $body = $response->getContent();
+
+        $output = preg_replace('/(<(form|FORM)[^>]*(method|METHOD)="(post|POST)"[^>]*>)/',
+                         '$0'. "\n\t" .$token, $body);
+
+        $response->setContent($output);
+
+        return $response;
     }
 
 } // END class Application
