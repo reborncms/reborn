@@ -11,6 +11,9 @@
  */
 
 return array(
+	// Admin Toolbar
+	'welcome_reborn'=> 'Welcome to Reborn CMS',
+
 	// Button Language
 	'delete'		=> 'Delete',
 	'delete_selected'=> 'Delete Selected',

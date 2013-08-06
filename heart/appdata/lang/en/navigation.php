@@ -13,7 +13,7 @@
 return array(
 
 	'dashboard'		=> 'Dashboard',
-	'contents'		=> 'Contents',
+	'content'		=> 'Contents',
 	'blog'			=> 'Blog',
 	'pages'			=> 'Pages',
 	'comments'		=> 'Comments',

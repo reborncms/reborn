@@ -11,6 +11,9 @@
  */
 
 return array(
+	// Admin Toolbar
+	'welcome_reborn'=> 'Reborn CMS  မှ ကြိုဆိုပါတယ်။',
+
 	// Button Language
 	'delete'		=> 'ဖျက်မည်',
 	'delete_selected'=> 'ရွေးချယ်ထားသည်များကို ဖျက်မည်',
