@@ -34,6 +34,10 @@ return array(
 	'clone'			=> 'Clone',
 	'search'		=> 'Search',
 
+	//label
+	'created_at'	=> 'Created at',
+	'updated_at'	=> 'Updated at',
+
 	// Question, Button Language
 	'Yes'			=> 'Yes',
 	'no'			=> 'No',

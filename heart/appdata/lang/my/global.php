@@ -34,6 +34,10 @@ return array(
 	'clone'			=> 'ပုံတူပွားမည်',
 	'search'		=> 'ရှာဖွေမည်',
 
+	//label
+	'created_at'	=> 'စတင်ပြုလုပ်သည့်အချိန်',
+	'updated_at'	=> 'နောက်ဆုံးပြင်ဆင်သည့်အချိန်',
+
 	// Question, Button Language
 	'Yes'			=> 'လုပ်မည်',
 	'no'			=> 'မလုပ်ပါ',
