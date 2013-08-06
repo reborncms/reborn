@@ -1,4 +1,6 @@
-# SetEnv REBORN_ENV production
+# ------------------------------------------------------------------------------
+# | Rewrite engine and Folder access |
+# ------------------------------------------------------------------------------
 
 <IfModule mod_rewrite.c>
 
@@ -8,52 +10,79 @@
 	RewriteEngine on
 
     # Send request via index.php (again, not if its a real file or folder)
-	#RewriteCond %{REQUEST_FILENAME} !-f
-	#RewriteCond %{REQUEST_FILENAME} !-d
-	#RewriteRule !\.(css|jpg)$ index.php
 	RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ index.php [QSA,L]
 
-   # deal with php5-cgi first
-	<IfModule mod_fcgid.c>
-		#RewriteRule ^(.*)$ index.php?/$1 [QSA,L]
-		#RewriteRule !\.(css|img|jpg)$ /index.php
-	</IfModule>
-
-	<IfModule !mod_fcgid.c>
-
-		# for normal Apache installations
-		<IfModule mod_php5.c>
-			# RewriteRule ^(.*)$ index.php/$1 [L]
-			# RewriteRule !\.(css|img|jpg)$ /index.php/$1 [L]
-		</IfModule>
-
-		# for Apache FGCI installations
-		<IfModule !mod_php5.c>
-			# RewriteRule ^(.*)$ index.php?/$1 [QSA,L]
-			# RewriteRule !\.(css|img|jpg)$ /index.php?/$1 [QSA,L]
-		</IfModule>
-
-	</IfModule>
-
 </IfModule>
 
-# BEGIN EXPIRES for Static File
+# ------------------------------------------------------------------------------
+# | Expires headers (for better cache control) |
+# ------------------------------------------------------------------------------
+
+# Cache for static file.
+# This scripts is original resources from
+#  - https://github.com/h5bp/html5-boilerplate/blob/master/.htaccess
+
+# The following expires headers are set pretty far in the future. If you don't
+# control versioning with filename-based cache busting, consider lowering the
+# cache time for resources like CSS and JS to something like 1 week.
+
 <IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresDefault "access plus 10 days"
-    ExpiresByType text/css "access plus 1 week"
-    ExpiresByType text/plain "access plus 1 month"
+
+    ExpiresActive on
+    ExpiresDefault "access plus 1 month"
+
+  # CSS
+    ExpiresByType text/css "access plus 1 year"
+
+  # Data interchange
+    ExpiresByType application/json "access plus 0 seconds"
+    ExpiresByType application/xml "access plus 0 seconds"
+    ExpiresByType text/xml "access plus 0 seconds"
+
+  # Favicon (cannot be renamed!)
+    ExpiresByType image/x-icon "access plus 1 week"
+    ExpiresByType application/x-icon "access plus 1 week"
+
+  # HTML components (HTCs)
+    ExpiresByType text/x-component "access plus 1 month"
+
+  # HTML
+    ExpiresByType text/html "access plus 0 seconds"
+
+  # JavaScript
+    ExpiresByType application/javascript "access plus 1 year"
+
+  # Manifest files
+    ExpiresByType application/x-web-app-manifest+json "access plus 0 seconds"
+    ExpiresByType text/cache-manifest "access plus 0 seconds"
+
+  # Media
+    ExpiresByType audio/ogg "access plus 1 month"
     ExpiresByType image/gif "access plus 1 month"
-    ExpiresByType image/png "access plus 1 month"
     ExpiresByType image/jpeg "access plus 1 month"
-    ExpiresByType application/x-javascript "access plus 1 month"
-    ExpiresByType application/javascript "access plus 1 week"
-    ExpiresByType application/x-icon "access plus 1 year"
-    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType video/mp4 "access plus 1 month"
+    ExpiresByType video/ogg "access plus 1 month"
+    ExpiresByType video/webm "access plus 1 month"
+
+  # Web feeds
+    ExpiresByType application/atom+xml "access plus 1 hour"
+    ExpiresByType application/rss+xml "access plus 1 hour"
+
+  # Web fonts
+    ExpiresByType application/font-woff "access plus 1 month"
+    ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
+    ExpiresByType application/x-font-ttf "access plus 1 month"
+    ExpiresByType font/opentype "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+
 </IfModule>
 # END EXPIRES
 
-#add ETags.
+# ------------------------------------------------------------------------------
+# | ETag for Static File |
+# ------------------------------------------------------------------------------
+
 FileETag MTime Size
 
