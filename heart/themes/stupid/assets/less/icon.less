@@ -938,3 +938,54 @@
 .icon-view:before {
 	content: "\76\69\65\77";
 }
+
+.icons-bar {
+	font-size: 0;
+	border: 1px solid @gray_light_color;
+	display: inline-block;
+	.radius_all(4px);
+
+	a, button {
+		border-right: 1px solid @gray_light_color;
+		border-left: 1px solid @white_color;
+		padding: 1px 8px;
+		background: #f9f9f9;
+		margin-right: 0;
+		font-size: @p_font_size;
+		display: inline-block;
+
+		&:first-child {
+			border-left: none;
+			.radius(4px, 0, 0, 4px);
+		}
+
+		&:last-child {
+			border-right: none;
+			.radius(0, 4px, 4px, 0);
+		}
+
+		&:hover {
+			background: #E9E9E9;
+		}
+	}
+
+}
+
+.icons-group {
+	.icons-bar {
+		margin-right: 10px;
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.icons-bar {
+		a {
+			padding: 1px 6px;
+		}
+	}
+}
+
