@@ -5,7 +5,9 @@ return array(
 	/**
 	 * Default Language for Reborn CMS
 	 */
-	'lang' => 'en',
+	'lang' => function() {
+				return \Setting::get('default_language', 'en');
+			},
 
 	/**
 	 * Supported Language for Reborn CMS

@@ -79,7 +79,7 @@ class Menu
 		}
 		$icon = '<i class="icon-globe icon-grey"></i>';
 		$output = '<li id="dashboard-dashboard" class="first '.$class.'">';
-		$output .= '<a href="'.adminUrl().'" >'.$icon.'Dashboard</a>';
+		$output .= '<a href="'.adminUrl().'" >'.$icon.t('navigation.dashboard').'</a>';
 		$output .= '</li>';
 
 		foreach ($this->items as $order => $child) {
@@ -211,7 +211,8 @@ class Menu
 	 **/
 	protected function displayName($name)
 	{
-		return ucwords(str_replace('_', ' ', $name));
+		$name = t('navigation.'.$name, ucwords(str_replace('_', ' ', $name)));
+		return $name;
 	}
 
 	/**

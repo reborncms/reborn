@@ -41,18 +41,11 @@ class TranslateManager
     protected static $paths = array();
 
     /**
-     * undocumented class variable
+     * Language cache variable
      *
-     * @var string
+     * @var array
      **/
     protected static $caches = array();
-
-    public function __construct($locale, $fallback_locale = 'en' )
-    {
-        static::setPath();
-        static::$locale = $locale;
-        static::$fallback_locale = $fallback_locale;
-    }
 
     /**
      * Set the Language File Path.
@@ -149,6 +142,11 @@ class TranslateManager
     {
         $locale = is_null($locale) ? static::$locale : $locale;
         $k = explode('.', $key);
+
+        // If data does't exits in cache, call the load()
+        if (!isset(static::$caches[$locale][$k[0]])) {
+            static::load($k[0], null, $locale, $type);
+        }
 
         if (isset(static::$fileLoaders[$type])) {
             $loaderClass = static::$fileLoaders[$type];
