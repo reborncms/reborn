@@ -52,6 +52,7 @@ return array(
 	// Post Status Language
 	'draft'			=> 'အကြမ်းသိမ်းမည်',
 	'live'			=> 'ထုတ်လွှင့်မည်',
+	'draft_label'	=> 'စာကြမ်း',
 
 	// Selection Language
 	'sel-none'		=> '-- ဘာမှမရွေးထားပါ --',

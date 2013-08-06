@@ -52,6 +52,7 @@ return array(
 	// Post Status Language
 	'draft'			=> 'Draft',
 	'live'			=> 'Live',
+	'draft_label'	=> 'Draft',
 
 	// Selection Language
 	'sel-none'		=> '-- None --',
