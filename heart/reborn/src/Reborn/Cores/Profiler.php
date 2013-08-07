@@ -52,7 +52,8 @@ class Profiler
      **/
     public function output($content)
     {
-        if (('dev' == ENV) and \Config::get('dev.profiler')) {
+        $app = Registry::get('app');
+        if (('dev' == $app['env']) and \Config::get('dev.profiler')) {
             $data = array();
 
             foreach ($this->profilers as $name => $p) {
@@ -68,7 +69,7 @@ class Profiler
             $data['get'] = $_GET;
             $data['post'] = $_POST;
 
-            $request = Registry::get('app')->request;
+            $request = $app->request;
             $data['request']['URL'] = \Uri::current();
             $data['request']['URI'] = \Uri::uriString();
             $data['request']['Module'] = $request->module;

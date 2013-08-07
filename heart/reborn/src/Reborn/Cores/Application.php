@@ -89,6 +89,22 @@ class Application extends \Pimple
     }
 
     /**
+     * Set the Reborn CMS Environment
+     * Reborn accept 3 type of environment
+     *  1) - dev (For Development Stage)
+     *  2) - test (For Testing Stage)
+     *  3) - production (For Production Stage)
+     *
+     * @param string $env
+     * @return void
+     **/
+    public function setAppEnvironment($env)
+    {
+        $accept_envs = array('dev', 'test', 'production');
+        $this['env'] = in_array($env, $accept_envs) ? $env : 'production';
+    }
+
+    /**
      * Check Reborn is already installed
      *
      * @return boolean
@@ -217,7 +233,7 @@ class Application extends \Pimple
         }
 
         // Start the Profiler
-        if (('dev' == ENV) and Config::get('dev.profiler')) {
+        if (('dev' == $this['env']) and Config::get('dev.profiler')) {
             $this['profiler']->start();
         }
 
@@ -256,7 +272,7 @@ class Application extends \Pimple
         $response = $this->injectCSRFToken($response);
 
         // Stop the Profiler
-        if (('dev' == ENV) and Config::get('dev.profiler')) {
+        if (('dev' == $this['env']) and Config::get('dev.profiler')) {
             $this['profiler']->stop();
             // Call the Event Name App Profiling
             if (Event::has('reborn.app.profiling')) {
