@@ -3,6 +3,7 @@
 namespace Reborn\MVC\View;
 
 use Reborn\Cores\Registry;
+use Reborn\Asset\Asset;
 use Reborn\Module\ModuleManager as Module;
 use Reborn\Exception\FileNotFoundException;
 
@@ -60,7 +61,7 @@ class Template
     /**
      * Variable for the Asset Object
      *
-     * @var \Reborn\MVC\View\Asset
+     * @var \Reborn\Asset\Asset
      **/
     protected $asset;
 

@@ -5,4 +5,5 @@ Changelog.md
 storages/maps/*.json
 heart/vendor/*
 content/modules/*
+assets/*
 heart/appdata/config/db.php

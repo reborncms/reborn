@@ -268,8 +268,26 @@ if(! function_exists('css'))
 	function css($file, $media = "all", $module = null)
 	{
 		$theme = Registry::get('app')->view->getTheme();
-		$asset = new Reborn\MVC\View\Asset($theme->getThemePath());
+		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		return $asset->css($file, $media, $module);
+	}
+}
+
+/**
+ * Helper function for the Asset::less().
+ *
+ * @param string $file LESS filename with extension.
+ * @param string $media Medaia type for CSS tag. Default is "all"
+ * @param string $module If you want to use LESS from module, set module name
+ * @return string
+ **/
+if(! function_exists('less'))
+{
+	function less($file, $media = "all", $module = null)
+	{
+		$theme = Registry::get('app')->view->getTheme();
+		$asset = new Reborn\Asset\Asset($theme->getThemePath());
+		return $asset->less($file, $media, $module);
 	}
 }
 
@@ -283,7 +301,7 @@ if(! function_exists('js'))
 	function js($file, $module = null)
 	{
 		$theme = Registry::get('app')->view->getTheme();
-		$asset = new Reborn\MVC\View\Asset($theme->getThemePath());
+		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		return $asset->js($file, $module);
 	}
 }
@@ -298,7 +316,7 @@ if(! function_exists('img'))
 	function img($file, $alt = null, $attr = array(), $module = null)
 	{
 		$theme = Registry::get('app')->view->getTheme();
-		$asset = new Reborn\MVC\View\Asset($theme->getThemePath());
+		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		return $asset->img($file, $alt, $attr, $module);
 	}
 }
@@ -313,7 +331,7 @@ if(! function_exists('assetPath'))
 	function assetPath($type = null, $module = null)
 	{
 		$theme = Registry::get('app')->view->getTheme();
-		$asset = new Reborn\MVC\View\Asset($theme->getThemePath());
+		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		switch($type) {
 			case 'css' :
 				return $asset->getCssPath($module);

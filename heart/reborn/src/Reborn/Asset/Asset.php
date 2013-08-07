@@ -1,15 +1,16 @@
 <?php
 
-namespace Reborn\MVC\View;
+namespace Reborn\Asset;
 
 use Reborn\Cores\Registry;
+use Reborn\Filesystem\Directory as Dir;
 use Reborn\Module\ModuleManager as Module;
 use Reborn\Exception\FileNotFoundException;
 
 /**
  * Asset Management class for the Reborn
  *
- * @package Reborn\MVC\View
+ * @package Reborn\Asset
  * @author Myanmar Links Professional Web Development Team
  **/
 class Asset
@@ -97,6 +98,24 @@ class Asset
 	}
 
 	/**
+	 * Get the less folder's URL path by given module or active theme.
+	 * example:
+	 * <code>
+	 * 		// return the active theme's less path
+	 * 		// eg: active theme = default
+	 * 		// output = http://localhost/reborn/content/themes/default/assets/less/
+	 * 		$this->asset->getLessPath();
+	 * </code>
+	 *
+	 * @param string|null $module Module name
+	 * @return string
+	 **/
+	public function getLessPath($module = null)
+	{
+		return $this->findPath('less', $module);
+	}
+
+	/**
 	 * Get the js folder's URL path by given module or active theme.
 	 * example:
 	 * <code>
@@ -146,6 +165,35 @@ class Asset
 		if (is_null($url)) return false;
 
 		return '<link rel="stylesheet" type="text/css" href="'.$url.'" media="'.$media.'">';
+	}
+
+	/**
+	 * Get the LeSS(stylesheet) file by given filename from module or active theme.
+	 *
+	 * @param string $file Stylesheet file name with extension
+	 * @param string $media Media type for stylesheet tag
+	 * @param string|null $module If you want file from module, set the module name.
+	 * @return string
+	 **/
+	public function less($file, $media = "all", $module = null)
+	{
+		if (!is_null($module)) {
+			list($real, $url) = $this->getModuelAssetPath($module);
+
+			$filePath = $real.'less'.DS;
+		} else {
+			$filePath = $this->realPath.'less'.DS;
+		}
+
+		if (!file_exists($lessfile = $filePath.$file)) {
+			return null;
+		}
+
+		$resolver = new LessResolver();
+
+		$solvedUrl = $resolver->solve($lessfile);
+
+		return '<link rel="stylesheet" type="text/css" href="'.$solvedUrl.'" media="'.$media.'">';
 	}
 
 	/**
@@ -230,15 +278,16 @@ class Asset
 	/**
 	 * Find the asset file in the given path.
 	 * If file is cannot find in given path, return the
-	 * Throw FileNotFoundException at the 'dev' Enviroment,
-	 * In the other enviroment (eg: production) return the null.
+	 * Throw FileNotFoundException at the 'dev' Environment,
+	 * In the other environment (eg: production) return the null.
 	 *
 	 * @param string $type Asset Type (css, js, img)
 	 * @param string $file Asset file name with extension
 	 * @param string|null $module Module name for asset file from module
+	 * @param boolean $noTime Without file modify time
 	 * @return mixed
 	 **/
-	protected function find($type, $file, $module = null)
+	protected function find($type, $file, $module = null, $noTime = false)
 	{
 		if (preg_match('/^http/', $file)) {
 			return $file;
@@ -257,13 +306,18 @@ class Asset
 		}
 
 		if (file_exists($filePath)) {
+			if ($noTime) {
+				return $urlPath;
+			}
+
 			$mTime = filemtime($filePath);
 			return $urlPath.'?'.$mTime;
 		}
 
 
 		// File Not Found Exception Only in Development Stage
-		if (ENV == 'dev') {
+		$app = Registry::get('app');
+		if ($app['env'] == 'dev') {
 			throw new FileNotFoundException($file, $path);
 		}
 

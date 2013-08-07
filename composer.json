@@ -24,7 +24,8 @@
         "cartalyst/sentry": "2.0.*@dev",
         "swiftmailer/swiftmailer": "4.3.*@dev",
         "tijsverkoyen/akismet": "dev-master",
-        "dflydev/markdown": "1.0.*@dev"
+        "dflydev/markdown": "1.0.*@dev",
+        "leafo/lessphp": "0.3.9"
     },
     "autoload": {
         "psr-0": {
