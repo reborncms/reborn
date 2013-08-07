@@ -1,25 +1,5 @@
 <?php
 
-// Define Application Everoment
-if(!defined('ENV'))
-{
-	$env = isset($_SERVER['REBORN_ENV']) ? $_SERVER['REBORN_ENV'] : 'dev';
-	define('ENV', $env);
-}
-
-// Error Reporting base on Reborn Enveroment
-if($env != 'production')
-{
-	ini_set('display_errors', 'On');
-	error_reporting(-1);
-}
-else
-{
-	error_reporting(0);
-	ini_set('display_errors', 'Off');
-}
-
-
 // Define Profiler
 if(! defined('PROFILER'))
 {
