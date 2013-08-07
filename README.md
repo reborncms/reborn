@@ -19,6 +19,7 @@ Thanks for opensource packages.
 * [Pimple](http://pimple.sensiolabs.org)
 * [tijsverkoyen/akismet](https://github.com/tijsverkoyen/Akismet)
 * [dflydev/markdown](https://github.com/dflydev/dflydev-markdown‎)
+* [leafo/lessphp](https://github.com/leafo/lessphp)
 
 ### License
 
