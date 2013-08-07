@@ -8,14 +8,14 @@
 
 
 // Custom Mixims
-.wh (@w; @h) {
+.wh (@w, @h) {
 	width: @w;
 	height: @h;
 }
 .square (@size) {
 	.wh(@size, @size)
 }
-.pos (@l; @t)
+.pos (@l, @t)
 {
 	background-position: @l @t;
 }
@@ -84,7 +84,7 @@
             box-sizing: @model;
 }
 
-.image_circle_border(@bd: @gray_white_color, @pad:4px; @bg: @white_color) {
+.image_circle_border(@bd:@gray_white_color, @pad:4px, @bg:@white_color) {
     .radius_all(50%);
     border: 1px solid @bd;
     background: @bg;

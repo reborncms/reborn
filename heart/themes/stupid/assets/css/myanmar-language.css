@@ -1,0 +1,7 @@
+/**
+ * Myanmar Language Style Templte
+ */
+
+/* ----- Override jQuery-UI ----- */
+.ui-widget { font-family: Arial, Myanmar3,sans-serif; font-size: 13px; }
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Arial,Myanmar3,sans-serif; font-size: 1em; }
