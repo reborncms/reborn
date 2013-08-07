@@ -118,7 +118,7 @@ class LessResolver
 					$newpath = $this->filepath;
 				}
 
-				$url = str_replace(BASE, DS, $newpath);
+				$url = str_replace(BASE, $this->url, $newpath);
 				$clearurl = str_replace(array('../','\'', '"'), '', $uri);
 				$replace[$k] = '"'.$url.DS.$clearurl.'"';
 			} else {
