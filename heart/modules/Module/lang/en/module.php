@@ -25,9 +25,11 @@ return array(
 	'upload_btn'			=> 'Upload File',
 
 	'no_have_mods'			=> 'You have no addon modules.',
+	'no_news'				=> 'You have no brandnew modules.',
 
 	'mod_author'			=> 'This modules is created by "%s" .',
-	'mod_website'			=> 'You can found at %s.',
+	'mod_website'			=> 'You can found at <a href="%s" target="_blank">%s</a>.',
+	'click_to_change'		=> 'Click to change status',
 
 	'disable_success'		=> 'The module "%s" has been disabled.',
 	'disable_error'			=> 'Could not disable the module "%s"!',
@@ -53,7 +55,21 @@ return array(
 	'plugged_mods'			=> 'Plugged Modules',
 	'unplug_mods'			=> 'UnPlug Modules',
 	'system_mods'			=> 'System Modules',
-	'system_mods_label'		=> 'Reborn CMS doesn\'t allow to change module status and remove for System Modules. Because Reborn CMS is Mainly base on these module.'
+	'system_mods_label'		=> 'Reborn CMS doesn\'t allow to change module status and remove for System Modules. Because Reborn CMS is Mainly base on these module.',
+
+	// Toolbar
+	'manage'				=> 'Manage',
+	'manage_info'			=> 'Management Area for Reborn Module',
+	'upload_area'			=> 'Upload New Module',
+	'upload_area_info'		=> 'Upload new module for Reborn CMS',
+
+	// Button Label
+	'btn_label_upgrade'		=> 'Need To Upgrade',
+	'btn_label_delete'		=> 'Click to Delete',
+	'btn_label_install'		=> 'Click to Install',
+	'btn_label_uninstall'	=> 'Click to UnInstall',
+	'btn_label_disable'		=> 'Click to Disable',
+	'btn_label_enable'		=> 'Click to Enable',
 
 );
 

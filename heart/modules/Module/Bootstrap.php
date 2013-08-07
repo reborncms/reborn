@@ -17,7 +17,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
-		$menu->add('module', 'Module Manager', $modUri, 'utilities', $order = 35);
+		$menu->add('module', t('module::module.title'), $modUri, 'utilities', $order = 35);
 	}
 
 	public function moduleToolbar()
@@ -25,14 +25,14 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		$mod_toolbar = array(
 			'index'	=> array(
                 'url'	=> 'module',
-                'name'	=> 'Manage',
-                'info'	=> 'Management Area for Reborn Module',
+                'name'	=> t('module::module.manage'),
+                'info'	=> t('module::module.manage_info'),
                 'class'	=> 'add'
             ),
             'add'	=> array(
                 'url'	=> 'module/upload',
-                'name'	=> 'Upload New Module',
-                'info'	=> 'Upload new module for Reborn CMS',
+                'name'	=> t('module::module.upload_area'),
+                'info'	=> t('module::module.upload_area_info'),
                 'class'	=> 'add'
             ),
         );

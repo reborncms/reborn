@@ -21,26 +21,26 @@
 				</div> <!-- end of div.mod-desc -->
 				<div class="mod-body-left">
 					<div class="mod-author">
-						Developed by : {{ $m['author'] }}
+						{{ sprintf(t('module::module.mod_author'), $m['author']) }}
 					</div> <!-- end of div.mod-author -->
 					<div class="mod-url">
-						Website : <a href="{{ $m['authorUrl'] }}" target="_blank"> {{ $m['authorUrl'] }}</a>
+						{{ sprintf(t('module::module.mod_website'), $m['authorUrl'], $m['authorUrl']) }}
 					</div> <!-- end of div.mod-url -->
 				</div> <!-- end of div.mod-body-left -->
 				<div class="mod-body-right">
-					<p>Module is {{ $status }}</p>
+					<p>{{ t('module::module.'.lcfirst($status)) }}</p>
 				</div> <!-- end of div.mod-body-right -->
 			</div> <!-- end of div.mod-body -->
 
 			<div class="mod-actions clearfix">
 
-				<a href="{{ adminUrl("module/install/$slug") }}" class="ico-button button-green tipsy-tip" title="Click to Install">
+				<a href="{{ adminUrl("module/install/$slug") }}" class="ico-btn btn-green tipsy-tip" title="{{ t('module::module.btn_label_install') }}">
 					<i class="icon-tick2 icon-white"></i>
 				</a>
 
 				{{ ifnot($m['isCore']) }}
 				<a href="{{ adminUrl("module/delete/$slug") }}"
-				class="button button-red tipsy-tip" title="Click to Delete">
+				class="btn btn-red tipsy-tip" title="{{ t('module::module.btn_label_delete') }}">
 					<i class="icon-trash2 icon-white"></i>
 				</a>
 				{{ endif }}
@@ -49,6 +49,10 @@
 
 		</div> <!-- end of div.sw-mod -->
 		{{ endloop }}
+	{{ else }}
+		<div id="no-index-data">
+		{{ t('module::module.no_news') }}
+		</div>
 	{{ endif }}
 	</div> <!-- end of div.switchs -->
 

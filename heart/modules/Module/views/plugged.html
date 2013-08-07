@@ -7,10 +7,10 @@
 
 		{{ if($m['enabled']) }}
 		{= $class = "mod-on" =}
-		{= $status = 'Enable' =}
+		{= $status = 'enable' =}
 		{{ else }}
 		{= $class = "mod-off" =}
-		{= $status = 'Disable' =}
+		{= $status = 'disable' =}
 		{{ endif }}
 
 		<div class="sw-mod">
@@ -21,25 +21,25 @@
 				</div> <!-- end of div.mod-desc -->
 				<div class="mod-body-left">
 					<div class="mod-author">
-						Developed by : {{ $m['author'] }}
+						{{ sprintf(t('module::module.mod_author'), $m['author']) }}
 					</div> <!-- end of div.mod-author -->
 					<div class="mod-url">
-						Website : <a href="{{ $m['authorUrl'] }}" target="_blank"> {{ $m['authorUrl'] }}</a>
+						{{ sprintf(t('module::module.mod_website'), $m['authorUrl'], $m['authorUrl']) }}
 					</div> <!-- end of div.mod-url -->
 				</div> <!-- end of div.mod-body-left -->
 				<div class="mod-body-right">
-					<p>Module is {{ $status }}</p>
-					<p>Click to change status</p>
+					<p>{{ t('module::module.'.$status) }}</p>
+					<p>{{ t('module::module.click_to_change') }}</p>
 
 					{{ if($m['enabled']) }}
 					<a href="{{ adminUrl("module/disable/$slug") }}"
-					class="button button-orange tipsy-tip" title="Click to Disable">
+					class="btn btn-orange tipsy-tip" title="{{ t('module::module.btn_label_disable') }}">
 						<i class="icon-refresh icon-white"></i>
 						Disable
 					</a>
 					{{ else }}
 					<a href="{{ adminUrl("module/enable/$slug") }}"
-					class="button button-green tipsy-tip" title="Click to Enable">
+					class="btn btn-green tipsy-tip" title="{{ t('module::module.btn_label_enable') }}">
 						<i class="icon-refresh icon-white"></i>
 						Enable
 					</a>
@@ -50,19 +50,19 @@
 			<div class="mod-actions clearfix">
 				{{ if($m['upgradeRequire']) }}
 				<a href="{{ adminUrl("module/upgrade/$slug") }}"
-				class="button button-blue tipsy-tip" title="Need To Upgrade">
-					<i class="icon-cloud-upload icon-white"></i>
+				class="btn btn-blue tipsy-tip" title="{{ t('module::module.btn_label_upgrade') }}">
+					<i class="icon-cloudup icon-white"></i>
 				</a>
 				{{ endif }}
 
-				<a href="{{ adminUrl("module/uninstall/$slug") }}" class="ico-button button-orange tipsy-tip" title="Click to UnInstall">
-					<i class="icon-cross2 icon-white"></i>
+				<a href="{{ adminUrl("module/uninstall/$slug") }}" class="btn btn-orange tipsy-tip" title="{{ t('module::module.btn_label_uninstall') }}">
+					<i class="icon-close icon-white"></i>
 				</a>
 
 				{{ ifnot($m['isCore']) }}
 				<a href="{{ adminUrl("module/delete/$slug") }}"
-				class="button button-red tipsy-tip" title="Click to Delete">
-					<i class="icon-trash2 icon-white"></i>
+				class="btn btn-red tipsy-tip" title="{{ t('module::module.btn_label_delete') }}">
+					<i class="icon-remove icon-white"></i>
 				</a>
 				{{ endif }}
 

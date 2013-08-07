@@ -24,14 +24,17 @@
 </div>
 
 <script>
-	var blocks = $('.sw-mod');
-	var max = 0;
+	$(document).ready(function(){
+		var blocks = $('.sw-mod'),
+			max = 0;
 
-	for(var i = 0; i < blocks.length; i++) {
-		var a = $(blocks[i]).height();
-		if (a > max) {
-			max = a;
+		for(var i =0; i < blocks.length; i++) {
+			var a = $(blocks[i]).height();
+			if (a > max) {
+				max = a;
+			}
 		}
-	}
-	$('.sw-mod').height(max + 3);
+
+		$('.sw-mod').height(max + 3);
+	})
 </script>

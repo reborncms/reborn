@@ -7,10 +7,10 @@
 
 		{{ if($module['enabled']) }}
 		{= $class = "mod-on" =}
-		{= $status = 'Enable' =}
+		{= $status = 'enable' =}
 		{{ else }}
 		{= $class = "mod-off" =}
-		{= $status = 'Disable' =}
+		{= $status = 'disable' =}
 		{{ endif }}
 
 		<div class="sw-mod">
@@ -21,22 +21,22 @@
 				</div> <!-- end of div.mod-desc -->
 				<div class="mod-body-left">
 					<div class="mod-author">
-						Developed by : {{ $m['author'] }}
+						{{ sprintf(t('module::module.mod_author'), $m['author']) }}
 					</div> <!-- end of div.mod-author -->
 					<div class="mod-url">
-						Website : {{ $m['authorUrl'] }}
+						{{ sprintf(t('module::module.mod_website'), $m['authorUrl'], $m['authorUrl']) }}
 					</div> <!-- end of div.mod-url -->
 				</div> <!-- end of div.mod-body-left -->
 				<div class="mod-body-right">
-					<p>Module is {{ $status }}</p>
+					<p>{{ t('module::module.'.$status) }}</p>
 				</div> <!-- end of div.mod-body-right -->
 			</div> <!-- end of div.mod-body -->
 
 			<div class="mod-actions clearfix">
 				{{ if($m['upgradeRequire']) }}
 				<a href="{{ adminUrl("module/upgrade/$slug") }}"
-				class="button button-blue tipsy-tip" title="Need To Upgrade">
-					<i class="icon-cloud-upload icon-white"></i>
+				class="btn btn-blue tipsy-tip" title="{{ t('module::module.btn_label_upgrade') }}">
+					<i class="icon-cloudup icon-white"></i>
 				</a>
 				{{ endif }}
 			</div> <!-- end of div.mod-actions -->
