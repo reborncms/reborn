@@ -5,6 +5,8 @@ return array(
 
 	'title' => 'Navigation Manager',
 
+	'menu' => 'Navigation',
+
 	'link'	=> array(
 		'title'		=> 'Navigation',
 		'save'		=> 'Save',
@@ -37,6 +39,11 @@ return array(
 		'target_new_win'=> 'New Window (_blank)',
 	),
 
+	'group_labels' => array(
+		'name' => 'Name',
+		'slug' => 'Slug',
+	),
+
 	'message'	=> array(
 		'csrf_error'		=> 'CSRF Token is invalid!',
 		'create_success'	=> 'Navigation link is successfully created.',
@@ -49,7 +56,14 @@ return array(
 		'required'			=> 'Group name is required!',
 		'group_create_success' => 'Group %s is succcessfully created.',
 		'group_create_error' => 'Error occur to create group %s!',
-	)
+	),
+
+	'toolbar'	=> array(
+			'link' => 'Links',
+			'link_info' => 'View Navigation Links',
+			'group' => 'Group',
+			'group_info' => 'View Navigation Group'
+		)
 );
 
 // end of navigation.php

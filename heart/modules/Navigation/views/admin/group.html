@@ -8,8 +8,8 @@
 				<thead>
 					<tr>
 						<th width="7%">#</th>
-						<th>Name</th>
-						<th>Slug</th>
+						<th>{{ t('nav.group_labels.name') }}</th>
+						<th>{{ t('nav.group_labels.slug') }}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -39,10 +39,6 @@
 			<div class="r-container nav-add-box" style="display:none">
 
 				{{ Form::start(adminUrl('navigation/group-create') , 'nav_group', false, array('class' => 'form', 'id' => 'nav-link-add')) }}
-
-				<div style="display:none">
-					{{ Security::CSRField('navigp') }}
-				</div>
 
 				<div class="c-a-b">
 

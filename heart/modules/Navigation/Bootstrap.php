@@ -12,7 +12,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
-		$menu->add('navigation', 'Navigation', $modUri, 'appearance', 35);
+		$menu->add('navigation', t('nav.menu'), $modUri, 'appearance', 35);
 	}
 
 	public function settings()
@@ -25,13 +25,13 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		$mod_toolbar = array(
 				'links'	=> array(
 					'url'	=> 'navigation',
-					'name'	=> 'Links',
-					'info'	=> 'View Navigation Links'
+					'name'	=> t('nav.toolbar.link'),
+					'info'	=> t('nav.toolbar.link_info')
 				),
 				'group'	=> array(
 					'url'	=> 'navigation/group',
-					'name'	=> 'Group',
-					'info'	=> 'View Navigation Group'
+					'name'	=> t('nav.toolbar.group'),
+					'info'	=> t('nav.toolbar.group_info')
 				));
 
 		return $mod_toolbar;
