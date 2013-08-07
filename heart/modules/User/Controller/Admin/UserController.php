@@ -183,6 +183,7 @@ class UserController extends \AdminController
 						    	$user->addGroup($groups);
 						    }
 
+						    \Event::call('user_edited',array($user));
 						    \Flash::success(t('user::user.edit.success'));
 						    return \Redirect::toAdmin('user');
 
@@ -228,6 +229,8 @@ class UserController extends \AdminController
 		if (!user_has_access('user.delete')) return $this->notFound();
 
 	    $user = Sentry::getUserProvider()->findById($uri);
+
+	    \Event::call('user_deleted',array($user));
 
 	    $user->delete();
 	    $usermeta = UserMeta::find($uri);
