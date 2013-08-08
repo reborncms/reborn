@@ -18,8 +18,6 @@ class UserInfo extends \Reborn\Module\AbstractInfo
 		'my' => 'အသုံးပြုသူများ၊ အဖွဲ့နေရာစီမံ ခန့်ခွဲခြင်း နှင့် မော်ဂျူး ခွင့်ပြုချက်များအား လုပ်ဆောင်နိုင်ပါသည်။ Cataclyst\Sentry ကို အသုံးပြုထားသည်။'
 	);
 
-	protected $description = 'User, Group, and Permission managament with Cataclyst\Sentry.';
-
 	protected $author = 'K';
 
 	protected $authorUrl = 'http://khaynote.com';
