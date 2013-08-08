@@ -67,7 +67,7 @@ class LessResolver
 		$outputFile = $this->getCacheFile($file, 'css');
 
 		// Return CSS Url
-		$cssUrl = str_replace(BASE, $this->url, $outputFile);
+		$cssUrl = str_replace(array(BASE, '\\'), array($this->url, '/'), $outputFile);
 
 		if (file_exists($cacheFile)) {
 			$cache = unserialize(file_get_contents($cacheFile));
@@ -118,10 +118,10 @@ class LessResolver
 					$newpath = $this->filepath;
 				}
 
-				$url = str_replace(BASE.DS, $this->url, $newpath);
+				$url = str_replace(BASE, $this->url, $newpath);
 				$clearurl = str_replace(array('../','\'', '"'), '', $uri);
-				$clearurl = str_replace('\\', '/', $clearurl);
-				$replace[$k] = '"'.$url.'/'.$clearurl.'"';
+				$clearurl = '"'.$url.'/'.$clearurl.'"';
+				$replace[$k] = str_replace('\\', '/', $clearurl);
 			} else {
 				$replace[$k] = $path;
 			}
