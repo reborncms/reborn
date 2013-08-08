@@ -5,7 +5,6 @@
 			<h3>Edit "{{ $currentFile['basename'] }}"</h3>
 
 			{{ Form::start("$adminUrl/theme/editor/edit/".$currentFile['extension']."/".$currentFile['filename'], 'theme_upload', true, array('class' => 'form')) }}
-			{{ Security::CSRField('editor') }}
 			<div class="form-block">			  	
 			    <textarea name="content" id="textEditor">{{ $content }}</textarea>			   
 			</div> <!-- end of form block -->

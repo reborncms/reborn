@@ -46,52 +46,49 @@ class PermissionController extends \AdminController
 		$permission_modules = \User\Model\PermissionModel::getall();
 
 		if (\Input::isPost()) {
-			if (\Security::CSRFvalid('user')) {
-				$modules = \Input::get('modules');
+			
+			$modules = \Input::get('modules');
 
-				$actions = \Input::get('modules_actions');
+			$actions = \Input::get('modules_actions');
 
-				if (!is_null($modules)) {
-					$module_lists = array();
-					foreach ($modules as $k => $v) {
-						$modules[$k] = 1;
-						foreach ($permission_modules as $m) {
-							if(empty($modules[$m->uri])) {
-								$modules[$m->uri] = 0;
-							}
-							$module_lists[$m->uri] = $m->uri;
+			if (!is_null($modules)) {
+				$module_lists = array();
+				foreach ($modules as $k => $v) {
+					$modules[$k] = 1;
+					foreach ($permission_modules as $m) {
+						if(empty($modules[$m->uri])) {
+							$modules[$m->uri] = 0;
 						}
+						$module_lists[$m->uri] = $m->uri;
 					}
-
-					// Add Module Actions Permission
-					if (!is_null($actions)) {
-						foreach ($group->permissions as $k => $v){
-							if ($k == 'admin') {
-								continue;
-							}
-							if (!array_key_exists($k, $actions)
-								and !array_key_exists($k, $module_lists)) {
-								$modules[$k] = 0;
-							}
-						}
-
-						foreach ($actions as $k => $v) {
-							$modules[$k] = (int) $v;
-						}
-					}
-
-					$group->permissions = $modules;
-
-					if ($group->save()) {
-				       \Flash::success(\Translate::get('user::permission.save'));
-						return \Redirect::to('admin/user/permission/');
-				    } else {
-				    	\Flash::success(\Translate::get('user::permission.error'));
-				    	return \Redirect::to('admin/user/permission/');
-				    }
 				}
-			} else {
-				\Flash::error(\Translate::get('user::user.csrf'));
+
+				// Add Module Actions Permission
+				if (!is_null($actions)) {
+					foreach ($group->permissions as $k => $v){
+						if ($k == 'admin') {
+							continue;
+						}
+						if (!array_key_exists($k, $actions)
+							and !array_key_exists($k, $module_lists)) {
+							$modules[$k] = 0;
+						}
+					}
+
+					foreach ($actions as $k => $v) {
+						$modules[$k] = (int) $v;
+					}
+				}
+
+				$group->permissions = $modules;
+
+				if ($group->save()) {
+			       \Flash::success(\Translate::get('user::permission.save'));
+					return \Redirect::to('admin/user/permission/');
+			    } else {
+			    	\Flash::success(\Translate::get('user::permission.error'));
+			    	return \Redirect::to('admin/user/permission/');
+			    }
 			}
 		}
 

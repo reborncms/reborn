@@ -1,7 +1,7 @@
 <div id="user-container">
 
 	{{ Form::start("user/login") }}
-	{{ Security::CSRField('user') }}
+	
 		<div class="block">
 		{{ Form::label('Email', 'email') }}
 		{{ Form::email('email', '', array('id' => 'email', 'placeholder' => 'Enter your email')) }}

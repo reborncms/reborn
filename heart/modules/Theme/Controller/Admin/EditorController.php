@@ -65,21 +65,18 @@ class EditorController extends \AdminController
 		}
 
 		if (\Input::isPost()) {
-			if (\Security::CSRFvalid('editor')) {
-
-				if(is_writable($currentFile)) {
-					$text = stripslashes(\Input::get('content'));			
-					$fileOpen = fopen($currentFile,"w");
-					if (fputs($fileOpen, html_entity_decode($text, ENT_QUOTES))) {
-						fclose($fileOpen);
-						\Flash::success(t('theme::editor.success'));
-					}
-					else{
-						\Flash::error(t('theme::editor.error'));
-					}
-				} else {
-					\Flash::error(t('theme::editor.permission'));
+			if(is_writable($currentFile)) {
+				$text = stripslashes(\Input::get('content'));			
+				$fileOpen = fopen($currentFile,"w");
+				if (fputs($fileOpen, html_entity_decode($text, ENT_QUOTES))) {
+					fclose($fileOpen);
+					\Flash::success(t('theme::editor.success'));
 				}
+				else{
+					\Flash::error(t('theme::editor.error'));
+				}
+			} else {
+				\Flash::error(t('theme::editor.permission'));
 			}
 		}
 

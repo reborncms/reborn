@@ -28,31 +28,28 @@ class GroupController extends \AdminController
 	{
 		if (!user_has_access('user.group.create')) return $this->notFound();
 		if (\Input::isPost()) {
-			if (\Security::CSRFvalid('user')) {
-				$v = $this->validate();
-				if ($v->fail()) {
-					$errors = $v->getErrors();
-					$this->template->set('errors', $errors);
-				} else {
-					$groupName = \Input::get('name');
-					$is_admin = (int)\Input::get('is_admin', 0);
-
-					try {
-						$group = Sentry::getGroupProvider()->create(array(
-					        'name'        => $groupName,
-					        'permissions' => array(
-					            'admin' => $is_admin,
-					        )
-					    ));
-
-						\Flash::success('user:group.create.success');
-					    return \Redirect::to('admin/user/group');	
-					} catch (\Cartalyst\Sentry\Groups\GroupExistsException $e) {
-    					\Flash::error(sprintf(t('group::group.auth.exist'), $groupName));
-					}
-				}
+			
+			$v = $this->validate();
+			if ($v->fail()) {
+				$errors = $v->getErrors();
+				$this->template->set('errors', $errors);
 			} else {
-				\Flash::error(\Translate::get('user::user.csrf'));
+				$groupName = \Input::get('name');
+				$is_admin = (int)\Input::get('is_admin', 0);
+
+				try {
+					$group = Sentry::getGroupProvider()->create(array(
+				        'name'        => $groupName,
+				        'permissions' => array(
+				            'admin' => $is_admin,
+				        )
+				    ));
+
+					\Flash::success('user:group.create.success');
+				    return \Redirect::to('admin/user/group');	
+				} catch (\Cartalyst\Sentry\Groups\GroupExistsException $e) {
+					\Flash::error(sprintf(t('group::group.auth.exist'), $groupName));
+				}
 			}
 		}
 
@@ -69,35 +66,32 @@ class GroupController extends \AdminController
 
 
 		if (\Input::isPost()) {
-			if (\Security::CSRFvalid('user')) {
-				$v = $this->validate();
-				if ($v->fail()) {
-					$errors = $v->getErrors();
-					$this->template->set('errors', $errors);
-				} else {
-					$groupName = \Input::get('name');
-					$is_admin = (int)\Input::get('is_admin', 0);
-
-					try {
-					    $group->name = $groupName;
-					    $group->permissions = array(
-					        'admin' => $is_admin
-					    );
-
-					    if ($group->save()) {
-					        \Flash::success(\Translate::get('user::group.edit.success'));
-						    return \Redirect::to('admin/user/group');
-					    } else {
-					        \Flash::error(\Translate::get('user::group.edit.success'));
-					    }
-
-					    return \Redirect::to('admin/user/group');	
-					} catch (\Cartalyst\Sentry\Groups\GroupExistsException $e) {
-    					\Flash::error(sprintf(t('user::group.auth.exist'), $groupName));
-					}
-				}
+			
+			$v = $this->validate();
+			if ($v->fail()) {
+				$errors = $v->getErrors();
+				$this->template->set('errors', $errors);
 			} else {
-				\Flash::error(\Translate::get('user::user.csrf'));
+				$groupName = \Input::get('name');
+				$is_admin = (int)\Input::get('is_admin', 0);
+
+				try {
+				    $group->name = $groupName;
+				    $group->permissions = array(
+				        'admin' => $is_admin
+				    );
+
+				    if ($group->save()) {
+				        \Flash::success(\Translate::get('user::group.edit.success'));
+					    return \Redirect::to('admin/user/group');
+				    } else {
+				        \Flash::error(\Translate::get('user::group.edit.success'));
+				    }
+
+				    return \Redirect::to('admin/user/group');	
+				} catch (\Cartalyst\Sentry\Groups\GroupExistsException $e) {
+					\Flash::error(sprintf(t('user::group.auth.exist'), $groupName));
+				}
 			}
 		}
 

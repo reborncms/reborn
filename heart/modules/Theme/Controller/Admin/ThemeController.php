@@ -76,69 +76,66 @@ class ThemeController extends \AdminController
 				'allowedExt' => array('zip')
 			);
 
-			if (\Security::CSRFvalid('theme')) {
-				$v = \Validation::create(
-					array('file' => \Input::file('file')),
-					array('file' => 'required')
-				);
+			
+			$v = \Validation::create(
+				array('file' => \Input::file('file')),
+				array('file' => 'required')
+			);
 
-				if ($v->valid()) {
+			if ($v->valid()) {
 
-					if (Upload::isSuccess()) {
-						Upload::initialize('file', $config);
+				if (Upload::isSuccess()) {
+					Upload::initialize('file', $config);
 
-						$data = Upload::upload('file');
-						$data[0]['status'] = 'success';
-					} else {
-						$v = Upload::errors();
-						$data[0]['status'] = 'fail';
-						$error = '';
-						foreach ($v[0] as $k => $s) {
-							if (is_int($k)) {
-								$error .= $s.' ';
-							}
-						}
-						$data[0]['errors'] = $error;
-
-						\Flash::error($error);
-
-						return \Redirect::toAdmin('theme/upload');
-					}
-
-					try {
-						$zip_file = $tmp_path.$data[0]['savedName'];
-
-						$filename = str_replace('.zip', '', $data[0]['savedName']);
-
-						// create object
-						$zip = new \ZipArchive() ;
-
-						// open archive
-						if ($zip->open($zip_file) !== TRUE) {
-							\Flash::error(sprintf(t('theme::theme.unzip_error'),$filename));
-							\File::delete($zip_file);
-							return \Redirect::toAdmin('theme/upload');
-						}
-
-						// extract contents to destination directory
-						$zip->extractTo($extract_path);
-
-						// close archive
-						$zip->close();
-
-						\File::delete($zip_file);
-						\Flash::success(sprintf(t('theme::theme.upload.success'),$filename));
-						return \Redirect::toAdmin('theme');
-					} catch (\Exception $e) {
-						\Flash::error($e);
-						return \Redirect::toAdmin('theme/upload');
-					}
+					$data = Upload::upload('file');
+					$data[0]['status'] = 'success';
 				} else {
-					\Flash::error(implode("\n\r", $v->getErrors()));
+					$v = Upload::errors();
+					$data[0]['status'] = 'fail';
+					$error = '';
+					foreach ($v[0] as $k => $s) {
+						if (is_int($k)) {
+							$error .= $s.' ';
+						}
+					}
+					$data[0]['errors'] = $error;
+
+					\Flash::error($error);
+
+					return \Redirect::toAdmin('theme/upload');
+				}
+
+				try {
+					$zip_file = $tmp_path.$data[0]['savedName'];
+
+					$filename = str_replace('.zip', '', $data[0]['savedName']);
+
+					// create object
+					$zip = new \ZipArchive() ;
+
+					// open archive
+					if ($zip->open($zip_file) !== TRUE) {
+						\Flash::error(sprintf(t('theme::theme.unzip_error'),$filename));
+						\File::delete($zip_file);
+						return \Redirect::toAdmin('theme/upload');
+					}
+
+					// extract contents to destination directory
+					$zip->extractTo($extract_path);
+
+					// close archive
+					$zip->close();
+
+					\File::delete($zip_file);
+					\Flash::success(sprintf(t('theme::theme.upload.success'),$filename));
+					return \Redirect::toAdmin('theme');
+				} catch (\Exception $e) {
+					\Flash::error($e);
+					return \Redirect::toAdmin('theme/upload');
 				}
 			} else {
-				\Flash::error(t('theme::theme.csrf_error'));
-			}
+				\Flash::error(implode("\n\r", $v->getErrors()));
+			}			
 		}
 
 		$this->template->title(\Translate::get('theme::theme.title'))

@@ -66,60 +66,57 @@ class UserController extends \AdminController
 		if (!user_has_access('user.create')) return $this->notFound();
 
 		if (\Input::isPost()) {
-			if (\Security::CSRFvalid('user')) {
-				$rule = array(
-			        'email' => 'required|email',
-			        'password' => 'required|minLength:6',
-			        'first_name' =>'required|minLength:2|maxLength:15',
-			        'last_name' => 'required|minLength:2|maxLength:15',
-			    );
+			
+			$rule = array(
+		        'email' => 'required|email',
+		        'password' => 'required|minLength:6',
+		        'first_name' =>'required|minLength:2|maxLength:15',
+		        'last_name' => 'required|minLength:2|maxLength:15',
+		    );
 
-				$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+			$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
 
-				if ($v->fail()) {
-					$errors = $v->getErrors();
-					$this->template->set('errors', $errors);
+			if ($v->fail()) {
+				$errors = $v->getErrors();
+				$this->template->set('errors', $errors);
+			} else {
+				$email = \Input::get('email');
+				$first_name = \Input::get('first_name');
+				$last_name = \Input::get('last_name');
+				$password = \Input::get('password');
+				$confpass = \Input::get('confpass');
+				$groups = (int)\Input::get('group');
+				$adminPanelAccess = (int)\Input::get('admin_access', 0);
+
+		    	if( $password !== $confpass ) {
+					\Flash::error(t('user::user.password.fail'));
 				} else {
-					$email = \Input::get('email');
-					$first_name = \Input::get('first_name');
-					$last_name = \Input::get('last_name');
-					$password = \Input::get('password');
-					$confpass = \Input::get('confpass');
-					$groups = (int)\Input::get('group');
-					$adminPanelAccess = (int)\Input::get('admin_access', 0);
 
-			    	if( $password !== $confpass ) {
-						\Flash::error(t('user::user.password.fail'));
-					} else {
+					try {
+						$user = Sentry::getUserProvider()->create(array(
+					        'email'    => $email,
+					        'password' => $password,
+					        'first_name' => $first_name,
+					        'last_name' => $last_name,
+					        'permissions' => array(),
+					        'activated' => 1,
+					        'permissions' => array(
+					            'admin' => $adminPanelAccess,
+					        )
+					    ));
 
-						try {
-							$user = Sentry::getUserProvider()->create(array(
-						        'email'    => $email,
-						        'password' => $password,
-						        'first_name' => $first_name,
-						        'last_name' => $last_name,
-						        'permissions' => array(),
-						        'activated' => 1,
-						        'permissions' => array(
-						            'admin' => $adminPanelAccess,
-						        )
-						    ));
+					    $usermeta = self::saveMeta('create', $user->id);
+					    $usermeta->save();
 
-						    $usermeta = self::saveMeta('create', $user->id);
-						    $usermeta->save();
+					    $groups = Sentry::getGroupProvider()->findById($groups);
+					    $user->addGroup($groups);
 
-						    $groups = Sentry::getGroupProvider()->findById($groups);
-						    $user->addGroup($groups);
-
-						    \Flash::success(t('user::user.create.success'));
-						    return \Redirect::toAdmin('user');
-						} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
-						    \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
-						}
+					    \Flash::success(t('user::user.create.success'));
+					    return \Redirect::toAdmin('user');
+					} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
+					    \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
 					}
 				}
-			} else {
-				\Flash::error(t('user::user.csrf'));
 			}
 		}
 
@@ -142,61 +139,58 @@ class UserController extends \AdminController
 		}
 
 		if (\Input::isPost()) {
-			if (\Security::CSRFvalid('user')) {
+			
 
-				$rule = array(
-			        'email' => 'required|email',
-			        'first_name' =>'required|minLength:2|maxLength:15',
-			        'last_name' => 'required|minLength:2|maxLength:15',
-			    );
+			$rule = array(
+		        'email' => 'required|email',
+		        'first_name' =>'required|minLength:2|maxLength:15',
+		        'last_name' => 'required|minLength:2|maxLength:15',
+		    );
 
-				$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+			$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
 
-				if ($v->fail()) {
-					$errors = $v->getErrors();
-					$this->template->set('errors', $errors);
-				} else {
-					$email = \Input::get('email');
-					$first_name = \Input::get('first_name');
-					$last_name = \Input::get('last_name');
-					$groups = (int)\Input::get('group');
-					$adminPanelAccess = (int)\Input::get('admin_access', 0);
-
-					try {
-						$user->email = $email;
-				    	$user->first_name = $first_name;
-				    	$user->last_name = $last_name;
-				    	$user->permissions = array(
-						    'admin' => $adminPanelAccess,
-						);
-
-						self::setPassword($user);
-
-					    if ($user->save()) {
-					    	$usermeta = self::saveMeta('edit', $user->id);
-						    $usermeta->save();
-
-						    if ((int)$group !== $groups) {
-						    	$group = Sentry::getGroupProvider()->findById($group);
-						    	$user->removeGroup($group);
-						    	$groups = Sentry::getGroupProvider()->findById($groups);
-						    	$user->addGroup($groups);
-						    }
-
-						    \Event::call('user_edited',array($user));
-						    \Flash::success(t('user::user.edit.success'));
-						    return \Redirect::toAdmin('user');
-
-					    } else {
-					    	\Flash::error(t('user::user.edit.fail'));
-					    }
-					} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
-					   \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
-					}
-				}
+			if ($v->fail()) {
+				$errors = $v->getErrors();
+				$this->template->set('errors', $errors);
 			} else {
-				\Flash::error(t('user::user.csrf'));
-			}
+				$email = \Input::get('email');
+				$first_name = \Input::get('first_name');
+				$last_name = \Input::get('last_name');
+				$groups = (int)\Input::get('group');
+				$adminPanelAccess = (int)\Input::get('admin_access', 0);
+
+				try {
+					$user->email = $email;
+			    	$user->first_name = $first_name;
+			    	$user->last_name = $last_name;
+			    	$user->permissions = array(
+					    'admin' => $adminPanelAccess,
+					);
+
+					self::setPassword($user);
+
+				    if ($user->save()) {
+				    	$usermeta = self::saveMeta('edit', $user->id);
+					    $usermeta->save();
+
+					    if ((int)$group !== $groups) {
+					    	$group = Sentry::getGroupProvider()->findById($group);
+					    	$user->removeGroup($group);
+					    	$groups = Sentry::getGroupProvider()->findById($groups);
+					    	$user->addGroup($groups);
+					    }
+
+					    \Event::call('user_edited',array($user));
+					    \Flash::success(t('user::user.edit.success'));
+					    return \Redirect::toAdmin('user');
+
+				    } else {
+				    	\Flash::error(t('user::user.edit.fail'));
+				    }
+				} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
+				   \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
+				}
+			}			
 		}
 
 		$usermeta = UserMeta::where('user_id', '=', $user->id)->get();
