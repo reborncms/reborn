@@ -13,6 +13,8 @@ return array(
 		'edit'	=> 'User Edit',
 	),
 
+	'menu'		=> 'Users',
+
 	'admin' 	=> 'User Admin',
 	'save'		=> 'Save',
 	'delete'	=> 'Delete',

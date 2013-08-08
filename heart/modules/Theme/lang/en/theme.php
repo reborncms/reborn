@@ -3,6 +3,7 @@
 return array(
 	'title'					=> 'Themes Manager',
 	'cheating'				=> 'Cheating Hun?!',
+	'menu'					=> 'Themes',
 
 	'activate' 				=> array(
 		'success'			=> 'Theme %s is successfully activated!',

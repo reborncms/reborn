@@ -2,6 +2,7 @@
 
 return array(
 		'title' 	=> 'Usergroup Management',
+		'menu'		=> 'Groups',
 
 		'create' => array(
 			'title' => 'Create New Usergroup',
