@@ -29,13 +29,6 @@ class Widget
 	protected $modules = array();
 
 	/**
-	 * Form File variable
-	 *
-	 * @var string
-	 **/
-	protected static $form = 'form.html';
-
-	/**
 	 *Widget Table variable
 	 *
 	 * @var string
@@ -176,20 +169,20 @@ class Widget
 		$options = $class->options();
 
 		if (isset($sub_name)) {
-			
+
 			if (isset($options[$sub_name])) {
 
 				return $options[$sub_name];
 
 			}
 			return;
-		
+
 		} else {
 
 			return $options;
 
 		}
-		
+
 	}
 
 	/**
@@ -201,8 +194,8 @@ class Widget
 	public static function options($name)
 	{
 		$ins = \Registry::get('app')->widget;
-		
-		return $ins->getOptions($name);	
+
+		return $ins->getOptions($name);
 	}
 
 	/**
@@ -229,86 +222,6 @@ class Widget
 		}
 
 		return call_user_func_array(array($class, $method), array());
-	}
-
-	/**
-	 * Saving the widget Attributes.
-	 *
-	 * @param string $name
-	 * @param array $args
-	 * @return string
-	 */
-	public function saving($name)
-	{
-		$args = array_slice(func_get_args(), 1);
-
-		$class = $this->getClass($name, $args);
-
-		if (is_null($class)) {
-			return null;
-		}
-
-		return call_user_func_array(array($class, 'save'), array());
-	}
-
-	/**
-	 * Updating the widget Attributes.
-	 *
-	 * @param string $name
-	 * @param array $args
-	 * @return string
-	 */
-	public function updating($name)
-	{
-		$args = array_slice(func_get_args(), 1);
-
-		$class = $this->getClass($name, $args);
-
-		if (is_null($class)) {
-			return null;
-		}
-
-		return call_user_func_array(array($class, 'update'), array());
-	}
-
-	/**
-	 * Display the widget Form (for Admin Panel...).
-	 *
-	 * @param string $name
-	 * @param array $args
-	 * @return string
-	 */
-	public function displayForm($name)
-	{
-		$args = array_slice(func_get_args(), 1);
-
-		$class = $this->getClass($name, $args);
-
-		if (is_null($class)) {
-			return null;
-		}
-
-		return call_user_func_array(array($class, 'form'), array());
-	}
-
-	/**
-	 * Delete the widget Form DB.
-	 *
-	 * @param string $name
-	 * @param array $args
-	 * @return string
-	 */
-	public function deleting($name)
-	{
-		$args = array_slice(func_get_args(), 1);
-
-		$class = $this->getClass($name, $args);
-
-		if (is_null($class)) {
-			return null;
-		}
-
-		return call_user_func_array(array($class, 'delete'), array());
 	}
 
 	/**

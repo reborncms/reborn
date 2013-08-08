@@ -32,38 +32,11 @@ abstract Class AbstractWidget
 	public function render() {}
 
 	/**
-	 * Save the Widget
+	 * Options array for Widget Setting
 	 *
-	 * @return void
-	 **/
-	public function save()
-	{
-
-	}
-
-	/**
-	 * Update the Widget
-	 *
-	 * @return void
-	 **/
-	public function update()
-	{
-
-	}
-
-	/**
-	 * Delete the Widget
-	 *
-	 * @return void
-	 **/
-	public function delete() {}
-
-	/**
-	 * Display the Widget Form at Admin Panel
-	 *
-	 * @return void
-	 **/
-	public function form() {}
+	 * @return array
+	 */
+	public function options() {}
 
 	/**
 	 * Set the Widget Attribute
