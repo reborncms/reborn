@@ -82,4 +82,6 @@ return array(
 	'installer_folder' => 'You should delete installer folder for security reason! <a href="%s">Click to delete.</a>',
 	'installer_delete_success'	=> 'Successfully deleted installer folder.',
 	'installer_delete_error'	=> 'Error occured to delete installer folder. Try again (or) Manually delete!',
+
+	'no_script'	=> 'Reborn CMS Admin Panel required javascript. Please enable javascript from your browser.'
 );
