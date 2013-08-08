@@ -240,6 +240,10 @@ class TagCloud
 	{
 		$result = array();
 
+		if (is_null($this->tags)) {
+			return null;
+		}
+
 		// Sorting the tags
 		if ($this->order == 'random') {
 			$sorted = $this->sortByRandomize();
@@ -313,10 +317,13 @@ class TagCloud
 	protected function sortByRandomize()
 	{
 		$sorted = array();
-		$tags = array_keys($this->tags);
-		shuffle($tags);
-		foreach ($tags as $tag) {
-			$sorted[$tag] = $this->tags[$tag];
+
+		if (! is_null($this->tags) ) {
+			$tags = array_keys($this->tags);
+			shuffle($tags);
+			foreach ($tags as $tag) {
+				$sorted[$tag] = $this->tags[$tag];
+			}
 		}
 
 		return $sorted;
