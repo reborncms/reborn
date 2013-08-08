@@ -102,16 +102,9 @@ input, select {
 }
 
 
-@import url(typo.css);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
 /* Login Screen */
-
-@font-face
-{
-  font-family: bebas;
-  src: url('../fonts/bebas.ttf');
-  format("opentype"); /* IE */
-}
 
 body {	background: url(../img/black_lozenge.png) repeat left top; }
 
@@ -154,48 +147,6 @@ div#login-container:after {
 	-o-transform: rotate(-5deg);
 	transform: rotate(-5deg);
 }
-
-/*div#login-container:before, div#login-container:after {
-	content: "";
-	display: block;
-	background: #fff;
-	width: 343px;
-	padding: 20px;
-	height: 260px;
-	position: absolute;
-	left: 4px;
-	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2) inset;
-	width: 349px;
-	height: 2px;
-	padding: 10px 20px;
-	opacity: 0.5;
-}
-
-div#login-container:before {
-	-webkit-transform: skewY(48deg);
-	-moz-transform: skewY(48deg);
-	-ms-transform: skewY(48deg);
-	-o-transform: skewY(48deg);
-	transform: skewY(48deg);
-	height: 280px;
-    left: 386px;
-    padding: 10px 9px;
-    top: 11px;
-    transform: skewY(48deg);
-    width: 1px;
-    z-index: 1;
-}
-div#login-container:after {
-	-webkit-transform: skewX(40deg);
-	-moz-transform: skewX(40deg);
-	-ms-transform: skewX(40deg);
-	-o-transform: skewX(40deg);
-	transform: skewX(40deg);
-	bottom: -24px;
-    left: 7px;
-    transform: skewX(40deg);
-    z-index: 2;
-}*/
 
 div#login-header {
 	background-color: #7b0000;
@@ -244,7 +195,7 @@ div#login-box input[type=submit]#login-box-submit {
 	background: url(../img/login-btn-bg.png) repeat-x left center transparent;
 	width: 343px;
 	height: 46px;
-	font-family: bebas, Arial, sans-serif;
+	font-family: "Open Sans", Arial, sans-serif;
 	border: 0px;
 	font-size: 16px;
 	color: #ffffff;
@@ -261,7 +212,7 @@ div#login-box input[type=submit]#login-box-submit:hover {
 
 span.login-register {
 	color: #7b0000;
-	font-family: Tahoma, Helvetica, Arial, sans-serif;
+	font-family: "Open Sans", Helvetica, Arial, sans-serif;
 	display: block;
 	text-align: center;
 	font-size: 13px;
@@ -272,7 +223,7 @@ span.login-register {
 span.login-register a {
 	color: #7b0000;
 	text-decoration: underline;
-	font-family: Tahoma, Helvetica, Arial, sans-serif;
+	font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }
 span.login-register a:hover { color: #550000; text-decoration: none;}
 

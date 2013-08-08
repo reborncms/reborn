@@ -50,6 +50,17 @@ class Security
     }
 
     /**
+     * undocumented function
+     *
+     * @return void
+     * @author
+     **/
+    public static function CSRFKeyOnly($key = null)
+    {
+        return static::CSRFtoken($key);
+    }
+
+    /**
      * Generate CSRFToken
      *
      * @return string
@@ -61,7 +72,7 @@ class Security
         } else {
             $csrf_key = $key.'_'.Config::get('app.security.csrf_key');
         }
-        
+
         $csrf_expire = Config::get('app.security.csrf_expiration');
         $session = Registry::get('app')->session;
         $expiretime = time() - $session->getMetadataBag()->getCreated();
@@ -85,12 +96,21 @@ class Security
     public static function CSRFvalid($key = null)
     {
         $session = Registry::get('app')->session;
+        $request = Registry::get('app')->request;
+
         if (is_null($key)) {
             $csrf_key = Config::get('app.security.csrf_key');
         } else {
             $csrf_key = $key.'_'.Config::get('app.security.csrf_key');
         }
-        if ($session->has($csrf_key) && $session->get($csrf_key) == \Input::get($csrf_key)) {
+
+        if ($request->isAjax() && \Input::isPost()) {
+            $ckey = $request->headers->get('X-CSRF-Token');
+        } else {
+            $ckey = \Input::get($csrf_key);
+        }
+
+        if ($session->has($csrf_key) && $session->get($csrf_key) == $ckey) {
             return true;
         } else {
             return false;

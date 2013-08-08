@@ -607,10 +607,10 @@ if (! function_exists('markdown_extra')) {
 }
 
 /**
- * undocumented function
+ * Change Number with localization
  *
- * @return void
- * @author
+ * @param string $str Number string
+ * @return string
  **/
 if (! function_exists('num')) {
 	function num($str)
@@ -621,5 +621,15 @@ if (! function_exists('num')) {
 		$replace = array_values($nums);
 
 		return str_replace($search, $replace, $str);
+	}
+}
+
+if (! function_exists('csrf_meta')) {
+	function csrf_meta()
+	{
+		$name = \Html::meta('csrf-param', \Config::get('app.security.csrf_key'));
+		$key = \Html::meta('csrf-token', \Security::CSRFKeyOnly());
+
+		return implode("\n\t", array($name, $key));
 	}
 }

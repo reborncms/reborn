@@ -177,6 +177,11 @@ jQuery(function($) {
 	// Start the initial function when document ready
 	$(document).ready(function() {
 		Reborn.init();
+
+		$(document).ajaxSend(function(e, xhr, options) {
+			var token = $("meta[name='csrf-token']").attr("content");
+			xhr.setRequestHeader("X-CSRF-Token", token);
+		});
 	});
 
 }); // end of jQuery

@@ -383,7 +383,13 @@ class Application extends \Pimple
     {
         $token = Security::CSRField();
 
+        preg_match('/(value\s*=\s*"(.*)")/', $token, $m);
+
+        $meta = \Html::meta('csrf-token', $m[2]);
+
         $body = $response->getContent();
+
+        $body = preg_replace('/(<\/(head|HEAD)>)/', $meta."\n".'$0', $body);
 
         $output = preg_replace('/(<(form|FORM)[^>]*(method|METHOD)="(post|POST)"[^>]*>)/',
                          '$0'. "\n\t" .$token, $body);
