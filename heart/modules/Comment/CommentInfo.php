@@ -6,9 +6,17 @@ class CommentInfo extends \Reborn\Module\AbstractInfo
 {
 	protected $name = 'Comment';
 
+	protected $displayName = array(
+		'en'	=> 'Comment',
+		'my'	=> 'မှတ်ချက်'
+	);
+
 	protected $version = '1.0';
 
-	protected $description = 'Comment Module';
+	protected $description = array(
+		'en'	=> 'Manage Comments',
+		'my'	=> 'မှတ်ချက်များစီမံရန်'
+	);
 
 	protected $author = 'Naing Lin Aung / Li Jia Li';
 

@@ -5,10 +5,18 @@ namespace Blog;
 class BlogInfo extends \Reborn\Module\AbstractInfo
 {
 	protected $name = 'Blog';
+	
+	protected $displayName = array(
+		'en'	=> 'Blog',
+		'my'	=> 'ဘလော့ဂ်'
+	);
 
 	protected $version = '1.0';
 
-	protected $description = 'Manage your blog';
+	protected $description = array(
+		'en'	=> 'Manage your blog',
+		'my'	=> 'ဘလော့ဂ် ပို့စ်များစီမံရန်'
+	);
 
 	protected $author = 'Nyan Lynn Htut / Li Jia Li';
 
