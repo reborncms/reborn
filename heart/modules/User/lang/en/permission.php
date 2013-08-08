@@ -2,7 +2,7 @@
 
 return array(
 		'title' 	=> 'Module Permissions',
-		'menu'		=> 'Permissions'
+		'menu'		=> 'Permissions',
 		'admin' 	=> 'User Admin',
 
 		'save'		=> 'Successfully saved permissions',
