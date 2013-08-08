@@ -5,7 +5,10 @@ namespace Admin;
 class Bootstrap extends \Reborn\Module\AbstractBootstrap
 {
 
-	public function boot() {}
+	public function boot()
+	{
+		\Translate::load('admin::dashboard', 'das');
+	}
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri) {}
 

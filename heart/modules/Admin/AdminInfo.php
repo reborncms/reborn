@@ -8,7 +8,15 @@ class AdminInfo extends \Reborn\Module\AbstractInfo
 
 	protected $version = '1.0';
 
-	protected $description = 'Admin Panel Dashboard Module';
+	protected $displayName = array(
+								'en' => 'Admin Dashboard',
+								'my' => 'ထိန်းချုပ်ခန်း မျက်နာစာ'
+							);
+
+	protected $description = array(
+								'en' => 'Admin Panel Dashboard Module',
+								'my' => 'ထိန်းချုပ်ခန်း မျက်နာစာ'
+							);
 
 	protected $author = 'Nyan Lynn Htut';
 
