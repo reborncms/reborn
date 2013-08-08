@@ -11,12 +11,12 @@ return array(
 
 	/**
 	 * Supported Language for Reborn CMS
-	 * Now only support english only
+	 * Now only support english and myanmar
 	 *
 	 */
 	'support_langs' => array(
-			'en' => 'en',
-			'my' => 'my'
+			'en' => 'English',
+			'my' => 'Myanmar'
 		),
 
 	/**
