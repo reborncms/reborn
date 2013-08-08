@@ -158,7 +158,7 @@ class Helper
 					if(user_has_access('nav.delete')) {
 						$output .= '<a href="'.adminUrl('navigation/delete/'.$link['id']);
 						$output .= '" title="'.t('global.delete').'" class="confirm_delete tipsy-tip">';
-						$output .= '<i class="icon-trash2 icon-black"></i>';
+						$output .= '<i class="icon-remove icon-black"></i>';
 						$output .= '</a>';
 					}
 

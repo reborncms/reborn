@@ -5,6 +5,7 @@
 
 return array(
 	'title'					=> 'Modules Manager',
+	'desc'					=> 'Module(Extension) Manager',
 	'core_mods'				=> 'Core Modules',
 	'addon_mods'			=> 'Addon Modules',
 	'upload_title'			=> 'Module Uploader',

@@ -7,7 +7,7 @@
 	{{ Form::start(adminUrl("navigation/edit/$link->id"),'nav', false, array('class' => 'form', 'id' => 'link-edit-form')) }}
 	<div class="c-a-b">
 
-		<div>
+		<div class="r-i-b">
 			<span>{{ t('navigation::navigation.labels.title') }}<span class="required"></span></span>
 		</div>
 
@@ -19,7 +19,7 @@
 
 	<div class="c-a-b">
 
-		<div>
+		<div class="r-i-b">
 			<span>{{ t('navigation::navigation.labels.type') }}<span class="required"></span></span>
 		</div>
 
@@ -61,7 +61,7 @@
 
 	<div class="c-a-b">
 
-		<div>
+		<div class="r-i-b">
 			<span>{{ t('navigation::navigation.labels.group') }}</span>
 		</div>
 		{{ Form::select('group', $groupSelect, isset($link->navigation_id) ? $link->navigation_id : $defaultGroup, array('class' => 'large thin')) }}
@@ -70,7 +70,7 @@
 
 	<div class="c-a-b">
 
-		<div>
+		<div class="r-i-b">
 			<span>{{ t('navigation::navigation.labels.target') }}</span>
 		</div>
 
@@ -84,7 +84,7 @@
 
 	<div class="c-a-b">
 
-		<div>
+		<div class="r-i-b">
 			<span>{{ t('navigation::navigation.labels.class') }}</span>
 		</div>
 
@@ -94,7 +94,7 @@
 
 	<div class="c-a-b">
 
-		{{ Form::submit('add', t('navigation::navigation.link.edit'), array('class' => 'button button-green', 'id' => 'edit-link-btn')) }}
+		{{ Form::submit('add', t('navigation::navigation.link.edit'), array('class' => 'btn btn-green', 'id' => 'edit-link-btn')) }}
 
 	</div> <!-- end of div.c-a-b -->
 

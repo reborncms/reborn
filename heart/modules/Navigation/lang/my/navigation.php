@@ -5,6 +5,8 @@ return array(
 
 	'title' => 'Website ၏ navigation များကို စီမံခန့်ခွဲရာနေရာ',
 
+	'desc' => 'Website တွင် တစ်နေရာမှ တစ်နေရာသို့ သွားလာရ အဆင်ပြေစေရန် ညွှန်းထားသော navigation link များကို စီမံခန့်ခွဲသည့်နေရာ',
+
 	'menu' => 'Navigation',
 
 	'link'	=> array(

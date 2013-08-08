@@ -36,7 +36,7 @@
 	{{ endloop }}
 
 	<div class="form-block form-action">
-		<button type="submit" class="button button-green">{{ t('global.save') }}</button>
+		<button type="submit" class="btn btn-green">{{ t('global.save') }}</button>
 	</div> <!-- end of form block -->
 
 {{ Form::end() }}
@@ -44,10 +44,10 @@
 <script type="text/javascript">
 
 	//Generate Spam Filter Key
-	$('#spam_filter').after('<span id="keygen">Auto Generate</span>');
+	$('#spam_filter').after('<span id="keygen">{{ t('setting::setting.auto_generate') }}</span>');
 
 	//Generate Spam Filter Key
-	$('#keygen').live('click', function(){
+	$('#keygen').on('click', function(){
 		var key = Reborn.keyGenerate(32);
 		$('#spam_filter').val(key);
 		$('#spam_filter').focus();
