@@ -12,7 +12,7 @@
 	<body>
 
 	<noscript>
-		Reborn CMS Admin Panel required javascript. Please enable javascript from your browser.
+		{{ t('global.no_script') }}
 	</noscript>
 
 		<div id="main-container">
@@ -32,10 +32,22 @@
 						<li>{{ gravatar($login_user->email, 22) }}</li>
 						<li><h2 class="dashboard-username">{{ $login_user->first_name.' '.$login_user->last_name }}</h2></li>
 						<li class="dashboard-dropdown">
-							<span id="dropdown"></span>
+							<span id="dropdown">
+								<i class="icon-arrow-right icon-white"></i>
+							</span>
 							<ul id="dashboard-user-properties" class="no-list">
-								<li><a href="{{ adminUrl("user/edit/$login_user->id") }}"><i class="icon-setting icon-white"></i>Edit Profile</a></li>
-								<li><a href="{{ adminUrl('logout') }}"><i class="icon-logout icon-white"></i>Logout</a></li>
+								<li>
+									<a href="{{ adminUrl("user/edit/$login_user->id") }}">
+										<i class="icon-setting icon-white"></i>
+										{{ t('label.edit-profile') }}
+									</a>
+								</li>
+								<li>
+									<a href="{{ adminUrl('logout') }}">
+										<i class="icon-exit icon-white"></i>
+										{{ t('label.logout') }}
+									</a>
+								</li>
 							</ul>
 						</li>
 					</ul>
