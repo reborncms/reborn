@@ -18,7 +18,8 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
     public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
     {
-        $menu->add('media', \Translate::get('m.title.title'), $modUri, null,25);
+        $menu->add('media', \Translate::get('media::media.title.title'), $modUri,
+        null,25);
     }
 
     public function settings()
