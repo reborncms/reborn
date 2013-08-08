@@ -5,3 +5,10 @@
 /* ----- Override jQuery-UI ----- */
 .ui-widget { font-family: Arial, Myanmar3,sans-serif; font-size: 13px; }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Arial,Myanmar3,sans-serif; font-size: 1em; }
+
+#header-right-panel ul li ul#dashboard-user-properties li {
+	width: 160px;
+}
+#header-right-panel ul li ul#dashboard-user-properties li a {
+	font-size: 12px;
+}

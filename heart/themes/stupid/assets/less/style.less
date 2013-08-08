@@ -106,16 +106,6 @@ header {
 	cursor: pointer;
 }
 
-#header-right-panel ul li.dashboard-dropdown span#dropdown {
-	background: url(../img/meta-arrow.png) no-repeat center top transparent;
-	display: block;
-	width: 10px;
-	height: 8px;
-	float: left;
-	cursor: pointer;
-	margin-top: 8px;
-}
-
 ul#dashboard-user-properties {
 	display: none;
 	position: absolute;
@@ -134,8 +124,8 @@ ul#dashboard-user-properties {
 	border: 1px solid #262626;
 	border-top: none;
 }
-div.open ul li.dashboard-dropdown span#dropdown {
-	background: url(../img/meta-arrow.png) no-repeat center bottom transparent;
+div.open ul li.dashboard-dropdown span#dropdown i {
+	margin-right: 0;
 }
 
 div.open ul li.dashboard-dropdown ul#dashboard-user-properties{ display: block; }
@@ -278,6 +268,11 @@ ul#dashboard-user-properties li:hover {
 	background: #292929;
 	.shadow_inset(0, 2px, 0, rgba(0, 0, 0, 0.1));
 }
+
+#nav-panel ul li.active ul.dashboard-second-level {
+	display: block;
+}
+
 #nav-panel ul ul.dashboard-second-level li {
 	border: none;
 }
