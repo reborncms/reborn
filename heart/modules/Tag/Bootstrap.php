@@ -5,7 +5,10 @@ namespace Tag;
 class Bootstrap extends \Reborn\Module\AbstractBootstrap
 {
 
-	public function boot() {}
+	public function boot() 
+	{
+		\Translate::load('tag::tag');
+	}
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
