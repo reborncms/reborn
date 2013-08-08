@@ -6,9 +6,17 @@ class PagesInfo extends \Reborn\Module\AbstractInfo
 {
     protected $name = 'Pages';
 
+    protected $displayName = array(
+        'en'    => 'Pages',
+        'my'    => 'စာမျက်နှာများ'
+    );
+
     protected $version = '1.0';
 
-    protected $description = 'Manage Pages of your website';
+    protected $description = array(
+        'en'    =>'Manage Pages of your website',
+        'my'    =>'သင့် ဝဘ်ဆိုဒ် အတွင်းရှိ စာမျက်နှာများ စီမံရန်'
+    );
 
     protected $author = 'Li Jia Li';
 

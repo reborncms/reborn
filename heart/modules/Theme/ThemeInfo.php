@@ -6,9 +6,17 @@ class ThemeInfo extends \Reborn\Module\AbstractInfo
 {
 	protected $name = 'Theme';
 
+	protected $displayName = array(
+		'en' => 'Theme', 
+		'my' => 'ဝက်ဘ်ဆိုဒ် အသွင်ပုံသဏ္ဍာန်'
+	);
+
 	protected $version = '1.0';
 
-	protected $description = 'Allows admins and staff to switch themes, upload new themes, and manage theme options.';
+	protected $description = array(
+		'en' => 'Allows admins and staff to switch themes, upload new themes, and manage theme options.', 
+		'my' => 'ဝက်ဆိုဒ် အသွင်ပုံသဏ္ဍာန် ပြောင်းလဲခြင်း၊ အသစ်ထည့်သွင်းခြင်း အစရှိသည်များကို လုပ်ဆောင်နိုင်ပါသည်။'
+	);
 
 	protected $author = 'K';
 

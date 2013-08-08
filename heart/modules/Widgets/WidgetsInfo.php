@@ -6,9 +6,17 @@ class WidgetsInfo extends \Reborn\Module\AbstractInfo
 {
 	protected $name = 'Widgets';
 
+	protected $displayName = array(
+			'en'	=> 'Widgets',
+			'my'	=> 'Widgets'
+	);
+
 	protected $version = '1.0';
 
-	protected $description = 'Widgets Manager';
+	protected $description = array(
+			'en'	=> 'Widgets Manager',
+			'my'	=> 'Widget များစီမံခန့်ခွဲရန်'
+	);
 
 	protected $author = 'Li Jia Li';
 

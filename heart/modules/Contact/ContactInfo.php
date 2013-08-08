@@ -8,7 +8,7 @@ class ContactInfo extends \Reborn\Module\AbstractInfo
 
 	protected $version = '1.0';
 
-	protected $description = 'Contact Module';
+	protected $description = array('en' => 'Contact Module', 'my' => 'ေမာ္ဂ်ူးအား ျမန္မာလို ရွင္းျပမယ္');
 
 	protected $author = 'Thet Paing Oo';
 
@@ -34,5 +34,7 @@ class ContactInfo extends \Reborn\Module\AbstractInfo
 		'contact.template.edit' => 'Template Edit',
 		'contact.template.delete' => 'Template Delete',
 	);
+
+	protected  $displayName = array('en' => 'Contact', 'my' => 'အီးမေးလ် နှင့်ပတ်သက်သော မော်ဂျူး');
 
 }
