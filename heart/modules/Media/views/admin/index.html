@@ -30,10 +30,10 @@
 
 					<li class="drop_zone relative" folder-id = "{{ $folder->id }}">
 						<div class="btns-group absolute">
-							<a href="{{ rbUrl('admin/media/editFolder/' . $folder->id) }}" title="Edit" class="btn-ico btn btn-green m_edit">
+							<a href="{{ rbUrl('admin/media/editFolder/' . $folder->id) }}" title="{{ \Translate::get('m.btn.edit') }}" class="btn-ico btn btn-green m_edit">
 								<i class="icon-edit icon-16"></i>
 							</a>
-							<a href="{{ rbUrl('admin/media/deleteFolder/' . $folder->id) }}" title="Delete" class="btn-ico btn btn-red m_confirm_delete">
+							<a href="{{ rbUrl('admin/media/deleteFolder/' . $folder->id) }}" title="{{ \Translate::get('m.btn.delete') }}" class="btn-ico btn btn-red m_confirm_delete">
 								<i class="icon-remove icon-16"></i>
 							</a>
 						</div> <!-- end of btns-group -->
@@ -66,10 +66,10 @@
 							<a href="{{ rbUrl('admin/media/showFileData/' . $file->id) }}" title="View" class="btn-ico btn btn-blue m_view">
 								<i class="icon-view icon-16"></i>
 							</a>
-							<a href="{{ rbUrl('admin/media/editFile/' . $file->id) }}" title="Edit" class="btn-ico btn btn-green m_edit">
+							<a href="{{ rbUrl('admin/media/editFile/' . $file->id) }}" title="{{ \Translate::get('m.btn.edit') }}" class="btn-ico btn btn-green m_edit">
 								<i class="icon-edit icon-16"></i>
 							</a>
-							<a href="{{ rbUrl('admin/media/deleteFile/' . $file->id) }}" title="Delete" class="btn-ico btn btn-red m_confirm_delete">
+							<a href="{{ rbUrl('admin/media/deleteFile/' . $file->id) }}" title="{{ \Translate::get('m.btn.delete') }}" class="btn-ico btn btn-red m_confirm_delete">
 								<i class="icon-remove icon-16"></i>
 							</a>
 						</div> <!-- end of btn-group -->

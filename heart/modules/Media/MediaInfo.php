@@ -15,7 +15,7 @@ class MediaInfo extends \Reborn\Module\AbstractInfo
 
     protected $version = '1.0';
 
-    protected $description = 'Media module for RebornCMS';
+    //protected $description = 'Media module for RebornCMS';
 
     protected $author = 'Yan Naing';
 
@@ -32,5 +32,15 @@ class MediaInfo extends \Reborn\Module\AbstractInfo
     protected $allowToChangeUriPrefix = false;
 
     protected $useAsDefaultModule = false;
+
+    protected $displayName = array(
+        'en'    => 'Media Manager',
+        'my'    => 'မီဒီယာ စီမံဌာန',
+        );
+
+    protected $description = array(
+        'en'    => 'Official media manager of RebornCMS',
+        'my'    => 'ဖိုင်များ၊ မီဒီယာ ဖိုင်လ်များကို ကိုင်တွယ်စီမံနိုင်မည့် မော်ဂျူး',
+        );
 
 } // END class MediaInfo
