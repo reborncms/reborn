@@ -20,9 +20,9 @@
 	<thead>
 		<tr>
 			<th width="5%">{{ Form::checkbox('action_to_all', '', array('class' => 'check-all')) }}</th>
-			<th>{{ Translate::get('label.name') }}</th>
-			<th>{{ Translate::get('label.email') }}</th>
-			<th width="120">{{ Translate::get('label.action') }}</th>
+			<th>{{ t('label.name') }}</th>
+			<th>{{ t('label.email') }}</th>
+			<th width="170">{{ t('label.action') }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -38,12 +38,20 @@
 			<td>{{ $template->name }}</td>
 			<td>{{ $template->description }}</td>
 			<td>
-				<a href="{{ \Uri::create("$adminUrl/contact/email-template/view/") }}{{$template->id}}" title="{{ Translate::get('contact::contact.labels.view') }}" class="ico-button button-blue tipsy-tip email-template"><i class="icon-view2 icon-white"></i></a>
-				<a href="{{ \Uri::create("$adminUrl/contact/email-template/edit") }}{{ $template->id }}" title="{{ Translate::get('global.edit') }}" class="ico-button button-green tipsy-tip"><i class="icon-edit icon-white"></i></a>
-				<a href="{{ \Uri::create("$adminUrl/contact/email-template/duplicate") }}{{ $template->id }}" title="{{ Translate::get('contact::contact.labels.duplicate') }}" class="ico-button button-orange tipsy-tip"><i class="icon-duplicate icon-white"></i></a>
-				{{ if($template->detemp == 0)}}
-				<a href="{{ \Uri::create("$adminUrl/contact/email-template/delete/") }}{{ $template->id }}" title="{{ Translate::get('global.delete') }}" class="ico-button button-red tipsy-tip confirm_delete"><i class="icon-trash2 icon-white"></i></a>
-				{{ endif }}
+				<div class="icons-bar">
+					<a href="{{ adminUrl("contact/email-template/view/".$template->id) }}" title="{{ t('contact::contact.labels.view') }}" class="tipsy-tip email-template">
+						<i class="icon-view"></i>
+					</a>
+					<a href="{{ adminUrl("contact/email-template/edit/".$template->id ) }}" title="{{ t('global.edit') }}" class="tipsy-tip">
+						<i class="icon-edit"></i>
+					</a>
+					<a href="{{ adminUrl("contact/email-template/duplicate/".$template->id) }}" title="{{ t('contact::contact.labels.duplicate') }}" class="tipsy-tip">
+						<i class="icon-copy"></i>
+					</a>
+					{{ if($template->detemp == 0)}}
+					<a href="{{ adminUrl("contact/email-template/delete/".$template->id) }}" title="{{ t('global.delete') }}" class="ico-button button-red tipsy-tip confirm_delete"><i class="icon-remove"></i></a>
+					{{ endif }}
+				</div><!--- end of icons-bar -->
 			</td>
 
 		</tr>
@@ -51,12 +59,12 @@
 	</tbody>
 </table>
 <div class="button-wrapper" id="delete_select">
-		{{ Form::submit('submit_delete', Translate::get('global.delete_selected'), array('class' => 'confirm_delete button button-red', 'disabled' => 'disabled')) }}
+		{{ Form::submit('submit_delete', t('global.delete_selected'), array('class' => 'confirm_delete button button-red', 'disabled' => 'disabled')) }}
 		{{ Form::end() }}
 	</div>
 {{ $pagination }}
 {{ else }}
 	<div id="no-index-data">
-		{{ Translate::get('contact::contact.no_template') }}
+		{{ t('contact::contact.no_template') }}
 	</div>
 {{ endif }}

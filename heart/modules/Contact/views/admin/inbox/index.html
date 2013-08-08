@@ -4,10 +4,10 @@
 	<thead>
 		<tr>
 			<th width="5%">{{ Form::checkbox('action_to_all', '', array('class' => 'check-all')) }}</th>
-			<th>{{ Translate::get('label.name') }}</th>
-			<th>{{ Translate::get('label.email') }}</th>
-			<th>{{ Translate::get('contact::contact.labels.subject') }}</th>
-			<th width="100">{{ Translate::get('label.action') }}</th>
+			<th>{{ t('label.name') }}</th>
+			<th>{{ t('label.email') }}</th>
+			<th>{{ t('contact::contact.labels.subject') }}</th>
+			<th width="140">{{ t('label.action') }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -19,13 +19,21 @@
 			<td>{{ $mail->email }}</td>
 			<td>{{ $mail->subject }}
 				{{ if(($mail->read_mail) == 0) }}
-					<span class="label label-success">{{ Translate::get('contact::contact.labels.new') }}</span>	 
+					<span class="label label-success">{{ t('contact::contact.labels.new') }}</span>	 
 				{{ endif}}
 			</td>
 			<td>
-				<a href="{{ \Uri::create("$adminUrl/contact/detail/") }}{{$mail->id}}" title="{{ Translate::get('contact::contact.labels.detail') }}" class="ico-button button-blue tipsy-tip"><i class="icon-view2 icon-white"></i></a>
-				<a href="{{ \Uri::create("$adminUrl/contact/send-mail/index") }}{{ $mail->id }}" title="{{ Translate::get('contact::contact.labels.reply') }}" class="ico-button button-green tipsy-tip"><i class="icon-redo icon-white"></i></a>
-				<a href="{{ \Uri::create("$adminUrl/contact/delete/") }}{{ $mail->id }}" title="{{ Translate::get('global.delete') }}" class="ico-button button-red tipsy-tip confirm_delete"><i class="icon-trash2 icon-white"></i></a>
+				<div class="icons-bar">
+					<a href="{{ adminUrl("contact/detail/".$mail->id) }}" title="{{ t('contact::contact.labels.detail') }}" class="tipsy-tip">
+						<i class="icon-view"></i>
+					</a>
+					<a href="{{ adminUrl("contact/send-mail/index/".$mail->id) }}" title="{{ t('contact::contact.labels.reply') }}" class="tipsy-tip">
+						<i class="icon-redo "></i>
+					</a>
+					<a href="{{ adminUrl("contact/delete/".$mail->id) }}" title="{{ t('global.delete') }}" class="tipsy-tip confirm_delete">
+						<i class="icon-remove"></i>
+					</a>
+				</div><!--- end of icons-bar -->
 			</td>
 			{= $a++ =}
 		</tr>
@@ -33,12 +41,12 @@
 	</tbody>
 </table>
 	<div class="button-wrapper" id="delete_select">
-		{{ Form::submit('submit_delete', Translate::get('global.delete_selected') , array('class' => 'confirm_delete button button-red', 'disabled' => 'disabled')) }}
+		{{ Form::submit('submit_delete', t('global.delete_selected') , array('class' => 'confirm_delete btn btn-red', 'disabled' => 'disabled')) }}
 		{{ Form::end() }}
 	</div>
 	{{ $pagination }}
 {{ else }}
 	<div id="no-index-data">
-		{{ Translate::get('contact::contact.no_mail') }}
+		{{ t('contact::contact.no_mail') }}
 	</div>
 {{ endif }}

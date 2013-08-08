@@ -24,6 +24,9 @@ return array(
 		'template_error' => 'Error Occur!',
 		'mail_delete' => 'Contact Mail is successfully deleted',
 		'mails_delete' => 'Contact Mails are successfully deleted',
+		'e_all_template' => 'All Email Template',
+		'add_template'	=> 'Add Template',
+		'add_des_template' => 'Create a new Email Template',
 		'labels'	=> array(
 			'subject'	=> 'Subject',
 			'ip'		=> 'Ip',
