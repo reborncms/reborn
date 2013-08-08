@@ -71,7 +71,7 @@
 						var err = "<div class='m_upload_error'>[ "+data.result.error[0][0]+" ]</div>";
 						$('li#'+data.uniqueName+' div.progress_wrap').replaceWith(err);
 					} else {
-						var btn = "<a href='javascript:void(0);' class='m_edit_btn button button-orange f-right'>Edit</a></div></li>";
+						var btn = "<a href='javascript:void(0);' class='m_edit_btn btn btn-orange f-right'>Edit</a></div></li>";
 
 						$('li#'+data.uniqueName+' div.m_uploaded_header').append(btn);
 						$('li#'+data.uniqueName+' div.m_progress').hide();

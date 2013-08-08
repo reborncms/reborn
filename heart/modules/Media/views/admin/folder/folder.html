@@ -13,57 +13,57 @@
 		{{ Form::hidden('orSlug', $fData->slug) }}
 	{{ endif }}
 		<div class="form-block">
-			{{ Form::label(Translate::get('media::folder.lbl.name'), 'name') }}
+			{{ Form::label(Translate::get('m.lbl.folderName'), 'name') }}
 			<div class="form-right-block">
 				{= $name = (isset($fData->name)) ? $fData->name : '' =}
 				{{ Form::input('name', $name, 'text', array('class' => 'medium rounded-corner required')) }}
 				{= $display = isset($errors['name']) ? 'auto' : 'none' =}
 				<span class="msg error" style="display: {{ $display }};">
-					{{ Translate::get('media::media.require') }}
+					{{ Translate::get('m.warning.require') }}
 				</span>
-				<p>{{ Translate::get('media::folder.info.nameInfo') }}</p>
+				<p>{{ Translate::get('m.info.folderName') }}</p>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form-block -->
 
 		<div class="form-block">
-			{{ Form::label(Translate::get('media::folder.lbl.slug'), 'slug') }}
+			{{ Form::label(Translate::get('m.lbl.slug'), 'slug') }}
 			<div class="form-right-block">
 				{= $slug = (isset($fData->slug)) ? $fData->slug : '' =}
 				{{ Form::input('slug', $slug, 'text', array('class' => 'medium rounded-corner required')) }}
 				{= $display = isset($errors['slug']) ? 'auto' : 'none' =}
 				<span class="msg error" style="display: {{ $display }}">
-					{{ Translate::get('media::media.require') }}
+					{{ Translate::get('m.warning.require') }}
 				</span> <!-- end of msg -->
-				<p>{{ Translate::get('media::folder.info.slugInfo') }}</p>
+				<p>{{ Translate::get('m.info.slug') }}</p>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form-block -->
 
 		<div class="form-block">
-			{{ Form::label(Translate::get('media::media.desc'), 'description') }}
+			{{ Form::label(Translate::get('m.lbl.desc'), 'description') }}
 			<div class="form-right-block">
 				{= $desc = (isset($fData->description)) ? $fData->description : '' =}
 				{{ Form::textarea('description', $desc) }}
-				<p>{{ Translate::get('media::folder.info.descInfo') }}</p>
+				<p>{{ Translate::get('me.info.folderDesc') }}</p>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form-block -->
 
 		<div class="form-block">
-			{{ Form::label(Translate::get('media::media.choFol'), 'folderId') }}
+			{{ Form::label(Translate::get('m.lbl.choFol'), 'folderId') }}
 			<div class="form-right-block">
 				{= $folderId = (isset($fData->folder_id)) ? $fData->folder_id : $folder_id =}
 				<select name="folder_id" class="medium required" id="folder_id">
-					<option value="0">{{ \Translate::get('media::media.none') }}</option>
+					<option value="0">{{ \Translate::get('m.lbl.none') }}</option>
 					{{ Media\Lib\Helper::folderTree($allFolders, 0, 0, $folderId) }}
 	            </select>
 	            <span class="msg error" style="display: none;">
-					{{ Translate::get('media::media.msg.warning.required') }}
+					{{ Translate::get('m.warning.required') }}
 				</span>
 	            <p>Choose folder</p>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form-block -->
 
 		<div class="form-block form-action">
-			{= $value = (isset($fData)) ? Translate::get('media::media.update') : Translate::get('media::media.submit') =}
+			{= $value = (isset($fData)) ? Translate::get('m.btn.update') : Translate::get('m.btn.submit') =}
 			{{ Form::input('submit', $value, 'submit', array('class' => 'button button-green', 'id' =>'ajax_submit')) }}
 			<span class="loading" style="display: none;"></span>
 		</div> <!-- end of form-aciton -->

@@ -32,37 +32,33 @@ form.form input{
 
 /* ===== ===== Pagination ===== ===== */
 #m_pagi_area{
-	width: 95%;
-	padding: 10px;
 	margin: 10px auto;
 }
 ul#m_pagi{
 	padding: 0 10px;
 	border: 1px solid #ddd;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	-ms-border-radius: 3px;
-	border-radius: 3px;
 	display: inline-block;
-	background: #f5fafa;
+	background: #393939;
 }
 ul#m_pagi li{
-	/*background: blue;*/
+	list-style: none;
 }
 ul#m_pagi li a{
 	display: block;
 	margin-left: 3px;
 	padding: 5px 10px;
+	color: lightblue;
 }
 ul#m_pagi span.sep{
 	width: 8px;
 	height: 28px;
 	background: url('../img/sep.png') center left no-repeat;
 }
-li#m_current a{
+ul#m_pagi li#m_current a{
 	cursor: text;
 	color: #222;
 	font-weight: bold;
+	color: white;
 }
 
 /* ===== ===== Forms ===== ==== */
@@ -122,6 +118,7 @@ ul#m_uploaded li{
 	padding: 3px 10px;
 	margin: 10px auto;
 	background: #f0f0f0;
+	list-style: none;
 }
 ul#m_uploaded li h3{
 	font-size: 16px;
@@ -139,7 +136,6 @@ div.m_upload_error{
     float: left;
     height: 20px;
     padding-top: 3px;
-   /* width: 100px;*/
 }
 
 /* @ == @ Progress @ == @ */
@@ -150,35 +146,20 @@ div#progress_wrap{
 	margin-left: 15px;
 }
 div.m_progress{
-	/*width: 100%;*/
-	background-color: #F7F7F7;
-	background-image: -moz-linear-gradient(center top , #F5F5F5, #F9F9F9);
+	background-color: #Fff;
 	background-repeat: repeat-x;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	-ms-border-radius: 4px;
-	border-radius: 4px;
-	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.2) inset;
-	-moz-box-shadow: 0 1px 2px rgba(0,0,0,0.2) inset;
-	-ms-box-shadow: 0 1px 2px rgba(0,0,0,0.2) inset;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.2) inset;
+	border: 1px solid #01a2c6;
+    padding: 1px;
 
-    height: 18px;
+    height: 14px;
     margin-bottom: 18px;
     overflow: hidden;
 }
 div.m_progress .m_bar{
     display: inline-block;
-    height: 18px;
+    height: 14px;
     margin-bottom: 10px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    -ms-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 1px 0  rgba(255,255,255,0.5) inset;
-    -moz-box-shadow: 0 1px 0  rgba(255,255,255,0.5) inset;
-    -ms-box-shadow: 0 1px 0  rgba(255,255,255,0.5) inset;
-    box-shadow: 0 1px 0  rgba(255,255,255,0.5) inset;
+ 
     transition: width 0.2s ease 0s;
     -webkit-transition: width 0.2s ease 0s;
     -moz-transition: width 0.2s ease 0s;
@@ -236,6 +217,7 @@ div.m_uploaded_header{
 
 div.m_edit_form{
 	width: 100%;
+	background: #fff;
 }
 
 /* ===== ===== Folders ===== ===== */
@@ -244,7 +226,7 @@ div#m_folder_area div#m_file_area{
 }
 ul#m_folder_list li, ul#m_file_list li {
 	width: 90px;
-	height: 90px;
+	height: 80px;
 	display: inline-block;
 	padding: 10px;
 	margin: 0 5px;
@@ -269,34 +251,29 @@ div.m_thumb_area{
 	margin: 0 auto;
 	background: url('../img/icons.png') -174px 0 no-repeat;
 }
-ul#m_folder_list li a, ul#m_file_list li a{
-	display: block;
-}
 ul#m_folder_list li a p, ul#m_file_list li p{
 	text-align: center;
 	color: #606060;
-	word-wrap: break-word;
+	/*word-wrap: break-word;*/
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	line-height: 1.3em;
 	margin-top: 5px;
-	height: 30px;
 	overflow: hidden;
 }
-ul#m_folder_list li a.ico-button, ul#m_file_list li a.ico-button{
-	display: none;
-	padding: 2px;
+ul#m_folder_list li div.btns-group, ul#m_file_list li div.btns-group {
 	top: 0;
 	right: 0;
 	z-index: 10;
+	display: none;
 }
-ul#m_folder_list li a.button-green, ul#m_file_list li a.button-green{
-	right: 25px;
+ul#m_folder_list li div.btns-group a.btn-ico, ul#m_file_list li div.btns-group a.btn-ico {
+	padding: 1px 4px;
 }
-ul#m_file_list li a.button-blue{
-	right: 50px;
-}
-ul#m_folder_list li:hover > a.ico-button, ul#m_file_list li:hover > a.ico-button{
+ul#m_folder_list li:hover > div.btns-group, ul#m_file_list li:hover > div.btns-group {
 	display: block;
 }
+
 
 /* ===== ===== Files ===== ===== */
 div.m_img_thumb{
@@ -307,7 +284,7 @@ div.m_img_thumb{
 	-ms-border-radius: 2px;
 	border-radius: 2px;
 }
-ul#m_file_list li { height: 120px; }
+ul#m_file_list li { height: 112px; }
 div.files_icon{
 	width: 44px;
 	height: 60px;

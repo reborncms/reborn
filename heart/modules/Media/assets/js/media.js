@@ -8,7 +8,6 @@ $(function(){
 	$('#media_create_folder').colorbox({
 		width: '60%',
 		height: '400',
-		href: ADMIN + '/media/createFolder/' + $('.media_wrap').attr('id'),
 		onComplete: function() { $.colorbox.resize(); },
 		onClosed: function() { window.location.reload(); }
 	});
@@ -33,7 +32,7 @@ $(function(){
 		}
 	});
 
-	$('.file_ajax_submit').live('click', function(e){
+	$('.file_ajax_submit').on('click', function(e){
 		e.preventDefault();
 
 		var theUniqueId = '#'+$(this).attr('uniqueName');
@@ -108,7 +107,6 @@ $(function(){
 	$('#media_upload').colorbox({
 		width: '60%',
 		height: '400',
-		href: ADMIN + '/media/upload/' + $('.media_wrap').attr('id'),
 		onClosed: function() { window.location.reload(); }
 	});
 

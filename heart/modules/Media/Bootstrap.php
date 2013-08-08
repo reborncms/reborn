@@ -13,14 +13,12 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
     public function boot()
     {
-        \Translate::load('media::media');
-        \Translate::load('media::file');
-        \Translate::load('media::folder');
+        \Translate::load('media::media', 'm');
     }
 
     public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
     {
-        $menu->add('media', 'Media Manager', $modUri, null, 27);
+        $menu->add('media', \Translate::get('m.title.title'), $modUri, null,25);
     }
 
     public function settings()
@@ -33,14 +31,14 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
         $mod_toolbar = array(
                 'upload'    => array(
                     'url'   => 'media/upload/',
-                    'name'  => 'Upload',
-                    'info'  => 'Upload your files',
+                    'name'  => \Translate::get('m.btn.upload'),
+                    'info'  => \Translate::get('m.info.upload'),
                     'id'    => 'media_upload',
                 ),
                 'folder'    => array(
                     'url'   => 'media/createFolder/',
-                    'name'  => 'New Folder',
-                    'info'  => 'Create a new folder',
+                    'name'  => \Translate::get('m.btn.create'),
+                    'info'  => \Translate::get('m.info.create'),
                     'id'    => 'media_create_folder',
                 ),
             );

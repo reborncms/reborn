@@ -38,7 +38,7 @@ class MediaController extends \AdminController
         $files = MFiles::where('module', '=', 'media')
                         ->where('folder_id', '=', 0)->get();
         $folders = MFolders::where('folder_id', '=', '0')->get();
-        $this->template->title('Media Module')
+        $this->template->title(\Translate::get('m.title.title'))
                         ->set('files', $files)
                         ->set('folders', $folders)
                         ->setPartial('admin/index');
@@ -61,70 +61,54 @@ class MediaController extends \AdminController
             $validate = $this->validation();
 
             if ($validate->valid()) {
-                if (\Security::CSRFvalid()) {
-                    $data = $this->setData();
 
-                    $depth = ($data['folder_id'] != 0) ? $this->defineDepth(
-                        $data['folder_id']) : 0;
+                $data = $this->setData();
 
-                    if (! $this->duplication($data['name'], $data['slug'],
-                        $data['folder_id'])) {
+                $depth = ($data['folder_id'] != 0) ? $this->defineDepth(
+                    $data['folder_id']) : 0;
 
-                        $toSave = new MFolders();
+                if (! $this->duplication($data['name'], $data['slug'],
+                    $data['folder_id'])) {
 
-                        $toSave->name = $data['name'];
-                        $toSave->slug = $data['slug'];
-                        $toSave->description = $data['description'];
-                        $toSave->folder_id = $data['folder_id'];
-                        $toSave->user_id = $data['user_id'];
-                        $toSave->depth = ((int)$depth) + 1;
+                    $toSave = new MFolders();
 
-                        if ($toSave->save()) {
-                            if ($this->request->isAjax()) {
-                                return $this->returnJson(array('success' => true));
-                            }
-                            \Flash::success(\Translate::get(
-                                'media::folder.flash.createSuc'));
+                    $toSave->name = $data['name'];
+                    $toSave->slug = $data['slug'];
+                    $toSave->description = $data['description'];
+                    $toSave->folder_id = $data['folder_id'];
+                    $toSave->user_id = $data['user_id'];
+                    $toSave->depth = ((int)$depth) + 1;
 
-                            return \Redirect::to('admin/media/');
-                        } else {
-                            if ($this->request->isAjax()) {
-                                $inform = array(
-                                    'success'   => false,
-                                    'error' => \Translate::get(
-                                        'media::folder.flash.createFail'),
-                                    );
-
-                                return $this->returnJson($inform);
-                            }
-                            \Flash::error(\Translate::get(
-                                'media::folder.flash.createFail'));
+                    if ($toSave->save()) {
+                        if ($this->request->isAjax()) {
+                            return $this->returnJson(array('success' => true));
                         }
+                        \Flash::success(\Translate::ger('m.success.create'));
+
+                        return \Redirect::to('admin/media/');
                     } else {
                         if ($this->request->isAjax()) {
                             $inform = array(
-                                'success' => false,
-                                'error' => \Translate::get(
-                                    'media::folder.flash.folderExist'),
+                                'success'   => false,
+                                'error' => \Translate::get('m.fail.create')
                                 );
 
                             return $this->returnJson($inform);
                         }
-                        \Flash::error(\Translate::get(
-                            'media::folder.flash.folderExist'));
+                        \Flash::error(\Translate::get('m.fail.create'));
                     }
-
                 } else {
                     if ($this->request->isAjax()) {
                         $inform = array(
                             'success' => false,
-                            'error' => \Translate::get('media::media.error.csrf'),
+                            'error' => \Translate::get('m.error.folderExist')
                             );
 
                         return $this->returnJson($inform);
                     }
-                    \Flash::error(\Translate::get('media::media.error.csrf'));
+                    \Flash::error(\Translate::get('m.error.folderExist'));
                 }
+
             } else {
                 if ($this->request->isAjax()) {
                     $inform = array(
@@ -141,7 +125,7 @@ class MediaController extends \AdminController
         // For ajax
         if ($this->request->isAjax()) { $this->template->partialOnly(); }
 
-        $this->template->title('Media &#124; New Folder')
+        $this->template->title(\Translate::get('m.title.create'))
                         ->set('allFolders', $allFolders)
                         ->set('folder_id', $folder_id)
                         ->setPartial('admin/folder/folder');
@@ -164,69 +148,54 @@ class MediaController extends \AdminController
             $validate = $this->validation();
 
             if ($validate->valid()) {
-                if (\Security::CSRFvalid()) {
-                    $data = $this->setData();
 
-                    $depth = ($data['folder_id'] != 0) ? $this->defineDepth(
-                        $data['folder_id']) : 0;
+                $data = $this->setData();
 
-                    if (! $this->duplication($data['name'], $data['slug'],
-                        $data['folder_id'], \Input::get('orName'), \Input::get('orSlug'))) {
+                $depth = ($data['folder_id'] != 0) ? $this->defineDepth(
+                    $data['folder_id']) : 0;
 
-                        $updateData = MFolders::find(\Input::get('id'));
+                if (! $this->duplication($data['name'], $data['slug'],
+                    $data['folder_id'], \Input::get('orName'), \Input::get('orSlug'))) {
 
-                        $updateData->name = $data['name'];
-                        $updateData->slug = $data['slug'];
-                        $updateData->description = $data['description'];
-                        $updateData->folder_id = $data['folder_id'];
-                        $updateData->user_id = $data['user_id'];
-                        $updateData->depth = $depth + 1;
+                    $updateData = MFolders::find(\Input::get('id'));
 
-                        if ($updateData->save()) {
-                            if ($this->request->isAjax()) {
-                                return $this->returnJson(array('success' => true));
-                            }
-                            \Flash::success(\Translate::get(
-                                'media::folder.flash.createSuc'));
+                    $updateData->name = $data['name'];
+                    $updateData->slug = $data['slug'];
+                    $updateData->description = $data['description'];
+                    $updateData->folder_id = $data['folder_id'];
+                    $updateData->user_id = $data['user_id'];
+                    $updateData->depth = $depth + 1;
 
-                            return \Redirect::to('admin/media/');
-                        } else {
-                            if ($this->request->isAjax()) {
-                                $inform = array(
-                                    'success' => false,
-                                    'error' => \Translate::get(
-                                        'media::folder.flash.createFail'),
-                                    );
-
-                                return $this->returnJson($inform);
-                            }
-                            \Flash::error(\Translate::get(
-                                'media::folder.flash.createFail'));
+                    if ($updateData->save()) {
+                        if ($this->request->isAjax()) {
+                            return $this->returnJson(array('success' => true));
                         }
+                        \Flash::success(\Translate::get('m.success.create'));
+
+                        return \Redirect::to('admin/media/');
                     } else {
                         if ($this->request->isAjax()) {
                             $inform = array(
                                 'success' => false,
-                                'error' => \Translate::get(
-                                    'media::folder.flash.folderExist'),
+                                'error' => \Translate::get('m.error.create'),
                                 );
 
                             return $this->returnJson($inform);
                         }
-                        \Flash::error(\Translate::get(
-                            'media::folder.flash.folderExist'));
+                        \Flash::error(\Translate::get('m.error.create'));
                     }
                 } else {
                     if ($this->request->isAjax()) {
                         $inform = array(
                             'success' => false,
-                            'error' => \Translate::get('media::media.error.csrf'),
+                            'error' => \Translate::get('m.error.folderExist'),
                             );
 
                         return $this->returnJson($inform);
                     }
-                    \Flash::error(\Translate::get('media::media.error.csrf'));
+                    \Flash::error(\Translate::get('m.error.folderExist'));
                 }
+
             } else {
                 if ($this->request->isAjax()) {
                     $inform = array(
@@ -242,7 +211,7 @@ class MediaController extends \AdminController
 
         if ($this->request->isAjax()) { $this->template->partialOnly(); }
 
-        $this->template->title('Media &#124; Edit Folder')
+        $this->template->title(\Translate::get('m.title.folderEdit'))
                         ->set('fData', $fData)
                         ->set('allFolders', $allFolders)
                         ->setPartial('admin/folder/folder');
@@ -273,7 +242,7 @@ class MediaController extends \AdminController
         if ($this->request->isAjax()) {
             return $this->returnJson(array('success' => true));
         }
-        \Flash::success('media::folder.flash.sucDel');
+        \Flash::success('m.success.folderDel');
     }
 
     /**
@@ -308,7 +277,7 @@ class MediaController extends \AdminController
         $currentFolder = MFolders::where('id', '=', $id)->first();
         $folderPagi = array_reverse($this->folderPagi($id));
 
-        $this->template->title('Media')
+        $this->template->title(\Translate::get('m.title.title'))
                         ->set('folders', $folders)
                         ->set('files', $files)
                         ->set('folder_id', $id)
@@ -343,7 +312,7 @@ class MediaController extends \AdminController
             $this->template->set('ajax', true);
         }
 
-        $this->template->title('Media &124; Set Featured Image')
+        $this->template->title(\Translate::get('m.ext.featureTitle'))
                         ->set('images', $images)
                         ->set('allFolders', $allFolders)
                         ->setPartial('admin'.DS.'outside'.DS.'featuredImage');
@@ -491,7 +460,7 @@ class MediaController extends \AdminController
             }
 
             if ($uploaded['success']) {
-                \Flash::success(\Translate::get('media::file.flash.sucUpload'));
+                \Flash::success(\Translate::get('m.success.upload'));
             } else {
                 foreach ($uploaded['error'] as $error) {
                     \Flash::error('The file ' . $error['errorAt'] .
@@ -509,7 +478,7 @@ class MediaController extends \AdminController
             $header = $this->template->partialRender('admin/outside/header');
             $footer = $this->template->partialRender('admin/outside/footer');
             $btnsBar = $this->template->partialRender('admin/outside/btns');
-            $this->template->title('Media &#124; Upload Files')
+            $this->template->title(\Translate::get('m.title.upload'))
                             ->partialOnly()
                             ->set('folder_id', $folderId)
                             ->set('allFolders', $allFolders)
@@ -520,7 +489,7 @@ class MediaController extends \AdminController
 
         if ($this->request->isAjax()) { $this->template->partialOnly(); }
 
-        $this->template->title('Media &#124; Upload Files')
+        $this->template->title(\Translate::get('m.title.upload'))
                         ->set('folder_id', $folderId)
                         ->set('allFolders', $allFolders)
                         ->set('maxUploadableSize', $maxUploadableSize)
@@ -570,19 +539,19 @@ class MediaController extends \AdminController
                     if ($this->request->isAjax()) {
                         return $this->returnJson(array('success' => true));
                     }
-                    \Flash::success('File is successfully updated');
+                    \Flash::success(\Translate::get('m.success.fileUpdate'));
 
                     return \Redirect::to('admin/media/');
                 } else {
                     if ($this->request->isAjax()) {
                         $inform = array(
                             'success'   => false,
-                            'error'     => 'File cannot be updated.',
+                            'error'     => \Translate::get('m.error.fileUpdate'),
                             );
 
                         return $this->returnJson($inform);
                     }
-                    \Flash::error('File cannot be updated.');
+                    \Flash::error(\Translate::get('m.error.fileUpdate'));
 
                     return \Redirect::to('admin/media/');
                 }
@@ -606,7 +575,7 @@ class MediaController extends \AdminController
 
         if ($this->request->isAjax()) { $this->template->partialOnly(); }
 
-        $this->template->title('Media &#124; File Edit')
+        $this->template->title(\Translate::get('m.title.fileEdit'))
                         ->set('allFolders', $allFolders)
                         ->set('fileData', $fileData)
                         ->setPartial('admin/file/edit');
@@ -632,7 +601,7 @@ class MediaController extends \AdminController
             if ($this->request->isAjax()) {
                 return $this->returnJson(array('success' => true));
             }
-            \Flash::success('media::file.flash.sucDel');
+            \Flash::success('m.success.fileDel');
         }
     }
 
@@ -650,7 +619,7 @@ class MediaController extends \AdminController
 
         if ($this->request->isAjax()) { $this->template->partialOnly(); }
 
-        $this->template->title('Media &#124; ' . $fileData->name)
+        $this->template->title($fileData->name)
                         ->set('fileData', $fileData)
                         ->setPartial('admin/file/show');
     }
@@ -683,7 +652,7 @@ class MediaController extends \AdminController
         $footer = $this->template->partialRender('admin/outside/footer');
         $btnsBar = $this->template->partialRender('admin/outside/btns');
 
-        $this->template->title('Inserting Image')
+        $this->template->title(\Translate::get('m.ext.insertTitle'))
                         ->partialOnly()
                         ->set('images', $images)
                         ->set('allFolders', $allFolders)
@@ -704,7 +673,7 @@ class MediaController extends \AdminController
         $footer = $this->template->partialRender('admin/outside/footer');
         $btnsBar = $this->template->partialRender('admin/outside/btns');
 
-        $this->template->title('Media &#124; Upload Files')
+        $this->template->title(\Translate::get('m.title.upload'))
                         ->partialOnly()
                         ->set('btnsBar', $btnsBar)
                         ->set('header', $header)
