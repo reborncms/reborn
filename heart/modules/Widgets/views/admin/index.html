@@ -2,10 +2,10 @@
 <div id="widget_wrapper">
 	<div id="left-side">
 		<div id="avaliable_widget_wrapper" class="wdg-wrapper">
-			<h4 class="wrapper_title">Avaliable Widgets</h3>
+			<h4 class="wrapper_title">{{ t('widgets::widgets.avaliable_widgets') }}</h3>
 				<div id="avaliable_widgets" class="wdg-wrap-body">
 					<div class="msg-box msg-info">
-						** Click on <i class="icon-circleplus icon-white icon-12"></i> to add widget to currently open widget area.
+						{{ t('widgets::widgets.instruction') }}
 						<span class="msg-close">
 							<a href="#" title="Close"></a>
 						</span>
@@ -36,11 +36,10 @@
 			</div> <!-- .avaliable_widget_wrapper -->
 			{{ if (count($inactive_widget) > 0) }}
 			<div class="wdg-wrapper" id="inactive_widget_wrapper">
-				<h4 class="wrapper_title">Inactive Widgets</h3>
+				<h4 class="wrapper_title">{{ t('widgets::widgets.inactive_widgets') }}</h3>
 				<div id="inactive_widgets" class="wdg-wrap-body">
 					<div class="msg-box">
-						These widgets may be from your previous themes and specify areas are not avaliable in current theme. <br />
-						Please click on <i class="icon-circleplus icon-white icon-12"></i> to assign to current theme areas. Or click on <i class="icon-circleminus icon-white icon-12"></i> to delete the widget.
+						{{ t('widgets::widgets.inactive_msg') }}
 						<span class="msg-close">
 							<a href="#" title="Close"></a>
 						</span>
@@ -97,7 +96,7 @@
 								</div> <!-- end of .single_wrapper -->
 				  			{{ endloop }}
 				  		{{ else }}
-				  			<div id="no-index-data">No widgets yet in this area.</div>
+				  			<div id="no-index-data">{{ t('widgets::widgets.no_widget') }}</div>
 				  		{{ endif }}
 				  	</div>
 				{{ endloop }}

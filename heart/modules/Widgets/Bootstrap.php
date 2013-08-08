@@ -5,7 +5,10 @@ namespace Widgets;
 class Bootstrap extends \Reborn\Module\AbstractBootstrap
 {
 
-	public function boot() {}
+	public function boot() 
+	{
+		\Translate::load('widgets::widgets');
+	}
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
