@@ -295,7 +295,7 @@ class ModuleManager
         foreach ($mods as $mod) {
             $name = $mod->name;
             $modFromDB[$name]['uri'] = $mod->uri;
-            $modFromDB[$name]['description'] = $mod->description;
+            //$modFromDB[$name]['description'] = $mod->description;
             $modFromDB[$name]['enabled'] = ($mod->enabled == '0') ? false : true;
             $modFromDB[$name]['version'] = $mod->version;
         }
