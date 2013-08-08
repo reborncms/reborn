@@ -1,4 +1,7 @@
 <div class="widget widget-fb-like-btn">
+	{{ if(is_null($fb_title)) }}
+	<h2 class="widget-title">{{ $fb_title }}</h2>
+	{{ endif }}
 	<div class="widget-body">
 		<div id="fb-root"></div>
 		<script>
