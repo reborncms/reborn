@@ -10,10 +10,8 @@
 		</div>
 		
 		<div class="c-a-b">
-
-			<div>
-				<span>{{ Translate::get('blog::blog.title') }}<span class="required"></span></span>
-			</div>
+			
+			{{ Form::label(t('blog::blog.title').'<span class="required"></span>', 'name') }}
 
 			{{ if(isset($val_errors['name'])) }}
 				<span class="error">{{ $val_errors['name'] }}</span>
@@ -25,22 +23,18 @@
 
 		<div class="c-a-b">
 
-			<div>
-				<span>{{ Translate::get('blog::blog.slug') }}<span class="required"></span></span>
-			</div>
+			{{ Form::label(t('blog::blog.slug').'<span class="required"></span>', 'slug') }}
 			
-				{{ if(isset($val_errors['slug'])) }}
-					<span class="error">{{ $val_errors['slug'] }}</span>
-				{{ endif }}	
-				{{ Form::input('slug', isset($cat->slug) ? $cat->slug : '', 'text', array('class' => 'xx-large thin', 'id' => 'form_slug')) }}
+			{{ if(isset($val_errors['slug'])) }}
+				<span class="error">{{ $val_errors['slug'] }}</span>
+			{{ endif }}	
+			{{ Form::input('slug', isset($cat->slug) ? $cat->slug : '', 'text', array('class' => 'xx-large thin', 'id' => 'form_slug')) }}
 		
 		</div> <!-- end of div.c-a-b -->
 
 		<div class="c-a-b">
 
-			<div>
-				<span>{{ Translate::get('blog::blog.parent') }}</span>
-			</div>
+			{{ Form::label(t('blog::blog.parent'), 'cat_selected') }}
 
 			{{ if ($method == 'edit') }}
 				{= $from = 'catEdit' =}
@@ -56,9 +50,7 @@
 
 		<div class="c-a-b">
 
-			<div>
-				<span>{{ Translate::get('blog::blog.description') }}</span>
-			</div>
+			{{ Form::label(t('blog::blog.description'), 'description') }}
 
 			{{ Form::textarea('description', isset($cat->description) ? $cat->description : '', array('style' => 'width:90%;height:40%;')) }}
 
@@ -67,9 +59,9 @@
 		<div class="c-a-b">
 
 		{{ if ($method == 'create') }}
-			{= $buttonVal = Translate::get('blog::blog.add_new_cat') =}
+			{= $buttonVal = t('blog::blog.add_new_cat') =}
 		{{ else }}
-			{= $buttonVal = Translate::get('blog::blog.edit_cat') =}
+			{= $buttonVal = t('blog::blog.edit_cat') =}
 		{{ endif }}
 		
 		{{ Form::submit('add-new-cat-btn', $buttonVal, array('class' => 'button button-green','id' => 'add-new-cat-btn')) }}

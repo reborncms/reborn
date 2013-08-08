@@ -21,7 +21,7 @@
 
 				<a kind="click" href="javascript:void(0);">
 					<span class="tt"></span>
-					<span>{{ Translate::get('blog::blog.add_new_cat') }}</span>
+					<span>{{ t('blog::blog.add_new_cat') }}</span>
 				</a>
 
 			</div> <!-- end of div.r-container#option-control -->
@@ -57,7 +57,7 @@
 		}
 	});
 
-	$('ol.sortable li:has(ol)').prepend('<i class="icon-circleplus icon-grey page_expand"></i>');
+	$('ol.sortable li:has(ol)').prepend('<i class="icon-circleplus icon-gray icon-12 page_expand"></i>');
  
 	$('.page_expand').click(function(){
 		$(this).siblings('ol').slideToggle();

@@ -2,32 +2,31 @@
 	{= $status = (isset($page['status'])) ? $page['status'] : '' =}
 {{ endif }}
 
-{{ Form::start('admin/pages/'.$method,'page_form',false, array('class' => 'form')) }}
-	{{ Security::CSRField() }}
+{{ Form::start(adminUrl('pages/'.$method),'page_form',false, array('class' => 'form')) }}
 	<div id="main-form-wrapper">
 		<div id="form-wrapper">
 			<div id="form-left">
 				<div id="autosave-msg"></div>
 				<div class="form-block">
-					{{ Form::label(Translate::get('pages::pages.labels.page_title').'<span class="required"></span>', 'title') }}
+					{{ Form::label(t('pages::pages.labels.page_title').'<span class="required"></span>', 'title') }}
 					<div class="form-right-block">
 						<span class="msg error">
 							{{ if(isset($errors['title'])) }}
 								{{ $errors['title'] }}
 							{{ endif }}
 						</span>
-						{{ Form::input('title', isset($page['title']) ? $page['title'] : '','text', array('class' => 'thin xx-large','required' => 'required','id' => 'form_title')) }}
+						{{ Form::input('title', isset($page['title']) ? $page['title'] : '','text', array('class' => 'xx-large','required' => 'required','id' => 'form_title')) }}
 					</div> <!-- end of form-right-block --> 
 				</div> <!-- end of form block -->
 				<div class="form-block">
-					{{ Form::label(Translate::get('pages::pages.labels.page_slug').'<span class="required"></span>', 'slug') }}
+					{{ Form::label(t('pages::pages.labels.page_slug').'<span class="required"></span>', 'slug') }}
 					<div class="form-right-block">
 						<span class="msg error" id="slug_error" style="display:block;">
 							{{ if(isset($errors['slug'])) }}
 								{{ $errors['slug'] }}
 							{{ endif }}
 						</span>
-						{{ Form::input('slug', isset($page['slug']) ? $page['slug'] : '','text', array('class' => 'thin xx-large','required' => 'required','id' => 'form_slug')) }}
+						{{ Form::input('slug', isset($page['slug']) ? $page['slug'] : '','text', array('class' => 'xx-large','required' => 'required','id' => 'form_slug')) }}
 					</div>
 				</div>
 				<div class="form-block">
@@ -38,15 +37,15 @@
 				<div id="option-control" class="r-m-c selected">
 					<a kind="click" href="javascript:void(0);">
 						<span class="tt"></span>
-						<span>{{ Translate::get('pages::pages.labels.page_settings') }}</span>
+						<span>{{ t('pages::pages.labels.page_settings') }}</span>
 					</a>
 				</div> <!-- end of div.r-container#option-control -->
 
 				<div class="r-container">
 					<a href="javascript:void(0);" class="r-i-b">
 						<div>
-							<i class="icon-grey icon-layout"></i>
-							<span>{{ Translate::get('pages::pages.labels.page_layout') }}</span>
+							<i class="icon-gray icon-layout icon-16"></i>
+							<span>{{ t('pages::pages.labels.page_layout') }}</span>
 						</div>
 					</a>
 					<div class="r-i-b-h">
@@ -54,28 +53,28 @@
 					</div>
 				</div> <!-- end of div.r-container -->
 
-				<div class="r-container">
+				<div class="r-container" id="meta_info">
 					<a href="javascript:void(0);" class="r-i-b">
 						<div>
-							<i class="icon-grey icon-tag"></i>
-							<span>{{ Translate::get('pages::pages.labels.page_meta_data') }}</span>
+							<i class="icon-gray icon-tag icon-16"></i>
+							<span>{{ t('pages::pages.labels.page_meta_data') }}</span>
 						</div>
 					</a>
 					<div class="r-i-b-h">
-						{{ Form::label(Translate::get('pages::pages.labels.meta_title'), 'meta_title') }}
+						{{ Form::label(t('pages::pages.labels.meta_title'), 'meta_title') }}
 						{{ Form::input('meta_title', isset($page['meta_title']) ? $page['meta_title'] : '','text', array('class' => 'thin xx-large')) }}
-						{{ Form::label(Translate::get('pages::pages.labels.meta_keywords'), 'meta_keyword') }}
-						{{ Form::input('meta_keyword', isset($page['meta_keyword']) ? $page['meta_keyword'] : '','text', array('class' => 'thin xx-large')) }}
-						{{ Form::label(Translate::get('pages::pages.labels.meta_description'), 'meta_description') }}
-						{{ Form::textarea('meta_description', isset($page['meta_description']) ? $page['meta_description'] : '', array('style' => 'width:211px;')) }}
+						{{ Form::label(t('pages::pages.labels.meta_keywords'), 'meta_keyword') }}
+						{{ Form::input('meta_keyword', isset($page['meta_keyword']) ? $page['meta_keyword'] : '','text', array('class' => 'xx-large')) }}
+						{{ Form::label(t('pages::pages.labels.meta_description'), 'meta_description') }}
+						{{ Form::textarea('meta_description', isset($page['meta_description']) ? $page['meta_description'] : '', array('style' => 'width:90%;')) }}
 					</div>
 				</div> <!-- end of page meta r-container -->
 				<div class="r-container">
 
 					<a href="javascript:void(0);" class="r-i-b">
 						<div>
-							<i class="icon-grey icon-comment"></i>
-							<span>{{ Translate::get('pages::pages.labels.comment_status') }}</span>
+							<i class="icon-gray icon-comment icon-16"></i>
+							<span>{{ t('pages::pages.labels.comment_status') }}</span>
 						</div>
 					</a>
 					<div class="r-i-b-h">
@@ -85,8 +84,8 @@
 				<div class="r-container page_design_wrapper">
 					<a href="#add_design" title="Page Design" class="design r-i-b">
 						<div>
-							<i class="icon-grey icon-css"></i>
-							<span>{{ Translate::get('pages::pages.labels.design') }}</span>
+							<i class="icon-gray icon-brush"></i>
+							<span>{{ t('pages::pages.labels.design') }}</span>
 						</div>
 					</a>
 				</div> <!-- end of design -->
@@ -124,21 +123,21 @@
 				{{ if($method == 'create' || $status == 'draft') }}
 
 					{= 
-						$save_button_val = 'Publish';
-						$draft_button_val = 'Save as Draft'; 
+						$save_button_val = t('global.publish');
+						$draft_button_val = t('global.save_draft'); 
 					=}
 
 				{{ else }}
 
 					{= 
-						$save_button_val = 'Save';
-						$draft_button_val = 'Unpublish'; 
+						$save_button_val = t('global.save');
+						$draft_button_val = t('global.unpublish');
 					=}
 					
 				{{ endif }}
 
-				{{ Form::submit('page_save', $save_button_val, array('class' => 'button button-green')) }}
-				{{ Form::submit('page_save', $draft_button_val, array('class' => 'button')) }}
+				{{ Form::submit('page_save', $save_button_val, array('class' => 'btn btn-green')) }}
+				{{ Form::submit('page_save', $draft_button_val, array('class' => 'btn')) }}
 				<!-- <a href="{{ rbUrl('pages/preview') }}" class="button button-blue" id="post_preview_btn">Preview</a> -->
 			</div> <!-- end of form block -->
 		</div> <!-- end of form-wrapper -->

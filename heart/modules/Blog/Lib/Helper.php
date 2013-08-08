@@ -19,9 +19,9 @@ class Helper {
 		$bcs .= 	$category['name'];
 
 		$bcs .= '<div class="actions">';
-		$bcs .= '<a href="'.\Uri::create(ADMIN_URL.'/blog/category/edit/'.$category['id']).'" title="Edit" class="tipsy-tip c-edit-box"><i class="icon-edit icon-black"></i></a>';
+		$bcs .= '<a href="'.\Uri::create(ADMIN_URL.'/blog/category/edit/'.$category['id']).'" title="'. t('global.edit') .'" class="tipsy-tip c-edit-box"><i class="icon-edit icon-black"></i></a>';
 		if ($category['id'] != 1) {
-			$bcs .= '<a href="'.\Uri::create(ADMIN_URL.'/blog/category/delete/'.$category['id']).'" title="Delete" class="confirm_delete tipsy-tip"><i class="icon-trash2 icon-black"></i></a>';	
+			$bcs .= '<a href="'.\Uri::create(ADMIN_URL.'/blog/category/delete/'.$category['id']).'" title="'. t('global.delete') .'" class="confirm_delete tipsy-tip"><i class="icon-remove icon-black"></i></a>';	
 		}
 		$bcs .= '</div>';
 		$bcs .= '</div>';

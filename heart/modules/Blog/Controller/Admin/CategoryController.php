@@ -63,7 +63,7 @@ class CategoryController extends \AdminController
 				$save_cat = $blogCat->save();
 				$save_id = $blogCat->id;
 				if ($save_cat) {
-					$msg = \Translate::get('blog::blog.cat_create_success');
+					$msg = t('blog::blog.cat_create_success');
 					if($ajax) 
 					{
 						return	json_encode(array('status' => 'ok', 'success' => $msg, 'saveID' => $save_id));
@@ -75,7 +75,7 @@ class CategoryController extends \AdminController
 					}
 				}
 				else {
-					$msg = \Translate::get('blog::blog.cat_create_error');
+					$msg = t('blog::blog.cat_create_error');
 					if ($ajax) 
 					{
 						return	json_encode(array('status' => 'fail' ,'error' => $msg));
@@ -128,26 +128,28 @@ class CategoryController extends \AdminController
 				$catUpdate = $blogCat->save();
 
 				if ($catUpdate)  
-				{					
+				{	
+					$msg = t('blog::blog.cat_edit_success');				
 					if($ajax) 
 					{
-						return	json_encode(array('status' => 'ok', 'success' => 'Success category edit'));
+						return	json_encode(array('status' => 'ok', 'success' => $msg));
 					} 
 					else 
 					{
-						\Flash::success('Successfully edit a category.');
+						\Flash::success($msg);
 						return \Redirect::to(adminUrl('blog/category'));
 					}
 				} 
 				else 
 				{
+					$err_msg = t('blog::blog.cat_edit_error');
 					if ($ajax) 
 					{
-						return	json_encode(array('status' => 'fail' ,'error' => 'I am Category edit Error'));
+						return	json_encode(array('status' => 'fail' ,'error' => $err_msg));
 					} 
 					else 
 					{
-						\Flash::error('Fail Category Edit');
+						\Flash::error($err_msg);
 					}
 				}
 			}

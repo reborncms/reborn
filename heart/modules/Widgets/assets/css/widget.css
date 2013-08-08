@@ -1,20 +1,38 @@
-.widget_wrapper_title, #widget_areas h3 {	
+#widget_wrapper {
+	margin-top: 10px;
+}
+
+.wrapper_title, #widget_areas h3 {	
 	padding:10px;
 	border-radius: 5px 5px 0px 0px;
 }
 
-.widget_wrapper_title {
+#avaliable_widget_wrapper .wrapper_title {
 	background:#313131;
 	color:#d1d1d1;
 }
 
-#avaliable_widget_wrapper {
+#inactive_widget_wrapper .wrapper_title {
+	background:#d1d1d1;
+	color:#313131;
+}
+
+.wdg-wrapper {
+	margin-bottom: 10px;
+}
+
+#left-side {
 	width: 60%;
 	float: left;
 	margin-right: 4%;
 }
 
-#avaliable_widgets, #widget_areas div.drop_area {
+#right-side {
+	width: 35%;
+	float: left;
+}
+
+.wdg-wrap-body, #widget_areas div.drop_area {
 	background: #F2F2F2;
 	padding: 10px;
 	border: 1px solid #D1D1D1;
@@ -55,11 +73,6 @@
 
 .widget-info, .widget-info-ico {
 	float:left;
-}
-
-#widget_areas {
-	width: 35%;
-	float: left;
 }
 
 #widget_areas h3 {
@@ -107,4 +120,12 @@
 .option-form-action {
 	text-align: right;
 	margin-top: 20px;
+}
+
+.option-form-action input, .option-form-action button {
+	margin-right:10px;
+}
+
+.option-form-wrapper label {
+	width:auto;
 }

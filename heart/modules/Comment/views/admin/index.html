@@ -1,14 +1,18 @@
 {{ if ($akismet_status === 'no-key') }}
-<div class="show-alert">
+<div class="msg-box">
   	{{ t('comment::comment.message.warning.no-akismet-key') }}
-  	<a href="#" class="close">&times;</a>
+  	<span class="msg-close">
+  		<a href="#" title="Close"></a>
+  	</span>
 </div>
 {{ endif }}
 
 {{ if ($akismet_status == false) }}
-	<div class="show-alert show-alert-error">
-  	{{ t('comment::comment.message.warning.wrong-akismet') }}
-  	<a href="#" class="close">&times;</a>
+	<div class="msg-box msg-error">
+	  	{{ t('comment::comment.message.warning.wrong-akismet') }}
+	  	<span class="msg-close">
+	  		<a href="#" title="Close"></a>
+	  	</span>
 	</div>
 {{ endif }}
 <div id="internal_menu">
@@ -28,9 +32,9 @@
 				<th width="3%">ID</th>
 				<th width="10%">{{ t('label.author') }}</th>
 				<th width="15%">{{ t('comment::comment.label.author_email') }}</th>
-				<th width="42%">{{ t('comment::comment.label.message') }}</th>
+				<th width="40%">{{ t('comment::comment.label.message') }}</th>
 				<th width="5%">{{ t('comment::comment.label.status') }}</th>
-				<th width="13%">{{ t('label.actions') }}</th>
+				<th width="15%">{{ t('label.actions') }}</th>
 			</tr>
 		</thead>
 
@@ -110,12 +114,17 @@
 				</td>
 
 				<td>
-					<a href="{{ adminUrl('comment/reply/'.$comment->id) }}" title="{{ t('comment::comment.label.reply') }}" class="ico-button button-blue tipsy-tip comment-reply-btn"><i class="icon-redo icon-white"></i></a>
-					<a href="{{ adminUrl('comment/edit/'.$comment->id) }}" title="{{ t('global.edit') }}" class="ico-button button-green tipsy-tip comment-edit-btn"><i class="icon-edit icon-white"></i></a>
-					{{ if ($comment->status != 'spam') }}
-						<a href="{{ adminUrl('comment/change-status/'.$comment->id.'/spam') }}" title="{{ t('comment::comment.label.mark_as_spam') }}" class="ico-button button-orange tipsy-tip"><i class="icon-disabled icon-white"></i></a>
-					{{ endif }}
-					<a href="{{ adminUrl('comment/delete/'.$comment->id) }}" title="{{ t('global.delete') }}" class="ico-button button-red confirm_delete_comment tipsy-tip"><i class="icon-trash2 icon-white"></i></a>
+					<div class="icons-bar">
+
+						<a href="{{ adminUrl('comment/reply/'.$comment->id) }}" title="{{ t('comment::comment.label.reply') }}" class="tipsy-tip comment-reply-btn"><i class="icon-reply"></i></a>
+
+						<a href="{{ adminUrl('comment/edit/'.$comment->id) }}" title="{{ t('global.edit') }}" class="tipsy-tip comment-edit-btn"><i class="icon-edit"></i></a>
+
+						{{ if ($comment->status != 'spam') }}
+							<a href="{{ adminUrl('comment/change-status/'.$comment->id.'/spam') }}" title="{{ t('comment::comment.label.mark_as_spam') }}" class="tipsy-tip"><i class="icon-ban"></i></a>
+						{{ endif }}
+						<a href="{{ adminUrl('comment/delete/'.$comment->id) }}" title="{{ t('global.delete') }}" class="confirm_delete_comment tipsy-tip"><i class="icon-remove"></i></a>
+					</div> <!-- end of icons-bar -->
 				</td>
 			</tr>
 			{{ endloop }}	
@@ -123,7 +132,7 @@
 	</table>
 	<div class="button-wrapper multiaction" id="delete_select">
 		{{ Form::select('sel_multi_action', array('none' => '-- Select action --','approved' => t('comment::comment.label.approved'), 'pending' => t('comment::comment.label.unapproved'), 'spam' => t('comment::comment.label.mark_as_spam'), 'delete' => t('global.delete'))) }}
-		{{ Form::submit('multi_action', t('comment::comment.label.apply_selected'), array('class' => 'button', 'disabled' => 'disabled', 'id' => 'multi_action_btn')) }}
+		{{ Form::submit('multi_action', t('comment::comment.label.apply_selected'), array('class' => 'btn', 'disabled' => 'disabled', 'id' => 'multi_action_btn')) }}
 		{{ Form::end() }}
 	</div> 
 	{{ if (isset($pagination)) }}

@@ -1,42 +1,51 @@
 <div id="msg_area"></div>
 <div id="widget_wrapper">
-	<div id="avaliable_widget_wrapper">
-		<h4 class="widget_wrapper_title">Avaliable Widgets</h3>
-		<div id="avaliable_widgets">
-			<div class="show-alert show-alert-info">
-				** Click on <i class="icon-circleplus icon-grey"></i> to add widget to currently open widget area.
-				<a href="#" class="close">&times;</a>
-			</div>
-			{{ loop ($all as $name => $widget) }}
-				{= $widget_info = Widget::propertiesFrom($name) =}
-				{{ if (isset($widget_info['sub'])) }}
-					{{ loop ($widget_info['sub'] as $key => $val) }}
-						<div class="single_widget" data-widget="{{ $name.'::'.$key }}">
-							{{ if (isset($val['description'])) }}
-								<a href="#" title="{{ $val['description'] }}" class="tipsy-tip widget-info"><i class="icon-help icon-grey widget-info-ico"></i></a>
-							{{ endif }}
-							<div class="widget_name">{{ $val['title'] }}</div>
-							<a href="#" class="widget_add_btn"><i class="icon-circleplus icon-grey widget-ico"></i></a>
-						</div> <!-- end of .single_wrapper -->
-					{{ endloop }}
-				{{ else }}
-					<div class="single_widget" data-widget="{{ $name }}">
-						{{ if (isset($widget_info['description'])) }}
-							<a href="#" title="{{ $widget_info['description'] }}" class="tipsy-tip widget-info"><i class="icon-help icon-grey widget-info-ico"></i></a>
+	<div id="left-side">
+		<div id="avaliable_widget_wrapper" class="wdg-wrapper">
+			<h4 class="wrapper_title">Avaliable Widgets</h3>
+				<div id="avaliable_widgets" class="wdg-wrap-body">
+					<div class="msg-box msg-info">
+						** Click on <i class="icon-circleplus icon-white icon-12"></i> to add widget to currently open widget area.
+						<span class="msg-close">
+							<a href="#" title="Close"></a>
+						</span>
+					</div>
+					{{ loop ($all as $name => $widget) }}
+						{= $widget_info = Widget::propertiesFrom($name) =}
+						{{ if (isset($widget_info['sub'])) }}
+							{{ loop ($widget_info['sub'] as $key => $val) }}
+								<div class="single_widget" data-widget="{{ $name.'::'.$key }}">
+									{{ if (isset($val['description'])) }}
+										<a href="#" title="{{ $val['description'] }}" class="tipsy-tip widget-info"><i class="icon-help icon-gray icon-12 widget-info-ico"></i></a>
+									{{ endif }}
+									<div class="widget_name">{{ $val['title'] }}</div>
+									<a href="#" class="widget_add_btn"><i class="icon-circleplus icon-gray icon-12 widget-ico"></i></a>
+								</div> <!-- end of .single_wrapper -->
+							{{ endloop }}
+						{{ else }}
+							<div class="single_widget" data-widget="{{ $name }}">
+								{{ if (isset($widget_info['description'])) }}
+									<a href="#" title="{{ $widget_info['description'] }}" class="tipsy-tip widget-info"><i class="icon-help icon-gray icon-12 widget-info-ico"></i></a>
+								{{ endif }}
+								<div class="widget_name">{{ $widget_info['name'] }}</div>
+								<a href="#" class="widget_add_btn"><i class="icon-circleplus icon-gray icon-12 widget-ico"></i></a>
+							</div> <!-- end of .single_wrapper -->
 						{{ endif }}
-						<div class="widget_name">{{ $widget_info['name'] }}</div>
-						<a href="#" class="widget_add_btn"><i class="icon-circleplus icon-grey widget-ico"></i></a>
-					</div> <!-- end of .single_wrapper -->
-				{{ endif }}
-			{{ endloop }}
-		</div> <!-- end of #avaliable_widgets -->
-	</div> <!-- .avaliable_widget_wrapper -->
-	<div id="widget_areas">
-		{{ loop ($areas as $area) }}
-		  	<h3>{{ $area['title'] }}</h3>
-		  	<div class="drop_area" id="{{ $area['name'] }}_area">
-		  		{{ if (count($area['widgets']) > 0) }}
-		  			{{ loop ($area['widgets'] as $widget) }}
+					{{ endloop }}
+				</div> <!-- end of #avaliable_widgets -->
+			</div> <!-- .avaliable_widget_wrapper -->
+			{{ if (count($inactive_widget) > 0) }}
+			<div class="wdg-wrapper" id="inactive_widget_wrapper">
+				<h4 class="wrapper_title">Inactive Widgets</h3>
+				<div id="inactive_widgets" class="wdg-wrap-body">
+					<div class="msg-box">
+						These widgets may be from your previous themes and specify areas are not avaliable in current theme. <br />
+						Please click on <i class="icon-circleplus icon-white icon-12"></i> to assign to current theme areas. Or click on <i class="icon-circleminus icon-white icon-12"></i> to delete the widget.
+						<span class="msg-close">
+							<a href="#" title="Close"></a>
+						</span>
+					</div>
+					{{ loop ($inactive_widget as $widget) }}
 		  				{{ if(strpos($widget->name, '::')) }}
 		  					{= $name_title = explode('::', $widget->name) =}
 		  					{= $widget_name = $name_title[0] =}
@@ -49,16 +58,49 @@
 		  				{{ endif }}
 		  				<div class="single_widget" id="{{ $widget->id }}">
 							<div class="widget_name">{{ $widget_title }}</div>
-							<a href="{{ adminUrl('widget/remove/'.$widget->id) }}" class="widget_remove_btn"><i class="icon-circleminus icon-grey widget-ico"></i></a>
+							<a href="{{ adminUrl('widget/move-area/'.$widget->id) }}" class="widget_move_btn"><i class="icon-circleplus icon-gray icon-12 widget-ico"></i></a>
+							<a href="{{ adminUrl('widget/remove/'.$widget->id) }}" class="widget_remove_btn"><i class="icon-circleminus icon-gray icon-12 widget-ico"></i></a>
 							{{ if (\Widget::options($widget->name) != null) }}
-								<a href="{{ adminUrl('widget/settings/'.$widget->name.'/'.$widget->id) }}" class="widget_settings_btn" title="{{ $widget_title }} Widget Settings"><i class="icon-setting icon-grey widget-ico"></i></a>
+								<a href="{{ adminUrl('widget/settings/'.$widget->name.'/'.$widget->id) }}" class="widget_settings_btn" title="{{ $widget_title }} Widget Settings" style="display:none;"><i class="icon-setting icon-gray icon-12 widget-ico"></i></a>
 							{{ endif }}
+							<!-- move button -->
 						</div> <!-- end of .single_wrapper -->
-		  			{{ endloop }}
-		  		{{ else }}
-		  			<div id="no-index-data">No widgets yet in this area.</div>
-		  		{{ endif }}
-		  	</div>
-		{{ endloop }}
-	</div> <!-- end of #widget_areas -->
+					{{ endloop }}
+				</div> <!-- end of inactive-widgets -->
+			</div> <!-- end of wdg-wrapper -->
+			{{ endif }}
+		</div><!-- end of left-side -->
+
+		<div id="right-side">
+			<div id="widget_areas">
+				{{ loop ($areas as $key => $area) }}
+				  	<h3>{{ $area['title'] }}</h3>
+				  	<div class="drop_area" id="{{ $key }}_area">
+				  		{{ if (count($area['widgets']) > 0) }}
+				  			{{ loop ($area['widgets'] as $widget) }}
+				  				{{ if(strpos($widget->name, '::')) }}
+				  					{= $name_title = explode('::', $widget->name) =}
+				  					{= $widget_name = $name_title[0] =}
+				  					{= $widget_info = Widget::propertiesFrom($name_title[0]) =}
+				  					{= $widget_title = $widget_info['sub'][$name_title[1]]['title'] =}
+				  				{{ else }}
+				  					{= $widget_info = Widget::propertiesFrom($widget->name) =}
+				  					{= $widget_name = $widget->name =}
+				  					{= $widget_title = $widget_info['name'] =}
+				  				{{ endif }}
+				  				<div class="single_widget" id="{{ $widget->id }}">
+									<div class="widget_name">{{ $widget_title }}</div>
+									<a href="{{ adminUrl('widget/remove/'.$widget->id) }}" class="widget_remove_btn"><i class="icon-circleminus icon-gray icon-12 widget-ico"></i></a>
+									{{ if (\Widget::options($widget->name) != null) }}
+										<a href="{{ adminUrl('widget/settings/'.$widget->name.'/'.$widget->id) }}" class="widget_settings_btn" title="{{ $widget_title }} Widget Settings"><i class="icon-setting icon-gray icon-12 widget-ico"></i></a>
+									{{ endif }}
+								</div> <!-- end of .single_wrapper -->
+				  			{{ endloop }}
+				  		{{ else }}
+				  			<div id="no-index-data">No widgets yet in this area.</div>
+				  		{{ endif }}
+				  	</div>
+				{{ endloop }}
+			</div> <!-- end of #widget_areas -->			
+		</div> <!-- end of right-side -->
 </div> <!-- end of #widget_wrapper -->

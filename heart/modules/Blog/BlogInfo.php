@@ -26,4 +26,13 @@ class BlogInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = true;
 
+	protected $roles = array(
+						'blog.create' => 'Create',
+						'blog.edit' => 'Edit',
+						'blog.delete' => 'Delete',
+						'blog_cat.create' => 'Category Create',
+						'blog_cat.edit'	  => 'Category Edit',
+						'blog_cat.delete' => 'Category Delete',
+						);
+
 }

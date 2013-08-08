@@ -4,12 +4,12 @@
 	<table class="stripe">
 		<thead>
 			<tr>
-				<th width="5%">{{ Form::checkbox('action_to_all', '', array('class' => 'check-all')) }}</th>
-				<th width="20%">{{ Translate::get('blog::blog.title') }}</th>
-				<th width="15%">{{ Translate::get('blog::blog.category') }}</th>
-				<th width="15%">{{ Translate::get('blog::blog.author') }}</th>
-				<th width="15%">{{ Translate::get('blog::blog.created_at') }}</th>
-				<th width="19%">{{ Translate::get('label.actions') }}</th>
+				<th width="3%">{{ Form::checkbox('action_to_all', '', array('class' => 'check-all')) }}</th>
+				<th width="27%">{{ t('blog::blog.title') }}</th>
+				<th width="15%">{{ t('blog::blog.category') }}</th>
+				<th width="15%">{{ t('blog::blog.author') }}</th>
+				<th width="15%">{{ t('blog::blog.created_at') }}</th>
+				<th width="15%">{{ t('label.actions') }}</th>
 			</tr>	
 		</thead>
 		<tbody>
@@ -19,14 +19,14 @@
 				<td class="checkbox">{{ Form::checkbox('action_to[]', $blog->id, array('id' => 'action'.$a)) }}</td>
 				<td>
 					<span class="bg-title">
-						<a href="{{ 'admin/blog/edit/'.$blog->id }}">{{ $blog->title }}</a>
+						<a href="{{ adminUrl('blog/edit/'.$blog->id) }}">{{ $blog->title }}</a>
 						{{ if($blog->status == 'draft') }}
-							<a href="{{ 'admin/blog/changeStatus/'.$blog->id }}">
-								<span class="label label-info">{{ Translate::get('blog::blog.'.$blog->status) }}</span>
+							<a href="{{ adminUrl('blog/changeStatus/'.$blog->id) }}">
+								<span class="label label-info">{{ t('global.draft_label') }}</span>
 							</a>
 						{{ endif }}
 						{{ if ($blog->created_at > date('Y-m-d H:i:s')) }}
-						<span class="label schedule_label">Scheduled</span>
+						<span class="label schedule_label">{{ t('blog::blog.schedule_label') }}</span>
 						{{ endif }}
 					</span>
 				</td>
@@ -41,9 +41,11 @@
 					{{ date_format($date, 'Y-m-d h:i a') }}
 				</td>
 				<td>
-					<a href="{{ 'blog/preview/'.$blog->slug }}" title="Preview" class="ico-button button-blue tipsy-tip"><i class="icon-view2 icon-white"></i></a>
-					<a href="{{ 'admin/blog/edit/'.$blog->id }}" title="Edit" class="ico-button button-green tipsy-tip"><i class="icon-edit icon-white"></i></a>
-					<a href="{{ 'admin/blog/delete/'.$blog->id }}" title="Delete" class="ico-button button-red confirm_delete tipsy-tip"><i class="icon-trash2 icon-white"></i></a>
+					<div class="icons-bar">
+						<a href="{{ rbUrl('blog/preview/'.$blog->slug) }}" title="{{ t('global.preview') }}" class="tipsy-tip"><i class="icon-view"></i></a>
+						<a href="{{ adminUrl('blog/edit/'.$blog->id) }}" title="{{ t('global.edit') }}" class="tipsy-tip"><i class="icon-edit"></i></a>
+						<a href="{{ adminUrl('blog/delete/'.$blog->id) }}" title="{{ t('global.delete') }}" class="confirm_delete tipsy-tip"><i class="icon-remove"></i></a>
+					</div>
 				</td>
 			</tr>
 			{= $a++ =}
@@ -51,7 +53,7 @@
 		</tbody>
 	</table>
 	<div class="button-wrapper" id="delete_select">
-		{{ Form::submit('submit_delete', 'Delete Selected', array('class' => 'confirm_delete button button-red', 'disabled' => 'disabled')) }}
+		{{ Form::submit('submit_delete', t('global.delete_selected'), array('class' => 'confirm_delete btn btn-red', 'disabled' => 'disabled')) }}
 		{{ Form::end() }}
 	</div>
 	{{ if(isset($pagination)) }}
@@ -59,6 +61,6 @@
 	{{ endif }}
 {{ else }}
 	<div id="no-index-data">
-		{{ Translate::get('blog::blog.no_post') }}
+		{{ t('blog::blog.no_post') }}
 	</div>
 {{ endif }}

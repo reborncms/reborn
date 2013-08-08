@@ -60,9 +60,9 @@ class optionsForm {
 
 			$form .= '<div class="option-form-action">';
 
-			$form .= \Form::submit('save_option', 'Save', array('class' => 'button button-green', 'id' => 'save_option_btn'));
+			$form .= \Form::submit('save_option', 'Save', array('class' => 'btn btn-green', 'id' => 'save_option_btn'));
 
-			$form .= \Form::button('cancel', 'Cancel', 'button', array('class' => 'button button-red', 'id' => 'option-cancel-btn'));
+			$form .= \Form::button('cancel', 'Cancel', 'button', array('class' => 'btn btn-red', 'id' => 'option-cancel-btn'));
 
 			$form .= '</div>'; // end of option-form-action 
 

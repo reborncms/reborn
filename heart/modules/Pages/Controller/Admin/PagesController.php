@@ -11,7 +11,6 @@ class PagesController extends \AdminController
     {
         $this->menu->activeParent('content');
 
-        \Translate::load('pages::pages');
         $this->template->style('pages.css','pages');
         $this->template->script('pages.js','pages');
 
@@ -48,18 +47,12 @@ class PagesController extends \AdminController
             $validation = self::validate();
 
             if ($validation->valid()) {
-                if (\Security::CSRFvalid()) {
-                    $page_insert = self::saveValues('create');
+                $page_insert = self::saveValues('create');
 
-                    if ($page_insert) {
-                        \Flash::success(t('pages::pages.messages.success.add'));
+                if ($page_insert) {
+                    \Flash::success(t('pages::pages.messages.success.add'));
 
-                        return \Redirect::to(adminUrl('pages'));
-                    }
-                } else {
-
-                    \Flash::error(t('pages::pages.messages.error.csrf_error'));
-
+                    return \Redirect::to(adminUrl('pages'));
                 }
             } else {
                 $errors = $validation->getErrors();
@@ -85,17 +78,13 @@ class PagesController extends \AdminController
             $validation = self::validate();
 
             if ($validation->valid()) {
-                if (\Security::CSRFvalid()) {
-                    //get parent id
-                    $page_insert = self::saveValues('edit', \Input::get('id'));
+                //get parent id
+                $page_insert = self::saveValues('edit', \Input::get('id'));
 
-                    if ($page_insert) {
-                        \Flash::success(t('pages::pages.messages.success.edit'));
+                if ($page_insert) {
+                    \Flash::success(t('pages::pages.messages.success.edit'));
 
-                        return \Redirect::to(adminUrl('pages'));
-                    }
-                } else {
-                    \Flash::error(t('pages::pages.messages.error.csrf_error'));
+                    return \Redirect::to(adminUrl('pages'));
                 }
             } else {
                 $errors = $validation->getErrors();
@@ -296,7 +285,7 @@ class PagesController extends \AdminController
                 ))
                 ->script(array(
                     'form.js',
-                    'plugins/jquery.colorbox.js',
+                    //'plugins/jquery.colorbox.js',
                     'plugins/codemirror/codemirror.js',
                     'plugins/codemirror/css.js',
                     'plugins/codemirror/javascript.js'

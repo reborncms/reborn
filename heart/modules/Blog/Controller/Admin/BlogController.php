@@ -10,7 +10,6 @@ class BlogController extends \AdminController
 	{
 		$this->menu->activeParent('content');
 		
-		\Translate::load('blog::blog');
 		$this->template->style('blog.css','blog');
 		$this->template->script('blog.js','blog');
 
@@ -44,7 +43,7 @@ class BlogController extends \AdminController
 							->take(\Pagination::limit())
 							->get();
 		
-		$this->template->title(\Translate::get('blog::blog.title_main'))
+		$this->template->title(t('blog::blog.title_main'))
 						->setPartial('admin/index')
 						->set('pagination', $pagination)
 					    ->set('blogs',$blogs);
@@ -58,36 +57,35 @@ class BlogController extends \AdminController
 	 *
 	 * @return void
 	 **/
-	public function create() 
+	public function create()
 	{
+		if (!user_has_access('blog.create')) {
+				return $this->notFound();
+		}
 		if (\Input::isPost()) {
 			$val = self::validate();
-			if (\Security::CSRFvalid()) {
-				if ($val->valid()) {
-					if (\Input::get('id') != '') {
-						$save = self::saveValues('edit', \Input::get('id'));
-					} else {
-						$save = self::saveValues('create');
-					}
-					
-					if ($save) {
-						//save tag
-						\Flash::success(t('blog::blog.create_success'));
-					} else {
-						\Flash::error(t('blog::blog.create_error'));
-					}
-					return \Redirect::to(adminUrl('blog'));
+			if ($val->valid()) {
+				if (\Input::get('id') != '') {
+					$save = self::saveValues('edit', \Input::get('id'));
 				} else {
-					$val_errors = $val->getErrors();
-					$this->template->set('val_errors',$val_errors);
-					$this->template->set('blog', (object)\Input::get('*'));
+					$save = self::saveValues('create');
 				}
+				
+				if ($save) {
+					\Event::call('reborn.blog.create');
+					\Flash::success(t('blog::blog.create_success'));
+				} else {
+					\Flash::error(t('blog::blog.create_error'));
+				}
+				return \Redirect::to(adminUrl('blog'));
 			} else {
-				\Flash::warning(t('blog::blog.csrf_error'));
+				$val_errors = $val->getErrors();
+				$this->template->set('val_errors',$val_errors);
+				$this->template->set('blog', (object)\Input::get('*'));
 			}
 		}
 		self::formEle();
-		$this->template->title('Blog &raquo; Create')
+		$this->template->title(t('blog::blog.title_create'))
 						->setPartial('admin/form')
 						->set('method', 'create');					
 	}
@@ -101,23 +99,18 @@ class BlogController extends \AdminController
 	{
 		if (\Input::isPost()) {
 			$val = self::validate();
-			if (\Security::CSRFvalid()) {
-				if ($val->valid()) {
-					$save = self::saveValues('edit', \Input::get('id'));
-					if ($save) {
-						//save tag
-						\Flash::success(t('blog::blog.edit_success'));
-					} else {
-						\Flash::error(t('blog::blog.edit_error'));
-					}
-					return \Redirect::to(adminUrl('blog'));
+			if ($val->valid()) {
+				$save = self::saveValues('edit', \Input::get('id'));
+				if ($save) {
+					\Flash::success(t('blog::blog.edit_success'));
 				} else {
-					$val_errors = $val->getErrors();
-					$this->template->set('val_errors',$val_errors);
-					$this->template->set('blog', (object)\Input::get('*'));
+					\Flash::error(t('blog::blog.edit_error'));
 				}
+				return \Redirect::to(adminUrl('blog'));
 			} else {
-				\Flash::warning(t('blog::blog.csrf_error'));
+				$val_errors = $val->getErrors();
+				$this->template->set('val_errors',$val_errors);
+				$this->template->set('blog', (object)\Input::get('*'));
 			}
 		} else {
 			if ($id == null) {
@@ -186,6 +179,7 @@ class BlogController extends \AdminController
 			} else {
 				\Flash::success(t('blog::blog.delete_success_many'));
 			}
+			\Event::call('reborn.blog.delete');
 		} else {
 			\Flash::error(t('blog::blog.delete_error'));
 		}
@@ -199,7 +193,7 @@ class BlogController extends \AdminController
 	 **/
 	protected function formEle()
 	{
-		$authors[0] = '-- Auto Detect -- '; 
+		$authors[0] = '-- '. t('blog::blog.auto_detect') .' -- '; 
 		$users = \Sentry::getUserProvider()->findAllWithAccess('admin');
 		foreach ($users as $user) {
 			$authors[$user->id] = $user->first_name . ' ' . $user->last_name;

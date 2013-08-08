@@ -6,9 +6,9 @@
 				<table class="stripe">
 					<thead>
 						<tr>
-							<th width="10%">{{ Form::checkbox('action_to_all', '', array('class' => 'check-all')) }}</th>
-							<th width="60%">{{ Translate::get('tag::tag.title') }}</th>
-							<th width="30%">{{ Translate::get('label.actions') }}</th>
+							<th width="5%">{{ Form::checkbox('action_to_all', '', array('class' => 'check-all')) }}</th>
+							<th width="75%">{{ t('tag::tag.title') }}</th>
+							<th width="20%">{{ t('label.actions') }}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -18,8 +18,10 @@
 							<td class="check-box">{{ Form::checkbox('action_to[]', $tag->id, array('id' => 'action'.$a)) }}</td>
 							<td>{{ $tag->name }}</td>
 							<td>
-								<a href="{{ adminUrl('tag/edit/'.$tag->id) }}" title = "Edit" class="ico-button button-green tipsy-tip" id="tag-edit"><i class="icon-edit icon-white"></i></a>
-								<a href="{{ adminUrl('tag/delete/'.$tag->id) }}" title = "Delete" class="ico-button button-red confirm_delete tipsy-tip"><i class="icon-trash2 icon-white"></i></a>
+								<div class="icons-bar">
+									<a href="{{ adminUrl('tag/edit/'.$tag->id) }}" title = "{{ t('global.edit') }}" class="tipsy-tip" id="tag-edit"><i class="icon-edit"></i></a>
+									<a href="{{ adminUrl('tag/delete/'.$tag->id) }}" title = "{{ t('global.delete') }}" class="confirm_delete tipsy-tip"><i class="icon-remove"></i></a>
+								</div>
 							</td>
 						</tr>
 						{= $a++ =}
@@ -27,13 +29,13 @@
 					</tbody>
 				</table> <!-- end of stripe -->
 				<div class="button-wrapper" id="delete_select">
-					{{ Form::submit('submit_delete', 'Delete Selected', array('class' => 'confirm_delete button button-red', 'disabled' => 'disabled')) }}
+					{{ Form::submit('submit_delete', t('global.delete_selected'), array('class' => 'confirm_delete btn btn-red', 'disabled' => 'disabled')) }}
 					{{ Form::end() }}
 				</div>
 				{{ $pagination }}
 			{{ else }}
 				<div id="no-index-data">
-					{{ Translate::get('tag::tag.no_tag_list') }}
+					{{ t('tag::tag.no_tag_list') }}
 			</div>
 			{{ endif }}
 		</div> <!-- end of form-left -->
@@ -42,7 +44,7 @@
 
 				<a kind="click" href="javascript:void(0);">
 					<span class="tt"></span>
-					<span>{{ Translate::get('tag::tag.title_create') }}</span>
+					<span>{{ t('tag::tag.title_create') }}</span>
 				</a>
 
 			</div> <!-- end of div.r-container#option-control -->
@@ -51,6 +53,9 @@
 	</div> <!-- end of form-wrapper -->
 </div> <!-- end of main-form-wrapper -->
 <style type="text/css">
+	#main-form-wrapper {
+		padding-top:15px;
+	}
 	#delete_select { margin-bottom: 10px;}
 	.c-a-b { margin-bottom: 10px;}
 	.tag-name, .tg-box-del { cursor: pointer; }

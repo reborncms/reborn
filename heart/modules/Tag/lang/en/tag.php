@@ -32,7 +32,7 @@ return array(
 	'create_error'			=> 'Error occur to create new tag %s.',
 	'edit_error'			=> 'Error occur to edit %s tag',
 	'delete_error'			=> 'Error occur to delete tag',
-	'already_exit'			=> 'Tag name %s is alerady exits.',
+	'already_exit'			=> 'Tag name %s is already exits.',
 
 	// Success Message
 	'create_success'		=> 'Tag %s is successfully created.',

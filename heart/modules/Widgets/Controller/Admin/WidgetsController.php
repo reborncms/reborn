@@ -27,19 +27,34 @@ class WidgetsController extends \AdminController
 		$all = $widgets->all();
 		$active_theme = \Setting::get('public_theme');
 		$theme_info = $this->theme->info($active_theme, true);
+
 		foreach ($theme_info['widget_areas'] as $name => $title) {
-			$widgets = Widgets::where('area', $name)->orderBy('widget_order')->get();
-			$area_widget[] = array(
-				'name'	=> $name,
+			$area_widget[$name] = array(
 				'title'	=> $title,
-				'widgets' => $widgets
+				'widgets' => array(),
 			);
 		}
+
+		$all_widgets = Widgets::all();
+
+		$areas = array_keys($theme_info['widget_areas']);
+
+		$inactive_widget = array();
+
+		foreach ($all_widgets as $widget) {
+			if (in_array($widget->area, $areas)) {
+				$area_widget[$widget->area]['widgets'][] = $widget;
+			} else {
+				$inactive_widget[] = $widget;
+			}
+		}
+
 		$this->template->title('Widgets Manager')
 						->setPartial('admin/index')
 						->script('plugins/jquery.colorbox.js')
 						->set('all', $all)
-						->set('areas', $area_widget);
+						->set('areas', $area_widget)
+						->set('inactive_widget', $inactive_widget);
 	}
 
 	public function add() 
@@ -104,6 +119,19 @@ class WidgetsController extends \AdminController
 
 			return json_encode(array('status' => 'fail'));
 
+		}
+	}
+
+	public function moveArea($id)
+	{
+		if ($widget = Widgets::find($id)) {
+			$widget->area = \Input::get('area');
+			$save = $widget->save();
+			if ($save) {
+				return json_encode(array('status' => 'ok', 'id' => $widget->id));
+			} else {
+				return json_encode(array('status' => 'fail'));
+			}
 		}
 	}
 

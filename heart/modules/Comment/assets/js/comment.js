@@ -22,39 +22,39 @@ jQuery(function(){
 	$('#sel_multi_action').on('change', function(){
 		var sel_val = $(this).val();
 		var btn = $('#multi_action_btn');
-		btn.attr('class', 'button');
+		btn.attr('class', 'btn');
 
 		if( $('input[name="action_to[]"]:checked, .check-all:checked').length >= 1 && $('#sel_multi_action').val() != 'none'){
-			$(".button-wrapper .button").removeAttr('disabled');
+			$(".button-wrapper .btn").removeAttr('disabled');
 		} else {
-			$(".button-wrapper .button").attr('disabled', 'disabled');
+			$(".button-wrapper .btn").attr('disabled', 'disabled');
 		}
 
 		switch (sel_val) {
 			case "approved" :
-				btn.addClass('button-green');
+				btn.addClass('btn-green');
 			break;
 
 			case "pending" :
-				btn.addClass('button-yellow');
+				btn.addClass('btn-orange');
 			break;
 
 			case "spam" :
-				btn.addClass('button-orange');
+				btn.addClass('btn-dark');
 			break;
 
 			case "delete" :
-				btn.addClass('button-red');
+				btn.addClass('btn-red');
 				btn.addClass('confirm_delete_comment');
 			break;
 
 			default :
-				btn.attr('class', 'button');
+				btn.attr('class', 'btn');
 				btn.attr('disabled', 'disabled');
 		}
 	});
 
-	$('input[name="action_to[]"], .check-all').live('click', function () {
+	$('input[name="action_to[]"], .check-all').on('click', function () {
 
 		if( $('input[name="action_to[]"]:checked, .check-all:checked').length >= 1 && $('#sel_multi_action').val() != 'none'){
 			$(".button-wrapper .button").removeAttr('disabled');
@@ -66,8 +66,8 @@ jQuery(function(){
 
 	$('.comment_message').each(function(){
 		var height = $(this).height();
-		if (height > 100) {
-			$(this).height(100).css('overflow', 'hidden').after('<a href="#" class="com_read_more">( Read More )</a>');
+		if (height > 106) {
+			$(this).height(106).css('overflow', 'hidden').after('<a href="#" class="com_read_more">( Read More )</a>');
 		};
 	});
 
@@ -78,7 +78,7 @@ jQuery(function(){
 			$(this).siblings('.comment_message').css('height', 'auto');	
 			$(this).text('( Hide )');
 		} else {
-			$(this).siblings('.comment_message').css('height', '100px');	
+			$(this).siblings('.comment_message').css('height', '106px');	
 			$(this).text('( Read More )');
 		}
 		

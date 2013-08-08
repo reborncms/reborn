@@ -10,6 +10,14 @@ return array(
 	'title_edit'			=> 'Edit Post',
 	'rss_posts_title'		=> 'Blog posts from %s',
 
+	//module bar
+	'all_posts'				=> 'All Posts',
+	'all_posts_info'		=> 'View All Posts',
+  	'add_post'				=> 'Add Post',
+  	'add_post_info'			=> 'Create new blog post',
+  	'categories'			=> 'Categories',
+  	'categories_info'		=> 'Manage Categories',
+
 	// Table Label
 	'created_at'			=> 'Created at',
 	
@@ -29,7 +37,6 @@ return array(
 	'title'					=> 'Title',
 	'slug'					=> 'Slug',
 	'excerpt'				=> 'Excerpt',
-	'body'					=> 'Body',
 	'category'				=> 'Category',
 	'tag'					=> 'Tag',
 	'tags'					=> 'Tags',
@@ -37,8 +44,6 @@ return array(
 	'comment_status'		=> 'Comment Status',
 	'type'					=> 'Type',
 	'author'				=> 'Author',
-	'draft'					=> 'Draft',
-	'live'					=> 'Publish',
 	'open'					=> 'Open',
 	'close'					=> 'Close',
 	'schedule'				=> 'Schedule',
@@ -54,6 +59,9 @@ return array(
 	'post_settings'			=> 'Post settings',
 	'parent'				=> 'Parent',
 	'author_select'			=> '-- Select Author --',
+	'filter_search'			=> 'Filter Search',
+	'schedule_label'		=> 'Scheduled',
+	'auto_detect'			=> 'Auto Detect',
 
 	// Button Label
 	'add_new_cat'			=> 'Add New Category',

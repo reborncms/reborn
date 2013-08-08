@@ -41,10 +41,19 @@
 }
 .check-box {padding-left: 13px;}
 .cat-add-box { padding-left: 15px; display: none; color: #555555;}
-.cat-add-box div.c-a-b { margin-bottom: 8px;}
+
 #cat-edit-box {
 	padding: 20px;
 }
+
+#cat-edit-box label {
+	margin-bottom: 5px;
+}
+
+#add-new-cat-btn {
+	margin-top: 10px;
+}
+
 #edit-msg {
 	padding: 5px 10px;
 	display: none;
@@ -110,6 +119,11 @@ div#right-side {
 
 #schdule_opt label {
 	display:block;
+	width:auto;
+}
+
+#schdule_opt {
+	overflow:hidden;
 }
 
 .draggable_wrap .actions {

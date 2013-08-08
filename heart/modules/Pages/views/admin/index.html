@@ -1,7 +1,7 @@
 <div id="page_index_wrapper">
 	<div class="alert" id="ajax-alert"><a href="#" class="close">&times;</a></div>
 	<div id="page_list">
-		<ol class="sortable">
+		<ol class="sortable no-list">
 			{{ loop($pages as $page) }}
 				<li id="page_{{ $page['id'] }}" class="parents">
 					{{ Pages\Lib\Helper::page_structure($page) }}
@@ -35,7 +35,7 @@
 			post.order = $('ol.sortable').nestedSortable("toHierarchy");
 			$.post(SITEURL+ADMIN+'/pages/order',post,function(data){
 
-				$('#content-wrapper').html(data);
+				$('#content-container').html(data);
 
 				if($('.page_expand').siblings('ol').show()){
 					$('.page_expand').removeClass('icon-circleplus');
@@ -61,7 +61,7 @@
 		}
 	});
 
-	$('ol.sortable li:has(ol)').prepend('<i class="icon-circleplus icon-grey page_expand"></i>');
+	$('ol.sortable li:has(ol)').prepend('<i class="icon-circleplus icon-gray icon-12 page_expand"></i>');
  
 	$('.page_expand').click(function(){
 		$(this).siblings('ol').slideToggle();

@@ -5,11 +5,14 @@ namespace Blog;
 class Bootstrap extends \Reborn\Module\AbstractBootstrap
 {
 
-	public function boot() {}
+	public function boot() 
+	{
+		\Translate::load('blog::blog');
+	}
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
-		$menu->add('blog', 'Blog', $modUri, 'content', '', 27);
+		$menu->add('blog', t('blog::blog.title_main'), $modUri, 'content', '', 27);
 	}
 
 	public function settings()
@@ -32,20 +35,20 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		$mod_toolbar = array(
 			'all' 	=> array(
 				'url'	=> 'blog',
-				'name'	=> 'All Posts',
-				'info'	=> 'View All Posts',
+				'name'	=> t('blog::blog.all_posts'),
+				'info'	=> t('blog::blog.all_posts_info'),
 				'class'	=> ''
 			),
 			'add'	=> array(
 				'url'	=> 'blog/create',
-				'name'	=> 'Add Post',
-				'info'	=> 'Create new blog post',
+				'name'	=> t('blog::blog.add_post'),
+				'info'	=> t('blog::blog.add_post_info'),
 				'class'	=> 'add'
 			),
 			'category' => array(
 				'url' => 'blog/category',
-				'name' => 'Categories',
-				'info' => 'Manage Categories',
+				'name' => t('blog::blog.categories'),
+				'info' => t('blog::blog.categories_info'),
 				'class' => ''
 			),
 		);

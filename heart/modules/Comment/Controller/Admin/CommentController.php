@@ -58,7 +58,7 @@ class CommentController extends \AdminController
 						->set('comments', $comments)
 						->set('pagination', $pagination)
 						->set('akismet_status', $akismet_status)
-						->script('plugins/jquery.colorbox.js')
+						//->script('plugins/jquery.colorbox.js')
 						->set('list_type', 'all')
 						->setPartial('admin/index');
 	}
@@ -94,7 +94,7 @@ class CommentController extends \AdminController
 						->set('pagination', $pagination)
 						->set('list_type', $status)
 						->set('akismet_status', $akismet_status)
-						->script('plugins/jquery.colorbox.js')
+						//	->script('plugins/jquery.colorbox.js')
 						->setPartial('admin/index');
 	}
 

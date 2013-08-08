@@ -74,4 +74,12 @@
 	display:block;
 }
 
+form .form_action {
+	margin-left:10px;
+}
+
+#meta_info label {
+	width:auto;
+}
+
 
