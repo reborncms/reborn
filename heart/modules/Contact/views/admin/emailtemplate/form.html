@@ -7,7 +7,7 @@
 	{{ Security::CSRField('contact') }}
 
 		<div class="form-block first-block">
-			{{ Form::label(\Translate::get('label.name').'<span class="required"></span>', 'name') }}
+			{{ Form::label(t('label.name').'<span class="required"></span>', 'name') }}
 			<div class="form-right-block">
 				{{ Form::input('name', isset($template->name) ? $template->name : '', 'text', array('placeholder' => 'name')) }}
 				{{ if(isset($errors['name'])) }}
@@ -17,7 +17,7 @@
 		</div> <!-- end of form block -->
 		{{ if (!($method == 'edit')) }}
 		<div class="form-block first-block">
-			{{ Form::label(\Translate::get('label.slug').'<span class="required"></span>', 'slug') }}
+			{{ Form::label(t('label.slug').'<span class="required"></span>', 'slug') }}
 			<div class="form-right-block">
 				{{ Form::input('slug', isset($template->slug) ? $template->slug :'', 'text', array('placeholder' => 'Slug')) }}
 				{{ if(isset($errors['slug'])) }}
@@ -28,7 +28,7 @@
 		</div> <!-- end of form block -->
 		{{ else }}
 			<div class="form-block first-block">
-				{{ Form::label(\Translate::get('label.slug').'<span class="required"></span>', 'slug') }}
+				{{ Form::label(t('label.slug').'<span class="required"></span>', 'slug') }}
 				<div class="form-right-block">
 					{{ Form::input('fade_slug', $template->slug , 'text', array('placeholder' => 'Slug','disabled'=>'disabled')) }}
 					<p>This field cann't be edited.</p>
@@ -36,7 +36,7 @@
 			</div> <!-- end of form block -->
 		{{ endif }}
 		<div class="form-block first-block">
-			{{ Form::label(\Translate::get('label.desc').'<span class="required"></span>', 'description') }}
+			{{ Form::label(t('label.desc').'<span class="required"></span>', 'description') }}
 			<div class="form-right-block">
 				{{ Form::input('description', isset($template->description) ? $template->description :'', 'text', array('placeholder' => 'Description')) }}
 				{{ if(isset($errors['description'])) }}
@@ -57,8 +57,8 @@
 			{{ Form::hidden('slug', $slug) }}
 		{{ endif }}
 		<div class="form-block form-action button-wrapper">
-			{{ Form::submit('submit', 'Save', array('id' => 'create', 'class' => 'button button-green')) }}
-			<a href="{{ \Uri::create("$adminUrl/contact/email-template") }}" title="{{ Translate::get('global.cancel') }}" class="tipsy-tip">{{ Translate::get('global.cancel') }}</a>
+			{{ Form::submit('submit', t('global.save'), array('id' => 'create', 'class' => 'btn btn-green')) }}
+			<a href="{{ adminUrl("contact/email-template") }}" title="{{ t('global.cancel') }}" class="tipsy-tip">{{ t('global.cancel') }}</a>
 		</div>
 
 	{{ Form::end() }}

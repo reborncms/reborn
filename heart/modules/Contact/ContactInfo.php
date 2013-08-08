@@ -8,7 +8,7 @@ class ContactInfo extends \Reborn\Module\AbstractInfo
 
 	protected $version = '1.0';
 
-	protected $description = array('en' => 'Contact Module is used for contact mail, reply mail, inbox and email template.', 'my' => 'အီးမေးလ် နှင့်ပတ်သက်သော မော်ဂျူး သည် အီးမေးလ် ပေးပို့ခြင်း လက်ခံခြင်းတို့နှင့် သက်ဆိုင်သော ကိစ္စများကို ပြုလုပ်ဆောင်ရွက်ပေးပါသည်။');
+	protected $description = array('en' => 'Contact Module is used for contact mail, reply mail, inbox and email template.', 'my' => 'အီးမေးလ်နှင့်ပတ်သတ်သော ကိစ္စများကို လုပ်ဆောင်ရန်နေရာ');
 
 	protected $author = 'Thet Paing Oo';
 
