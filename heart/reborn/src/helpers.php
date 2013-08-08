@@ -605,3 +605,21 @@ if (! function_exists('markdown_extra')) {
     	return $markdownParser->transformMarkdown($text);
 	}
 }
+
+/**
+ * undocumented function
+ *
+ * @return void
+ * @author
+ **/
+if (! function_exists('num')) {
+	function num($str)
+	{
+		\Translate::load('numbers');
+		$nums = \Translate::get('numbers.formats');
+		$search = array_keys($nums);
+		$replace = array_values($nums);
+
+		return str_replace($search, $replace, $str);
+	}
+}

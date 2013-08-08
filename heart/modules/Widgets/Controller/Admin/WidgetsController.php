@@ -9,14 +9,14 @@ use Widgets\Lib\optionsForm;
 class WidgetsController extends \AdminController
 {
 	public function before() {
-		
+
 		$this->menu->activeParent('appearance');
 
 		$this->template->style('widget.css', 'widget');
 		$this->template->script('widget.js', 'widget');
 
 		$ajax = $this->request->isAjax();
-		
+
 		if ($ajax) {
 			$this->template->partialOnly();
 		}
@@ -57,7 +57,7 @@ class WidgetsController extends \AdminController
 						->set('inactive_widget', $inactive_widget);
 	}
 
-	public function add() 
+	public function add()
 	{
 		if (\Input::isPost()) {
 			$widget = new Widgets;
@@ -135,7 +135,7 @@ class WidgetsController extends \AdminController
 		}
 	}
 
-	public function optionsSave() 
+	public function optionsSave()
 	{
 		$form_data = \Input::get('*');
 

@@ -28,6 +28,7 @@ jQuery(function() {
 				area: area,
 			},
 			success: function(data) {
+
 				var obj = jQuery.parseJSON(data);
 
 				if (obj.status == 'ok') {
@@ -58,7 +59,7 @@ jQuery(function() {
 						}
 					});
 
-					//add if option exist 
+					//add if option exist
 
 
 					$('#msg_area').html("<span class='show-alert-success'>New Widget Added!</span>");

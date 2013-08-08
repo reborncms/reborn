@@ -122,7 +122,7 @@
 				{{ loop($last_login as $user) }}
 				{= $url = rbUrl('user/profile/'.$user->id) =}
 					<li>
-						{{ sprintf(t('label.last_login_text'), $url, $user->fullname, $user->last_login) }}
+						{{ sprintf(t('label.last_login_text'), $url, $user->fullname, num($user->last_login)) }}
 					</li>
 				{{ endloop }}
 				</ul>
