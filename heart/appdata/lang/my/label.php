@@ -62,9 +62,9 @@ return array(
 	// Control Panel Dashboard Label
 	'rb_blog_n_news'	=> 'Reborn CMS Blog &amp; News',
 	'rb_server_info'	=> 'ဆာဘာ အချက်အလက်',
-	'user_last_login'	=> 'နောက်ဆုံးဝင်ရောက်ထားသာ အသုံးပြုသူ',
-	'last_login_text'	=> '<a class="fullname" href="%s" target="_blank">%s</a> is last login at <span class="date">%s</span>',
-	'last_post'			=> 'နောက်ဆုံးတင်ထားသေားအကြောင်းအရာ',
+	'user_last_login'	=> 'နောက်ဆုံးဝင်ရောက်ထားသော အသုံးပြုသူ',
+	'last_login_text'	=> 'အသုံးပြုသူ <a class="fullname" href="%s" target="_blank">%s</a> မှ <span class="date">%s</span> တွင် နောက်ဆုံး ဝင်ရောက်ထားပါသည်။',
+	'last_post'			=> 'နောက်ဆုံးတင်ထားသော အကြောင်းအရာ',
 	'last_post_empty'	=> 'ဘလော့ပို့ မရှိသေးပါ',
 	'last_comment'		=> 'နောက်ဆုံး ဝေဖန်အကြံပြုချက်',
 	'last_comment_empty'=> 'ဝေဖန်အကြံပြုချက် မရှိသေးပါ',

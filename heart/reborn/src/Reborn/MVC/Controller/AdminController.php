@@ -165,10 +165,11 @@ class AdminController extends Controller
 
         $start_year = '2012';
         $end_year = date('Y');
+        $cp_right = t('global.rb_copyright');
         if ($start_year == $end_year ) {
-            $copyright = 'Copyright &copy; '.$end_year;
+            $copyright = $cp_right.$end_year;
         } else {
-            $copyright = 'Copyright &copy; '.$start_year.' - '.$end_year;
+            $copyright = $cp_right.$start_year.' - '.$end_year;
         }
         // Set the copyright date
         $this->template->copyRight = $copyright;

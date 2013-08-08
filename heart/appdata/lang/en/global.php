@@ -83,5 +83,9 @@ return array(
 	'installer_delete_success'	=> 'Successfully deleted installer folder.',
 	'installer_delete_error'	=> 'Error occured to delete installer folder. Try again (or) Manually delete!',
 
-	'no_script'	=> 'Reborn CMS Admin Panel required javascript. Please enable javascript from your browser.'
+	'no_script'	=> 'Reborn CMS Admin Panel required javascript. Please enable javascript from your browser.',
+
+	// Footer Label
+	'rb_copyright' => 'Copyright &copy; ',
+	'rb_developed_by' => 'Developed by <a href="%s" target="_blank">REBORN CMS Development Team</a>'
 );

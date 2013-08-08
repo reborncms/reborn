@@ -23,6 +23,7 @@ return array(
 	'appearance'	=> 'အပြင်အဆင်',
 	'themes'		=> 'Themes',
 	'users'			=> 'အသုံးပြုသူများ',
+	'user_management'=> 'အသုံးပြုသူများ စီမံခန့်ခွဲရန်',
 	'permission'	=> 'ပြုလုပ်ဆောင်ရွက်ခွင့်',
 	'settings'		=> 'ပြင်ဆင်ရန်',
 	'modules'		=> 'Modules',

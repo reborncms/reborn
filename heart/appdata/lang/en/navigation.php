@@ -23,6 +23,7 @@ return array(
 	'appearance'	=> 'Appearance',
 	'themes'		=> 'Themes',
 	'users'			=> 'Users',
+	'user_management'=> 'User Management',
 	'permission'	=> 'Permission',
 	'settings'		=> 'Settings',
 	'modules'		=> 'Modules',
