@@ -4,7 +4,7 @@
  */
 
 return array(
-	'title'				=> 'Settings',
+	'title'				=> 'Settings Manager',
 	'save_success'		=> 'Setting sucessfully save.',
 	'save_error'		=> 'Error occurring to save setting!',
 	'save_csrf_error'	=> 'Error occurring to save setting. Please try again!',
@@ -12,6 +12,9 @@ return array(
 	// Setting Group Title
 	'system_title'		=> 'System Settings',
 	'module_title'		=> '%s Module Settings',
+
+	// Label
+	'auto_generate'		=> 'Auto Generate'
 );
 
 

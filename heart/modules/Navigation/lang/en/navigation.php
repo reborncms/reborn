@@ -5,6 +5,8 @@ return array(
 
 	'title' => 'Navigation Manager',
 
+	'desc' => 'Manage navigation link and group for your website.'
+
 	'menu' => 'Navigation',
 
 	'link'	=> array(

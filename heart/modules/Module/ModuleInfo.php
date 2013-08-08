@@ -8,7 +8,15 @@ class ModuleInfo extends \Reborn\Module\AbstractInfo
 
 	protected $version = '1.0';
 
-	protected $description = 'Module(Extension) Manager';
+	protected $displayName = array(
+								'en' => 'Modules Manager',
+								'my' => 'မော်ဂျူးများ စီမံခန့်ခွဲရာနေရာ'
+							);
+
+	protected $description = array(
+								'en' => 'Modules Manager',
+								'my' => 'မော်ဂျူးများ စီမံခန့်ခွဲရာနေရာ'
+							);
 
 	protected $author = 'Nyan Lynn Htut';
 

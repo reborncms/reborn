@@ -11,6 +11,9 @@ return array(
 	// Setting Group Title
 	'system_title'		=> 'System ပိုင်းဆိုင်ရာ အချက်အလက်များ',
 	'module_title'		=> '%s မော်ဂျူး၏ အချက်အလက်များ',
+
+	// Label
+	'auto_generate'		=> 'အလိုအလျောက် သတ်မှတ်မည်'
 );
 
 

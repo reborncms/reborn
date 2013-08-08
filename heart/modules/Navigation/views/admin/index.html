@@ -39,7 +39,7 @@
 
 											{{ if(user_has_access('nav.delete')) }}
 											<a href="{{ adminUrl("navigation/delete/".$list['id']) }}" class="confirm_delete tipsy-tip" title="{{ t('global.delete') }}">
-												<i class="icon-trash2 icon-black"></i>
+												<i class="icon-remove icon-black"></i>
 											</a>
 											{{ endif }}
 										</div>
@@ -107,7 +107,7 @@
 
 				<div class="c-a-b">
 
-					<div>
+					<div class="r-i-b">
 						<span>{{ t('navigation::navigation.labels.title') }}<span class="required"></span></span>
 					</div>
 
@@ -118,7 +118,7 @@
 
 				<div class="c-a-b">
 
-					<div>
+					<div class="r-i-b">
 						<span>{{ t('navigation::navigation.labels.type') }}<span class="required"></span></span>
 					</div>
 
@@ -165,7 +165,7 @@
 
 				<div class="c-a-b">
 
-					<div>
+					<div class="r-i-b">
 						<span>{{ t('navigation::navigation.labels.group') }}</span>
 					</div>
 					{{ Form::select('group', $groupSelect, $defaultGroup, array('class' => 'xx-large thin')) }}
@@ -174,7 +174,7 @@
 
 				<div class="c-a-b">
 
-					<div>
+					<div class="r-i-b">
 						<span>{{ t('navigation::navigation.labels.target') }}</span>
 					</div>
 
@@ -188,7 +188,7 @@
 
 				<div class="c-a-b">
 
-					<div>
+					<div class="r-i-b">
 						<span>{{ t('navigation::navigation.labels.class') }}</span>
 					</div>
 
@@ -198,7 +198,7 @@
 
 				<div class="c-a-b">
 
-				{{ Form::button('add', t('navigation::navigation.link.add'), 'submit', array('class' => 'button button-green', 'id' => 'add-new-cat-btn')) }}
+				{{ Form::button('add', t('navigation::navigation.link.add'), 'submit', array('class' => 'btn btn-green', 'id' => 'add-new-cat-btn')) }}
 
 				</div> <!-- end of div.c-a-b -->
 
@@ -210,7 +210,7 @@
 
 		{{ endif }}
 
-		<div class="form-block"></div>
+		<!-- <div class="form-block"></div> -->
 
 	</div> <!-- end of div#form-wrapper -->
 
