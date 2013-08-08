@@ -121,7 +121,7 @@ class LessResolver
 				$url = str_replace(BASE, $this->url, $newpath);
 				$clearurl = str_replace(array('../','\'', '"'), '', $uri);
 				$clearurl = str_replace('\\', '/', $clearurl);
-				$replace[$k] = '"'.$url.DS.$clearurl.'"';
+				$replace[$k] = '"'.$url.'/'.$clearurl.'"';
 			} else {
 				$replace[$k] = $path;
 			}
