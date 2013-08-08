@@ -3,7 +3,7 @@
 /**
  * Event Register for Reborn CMS.
  *
- * Reborn have 4 event calling for application.
+ * Reborn have 8 event calling for application.
  */
 
 return array(
@@ -36,5 +36,9 @@ return array(
 				'callback' => function ($response) {
 					return Registry::get('app')->profiler->output($response);
 				}
+			),
+		array(
+				'name' => 'reborn.app.locale_change',
+				'callback' => ''
 			)
 	);

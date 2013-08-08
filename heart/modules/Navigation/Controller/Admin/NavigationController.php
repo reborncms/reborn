@@ -82,7 +82,7 @@ class NavigationController extends \AdminController
 			\Cache::deleteFolder('Navigation');
 		}
 
-		return;
+		return $this->returnJson(array('status' => 'ok'));
 	}
 
 	/**
@@ -255,11 +255,6 @@ class NavigationController extends \AdminController
 	public function groupCreate()
 	{
 		if (! \Input::isPost()) {
-			return \Redirect::toAdmin('navigation/group');
-		}
-
-		if ( ! \Security::CSRFvalid('navigp')) {
-			\Flash::error(t('navigation::navigation.message.csrf_error'));
 			return \Redirect::toAdmin('navigation/group');
 		}
 

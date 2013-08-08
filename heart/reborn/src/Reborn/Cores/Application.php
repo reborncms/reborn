@@ -56,10 +56,6 @@ class Application extends \Pimple
             return new Router();
         });
 
-        $this['map'] = $this->share(function ($this) {
-            return new \Reborn\Route\Map();
-        });
-
         $this['log'] = $this->share(function () {
             return new Log();
         });
@@ -297,6 +293,8 @@ class Application extends \Pimple
     public function setLocale($locale = 'en')
     {
         $this['locale'] = $locale;
+
+        Event::call('reborn.app.locale_change', array($locale));
     }
 
     /**
