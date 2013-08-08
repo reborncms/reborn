@@ -77,7 +77,7 @@ class Menu
 		if ((count(\Uri::segments()) == 1) and \Uri::segment(1) == ADMIN_URL) {
 			$class = 'active';
 		}
-		$icon = '<i class="icon-globe icon-grey"></i>';
+		$icon = '<i class="icon-dashboard"></i>';
 		$output = '<li id="dashboard-dashboard" class="first '.$class.'">';
 		$output .= '<a href="'.adminUrl().'" >'.$icon.t('navigation.dashboard').'</a>';
 		$output .= '</li>';

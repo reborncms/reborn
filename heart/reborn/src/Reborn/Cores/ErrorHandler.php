@@ -40,7 +40,9 @@ class ErrorHandler
 
         \Log::debug($message);
 
-        if (ENV == 'production') {
+        $app = \Registry::get('app');
+
+        if ($app['env'] == 'production') {
             $view = new \Reborn\MVC\View\View(\Config::get('template.cache_path'));
             $content = $view->render(APP.'views'.DS.'production-error.php');
             //echo $content;
