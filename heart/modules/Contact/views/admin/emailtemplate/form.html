@@ -4,7 +4,6 @@
 {{ endif }}
 
 {{ Form::start(adminUrl('contact/email-template/'.$method),'',true,array('class'=>'form')) }}
-	{{ Security::CSRField('contact') }}
 
 		<div class="form-block first-block">
 			{{ Form::label(t('label.name').'<span class="required"></span>', 'name') }}

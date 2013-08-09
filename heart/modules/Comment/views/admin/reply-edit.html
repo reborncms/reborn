@@ -11,11 +11,11 @@
 			{= $author = $comment->name =}
 		{{ endif }}
 		{{ if ($method == 'reply') }}
-			Reply to {{ $author }}'s comment
-			{= $btn_val = 'Reply' =}
+			{{ sprintf(t('comment::comment.label.reply_to'), $author) }}
+			{= $btn_val = t('comment::comment.label.reply') =}
 		{{ else }}
-			Edit {{ $author }}'s comment
-			{= $btn_val = 'Edit' =}
+			{{ sprintf(t('comment::comment.label.edit_comment'), $author) }}
+			{= $btn_val = t('global.edit') =}
 		{{ endif }}
 	</h4>
 

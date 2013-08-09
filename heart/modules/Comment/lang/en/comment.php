@@ -51,6 +51,16 @@ return array(
 		'delete' 			=> 'Comments have been deleted',
 	),
 
+	'menu'					=> array(
+		'approved'			=> 'Approved',
+		'pending'			=> 'Pending',
+	),
+
+	'info'					=> array(
+		'approve'			=> 'Approve',
+		'unapprove'			=> 'Unapprove',
+	),
+
 	'label'					=> array(
 		'all'				=> 'All',
 		'approved'			=> 'Approved',
@@ -66,6 +76,8 @@ return array(
 		'apply_selected'	=> 'Apply action to Selected',
 		'select_action'		=> '-- Select action --',
 		'post_comment'		=> 'Post a Comment',
+		'reply_to'			=> 'Reply to %s\'s comment',
+		'edit_comment'		=> 'Edit %s\'s comment',
 		'post_comment_as'	=> 'Post comment as',
 		'logout'			=> 'Logout',
 	),

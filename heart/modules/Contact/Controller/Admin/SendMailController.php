@@ -56,53 +56,48 @@ class SendMailController extends \AdminController
 
 				} else{
 
-					if (\Security::CSRFvalid('contact')) {
+					$data['name'] = \Setting::get('site_title');
+					$data['from'] = \Setting::get('sever_mail');
+					
+					$temp = Helper::getTemplate($data,'reply_template');
+					
+					$attach = \Input::file('attachment');
+					
+					$config = array(
+						'to'		=> $to,
+						'from'		=> $data['from'],
+						'name'		=> $data['name'],
+						'subject'	=> $data['subject'],
+						'body'		=> $temp,
+						'attachment'=> array(
+							'fieldName'=> 'attachment',
+							'value'		=> $attach,
+							),
+						'attachmentConfig'=> array(
+							'savePath'		=> UPLOAD.'contact_attachment',
+							'createDir'	=> true,
+							'allowedExt'=> array('jpg', 'jpeg', 'png', 'gif',
+											'txt','pdf','doc','docx','xls','zip','tar',
+											'xlsx','ppt','tif','tiff'),
+							),
+					);
+					
+					$sendmail = Mailer::send($config);
 
-						$data['name'] = \Setting::get('site_title');
-						$data['from'] = \Setting::get('sever_mail');
-						
-						$temp = Helper::getTemplate($data,'reply_template');
-						
-						$attach = \Input::file('attachment');
-						
-						$config = array(
-							'to'		=> $to,
-							'from'		=> $data['from'],
-							'name'		=> $data['name'],
-							'subject'	=> $data['subject'],
-							'body'		=> $temp,
-							'attachment'=> array(
-								'fieldName'=> 'attachment',
-								'value'		=> $attach,
-								),
-							'attachmentConfig'=> array(
-								'savePath'		=> UPLOAD.'contact_attachment',
-								'createDir'	=> true,
-								'allowedExt'=> array('jpg', 'jpeg', 'png', 'gif',
-												'txt','pdf','doc','docx','xls','zip','tar',
-												'xlsx','ppt','tif','tiff'),
-								),
-						);
-						
-						$sendmail = Mailer::send($config);
-
-						$attName = Mailer::getAttName();
-						if ($attName) {
-							$data['attachment'] = UPLOAD.'contact_attachment'.DS.$attName;
-						}
-						if (isset($sendmail['success'])) {
-							\Flash::success($sendmail['success']);
-							\Event::call('reply_email_success' ,array($data,$to));
-							return \Redirect::toAdmin('contact/send-mail');
-						}
-						if (isset($sendmail['fail'])) {
-							\Flash::error($sendmail['fail']);
-							return \Redirect::toAdmin('contact/send-mail');
-						}
-					} else{
-						\Flash::warning(\Translate::get('contact::contact.wait'));
+					$attName = Mailer::getAttName();
+					if ($attName) {
+						$data['attachment'] = UPLOAD.'contact_attachment'.DS.$attName;
+					}
+					if (isset($sendmail['success'])) {
+						\Flash::success($sendmail['success']);
+						\Event::call('reply_email_success' ,array($data,$to));
 						return \Redirect::toAdmin('contact/send-mail');
 					}
+					if (isset($sendmail['fail'])) {
+						\Flash::error($sendmail['fail']);
+						return \Redirect::toAdmin('contact/send-mail');
+					}
+					
 				}
 			} else {
 				$errors = $v->getErrors();

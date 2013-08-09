@@ -47,8 +47,7 @@ class Widget extends \Reborn\Widget\AbstractWidget
 			return null;
 		}
 
-		$title = $this->get('title', '');
-
+		$title = $this->get('title', 'Contact Us');
 
 		\Module::load('Contact');
 

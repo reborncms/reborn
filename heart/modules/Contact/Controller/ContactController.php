@@ -30,57 +30,51 @@ class ContactController extends \PublicController
 			$widget = \Input::get('widget');
 			if ($v->valid()) {
 
-				if (\Security::CSRFvalid('contact')) {
+				$data = \Input::get('*');
 
-					$data = \Input::get('*');
+				$data['ip'] = \Input::ip();
 
-					$data['ip'] = \Input::ip();
+				$attach = \Input::file('attachment');
 
-					$attach = \Input::file('attachment');
-
-					$temp = Helper::getTemplate($data,'contact_template');
+				$temp = Helper::getTemplate($data,'contact_template');
+				
+				$config = array(
+					'to'		=> array(\Setting::get('site_mail')),
+					'from'		=> $data['email'],
+					'name'		=> $data['name'],
+					'subject'	=> $data['subject'],
+					'body'		=> $temp,
+					'attachment'=> array(
+						'fieldName'=> 'attachment',
+						'value'		=> $attach,
+						),
 					
-					$config = array(
-						'to'		=> array(\Setting::get('site_mail')),
-						'from'		=> $data['email'],
-						'name'		=> $data['name'],
-						'subject'	=> $data['subject'],
-						'body'		=> $temp,
-						'attachment'=> array(
-							'fieldName'=> 'attachment',
-							'value'		=> $attach,
-							),
-						
-						'attachmentConfig'=> array(
-							'savePath'		=> UPLOAD.'contact_attachment',
-							'createDir'	=> true,
-							'allowedExt'=> array('jpg', 'jpeg', 'png', 'gif',
-											'txt','pdf','doc','docx','xls','zip','tar',
-											'xlsx','ppt','tif','tiff'),
-							),
-					);
-					
-					$contact = Mailer::send($config);
+					'attachmentConfig'=> array(
+						'savePath'		=> UPLOAD.'contact_attachment',
+						'createDir'	=> true,
+						'allowedExt'=> array('jpg', 'jpeg', 'png', 'gif',
+										'txt','pdf','doc','docx','xls','zip','tar',
+										'xlsx','ppt','tif','tiff'),
+						),
+				);
+				
+				$contact = Mailer::send($config);
 
-					$attName = Mailer::getAttName();
-					if ($attName) {
-						$data['attachment'] = UPLOAD.'contact_attachment'.DS.$attName;
-					}
-					if (isset($contact['success'])) {
-						\Flash::success($contact['success']);
-						$this->getData($data);
-						\Event::call('receive_mail_success',array($data));
-						return \Redirect::to($referer);
-					}
-					if (isset($contact['fail'])) {
-						\Flash::error($contact['fail']);
-						return \Redirect::to($referer);
-					}
+				$attName = Mailer::getAttName();
+				if ($attName) {
+					$data['attachment'] = UPLOAD.'contact_attachment'.DS.$attName;
 				}
-				else{
-					\Flash::warning(\Translate::get('contact::contact.wait'));
+				if (isset($contact['success'])) {
+					\Flash::success($contact['success']);
+					$this->getData($data);
+					\Event::call('receive_mail_success',array($data));
 					return \Redirect::to($referer);
 				}
+				if (isset($contact['fail'])) {
+					\Flash::error($contact['fail']);
+					return \Redirect::to($referer);
+				}
+				
 			} else {
 				$errors = $v->getErrors();
 				$this->template->errors = $errors;
