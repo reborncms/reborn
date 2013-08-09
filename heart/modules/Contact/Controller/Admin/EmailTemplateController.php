@@ -56,33 +56,30 @@ class EmailTemplateController extends \AdminController
 		if (!user_has_access('contact.template.add')) return $this->notFound();
 		$template =new \stdClass;
 		if (\Input::isPost()) {
-			if (! \Security::CSRFvalid('contact')) {
-				\Flash::warning(\Translate::get('contact::contact.wait_template'));
-				return \Redirect::toAdmin('contact/email-template/create');
-			} else {
-				$v = $this->validate();
-				if ($v->valid()) {
+			 
+			$v = $this->validate();
+			if ($v->valid()) {
 
-					$check = $this->uni_slug(\Input::get('slug'),\Input::get('name'));
-					
-					if ($check == true) {
-						$this->fillData('create');
-						\Flash::success(\Translate::get('contact::contact.success_template'));
+				$check = $this->uni_slug(\Input::get('slug'),\Input::get('name'));
+				
+				if ($check == true) {
+					$this->fillData('create');
+					\Flash::success(\Translate::get('contact::contact.success_template'));
 
-						return \Redirect::toAdmin('contact/email-template');
+					return \Redirect::toAdmin('contact/email-template');
 
-					} else
-					{
-						\Flash::error(\Translate::get('contact::contact.error_template'));
-						$template = (object)\Input::get('*');
-					}
-					
-				} else {
-					$errors = $v->getErrors();
-					$this->template->errors = $errors;
+				} else
+				{
+					\Flash::error(\Translate::get('contact::contact.error_template'));
 					$template = (object)\Input::get('*');
 				}
+				
+			} else {
+				$errors = $v->getErrors();
+				$this->template->errors = $errors;
+				$template = (object)\Input::get('*');
 			}
+			
 		}
 
 		$this->template->title(\Translate::get('contact::contact.add_email_temp'))
@@ -129,31 +126,28 @@ class EmailTemplateController extends \AdminController
 		if (!user_has_access('contact.template.edit')) return $this->notFound();
 		$template = Etemplate::find($id);
 		if (\Input::isPost()) {
-			if (! \Security::CSRFvalid('contact')) {
-				\Flash::warning(\Translate::get('contact::contact.wait_template'));
-				return \Redirect::toAdmin('contact/email-template');
-			} else {
-				$v = $this->validate();
-				if ($v->valid()) {
-					$check = $this->uni_slug(\Input::get('slug'),\Input::get('name'),\Input::get('id'));
-					
-					if ($check == true) {
-						$this->fillData('edit',\Input::get('id'));
-						\Flash::success(\Translate::get('contact::contact.success_template'));
-						return \Redirect::toAdmin('contact/email-template');
+			 
+			$v = $this->validate();
+			if ($v->valid()) {
+				$check = $this->uni_slug(\Input::get('slug'),\Input::get('name'),\Input::get('id'));
+				
+				if ($check == true) {
+					$this->fillData('edit',\Input::get('id'));
+					\Flash::success(\Translate::get('contact::contact.success_template'));
+					return \Redirect::toAdmin('contact/email-template');
 
-					} else
-					{
-						\Flash::error(\Translate::get('contact::contact.error_template'));
-						$template = (object)\Input::get('*');
-					}
-					
-				} else {
-					$errors = $v->getErrors();
-					$this->template->errors = $errors;
+				} else
+				{
+					\Flash::error(\Translate::get('contact::contact.error_template'));
 					$template = (object)\Input::get('*');
 				}
+				
+			} else {
+				$errors = $v->getErrors();
+				$this->template->errors = $errors;
+				$template = (object)\Input::get('*');
 			}
+			
 		}
 
 		$this->template->title(\Translate::get('contact::contact.edit_email_temp'))

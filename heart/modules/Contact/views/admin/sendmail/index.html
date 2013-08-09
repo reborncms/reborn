@@ -1,5 +1,4 @@
 {{ Form::start(adminUrl('contact/send-mail'),'',true,array('class'=>'form')) }}
-	{{ Security::CSRField('contact') }}
 		
 		<div class="form-block first-block">
 			{{ Form::label(t('label.email').'<span class="required"></span>', 'email') }}
