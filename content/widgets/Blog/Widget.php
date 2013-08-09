@@ -12,10 +12,10 @@ class Widget extends \Reborn\Widget\AbstractWidget
 					'title' => 'Blog Post',
 					'description' => 'Latest Blog Posts which is posted last days',
 				),
-				'archive' 	=> array(
+				/*'archive' 	=> array(
 					'title' =>'Blog Archive',
 					'description' => 'Blog by Year and month',
-				),
+				),*/
 				'category' 	=> array(
 					'title' => 'Blog Category',
 					'description' => 'Blog Category List',
@@ -54,22 +54,30 @@ class Widget extends \Reborn\Widget\AbstractWidget
 					'type'		=> 'text',
 					'info'		=> 'Leave it blank if you don\'t want to show your widget title',
 				),
+				'show_type'		=> array(
+					'label'		=> 'Yearly or Monthly',
+					'type'		=> 'select',
+					'options'	=> array(
+						'yearly'	=> 'Yearly',
+						'monthly'	=> 'Monthly',
+					),
+				),
 			),
 
 			'category' 	=> array(
 				'title' => array(
 					'label' 	=> 'Title',
-					'type'		=> 'textarea',
+					'type'		=> 'text',
 					'info'		=> 'Leave it blank if you don\'t want to show your widget title',
 				),
-				'show_type' 	=> array(
+				/*'show_type' 	=> array(
 					'label'		=> 'Show Type',
 					'type'		=> 'select',
 					'options'	=> array(
 						'cat'	=> 'Category',
 						'post'	=> 'Blog Posts',
 					)
-				),
+				),*/
 			),
 		);
 	}
@@ -147,6 +155,10 @@ class Widget extends \Reborn\Widget\AbstractWidget
 		\Module::load('Blog');
 		$title = $this->get('title', 'Archives');
 		$limit = $this->get('limit', 5);
+		$data = array();
+
+		$data['title'] = $this->get('title', 'Blog Archives');
+		$data['list'] = array();
 
 		return $this->show($data, 'archive');
 	}

@@ -5,7 +5,7 @@
 		{{ if (!\Sentry::check()) }}
 			<div class="field_wrapper">
 				<div class="form_label">
-					{{ Form::label('Name', 'name') }}
+					{{ Form::label(t('label.fullname'), 'name') }}
 				</div>
 				<div class="form_field">
 					{{ Form::input('name', '', 'text', array('required' => 'required')) }}
@@ -13,7 +13,7 @@
 			</div> <!-- end of field_wrapper -->
 			<div class="field_wrapper">
 				<div class="form_label">
-					{{ Form::label('Email', 'email') }}
+					{{ Form::label(t('label.email'), 'email') }}
 				</div>
 				<div class="form_field">
 					{{ Form::email('email', '', array('required' => 'required')) }}
@@ -21,7 +21,7 @@
 			</div> <!-- end of field_wrapper -->
 			<div class="field_wrapper">
 				<div class="form_label">
-					{{ Form::label('Website', 'url') }}
+					{{ Form::label(t('label.website'), 'url') }}
 				</div>
 				<div class="form_field">
 					{{ Form::url('url', '') }}
@@ -30,7 +30,8 @@
 		{{ else }}
 			{= $user = \Sentry::getUser() =}
 			<div id="login_info">
-				{{ t('comment::comment.label.post_comment_as') }} {{ $user->first_name . ' ' . $user->last_name }}.
+				{= $cmt_author = $user->first_name . ' ' . $user->last_name =}
+				{{ sprintf(t('comment::comment.label.post_comment_as'), $cmt_author) }}.
 				<a href="{{ rbUrl('user/logout') }}" id="logout_link">{{ t('comment::comment.label.logout') }}</a>
 			</div>	
 		{{ endif }}
@@ -41,14 +42,14 @@
 			{{ Form::hidden('content_id', $content_id) }}
 			<div class="field_wrapper">
 				<div class="form_label">
-					{{ Form::label('Message', 'message') }}
+					{{ Form::label(t('comment::comment.label.message'), 'message') }}
 				</div>
 				<div class="form_field">
 					{{ Form::textarea('message', '') }}
 				</div>	
 			</div>
 			<div class="form_action">
-				{{ Form::submit('comment_submit', 'Submit') }}
+				{{ Form::submit('comment_submit', t('global.submit')) }}
 			</div>
 	{{ Form::end() }}
 </div> <!-- end of comment_form_wrapper -->
