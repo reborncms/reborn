@@ -11,14 +11,6 @@ class Widget extends \Reborn\Widget\AbstractWidget
 			'author' => 'Nyan Lynn Htut'
 		);
 
-	public function save() {}
-
-	public function update() {}
-
-	public function delete() {}
-
-	public function form() {}
-
 	public function options()
 	{
 		return array(
@@ -26,11 +18,6 @@ class Widget extends \Reborn\Widget\AbstractWidget
 	            'label'		=> 'Title',
 	            'type'		=> 'text',
 	            'info'		=> 'Title for Google Doc Viewer',
-	        ),
-	        'url' => array(
-	            'label'		=> 'Document Url',
-	            'type'		=> 'text',
-	            'info'		=> 'Document Url for Google Doc Viewer',
 	        ),
 	        'url' => array(
 	            'label'		=> 'Document Url',

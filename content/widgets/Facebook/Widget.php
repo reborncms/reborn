@@ -11,14 +11,6 @@ class Widget extends \Reborn\Widget\AbstractWidget
 			'author' => 'Nyan Lynn Htut'
 		);
 
-	public function save() {}
-
-	public function update() {}
-
-	public function delete() {}
-
-	public function form() {}
-
 	public function options()
 	{
 		return array(
