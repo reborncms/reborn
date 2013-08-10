@@ -12,36 +12,49 @@
 	<body>
 
 	<noscript>
-		Reborn CMS Admin Panel required javascript. Please enable javascript from your browser.
+		{{ t('global.no_script') }}
 	</noscript>
 
 		<div id="main-container">
-			<div id="dashboard-head-wrap">
-				<div id="dashboard-header">
+			<header id="header-wrapper">
 
+				<div id="logo">
 					<h1>
 						<a href="{{ rbUrl() }}" target="_blank">
 							{{ $siteTitle }}
 							<span class="view-site">[ {{ t('label.view_site') }} ]</span>
 						</a>
 					</h1>
+				</div> <!-- end of #logo -->
 
-					<div id="dashboard-user-meta">
-						<ul>
-							<li>{{ gravatar($login_user->email, 22) }}</li>
-							<li><h2 class="dashboard-username">{{ $login_user->first_name.' '.$login_user->last_name }}</h2></li>
-							<li class="dashboard-dropdown">
-								<span id="dropdown"></span>
-								<ul id="dashboard-user-properties">
-									<li><a href="{{ adminUrl("user/edit/$login_user->id") }}"><i class="icon-setting icon-grey"></i>Edit Profile</a></li>
-									<li><a href="{{ adminUrl('logout') }}"><i class="icon-exit icon-grey"></i>Logout</a></li>
-								</ul>
-							</li>
-						</ul>
-					</div> <!-- end of div#user-meta -->
+				<div id="header-right-panel">
+					<ul>
+						<li>{{ gravatar($login_user->email, 22) }}</li>
+						<li><h2 class="dashboard-username">{{ $login_user->first_name.' '.$login_user->last_name }}</h2></li>
+						<li class="dashboard-dropdown">
+							<span id="dropdown">
+								<i class="icon-arrow-right icon-white"></i>
+							</span>
+							<ul id="dashboard-user-properties" class="no-list">
+								<li>
+									<a href="{{ adminUrl("user/edit/$login_user->id") }}">
+										<i class="icon-setting icon-white"></i>
+										{{ t('label.edit-profile') }}
+									</a>
+								</li>
+								<li>
+									<a href="{{ adminUrl('logout') }}">
+										<i class="icon-exit icon-white"></i>
+										{{ t('label.logout') }}
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div> <!-- end of #header-right-panel -->
 
-				</div> <!-- end of div#dashboard-header -->
-			</div> <!-- end of div#dashboard-head-wrap -->
+			</header> <!-- end of #header-wrapper -->
+<!-- *********** END OF HEADER AREA **************** -->
 
 			<!-- start of message area -->
 			<div id="message-area">
@@ -49,44 +62,61 @@
 			</div>
 			<!-- end of message area -->
 
-			<div id="dashboard-navigation">
-				<h1 id="reborncms"><a href="{{ adminUrl() }}">Reborn CMS</a></h1>
-				<ul>
-					{{ $adminMenus->generate() }}
-				</ul>
-			</div> <!-- end of div#dashboard-navigation -->
+			<section id="content-wrapper">
 
-			<div id="dashboard-area">
+				<aside id="sidebar" class="">
 
-				<div id="dashboard-wrapper" class="clearfix">
+					<div id="nav-panel">
+						<span
+							class="icon-list icon-white icon-16 tipsy-tip"
+							title="Navigation Toggle"
+							data-gravity="w"
+							data-target="#sidebar"
+							id="nav-toggle">
+						</span>
+						<h1 id="reborn"><a href="{{ adminUrl() }}">Reborn CMS</a></h1>
+						<ul id="admin-nav">
+							{{ $adminMenus->generate() }}
+						</ul>
+					</div> <!-- end of #nav-panel -->
 
-					<h2 id="welcome"><span>Welcome to Reborn CMS -</span>
+				</aside>
+
+				<div id="content-panel" class="container">
+
+					<h2 id="welcome"><span>{{ t('global.welcome_reborn') }} -</span>
 						{{ $module['description'] }}
 					</h2>
 
-					{{ if(isset($modToolbar)) }}
+					{{ if(isset($modToolbar) and (!empty($modToolbar))) }}
 					<div id="toolbar">
 						{{ loop($modToolbar as $btn) }}
-						<a class="shortcut tipsy-tip" title="{{ $btn['info'] }}" href="{{ adminUrl($btn['url']) }}" id="{{ isset($btn['id']) ? $btn['id'] : '' }}">
+						<a class="shortcut btn btn-dark tipsy-tip"
+							title="{{ $btn['info'] }}"
+							href="{{ adminUrl($btn['url']) }}"
+							id="{{ isset($btn['id']) ? $btn['id'] : '' }}">
 						{{ $btn['name'] }}
 						</a>
 						{{ endloop }}
 					</div> <!-- end of div#toolbar -->
 					{{ endif }}
 
-					<div id="content-wrapper">
+					<div id="content-container">
 
-					{{ $layoutBody }}
+						{{ $layoutBody }}
 
-					</div> <!-- end of div#content-wrapper -->
+					</div> <!-- end of #content-container -->
 
-					<div id="dashboard-footer" class="clearfix">
-						{{ include:footer }}
-					</div> <!-- end of div#dashboard-footer -->
+				</div> <!-- end of #content-panel -->
 
-				</div> <!-- end of div#dashboard-wrapper -->
+			</section> <!-- end of #content-wrapper -->
 
-			</div> <!-- end of div#dashboard-area -->
+			<div id="dashboard-footer-wrapper" class="clearfix">
+				<div id="dashboard-footer">
+					{{ include:footer }}
+				</div>
+			</div> <!-- end of div#dashboard-footer -->
+
 		</div> <!-- end of div#main-container -->
 
 	{{ $footerStyle }}

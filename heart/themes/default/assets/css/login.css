@@ -102,16 +102,9 @@ input, select {
 }
 
 
-@import url(typo.css);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
 /* Login Screen */
-
-@font-face
-{
-  font-family: bebas;
-  src: url('../fonts/bebas.ttf');
-  format("opentype"); /* IE */
-}
 
 body {	background: url(../img/black_lozenge.png) repeat left top; }
 
@@ -121,6 +114,38 @@ div#login-container {
 	padding: 20px;
 	border: 1px solid #E5E5E5;
 	background: #efefef;
+	position: relative;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+div#login-container:before, div#login-container:after {
+	content: "";
+	width: 387px;
+	height: 298px;
+    top : -1px;
+    left : -2px;
+    background: #fff;
+	display: block;
+	position: absolute;
+	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2) inset;
+}
+
+div#login-container:before {
+    z-index: -1;
+    -webkit-transform: rotate(5deg);
+	-moz-transform: rotate(5deg);
+	-ms-transform: rotate(5deg);
+	-o-transform: rotate(5deg);
+	transform: rotate(5deg);
+}
+
+div#login-container:after {
+    z-index: -2;
+    -webkit-transform: rotate(-5deg);
+	-moz-transform: rotate(-5deg);
+	-ms-transform: rotate(-5deg);
+	-o-transform: rotate(-5deg);
+	transform: rotate(-5deg);
 }
 
 div#login-header {
@@ -170,7 +195,7 @@ div#login-box input[type=submit]#login-box-submit {
 	background: url(../img/login-btn-bg.png) repeat-x left center transparent;
 	width: 343px;
 	height: 46px;
-	font-family: bebas, Arial, sans-serif;
+	font-family: "Open Sans", Arial, sans-serif;
 	border: 0px;
 	font-size: 16px;
 	color: #ffffff;
@@ -187,7 +212,7 @@ div#login-box input[type=submit]#login-box-submit:hover {
 
 span.login-register {
 	color: #7b0000;
-	font-family: Tahoma, Helvetica, Arial, sans-serif;
+	font-family: "Open Sans", Helvetica, Arial, sans-serif;
 	display: block;
 	text-align: center;
 	font-size: 13px;
@@ -198,7 +223,7 @@ span.login-register {
 span.login-register a {
 	color: #7b0000;
 	text-decoration: underline;
-	font-family: Tahoma, Helvetica, Arial, sans-serif;
+	font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }
 span.login-register a:hover { color: #550000; text-decoration: none;}
 
@@ -231,11 +256,11 @@ span.login-register a:hover { color: #550000; text-decoration: none;}
 	color: #5e5e5e;
 }
 .alert-error {
-	color: #f33c3c;
+	color: #fff;
 	background: #f3d1d1;
 }
 .alert-error a {
-	color: #f33c3c;
+	color: #fff;
 }
 
 #rb_profiler {

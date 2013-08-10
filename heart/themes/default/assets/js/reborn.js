@@ -21,19 +21,19 @@ jQuery(function($) {
 		/* Alert Box Options */
 		$('#message-area').animate({opacity: 1.0},4000).fadeOut('slow');
 
-		$('#message-area > div > a.close').live('click', function(){
+		$('#message-area > div > a.close').on('click', function(){
 			$('#message-area').fadeOut('slow');
 			return false;
 		});
 
-		$('a.close').live('click', function(e){
+		$('span.msg-close').on('click', function(e){
 			e.preventDefault();
 			$(this).parent().fadeOut('slow');
 		});
 
 		/* Toggle Navigation for User Profile */
 		$("li.dashboard-dropdown").click(function(){
-			$("#dashboard-user-meta").toggleClass("open");
+			$("#header-right-panel").toggleClass("open");
 			$("li.dashboard-dropdown").toggleClass("active");
 
 			var m = $(this).parent();
@@ -41,11 +41,11 @@ jQuery(function($) {
 		}); // end of Toggle Navigation for User Profile
 
 		// Toggle Navigation Close
-		$(document).bind('click', function(e) {
+		$(document).on('click', function(e) {
 			// Lets hide the menu when the page is clicked anywhere but the menu.
 			var jQueryclicked = $(e.target);
 			if (! jQueryclicked.parents().hasClass("afb-dropdown")){
-				$("#dashboard-user-meta").removeClass("open");
+				$("#header-right-panel").removeClass("open");
 				if($("li.dashboard-dropdown").hasClass("active")) {
 					$("li.dashboard-dropdown").removeClass("active");
 				}
@@ -53,7 +53,7 @@ jQuery(function($) {
 		}); // end of Toggle Navigation Close
 
 		// Admin Menu has child function
-		$('.am_has_child > a:not(.am_has_child ul li a)').live('click', function(){
+		$('.am_has_child > a:not(.am_has_child ul li a)').on('click', function(){
 			var child = $(this).parent().find('ul'),
 				parentLi = $(this).parent();
 
@@ -62,7 +62,7 @@ jQuery(function($) {
 			return false;
 		}); // end of Admin Menu hass child
 
-		$('#dashboard-navigation > ul > li > ul > li > a').live('click', function(){
+		$('#dashboard-navigation > ul > li > ul > li > a').on('click', function(){
 			window.location.href = $(this).attr('href');
 		});
 
@@ -77,7 +77,7 @@ jQuery(function($) {
 
 		var inputVal, alphaNum, slug;
 
-		$(inputField).live('keyup blur', function(){
+		$(inputField).on('keyup blur', function(){
 			inputVal = $(inputField).val();
 
 			if ( ! inputVal.length ) return;
@@ -114,7 +114,7 @@ jQuery(function($) {
 	$(".buttons-wrapper .button").attr('disabled', 'disabled');
 
 	// Check all checkboxes in container table or grid
-	$(".check-all").live('click', function () {
+	$(".check-all").on('click', function () {
 		var checkAll		= $(this),
 			allCheckbox		= $(this).is('.grid-check-all')
 				? $(this).parents(".list-items").find(".grid input[type='checkbox']")
@@ -136,12 +136,12 @@ jQuery(function($) {
 	}); // end of Check all checkboxes
 
 	// Enable/Disable table action buttons
-	$('input[name="action_to[]"], .check-all').live('click', function () {
+	$('input[name="action_to[]"], .check-all').on('click', function () {
 
 		if( $('input[name="action_to[]"]:checked, .check-all:checked').length >= 1 ){
-			$(".button-wrapper .button").removeAttr('disabled');
+			$(".button-wrapper .btn").removeAttr('disabled');
 		} else {
-			$(".button-wrapper .button").attr('disabled', 'disabled');
+			$(".button-wrapper .btn").attr('disabled', 'disabled');
 		}
 	});
 
@@ -156,12 +156,32 @@ jQuery(function($) {
 
 	// For Tooltip Tipsy
 	$('.tipsy-tip').livequery(function() {
-		$(this).tipsy({gravity: 's'});
+		var gravityValue = $(this).data('gravity') ? $(this).data('gravity') : 's';
+		$(this).tipsy({gravity: gravityValue});
+	});
+
+	// Navigation Toggle
+	$('#nav-toggle').on('click', function(){
+		var target = $(this).data('target'),
+			targetElem = $(target);
+
+		if ($(targetElem).hasClass('toggle-hider')) {
+			$(targetElem).removeClass('toggle-hider');
+			$('#content-panel').removeClass('nav-hider-content');
+		} else {
+			$(targetElem).addClass('toggle-hider');
+			$('#content-panel').addClass('nav-hider-content');
+		}
 	});
 
 	// Start the initial function when document ready
 	$(document).ready(function() {
 		Reborn.init();
+
+		$(document).ajaxSend(function(e, xhr, options) {
+			var token = $("meta[name='csrf-token']").attr("content");
+			xhr.setRequestHeader("X-CSRF-Token", token);
+		});
 	});
 
 }); // end of jQuery
