@@ -53,7 +53,7 @@ $('.link-edit').colorbox({
 		$.colorbox.resize();
 
 		//Link Type Change Event in Edit
-		$('#type_select_edit').live('change', function(){
+		$('#type_select_edit').on('change', function(){
 
 			var boxe = $(this).val();
 
@@ -63,7 +63,8 @@ $('.link-edit').colorbox({
 
 		});
 
-		$('#edit-link-btn').click(function() {
+		$('#edit-link-btn').click(function(e) {
+			e.preventDefault();
 			var form = $('#link-edit-form');
 			$.ajax({
 				url: $(form).attr('action'),
