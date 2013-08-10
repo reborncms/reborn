@@ -4,6 +4,7 @@ namespace Setting\Controller\Admin;
 
 class SettingController extends \AdminController
 {
+
 	public function before()
 	{
 		$this->menu->activeParent('settings');
@@ -36,7 +37,7 @@ class SettingController extends \AdminController
 		$this->process($name);
 	}
 
-	public function save()
+	public function save($type)
 	{
 		if (!\Input::isPost()) {
 			return \Redirect::toAdmin('setting/system');
@@ -85,7 +86,7 @@ class SettingController extends \AdminController
 			\Flash::error($errors);
 		}
 
-		return \Redirect::to(\Input::server('HTTP_REFERER'));
+		return \Redirect::toAdmin('setting/'.$type);
 	}
 
 	protected function getCheckBox($fields = array())

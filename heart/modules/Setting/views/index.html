@@ -13,7 +13,7 @@
 </style>
 <h3 id="setting-title">{{ $title }}</h3>
 
-{{ Form::start(adminUrl('setting/save'), 'setting', false, array('class' => 'form')) }}
+{{ Form::start(adminUrl('setting/save/'.$type), 'setting', false, array('class' => 'form')) }}
 
 	{{ Form::hidden('type', $type) }}
 
