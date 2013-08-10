@@ -8,7 +8,13 @@ class {module}Info extends \Reborn\Module\AbstractInfo
 
 	protected $version = '{version}';
 
-	protected $description = '{description}';
+	protected $displayName = array(
+								'en' => '{name}'
+								);
+
+	protected $description = array(
+							'en' => '{description}'
+							);
 
 	protected $author = '{author}';
 

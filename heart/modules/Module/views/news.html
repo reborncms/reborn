@@ -34,14 +34,14 @@
 
 			<div class="mod-actions clearfix">
 
-				<a href="{{ adminUrl("module/install/$slug") }}" class="ico-btn btn-green tipsy-tip" title="{{ t('module::module.btn_label_install') }}">
-					<i class="icon-tick2 icon-white"></i>
+				<a href="{{ adminUrl("module/install/$slug") }}" class="btn btn-green tipsy-tip" title="{{ t('module::module.btn_label_install') }}">
+					<i class="icon-check icon-white"></i>
 				</a>
 
 				{{ ifnot($m['isCore']) }}
 				<a href="{{ adminUrl("module/delete/$slug") }}"
 				class="btn btn-red tipsy-tip" title="{{ t('module::module.btn_label_delete') }}">
-					<i class="icon-trash2 icon-white"></i>
+					<i class="icon-remove icon-white"></i>
 				</a>
 				{{ endif }}
 
