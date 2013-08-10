@@ -120,6 +120,24 @@
 		</table>
 	</div>
 
+	<div class="extension" style="margin-top:20px;">
+		<h2>Reborn CMS Requirement</h2>
+		<table>
+			<tr>
+				<td>PHP</td>
+				<td>>= 5.3.4</td>
+			</tr>
+			<tr>
+				<td>MySQL</td>
+				<td>>= 5</td>
+			</tr>
+			<tr>
+				<td>Server</td>
+				<td>Apache with Mod Rewrite</td>
+			</tr>
+		</table>
+	</div>
+
 	<div class="clear"></div>
 
 	<div class="btn-area">

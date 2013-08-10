@@ -172,6 +172,11 @@ class Installer
 			return array('status' => 'fail', 'msg' => 'Database Connection Error');
 		}
 
+		// Create Database if requirement
+		if ( ! empty($db['db_create'] )) {
+			mysql_query('CREATE DATABASE IF NOT EXISTS '.$db['db'], $mysqldb);
+		}
+
 		// Select DB
 		if( !mysql_select_db($db['db'], $mysqldb) ) {
 			return array('status' => 'fail', 'msg' => 'No Database select!');
@@ -193,8 +198,7 @@ class Installer
 		$sql = explode("--- db ---", $sql);
 
 		// Loop and query for each MySQL Command
-		foreach ($sql as $q)
-		{
+		foreach ($sql as $q) {
 			$mysql = rtrim( trim($q), "\n;");
 	        if(strlen($mysql) > 0) {
 	            mysql_query($mysql, $mysqldb);

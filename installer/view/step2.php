@@ -20,6 +20,10 @@
 			<input type="text" name="db" id="db">
 		</div>
 		<div class="row">
+			<label for="db_create">Create Database</label>
+			<input type="checkbox" name="db_create" id="db_create">
+		</div>
+		<div class="row">
 			<label for="hostname">MySQL Hostname</label>
 			<input type="text" name="hostname" id="hostname" value="localhost">
 		</div>
