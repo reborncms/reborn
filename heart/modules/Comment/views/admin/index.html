@@ -21,8 +21,8 @@
 	<a href="{{ adminUrl('comment/filter/pending') }}">{{ t('comment::comment.menu.pending') }}</a>
 	<a href="{{ adminUrl('comment/filter/spam') }}">{{ t('comment::comment.label.spam') }}</a>
 </div><!-- end of internal_menu -->
-<div id="note_msg" style="color:red; margin-bottom:10px;">{{ t('comment::comment.message.warning.muti-action-note') }}</div>
 {{ if(count($comments) > 0) }}
+<div id="note_msg" style="color:red; margin-bottom:10px;">{{ t('comment::comment.message.warning.muti-action-note') }}</div>
 <div id="data_table_wrapper">
 	{{ Form::start(adminUrl('comment/multiaction', 'multi_action_form')) }}
 	<table class="stripe">
