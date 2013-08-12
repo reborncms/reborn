@@ -8,7 +8,7 @@
 				<th width="27%">{{ t('blog::blog.title') }}</th>
 				<th width="15%">{{ t('blog::blog.category') }}</th>
 				<th width="15%">{{ t('blog::blog.author') }}</th>
-				<th width="15%">{{ t('blog::blog.created_at') }}</th>
+				<th width="15%">{{ t('global.created_at') }}</th>
 				<th width="15%">{{ t('label.actions') }}</th>
 			</tr>	
 		</thead>
@@ -38,7 +38,7 @@
 				</td>
 				<td>
 					{= $date = date_create($blog->created_at) =}
-					{{ date_format($date, 'Y-m-d h:i a') }}
+					{{ num(date_format($date, 'Y-m-d h:i a')) }}
 				</td>
 				<td>
 					<div class="icons-bar">

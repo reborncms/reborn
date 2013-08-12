@@ -362,9 +362,7 @@ class BlogController extends \AdminController
 			}
 		}
 		return \Redirect::to(adminUrl('blog'));
-	}
-
-	
+	}	
 
 	/**
 	 * Validate Form

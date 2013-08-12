@@ -60,7 +60,7 @@
                         <div id="category_select">
                             {{ Form::select('category_id', Blog\Lib\Helper::catList(), isset($blog->category_id) ? $blog->category_id : 1, array('class' => 'xx-large')) }}
                         </div>
-                        <a href="{{ adminUrl('/blog/category/create') }}" id="add-new-cat" title="Add new Category" class="tipsy-tip c-edit-box"><i class="icon-add icon-12"></i>{{ t('blog::blog.add_new_cat') }}</a>
+                        <a href="{{ adminUrl('/blog/category/create') }}" id="add-new-cat" title="Add new Category" class="tipsy-tip c-edit-box"><i class="icon-circleplus icon-12 icon-gray"></i>{{ t('blog::blog.add_new_cat') }}</a>
                     </div>
                 </div> <!-- end of div.r-container -->
 
@@ -155,13 +155,13 @@
                                 <img id='featured_image' src='{{ $blog->attachment }}'>
                             </div>
                             {{ Form::hidden('featured_id', $blog->attachment) }}
-                            <a href="{{ adminUrl('media/featureImage') }}" id="featured_add_btn" style="display:none"><i class="icon-add icon-12"></i>{{ t('blog::blog.add_featured_img') }}</a>
-                            <a href="javascript:void(0);" id="featured_remove_btn"><i class="icon-minus icon-12"></i>{{ t('blog::blog.remove_featured_img') }}</a>
+                            <a href="{{ adminUrl('media/featureImage') }}" id="featured_add_btn" style="display:none"><i class="icon-circleplus icon-12 icon-gray"></i>{{ t('blog::blog.add_featured_img') }}</a>
+                            <a href="javascript:void(0);" id="featured_remove_btn"><i class="icon-circleminus icon-12 icon-gray"></i>{{ t('blog::blog.remove_featured_img') }}</a>
                         {{ else }}
                             <div id="featured_preview"></div>
                             {{ Form::hidden('featured_id') }}
-                            <a href="{{ adminUrl('media/featureImage') }}" id="featured_add_btn"><i class="icon-add icon-12"></i>{{ t('blog::blog.add_featured_img') }}</a>
-                            <a href="javascript:void(0);" id="featured_remove_btn" style="display:none"><i class="icon-minus icon-12"></i>{{ t('blog::blog.remove_featured_img') }}</a>
+                            <a href="{{ adminUrl('media/featureImage') }}" id="featured_add_btn"><i class="icon-circleplus icon-12 icon-gray"></i>{{ t('blog::blog.add_featured_img') }}</a>
+                            <a href="javascript:void(0);" id="featured_remove_btn" style="display:none"><i class="icon-circleminus icon-12 icon-gray"></i>{{ t('blog::blog.remove_featured_img') }}</a>
                         {{ endif }}
                     </div>
 
