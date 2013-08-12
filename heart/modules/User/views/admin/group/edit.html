@@ -27,9 +27,9 @@
    		</div> <!-- end of form block -->
     {{ endif }}
 
-    <div class="form-button">
-		  {{ Form::submit('submit', 'Edit', array('id' => 'edit', 'class' => 'button button-green')) }}
-		  <a href="{{ \Uri::create("$adminUrl/user/group") }}" class="button button-red">Cancel</a>
+    <div class="form-btn">
+		  {{ Form::submit('submit', 'Edit', array('id' => 'edit', 'class' => 'btn btn-green')) }}
+		  <a href="{{ \Uri::create("$adminUrl/user/group") }}" class="btn">Cancel</a>
     </div>
 
 	{{ Form::end() }}

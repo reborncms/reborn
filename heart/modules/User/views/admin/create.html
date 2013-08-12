@@ -119,9 +119,9 @@
         </div> <!-- end of form-right-block -->
       </div> <!-- end of form block -->
 
-		<div class="block form-button">
-		{{ Form::submit('submit', 'Create', array('id' => 'edit', 'class' => 'button button-green')) }}
-		<a href="{{ \Uri::create("$adminUrl/user/") }}" class="button button-red">Cancel</a>
+		<div>
+		{{ Form::submit('submit', 'Create', array('id' => 'edit', 'class' => 'btn btn-green')) }}
+		<a href="{{ \Uri::create("$adminUrl/user/") }}" class="btn">Cancel</a>
 		</div>	
 
 	{{ Form::end() }}

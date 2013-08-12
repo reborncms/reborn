@@ -19,12 +19,13 @@
 				<td>{{ $u->group }}</td>
 				<td><a href="mailto:{{ $u->email }}">{{ $u->email }}</a></td>
 				<td>
-					<a href="{{ \Uri::create("$adminUrl/user/edit/") }}{{ $u->id }}" class="ico-button button-green tipsy-tip" original-title="Edit"><i class="icon-edit icon-white"></i></a>
+				<div class="icons-bar">
+					<a href="{{ \Uri::create("$adminUrl/user/edit/") }}{{ $u->id }}" class="ico-btn btn-green tipsy-tip" original-title="Edit"><i class="icon-edit"></i></a>
 					
 					{{ if (($currentUser->id != $u->id) AND ($u->id != 1)) }}
-					<a href="{{ \Uri::create("$adminUrl/user/delete/") }}{{ $u->id }}" class="ico-button button-red tipsy-tip confirm_delete" original-title="Delete"><i class="icon-trash2 icon-white"></i></a>
+					<a href="{{ \Uri::create("$adminUrl/user/delete/") }}{{ $u->id }}" class="ico-btn btn-red tipsy-tip confirm_delete" original-title="Delete"><i class="icon-remove"></i></a>
 					{{ endif }}
-					
+				</div>
 				</td>
 			</tr>
 	{{ endloop }}
