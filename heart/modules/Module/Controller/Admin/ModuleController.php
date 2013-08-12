@@ -121,7 +121,7 @@ class ModuleController extends \AdminController
 			}
 
 			if (\Dir::is($mod['path'])) {
-				if (\Dir::delete($mod['path'])) {
+				if (@\Dir::delete($mod['path'])) {
 					$msg = sprintf(t('module::module.delete_success'), $name);
 					\Flash::success($msg);
 				} else {
