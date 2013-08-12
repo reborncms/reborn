@@ -1,6 +1,6 @@
 {{ Form::start(adminUrl('contact/send-mail'),'',true,array('class'=>'form')) }}
 		
-		<div class="form-block first-block">
+		<div class="form-block first-block" style="margin-top:8px;">
 			{{ Form::label(t('label.email').'<span class="required"></span>', 'email') }}
 			<div class="form-right-block">
 				{{ Form::input('email', isset($mail->email) ? $mail->email : '', 'text', array('placeholder' => 'email@example.com')) }}

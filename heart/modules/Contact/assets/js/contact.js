@@ -6,7 +6,7 @@
 		if(document.getElementById('email')) {
 			$('#email').tagsInput({
 				height:'auto',
-				width:'50%',
+				width:'29.5%',
 				defaultText:'Add Email',
 				placeholderColor:'#CBCBCB'
 			});

@@ -8,8 +8,7 @@
 }
 #email_tagsinput
 {
-    border: 1px solid #DBDBDB;
-    border-radius: 4px 4px 4px 4px;
+    border: 1px solid #A4BECC;
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.075) inset;
     color: #696969;
     display: inline-block;
@@ -18,7 +17,7 @@
     font-weight: normal;
     line-height: 18px;
     margin: 0;
-    padding: 10px 8px 5px;
+    padding: 8px 8px 3px;
 }
 .msg 
 {
