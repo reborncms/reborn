@@ -16,12 +16,6 @@ class Widget extends \Reborn\Widget\AbstractWidget
 			'author' => 'Reborn CMS Development Team'
 		);
 
-	public function save() {}
-
-	public function update() {}
-
-	public function delete() {}
-
 	public function options() 
 	{
 		return array(
