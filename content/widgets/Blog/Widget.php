@@ -12,10 +12,10 @@ class Widget extends \Reborn\Widget\AbstractWidget
 					'title' => 'Blog Post',
 					'description' => 'Latest Blog Posts which is posted last days',
 				),
-				/*'archive' 	=> array(
+				'archive' 	=> array(
 					'title' =>'Blog Archive',
 					'description' => 'Blog by Year and month',
-				),*/
+				),
 				'category' 	=> array(
 					'title' => 'Blog Category',
 					'description' => 'Blog Category List',
@@ -159,6 +159,18 @@ class Widget extends \Reborn\Widget\AbstractWidget
 
 		$data['title'] = $this->get('title', 'Blog Archives');
 		$data['list'] = array();
+
+		$years = \Blog\Model\Blog::orderBy('created_at','DESC')
+									->select(\DB::raw('YEAR(created_at) as year, MONTH(created_at) as month, count(id) as post_count'))
+									->groupBy(\DB::raw('YEAR(created_at), MONTH(created_at)'))
+									->get();
+		$c = 0;
+		foreach ($years as $yr) {
+			$data['list'][$c]['yr'] = $yr['year'];
+			$data['list'][$c]['month'] = $yr['month'];
+			$data['list'][$c]['post_count'] = $yr['post_count'];
+			$c++;
+		}
 
 		return $this->show($data, 'archive');
 	}
