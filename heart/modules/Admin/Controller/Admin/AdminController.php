@@ -39,34 +39,29 @@ class AdminController extends \AdminController
 
 		if (\Input::isPost())
 		{
-			if (\Security::CSRFvalid('rbam')) {
-				if ($v->valid()) {
-					$login = array(
-				        'email'    => \Input::get('email'),
-				        'password' => \Input::get('password')
-				    );
+			if ($v->valid()) {
+				$login = array(
+			        'email'    => \Input::get('email'),
+			        'password' => \Input::get('password')
+			    );
 
-					try {
-						if ($user = Sentry::authenticate($login)) {
-					    	$username = $user->first_name.' '.$user->last_name;
-					        \Flash::success(sprintf(t('global.welcome_ap'), $username));
-					        return \Redirect::toAdmin();
-					    } else {
-					    	\Flash::error(t('global.login_fail'));
-							return \Redirect::toAdmin('login');
-					    }
-					} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
-						\Flash::error(t('global.login_fail'));
+				try {
+					if ($user = Sentry::authenticate($login)) {
+				    	$username = $user->first_name.' '.$user->last_name;
+				        \Flash::success(sprintf(t('global.welcome_ap'), $username));
+				        return \Redirect::toAdmin();
+				    } else {
+				    	\Flash::error(t('global.login_fail'));
 						return \Redirect::toAdmin('login');
-					}
-
-				} else {
-					$err = $v->getErrors();
-					\Flash::error($msg);
+				    }
+				} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
+					\Flash::error(t('global.login_fail'));
 					return \Redirect::toAdmin('login');
 				}
+
 			} else {
-				\Flash::error(t('global.csrf_fail'));
+				$err = $v->getErrors();
+				\Flash::error($msg);
 				return \Redirect::toAdmin('login');
 			}
 		}

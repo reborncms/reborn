@@ -1,9 +1,30 @@
 <style type="text/css">
 	#setting-title {
-		padding-bottom: 10px;
+		padding: 10px 0;
+		margin-bottom: 10px;
+	}
+	#setting {
+		border: 1px solid #EFEFEF;
+	}
+	.form .even {
+		background: #F4F4F4;
+	}
+	.form .form-block {
+		padding: 10px;
+		margin-bottom: 0;
+	}
+	.form-block label {
+		width: 25%;
+	}
+	.form .form-right-block {
+		margin-left: 25%;
 	}
 	.form .form-right-block label {
 		margin-right: 15px;
+	}
+	.form-right-block p {
+		color: #878787;
+		font-size: 0.8em;
 	}
 	.form input[type="radio"], .form input[type="checkbox"] {
 		float: none;
@@ -19,7 +40,9 @@
 
 	{{ loop($settings as $set) }}
 
-	<div class="form-block">
+	{= $class = cycle('odd', 'even') =}
+
+	<div class="form-block {{ $class }}">
 		<label for="{{ $set['slug'] }}">{{ $set['name'] }}
 
 			{{ if($set['require']) }}

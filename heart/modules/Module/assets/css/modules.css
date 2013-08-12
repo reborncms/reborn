@@ -68,6 +68,9 @@
 .mod-body-right p {
 	font-size: 11px;
 }
+.mod-body-right 1 {
+	color: #ffffff;
+}
 .mod-desc, .mod-author, .mod-url {
 	padding: 5px;
 }
