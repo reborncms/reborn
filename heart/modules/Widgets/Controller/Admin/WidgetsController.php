@@ -65,9 +65,9 @@ class WidgetsController extends \AdminController
 			$widget->area = \Input::get('area');
 			$save = $widget->save();
 			if ($save) {
-				return json_encode(array('status' => 'ok', 'id' => $widget->id));
+				return $this->returnJson(array('status' => 'ok', 'id' => $widget->id));
 			} else {
-				return json_encode(array('status' => 'fail'));
+				return $this->returnJson(array('status' => 'fail'));
 			}
 		}
 	}
@@ -85,9 +85,9 @@ class WidgetsController extends \AdminController
 				}
 			}
 			if (count($save_items) > 0) {
-				return json_encode(array('status' => 'ok', 'area' => \Input::get('area')));
+				return $this->returnJson(array('status' => 'ok', 'area' => \Input::get('area')));
 			} else {
-				return json_encode(array('status' => 'fail'));
+				return $this->returnJson(array('status' => 'fail'));
 			}
 		}
 	}
@@ -97,7 +97,7 @@ class WidgetsController extends \AdminController
 		if ($id != null) {
 			if ($widget = Widgets::find($id)) {
 				$widget->delete();
-				return json_encode(array('status' => 'ok'));
+				return $this->returnJson(array('status' => 'ok'));
 			}
 		}
 	}
@@ -113,11 +113,11 @@ class WidgetsController extends \AdminController
 
 		if ($options != null) {
 
-			return json_encode(array('status' => 'ok'));
+			return $this->returnJson(array('status' => 'ok'));
 
 		} else {
 
-			return json_encode(array('status' => 'fail'));
+			return $this->returnJson(array('status' => 'fail'));
 
 		}
 	}
@@ -128,9 +128,9 @@ class WidgetsController extends \AdminController
 			$widget->area = \Input::get('area');
 			$save = $widget->save();
 			if ($save) {
-				return json_encode(array('status' => 'ok', 'id' => $widget->id));
+				return $this->returnJson(array('status' => 'ok', 'id' => $widget->id));
 			} else {
-				return json_encode(array('status' => 'fail'));
+				return $this->returnJson(array('status' => 'fail'));
 			}
 		}
 	}
@@ -148,9 +148,9 @@ class WidgetsController extends \AdminController
 		$save = $widget->save();
 
 		if ($save) {
-			return json_encode(array('status' => 'ok'));
+			return $this->returnJson(array('status' => 'ok'));
 		} else {
-			return json_encode(array('status' => 'fail'));
+			return $this->returnJson(array('status' => 'fail'));
 		}
 
 	}

@@ -29,7 +29,7 @@ jQuery(function() {
 			},
 			success: function(data) {
 
-				var obj = jQuery.parseJSON(data);
+				var obj = data;
 
 				if (obj.status == 'ok') {
 
@@ -51,7 +51,7 @@ jQuery(function() {
 							name: widget_name,
 						},
 						success: function(data) {
-							var dt = jQuery.parseJSON(data);
+							var dt = data;
 							if (dt.status == 'ok') {
 								var setting_btn = '<a href="' + SITEURL + ADMIN + '/widget/settings/' + widget_name + '/' + obj.id + '" class="widget_settings_btn"><i class="icon-setting icon-gray icon-12 widget-ico"></i></a>';
 								widget.find('a.widget_remove_btn').after(setting_btn);
@@ -102,7 +102,7 @@ jQuery(function() {
 				area: area,
 			},
 			success: function(data) {
-				var obj = jQuery.parseJSON(data);
+				var obj = data;
 
 				if (obj.status == 'ok') {
 
@@ -176,7 +176,7 @@ jQuery(function() {
 					order: sorted,
 				},
 				success: function(data) {
-					var obj = jQuery.parseJSON(data);
+					var obj = data;
 					if (obj.status == 'ok') {
 						$('#msg_area').html("<span class='show-alert-success'>Widgets sorted in " + obj.area + " area.</span>");
 					} else {
@@ -213,7 +213,7 @@ jQuery(function() {
 					var data = form.serialize();
 
 					$.post(url, data, function(data) {
-						var dt = jQuery.parseJSON(data);
+						var dt = data;
 						if (dt.status == 'ok') {
 
 							$.colorbox.close();
