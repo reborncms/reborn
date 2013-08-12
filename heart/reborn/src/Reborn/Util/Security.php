@@ -36,36 +36,41 @@ class Security
     /**
      * CSRF hidden field
      *
+     * @param string $key
+     * @param boolean $refresh Make refresh the token key
      * @return string
      **/
-    public static function CSRField($key = null)
+    public static function CSRField($key = null, $refresh = false)
     {
         if (is_null($key)) {
             $csrf_key = Config::get('app.security.csrf_key');
         } else {
             $csrf_key = $key.'_'.Config::get('app.security.csrf_key');
         }
-        $token =  self::CSRFtoken($key);
+        $token =  self::CSRFtoken($key, $refresh);
         return Form::hidden($csrf_key, $token);
     }
 
     /**
-     * undocumented function
+     * Return CSFR Key Only
      *
-     * @return void
-     * @author
+     * @param string $key
+     * @param boolean $refresh Make refresh the token key
+     * @return string
      **/
-    public static function CSRFKeyOnly($key = null)
+    public static function CSRFKeyOnly($key = null, $refresh = false)
     {
-        return static::CSRFtoken($key);
+        return static::CSRFtoken($key, $refresh);
     }
 
     /**
      * Generate CSRFToken
      *
+     * @param string $key
+     * @param boolean $refresh Make refresh the token key
      * @return string
      **/
-    protected static function CSRFtoken($key = null)
+    protected static function CSRFtoken($key = null, $refresh = false)
     {
         if (is_null($key)) {
             $csrf_key = Config::get('app.security.csrf_key');
@@ -73,19 +78,13 @@ class Security
             $csrf_key = $key.'_'.Config::get('app.security.csrf_key');
         }
 
-        $csrf_expire = Config::get('app.security.csrf_expiration');
         $session = Registry::get('app')->session;
-        $expiretime = time() - $session->getMetadataBag()->getCreated();
-        if ($session->has($csrf_key) && ($expiretime < $csrf_expire)) {
-            return $session->get($csrf_key);
+
+        if ($refresh) {
+            static::refreshToken($session, $csrf_key);
         }
-        else {
-            $session->remove($csrf_key);
-            $encypt_method = Config::get('app.security.token_encrypt');
-            $token = $encypt_method(uniqid(rand(), true));
-            $session->set($csrf_key,$token);
-            return $token;
-        }
+
+        return $session->get($csrf_key);
     }
 
     /**
@@ -115,5 +114,20 @@ class Security
         } else {
             return false;
         }
+    }
+
+    /**
+     * Refresh the CSRF Token
+     *
+     * @param Symfony\Component\HttpFoundation\Session\Session $session
+     * @param string $key CSRF-Key
+     * @return void
+     **/
+    protected static function refreshToken($session, $key)
+    {
+        $session->remove($key);
+        $encypt_method = Config::get('app.security.token_encrypt');
+        $token = $encypt_method(uniqid(rand(), true));
+        $session->set($key,$token);
     }
 }

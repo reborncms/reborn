@@ -379,7 +379,12 @@ class Application extends \Pimple
      **/
     protected function injectCSRFToken($response)
     {
-        $token = Security::CSRField();
+        // Change CSRF key if request is not ajax.
+        if (!$this['request']->isAjax()) {
+            $token = Security::CSRField(null, true);
+        } else {
+            $token = Security::CSRField();
+        }
 
         preg_match('/(value\s*=\s*"(.*)")/', $token, $m);
 

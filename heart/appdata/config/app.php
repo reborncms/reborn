@@ -62,7 +62,6 @@ return array(
 	 */
 	'security' => array(
 		'csrf_key' => 'csrf_token_key',
-		'csrf_expiration' => 10000,
 		'token_encrypt' => 'md5',
 	),
 
