@@ -12,7 +12,7 @@ use ArrayAccess;
  * @package Reborn\Presenter
  * @author Nyan Lynn Htut
  **/
-class Collection implements Iterator, ArrayAccess
+class Collection implements Iterator, ArrayAccess, Countable
 {
 
     /**
@@ -53,6 +53,11 @@ class Collection implements Iterator, ArrayAccess
             }
         });
 	}
+
+    public function count()
+    {
+        return count($this->items);
+    }
 
 	public function offsetExists($key)
     {
@@ -112,9 +117,9 @@ class Collection implements Iterator, ArrayAccess
                 }, $this->items);
     }
 
-    public function toJson()
+    public function toJson($options = 0)
     {
-        return json_encode($this->toArray());
+        return json_encode($this->toArray(), $options);
     }
 
 } // END class Collection implements Iterator, ArrayAccess, Countable

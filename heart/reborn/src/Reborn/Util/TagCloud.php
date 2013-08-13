@@ -56,6 +56,7 @@ class TagCloud
 	/**
 	 * Order for tag display.
 	 * Default is random. Tags will display radonmize.
+	 * (random, name)
 	 *
 	 * @var string
 	 **/

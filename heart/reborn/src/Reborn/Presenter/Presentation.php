@@ -79,11 +79,12 @@ class Presentation
 	/**
 	 * Convert the model from this object to Json String
 	 *
+	 * @param integer $options
 	 * @return string
 	 **/
-	public function toJson()
+	public function toJson($options = 0)
 	{
-		return json_encode($this->toArray());
+		return json_encode($this->toArray(), $options);
 	}
 
 	/**
