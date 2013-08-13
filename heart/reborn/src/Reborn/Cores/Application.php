@@ -398,9 +398,13 @@ class Application extends \Pimple
 
         $pattern = '/(<(form|FORM)[^>]*(method|METHOD)="(post|POST)"[^>]*>)/';
 
-        if (preg_match($pattern, $body, $match)) {
-            if (false == strpos($match[0], 'nocsrf')) {
-                $body = str_replace($match[0], $match[0]."\n\t" .$token, $body);
+        preg_match_all($pattern, $body, $matches, PREG_SET_ORDER);
+        //dump($matches, true);
+        if (is_array($matches)) {
+            foreach ($matches as $match) {
+                if (false == strpos($match[0], 'nocsrf')) {
+                    $body = str_replace($match[0], $match[0]."\n\t" .$token, $body);
+                }
             }
         }
 
