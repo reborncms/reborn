@@ -392,12 +392,19 @@ class Application extends \Pimple
 
         $body = $response->getContent();
 
+        preg_match('/(<\/(head|HEAD)>)/', $body, $m);
+
         $body = preg_replace('/(<\/(head|HEAD)>)/', $meta."\n".'$0', $body);
 
-        $output = preg_replace('/(<(form|FORM)[^>]*(method|METHOD)="(post|POST)"[^>]*>)/',
-                         '$0'. "\n\t" .$token, $body);
+        $pattern = '/(<(form|FORM)[^>]*(method|METHOD)="(post|POST)"[^>]*>)/';
 
-        $response->setContent($output);
+        if (preg_match($pattern, $body, $match)) {
+            if (false == strpos($match[0], 'nocsrf')) {
+                $body = str_replace($match[0], $match[0]."\n\t" .$token, $body);
+            }
+        }
+
+        $response->setContent($body);
 
         return $response;
     }

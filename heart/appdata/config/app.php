@@ -62,7 +62,8 @@ return array(
 	 */
 	'security' => array(
 		'csrf_key' => 'csrf_token_key',
-		'token_encrypt' => 'md5',
+		// Supprot Method md5, sha1, random (Reborn\Util\Str::random with md5)
+		'token_encrypt' => 'random'
 	),
 
 	/**

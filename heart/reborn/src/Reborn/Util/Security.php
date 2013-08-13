@@ -127,7 +127,19 @@ class Security
     {
         $session->remove($key);
         $encypt_method = Config::get('app.security.token_encrypt');
-        $token = $encypt_method(uniqid(rand(), true));
+
+        if ( ! in_array($encypt_method, array('md5', 'sha1', 'random')) ) {
+            $encypt_method = 'hash';
+        }
+
+        if ('random' == $encypt_method) {
+            $token = md5(\Reborn\Util\Str::random(15));
+            $uq = explode('.', uniqid(rand(), true));
+            $token = substr($uq[0].$token.$uq[1], 5, 48);
+        } else {
+            $token = $encypt_method(uniqid(rand(), true));
+        }
+
         $session->set($key,$token);
     }
 }
