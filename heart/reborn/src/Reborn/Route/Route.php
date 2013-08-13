@@ -149,6 +149,30 @@ class Route
     }
 
     /**
+     * REST Resource for Controller.
+     * Suport lists -
+     *  - GET       {resources}             Controller::index()
+     *  - GET       {resources}/{id}        Controller::view($id)
+     *  - GET       {respurces}/new         Controller::add()
+     *  - POST      {resources}             Controller::create()
+     *  - GET       {resources}/{id}/edit   Controller::edit($id)
+     *  - PUT       {resources}/{id}        Controller::update($id)
+     *  - DELETE    {resources}/{id}        Controller::delete($id)
+     *
+     * @return void
+     **/
+    public static function resources($resources, $controller)
+    {
+        static::get($resources, $resources, $controller.'::index');
+        static::get($resources.'_add', $resources.'/add', $controller.'::add');
+        static::post($resources.'_create', $resources, $controller.'::create');
+        static::get($resources.'_edit', $resources.'/{:alnum}/edit', $controller.'::edit');
+        static::put($resources.'_update', $resources.'/{:alnum}', $controller.'::update');
+        static::delete($resources.'_delete', $resources.'/{:alnum}', $controller.'::delete');
+        static::get($resources.'_view', $resources.'/{:alnum}', $controller.'::view');
+    }
+
+    /**
      * Get the all route (route collection)
      *
      * @return array
