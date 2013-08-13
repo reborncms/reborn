@@ -71,6 +71,7 @@ class Table
 	 * Action buttons type name
 	 * Support Type name are
 	 *  - icon [Icon only] eg: <a href="#"><i class="icon-class"></i></a>
+	 *  - icons-bar [Icons group with div.icons-bar wrapping]
 	 *  - icon-text [Icon and Text] eg: <a href="#"><i class="icon-class"></i>TextLabel</a>
 	 *  - text-icon [Text and Icon] eg: <a href="#">TextLabel<i class="icon-class"></i></a>
 	 *  - text [Text Only] eg: <a href="#">TextLabel</a>
@@ -146,7 +147,7 @@ class Table
 	 **/
 	public function setObject($obj)
 	{
-		if (is_object($obj)) {
+		if (is_object($obj) || is_array($obj)) {
 			$this->object = $obj;
 		}
 
@@ -187,7 +188,7 @@ class Table
 	 **/
 	public function setBtnType($type)
 	{
-		if (in_array($type, array('text', 'icon-text', 'text-icon', 'icon'))) {
+		if (in_array($type, array('text', 'icon-text', 'text-icon', 'icon', 'icons-bar'))) {
 			$this->buttonType = $type;
 		}
 
@@ -559,6 +560,11 @@ class Table
 	protected function renderActionsColumn($obj)
 	{
 		$row = "\n\t\t\t<td class=\"td-actions\">";
+
+		if('icons-bar' == $this->buttonType) {
+			$row .= '<div class="icons-bar">';
+		}
+
 		foreach ($this->actions as $action) {
 
 			if (!is_null($obj->{$action['key']})) {
@@ -566,6 +572,10 @@ class Table
 			}
 
 			$row .= $this->getButton($action);
+		}
+
+		if('icons-bar' == $this->buttonType) {
+			$row .= '</div>';
 		}
 
 		$row .= "\n\t\t\t</td>";
