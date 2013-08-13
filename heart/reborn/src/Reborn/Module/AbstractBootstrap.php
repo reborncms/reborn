@@ -5,8 +5,17 @@ namespace Reborn\Module;
 abstract class AbstractBootstrap
 {
 
-	public function __construct()
+	/**
+	 * Variable for Application (DIC) instance
+	 *
+	 * @var Reborn\Cores\Application
+	 **/
+	protected $app;
+
+	public function __construct(\Reborn\Cores\Application $app)
 	{
+		$this->app = $app;
+
 		return $this;
 	}
 

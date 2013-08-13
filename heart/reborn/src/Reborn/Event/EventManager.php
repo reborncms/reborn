@@ -63,7 +63,7 @@ class EventManager
             	require $bootstrap;
 
             	$class = $name.'\Bootstrap';
-                $class = new $class();
+                $class = new $class(\Registry::get('app'));
 
                 $class->eventRegister();
             }

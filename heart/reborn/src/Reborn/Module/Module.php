@@ -526,7 +526,7 @@ class Module
                 require $bootFile;
             }
 
-            $class = new $classname();
+            $class = new $classname(\Registry::get('app'));
 
             if ($class instanceof AbstractBootstrap) {
                 return $class;
