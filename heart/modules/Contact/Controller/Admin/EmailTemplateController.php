@@ -256,7 +256,7 @@ class EmailTemplateController extends \AdminController
 	 * @package Contact\EmailTemplate
 	 * @author RebornCMS Development Team
 	 **/
-	public function validate()
+	protected function validate()
 	{
 		$rule = array(
 			        'name'  => 'required',

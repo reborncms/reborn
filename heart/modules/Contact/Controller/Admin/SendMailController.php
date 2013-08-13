@@ -122,7 +122,7 @@ class SendMailController extends \AdminController
 	 * @package Contact\Controller
 	 * @author RebornCMS Development Team
 	 **/
-	public function validate()
+	protected function validate()
 	{
 		$rule = array(
 			        'email'  => 'required',
