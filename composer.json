@@ -29,7 +29,8 @@
     },
     "autoload": {
         "psr-0": {
-            "Reborn": "heart/reborn/src"
+            "Reborn": "heart/reborn/src",
+            "": "content/vendor"
         },
         "classmap": [
             "content/vendor"
