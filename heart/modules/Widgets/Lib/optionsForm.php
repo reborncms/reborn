@@ -56,6 +56,10 @@ class optionsForm {
 
 				$form .= '</div>'; // end of form-field-wrapper
 
+				if (isset($values['info'])) {
+					$form .= '<span class="option_info">'.$values['info'].'</span>';
+				}
+
 			}
 
 			$form .= '<div class="option-form-action">';

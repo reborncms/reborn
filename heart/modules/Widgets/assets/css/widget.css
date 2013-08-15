@@ -133,3 +133,8 @@
 .option-form-wrapper label {
 	width:100%;
 }
+
+.option_info {
+	color: #BBB7B7;
+	font-size: 0.9em;
+}
