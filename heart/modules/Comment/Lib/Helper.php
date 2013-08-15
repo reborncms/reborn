@@ -71,6 +71,18 @@ class Helper
     	return $title;
 	}
 
+	public static function userDeleted($user)
+	{
+		$name = $user->first_name.' '.$user->last_name;
+		$email = $user->email;
+		$cmt_update = Comment::where('user_id', $user->id)->update(array('user_id' => null, 'name' => $name, 'email' => $email));
+		if ($cmt_update) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public static function getLatestComments($count) {
 
 		$comments = Comment::where('status', '!=', 'spam')

@@ -89,7 +89,7 @@ class CommentController extends \PublicController
 	{
 		if (\Input::isPost()) {
 			$referer = \Input::server('HTTP_REFERER');
-			if (\Security::CSRFvalid('comment') and \Input::get('d0ntF1ll') == '') {
+			if (\Input::get('d0ntF1ll') == '') {
 				$val = self::validate();
 				if ($val->valid()) {
 					$comment = new Comment;

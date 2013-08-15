@@ -4,6 +4,8 @@ namespace Blog\Lib;
 
 use Blog\Model\BlogCategory;
 
+use Blog\Model\Blog;
+
 class Helper {
 
 	protected static $level = 1;
@@ -26,6 +28,15 @@ class Helper {
 		$bcs .= '</div>';
 		$bcs .= '</div>';
 		return $bcs;
+	}
+
+	public static function changeAuthor($author_id){
+		$blogs = Blog::where('author_id', $author_id)->update(array('author_id' => 1));
+		if ($blogs) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public static function generateChildren($children)

@@ -34,6 +34,12 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
         return $mod_toolbar;
     }
 
-    public function eventRegister() {}
+    public function eventRegister() {
+        \Module::load('Pages');
+
+        \Event::on('user_deleted', function($user){
+            return \Pages\Lib\Helper::changeAuthor($user->id);
+        });
+    }
 
 }

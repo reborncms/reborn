@@ -56,6 +56,13 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		return $mod_toolbar;
 	}
 
-	public function eventRegister() {}
+	public function eventRegister() 
+	{
+		\Module::load('Blog');
+
+		\Event::on('user_deleted', function($param){
+			return \Blog\Lib\Helper::changeAuthor($param->id);
+		});
+	}
 
 }

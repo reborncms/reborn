@@ -40,6 +40,17 @@ class Helper
         return $ps;
     }
 
+    public static function changeAuthor($author_id)
+    {
+        $page_update = Pages::where('author_id', $author_id)->update(array('author_id' => 1));
+
+        if ($page_update) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static function generate_children($children)
     {
         $gc = '';

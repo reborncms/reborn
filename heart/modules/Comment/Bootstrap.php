@@ -49,12 +49,10 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 	
 	public function eventRegister()
 	{
-		// Sampler
-		/*\Event::add('blog.post_create', function($title, $author){
+		\Module::load('Comment');
 
-			$msg = "Blog post ".$title.' is created by '.$author.' at '.date('d-m-Y H:i');
-			// Blog post created record is save at log file.
-			\Log::info($msg);
-		});*/
+		\Event::on('user_deleted', function($user){
+			return \Comment\Lib\Helper::userDeleted($user);
+		});
 	}
 }
