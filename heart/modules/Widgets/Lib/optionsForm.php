@@ -34,7 +34,7 @@ class optionsForm {
 
 				$type = $values['type'];
 
-				$value = ($options_data[$name]) ? $options_data[$name] : '';
+				$value = (isset($options_data[$name])) ? $options_data[$name] : '';
 
 				switch ($type) {
 					case 'text':

@@ -139,6 +139,12 @@ class WidgetsController extends \AdminController
 	{
 		$form_data = \Input::get('*');
 
+		foreach ($form_data as $key => $value) {
+			if (empty($value)) {
+				unset($form_data[$key]);
+			}
+		}
+
 		unset($form_data['widget_id']);
 
 		$widget = Widgets::find(\Input::get('widget_id'));

@@ -113,8 +113,12 @@
 	margin-bottom: 5px;
 }
 
-.option-form-wrapper input[type=text], .option-form-wrapper select, .option-form-wrapper textarea {
+.option-form-wrapper input[type=text], .option-form-wrapper textarea {
 	width:90%;
+}
+
+.option-form-wrapper select {
+	width:95%;
 }
 
 .option-form-action {
@@ -127,5 +131,5 @@
 }
 
 .option-form-wrapper label {
-	width:auto;
+	width:100%;
 }
