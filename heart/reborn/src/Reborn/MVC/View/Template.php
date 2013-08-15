@@ -599,7 +599,7 @@ class Template
      **/
     protected function getScriptString($place)
     {
-        $scripts = isset($this->scripts[$place]) ?: array();
+        $scripts = isset($this->scripts[$place]) ? $this->scripts[$place] : array();
 
         // Call Event
         $result = \Event::call('reborn.template.script.render.'.$place, array($scripts));
@@ -652,7 +652,7 @@ class Template
      **/
     protected function getStyleString($place)
     {
-        $styles = isset($this->styles[$place]) ?: array();
+        $styles = isset($this->styles[$place]) ? $this->styles[$place] : array();
 
         // Call Event
         $result = \Event::call('reborn.template.style.render.'.$place, array($styles));
