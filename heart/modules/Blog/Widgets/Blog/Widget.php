@@ -58,9 +58,13 @@ class Widget extends \Reborn\Widget\AbstractWidget
 					'label'		=> 'Yearly or Monthly',
 					'type'		=> 'select',
 					'options'	=> array(
-						'yearly'	=> 'Yearly',
 						'monthly'	=> 'Monthly',
+						'yearly'	=> 'Yearly',
 					),
+				),
+				'limit' 	=> array(
+					'label' 	=> 'Number of Posts',
+					'type'		=> 'text',
 				),
 			),
 
@@ -70,14 +74,51 @@ class Widget extends \Reborn\Widget\AbstractWidget
 					'type'		=> 'text',
 					'info'		=> 'Leave it blank if you don\'t want to show your widget title',
 				),
-				/*'show_type' 	=> array(
-					'label'		=> 'Show Type',
+			),
+
+			'tagCloud' => array(
+				'title'	=> array(
+					'label'		=> 'Title',
+					'type'		=> 'text',
+				),
+				'maxsize'		=> array(
+					'label'		=> 'Maximum Font Size',
+					'type'		=> 'text',
+				),
+				'minsize'		=> array(
+					'label'		=> 'Minimum Font Size',
+					'type'		=> 'text',
+				),
+				'unit'			=> array(
+					'label'		=> 'Font Unit',
 					'type'		=> 'select',
 					'options'	=> array(
-						'cat'	=> 'Category',
-						'post'	=> 'Blog Posts',
-					)
-				),*/
+						'pt'	=> 'pt',
+						'px'	=> 'px',
+						'%'		=> '%',
+						'em'	=> 'em'
+					),
+				),
+				'class_prefix'	=> array(
+					'label'		=> 'Class Prefix',
+					'type'		=> 'text',
+				),
+				'order'			=> array(
+					'label'		=> 'Order',
+					'type'		=> 'select',
+					'options'	=> array(
+						'random'=> 'Random',
+						'name'	=> 'By Name'	
+					),
+				),
+				'order_dir'		=> array(
+					'label'		=> 'Order Direction',
+					'type'		=> 'select',
+					'options'	=> array(
+						'asc'	=> 'Asending',
+						'desc'	=> 'Descending'
+					),
+				),
 			),
 		);
 	}
@@ -160,14 +201,27 @@ class Widget extends \Reborn\Widget\AbstractWidget
 		$data['title'] = $this->get('title', 'Blog Archives');
 		$data['list'] = array();
 
+		$data['s_type'] = $this->get('show_type', 'monthly');
+
+		if ($data['s_type'] == 'monthly') {
+			$select_q = 'YEAR(created_at) as year, MONTH(created_at) as month, count(id) as post_count';
+			$gp_q = 'YEAR(created_at), MONTH(created_at)';
+		} else {
+			$select_q = 'YEAR(created_at) as year, count(id) as post_count';
+			$gp_q = 'YEAR(created_at)';
+		};
+
 		$years = \Blog\Model\Blog::orderBy('created_at','DESC')
-									->select(\DB::raw('YEAR(created_at) as year, MONTH(created_at) as month, count(id) as post_count'))
-									->groupBy(\DB::raw('YEAR(created_at), MONTH(created_at)'))
+									->where('status', 'live')
+									->select(\DB::raw($select_q))
+									->groupBy(\DB::raw($gp_q))
 									->get();
 		$c = 0;
 		foreach ($years as $yr) {
 			$data['list'][$c]['yr'] = $yr['year'];
-			$data['list'][$c]['month'] = $yr['month'];
+			if ($data['s_type'] == 'monthly') {
+				$data['list'][$c]['month'] = $yr['month'];
+			}
 			$data['list'][$c]['post_count'] = $yr['post_count'];
 			$c++;
 		}
