@@ -8,8 +8,8 @@
 	<thead>
 		<tr>
 			<th width=20px ></th>
-			<th>Modules</th>
-			<th>Module Actions</th>
+			<th>{{ t('user::permission.modules') }}</th>
+			<th>{{ t('user::permission.moduleAcitons') }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -38,8 +38,8 @@
 	</tbody>
 </table>
 <div class="buttons form-button">
-	{{ Form::submit('submit', 'Edit', array('id' => 'edit', 'class' => 'btn btn-green')) }}
-	<a href="{{ \Uri::create("$adminUrl/user/permission/") }}" class="btn">Cancel</a>
+	{{ Form::submit('submit', t('user::permission.edit'), array('id' => 'edit', 'class' => 'btn btn-green')) }}
+	<a href="{{ \Uri::create("$adminUrl/user/permission/") }}" class="btn">{{ t('user::permission.cancel') }}</a>
 </div>
 {{ Form::end() }}
 </section>

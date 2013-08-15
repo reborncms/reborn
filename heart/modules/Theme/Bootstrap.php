@@ -34,8 +34,8 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 			$mod_toolbar = array(
 				'add'	=> array(
 					'url'	=> 'theme/upload',
-					'name'	=> 'Upload a New Theme',
-					'info'	=> 'Upload a new Theme',
+					'name'	=> t('theme::theme.modToolbar'),
+					'info'	=> t('theme::theme.modToolbar'),
 					'class'	=> 'add'
 				)
 			);

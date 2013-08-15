@@ -3,52 +3,51 @@
 	{{ Form::start("$adminUrl/user/create", 'user_create_form', false, array('class' => 'form')) }}
 
     <div class="form-block">
-      <label for="">{{ Form::label('Display Name', 'display_name') }}<span class="required"></span></label>
+      <label for="">{{ Form::label(t('user::user.displayName'), 'display_name') }}<span class="required"></span></label>
       
       <div class="double-field-block">
-        {{ Form::input('first_name', '', 'text', array('id' => 'user-first_name', 'placeholder' => 'First Name', 'class' => 'left-input')) }}
-        {{ Form::input('last_name', '', 'text', array('id' => 'user-last_name', 'placeholder' => 'Last Name', 'class' => 'right-input')) }}
+        {{ Form::input('first_name', '', 'text', array('id' => 'user-first_name', 'placeholder' => t('user::user.firstname'), 'class' => 'left-input')) }}
+        {{ Form::input('last_name', '', 'text', array('id' => 'user-last_name', 'placeholder' => t('user::user.lastname'), 'class' => 'right-input')) }}
         {{ if ((isset($errors['first_name'])) AND (isset($errors['last_name']))) }}
           <span class="msg error">**This field is required.</span>
         {{ endif }}
-        <p>e.g. John Doe</p>
+        <p>{{ t('user::user.namexample') }}</p>
       </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
 		<div class="form-block">
-    		<label for="">{{ Form::label('Email', 'email') }}<span class="required"></span></label>
+    		<label for="">{{ Form::label(t('user::user.email'), 'email') }}<span class="required"></span></label>
       
   			<div class="form-right-block">
-    			{{ Form::email('email', '', array('id' => 'user-email', 'placeholder' => 'Enter your email')) }}
+    			{{ Form::email('email', '', array('id' => 'user-email')) }}
           {{ if(isset($errors['email'])) }}
             <span class="msg error">{{ $errors['email'] }}</p>
           {{ endif }}
-    			<p>Please enter valid Email Address</p>     
+    			<p>{{ t('user::user.temail') }}</p>     
 			</div> <!-- end of form-right-block -->
         </div> <!-- end of form block -->
 
         <div class="form-block">
-    		<label for="">{{ Form::label('Password', 'password') }}<span class="required"></span></label>
+    		<label for="">{{ Form::label(t('user::user.lpassword'), 'password') }}<span class="required"></span></label>
       
   			<div class="form-right-block">
-    			{{ Form::password('password', '', array('id' => 'user-password', 'placeholder' => 'Enter your new password')) }}
+    			{{ Form::password('password', '', array('id' => 'user-password')) }}
           {{ if(isset($errors['password'])) }}
             <span class="msg error">{{ $errors['password'] }}</p>
           {{ endif }}
-    			<p>Type a secure password</p>     
 			</div> <!-- end of form-right-block -->
         </div> <!-- end of form block -->
 
         <div class="form-block">
-    		<label for="">{{ Form::label('Confirm Password', 'confpass') }}<span class="required"></span></label>
+    		<label for="">{{ Form::label(t('user::user.lconfPass'), 'confpass') }}<span class="required"></span></label>
       
   			<div class="form-right-block">
-    			{{ Form::password('confpass', '', array('id' => 'confpass', 'placeholder' => 'Type the same password again')) }} 
+    			{{ Form::password('confpass', '', array('id' => 'confpass')) }} 
 			</div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
 		<div class="form-block">
-     		<label for="">{{ Form::label('Group', 'group') }}</label>
+     		<label for="">{{ Form::label(t('user::user.lgroup'), 'group') }}</label>
       
       		{= $data = array() =}	
 
@@ -61,22 +60,22 @@
    		</div> <!-- end of form block -->
 
     <div class="form-block">
-        <label for="">{{ Form::label('Username', 'username') }}</label>
+        <label for="">{{ Form::label(t('user::user.lusername'), 'username') }}</label>
       
         <div class="form-right-block">
-          {{ Form::input('username', '', 'text', array('id' => 'user-username', 'placeholder' => 'Enter your Username')) }}
-          <p>Username must not include space, or special characters.</p>     
+          {{ Form::input('username', '', 'text', array('id' => 'user-username')) }}
+          <p>{{ t('user::user.tusername') }}</p>     
       </div> <!-- end of form-right-block -->
 
     </div> <!-- end of form block -->
     <div class="form-block">
-        <label for="">{{ Form::label('Biography', 'biography') }}</label>
+        <label for="">{{ Form::label(t('user::user.lbiography'), 'biography') }}</label>
       
         {{ Form::textarea('biography', '', array('id' => 'user-biography')) }}
     </div> <!-- end of form block -->
 
     <div class="form-block">
-        <label for="">{{ Form::label('Country', 'country') }}</label>
+        <label for="">{{ Form::label(t('user::user.lcountry'), 'country') }}</label>
       
         <div class="form-right-block">
           {{ Form::input('country', '', 'text', array('id' => 'user-country')) }}  
@@ -84,34 +83,34 @@
     </div> <!-- end of form block -->
 
     <div class="form-block">
-        <label for="">{{ Form::label('Website', 'website') }}</label>
+        <label for="">{{ Form::label(t('user::user.lwebsite'), 'website') }}</label>
       
         <div class="form-right-block">
           {{ Form::input('website', '', 'text', array('id' => 'user-website')) }}
-          <p>Personal blog or webpage of this user</p> 
+          <p>{{ t('user::user.twebsite') }}</p> 
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
     <div class="form-block">
-        <label for="">{{ Form::label('Facebook', 'facebook') }}</label>
+        <label for="">{{ Form::label(t('user::user.lfacebook'), 'facebook') }}</label>
       
         <div class="form-right-block">
           {{ Form::input('facebook', '', 'text', array('id' => 'user-facebook')) }}
-          <p>Enter this user's facebook username</p>     
+          <p>{{ t('user::user.tfacebook') }}</p>     
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
     <div class="form-block">
-        <label for="">{{ Form::label('Twitter', 'twitter') }}</label>
+        <label for="">{{ Form::label(t('user::user.ltwitter'), 'twitter') }}</label>
       
         <div class="form-right-block">
           {{ Form::input('twitter', '', 'text', array('id' => 'user-twitter')) }}
-          <p>Enter this user's twitter username</p>     
+          <p>{{ t('user::user.ttwitter') }}</p>     
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
     <div class="form-block ckeck-block">
-          <label for="checkbox">{{ Form::label('Can access to Dashboard?', 'admin_access') }}</label>
+          <label for="checkbox">{{ Form::label(t('user::user.adminpanelaccess'), 'admin_access') }}</label>
           <div class="form-right-block clearfix">
             <label for="ckeckbox" class="inline-label">
               {{ Form::checkbox('admin_access', 1, array('id'=>'ckeckbox')) }}
@@ -120,8 +119,8 @@
       </div> <!-- end of form block -->
 
 		<div>
-		{{ Form::submit('submit', 'Create', array('id' => 'edit', 'class' => 'btn btn-green')) }}
-		<a href="{{ \Uri::create("$adminUrl/user/") }}" class="btn">Cancel</a>
+		{{ Form::submit('submit', t('user::permission.create'), array('id' => 'create', 'class' => 'btn btn-green')) }}
+		<a href="{{ \Uri::create("$adminUrl/user/") }}" class="btn">{{ t('user::permission.cancel') }}</a>
 		</div>	
 
 	{{ Form::end() }}

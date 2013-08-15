@@ -4,10 +4,10 @@
 		<tr>
 			<!-- <th>ID</th> -->
 			<th></th>
-			<th>Display Name</th>
-			<th>Group</th>
-			<th>Mail Address</th>
-			<th>Action</th>
+			<th>{{ t('user::user.displayName') }}</th>
+			<th>{{ t('user::user.group') }}</th>
+			<th>{{ t('user::user.email') }}</th>
+			<th>{{ t('user::permission.action') }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -20,10 +20,10 @@
 				<td><a href="mailto:{{ $u->email }}">{{ $u->email }}</a></td>
 				<td>
 				<div class="icons-bar">
-					<a href="{{ \Uri::create("$adminUrl/user/edit/") }}{{ $u->id }}" class="ico-btn btn-green tipsy-tip" original-title="Edit"><i class="icon-edit"></i></a>
+					<a href="{{ \Uri::create("$adminUrl/user/edit/") }}{{ $u->id }}" class="ico-btn btn-green tipsy-tip" original-title="{{ t('user::permission.edit') }}"><i class="icon-edit"></i></a>
 					
 					{{ if (($currentUser->id != $u->id) AND ($u->id != 1)) }}
-					<a href="{{ \Uri::create("$adminUrl/user/delete/") }}{{ $u->id }}" class="ico-btn btn-red tipsy-tip confirm_delete" original-title="Delete"><i class="icon-remove"></i></a>
+					<a href="{{ \Uri::create("$adminUrl/user/delete/") }}{{ $u->id }}" class="ico-btn btn-red tipsy-tip confirm_delete" original-title="{{ t('user::permission.delete') }}"><i class="icon-remove"></i></a>
 					{{ endif }}
 				</div>
 				</td>

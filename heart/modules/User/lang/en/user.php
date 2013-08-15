@@ -13,8 +13,39 @@ return array(
 		'edit'	=> 'User Edit',
 	),
 
-	'menu'		=> 'Users',
+	'modToolbar' => array(
+		'name' => 'Create User',
+		'info'	=> 'Create a new user',
+	),
 
+	//View Language
+	'displayName' 	=> 'Display Name',
+	'firstname'		=> 'First Name',
+	'lastname'		=> 'Last Name',
+	'namexample'	=> 'e.g. John Doe',
+	'group'			=> 'Group',
+	'email'			=> 'Email',
+
+	'lpassword' => 'Password',
+	'lconfPass' => 'Confirm Password',
+	'lgroup' => 'Group',
+	'lusername' => 'Username',
+	'lbiography' => 'Biography',
+	'lcountry' => 'Country',
+	'lwebsite' => 'Website',
+	'lfacebook' => 'Facebook',
+	'ltwitter' => 'twitter',
+	'adminpanelaccess' => 'Can access to Dashboard?',
+
+	'temail' => 'Please enter valid Email Address',
+	'tpassword' => 'Type a secure password',
+	'tconfPass' => 'Confirm new password if you typed new password',
+	'tusername' => 'Username must not include space, or special characters.',
+	'twebsite' => 'Personal blog or webpage of this user',
+	'tfacebook' => 'Enter this user\'s facebook username',
+	'ttwitter' => 'Enter this user\'s twitter username',
+
+	'menu'		=> 'Users',
 	'admin' 	=> 'User Admin',
 	'save'		=> 'Save',
 	'delete'	=> 'Delete',

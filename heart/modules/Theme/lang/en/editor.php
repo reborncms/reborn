@@ -6,4 +6,5 @@ return array(
 	'success'				=> 'Successfully saved!',
 	'error'					=> 'Error while saving File!',
 	'permission'			=> 'You dun have enough permission to edit file!',
+	'save'					=> 'Save Template',
 );

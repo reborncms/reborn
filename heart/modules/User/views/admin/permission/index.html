@@ -2,8 +2,8 @@
 <table class="stripe">
 	<thead>
 		<tr>
-			<th>Group Name</th>
-			<th>Actions</th>
+			<th>{{ t('user::permission.groupName') }}</th>
+			<th>{{ t('user::permission.action') }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -12,7 +12,7 @@
 		<tr>
 			<td>{{ $g->name }}</td>
 			<td>
-				<a href="{{ \Uri::create("$adminUrl/user/permission/edit/") }}{{ $g->id }}" class="btn">Edit Permission</a>
+				<a href="{{ \Uri::create("$adminUrl/user/permission/edit/") }}{{ $g->id }}" class="btn">{{ t('user::permission.editPermission') }}</a>
 			</td>
 		</tr>
 		{= $i++ =}
@@ -25,4 +25,4 @@
 
 <br >
 
-<a href="{{ \Uri::create("$adminUrl/user/") }}" class="btn">Back to Users</a>
+<a href="{{ \Uri::create("$adminUrl/user/") }}" class="btn">{{ t('user::permission.back') }}</a>

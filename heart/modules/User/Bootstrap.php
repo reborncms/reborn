@@ -38,8 +38,8 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 				$mod_toolbar = array(
 					'add_group'	=> array(
 						'url'	=> 'user/group/create',
-						'name'	=> 'Create Group',
-						'info'	=> 'Create new group',
+						'name'	=> t('user::group.modToolbar.name'),
+						'info'	=> t('user::group.modToolbar.info'),
 						'class'	=> 'add'
 					)
 				);
@@ -48,8 +48,8 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 					$mod_toolbar = array(
 						'add'	=> array(
 							'url'	=> 'user/create',
-							'name'	=> 'Create User',
-							'info'	=> 'Create a new user',
+							'name'	=> t('user::user.modToolbar.name'),
+							'info'	=> t('user::user.modToolbar.info'),
 							'class'	=> 'add'
 						),
 					);

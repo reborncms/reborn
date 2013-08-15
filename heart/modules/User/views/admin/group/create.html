@@ -3,16 +3,15 @@
 	{{ Form::start("$adminUrl/user/group/create", 'group_create_form', false, array('class' => 'form')) }}
 
 		<div class="form-block">
-    		<label for="">{{ Form::label('Name', 'name') }}<span class="required"></span></label>      
+    		<label for="">{{ Form::label(t('user::group.name'), 'name') }}<span class="required"></span></label>      
   			<div class="form-right-block">
-    			{{ Form::input('name', '', 'text', array('id' => 'name', 'placeholder' => 'Enter group name')) }}
-    			<span class="msg error">**This field is required.</span>
+    			{{ Form::input('name', '', 'text', array('id' => 'name')) }}
     			<p>e.g. Administrator</p>     
 			</div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
       <div class="form-block ckeck-block" style="height: 40px;">
-      		<label for="checkbox">{{ Form::label('Admin Permission', 'is_admin') }}</label>
+      		<label for="checkbox">{{ Form::label(t('user::group.adminpermission'), 'is_admin') }}</label>
       		<div class="form-right-block clearfix">
         		<label for="ckeckbox" class="inline-label">
          			{{ Form::checkbox('is_admin', 1, array('id'=>'ckeckbox')) }}
@@ -21,8 +20,8 @@
    		</div> <!-- end of form block -->
 
       <div class="form-btn">
-        {{ Form::submit('submit', 'Create', array('id' => 'create', 'class' => 'btn btn-green')) }}
-        <a href="{{ \Uri::create("$adminUrl/user/group") }}" class="btn">Cancel</a>  
+        {{ Form::submit('submit', t('user::permission.create'), array('id' => 'create', 'class' => 'btn btn-green')) }}
+        <a href="{{ \Uri::create("$adminUrl/user/group") }}" class="btn">{{ t('user::permission.cancel') }}</a>  
       </div>
 	{{ Form::end() }}
 </div>

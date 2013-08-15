@@ -3,6 +3,13 @@
 return array(
 		'title' 	=> 'Usergroup Management',
 		'menu'		=> 'Groups',
+		'name'		=> 'Name',
+		'adminpermission' => 'Admin Permission',
+
+		'modToolbar' => array(
+			'name' => 'Create Group',
+			'info'	=> 'Create new group',
+		),
 
 		'create' => array(
 			'title' => 'Create New Usergroup',
