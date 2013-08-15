@@ -599,15 +599,24 @@ class Template
      **/
     protected function getScriptString($place)
     {
-        if (isset($this->scripts[$place])) {
-            if (count($this->scripts[$place]) == 1) {
-                return "\n\t\t".$this->scripts[$place][0]."\n";
-            }
+        $scripts = isset($this->scripts[$place]) ?: array();
 
-            return "\n\t\t".implode("\n\t\t", $this->scripts[$place])."\n";
+        // Call Event
+        $result = \Event::call('reborn.template.script.render.'.$place, array($scripts));
+
+        if(! empty($result[0])) {
+            $scripts = $result[0];
         }
 
-        return null;
+        if (count($scripts) == 0) {
+            return null;
+        }
+
+        if (count($scripts) == 1) {
+            return "\n\t\t".$scripts[0]."\n";
+        }
+
+        return "\n\t\t".implode("\n\t\t", $scripts)."\n";
     }
 
     /**
@@ -643,14 +652,24 @@ class Template
      **/
     protected function getStyleString($place)
     {
-        if (isset($this->styles[$place])) {
-            if (count($this->styles[$place]) == 1) {
-                return "\n\t\t".$this->styles[$place][0]."\n";
-            }
-            return "\n\t\t".implode("\n\t\t", $this->styles[$place])."\n";
+        $styles = isset($this->styles[$place]) ?: array();
+
+        // Call Event
+        $result = \Event::call('reborn.template.style.render.'.$place, array($styles));
+
+        if(! empty($result[0])) {
+            $styles = $result[0];
         }
 
-        return null;
+        if (count($styles) == 0) {
+            return null;
+        }
+
+        if (count($styles) == 1) {
+            return "\n\t\t".$styles[0]."\n";
+        }
+
+        return "\n\t\t".implode("\n\t\t",  $styles)."\n";
     }
 
     /**
