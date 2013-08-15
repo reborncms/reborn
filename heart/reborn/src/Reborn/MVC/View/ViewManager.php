@@ -118,6 +118,12 @@ class ViewManager
 			$themePath = THEMES;
 		}
 
+		// Register Event from Theme
+		$events = $themePath.$theme.DS.'events.php';
+		if (\File::is($events)) {
+			require $events;
+		}
+
 		return new Theme($theme, $themePath);
 	}
 
