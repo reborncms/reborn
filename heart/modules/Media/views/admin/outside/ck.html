@@ -13,18 +13,27 @@
 				{{ Media\Lib\Helper::folderTree($allFolders, 0, 0, $current) }}
 	        </select>
 
-	        {{ Form::label('Float', 'float') }}
+	        
+        	{{ Form::label('Float', 'float') }}
 	        {= $float = array('left' => 'Left', 'right' => 'Right', 'auto' => 'None') =}
 	        {{ Form::select('float', $float, 'auto', array('id' => 'float')) }}
+        
+
+        
+        	{{ Form::label('Dimension') }}
+	        <div class="w-h-wrapper clearfix">
+	        	{{ Form::input('width') }}
+        		{{ Form::input('height') }}
+	        </div> <!-- end of w-h-wrapper -->
+	        
+	        
 
 	        <div id="m_preview_area" class="overflow"  style="display: none;">
 	        	<div id="m_img_preview">
 
 	        	</div> <!-- end of m_img_preview -->
 	        	<p id="m_preview_name"></p>
-	        	{{ Form::label('Dimension') }}
-	        	{{ Form::input('width') }}
-	        	{{ Form::input('height') }}
+	        	
 	        	<div class="clear"></div>
 	        	{{ Form::hidden('fileId') }}
 	        	<button id="insert" class="button button-green">Insert</button>

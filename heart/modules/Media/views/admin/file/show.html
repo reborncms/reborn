@@ -37,15 +37,15 @@
 		</tr>
 		<tr>
 			<td>{{ Translate::get('m.lbl.size') }}</td>
-			<td> : {{ $fileData->filesize }}</td>
+			<td> : {{ num($fileData->filesize) }}</td>
 		</tr>
 		<tr>
 			<td>{{ Translate::get('m.lbl.width') }}</td>
-			<td> : {{ $fileData->width }}</td>
+			<td> : {{ num($fileData->width) }}</td>
 		</tr>
 		<tr>
 			<td>{{ Translate::get('m.lbl.height') }}</td>
-			<td> : {{ $fileData->height }}</td>
+			<td> : {{ num($fileData->height) }}</td>
 		</tr>
 	</table>
 

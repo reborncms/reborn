@@ -619,7 +619,7 @@ class MediaController extends \AdminController
 
         if ($this->request->isAjax()) { $this->template->partialOnly(); }
 
-        $this->template->title($fileData->name)
+        $this->template->title(\Translate::get('m.title.detail'))
                         ->set('fileData', $fileData)
                         ->setPartial('admin/file/show');
     }

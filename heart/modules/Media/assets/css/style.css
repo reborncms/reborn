@@ -310,37 +310,37 @@ table#m_table tr td{
 
 /* ===== ===== WYSIWYG ===== ===== */
 div#m_btns_bar{
-	background: lavender;
     height: 40px;
-    padding-top: 12px;
+    padding-top: 4px;
     width: 100%;
     margin-bottom: 10px;
-    background: #fff;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -ms-border-radius: 3px;
-    border-radius: 3px;
-    border: 1px solid #e5e5e5;
+    background: #fcfcfc;
+    border-bottom: 1px solid #f0f0f0;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 div#m_btns_wrap{
 	float: right;
-	padding-right: 10px;
 }
+div#m_btns_wrap .btn-ico-text { margin-right: 8px; padding: 3px 16px; }
 
 div#m_chooser_area{
 	float: left;
+	padding-left: 8px;
 	width: 30%;
 	min-height: 340px;
 	border-right: 1px solid #c2c2c2;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 div#m_chooser_area label{
 	display: block;
 	font-weight: bold;
 	color: #3f3f3f;
-	padding: 5px;
+	padding: 5px 0;
+	width: 100%;
 }
 div#m_chooser_area select{
 	width: 90%;
@@ -368,6 +368,7 @@ div#m_img_preview p{
 input#width, input#height{
 	width: 40%;
 	float: left;
+	padding: 3px;
 }
 input#width{ margin-right: 15px; }
 button#insert{ margin-top: 15px; }

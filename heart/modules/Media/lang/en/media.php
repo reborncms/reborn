@@ -7,6 +7,7 @@ return array(
 		'create'	=> 'Folder Create',
 		'fileEdit'	=> 'Edit File',
 		'folderEdit'=> 'Edit Folder',
+		'detail'	=> 'Detail Information'
 		),
 	'lbl'	=> array(
 		'fileName'	=> 'File Name',

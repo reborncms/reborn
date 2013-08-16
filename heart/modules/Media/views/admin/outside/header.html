@@ -3,7 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title></title>
-	{{ css('reborn.css', 'all') }}
+
+	{{ less('import.less') }}
 	{{ css('style.css', 'all', 'media') }}
 
 	{{ js('jquery.min.js') }}
@@ -19,4 +20,4 @@
 			SITEURL = '{{ rbUrl() }}';
 	</script>
 </head>
-<body>
+<body style="background: #fff !important;">
