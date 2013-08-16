@@ -34,4 +34,10 @@ class TagInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = false;
 
+	protected $roles = array(
+			'tag.create'	=> 'Create',
+			'tag.edit'		=> 'Edit',
+			'tag.delete'	=> 'Delete'
+	);
+
 }

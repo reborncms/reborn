@@ -41,6 +41,9 @@ class TagController extends \AdminController
 
 	public function create() 
 	{
+		if (!user_has_access('tag.create')) {
+             return $this->notFound();
+        }
 		if (\Input::isPost()) {
 
 			$validation = self::validate();
@@ -78,6 +81,10 @@ class TagController extends \AdminController
 
 	public function edit($id = null) 
 	{
+		if (!user_has_access('tag.edit')) {
+             return $this->notFound();
+        }
+
 		$ajax = $this->request->isAjax();
 
 		if (\Input::isPost()) {
@@ -173,6 +180,10 @@ class TagController extends \AdminController
 
 	public function delete($id = 0) 
 	{
+		if (!user_has_access('tag.delete')) {
+             return $this->notFound();
+        }
+
 		$ids = ($id) ? array($id) : \Input::get('action_to');
 
 		$tags = array();

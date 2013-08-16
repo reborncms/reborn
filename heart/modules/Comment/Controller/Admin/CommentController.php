@@ -105,6 +105,10 @@ class CommentController extends \AdminController
 	 **/
 	public function changeStatus($id, $status = null)
 	{
+		if (!user_has_access('comment.create')) {
+             return $this->notFound();
+        }
+
 		$comment = Comment::find($id);
 
 		if ($comment->status == 'spam') {
@@ -184,6 +188,10 @@ class CommentController extends \AdminController
 	 **/
 	public function reply($id = 0)
 	{
+		if (!user_has_access('comment.reply')) {
+             return $this->notFound();
+        }
+
 		if (\Input::isPost()) {
 			$or_comment = Comment::find(\Input::get('id'));
 
@@ -217,6 +225,10 @@ class CommentController extends \AdminController
 
 	public function edit($id = 0)
 	{
+		if (!user_has_access('comment.edit')) {
+             return $this->notFound();
+        }
+
 		if (\Input::isPost()) {
 			$comment = Comment::find(\Input::get('id'));
 			$comment->value = \Input::get('message');
@@ -247,8 +259,17 @@ class CommentController extends \AdminController
 		$method = \Input::get('sel_multi_action');
 
 		if ($method == 'delete') {
+
+			if (!user_has_access('comment.delete')) {
+             	return $this->notFound();
+        	}
+        	
 			self::delete();
 		} else {
+
+			if (!user_has_access('comment.edit')) {
+             	return $this->notFound();
+        	}
 
 			$ids = \Input::get('action_to');
 			$comments = array();
@@ -287,6 +308,10 @@ class CommentController extends \AdminController
 
 	public function delete($id = null)
 	{
+		if (!user_has_access('comment.delete')) {
+             return $this->notFound();
+        }
+
 		$ids = ($id) ? array($id) : \Input::get('action_to');
 
 		$comments = array();

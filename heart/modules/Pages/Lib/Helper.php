@@ -30,9 +30,19 @@ class Helper
         }
         $ps .= '<div class="page_actions">';
         $ps .= '<a href="'.rbUrl('pages/preview/'.$page['uri']).'" title="'.t('global.view').'" class="tipsy-tip" target="_blank"><i class="icon-view icon-black"></i></a>';
-        $ps .= '<a href="'.adminUrl('pages/edit/'.$page['id']).'" title="'.t('global.edit').'" class="tipsy-tip"><i class="icon-edit icon-black"></i></a>';
-        $ps .= '<a href="'.adminUrl('pages/duplicate/'.$page['id']).'" title="'.t('pages::pages.labels.page_duplicate').'" class="tipsy-tip"><i class="icon-copy icon-black"></i></a>';
-        $ps .= '<a href="'.adminUrl('pages/delete/'.$page['id']).'" title="'.t('global.delete').'" class="confirm_delete tipsy-tip"><i class="icon-remove icon-black"></i></a>';
+
+        if (user_has_access('pages.create')) {
+             $ps .= '<a href="'.adminUrl('pages/duplicate/'.$page['id']).'" title="'.t('pages::pages.labels.page_duplicate').'" class="tipsy-tip"><i class="icon-copy icon-black"></i></a>';   
+        }
+
+        if (user_has_access('pages.edit')) {
+            $ps .= '<a href="'.adminUrl('pages/edit/'.$page['id']).'" title="'.t('global.edit').'" class="tipsy-tip"><i class="icon-edit icon-black"></i></a>';
+        }
+
+        if (user_has_access('pages.delete')) {
+            $ps .= '<a href="'.adminUrl('pages/delete/'.$page['id']).'" title="'.t('global.delete').'" class="confirm_delete tipsy-tip"><i class="icon-remove icon-black"></i></a>'; 
+        }
+        
         $ps .= '</div>';
         $ps .= '</div>
                     </div>';

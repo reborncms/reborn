@@ -116,14 +116,21 @@
 				<td>
 					<div class="icons-bar">
 
-						<a href="{{ adminUrl('comment/reply/'.$comment->id) }}" title="{{ t('comment::comment.label.reply') }}" class="tipsy-tip comment-reply-btn"><i class="icon-reply"></i></a>
-
-						<a href="{{ adminUrl('comment/edit/'.$comment->id) }}" title="{{ t('global.edit') }}" class="tipsy-tip comment-edit-btn"><i class="icon-edit"></i></a>
-
-						{{ if ($comment->status != 'spam') }}
-							<a href="{{ adminUrl('comment/change-status/'.$comment->id.'/spam') }}" title="{{ t('comment::comment.label.mark_as_spam') }}" class="tipsy-tip"><i class="icon-ban"></i></a>
+						{{ if (user_has_access('comment.reply')) }}
+							<a href="{{ adminUrl('comment/reply/'.$comment->id) }}" title="{{ t('comment::comment.label.reply') }}" class="tipsy-tip comment-reply-btn"><i class="icon-reply"></i></a>
 						{{ endif }}
-						<a href="{{ adminUrl('comment/delete/'.$comment->id) }}" title="{{ t('global.delete') }}" class="confirm_delete_comment tipsy-tip"><i class="icon-remove"></i></a>
+
+						{{ if (user_has_access('comment.edit')) }}
+							<a href="{{ adminUrl('comment/edit/'.$comment->id) }}" title="{{ t('global.edit') }}" class="tipsy-tip comment-edit-btn"><i class="icon-edit"></i></a>
+
+							{{ if ($comment->status != 'spam') }}
+								<a href="{{ adminUrl('comment/change-status/'.$comment->id.'/spam') }}" title="{{ t('comment::comment.label.mark_as_spam') }}" class="tipsy-tip"><i class="icon-ban"></i></a>
+							{{ endif }}
+						{{ endif }}
+
+						{{ if (user_has_access('comment.delete')) }}
+							<a href="{{ adminUrl('comment/delete/'.$comment->id) }}" title="{{ t('global.delete') }}" class="confirm_delete_comment tipsy-tip"><i class="icon-remove"></i></a>
+						{{ endif }}
 					</div> <!-- end of icons-bar -->
 				</td>
 			</tr>

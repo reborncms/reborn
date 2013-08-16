@@ -22,14 +22,18 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
     public function moduleToolbar()
     {
-        $mod_toolbar = array(
-            'add'	=> array(
-                'url'	=> 'pages/create',
-                'name'	=> t('pages::pages.titles.add_page'),
-                'info'	=> t('pages::pages.titles.add_page_info'),
-                'class'	=> 'add'
-            ),
-        );
+        $mod_toolbar = array();
+        
+        if (user_has_access('pages.create')) {
+            $mod_toolbar = array(
+                'add'   => array(
+                    'url'   => 'pages/create',
+                    'name'  => t('pages::pages.titles.add_page'),
+                    'info'  => t('pages::pages.titles.add_page_info'),
+                    'class' => 'add'
+                ),
+            );
+        }
 
         return $mod_toolbar;
     }

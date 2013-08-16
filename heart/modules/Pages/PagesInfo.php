@@ -34,4 +34,10 @@ class PagesInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = true;
 
+    protected $roles = array(
+            'pages.create'      => 'Create',
+            'pages.edit'        => 'Edit',
+            'pages.delete'      => 'Delete',
+    );
+
 }

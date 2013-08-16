@@ -41,6 +41,9 @@ class PagesController extends \AdminController
      **/
     public function create()
     {
+        if (!user_has_access('pages.create')) {
+                return $this->notFound();
+        }
 
         if (\Input::isPost()) {
 
@@ -74,6 +77,11 @@ class PagesController extends \AdminController
      **/
     public function edit($id = null)
     {
+
+        if (!user_has_access('pages.create')) {
+                return $this->notFound();
+        }
+
         if (\Input::isPost()) {
             $validation = self::validate();
 
@@ -108,6 +116,11 @@ class PagesController extends \AdminController
      **/
     public function duplicate($id)
     {
+
+        if (!user_has_access('pages.create')) {
+                return $this->notFound();
+        }
+
         $page = Pages::find($id)->toArray();
         self::formElements();
         $this->template->title('Add new Page')
@@ -197,6 +210,10 @@ class PagesController extends \AdminController
      **/
     public function delete($id)
     {
+        if (!user_has_access('pages.delete')) {
+                return $this->notFound();
+        }
+
         $page = Pages::find($id);
         $parent_id = $page->parent_id;
         $parent_uri = Pages::get_parent_uri((int) $parent_id);
@@ -225,6 +242,10 @@ class PagesController extends \AdminController
      **/
     public function status($id)
     {
+        if (!user_has_access('pages.edit')) {
+                return $this->notFound();
+        }
+
         $page = Pages::find($id);
 
         if ($page->status == 'draft') {
