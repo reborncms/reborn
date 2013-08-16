@@ -13,7 +13,7 @@
 	{{ js('plugins/blueimp/jquery.fileupload.js') }}
 	{{ js('media.js', 'media') }}
 
-	{{ Form::start('admin/media/upload/' . $folder_id, 'fileUpload', true, array('class' => 'form')) }}
+	{{ Form::start('admin/media/upload/' . $folder_id, 'fileUpload', true, array('class' => 'form', 'nocsrf' => '')) }}
 
 		<div id="upload_field_wrap" class='relative overflow'>
 			<p>Click or Drag Files Here to Upload.</p>
