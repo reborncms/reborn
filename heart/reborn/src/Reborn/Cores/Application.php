@@ -226,6 +226,13 @@ class Application extends \Pimple
         // Start the Session
         if (isset($this['session'])) {
             $this['session']->start();
+
+            // Check and Make CSRF Token
+            $csrf = Config::get('app.security.csrf_key');
+
+            if ( ! $this['session']->has($csrf)) {
+                \Security::makeCSRFToken();
+            }
         }
 
         // Start the Profiler
@@ -338,7 +345,7 @@ class Application extends \Pimple
             if (file_exists($file)) {
                 $content = File::getContent($file);
             } else {
-               $content = File::getContent(APP.'views'.DS.'404.php');
+               $content = File::getContent(APP.'views'.DS.'maintain.php');
             }
 
             $response = new Response($content, 503);
@@ -379,12 +386,7 @@ class Application extends \Pimple
      **/
     protected function injectCSRFToken($response)
     {
-        // Change CSRF key if request is not ajax.
-        if (!$this['request']->isAjax()) {
-            $token = Security::CSRField(null, true);
-        } else {
-            $token = Security::CSRField();
-        }
+        $token = Security::CSRField();
 
         preg_match('/(value\s*=\s*"(.*)")/', $token, $m);
 
@@ -399,7 +401,7 @@ class Application extends \Pimple
         $pattern = '/(<(form|FORM)[^>]*(method|METHOD)="(post|POST)"[^>]*>)/';
 
         preg_match_all($pattern, $body, $matches, PREG_SET_ORDER);
-        //dump($matches, true);
+
         if (is_array($matches)) {
             foreach ($matches as $match) {
                 if (false == strpos($match[0], 'nocsrf')) {
