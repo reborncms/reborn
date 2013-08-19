@@ -67,13 +67,23 @@ class Presentation
 	}
 
 	/**
+	 * Check Model Object is empty or not.
+	 *
+	 * @return boolean
+	 **/
+	public function isEmpty()
+	{
+		return empty($this->modelObj);
+	}
+
+	/**
 	 * Convert the model from this object to Array
 	 *
 	 * @return array
 	 **/
 	public function toArray()
 	{
-		return $this->model->toJson();
+		return $this->modelObj->toArray();
 	}
 
 	/**
@@ -109,7 +119,7 @@ class Presentation
 			return $this->{$name}();
 		}
 
-		return $this->modelObj->{$name};
+		return is_array($this->modelObj) ? $$this->modelObj[$name] : $this->modelObj->{$name};
 	}
 
 	/**
