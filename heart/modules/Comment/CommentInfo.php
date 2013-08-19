@@ -34,4 +34,10 @@ class CommentInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = false;
 
+	protected $roles = array(
+		'comment.reply'		=> 'Reply',
+		'comment.edit'		=> 'Edit',
+		'comment.delete'	=> 'Delete'
+	);
+
 }

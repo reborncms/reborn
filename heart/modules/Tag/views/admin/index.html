@@ -19,8 +19,13 @@
 							<td>{{ $tag->name }}</td>
 							<td>
 								<div class="icons-bar">
-									<a href="{{ adminUrl('tag/edit/'.$tag->id) }}" title = "{{ t('global.edit') }}" class="tipsy-tip" id="tag-edit"><i class="icon-edit"></i></a>
-									<a href="{{ adminUrl('tag/delete/'.$tag->id) }}" title = "{{ t('global.delete') }}" class="confirm_delete tipsy-tip"><i class="icon-remove"></i></a>
+									{{ if (user_has_access('tag.edit')) }}
+										<a href="{{ adminUrl('tag/edit/'.$tag->id) }}" title = "{{ t('global.edit') }}" class="tipsy-tip" id="tag-edit"><i class="icon-edit"></i></a>
+									{{ endif }}
+
+									{{ if (user_has_access('tag.delete')) }}
+										<a href="{{ adminUrl('tag/delete/'.$tag->id) }}" title = "{{ t('global.delete') }}" class="confirm_delete tipsy-tip"><i class="icon-remove"></i></a>
+									{{ endif }}
 								</div>
 							</td>
 						</tr>
@@ -39,6 +44,7 @@
 			</div>
 			{{ endif }}
 		</div> <!-- end of form-left -->
+		{{ if (user_has_access('tag.create')) }}
 		<div id="form-right">
 			<div id="option-control" class="r-m-c">
 
@@ -50,6 +56,7 @@
 			</div> <!-- end of div.r-container#option-control -->
 			{{ $form }}
 		</div> <!-- end of form-right -->
+		{{ endif }}
 	</div> <!-- end of form-wrapper -->
 </div> <!-- end of main-form-wrapper -->
 <style type="text/css">

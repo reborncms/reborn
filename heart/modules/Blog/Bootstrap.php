@@ -39,12 +39,6 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 				'info'	=> t('blog::blog.all_posts_info'),
 				'class'	=> ''
 			),
-			'add'	=> array(
-				'url'	=> 'blog/create',
-				'name'	=> t('blog::blog.add_post'),
-				'info'	=> t('blog::blog.add_post_info'),
-				'class'	=> 'add'
-			),
 			'category' => array(
 				'url' => 'blog/category',
 				'name' => t('blog::blog.categories'),
@@ -52,6 +46,15 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 				'class' => ''
 			),
 		);
+
+		if (user_has_access('blog.create')) {
+            $mod_toolbar['add'] = array(
+				'url'	=> 'blog/create',
+				'name'	=> t('blog::blog.add_post'),
+				'info'	=> t('blog::blog.add_post_info'),
+				'class'	=> 'add'
+			);
+        }
 
 		return $mod_toolbar;
 	}

@@ -147,7 +147,7 @@ $(function(){
 			ui.draggable.parent().hide();
 			$.ajax({
 				type: 'POST',
-				url: ADMIN + '/media/changeDir/' + ui.draggable.parent().attr('file-id') + '/' + $(this).attr('folder-id'),
+				url: SITEURL + ADMIN + '/media/changeDir/' + ui.draggable.parent().attr('file-id') + '/' + $(this).attr('folder-id'),
 				success: function(e) {
 					/*var result = $.parseJSON(e);*/
 					/*if(e.success) ui.draggable.parent().hide();*/
