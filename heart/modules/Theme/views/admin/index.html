@@ -29,8 +29,8 @@
 			<p>{{ $theme['description'] }}</p>
 			<p>Version {{ $theme['version'] }}</p>
 
-			<a href="{{ \Uri::create("$adminUrl/theme/activate/") }}{{ $name }}" class="action_links">t('theme::theme.activate.name')</a> |
-			<a href="{{ \Uri::create("$adminUrl/theme/delete/") }}{{ $name }}" class="action_links confirm_delete">t('theme::theme.delete.name')</a>
+			<a href="{{ \Uri::create("$adminUrl/theme/activate/") }}{{ $name }}" class="action_links">{{ t('theme::theme.activate.name') }}</a> |
+			<a href="{{ \Uri::create("$adminUrl/theme/delete/") }}{{ $name }}" class="action_links confirm_delete">{{ t('theme::theme.delete.name') }}</a>
 
 		</li>
 

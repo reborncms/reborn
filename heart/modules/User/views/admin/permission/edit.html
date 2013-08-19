@@ -1,6 +1,6 @@
 <section class="title">
 	<h4>{{ $group->name }}</h4>
-	<p>Set permission for this usergroup. If you set empty check for permission, usergroup will not have access permission for follow module.</p>
+	<p>{{ t('user::permission.info') }}</p>
 </section>
 <section class="item">
 {{ Form::start("$adminUrl/user/permission/edit/$group->id") }}
