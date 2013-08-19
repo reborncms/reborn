@@ -49,7 +49,7 @@
 
 	{{ ifnot($widgets['fullcolumn']->isEmpty()) }}
 
-	<div class="box-fullsize dashboard-wg">
+	<div id="box-fullsize">
 
 		{{ $widgets['fullcolumn']->render }}
 
@@ -59,7 +59,7 @@
 
 	{{ ifnot($widgets['leftcolumn']->isEmpty()) }}
 
-	<div class="box-left dashboard-wg">
+	<div id="box-left">
 
 		{{ $widgets['leftcolumn']->render }}
 
@@ -69,7 +69,7 @@
 
 	{{ ifnot($widgets['rightcolumn']->isEmpty()) }}
 
-	<div class="box-right dashboard-wg">
+	<div id="box-right">
 
 		{{ $widgets['rightcolumn']->render }}
 
