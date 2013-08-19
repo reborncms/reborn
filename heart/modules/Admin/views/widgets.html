@@ -1,0 +1,26 @@
+{{ loop($widgets as $k => $area) }}
+
+	{{ ifnot(isset($area['block-color'])) }}
+		{= $class = cycle('dark', 'cyan', 'grey', 'red', 'blue', 'green') =}
+	{{ else }}
+		{= $class = $area['block-color'] =}
+	{{ endif }}
+
+	<div class="dashboard-wg">
+
+		<div class="block block-{{ $class }}">
+			<h3>
+				{{ if(isset($area['icon'])) }}
+				<i class="{{ $area['icon'] }} icon-white"></i>
+				{{ endif }}
+				{{ $area['title'] }}
+			</h3>
+
+			<div class="widget-block" id="dashboard-widget-{{ isset($area['id']) ? $area['id'] : $k }}">
+				{{ $area['body'] }}
+			</div>
+		</div>
+
+	</div> <!-- end of div.dashboard-wg -->
+
+{{ endloop }}
