@@ -54,5 +54,9 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		\Event::on('user_deleted', function($user){
 			return \Comment\Lib\Helper::userDeleted($user);
 		});
+
+		\Event::on('reborn.dashboard.widgets.leftcolumn', function(){
+			return \Comment\Lib\Helper::dashboardWidget();
+		});
 	}
 }

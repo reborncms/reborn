@@ -66,6 +66,10 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		\Event::on('user_deleted', function($param){
 			return \Blog\Lib\Helper::changeAuthor($param->id);
 		});
+
+		\Event::on('reborn.dashboard.widgets.leftcolumn', function(){
+			return \Blog\Lib\Helper::dashboardWidget();
+		});
 	}
 
 }

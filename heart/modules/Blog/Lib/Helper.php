@@ -89,4 +89,31 @@ class Helper {
 			}
 		}
 	}
+
+	public static function dashboardWidget()
+	{
+		$widget = array();
+		$widget['title'] = 'Latest Blog Posts';
+		$widget['icon'] = 'icon-archive';
+		$widget['id'] = 'blog';
+		$widget['body'] = '';
+		$posts = Blog::with('author')->take(5)->orderBy('created_at', 'desc')->get();
+		$widget['body'] .= '<ul>';
+		if (count($posts) > 0) {
+			foreach ($posts as $post) {
+				$widget['body'] .= '<li>
+										<span class="date">'.rbDate($post->created_at).'</span>
+										<span class="blog-author"><i class="icon-user icon-white"></i>
+											<a href="'.rbUrl('user/profile/'.$post->author->id).'">'.$post->author->first_name.' '.$post->author->last_name.'</a>
+										</span>
+										<a href="'.rbUrl('blog/'.$post->slug).'" target="_black">'.$post->title.'</a>
+									</li>';
+			}
+		} else {
+			$widget['body'] .= '<li><span class="empty-list">'. t('label.last_post_empty') .'</span></li>';
+		}
+		$widget['body'] .= '</ul>';
+
+		return $widget;
+	}
 }
