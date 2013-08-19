@@ -2,7 +2,7 @@
 
 	include 'header.php';
 ?>
-<h2>Fill your Database Data and User Data</h2>
+<h2>Fill your User and Site Information</h2>
 
 <?php
 	if(isset($error)) {
@@ -13,15 +13,17 @@
 <form action="<?php echo $url.'step3'; ?>" method="post">
 	<div class="left">
 		<legend>
-			User Data
+			User Information
 		</legend>
 		<div class="row">
 			<label for="first_name">First Name</label>
 			<input type="text" name="first_name" id="first_name">
+			<p class="label-info">Minimum 2 characters and Maximum 15 characters.</p>
 		</div>
 		<div class="row">
 			<label for="last_name">Last Name</label>
 			<input type="text" name="last_name" id="last_name">
+			<p class="label-info">Minimum 2 characters and Maximum 15 characters.</p>
 		</div>
 		<div class="row">
 			<label for="email">Email</label>
@@ -30,6 +32,7 @@
 		<div class="row">
 			<label for="passowrd">Password</label>
 			<input type="password" name="password" id="password">
+			<p class="label-info">Minimum length 6 characters.</p>
 		</div>
 		<div class="row">
 			<label for="conf_passowrd">Confirm Password</label>
@@ -39,7 +42,7 @@
 
 	<div class="right">
 		<legend>
-			Site Data
+			Site Information
 		</legend>
 		<div class="row">
 			<label for="site_title">Site Title</label>

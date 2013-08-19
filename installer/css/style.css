@@ -125,6 +125,15 @@ input[type=submit] {
 	float: none;
 }
 
+.label-info {
+	color: #ABB6BC;
+	float: left;
+	font-size: 13px;
+	font-style: oblique;
+	padding-left: 35%;
+	padding-top: 5px;
+}
+
 .row {
 	margin-bottom: 10px;
 	border-bottom: 1px dotted #efefef;
