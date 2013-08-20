@@ -110,7 +110,7 @@ class BlogController extends \AdminController
 			} else {
 				$val_errors = $val->getErrors();
 				$this->template->set('val_errors',$val_errors);
-				$this->template->set('blog', (object)\Input::get('*'));
+				$blog = (object)\Input::get('*');
 			}
 		} else {
 			if ($id == null) {
@@ -242,8 +242,29 @@ class BlogController extends \AdminController
 			$excerpt = \Input::get('excerpt');
 		}
 
-		$blog->title = \Input::get('title');
-		$blog->slug = \Input::get('slug');
+		$slug = (\Input::get('slug') == '') ? 'untitled' : \Input::get('slug');
+
+		$id = \Input::get('id');
+
+		$slug_check = self::slugDuplicateCheck($slug, $id);
+
+		if ($slug_check) {
+			$n = 1;
+			do {
+				$match = preg_match('/(.+)_([0-9]+)$/', $slug, $matches);
+				if ($match) {
+					$slug = $matches[1].'_'.$n;
+				} else {
+					$slug = $slug.'_'.$n;
+				}
+				$check = self::slugDuplicateCheck($slug, $id);
+				$n++;
+			} while ($check);
+			//change to slug_1 , slug_2, slug_3
+		}
+
+		$blog->title = (\Input::get('title') == '') ? 'Untitled' : \Input::get('title');
+		$blog->slug = $slug;
 		$blog->category_id = \Input::get('category_id');
 		$blog->excerpt = $excerpt;
 		$blog->body = \Input::get('body');
@@ -277,6 +298,45 @@ class BlogController extends \AdminController
 			return $blog_save;
 		}
 		
+	}
+
+	/**
+	 * Ajax Check slug
+	 *
+	 * @return void
+	 **/
+	public function checkSlug()
+	{
+	    $slug = \Input::get('slug');
+	    if ($slug == "") {
+	        return "*** This Field is required.";
+	    } else {
+	        $id = (int)\Input::get('id');
+	        if ($id != '') {
+	            //page edit check slug
+	            $data = Blog::where('slug', '=', $slug)->where('id', '!=', $id)->get();
+	        } else {
+	            //page create check slug
+	            $data = Blog::where('slug', '=', $slug)->get();
+	        }
+	        if (count($data) > 0) {
+	            $error_msg = t('validation.slug_duplicate');
+
+	            return $error_msg;
+	        }
+	    }
+	    $this->template->partialOnly();
+	}
+
+	protected function slugDuplicateCheck($slug, $id) {
+		$check = Blog::where('slug', $slug)
+					->where('id', '!=', $id)
+					->get();
+		if (count($check)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**

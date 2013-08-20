@@ -40,6 +40,15 @@
 		});
 		
 		/* ========== End of Search Function List ============== */
+
+		//check slug 
+		$('#form_slug, #form_title').bind('blur',function(){
+			var slug = $('#form_slug').val();
+			var post_data = $('#blog-create').serialize();
+			$.post(SITEURL+ADMIN+'/blog/check_slug',post_data,function(data){
+				$('#slug_error').html(data);
+			});
+		});
 		
 		// Post Auto Save Function
 		function postAutoSave() {

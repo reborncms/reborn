@@ -62,3 +62,8 @@
     position: relative;
     top: -47px;
 }
+
+#slug_error {
+    display: block;
+}
+}

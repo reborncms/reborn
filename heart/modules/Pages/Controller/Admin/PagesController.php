@@ -149,11 +149,32 @@ class PagesController extends \AdminController
         } else {
             $uri = \Input::get('slug');
         }
+
+        $slug = (\Input::get('slug') == '') ? 'untitled' : \Input::get('slug');
+
+        $id = \Input::get('id');
+
+        $slug_check = self::slugDuplicateCheck($slug, $id);
+
+        if ($slug_check) {
+            $n = 1;
+            do {
+                $match = preg_match('/(.+)_([0-9]+)$/', $slug, $matches);
+                if ($match) {
+                    $slug = $matches[1].'_'.$n;
+                } else {
+                    $slug = $slug.'_'.$n;
+                }
+                $check = self::slugDuplicateCheck($slug, $id);
+                $n++;
+            } while ($check);
+        }
+
         $current_user = \Sentry::getUser();
         $button_save = \Input::get('page_save');
         $status = ($button_save == 'Save' || $button_save == 'Publish') ? 'live' : 'draft';
-        $page->title = \Input::get('title');
-        $page->slug = \Input::get('slug');
+        $page->title = (\Input::get('title') == '') ? 'Untitled' : \Input::get('title');
+        $page->slug = $slug;
         $page->uri = $uri;
         $page->content = \Input::get('content');
         $page->page_layout = \Input::get('page_layout');
@@ -175,6 +196,18 @@ class PagesController extends \AdminController
         }
     }
 
+    protected function slugDuplicateCheck($slug, $id)
+    {
+        $check = Pages::where('slug', $slug)
+                        ->where('id', '!=', $id)
+                        ->get();
+        if (count($check)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Autosave Page
      *
@@ -188,6 +221,9 @@ class PagesController extends \AdminController
                 if ((\Input::get('title') == '') and (\Input::get('slug') == '') and (\Input::get('content') == '')) {
                     return json_encode(array('status' => 'no_save'));
                 } else {
+                    if (\Input::get('name') == '') {
+                        
+                    }
                     if (\Input::get('id') == '') {
                         $save = self::saveValues('create');
                     } else {
