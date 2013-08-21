@@ -3,7 +3,7 @@
 	{{ Form::start("$adminUrl/user/edit/$user->id", 'user_edit_form', false, array('class' => 'form')) }}
   
     {{ Form::hidden('id', $user->id) }}
-		<div class="form-block">
+		<div class="form-block odd">
 			<label for="">{{ Form::label(t('user::user.displayName'), 'display_name') }}<span class="required"></span></label>
 			
 			<div class="double-field-block">
@@ -16,7 +16,7 @@
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form block -->
 
-		<div class="form-block">
+		<div class="form-block even">
     		<label for="">{{ Form::label(t('user::user.email'), 'email') }}<span class="required"></span></label>
       
   			<div class="form-right-block">
@@ -28,7 +28,7 @@
 			</div> <!-- end of form-right-block -->
         </div> <!-- end of form block -->
 
-        <div class="form-block">
+        <div class="form-block odd">
     		<label for="">{{ Form::label(t('user::user.lpassword'), 'password') }}<span class="required"></span></label>
       
   			<div class="form-right-block">
@@ -40,7 +40,7 @@
 			</div> <!-- end of form-right-block -->
         </div> <!-- end of form block -->
 
-        <div class="form-block">
+        <div class="form-block even">
     		<label for="">{{ Form::label(t('user::user.lconfPass'), 'confpass') }}<span class="required"></span></label>
       
   			<div class="form-right-block">
@@ -49,7 +49,7 @@
 			</div> <!-- end of form-right-block -->
         </div> <!-- end of form block -->
 
-        <div class="form-block">
+        <div class="form-block odd">
      		<label for="">{{ Form::label(t('user::user.lgroup'), 'group') }}</label>
       
       		{= $data = array() =}		
@@ -63,7 +63,7 @@
    		</div> <!-- end of form block -->
 
 
-      <div class="form-block">
+      <div class="form-block even">
         <label for="">{{ Form::label(t('user::user.lusername'), 'username') }}</label>
       
         <div class="form-right-block">
@@ -72,12 +72,12 @@
       </div> <!-- end of form-right-block -->
 
     </div> <!-- end of form block -->
-    <div class="form-block">
+    <div class="form-block odd">
         <label for="">{{ Form::label(t('user::user.lusername'), 'biography') }}</label>      
         {{ Form::textarea('biography', $usermeta->biography, array('id' => 'user-biography')) }}
     </div> <!-- end of form block -->
 
-    <div class="form-block">
+    <div class="form-block even">
         <label for="">{{ Form::label(t('user::user.lcountry'), 'country') }}</label>
       
         <div class="form-right-block">
@@ -85,7 +85,7 @@
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
-    <div class="form-block">
+    <div class="form-block odd">
         <label for="">{{ Form::label(t('user::user.lwebsite'), 'website') }}</label>
       
         <div class="form-right-block">
@@ -94,7 +94,7 @@
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
-    <div class="form-block">
+    <div class="form-block even">
         <label for="">{{ Form::label(t('user::user.lfacebook'), 'facebook') }}</label>
       
         <div class="form-right-block">
@@ -103,7 +103,7 @@
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
-    <div class="form-block">
+    <div class="form-block odd">
         <label for="">{{ Form::label(t('user::user.ltwitter'), 'twitter') }}</label>
       
         <div class="form-right-block">
@@ -112,7 +112,7 @@
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
-    <div class="form-block ckeck-block">
+    <div class="form-block ckeck-block even">
           <label for="checkbox">{{ Form::label(t('user::user.adminpanelaccess'), 'admin_access') }}</label>
           <div class="form-right-block clearfix">
             <label for="ckeckbox" class="inline-label">
@@ -126,7 +126,7 @@
     </div> <!-- end of form block -->
 		
 
-		<div>
+		<div class="form-block odd">
 		{{ Form::submit('submit', t('user::permission.edit'), array('id' => 'edit', 'class' => 'btn btn-green')) }}
 		<a href="{{ \Uri::create("$adminUrl/user/") }}" class="btn">{{ t('user::permission.cancel') }}</a>
 		</div>

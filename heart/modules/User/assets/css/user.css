@@ -1,0 +1,28 @@
+.form {
+	border: 1px solid #EFEFEF;
+}
+
+.form .even {
+	background: #F4F4F4;
+}
+.form .form-block {
+	padding: 10px;
+	margin-bottom: 0;
+}
+.form-block label {
+	width: 25%;
+}
+.form .form-right-block {
+	margin-left: 25%;
+}
+.form .form-right-block label {
+	margin-right: 15px;
+}
+.form-right-block p {
+	color: #878787;
+	font-size: 0.8em;
+}
+.form input[type="radio"], .form input[type="checkbox"] {
+	float: none;
+	margin: 0 5px 0 0;
+}

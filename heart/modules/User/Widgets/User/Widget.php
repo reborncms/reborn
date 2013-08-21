@@ -62,11 +62,11 @@ class Widget extends \Reborn\Widget\AbstractWidget
 		if(Sentry::check()) {
 			$user = Sentry::getUser();
 			
-			$title = $this->get('title', '');
+			$title = $this->get('title', 'User Panel');
 			$name = $user->first_name.' '.$user->last_name;
 			return $this->show(array('name' => $name, 'title' => $title));
 		} else {
-			$title = $this->get('title', '');
+			$title = $this->get('title', 'User Login');
 			return $this->show(array('title' => $title), 'login');
 		}
 	}

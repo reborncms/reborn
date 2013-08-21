@@ -11,7 +11,9 @@ class UserController extends \AdminController
 	public function before() 
 	{
 		$this->menu->activeParent('user_management');
+		$this->template->style('user.css', 'user');
 		$this->template->header = t('user::user.title.usermod');
+
 		if(!Sentry::check()) return \Redirect::to(adminUrl('login'));
 	}
 

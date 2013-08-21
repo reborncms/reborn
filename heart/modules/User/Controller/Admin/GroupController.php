@@ -9,6 +9,7 @@ class GroupController extends \AdminController
 	public function before() 
 	{
 		$this->menu->activeParent('user_management');
+		$this->template->style('user.css', 'user');
 		$this->template->header = \Translate::get('user::group.title');
 		if(!Sentry::check()) return \Redirect::to('login');
 	}
