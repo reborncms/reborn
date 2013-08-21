@@ -75,6 +75,23 @@ class ModuleController extends \AdminController
 		return \Redirect::toAdmin('module');
 	}
 
+	public function upgrade($name, $uri)
+	{
+		if (! $this->checkAction($name, $uri) ) {
+			return $this->notFound();
+		}
+
+		if (\Module::upgrade($name, $uri)) {
+			$msg = sprintf(t('module::module.upgrade_success'), $name);
+			\Flash::success($msg);
+		} else {
+			$msg = sprintf(t('module::module.upgrade_error'), $name);
+			\Flash::error($msg);
+		}
+
+		return \Redirect::toAdmin('module');
+	}
+
 	public function enable($name, $uri)
 	{
 		if (! $this->checkAction($name, $uri) ) {
