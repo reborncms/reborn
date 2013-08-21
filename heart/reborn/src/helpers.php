@@ -60,16 +60,15 @@ if(! function_exists('h'))
  * See detail at Translate::get()
  *
  * @param string $key
+ * @param array $replace Replace value for langauge string
  * @param string $default
- * @param string $locale
- * @param string $type Loader driver. Default is file.
  * @return void
  **/
 if(! function_exists('t'))
 {
-	function t($key, $default = null, $locale = null, $type = 'file')
+	function t($key, $replace = null, $default = null)
 	{
-		return \Translate::get($key, $default, $locale, $type);
+		return \Translate::get($key, $replace, $default);
 	}
 }
 

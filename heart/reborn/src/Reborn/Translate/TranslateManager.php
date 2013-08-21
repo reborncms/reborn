@@ -194,7 +194,7 @@ class TranslateManager
      **/
     protected static function replacer($str, $replace)
     {
-        foreach ($replace as $k => $v) {
+        foreach ((array) $replace as $k => $v) {
             $str = str_replace('{:'.$k.'}', $v, $str);
         }
 

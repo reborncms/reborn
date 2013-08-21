@@ -262,7 +262,7 @@ class Menu
 	 **/
 	protected function displayName($name)
 	{
-		$name = t('navigation.'.$name, ucwords(str_replace('_', ' ', $name)));
+		$name = t('navigation.'.$name, null, ucwords(str_replace('_', ' ', $name)));
 		return $name;
 	}
 
