@@ -247,7 +247,7 @@ EOT;
 
         $allowDefaultModule = $dialog->ask($output, "<question>Module is allow to set default module? (Yes, No) : </question>", null);
 
-        $prefix = $dialog->ask($output, "<question>lease enter the URI Prefix of the module : </question>", null);
+        $prefix = $dialog->ask($output, "<question>Please enter the URI Prefix of the module : </question>", null);
 
         $allowToChangeUriPrefix = $dialog->ask($output, "<question>Module is allow to change the Default URI Prefix? (Yes, No) : </question>", null);
 
