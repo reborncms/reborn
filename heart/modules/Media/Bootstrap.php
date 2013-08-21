@@ -13,7 +13,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
     public function boot()
     {
-        require __DIR__ . DS . 'Lib' . DS .'Helpers.php';
+        /*require __DIR__ . DS . 'Lib' . DS .'Helpers.php';*/
         \Translate::load('media::media', 'm');
     }
 
@@ -38,7 +38,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
                     'id'    => 'media_upload',
                 ),
                 'folder'    => array(
-                    'url'   => 'media/createFolder/',
+                    'url'   => 'media/create-folder/',
                     'name'  => \Translate::get('m.btn.create'),
                     'info'  => \Translate::get('m.info.create'),
                     'id'    => 'media_create_folder',
