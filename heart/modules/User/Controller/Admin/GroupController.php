@@ -31,9 +31,11 @@ class GroupController extends \AdminController
 		if (\Input::isPost()) {
 			
 			$v = $this->validate();
+			$e = new \Reborn\Form\ValidationError();
+
 			if ($v->fail()) {
-				$errors = $v->getErrors();
-				$this->template->set('errors', $errors);
+				$e = $v->getErrors();
+				$this->template->set('errors', $e);
 			} else {
 				$groupName = \Input::get('name');
 				$is_admin = (int)\Input::get('is_admin', 0);
@@ -69,9 +71,10 @@ class GroupController extends \AdminController
 		if (\Input::isPost()) {
 			
 			$v = $this->validate();
+			$e = new \Reborn\Form\ValidationError();
 			if ($v->fail()) {
-				$errors = $v->getErrors();
-				$this->template->set('errors', $errors);
+				$e = $v->getErrors();
+				$this->template->set('errors', $e);
 			} else {
 				$groupName = \Input::get('name');
 				$is_admin = (int)\Input::get('is_admin', 0);

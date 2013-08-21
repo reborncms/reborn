@@ -77,10 +77,11 @@ class UserController extends \AdminController
 		    );
 
 			$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+			$e = new \Reborn\Form\ValidationError();
 
 			if ($v->fail()) {
-				$errors = $v->getErrors();
-				$this->template->set('errors', $errors);
+				$e = $v->getErrors();
+				$this->template->set('errors', $e);
 			} else {
 				$email = \Input::get('email');
 				$first_name = \Input::get('first_name');
@@ -142,7 +143,6 @@ class UserController extends \AdminController
 
 		if (\Input::isPost()) {
 			
-
 			$rule = array(
 		        'email' => 'required|email',
 		        'first_name' =>'required|minLength:2|maxLength:15',
@@ -150,10 +150,11 @@ class UserController extends \AdminController
 		    );
 
 			$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+			$e = new \Reborn\Form\ValidationError();
 
 			if ($v->fail()) {
-				$errors = $v->getErrors();
-				$this->template->set('errors', $errors);
+				$e = $v->getErrors();
+				$this->template->set('errors', $e);
 			} else {
 				$email = \Input::get('email');
 				$first_name = \Input::get('first_name');
