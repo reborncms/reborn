@@ -8,7 +8,7 @@ use Reborn\Util\Pagination as Pagination;
 class ContactController extends \AdminController
 {
 	public function before() {
-		$this->menu->activeParent('email');
+		$this->menu->activeParent(\Module::getData('contact', 'uri'));
 		$this->template->style('contact.css', 'contact');
 	}
 

@@ -12,11 +12,12 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
-		$menu->add('email', t('label.email'), '#', null,'icon-mail', 27);
-		$menu->add('contact', t('contact::contact.inbox'),$modUri, 'email', null, 27);
-		$menu->add('reply', t('contact::contact.s_mail'),$modUri.'/send-mail', 'email', null, 27);
-		$menu->add('etemplate', t('contact::contact.e_template'),$modUri.'/email-template', 'email', null, 27);
-		/*$menu->add('cform', 'Contact Form',$modUri.'/contact-form', 'email', null, 27);*/
+		$childs = array(
+			array('title' => t('contact::contact.inbox'), 'uri' => '' ),
+			array('title' => t('contact::contact.s_mail'), 'uri' => 'send-mail' ),
+			array('title' => t('contact::contact.e_template'), 'uri' => 'email-template'),
+			);
+		$menu->group($modUri,'Email','icon-mail',27,$childs);
 	}
 
 	public function moduleToolbar()
