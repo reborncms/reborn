@@ -197,11 +197,17 @@ class Validation
     /**
      * Get the Validation Errors. If doesn't have any validation error, return null
      *
-     * @return array|null
+     * @return ValidationError
      **/
     public function getErrors()
     {
-        return (count($this->errors) !== 0) ? $this->errors : null;
+        $container = new ValidationError();
+
+        if (count($this->errors) !== 0) {
+            $container->setErrors($this->errors);
+        }
+
+        return $container;
     }
 
     /**
