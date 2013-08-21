@@ -1,7 +1,7 @@
 <?php
 
 namespace Media;
-//
+
 /**
  * Bootstrapt class for media module
  *
@@ -13,6 +13,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
     public function boot()
     {
+        require __DIR__ . DS . 'Lib' . DS .'Helpers.php';
         \Translate::load('media::media', 'm');
     }
 
@@ -47,7 +48,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
         return $mod_toolbar;
     }
 
-    public function eventRegister ()
+    public function register ()
     {
         // Nothing to do now
     }
