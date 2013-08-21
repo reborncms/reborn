@@ -25,7 +25,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		return array();
 	}
 
-	public function eventRegister() 
+	public function register() 
 	{
 		$file = realpath(__DIR__).DS.'Events'.DS.'register.php';
 
