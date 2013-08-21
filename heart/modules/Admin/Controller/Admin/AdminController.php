@@ -3,8 +3,6 @@
 namespace Admin\Controller\Admin;
 
 use Reborn\Connector\Sentry\Sentry;
-use Admin\Model\User;
-use Admin\Model\Blog;
 use Admin\Presenter\DashboardWidget;
 
 class AdminController extends \AdminController
@@ -13,19 +11,11 @@ class AdminController extends \AdminController
 
 	public function index()
 	{
-		$last_login = User::take(5)->orderBy('last_login', 'desc')->get();
-
-		if (\Module::isEnabled('Blog')) {
-			$last_post = Blog::with('author')->take(5)->orderBy('created_at', 'desc')->get();
-			$this->template->set('last_post', $last_post);
-		}
-
 		$widgets['fullcolumn'] = new DashboardWidget(\Event::call('reborn.dashboard.widgets.fullcolumn'));
 		$widgets['leftcolumn'] = new DashboardWidget(\Event::call('reborn.dashboard.widgets.leftcolumn'));
 		$widgets['rightcolumn'] = new DashboardWidget(\Event::call('reborn.dashboard.widgets.rightcolumn'));
 
 		$this->template->title(\Setting::get('site_title').' - '.t('label.dashboard'))
-						->set('last_login', $last_login)
 						->set('widgets', $widgets)
 						->setPartial('dashboard');
 	}
