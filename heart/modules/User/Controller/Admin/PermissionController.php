@@ -99,7 +99,7 @@ class PermissionController extends \AdminController
 				->set('groupPermissions', $groupPermissions)
 				->set('permission_modules', $permission_modules)
 				->set('group', $group)
-				->script('users.js', 'user', 'footer')
+				->script('user.js', 'user', 'footer')
 				->setPartial('admin/permission/edit');
 	}
 }

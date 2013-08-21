@@ -5,6 +5,8 @@ $('.inline-label input').bind('click', function(){
 		col = $(row).find('td:first-child'),
 		checked = $(group).find("input:checked");
 
+	console.log(val);
+
 	if (checked.length > 0) {
 		var mod = $(col).find('input');
 

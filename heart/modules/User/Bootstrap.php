@@ -65,7 +65,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		return $mod_toolbar;
 	}
 
-	public function eventRegister()
+	public function register()
 	{
 		// Laster
 		require __DIR__.DS."helpers.php";
