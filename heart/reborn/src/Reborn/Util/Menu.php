@@ -128,12 +128,63 @@ class Menu
 	}
 
 	/**
+	 * Add Navigation Menu with group.
+	 *
+	 * @param string $prefix ModuleUriPrefix. (eg: blog)
+	 * @param string $title Menu Item Title(display on View)
+	 * @param string $icon Menu Icon class name
+	 * @param int $order Menu Order
+	 * @param array $childs Childs menu for this group
+	 * @return Reborn\Util\Menu
+	 **/
+	public function group($prefix, $title, $icon = null, $order = 35, $childs = array())
+	{
+		$order = is_integer($icon) ? $icon : $order;
+		$icon = is_integer($icon) ? null : $icon;
+
+		// Add Parent Menu with URI
+		$uri = empty($childs) ? $prefix : '#';
+		$this->add($prefix, $title, $uri, null, $icon, $order);
+
+		// Prepare Childs Menu Items if exists
+		if (empty($childs)) return $this;
+
+		$child_order = 10;
+		foreach ($childs as $key => $item) {
+			list($name, $title, $url) = $this->prepareChildAttributes($prefix, $item);
+
+			$this->add($name, $title, $url, $prefix, null, $child_order);
+
+			$child_order = $child_order + 10;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Prepare Child Menu's Attributes for Menu::group()
+	 *
+	 * @param string $prefix ModuleUri Prefix for menu item url.
+	 * @param array $item Menu Item array
+	 * @return array
+	 **/
+	protected function prepareChildAttributes($prefix, $item)
+	{
+		$title = isset($item['title']) ? $item['title'] : 'Unknown';
+		$url = isset($item['uri']) ?  $prefix.'/'.ltrim($item['uri']) : $prefix.'#';
+		$name = isset($item['name']) ? $item['name'] : strtolower($title);
+
+		return array($name, $title, $url);
+	}
+
+	/**
 	 * Add the new menu item.
 	 *
 	 * @param string $name Menu Item Name
 	 * @param string $title Menu Item Title(display on View)
 	 * @param string $link Menu Item URI string
 	 * @param string $parent Parent menu name for this item
+	 * @param string $icon Menu Icon class name
 	 * @param integer $order Menu Order number
 	 * @return void
 	 **/
