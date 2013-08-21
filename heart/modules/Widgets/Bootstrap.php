@@ -28,8 +28,6 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 	public function register() 
 	{
 		$file = realpath(__DIR__).DS.'Events'.DS.'register.php';
-
-		\Module::load('Widgets');
 		
 		\Event::on('reborn.parser.create', function($parser) use ($file) {
 			require $file;

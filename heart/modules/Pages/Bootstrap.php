@@ -39,7 +39,6 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
     }
 
     public function register() {
-        \Module::load('Pages');
 
         \Event::on('user_deleted', function($user){
             return \Pages\Lib\Helper::changeAuthor($user->id);
