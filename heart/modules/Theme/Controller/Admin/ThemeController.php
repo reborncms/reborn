@@ -82,6 +82,8 @@ class ThemeController extends \AdminController
 				array('file' => 'required')
 			);
 
+			$e = new \Reborn\Form\ValidationError();
+
 			if ($v->valid()) {
 
 				if (Upload::isSuccess()) {
@@ -134,7 +136,8 @@ class ThemeController extends \AdminController
 					return \Redirect::toAdmin('theme/upload');
 				}
 			} else {
-				\Flash::error(implode("\n\r", $v->getErrors()));
+				$e = $v->getErrors();
+				\Flash::error(implode("\n\r", $e));
 			}			
 		}
 

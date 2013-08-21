@@ -63,10 +63,11 @@ class UserController extends \PublicController
 		        'password' => 'required|mixLength:6',
 		    );
 			$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+			$e = new \Reborn\Form\ValidationError();
 
 			if ($v->fail()) {
-					$errors = $v->getErrors();
-					$this->template->set('errors', $errors);
+					$e = $v->getErrors();
+					$this->template->set('errors', $e);
 			} else {
 				try
 				{
@@ -142,9 +143,11 @@ class UserController extends \PublicController
 			if($user->id == $editUser->id ) {
 
 				$v = $this->validate();
+				$e = new \Reborn\Form\ValidationError();
+
 				if ($v->fail()) {
-					$errors = $v->getErrors();
-					$this->template->errors = $errors;
+					$e = $v->getErrors();
+					$this->template->set('errors', $e);
 				} else {
 					$email = \Input::get('email');
 					$first_name = \Input::get('first_name');
@@ -196,10 +199,11 @@ class UserController extends \PublicController
 		        'newPassword' => 'required|minLength:6',
 		    );
 			$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+			$e = new \Reborn\Form\ValidationError();
 
 			if ($v->fail()) {
-					$errors = $v->getErrors();
-					$this->template->set('errors', $errors);
+					$e = $v->getErrors();
+					$this->template->set('errors', $e);
 			} else {
 				try {
 				    $user = Sentry::getUser();
@@ -248,9 +252,11 @@ class UserController extends \PublicController
 		if (\Input::isPost()) {		
 			
 			$v = $this->validate();
+			$e = new \Reborn\Form\ValidationError();
+
 			if ($v->fail()) {
-				$errors = $v->getErrors();
-				$this->template->errors = $errors;
+				$e = $v->getErrors();
+				$this->template->set('errors', $e);
 			} else {
 				$email = \Input::get('email');
 				$first_name = \Input::get('first_name');
@@ -356,10 +362,11 @@ class UserController extends \PublicController
 		        'email' => 'required|email',
 		    );
 			$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+			$e = new \Reborn\Form\ValidationError();
 
 			if ($v->fail()) {
-					$errors = $v->getErrors();
-					$this->template->set('errors', $errors);
+					$e = $v->getErrors();
+					$this->template->set('errors', $e);
 			} else {
 				$email = \Input::get('email');
 				try
@@ -412,10 +419,11 @@ class UserController extends \PublicController
 		        'new_password' => 'required|minLength:6',
 		    );
 			$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+			$e = new \Reborn\Form\ValidationError();
 
 			if ($v->fail()) {
-					$errors = $v->getErrors();
-					$this->template->set('errors', $errors);
+					$e = $v->getErrors();
+					$this->template->set('errors', $e);
 			} else {
 
 				$newPassword = \Input::get('new_password');
@@ -496,10 +504,11 @@ class UserController extends \PublicController
 				'password' => 'required|minLength:6',
 			);
 			$validatePassword = new \Reborn\Form\Validation(\Input::get('*'), $passwordRule);
+			$e = new \Reborn\Form\ValidationError();
 
 			if ($validatePassword->fail()) {
-				$errors = $validatePassword->getErrors();
-				\Flash::error($errors);
+				$e = $validatePassword->getErrors();
+				\Flash::error($e);
 			} else {
 				if ($password) {
 					if($password == $confpass) {
