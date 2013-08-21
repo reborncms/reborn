@@ -73,15 +73,23 @@ class Module
 	{
         $this->modules = $modules;
 
-        $autoload = Config::get('app.module.autoload');
-
-        foreach ($autoload as $load) {
-            $this->load($load);
-        }
-
-        // Register Installed Module
-        $this->registerInstalledModules();
+        // Load all enable modules
+        $this->loadEnableModules();
 	}
+
+    /**
+     * Register for Installed Modules
+     *
+     * @return void
+     **/
+    public function registerInstalledModules()
+    {
+        // First register the core modules
+        $this->coreModulesRegister();
+
+        // Second register the addon modules
+        $this->otherModulesRegister();
+    }
 
 	/**
      * Get the all modules
@@ -267,12 +275,26 @@ class Module
             $loader = new Loader();
             $loader->add($moduleName, $path);
             $loader->register();
-            $this->loadedModules[$moduleName] = true;
+            $this->loaded[$moduleName] = true;
 
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Load Enabled Modules
+     *
+     * @return void
+     **/
+    protected function loadEnableModules()
+    {
+        $enabled_modules = $this->getModulesByFilter('enabled', true);
+
+        foreach ($enabled_modules as $name => $attrs) {
+            $this->load($name);
+        }
     }
 
     /**
@@ -486,25 +508,11 @@ class Module
     }
 
     /**
-     * Register for Installed Modules
-     *
-     * @return void
-     **/
-    protected function registerInstalledModules()
-    {
-        // First register the core modules
-        $this->coreModulesRegiister();
-
-        // Second register the addon modules
-        $this->otherModulesRegister();
-    }
-
-    /**
      * Register Core Modules.
      *
      * @return void
      **/
-    protected function coreModulesRegiister()
+    protected function coreModulesRegister()
     {
         $cores = $this->getModulesByFilter('isCore', true);
 
@@ -524,7 +532,7 @@ class Module
      *
      * @return void
      **/
-    protected function otherModulesRegiister()
+    protected function otherModulesRegister()
     {
         $addons = $this->getModulesByFilter('isCore', false);
 

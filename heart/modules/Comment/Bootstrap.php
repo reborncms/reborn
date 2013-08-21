@@ -13,7 +13,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
 		$menu->add('Comment', t('comment::comment.comment.plu'), $modUri, 'content', '', 35);
-		
+
 	}
 
 	public function moduleToolbar()
@@ -21,10 +21,10 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		$uri = \Uri::segment(3);
 
 		$mod_toolbar = array();
-		
+
 		return $mod_toolbar;
 	}
-	
+
 	public function settings()
 	{
 		return array(
@@ -46,11 +46,9 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 			),
 		);
 	}
-	
+
 	public function register()
 	{
-		\Module::load('Comment');
-
 		\Event::on('user_deleted', function($user){
 			return \Comment\Lib\Helper::userDeleted($user);
 		});

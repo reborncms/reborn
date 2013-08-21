@@ -68,6 +68,8 @@ class ModuleManager
         $allMods = static::moduleSetup($modulesFromFolder, $modulesFromDB);
 
         static::$mod = new Module($allMods);
+
+        static::$mod->registerInstalledModules();
     }
 
     /**
