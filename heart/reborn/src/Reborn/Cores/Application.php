@@ -53,7 +53,7 @@ class Application extends \Pimple
         $this['response'] = Response::create(null);
 
         $this['router'] =  $this->share(function ($this) {
-            return new Router();
+            return new Router($this);
         });
 
         $this['log'] = $this->share(function () {

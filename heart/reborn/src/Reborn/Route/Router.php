@@ -3,7 +3,7 @@
 namespace Reborn\Route;
 
 use ReflectionClass;
-use Reborn\Cores\Registry;
+use Reborn\Cores\Application;
 use Reborn\Filesystem\File;
 use Reborn\Http\Uri;
 use Reborn\Http\Input;
@@ -43,13 +43,21 @@ class Router
     protected $admin;
 
     /**
+     * Applicaion Object
+     *
+     * @var Reborn\Core\Application
+     **/
+    protected $app;
+
+    /**
      * Constructor Method
      *
      * @return void
      **/
-    public function __construct()
+    public function __construct(Application $app)
     {
-        $this->request = Registry::get('app')->request;
+        $this->app = $app;
+        $this->request = $app->request;
 
         $this->admin = \Setting::get('adminpanel_url');
 
@@ -212,7 +220,7 @@ class Router
             return null;
         }
 
-        $route = new \stdClass();
+        $route = new Map();
         // Set Module
         $route->module = $module;
         // Set Controller
@@ -245,69 +253,13 @@ class Router
      **/
     protected function callbackController($route)
     {
-        $module = $route->module;
-        $controller = '\\'.$module.'\Controller\\'.$route->controller.'Controller';
-        $action = $route->action;
-        $params = $route->params;
-
-        // Prevent Direct call the callByMethod
-        if ('callByMethod' === $action) {
-            throw new HttpNotFoundException("Request Method is not callable method!");
-        }
-
-        // Set the active at request
-        $this->request->module = $module;
-        $this->request->controller = $controller;
-        $this->request->action = $action;
-        $this->request->params = $params;
-
-        if (!Module::isEnabled($module)) {
+        if (!Module::isEnabled($route->module)) {
             return $this->notFound();
         }
 
-        Module::load($module);
+        $resolver = new ControllerResolver($this->app, $route);
 
-        if (class_exists($controller)) {
-
-            // Call the active Module's Boot Method
-            Module::boot($module);
-
-            $reflect = new ReflectionClass($controller);
-
-            $controllerClass = $reflect->newInstance();
-
-            // Method (Action) Not Found
-            if (! $reflect->hasMethod($action) ) {
-                throw new HttpNotFoundException("Request Method is not found!");
-            }
-
-            $method = $reflect->getMethod($action);
-
-            // Check method is public or not
-            if (! $method->isPublic()) {
-                throw new HttpNotFoundException("Request Method is not public method!");
-            }
-
-            \Event::call('reborn.controller.process.starting');
-
-            // Call the Controller class's before method.
-            $reflect->getMethod('before')->invoke($controllerClass);
-
-            // Call the action method
-            $args = array($action, $params);
-            $response = $reflect->getMethod('callByMethod')
-                                    ->invokeArgs($controllerClass, (array)$args);
-
-            // Call the Controller class's after method.
-            $response = $reflect->getMethod('after')
-                                ->invoke($controllerClass, $response);
-
-            \Event::call('reborn.controller.process.ending', array($response));
-
-            return $response;
-        } else { // Class doesn't exit, so we throw HTTPNotFound
-            throw new HttpNotFoundException("Request Class is not found!");
-        }
+        return $resolver->solve();
     }
 
     /**
