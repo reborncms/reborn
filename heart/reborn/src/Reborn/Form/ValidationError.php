@@ -66,6 +66,27 @@ class ValidationError implements ArrayAccess
     }
 
     /**
+     * Get error message as array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+    	return $this->errors;
+    }
+
+    /**
+     * Get error message as json
+     *
+     * @param integer $options
+     * @return string
+     */
+    public function toJson($options = 0)
+    {
+    	return json_encode($this->errors, $options);
+    }
+
+    /**
      * Magic setter method
      *
      * @param string $key

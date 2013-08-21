@@ -83,7 +83,7 @@ class SettingController extends \AdminController
 			// Form Validation Error
 			$errors = $v->getErrors();
 			// Assign session for errors
-			\Flash::error($errors);
+			\Flash::error($errors->toArray());
 		}
 
 		return \Redirect::toAdmin('setting/'.$type);
