@@ -101,7 +101,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 			);
 	}
 
-	public function eventRegister()
+	public function register()
 	{
 		
 	}
