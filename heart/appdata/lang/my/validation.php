@@ -21,5 +21,5 @@ return array(
 	'color'			=> "ဒီ {key} သည် 6-digits color hexadecimal code ဖြစ်ရမည်။",
 	'pattern'		=> "ဒီ {key} သည် ဖွဲ့စည်းပုံ မမှန်ပါ။",
 	'unique'		=> "ဒီ {key} သည် တစ်ခုတည်းဖြစ်ရမည်။ {value} သည် database ထဲတွင် ရှိပြီးသားဖြစ်သည်။"
-
+	'slug_duplicate'=> '*** ဒီနာမည်နှင့် slug ရှိပြီးသားဖြစ်နေပါသည်။ တခြားနာမည်တစ်ခုပြန်ရွေးစေလိုပါတယ်။',
 );

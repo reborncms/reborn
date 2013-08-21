@@ -69,5 +69,9 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 	{
 		// Laster
 		require __DIR__.DS."helpers.php";
+
+		\Event::on('reborn.dashboard.widgets.rightcolumn', function(){
+			return \User\Lib\Helper::dashboardWidget();
+		});
 	}
 }

@@ -101,4 +101,33 @@ class Helper
 		}
 		return $com;
 	}
+
+	public static function dashboardWidget()
+	{
+		$widget = array();
+		$widget['title'] = 'Latest Blog Posts';
+		$widget['icon'] = 'icon-comment';
+		$widget['id'] = 'comment';
+		$widget['body'] = '';
+		$comments = self::getLatestComments(5);
+		$widget['body'] .= '<ul>';
+		if (!empty($comments)) {
+			foreach ($comments as $comment) {
+				$widget['body'] .= '<li>
+										<span class="date">'.rbDate($comment->created_at).'</span>
+										<span class="commenter">'.$comment->name.'</span>
+										commented at
+										<span class="cmt-module">'. ucfirst($comment->module) .'</span>
+										on
+										<span class="cmt-title">'. $comment->content_title .'</span>
+									</li>';
+			}
+		} else {
+			$widget['body'] .= '<li><span class="empty-list">'.t('label.last_comment_empty').'</span></li>';
+		}
+		$widget['body'] .= '</ul>';
+
+		return $widget;
+	}
+
 }

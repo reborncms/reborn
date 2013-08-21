@@ -10,17 +10,19 @@
                         {{ if(isset($val_errors['title'])) }}
                             <span class="msg error">{{ $val_errors['title'] }}</span>
                         {{ endif }}
-                        {{ Form::input('title', isset($blog->title) ? $blog->title : '' ,'text',array('class' => 'xx-large', 'id' => 'form_title')) }}
+                        {{ Form::input('title', isset($blog->title) ? $blog->title : '' ,'text',array('class' => 'xx-large', 'id' => 'form_title', 'required' => 'required')) }}
                     </div> <!-- end of form-right-block -->
                 </div> <!-- end of form-block -->
 
                 <div class="form-block first-block" id="title-slug">
                     {{ Form::label(t('blog::blog.slug').'<span class="required"></span>','slug') }}
                     <div class="form-right-block">
-                        {{ if(isset($val_errors['slug'])) }}
-                            <span class="msg error">{{ $val_errors['slug'] }}</span>
-                        {{ endif }}
-                        {{ Form::input('slug', isset($blog->slug) ? $blog->slug : '','text',array('class' => 'xx-large', 'id' => 'form_slug')) }}
+                        <span class="msg error" id="slug_error">
+                            {{ if(isset($val_errors['slug'])) }}
+                                {{ $val_errors['slug'] }}
+                            {{ endif }}
+                        </span>
+                        {{ Form::input('slug', isset($blog->slug) ? $blog->slug : '','text',array('class' => 'xx-large', 'id' => 'form_slug', 'required' => 'required')) }}
                     </div> <!-- end of form-right-block -->
                 </div> <!-- end of form block -->
 
@@ -34,7 +36,7 @@
                 <div class="form-block">
                     {{ Form::label(t('blog::blog.excerpt'), 'form_excerpt') }}
                     <div class="form-right-block">
-                        {{ Form::textarea('excerpt', isset($blog->excerpt) ? $blog->excerpt : '', array('style' => 'width:90%')) }}
+                        {{ Form::textarea('excerpt', isset($blog->excerpt) ? $blog->excerpt : '', array('style' => 'width:90%', 'required' => 'required')) }}
                     </div> <!-- end of form-right-block -->
                 </div> <!-- end of form block -->
             </div> <!-- end of form-left -->

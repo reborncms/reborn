@@ -20,6 +20,7 @@ return array(
 	'equal'			=> "The {key} must be equal with {equal}",
 	'color'			=> "The {key} must be 6-digits color hexadecimal code",
 	'pattern'		=> "The {key} format is invalid",
-	'unique'		=> "This {key} field must be unique. {value} is already exists in database."
+	'unique'		=> "This {key} field must be unique. {value} is already exists in database.",
+	'slug_duplicate'=> '*** Slug with this name already exist.Please choose another slug.',
 
 );
