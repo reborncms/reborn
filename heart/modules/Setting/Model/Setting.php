@@ -4,6 +4,6 @@ namespace Setting\Model;
 
 class Setting extends \Eloquent
 {
-    protected $table = 'setting';
+    protected $table = 'settings';
 
 }
