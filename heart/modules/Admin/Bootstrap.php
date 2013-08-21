@@ -22,6 +22,6 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		return array();
 	}
 
-	public function eventRegister() {}
+	public function register() {}
 
 }

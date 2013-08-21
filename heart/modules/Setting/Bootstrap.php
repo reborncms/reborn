@@ -37,6 +37,9 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		return $mod_toolbar;
 	}
 
-	public function eventRegister() {}
+	public function register()
+	{
+
+	}
 
 }
