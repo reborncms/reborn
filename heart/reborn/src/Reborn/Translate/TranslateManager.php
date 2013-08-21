@@ -34,6 +34,13 @@ class TranslateManager
         );
 
     /**
+     * File Loader name
+     *
+     * @var string
+     **/
+    protected static $loader = 'file';
+
+    /**
      * Variable for File path (Module Path, Theme Path)
      *
      * @var array
@@ -78,6 +85,19 @@ class TranslateManager
         static::setPath();
         static::$locale = $locale;
         static::$fallback_locale = $fallback_locale;
+    }
+
+    /**
+     * Set File Loader
+     *
+     * @param string $loader File Loader Key Name
+     * @return void
+     **/
+    public static function setLoader($loader)
+    {
+        if (isset(static::$fileLoaders[$loader])) {
+            static::$loader = $loader;
+        }
     }
 
     /**
@@ -133,34 +153,52 @@ class TranslateManager
      * Get the language resource string.
      *
      * @param string $key
+     * @param array $replace Replace value for langauge string
      * @param string $default Default result, will return not found $key
-     * @param string $locale
-     * @param string $type
      * @return string|null
      **/
-    public static function get($key, $default = null, $locale = null, $type = 'file')
+    public static function get($key, $replace = null, $default = null)
     {
-        $locale = is_null($locale) ? static::$locale : $locale;
         $k = explode('.', $key);
+
+        $locale = static::$locale;
 
         // If data does't exits in cache, call the load()
         if (!isset(static::$caches[$locale][$k[0]])) {
-            static::load($k[0], null, $locale, $type);
+            static::load($k[0]);
         }
 
-        if (isset(static::$fileLoaders[$type])) {
-            $loaderClass = static::$fileLoaders[$type];
-        } else {
-            throw new RbException("File Loader {$type} is not supported driver!");
-        }
+        $loaderClass = static::$fileLoaders[static::$loader];
 
         if (isset(static::$caches[$locale][$k[0]])) {
             $data = static::$caches[$locale][$k[0]];
             $class = new $loaderClass();
-            return $class->get($key, $data, $default);
+            $lang = $class->get($key, $data, $default);
+
+            if(is_null($replace)) {
+                return $lang;
+            }
+
+            return static::replacer($lang, $replace);
         }
 
         return $default;
+    }
+
+    /**
+     * String replacae with key and value
+     *
+     * @param string $str Language string
+     * @param array $replace Replace data
+     * @return string
+     **/
+    protected static function replacer($str, $replace)
+    {
+        foreach ($replace as $k => $v) {
+            $str = str_replace('{:'.$k.'}', $v, $str);
+        }
+
+        return $str;
     }
 
 } // END class Translate Manager
