@@ -252,9 +252,6 @@ class Application extends \Pimple
         // Start the Module initialize
         Module::initialize();
 
-        // Load Event from the Enable Modules
-        Event::loadFromModules();
-
         // Start the Uri initialize
         Uri::initialize($this->request);
 

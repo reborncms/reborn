@@ -40,8 +40,8 @@ abstract class AbstractBootstrap
 	abstract public function moduleToolbar();
 
 	/**
-	 * Abstract function for the event register
+	 * Abstract function for the module register
 	 */
-	abstract public function eventRegister();
+	abstract public function register();
 
 } // End class AbstractBootstrap

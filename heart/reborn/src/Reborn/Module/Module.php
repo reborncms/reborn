@@ -78,6 +78,9 @@ class Module
         foreach ($autoload as $load) {
             $this->load($load);
         }
+
+        // Register Installed Module
+        $this->registerInstalledModules();
 	}
 
 	/**
@@ -283,8 +286,20 @@ class Module
      */
     public function install($module, $uri, $setEnable = false, $refresh = true)
     {
-        if (false === $this->modules[$module]['installed'])
-        {
+        if (false === $this->modules[$module]['installed']) {
+
+            try {
+                $class = $this->getInstaller($module);
+
+                if ($class) {
+                    if ($class instanceof AbstractInstaller) {
+                        $class->install();
+                    }
+                }
+            } catch (\Exception $e) {
+                return false;
+            }
+
             // Install the Module Data into DB table
             $id = DB::table($this->_table)
                     ->insertGetId(array(
@@ -296,24 +311,14 @@ class Module
                         )
                     );
             if ($id) {
-                $class = $this->getInstaller($module);
-
-                if ($class) {
-                    if ($class instanceof AbstractInstaller) {
-                        $class->install();
-                    }
-                }
-
                 if ($refresh) {
                     // Refresh the map cache
                     $this->mapRefresh();
                 }
 
-                return true;
+                 return true;
             }
-        }
-        else
-        {
+        } else {
             throw new ModuleException(sprintf($this->alreadyInstalled, $module));
         }
 
@@ -334,7 +339,12 @@ class Module
         // If given module has Initialize.php File, call the uninstall method
         if ($class) {
             if ($class instanceof AbstractInstaller) {
-                $class->uninstall();
+
+                try {
+                    $class->uninstall();
+                } catch (\Exception $e) {
+                    return false;
+                }
 
                 DB::table($this->_table)
                     ->where('uri', '=', $uri)
@@ -363,12 +373,13 @@ class Module
 
         if ($class) {
             if ($class instanceof AbstractInstaller) {
-                $class->upgrade($this->modules[$module]['dbVersion']);
+                try {
+                    $class->upgrade($this->modules[$module]['dbVersion']);
+                } catch (\Exception $e) {
+                    return false;
+                }
             }
         }
-
-        // Delete the Route Map File
-        //File::delete(STORAGES.'routes'.DS.'map.php');
 
         // Upgrade the DB's Module Version
         $newVersion = $this->modules[$module]['version'];
@@ -472,6 +483,80 @@ class Module
         } else {
             return false;
         }
+    }
+
+    /**
+     * Register for Installed Modules
+     *
+     * @return void
+     **/
+    protected function registerInstalledModules()
+    {
+        // First register the core modules
+        $this->coreModulesRegiister();
+
+        // Second register the addon modules
+        $this->otherModulesRegister();
+    }
+
+    /**
+     * Register Core Modules.
+     *
+     * @return void
+     **/
+    protected function coreModulesRegiister()
+    {
+        $cores = $this->getModulesByFilter('isCore', true);
+
+        foreach ($cores as $name => $core) {
+
+            if(!$this->isEnabled($name)) {
+                continue;
+            }
+
+            $bootstrap = $this->getBootstrap($name);
+            $bootstrap->register();
+        }
+    }
+
+    /**
+     * Register Addon Modules.
+     *
+     * @return void
+     **/
+    protected function otherModulesRegiister()
+    {
+        $addons = $this->getModulesByFilter('isCore', false);
+
+        foreach ($addons as $name => $addon) {
+
+            if(!$this->isEnabled($name)) {
+                continue;
+            }
+
+            $bootstrap = $this->getBootstrap($name);
+            $bootstrap->register();
+        }
+    }
+
+    /**
+     * Get modules by filter on their key and value
+     *
+     * @param string $key Module's data key name
+     * @param mixed $value Value for Module's data key
+     * @return array
+     **/
+    protected function getModulesByFilter($key, $value)
+    {
+        $all = $this->modules;
+
+        $modules = array();
+
+        $modules = array_filter($all, function($m) use($key, $value) {
+            return ($value == $m[$key]);
+        });
+
+        return $modules;
     }
 
     /**

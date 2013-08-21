@@ -48,29 +48,6 @@ class EventManager
 	}
 
 	/**
-	 * Load from the Modules Event
-	 */
-	public static function loadFromModules()
-	{
-		$all = Module::getAll();
-
-        foreach ($all as $name => $data) {
-
-            if (Module::isEnabled($name)) {
-
-            	$bootstrap = $data['path'].'Bootstrap.php';
-
-            	require $bootstrap;
-
-            	$class = $name.'\Bootstrap';
-                $class = new $class(\Registry::get('app'));
-
-                $class->eventRegister();
-            }
-        }
-	}
-
-	/**
 	 * Call the method by PHP Magic method _callStatic
 	 *
 	 */
