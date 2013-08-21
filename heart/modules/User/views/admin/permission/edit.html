@@ -7,7 +7,7 @@
 <table class="stripe">
 	<thead>
 		<tr>
-			<th width=20px ></th>
+			<th>{{ Form::checkbox('', 1, array('id'=>'check-all', 'name' => 'action_to_all', 'class' => 'check-all', 'title' => 'Check All')) }}
 			<th>{{ t('user::permission.modules') }}</th>
 			<th>{{ t('user::permission.moduleAcitons') }}</th>
 		</tr>

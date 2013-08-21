@@ -14,13 +14,17 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
-		$menu->add('user', t('user::user.menu'), $modUri, 'user_management');
+		$childs = array();
+
+		$childs[] = array('title' => t('user::user.menu'), 'uri' => '');
 		if (user_has_access('user.group')) {
-		$menu->add('group', t('user::group.menu'), $modUri.'/group', 'user_management');
+			$childs[] = array('title' => t('user::group.menu'), 'uri' => 'group');
 		}
 		if (user_has_access('user.permission')) {
-			$menu->add('permission', t('user::permission.menu'), $modUri.'/permission', 'user_management');
+			$childs[] = array('title' => t('user::permission.menu'), 'uri' => 'permission');
 		}
+			
+		$menu->group($modUri, t('navigation.user_management'), 'icon-users', 27, $childs);
 	}
 
 	public function settings()

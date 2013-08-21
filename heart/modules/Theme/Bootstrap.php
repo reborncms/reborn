@@ -17,6 +17,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		if (user_has_access('theme.editor')) {
 			$menu->add('theme-editor', t('theme::editor.menu'), $modUri.'/editor', 'appearance', $order = 36);
 		}
+
 	}
 
 	public function settings()
