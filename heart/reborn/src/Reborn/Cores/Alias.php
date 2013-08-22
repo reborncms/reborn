@@ -62,6 +62,7 @@ class Alias
             'Translate' => 'Reborn\Translate\TranslateManager',
             'Uri' => 'Reborn\Http\Uri',
             'Validation' => 'Reborn\Form\Validation',
+            'ViewData' => 'Reborn\MVC\View\ViewData',
             'Widget' => 'Reborn\Widget\Widget',
             'AbstractWidget' => 'Reborn\Widget\AbstractWidget'
         );

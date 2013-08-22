@@ -140,6 +140,31 @@ class Theme
         throw new FileNotFoundException("info.php", 'theme '.$theme);
     }
 
+    /**
+     * Get the theme config from active theme's info file or given theme name
+     *
+     * @param string $name Theme name, if you set this value is null
+     *                      return config from active theme
+     * @param boolean $frontend_only Only theme from frontend theme path
+     * @return array
+     **/
+    public function config($name = null, $frontend_only = false)
+    {
+        $theme = is_null($name) ? $this->theme : $name;
+
+        if ($frontend_only) {
+            if(File::is(THEMES.$theme.DS.'config.php')) {
+                return require THEMES.$theme.DS.'config.php';
+            }
+        } else {
+            if(File::is($this->path.$theme.DS.'config.php')) {
+                return require $this->path.$theme.DS.'config.php';
+            }
+        }
+
+        throw new FileNotFoundException("config.php", 'theme '.$theme);
+    }
+
 
     /**
      * Find the Widgets from theme

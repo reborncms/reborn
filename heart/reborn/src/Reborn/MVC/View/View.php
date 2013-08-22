@@ -171,16 +171,6 @@ class View implements ArrayAccess
     }
 
     /**
-     * Print the Variable
-     *
-     * @return string
-     **/
-    protected function printVar($var = null)
-    {
-        echo $var;
-    }
-
-    /**
      * Include the partial file
      *
      * @param string $file Partial file name
@@ -234,7 +224,9 @@ class View implements ArrayAccess
 
         \Uri::initialize(\Request::create($uri));
 
-        return \Registry::get('app')->router->dispatch();
+        $response = \Registry::get('app')->router->dispatch();
+
+        return $response->getContent();
     }
 
     /**

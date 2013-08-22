@@ -32,6 +32,7 @@ class Parser
             'elseif'        => 'handleElseIf',
             'else'          => 'handleElse',
             'breadcrumb'    => 'handleBreadcrumb',
+            'make'          => 'handlerMaker',
             'Date'          => 'handleDateFormat',
         );
 
@@ -408,6 +409,46 @@ class Parser
         ';
 
         return preg_replace($pattern, $replace, $template);
+    }
+
+    /**
+     * Handle the ViewData::make()
+     *
+     * @param string $template
+     * @return string
+     **/
+    protected function handlerMaker($template)
+    {
+        $pattern = '/\{\{\s*make:(\w+)\s(.*)\s*\}\}/';
+
+        $callback = function($match) {
+            $name = $match[1];
+            $params = $match[2];
+
+            if ('' == $params) return '<?php echo ViewData::make("'.$name.'"); ?>';
+
+            $pattern = '/(.*?)\s*=\s*(\'|")(|&#?\w+;)(.*?)(\'|")/s';
+
+            preg_match_all($pattern, $params, $m);
+            $parameters = array();
+
+            foreach ($m[1] as $k => $v) {
+                if (isset($m[4][$k])) {
+                    if (!in_array($m[4][$k], array('true', 'false', 'null', 'array()'))) {
+                        $parameters[$v] = '"'.$m[4][$k].'"';
+                    } else {
+                        $parameters[$v] = $m[4][$k];
+                    }
+                } else {
+                    $parameters[$v] = "";
+                }
+            }
+            $ps = implode(', ', $parameters);
+
+            return '<?php echo ViewData::make("'.$name.'", array('.$ps.')); ?>';
+        };
+
+        return preg_replace_callback($pattern, $callback, $template);
     }
 
     /**

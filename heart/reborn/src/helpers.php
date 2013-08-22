@@ -623,12 +623,25 @@ if (! function_exists('num')) {
 	}
 }
 
-if (! function_exists('csrf_meta')) {
-	function csrf_meta()
+/**
+ * Helper function for theme_config value.
+ *
+ * @param string $key Config Key
+ * @param mixed $default Default value to return if config key doesn't found
+ * @return mixed
+ **/
+if(! function_exists('theme_config'))
+{
+	function theme_config($key, $default = null)
 	{
-		$name = \Html::meta('csrf-param', \Config::get('app.security.csrf_key'));
-		$key = \Html::meta('csrf-token', \Security::CSRFKeyOnly());
+		$theme = Registry::get('app')->view->getTheme();
 
-		return implode("\n\t", array($name, $key));
+		try {
+			$theme_config = $theme->config();
+		} catch (Exception $e) {
+			return $default;
+		}
+
+		return array_get($theme_config, $key, $default);
 	}
 }
