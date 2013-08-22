@@ -47,7 +47,7 @@ class Route
      **/
     public static function addNotFound($caller, $controller = null, $action = null)
     {
-        static::$notFound = new \stdClass();
+        static::$notFound = new Map();
 
         if ($caller instanceof \Closure) {
             static::$notFound->closure = $caller;

@@ -249,7 +249,7 @@ class Router
      * Call the given controller's action(method).
      *
      * @param Reborn\Route\Map
-     * @return void
+     * @return \Reborn\Http\Response
      **/
     protected function callbackController($route)
     {
@@ -259,7 +259,7 @@ class Router
 
         $resolver = new ControllerResolver($this->app, $route);
 
-        return $resolver->solve();
+        return $resolver->resolve();
     }
 
     /**

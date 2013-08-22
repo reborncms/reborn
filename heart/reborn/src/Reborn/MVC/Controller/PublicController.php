@@ -16,17 +16,15 @@ use Reborn\Http\Uri;
 class PublicController extends Controller
 {
     /**
-     * Constructor Method
+     * Initial Method for this contoller
      *
      * @return void
      **/
-    public function __construct()
+    protected function init()
     {
         if (! defined('PUBLIC')) {
             define('PUBLIC', true);
         }
-
-        parent::__construct();
 
         $module_layout = strtolower($this->request->module);
 

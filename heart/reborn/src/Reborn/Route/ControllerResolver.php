@@ -49,11 +49,11 @@ class ControllerResolver
 	}
 
 	/**
-	 * Solve the controller and return response.
+	 * Resolve the controller and return response.
 	 *
 	 * @return Response|HttpNotFoundException
 	 **/
-	public function solve()
+	public function resolve()
 	{
 		list($module, $controller, $action, $params) = $this->prepareFromRoute();
 
@@ -65,7 +65,6 @@ class ControllerResolver
         	// Class doesn't exit, so we throw HTTPNotFound
         	throw new HttpNotFoundException("Request Class is not found!");
         }
-
 	}
 
 	/**
@@ -136,78 +135,11 @@ class ControllerResolver
 		// Call the active Module's Boot Method
         \Module::boot($module);
 
-        $reflect = new ReflectionClass($controller);
+        // Solve the Controller with Illuminate\Container
+        $instance = $this->app->make($controller);
 
-        $controllerClass = $reflect->newInstance();
-
-        // Method (Action) Not Found
-        if (! $reflect->hasMethod($action) ) {
-            throw new HttpNotFoundException("Request Method is not found!");
-        }
-
-        $method = $reflect->getMethod($action);
-
-        // Check method is public or not
-        if (! $method->isPublic()) {
-            throw new HttpNotFoundException("Request Method is not public method!");
-        }
-
-        $method_params = $method->getParameters();
-
-        // Check Request passing params and require params
-        $this->checkParameters($method_params, $params);
-
-        // Check Controller has init().
-        // If init() have, call and pass $app
-        if ($reflect->hasMethod('init')) {
-        	$reflect->getMethod('init')->invoke($this->app);
-        }
-
-        \Event::call('reborn.controller.process.starting');
-
-        // Call the Controller class's before method.
-        $reflect->getMethod('before')->invoke($controllerClass);
-
-        // Call the action method
-        $args = array($action, $params);
-        $response = $reflect->getMethod('callByMethod')
-                                ->invokeArgs($controllerClass, (array)$args);
-
-        // Call the Controller class's after method.
-        $response = $reflect->getMethod('after')
-                            ->invoke($controllerClass, $response);
-
-        \Event::call('reborn.controller.process.ending', array($response));
-
-        return $response;
-	}
-
-	/**
-	 * Check method's require parameters and passing parameter
-	 *
-	 * @param array $method_params Request method's require params
-	 * @param array $params Passing params from Request
-	 * @return boolean|HttpNotFoundException
-	 **/
-	protected function checkParameters($method_params, $params)
-	{
-		if (empty($method_params)) return true;
-
-		$ps = array();
-		foreach ($method_params as $p) {
-			if (! $p->isDefaultValueAvailable()) {
-				$ps[] = $p;
-			}
-		}
-
-		$require = count($ps);
-		$pass = count($params);
-
-		if ($require > $pass) {
-			throw new HttpNotFoundException("Request params doesn't match for method!");
-		}
-
-		return true;
+        // Call action caller method
+        return $instance->actionCaller($this->app, $action, $params);
 	}
 
 } // END class ControllerResolver

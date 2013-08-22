@@ -22,11 +22,11 @@ class AdminController extends Controller
     protected $menu;
 
     /**
-     * Constructor Method
+     * Initial Method for this contoller
      *
      * @return void
      **/
-    public function __construct()
+    protected function init()
     {
         if (! defined('ADMIN')) {
             define('ADMIN', true);
@@ -36,38 +36,19 @@ class AdminController extends Controller
             define('ADMIN_URL', $this->getAdminLink());
         }
 
-        parent::__construct();
-
         \Translate::load('label');
         \Translate::load('global');
         \Translate::load('navigation');
 
+        // Set the Reborn Version and URL
+        $this->template->rebornVersion = \Reborn\Cores\Version::FULL;
+        $this->template->rebornUrl = \Reborn\Cores\Version::URL;
+
         $this->checkAuthentication();
 
-        $this->module = \Registry::get('app')->request->module;
+        $this->module = $this->request->module;
 
         $this->varSetter();
-    }
-
-    /**
-     * After Method for controller.
-     * This method will be call after request action.
-     */
-    public function after($response)
-    {
-        return parent::after($response);
-    }
-
-    /**
-     * Call the Action Method
-     *
-     * @return void
-     **/
-    public function callByMethod($method, $params)
-    {
-        if (! method_exists($this, $method)) {
-            return $this->notFound();
-        }
 
         if (\Sentry::check()) {
             $user = \Sentry::getUser();
@@ -77,8 +58,15 @@ class AdminController extends Controller
                 return $this->notFound();
             }
         }
+    }
 
-        return call_user_func_array(array($this, $method), (array)$params);
+    /**
+     * After Method for controller.
+     * This method will be call after request action.
+     */
+    public function after($response)
+    {
+        return parent::after($response);
     }
 
     /**
@@ -148,14 +136,6 @@ class AdminController extends Controller
 
         // Set the Site Title
         $this->template->siteTitle = \Setting::get('site_title');
-
-        // Set the Reborn Version and URL
-        $this->template->rebornVersion = \Reborn\Cores\Version::FULL;
-        $this->template->rebornUrl = \Reborn\Cores\Version::URL;
-
-        // Set the Reborn Usage
-        //$this->template->usageTime = \Reborn\Cores\Profiler::getTime();
-        //$this->template->usageMem = \Reborn\Cores\Profiler::getMemory();
 
         // Set the active module
         $toolbar = \Module::moduleToolbar($this->module);

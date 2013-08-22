@@ -19,6 +19,7 @@ use Reborn\Module\ModuleManager as Module;
 use Reborn\Exception\RbException;
 use Reborn\Exception\HttpNotFoundException;
 use Reborn\Exception\TokenNotMatchException;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\Session\Session as Session;
@@ -30,7 +31,7 @@ use Symfony\Component\HttpFoundation\Session\Session as Session;
  * @package Reborn\Cores
  * @author Myanmar Links Professional Web Development Team
  **/
-class Application extends \Pimple
+class Application extends \Illuminate\Container\Container
 {
 
     /**
@@ -49,8 +50,6 @@ class Application extends \Pimple
     public function __construct()
     {
         $this['request'] = Request::createFromGlobals();
-
-        $this['response'] = Response::create(null);
 
         $this['router'] =  $this->share(function ($this) {
             return new Router($this);
@@ -169,28 +168,6 @@ class Application extends \Pimple
 
             $response = $this['router']->dispatch();
 
-             // Check Response is JsonResponse
-            if ($response instanceof JsonResponse) {
-                // Call the Event Name App Ending
-                Event::call('reborn.app.ending');
-
-                // Send the Json Content with Headers
-                return $response->send();
-            }
-
-            if ($response instanceof StreamedResponse) {
-                // Call the Event Name App Ending
-                Event::call('reborn.app.ending');
-
-                // Send the Stream Content with Headers
-                return $response->send();
-            }
-
-            if(! $response instanceof Response)
-            {
-                $response = new Response($response);
-            }
-
             $this->started = true;
 
             // Send response to the end method
@@ -264,20 +241,19 @@ class Application extends \Pimple
      *
      * @return void
      **/
-    public function end(Response $response)
+    public function end(SymfonyResponse $response)
     {
-        $response->prepare($this['request']);
-
-        // Inject the CSRF Token to Response
-        $response = $this->injectCSRFToken($response);
-
         // Stop the Profiler
         if (('dev' == $this['env']) and Config::get('dev.profiler')) {
             $this['profiler']->stop();
-            // Call the Event Name App Profiling
-            if (Event::has('reborn.app.profiling')) {
-                $result = Event::call('reborn.app.profiling', $response->getContent());
-                $response->setContent($result[0]);
+
+            if (!$response instanceof JsonResponse ||
+                !$response instanceof StreamedResponse) {
+                // Call the Event Name App Profiling
+                if (Event::has('reborn.app.profiling')) {
+                    $result = Event::call('reborn.app.profiling', $response->getContent());
+                    $response->setContent($result[0]);
+                }
             }
         }
 
@@ -381,7 +357,7 @@ class Application extends \Pimple
      * @param Reborn\Http\Response $response Response Object
      * @return string
      **/
-    protected function injectCSRFToken($response)
+    public function injectCSRFToken($response)
     {
         $token = Security::CSRField();
 
