@@ -1,6 +1,6 @@
 <form action="{{ adminUrl('login') }}" method="POST">
 	<input type="hidden" id="referrer" name="referrer" value="{{ \Input::server("HTTP_REFERER, ''") }}" />
-	{{ Security::CSRField('rbam') }}
+
 	<input type="text" placeholder="Email" id="login-box-name" name="email" />
 	<input type="password" placeholder="Password" id="login-box-password" name="password">
 	<input type="submit" value="Log In" id="login-box-submit">
