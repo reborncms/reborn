@@ -45,21 +45,25 @@ class PagesController extends \AdminController
                 return $this->notFound();
         }
 
+        $val_errors = new \Reborn\Form\ValidationError();
+
         if (\Input::isPost()) {
 
             $validation = self::validate();
 
             if ($validation->valid()) {
+
                 $page_insert = self::saveValues('create');
 
                 if ($page_insert) {
+
+                    \Event::call('reborn.page.create');
                     \Flash::success(t('pages::pages.messages.success.add'));
 
                     return \Redirect::to(adminUrl('pages'));
                 }
             } else {
-                $errors = $validation->getErrors();
-                $this->template->errors = $errors;
+                $val_errors = $validation->getErrors();
             }
             $page = \Input::get('*');
             $this->template->set('page',$page);
@@ -67,6 +71,7 @@ class PagesController extends \AdminController
         self::formElements();
         $this->template->title('Create Page')
                     ->set('method','create')
+                    ->set('errors', $val_errors)
                     ->setPartial('admin/form');
     }
 
@@ -82,6 +87,8 @@ class PagesController extends \AdminController
                 return $this->notFound();
         }
 
+        $val_errors = new \Reborn\Form\ValidationError();
+
         if (\Input::isPost()) {
             $validation = self::validate();
 
@@ -95,8 +102,7 @@ class PagesController extends \AdminController
                     return \Redirect::to(adminUrl('pages'));
                 }
             } else {
-                $errors = $validation->getErrors();
-                $this->template->errors = $errors;
+                $val_errors = $validation->getErrors();
             }
             $page = \Input::get('*');
         } else {
@@ -105,6 +111,7 @@ class PagesController extends \AdminController
         self::formElements();
         $this->template->title('Edit Page')
                     ->set('method','edit')
+                    ->set('errors', $val_errors)
                     ->set('page', $page)
                     ->setPartial('admin/form');
     }

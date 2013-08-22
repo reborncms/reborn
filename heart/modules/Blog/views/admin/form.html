@@ -7,9 +7,7 @@
                 <div class="form-block first-block" id="title-slug">
                     {{ Form::label(t('blog::blog.title').'<span class="required"></span>','title') }}
                     <div class="form-right-block">
-                        {{ if(isset($val_errors['title'])) }}
-                            <span class="msg error">{{ $val_errors['title'] }}</span>
-                        {{ endif }}
+                        <span class="msg error">{{ $val_errors['title'] }}</span>
                         {{ Form::input('title', isset($blog->title) ? $blog->title : '' ,'text',array('class' => 'xx-large', 'id' => 'form_title', 'required' => 'required')) }}
                     </div> <!-- end of form-right-block -->
                 </div> <!-- end of form-block -->
@@ -17,26 +15,20 @@
                 <div class="form-block first-block" id="title-slug">
                     {{ Form::label(t('blog::blog.slug').'<span class="required"></span>','slug') }}
                     <div class="form-right-block">
-                        <span class="msg error" id="slug_error">
-                            {{ if(isset($val_errors['slug'])) }}
-                                {{ $val_errors['slug'] }}
-                            {{ endif }}
-                        </span>
+                        <span class="msg error" id="slug_error">{{ $val_errors['slug'] }}</span>
                         {{ Form::input('slug', isset($blog->slug) ? $blog->slug : '','text',array('class' => 'xx-large', 'id' => 'form_slug', 'required' => 'required')) }}
                     </div> <!-- end of form-right-block -->
                 </div> <!-- end of form block -->
 
                 <div class="form-block">
-                    {{ if(isset($val_errors['body'])) }}
-                        <span class="msg error">{{ $val_errors['body'] }}</span>
-                    {{ endif }}
+                    <span class="msg error">{{ $val_errors['body'] }}</span>
                     {{ Form::textarea('body', isset($blog->body) ? $blog->body : '', array('class' => '', 'id' => 'wysiwyg-adv')) }}
                 </div> <!-- end of form-block -->
 
                 <div class="form-block">
                     {{ Form::label(t('blog::blog.excerpt'), 'form_excerpt') }}
                     <div class="form-right-block">
-                        {{ Form::textarea('excerpt', isset($blog->excerpt) ? $blog->excerpt : '', array('style' => 'width:90%', 'required' => 'required')) }}
+                        {{ Form::textarea('excerpt', isset($blog->excerpt) ? $blog->excerpt : '', array('style' => 'width:90%')) }}
                     </div> <!-- end of form-right-block -->
                 </div> <!-- end of form block -->
             </div> <!-- end of form-left -->
@@ -126,6 +118,8 @@
                         
                     </div>
                 </div> <!-- end of div.r-container -->
+                {{ else }}
+                    {{ Form::hidden('created_at', isset($blog->created_at) ? $blog->created_at : '') }}
                 {{ endif }}
 
                 <div class="r-container">
@@ -173,7 +167,11 @@
 
             <div class="form-block form-action button-wrapper">
 
-                {{ if ($method == 'create' || $blog->status == 'draft') }} 
+                {{ if ($method == 'edit') }}
+                    {{ Form::hidden('status', $blog->status) }}
+                {{ endif }}
+
+                {{ if ($method == 'create' or $blog->status == 'draft') }} 
                     {= 
                         $save_button_val = t('global.publish');
                         $draft_button_val = t('global.save_draft');

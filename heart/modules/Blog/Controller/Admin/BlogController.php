@@ -62,6 +62,7 @@ class BlogController extends \AdminController
 		if (!user_has_access('blog.create')) {
 				return $this->notFound();
 		}
+		$val_errors = new \Reborn\Form\ValidationError();
 		if (\Input::isPost()) {
 			$val = self::validate();
 			if ($val->valid()) {
@@ -80,13 +81,13 @@ class BlogController extends \AdminController
 				return \Redirect::to(adminUrl('blog'));
 			} else {
 				$val_errors = $val->getErrors();
-				$this->template->set('val_errors',$val_errors);
 				$this->template->set('blog', (object)\Input::get('*'));
 			}
 		}
 		self::formEle();
 		$this->template->title(t('blog::blog.title_create'))
 						->setPartial('admin/form')
+						->set('val_errors',$val_errors)
 						->set('method', 'create');					
 	}
 
@@ -97,6 +98,7 @@ class BlogController extends \AdminController
 	 **/
 	public function edit($id = null) 
 	{
+		$val_errors = new \Reborn\Form\ValidationError();
 		if (\Input::isPost()) {
 			$val = self::validate();
 			if ($val->valid()) {
@@ -109,7 +111,6 @@ class BlogController extends \AdminController
 				return \Redirect::to(adminUrl('blog'));
 			} else {
 				$val_errors = $val->getErrors();
-				$this->template->set('val_errors',$val_errors);
 				$blog = (object)\Input::get('*');
 			}
 		} else {
@@ -125,6 +126,7 @@ class BlogController extends \AdminController
 		self::formEle();
 		$this->template->title('Edit Blog')
 						->setPartial('admin/form')
+						->set('val_errors',$val_errors)
 						->set('blog', $blog)
 					   	->set('method', 'edit');
 	}
