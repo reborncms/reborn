@@ -44,13 +44,13 @@ class ViewData
 	 * Call from view for bind result
 	 *
 	 * @param string $name Binding name
-	 * @param array $parameters Parameters for binding callback function
+	 * @param array $options Options array for binding callback function
 	 * @return mixed
 	 */
-	public static function make($name, $parameters = array())
+	public static function make($name, $options = array())
 	{
 		if( static::has($name) and is_callable(static::$bind[$name]) ) {
-			$result = call_user_func_array(static::$bind[$name], $parameters);
+			$result = call_user_func_array(static::$bind[$name], array($options));
 
 			return $result;
 		}

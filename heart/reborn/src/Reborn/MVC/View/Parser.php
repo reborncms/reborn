@@ -433,14 +433,15 @@ class Parser
             $parameters = array();
 
             foreach ($m[1] as $k => $v) {
+                $v = ltrim($v, ' ');
                 if (isset($m[4][$k])) {
                     if (!in_array($m[4][$k], array('true', 'false', 'null', 'array()'))) {
-                        $parameters[$v] = '"'.$m[4][$k].'"';
+                        $parameters[$v] = "'".$v."'=>".'"'.$m[4][$k].'"';
                     } else {
-                        $parameters[$v] = $m[4][$k];
+                        $parameters[$v] = "'".$v."'=>".$m[4][$k];
                     }
                 } else {
-                    $parameters[$v] = "";
+                    $parameters[$v] = "'".$v."'=>"."''";
                 }
             }
             $ps = implode(', ', $parameters);
