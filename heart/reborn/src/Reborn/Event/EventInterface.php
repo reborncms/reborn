@@ -43,13 +43,21 @@ Interface EventInterface
 	public function clear();
 
 	/**
+     * Call the event first register
+     *
+     * @param string $name Name of event
+     * @param array $params Paramater array for callback event (optional)
+     * @return mixed
+     **/
+	public function first($name, $data = array());
+
+	/**
      * Call(Trigger) the event.
      *
      * @param string $name Name of event
      * @param array $data Data array for callback event (optional)
-     * @param boolean $frist_only Make First event only
      * @return mixed
      */
-	public function call($name, $data = array(), $first_only = false);
+	public function call($name, $data = array());
 
 } // END Interface EventInterface

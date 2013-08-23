@@ -10,9 +10,9 @@ class PostPresenter extends \Presenter
 	{
 		// Customized View is bind in Event name 'blog.post.maker'
 		if (\Event::has('blog.post.maker')) {
-			return \Event::call('blog.post.maker', array($this->posts), true);
+			$result = \Event::first('blog.post.maker', array($this->posts), true);
+			if (is_null($result)) return null;
 		}
-
 		require __DIR__.DS.'template'.DS.'post.html';
 	}
 }

@@ -79,14 +79,31 @@ class SimpleEvent implements \Reborn\Event\EventInterface
     }
 
     /**
+     * Call the event first register
+     *
+     * @param string $name Name of event
+     * @param array $params Paramater array for callback event (optional)
+     * @return mixed
+     **/
+    public function first($name, $params = array())
+    {
+        $params = (array)$params;
+
+        if (isset($this->events[$name])) {
+            return call_user_func_array($this->events[$name][0]['callback'], $params);
+        }
+
+        return null;
+    }
+
+    /**
      * Call(Trigger) the event.
      *
      * @param string $name Name of event
      * @param array $params Paramater array for callback event (optional)
-     * @param boolean $frist_only Make First event only
      * @return mixed
      */
-    public function call($name, $params = array(), $first_only = false)
+    public function call($name, $params = array())
     {
         $result = array();
 
@@ -95,13 +112,7 @@ class SimpleEvent implements \Reborn\Event\EventInterface
         if (isset($this->events[$name])) {
             foreach ($this->events[$name] as $call) {
                 if (is_callable($call['callback'])) {
-                    $res = call_user_func_array($call['callback'], $params);
-
-                    if($first_only and !is_null($res)) {
-                        return $res;
-                    } else {
-                        $result[] = $res;
-                    }
+                    $result[] = call_user_func_array($call['callback'], $params);
                 }
             }
         }
