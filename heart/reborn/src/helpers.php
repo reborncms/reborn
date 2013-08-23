@@ -645,3 +645,40 @@ if(! function_exists('theme_config'))
 		return array_get($theme_config, $key, $default);
 	}
 }
+
+/**
+ * This function will be help in looping.
+ * If you need something at looping's first time only.
+ * eg:
+ * $i = 0;
+ * foreach($images as $img) {
+ * 		if($i == 0) {
+ * 			echo "<div class="active">
+ * 		} else {
+ * 			echo "<div>";
+ * 		}
+ * 		<img src="$img">
+ * 		</div>
+ * 		$i++;
+ * }
+ * Use first()
+ * foreach ($images as $img) {
+ * 		<div class="first('active')">
+ * 			<img src="$img">
+ * 		</div>
+ * }
+ *
+ * @return string
+ **/
+if (!function_exists('first')) {
+	function first($var)
+	{
+		static $j = 0;
+
+		if (0 === $j) {
+			$j++;
+			return $var;
+		}
+	}
+}
+
