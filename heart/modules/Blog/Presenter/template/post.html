@@ -1,0 +1,10 @@
+<div class="blog-posts-area">
+	<?php foreach($this->posts as $post) : ?>
+	<div class="blog-post">
+		<h2><a href="<?php echo rbUrl('blog/'.$post->slug); ?>"><?php echo $post->title; ?></a></h2>
+		<div class="blog-post-body">
+			<?php echo $post->excerpt; ?>
+		</div>
+	</div>
+	<?php endforeach; ?>
+</div>

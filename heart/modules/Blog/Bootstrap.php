@@ -2,10 +2,13 @@
 
 namespace Blog;
 
+use Blog\Model\Blog as Model;
+use Blog\Presenter\PostPresenter;
+
 class Bootstrap extends \Reborn\Module\AbstractBootstrap
 {
 
-	public function boot() 
+	public function boot()
 	{
 		\Translate::load('blog::blog');
 	}
@@ -59,8 +62,10 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		return $mod_toolbar;
 	}
 
-	public function register() 
+	public function register()
 	{
+
+		$this->postsBind();
 
 		\Event::on('user_deleted', function($param){
 			return \Blog\Lib\Helper::changeAuthor($param->id);
@@ -69,6 +74,24 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		\Event::on('reborn.dashboard.widgets.leftcolumn', function(){
 			return \Blog\Lib\Helper::dashboardWidget();
 		});
+	}
+
+	/**
+	 * Bind Bog Post data for Theme
+	 * Avaliable Passing Param
+	 *  - category category slug. If you need multiple category, use comma (eg: news,announcement)
+	 *  - limit Blog post limit. Defult is 5
+	 *  - offset Blog post offset
+	 *  - order [order_key] Default is created_at
+	 *  - order_dir [asc|desc] Default is desc
+	 */
+	protected function postsBind()
+	{
+		\ViewData::bind('blog_posts',
+			function($options) {
+				return with($ins = new \Blog\Lib\Blog())->post($options);
+			}
+		);
 	}
 
 }

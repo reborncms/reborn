@@ -20,4 +20,12 @@ class Blog extends \Eloquent
     	return $this->belongsTo('\User\Model\User');
     }
 
+    /**
+     * Scope for post is active
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'live')->where('created_at', '<=', date('Y-m-d H:i:s'));
+    }
+
 }
