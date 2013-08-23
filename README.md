@@ -11,12 +11,13 @@ Reborn is created and maintain by [Myanmar Links Professional Web Development](h
 
 Thanks for opensource packages.
 
-* [Symfony Components](http://symfony.com)
-* [Illuminate Components](http://packagist.org/packages/illuminate/database)
+* [Symfony HttpFoundation Component](https://packagist.org/packages/symfony/http-foundation)
+* [Symfony Console Component](https://packagist.org/packages/symfony/console)
+* [Illuminate Container Component](https://packagist.org/packages/illuminate/container)
+* [Illuminate Database Component](http://packagist.org/packages/illuminate/database)
 * [Sentry](http://packages.org/packagist/cartalyst/sentry)
 * [Swift Mailer](http://swiftmailer.org)
 * [Monolog](http://github.com/Seldaek/monolog)
-* [Pimple](http://pimple.sensiolabs.org)
 * [tijsverkoyen/akismet](https://github.com/tijsverkoyen/Akismet)
 * [dflydev/markdown](https://github.com/dflydev/dflydev-markdown‎)
 * [leafo/lessphp](https://github.com/leafo/lessphp)
