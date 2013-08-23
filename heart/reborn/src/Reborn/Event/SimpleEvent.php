@@ -83,9 +83,10 @@ class SimpleEvent implements \Reborn\Event\EventInterface
      *
      * @param string $name Name of event
      * @param array $params Paramater array for callback event (optional)
+     * @param boolean $frist_only Make First event only
      * @return mixed
      */
-    public function call($name, $params = array(), $only_one = false)
+    public function call($name, $params = array(), $first_only = false)
     {
         $result = array();
 
@@ -96,7 +97,7 @@ class SimpleEvent implements \Reborn\Event\EventInterface
                 if (is_callable($call['callback'])) {
                     $res = call_user_func_array($call['callback'], $params);
 
-                    if($only_one and !is_null($res)) {
+                    if($first_only and !is_null($res)) {
                         return $res;
                     } else {
                         $result[] = $res;

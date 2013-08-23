@@ -53,6 +53,8 @@ class ViewManager
 
 		$this->addParserHandler();
 
+		$this->checkHelpersFileFromTheme();
+
 		$this->view = new View(Config::get('template.cache_path'));
 
 		$this->ext = Config::get('template.template_extension');
@@ -160,6 +162,22 @@ class ViewManager
 			$ins = new $obj($this->parser);
 			$key = $ins->getKey();
 			$this->parser->addHandler($key, $namespace.$name);
+		}
+	}
+
+	/**
+	 * Check helpers.php from active theme root and import
+	 *
+	 * @return void
+	 **/
+	protected function checkHelpersFileFromTheme()
+	{
+		$active = $this->theme->getThemePath();
+
+		$file = $active.'helpers.php';
+
+		if(file_exists($file)) {
+			require $file;
 		}
 	}
 

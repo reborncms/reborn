@@ -47,8 +47,9 @@ Interface EventInterface
      *
      * @param string $name Name of event
      * @param array $data Data array for callback event (optional)
-     * @return void
+     * @param boolean $frist_only Make First event only
+     * @return mixed
      */
-	public function call($name, $data = array());
+	public function call($name, $data = array(), $first_only = false);
 
 } // END Interface EventInterface
