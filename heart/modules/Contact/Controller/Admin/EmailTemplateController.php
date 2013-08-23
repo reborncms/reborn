@@ -55,6 +55,7 @@ class EmailTemplateController extends \AdminController
 	{
 		if (!user_has_access('contact.template.add')) return $this->notFound();
 		$template =new \stdClass;
+		$errors = new \Reborn\Form\ValidationError();
 		if (\Input::isPost()) {
 			 
 			$v = $this->validate();
@@ -76,7 +77,6 @@ class EmailTemplateController extends \AdminController
 				
 			} else {
 				$errors = $v->getErrors();
-				$this->template->errors = $errors;
 				$template = (object)\Input::get('*');
 			}
 			
@@ -84,6 +84,7 @@ class EmailTemplateController extends \AdminController
 
 		$this->template->title(\Translate::get('contact::contact.add_email_temp'))
 						->useWysiwyg()
+						->set('errors',$errors)
 						->set('method', 'create')
 						->set('template',$template)
 						->setPartial('admin/emailtemplate/form');
@@ -125,6 +126,7 @@ class EmailTemplateController extends \AdminController
 	{
 		if (!user_has_access('contact.template.edit')) return $this->notFound();
 		$template = Etemplate::find($id);
+		$errors = new \Reborn\Form\ValidationError();
 		if (\Input::isPost()) {
 			 
 			$v = $this->validate();
@@ -144,7 +146,6 @@ class EmailTemplateController extends \AdminController
 				
 			} else {
 				$errors = $v->getErrors();
-				$this->template->errors = $errors;
 				$template = (object)\Input::get('*');
 			}
 			
@@ -152,6 +153,7 @@ class EmailTemplateController extends \AdminController
 
 		$this->template->title(\Translate::get('contact::contact.edit_email_temp'))
 						->useWysiwyg()
+						->set('errors',$errors)
 						->set('method', 'edit')
 						->set('template',$template)
 						->setPartial('admin/emailtemplate/form');

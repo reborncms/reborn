@@ -4,9 +4,9 @@
 			{{ Form::label('Name <span class="required"></span>', 'name') }}
 			<div class="form-field-block">
 				{{ Form::input('name', isset($mail->name) ? $mail->name : '', 'text', array('placeholder' => 'Your Name')) }}
-				{{ if(isset($errors['name'])) }}
-					<span class="field-error">{{ $errors['name'] }}</span>
-				{{ endif }}
+				
+				<span class="field-error">{{ $errors['name'] }}</span>
+				
 			</div> 
 		</div>
 		
@@ -14,9 +14,7 @@
 			{{ Form::label('Email <span class="required"></span>', 'email') }}
 			<div class="form-field-block">
 				{{ Form::input('email', isset($mail->email) ? $mail->email : '', 'text', array('placeholder' => 'Your Email')) }}
-				{{ if(isset($errors['email'])) }}
-					<span class="field-error">{{ $errors['email'] }}</span>
-				{{ endif }}
+				<span class="field-error">{{ $errors['email'] }}</span>
 			</div> 
 		</div> 
 
@@ -24,9 +22,7 @@
 			{{ Form::label('Subject <span class="required"></span>', 'subject') }}
 			<div class="form-field-block">
 				{{ Form::input('subject', isset($mail->subject) ? $mail->subject : '', 'text', array('placeholder' => 'Your Subject')) }}
-				{{ if(isset($errors['subject'])) }}
-					<span class="field-error">{{ $errors['subject'] }}</span>
-				{{ endif }}
+				<span class="field-error">{{ $errors['subject'] }}</span>
 			</div> 
 		</div>
 
@@ -34,9 +30,7 @@
 			{{ Form::label('Message <span class="required"></span>', 'message') }}
 			<div class="form-field-block">
 				{{ Form::textarea('message', isset($mail->message) ? $mail->message :'',array('placeholder' => 'Your Message','cols'=>'30')) }}
-				{{ if(isset($errors['message'])) }}
-					<span class="field-error">{{ $errors['message'] }}</span>
-				{{ endif }}
+				<span class="field-error">{{ $errors['message'] }}</span>
 			</div>
 		</div>
 
@@ -44,9 +38,7 @@
 			{{ Form::label('Attachment', 'attachment') }}
 			<div class="form-field-block">
 				{{ Form::file('attachment',array()) }}
-				{{ if(isset($errors['attachment'])) }}
-					<span class="field-error">{{ $errors['attachment'] }}</span>
-				{{ endif }}
+				<span class="field-error">{{ $errors['attachment'] }}</span>
 			</div> 
 		</div> 
 

@@ -4,9 +4,7 @@
 			{{ Form::label(t('label.email').'<span class="required"></span>', 'email') }}
 			<div class="form-right-block">
 				{{ Form::input('email', isset($mail->email) ? $mail->email : '', 'text', array('placeholder' => 'email@example.com')) }}
-				{{ if(isset($errors['email'])) }}
-					<span class="msg error">{{ $errors['email'] }}</span>
-				{{ endif }}
+				<span class="msg error">{{ $errors['email'] }}</span>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form block -->
 		
@@ -14,9 +12,7 @@
 			{{ Form::label(t('contact::contact.labels.subject').'<span class="required"></span>', 'subject') }}
 			<div class="form-right-block">
 				{{ Form::input('subject', isset($mail->subject) ? $mail->subject :'', 'text', array('placeholder' => 'Subject')) }}
-				{{ if(isset($errors['subject'])) }}
-					<span class="msg error">{{ $errors['subject'] }}</span>
-				{{ endif }}
+				<span class="msg error">{{ $errors['subject'] }}</span>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form block -->
 
@@ -24,9 +20,7 @@
 			{{ Form::label(t('contact::contact.labels.message').'<span class="required"></span>', 'message') }}
 			<div class="form-right-block">
 				{{ Form::textarea('message', isset($mail->message) ? $mail->message :'',array('placeholder' => 'Message','cols'=>'30')) }}
-				{{ if(isset($errors['message'])) }}
-					<span class="msg error">{{ $errors['message'] }}</span>
-				{{ endif }}
+				<span class="msg error">{{ $errors['message'] }}</span>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form block -->
 
@@ -34,9 +28,7 @@
 			{{ Form::label(t('contact::contact.labels.attachment'), 'attachment') }}
 			<div class="form-right-block">
 				{{ Form::file('attachment',array()) }}
-				{{ if(isset($errors['attachment'])) }}
-					<span class="msg error">{{ $errors['attachment'] }}</span>
-				{{ endif }}
+				<span class="msg error">{{ $errors['attachment'] }}</span>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form block -->
 

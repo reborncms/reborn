@@ -9,9 +9,7 @@
 			{{ Form::label(t('label.name').'<span class="required"></span>', 'name') }}
 			<div class="form-right-block">
 				{{ Form::input('name', isset($template->name) ? $template->name : '', 'text', array('placeholder' => 'name')) }}
-				{{ if(isset($errors['name'])) }}
-					<span class="msg error">{{ $errors['name'] }}</span>
-				{{ endif }}
+				<span class="msg error">{{ $errors['name'] }}</span>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form block -->
 		{{ if (!($method == 'edit')) }}
@@ -19,9 +17,7 @@
 			{{ Form::label(t('label.slug').'<span class="required"></span>', 'slug') }}
 			<div class="form-right-block">
 				{{ Form::input('slug', isset($template->slug) ? $template->slug :'', 'text', array('placeholder' => 'Slug')) }}
-				{{ if(isset($errors['slug'])) }}
 					<span class="msg error">{{ $errors['slug'] }}</span>
-				{{ endif }}
 				<p>Careful! This field cann't be edited.</p>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form block -->
@@ -38,16 +34,12 @@
 			{{ Form::label(t('label.desc').'<span class="required"></span>', 'description') }}
 			<div class="form-right-block">
 				{{ Form::input('description', isset($template->description) ? $template->description :'', 'text', array('placeholder' => 'Description')) }}
-				{{ if(isset($errors['description'])) }}
-					<span class="msg error">{{ $errors['description'] }}</span>
-				{{ endif }}
+				<span class="msg error">{{ $errors['description'] }}</span>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form block -->
 
 		<div class="form-block first-block">
-			{{ if(isset($errors['body'])) }}
-				<span class="msg error">{{ $errors['body'] }}</span>
-			{{ endif }}
+			<span class="msg error">{{ $errors['body'] }}</span>
 			{{ Form::textarea('body', isset($template->body) ? $template->body : '', array('class' => '', 'id' => 'wysiwyg-adv')) }}
 		</div> <!-- end of form-right-block -->
 		

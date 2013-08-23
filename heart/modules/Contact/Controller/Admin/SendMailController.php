@@ -31,7 +31,7 @@ class SendMailController extends \AdminController
 		if($reply){
 			$mail->email = $reply->email;
 		}
-
+		$errors = new \Reborn\Form\ValidationError();
 		if (\Input::isPost()) {
 
 			$v = $this->validate();
@@ -101,7 +101,6 @@ class SendMailController extends \AdminController
 				}
 			} else {
 				$errors = $v->getErrors();
-				$this->template->errors = $errors;
 				$mail = (object)\Input::get('*');
 			}
 
@@ -113,6 +112,7 @@ class SendMailController extends \AdminController
 					 	'plugins/jquery-ui-timepicker-addon.js',
 					 	'plugins/jquery.tagsinput.min.js'))
 					->set('mail',$mail)
+					->set('errors',$errors)
 					->setPartial('admin/sendmail/index');
 	}
 
