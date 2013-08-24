@@ -104,6 +104,7 @@ class View implements ArrayAccess
 
             if(!is_null($hook_data)) {
                 foreach ($hook_data as $hook) {
+                    if(is_null($hook)) continue;
                     extract($hook, EXTR_SKIP);
                 }
             }
