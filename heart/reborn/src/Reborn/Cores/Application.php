@@ -59,8 +59,20 @@ class Application extends \Illuminate\Container\Container
             return new Log();
         });
 
-        $this['view'] = $this->share( function() {
+        $this['view_manager'] = $this->share( function() {
             return new ViewManager();
+        });
+
+        $this['view'] = $this->share( function($app) {
+            return $app['view_manager']->getView();
+        });
+
+        $this['theme'] = $this->share( function($app) {
+            return $app['view_manager']->getTheme();
+        });
+
+        $this['template'] = $this->share( function($app) {
+            return $app['view_manager']->getTemplate();
         });
 
         $this['session'] = $this->share( function() {

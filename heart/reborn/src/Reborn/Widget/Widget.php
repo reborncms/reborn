@@ -90,7 +90,7 @@ class Widget
 	{
 		$ins = \Registry::get('app')->widget;
 
-		$theme = \Registry::get('app')->view->getTheme();
+		$theme = \Registry::get('app')->theme;
 
 		$theme_path = $theme->getThemePath().'views'.DS.'widgets'.DS.$name.DS;
 
@@ -116,7 +116,7 @@ class Widget
 	 */
 	protected static function getView()
 	{
-		return \Registry::get('app')->view->getView();
+		return \Registry::get('app')->view;
 	}
 
 	/**
@@ -303,8 +303,7 @@ class Widget
 	 */
 	protected function themeWidgets()
 	{
-		$view = \Registry::get('app')->view;
-		$theme = $view->getTheme();
+		$theme = \Registry::get('app')->theme;
 
 		$all = $theme->findWidgets();
 

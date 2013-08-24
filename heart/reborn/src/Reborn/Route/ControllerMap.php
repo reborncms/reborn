@@ -63,10 +63,7 @@ class ControllerMap
 
 		$this->setModulePath($modules);
 
-		if(File::is($this->cache_path.$this->cache_file)) {
-			$data = File::getContent($this->cache_path.$this->cache_file);
-			$this->map = (array) json_decode($data);
-		}
+		$this->setMapData();
 	}
 
 	/**
@@ -78,6 +75,11 @@ class ControllerMap
 	 **/
 	public function find($key, $filename)
 	{
+		if (empty($this->map)) {
+			$this->make();
+			$this->setMapData();
+		}
+
 		if (isset($this->map[$key])) {
 			foreach ($this->map[$key] as $file) {
 				if (true == strpos($file, $filename)) {
@@ -112,6 +114,19 @@ class ControllerMap
 		}
 
 		File::write(rtrim($this->cache_path, DS), $this->cache_file, json_encode($lists));
+	}
+
+	/**
+	 * Set Map Data from controllers.json.
+	 *
+	 * @return void
+	 **/
+	protected function setMapData()
+	{
+		if(File::is($this->cache_path.$this->cache_file)) {
+			$data = File::getContent($this->cache_path.$this->cache_file);
+			$this->map = (array) json_decode($data);
+		}
 	}
 
 	/**

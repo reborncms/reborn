@@ -266,7 +266,7 @@ if(! function_exists('css'))
 {
 	function css($file, $media = "all", $module = null)
 	{
-		$theme = Registry::get('app')->view->getTheme();
+		$theme = Registry::get('app')->theme;
 		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		return $asset->css($file, $media, $module);
 	}
@@ -284,7 +284,7 @@ if(! function_exists('less'))
 {
 	function less($file, $media = "all", $module = null)
 	{
-		$theme = Registry::get('app')->view->getTheme();
+		$theme = Registry::get('app')->theme;
 		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		return $asset->less($file, $media, $module);
 	}
@@ -299,7 +299,7 @@ if(! function_exists('js'))
 {
 	function js($file, $module = null)
 	{
-		$theme = Registry::get('app')->view->getTheme();
+		$theme = Registry::get('app')->theme;
 		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		return $asset->js($file, $module);
 	}
@@ -314,7 +314,7 @@ if(! function_exists('img'))
 {
 	function img($file, $alt = null, $attr = array(), $module = null)
 	{
-		$theme = Registry::get('app')->view->getTheme();
+		$theme = Registry::get('app')->theme;
 		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		return $asset->img($file, $alt, $attr, $module);
 	}
@@ -329,7 +329,7 @@ if(! function_exists('assetPath'))
 {
 	function assetPath($type = null, $module = null)
 	{
-		$theme = Registry::get('app')->view->getTheme();
+		$theme = Registry::get('app')->theme;
 		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		switch($type) {
 			case 'css' :
@@ -634,7 +634,7 @@ if(! function_exists('theme_config'))
 {
 	function theme_config($key, $default = null)
 	{
-		$theme = Registry::get('app')->view->getTheme();
+		$theme = Registry::get('app')->theme;
 
 		try {
 			$theme_config = $theme->config();

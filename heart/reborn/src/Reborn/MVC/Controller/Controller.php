@@ -217,8 +217,8 @@ class Controller
         $app = $this->app;
         $this->request = $app['request'];
         $this->session = $app['session'];
-        $this->template = $app['view']->getTemplate();
-        $this->theme = $app['view']->getTheme();
+        $this->template = $app['template'];
+        $this->theme = $app['theme'];
 
         // Set Request Format
         switch ($this->request->getRequestFormat()) {
@@ -285,7 +285,7 @@ class Controller
      **/
     protected function parse($template, $data = array())
     {
-        $view = $this->app['view']->getView();
+        $view = $this->app['view'];
 
         return $view->renderAsStr($template, $data);
     }

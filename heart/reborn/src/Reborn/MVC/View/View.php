@@ -87,6 +87,11 @@ class View implements ArrayAccess
     public function render($file)
     {
         if (file_exists($file)) {
+
+            if (\Event::has('reborn.view.before.render')) {
+                $hook_data = \Event::call('reborn.view.before.render');
+            }
+
             $data = $this->data;
 
             if ('html' == pathinfo($file, PATHINFO_EXTENSION)) {
@@ -96,6 +101,12 @@ class View implements ArrayAccess
             ob_start();
 
             extract($data, EXTR_SKIP);
+
+            if(!is_null($hook_data)) {
+                foreach ($hook_data as $hook) {
+                    extract($hook, EXTR_SKIP);
+                }
+            }
 
             try {
                 include $file;
