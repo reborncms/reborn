@@ -16,7 +16,7 @@ class DashboardWidget extends \Presenter
 
 	protected function renderWidgets()
 	{
-		$view = \Registry::get('app')->view->getView();
+		$view = \Registry::get('app')->view;
 		$html = __DIR__.DS.'..'.DS.'views'.DS.'widgets.html';
 
 		return $view->set('widgets', $this->model)->render($html);
