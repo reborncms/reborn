@@ -102,7 +102,7 @@ class View implements ArrayAccess
 
             extract($data, EXTR_SKIP);
 
-            if(!is_null($hook_data)) {
+            if(isset($hook_data) and !is_null($hook_data)) {
                 foreach ($hook_data as $hook) {
                     if(is_null($hook)) continue;
                     extract($hook, EXTR_SKIP);

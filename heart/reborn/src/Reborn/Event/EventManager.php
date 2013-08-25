@@ -55,6 +55,10 @@ class EventManager
 	{
 		$args = (array) $args;
 
+		if (is_null(static::$instance)) {
+			return null;
+		}
+
 		if (is_callable(array(static::$instance, $method))) {
 			return call_user_func_array(array(static::$instance, $method), $args);
 		}
