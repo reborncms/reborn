@@ -22,8 +22,8 @@ class ContactController extends \PublicController
 	 **/
 	public function index($widget = false )
 	{
-		$mail =new \stdClass;
-		
+		$mail = new \stdClass;
+		$errors = new \Reborn\Form\ValidationError();
 		if (\Input::isPost()) {
 			$referer = \Input::server('HTTP_REFERER');
 			$v = $this->validate();
@@ -77,7 +77,6 @@ class ContactController extends \PublicController
 				
 			} else {
 				$errors = $v->getErrors();
-				$this->template->errors = $errors;
 				$mail = (object)\Input::get('*');
 				if ($widget == true) {
 					 \Flash::error($errors);
@@ -90,6 +89,7 @@ class ContactController extends \PublicController
 		$this->template->title(\Translate::get('contact::contact.title'))
 					->breadcrumb(\Translate::get('contact::contact.p_title'))
 					->set('mail',$mail)
+					->set('errors',$errors)
 					->setPartial('index');
 	}
 
