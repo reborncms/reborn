@@ -2,9 +2,6 @@
 
 namespace Blog;
 
-use Blog\Model\Blog as Model;
-use Blog\Presenter\PostPresenter;
-
 class Bootstrap extends \Reborn\Module\AbstractBootstrap
 {
 

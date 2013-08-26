@@ -299,7 +299,8 @@ class BlogController extends \PublicController
 						->breadcrumb($year, rbUrl('blog/archives/'.$year));
 
 		if ($month != null) {
-			$this->template->breadcrumb($month, rbUrl('blog/archives/'.$year.'/'.$month));
+			$month_name = date("F", mktime(0, 0, 0, $month, 10));
+			$this->template->breadcrumb($month_name);
 		}
 	}
 

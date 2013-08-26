@@ -80,7 +80,7 @@ class ModuleManager
      */
     public static function install($module, $uri, $setEnable = false, $refresh = true)
     {
-        $module = ucfirst($module);
+        $module = strtolower($module);
 
         // Check the given module is truely
         if (! static::checkModule($module)) {
@@ -98,7 +98,7 @@ class ModuleManager
      */
     public static function uninstall($module, $uri)
     {
-        $module = ucfirst($module);
+        $module = strtolower($module);
         // Check the given module is truely
         if (! static::checkModule($module)) {
             return false;
@@ -125,7 +125,7 @@ class ModuleManager
      **/
     public static function upgrade($module, $uri)
     {
-        $module = ucfirst($module);
+        $module = strtolower($module);
 
         if (! static::checkModule($module)) {
             return false;
@@ -146,7 +146,7 @@ class ModuleManager
      **/
     public static function boot($module)
     {
-        $module = ucfirst($module);
+        $module = strtolower($module);
 
         static::$mod->boot($module);
     }
@@ -160,7 +160,7 @@ class ModuleManager
      **/
     public static function adminMenu(Menu $menu, $module)
     {
-        $module = ucfirst($module);
+        $module = strtolower($module);
 
         $modUri = static::$mod->getData($module, 'uri');
 
@@ -175,7 +175,7 @@ class ModuleManager
      **/
     public static function settings($module)
     {
-        $module = ucfirst($module);
+        $module = strtolower($module);
 
         return static::$mod->settings($module);
     }
@@ -187,7 +187,7 @@ class ModuleManager
      **/
     public static function moduleToolbar($module)
     {
-        $module = ucfirst($module);
+        $module = strtolower($module);
 
         return static::$mod->adminToolbar($module);
     }
@@ -203,7 +203,7 @@ class ModuleManager
      **/
     protected static function checkModule($module)
     {
-        $module = ucfirst($module);
+        $module = strtolower($module);
 
         if (!static::find($module)) {
             return false;
@@ -295,7 +295,7 @@ class ModuleManager
         $mods = DB::table(static::$_table)->get();
 
         foreach ($mods as $mod) {
-            $name = $mod->name;
+            $name = strtolower($mod->name);
             $modFromDB[$name]['uri'] = $mod->uri;
             //$modFromDB[$name]['description'] = $mod->description;
             $modFromDB[$name]['enabled'] = ($mod->enabled == '0') ? false : true;
@@ -354,6 +354,7 @@ class ModuleManager
      **/
     protected static function fileCheck($path, $name)
     {
+        $name = ucfirst($name);
         // Check the {ModuleName}Info.php file at module main root
         if (!file_exists($path.$name.static::$infoFile)) {
             $msg = sprintf(static::$noInfoFile, static::$infoFile, $name);
@@ -376,12 +377,13 @@ class ModuleManager
     }
 
     /**
-     * undocumented function
+     * Get Module Info
      *
      * @return void
      **/
     public static function getModuleInfo($path, $name)
     {
+        $name = ucfirst($name);
         // Require the {ModuleName}Info.php
         require $path.$name.static::$infoFile;
 

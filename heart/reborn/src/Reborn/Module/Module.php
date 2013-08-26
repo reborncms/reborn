@@ -169,6 +169,7 @@ class Module
      */
     public function isCore($module)
     {
+        $module = strtolower($module);
         if ($moduleName = $this->checkModule($module)) {
             return $this->modules[$moduleName]['isCore'];
         }
@@ -184,6 +185,7 @@ class Module
      **/
     public function enable($module, $uri)
     {
+        $module = strtolower($module);
         if ($moduleName = $this->checkModule($module)) {
             if (!$this->modules[$moduleName]['enabled']) {
                 $uri = $this->modules[$moduleName]['uri'];
@@ -206,6 +208,7 @@ class Module
      **/
     public function disable($module, $uri)
     {
+        $module = strtolower($module);
         if ($moduleName = $this->checkModule($module)) {
             if ($this->modules[$moduleName]['enabled']) {
                 $uri = $this->modules[$moduleName]['uri'];
@@ -229,11 +232,13 @@ class Module
      **/
     public function isEnabled($module, $throw = false)
     {
+        $module = strtolower($module);
+
         if ($moduleName = $this->checkModule($module)) {
-            return $this->modules[$moduleName]['enabled'];
+            return $this->modules[$module]['enabled'];
         }
 
-         if ($throw) {
+        if ($throw) {
             throw new ModuleException(sprintf($this->notFound, $moduleName));
         }
         return false;
@@ -269,11 +274,12 @@ class Module
             }
         }
 
-        $path = str_replace($moduleName.DS, '', $this->modules[$moduleName]['path']);
+        $path = $this->modules[$moduleName]['path'];
 
-        if (($moduleName == 'Contact') || $this->modules[$moduleName]['enabled']) {
+        if ($this->modules[$moduleName]['enabled']) {
+            $namespace = $this->modules[$moduleName]['ns'];
             $loader = new Loader();
-            $loader->add($moduleName, $path);
+            $loader->add($namespace, $path.'src');
             $loader->register();
             $this->loaded[$moduleName] = true;
 
@@ -586,7 +592,7 @@ class Module
      **/
     protected function checkModule($module)
     {
-        $moduleName = ucfirst($module);
+        $moduleName = strtolower($module);
 
         // if Given vlue is Module name
         if (isset($this->modules[$moduleName])) {
