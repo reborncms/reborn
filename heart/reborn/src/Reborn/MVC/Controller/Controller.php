@@ -4,6 +4,7 @@ namespace Reborn\MVC\Controller;
 
 use Reborn\Cores\Application;
 use Reborn\Http\Response;
+use Reborn\Exception\HttpNotFoundException;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
