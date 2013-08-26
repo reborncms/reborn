@@ -49,6 +49,9 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 	public function register()
 	{
+		// Make Class Alias
+		\Alias::aliasRegister(array('Comment' => 'Comment\Facade\Comment'));
+
 		\Event::on('user_deleted', function($user){
 			return \Comment\Lib\Helper::userDeleted($user);
 		});

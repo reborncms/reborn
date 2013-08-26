@@ -17,7 +17,7 @@ abstract class Facade
 	 *
 	 * @var \Reborn\Cores\Application
 	 **/
-	protected $app;
+	protected static $app;
 
 	/**
 	 * Set Application Object

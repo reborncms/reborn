@@ -172,10 +172,13 @@ class Uri
 
         $path = trim($path, '/');
         if ($path == '' || $path =='/') {
-            return $request->baseUrl();
+            $url = $request->baseUrl();
+        } else {
+            $path = str_replace(' ', '+', $path);
+            $url = $request->baseUrl().$path.'/';
         }
 
-        return $request->baseUrl().$path.'/';
+        return $url;
     }
 
     /**

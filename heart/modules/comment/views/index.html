@@ -14,7 +14,7 @@
 			{{ endif }}
 		{{ endloop }}
 	</ul><!-- end of comments_wrapper -->
-	
+
 {{ else }}
 	{{ if ($status == 'open') }}
 		<h3>{{ t('comment::comment.message.no_comment') }}</h3>
@@ -50,79 +50,75 @@
 				e.preventDefault();
 				$(this).toggleClass('hide');
 				if ($(this).hasClass('hide')) {
-					$(this).siblings('.comment_message').css('height', 'auto');	
+					$(this).siblings('.comment_message').css('height', 'auto');
 					$(this).text('( Hide )');
 				} else {
-					$(this).siblings('.comment_message').css('height', '105px');	
+					$(this).siblings('.comment_message').css('height', '105px');
 					$(this).text('( Read More )');
 				}
-				
+
 			});
 
 		});
 	}
 
-	/* 
+	/*
 	Code Snippet from http://css-tricks.com/snippets/jquery/load-jquery-only-if-not-present/
-	Credited to http://css-tricks.com/ 
+	Credited to http://css-tricks.com/
 	*/
 
 	// Only do anything if jQuery isn't defined
 	if (typeof jQuery == 'undefined') {
-		
+
 		function getScript(url, success) {
-		
+
 			var script = document.createElement('script');
 			    script.src = url;
-			
+
 			var head = document.getElementsByTagName('head')[0],
 			done = false;
-			
+
 			// Attach handlers for all browsers
 			script.onload = script.onreadystatechange = function() {
-			
+
 				if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
-				
+
 				done = true;
-					
+
 					// callback function provided as param
 					success();
-					
+
 					script.onload = script.onreadystatechange = null;
 					head.removeChild(script);
-					
+
 				};
-			
+
 			};
-			
+
 			head.appendChild(script);
-		
+
 		};
-		
+
 		getScript('{{ GLOBAL_URL }}js/jquery.min.js', function() {
-		
+
 			if (typeof jQuery=='undefined') {
 
 				console.log("still not loaded jQuery");
 				// Super failsafe - still somehow failed...
-			
+
 			} else {
 
 				console.log("jQuery loaded!");
 
 				Jq.init();
-			
+
 			}
-		
+
 		});
-		
+
 	} else { // jQuery was already loaded
-
-		console.log("jQuery already loaded");
-		
 		Jq.init();
-
 	};
-	
+
 </script>
 {{ endif }}

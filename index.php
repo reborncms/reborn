@@ -97,6 +97,17 @@ if($app['env'] != 'production') {
 
 /**
  * ---------------------------------------------------------
+ * Set Application Object to Facade Class
+ * ---------------------------------------------------------
+ *
+ * Facade class have $app to easy access for Dependency Injection
+ * Now, set the application object($app) to facade class.
+ *
+ */
+\Reborn\Cores\Facade::setApplication($app);
+
+/**
+ * ---------------------------------------------------------
  * Really start point for Reborn CMS
  * ---------------------------------------------------------
  *

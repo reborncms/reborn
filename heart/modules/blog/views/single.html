@@ -28,10 +28,6 @@
 	<div class="blog_body">{{ html_entity_decode($blog->body) }}</div>
 </div>
 <!-- call comments -->
-{{ if (\Module::isEnabled('Comment')) }}
-	{=
-		$id = $blog->id;
-		$status = $blog->comment_status;
-	=}
-	{{ action:comment/show/$id/blog/$status }}
+{{ if (\Module::isEnabled('comment')) }}
+	{{ Comment::get($blog->id, 'blog', $blog->comment_status) }}
 {{ endif }}
