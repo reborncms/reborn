@@ -1,0 +1,42 @@
+<div id="themes-wrapper">
+
+
+<div id="active-theme">
+	{{ loop($themes as $name => $theme) }}
+		{{ if ($active == $name) }}
+			<img src="{{ rbUrl().$theme['screenshot'] }}" alt="{{ $theme['name'] }}" class="screenshot activeshot" />
+
+			<h2>{{ $theme['name'] }}</h2>	
+			<h3>By <a href="{{ $theme['website'] }}" target="_blank">{{ $theme['author'] }}</a></h3>
+			<p>{{ $theme['description'] }}</p>
+			<p>Version {{ $theme['version'] }}</p>
+		{{ endif }}
+ 	{{ endloop }}
+</div>
+
+	
+<!-- List Other Themes except Activated Theme -->
+<div id="list-themes">
+	<ul>	
+	{{ loop($themes as $name => $theme) }}
+		{{ if ($active != $name) }}
+		
+		<li>
+			<img src="{{ rbUrl().$theme['screenshot'] }}" alt="{{ $theme['name'] }}" class="screenshot" />
+
+			<h2>{{ $theme['name'] }}</h2>	
+			<h3>By <a href="{{ $theme['website'] }}" target="_blank">{{ $theme['author'] }}</a></h3>
+			<p>{{ $theme['description'] }}</p>
+			<p>Version {{ $theme['version'] }}</p>
+
+			<a href="{{ \Uri::create("$adminUrl/theme/activate/") }}{{ $name }}" class="action_links">{{ t('theme::theme.activate.name') }}</a> |
+			<a href="{{ \Uri::create("$adminUrl/theme/delete/") }}{{ $name }}" class="action_links confirm_delete">{{ t('theme::theme.delete.name') }}</a>
+
+		</li>
+
+		{{ endif }}
+	{{ endloop }}
+	</ul>
+</div> <!-- end of div#list-themes -->
+
+</div> <!-- end of div#themes-wrapper -->

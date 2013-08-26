@@ -1,0 +1,135 @@
+  <div id="user-container">
+
+	{{ Form::start("$adminUrl/user/edit/$user->id", 'user_edit_form', false, array('class' => 'form')) }}
+  
+    {{ Form::hidden('id', $user->id) }}
+		<div class="form-block odd">
+			<label for="">{{ Form::label(t('user::user.displayName'), 'display_name') }}<span class="required"></span></label>
+			
+			<div class="double-field-block">
+				{{ Form::input('first_name', $user->first_name, 'text', array('id' => 'first_name', 'placeholder' => t('user::user.firstname'), 'class' => 'left-input')) }}
+				{{ Form::input('last_name', $user->last_name, 'text', array('id' => 'last_name', 'placeholder' => t('user::user.lastname'), 'class' => 'right-input')) }}
+        {{ if ((isset($errors['first_name'])) or (isset($errors['last_name']))) }}
+          <span class="msg error">**You must enter your first name and last name.</span>
+        {{ endif }}
+        <p>{{ t('user::user.namexample') }}</p>
+			</div> <!-- end of form-right-block -->
+		</div> <!-- end of form block -->
+
+		<div class="form-block even">
+    		<label for="">{{ Form::label(t('user::user.email'), 'email') }}<span class="required"></span></label>
+      
+  			<div class="form-right-block">
+    			{{ Form::email('email', $user->email, array('id' => 'email')) }}
+          {{ if(isset($errors['email'])) }}
+            <span class="msg error">{{ $errors['email'] }}</p>
+          {{ endif }}
+    			<p>{{ t('user::user.temail') }}</p>     
+			</div> <!-- end of form-right-block -->
+        </div> <!-- end of form block -->
+
+        <div class="form-block odd">
+    		<label for="">{{ Form::label(t('user::user.lpassword'), 'password') }}<span class="required"></span></label>
+      
+  			<div class="form-right-block">
+    			{{ Form::password('password', '', array('id' => 'password')) }}
+    			{{ if(isset($errors['password'])) }}
+            <span class="msg error">{{ $errors['password'] }}</p>
+          {{ endif }}
+    			<p>{{ t('user::user.tpassword') }}</p>     
+			</div> <!-- end of form-right-block -->
+        </div> <!-- end of form block -->
+
+        <div class="form-block even">
+    		<label for="">{{ Form::label(t('user::user.lconfPass'), 'confpass') }}<span class="required"></span></label>
+      
+  			<div class="form-right-block">
+    			{{ Form::password('confpass', '', array('id' => 'confpass')) }}
+    			<p>{{ t('user::user.tconfPass') }}</p>     
+			</div> <!-- end of form-right-block -->
+        </div> <!-- end of form block -->
+
+        <div class="form-block odd">
+     		<label for="">{{ Form::label(t('user::user.lgroup'), 'group') }}</label>
+      
+      		{= $data = array() =}		
+
+			{{ loop($groups as $g) }}
+				{= $data[$g->id] = $g->name =}
+			{{ endloop }}
+      		<div class="form-right-block">
+        		{{ Form::select('group', $data, $group ) }}
+     		</div> <!-- end of form-right-block -->       
+   		</div> <!-- end of form block -->
+
+
+      <div class="form-block even">
+        <label for="">{{ Form::label(t('user::user.lusername'), 'username') }}</label>
+      
+        <div class="form-right-block">
+          {{ Form::input('username', $usermeta->username, 'text', array('id' => 'user-username')) }}
+          <p>{{ t('user::user.tusername') }}</p>     
+      </div> <!-- end of form-right-block -->
+
+    </div> <!-- end of form block -->
+    <div class="form-block odd">
+        <label for="">{{ Form::label(t('user::user.lusername'), 'biography') }}</label>      
+        {{ Form::textarea('biography', $usermeta->biography, array('id' => 'user-biography')) }}
+    </div> <!-- end of form block -->
+
+    <div class="form-block even">
+        <label for="">{{ Form::label(t('user::user.lcountry'), 'country') }}</label>
+      
+        <div class="form-right-block">
+          {{ Form::input('country', $usermeta->country, 'text', array('id' => 'user-country')) }}  
+        </div> <!-- end of form-right-block -->
+    </div> <!-- end of form block -->
+
+    <div class="form-block odd">
+        <label for="">{{ Form::label(t('user::user.lwebsite'), 'website') }}</label>
+      
+        <div class="form-right-block">
+          {{ Form::input('website', $usermeta->website, 'text', array('id' => 'user-website')) }}
+          <p>{{ t('user::user.twebsite') }}</p> 
+        </div> <!-- end of form-right-block -->
+    </div> <!-- end of form block -->
+
+    <div class="form-block even">
+        <label for="">{{ Form::label(t('user::user.lfacebook'), 'facebook') }}</label>
+      
+        <div class="form-right-block">
+          {{ Form::input('facebook', $usermeta->facebook, 'text', array('id' => 'user-facebook')) }}
+          <p>{{ t('user::user.tfacebook') }}</p>     
+        </div> <!-- end of form-right-block -->
+    </div> <!-- end of form block -->
+
+    <div class="form-block odd">
+        <label for="">{{ Form::label(t('user::user.ltwitter'), 'twitter') }}</label>
+      
+        <div class="form-right-block">
+          {{ Form::input('twitter', $usermeta->twitter, 'text', array('id' => 'user-twitter')) }}
+          <p>{{ t('user::user.ttwitter') }}</p>     
+        </div> <!-- end of form-right-block -->
+    </div> <!-- end of form block -->
+
+    <div class="form-block ckeck-block even">
+          <label for="checkbox">{{ Form::label(t('user::user.adminpanelaccess'), 'admin_access') }}</label>
+          <div class="form-right-block clearfix">
+            <label for="ckeckbox" class="inline-label">
+              {{ if($adminAccess['dashboard']) }}
+                {{ Form::checkbox('admin_access', 1, array('checked' => 'checked', 'id'=>'ckeckbox')) }}
+              {{ else }}
+                {{ Form::checkbox('admin_access', 1, array('id'=>'ckeckbox')) }}
+              {{ endif }}
+            </label>
+        </div> <!-- end of form-right-block -->
+    </div> <!-- end of form block -->
+		
+
+		<div class="form-block odd">
+		{{ Form::submit('submit', t('user::permission.edit'), array('id' => 'edit', 'class' => 'btn btn-green')) }}
+		<a href="{{ \Uri::create("$adminUrl/user/") }}" class="btn">{{ t('user::permission.cancel') }}</a>
+		</div>
+
+	{{ Form::end() }}
+</div>

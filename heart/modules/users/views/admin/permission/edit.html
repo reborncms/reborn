@@ -1,0 +1,56 @@
+<section class="title">
+	<h4>{{ $group->name }}</h4>
+	<p>{{ t('user::permission.info') }}</p>
+</section>
+<section class="item">
+{{ Form::start("$adminUrl/user/permission/edit/$group->id") }}
+<table class="stripe">
+	<thead>
+		<tr>
+			<th>{{ Form::checkbox('', 1, array('id'=>'check-all', 'name' => 'action_to_all', 'class' => 'check-all', 'title' => 'Check All')) }}
+			<th>{{ t('user::permission.modules') }}</th>
+			<th>{{ t('user::permission.moduleAcitons') }}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{ loop($permission_modules as $module) }}
+		<tr id="{{ $module->uri }}">
+			{= $check = false; =}
+
+			{{ loop($groupPermissions as $permission => $v ) }}
+				{{ if($module->uri == $permission) }}
+					{= $check = true; break; =}
+				{{ endif }}
+			{{ endloop }}
+
+		{{ if($check) }}
+			<td class="module-role">{{ Form::checkbox("modules[$module->uri]", 1, array('checked' => 'checked', 'data-module' => $module->uri)) }}</td>
+		{{ else }}
+			<td class="module-role">{{ Form::checkbox("modules[$module->uri]", 1, array('data-module' => $module->uri)) }}</td>
+		{{ endif }}
+			<td>{{ $module->name }}</td>
+			<td class="action_roles">
+				{{ module_action_permission_ui($module->name, $groupPermissions) }}
+			</td>
+		</tr>
+		{{ endloop }}
+
+	</tbody>
+</table>
+<div class="buttons form-button">
+	{{ Form::submit('submit', t('user::permission.edit'), array('id' => 'edit', 'class' => 'btn btn-green')) }}
+	<a href="{{ \Uri::create("$adminUrl/user/permission/") }}" class="btn">{{ t('user::permission.cancel') }}</a>
+</div>
+{{ Form::end() }}
+</section>
+
+<style type="text/css">
+	.ckeck-group-block {
+		padding: 2px;
+		border: none;
+		width: 90%;
+	}
+	.ckeck-group-block .inline-label {
+		margin-right: 10px;
+	}
+</style>
