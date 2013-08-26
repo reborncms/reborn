@@ -1,0 +1,109 @@
+<div id="user-container">
+
+	{{ Form::start("user/register", 'user_registration_form', false, array('class' => 'form')) }}
+
+  <div class="form-block">
+      <label for="">{{ Form::label('Username', 'username') }}<span class="required"></span></label>
+      <div class="form-right-block">
+        {{ if(isset($errors['username'])) }}
+          <p class="er">{{ $errors['username'] }}</p>
+        {{ endif }}
+        {{ Form::input('username', '', 'text', array('id' => 'user-username', 'placeholder' => 'Enter your Username')) }}
+        <p>Username must not include space, or special characters.</p>     
+    </div> <!-- end of form-right-block -->
+
+  </div> <!-- end of form block -->
+
+	<div class="form-block">
+  	<label for="">{{ Form::label('Email', 'email') }}<span class="required"></span></label>
+    
+		<div class="form-right-block">
+      {{ if(isset($errors['email'])) }}
+        <p class="er">{{ $errors['email'] }}</p>
+      {{ endif }}
+  		{{ Form::email('email', '', array('id' => 'email', 'placeholder' => 'Enter your email')) }}
+  		<p>Please enter valid Email Address</p>     
+		</div> <!-- end of form-right-block -->
+  </div> <!-- end of form block -->
+
+  <div class="form-block">
+  	<label for="">{{ Form::label('Password', 'password') }}<span class="required"></span></label>
+      
+  	<div class="form-right-block">
+      {{ if(isset($errors['password'])) }}
+        <p class="er">{{ $errors['password'] }}</p>
+      {{ endif }}
+    	{{ Form::password('password', '', array('id' => 'password', 'placeholder' => 'Enter your new password')) }}
+    	 <p>Type a secure password</p>     
+		</div> <!-- end of form-right-block -->
+  </div> <!-- end of form block -->
+
+  <div class="form-block">
+    <label for="">{{ Form::label('Confirm Password', 'confpass') }}<span class="required"></span></label>
+      
+  	<div class="form-right-block">
+    			{{ Form::password('confpass', '', array('id' => 'confpass', 'placeholder' => 'Type the same password again')) }}
+    			<p>Confirm your password</p>     
+		</div> <!-- end of form-right-block -->
+  </div> <!-- end of form block -->
+
+  <div class="form-block">
+		<label for="">{{ Form::label('Display Name', 'display_name') }}<span class="required"></span></label>
+			
+	<div class="double-field-block">
+		{{ Form::input('first_name', '', 'text', array('id' => 'first_name', 'placeholder' => 'First Name', 'class' => 'left-input')) }}
+		{{ Form::input('last_name', '', 'text', array('id' => 'last_name', 'placeholder' => 'Last Name', 'class' => 'right-input')) }}
+    {{ if ((isset($errors['first_name'])) AND (isset($errors['last_name']))) }}
+        <span class="msg error">You must fill both First Name and Last Name.</span>
+    {{ endif }}
+	</div> <!-- end of form-right-block -->
+				
+		</div> <!-- end of form block -->
+
+  <div class="form-block">
+    <label for="">{{ Form::label('Biography', 'biography') }}</label>      
+    {{ Form::textarea('biography', '', array('id' => 'user-biography')) }}
+  </div> <!-- end of form block -->
+
+  <div class="form-block">
+      <label for="">{{ Form::label('Country', 'country') }}</label>
+      
+      <div class="form-right-block">
+        {{ Form::input('country', '', 'text', array('id' => 'user-country')) }}  
+      </div> <!-- end of form-right-block -->
+  </div> <!-- end of form block -->
+
+  <div class="form-block">
+    <label for="">{{ Form::label('Website', 'website') }}</label>
+      
+    <div class="form-right-block">
+      {{ Form::input('website', '', 'text', array('id' => 'user-website')) }}
+      <p>Personal blog or webpage of this user</p> 
+    </div> <!-- end of form-right-block -->
+  </div> <!-- end of form block -->
+
+  <div class="form-block">
+    <label for="">{{ Form::label('Facebook', 'facebook') }}</label>
+      
+    <div class="form-right-block">
+      {{ Form::input('facebook', '', 'text', array('id' => 'user-facebook')) }}
+        <p>Enter this user's facebook username</p>     
+      </div> <!-- end of form-right-block -->
+  </div> <!-- end of form block -->
+
+  <div class="form-block">
+    <label for="">{{ Form::label('Twitter', 'twitter') }}</label>
+      
+    <div class="form-right-block">
+      {{ Form::input('twitter', '', 'text', array('id' => 'user-twitter')) }}
+        <p>Enter this user's twitter username</p>     
+    </div> <!-- end of form-right-block -->
+  </div> <!-- end of form block -->
+
+	<div class="block">
+	  {{ Form::submit('submit', 'Create', array('id' => 'edit')) }}
+	  <a href="{{ \Uri::create("/user/login") }}">Already had an account? Login here!</a>
+	</div>	
+
+	{{ Form::end() }}
+</div>
