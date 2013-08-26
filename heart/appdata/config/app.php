@@ -71,12 +71,10 @@ return array(
 	 */
 	'module' => array(
 			'cores' => array(
-					'Admin', 'Blog', 'Comment', 'Contact', 'Media', 'Module',
-					'Navigation', 'Pages', 'Setting', 'Tag', 'User'
+					'admin', 'blog', 'comment', 'contact', 'media', 'module',
+					'navigation', 'pages', 'setting', 'tag', 'user'
 				),
-			'system' => array('Admin', 'Pages', 'Navigation', 'User', 'Module', 'Setting'),
-
-			'autoload' => array('User', 'Navigation'),
+			'system' => array('admin', 'pages', 'navigation', 'user', 'module', 'setting'),
 		),
 
 	/**
