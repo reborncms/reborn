@@ -225,6 +225,20 @@ if(! function_exists('arrToObject'))
 }
 
 /**
+ * Helper function fto remove baseUrl from given url
+ *
+ * @param string $url
+ * @return string
+ **/
+if(! function_exists('remove_base_url'))
+{
+	function remove_base_url($url)
+	{
+		return str_replace(rbUrl(), '', $url);
+	}
+}
+
+/**
  * Helper function for the Uri::create().
  *
  * @param string $path Uri path to create.
