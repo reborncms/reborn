@@ -104,5 +104,6 @@ return array(
 		'check' => 'Check your mail for activaion code',
 		'success' => 'Your account is successfully activated',
 		'fail'	=> 'Fail to activate your account! Pleaes try again.',
+		'already' => 'Email %s is already activated. Please try login.',
 	),
 );

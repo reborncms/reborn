@@ -466,6 +466,66 @@ class UserController extends \PublicController
 	}
 
 	/**
+	* Resend activation link to user
+	*
+	*/
+	public function resend()
+	{
+		if(Sentry::check()) return \Redirect::to('user');
+
+		if (\Input::isPost()) {
+			$rule = array(
+		        'email' => 'required|email',
+		    );
+			$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+			$e = new \Reborn\Form\ValidationError();
+
+			if ($v->fail()) {
+					$e = $v->getErrors();
+					$this->template->set('errors', $e);
+			} else {
+				$email = \Input::get('email');
+				try
+				{
+				    $user = Sentry::findUserByLogin($email);
+
+				    if ($user->isActivated()) {
+				        \Flash::error(sprintf(t('user::user.activate.already'), $email));
+				        return \Redirect::to('login');
+				    } else {
+					    $activationCode = $user->getActivationCode();
+						$emailEncode = base64_encode($email);
+					    $activationLink = rbUrl().'user/activate/'.$emailEncode.'/'.$activationCode;
+					    
+					    // create config to mail user activation code
+					    $config = array(
+							'to'		=> array($email),
+							'from'		=> \Setting::get('site_mail'),
+							'name'		=> \Setting::get('site_title'),
+							'subject'	=> t('user::user.activate.subject'),
+							'body'		=> 'Please active your account by using following link: <br /><a href="'.$activationLink.'">'.$activationLink.'</a>',
+						);
+
+					    // sent mail to register user
+					    $mail = Mailer::send($config);
+
+					    \Flash::success(t('user::user.activate.check'));
+						return \Redirect::to('user/activate');
+				    }				   
+				}
+				catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
+				{
+				    \Flash::error(t('user::user.auth.dunexist'));
+				}
+			}
+		}
+
+		$this->template->title('Resend Activation Code')
+			->breadcrumb('Resend Activation Code')
+			->setPartial('resend');
+	}
+
+	/**
 	 * Save Form Values of Create and Edit Blog
 	 *
 	 * @return boolean
