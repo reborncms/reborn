@@ -11,6 +11,7 @@ use Reborn\Cores\Setting;
 use Reborn\Module\ModuleManager as Module;
 use Reborn\Connector\DB\DBManager as DB;
 use Cartalyst\Sentry\Hashing\BcryptHasher;
+use Composer\Autoload\ClassLoader as Loader;
 
 /**
  * Reborn CMS Installer Class
@@ -174,7 +175,7 @@ class Installer
 
 		// Create Database if requirement
 		if ( ! empty($db['db_create'] )) {
-			mysql_query('CREATE DATABASE IF NOT EXISTS '.$db['db'], $mysqldb);
+			mysql_query('CREATE DATABASE IF NOT EXISTS '.$db['db'].' CHARACTER SET utf8 COLLATE utf8_unicode_ci', $mysqldb);
 		}
 
 		// Select DB
@@ -237,8 +238,21 @@ class Installer
         $modules = Module::getAll();
 
         foreach ($modules as $name => $mod) {
+        	static::loadModule($mod);
         	Module::install($name, $mod['uri'], true, false);
         }
+	}
+
+	protected static function loadModule($data)
+	{
+		if (!class_exists('Composer\Autoload\ClassLoader')) {
+            throw new \RbException("Need \"Composer\Autoload\ClassLoader\" to install Reborn CMS");
+        }
+        $path = $data['path'];
+		$namespace = $data['ns'];
+        $loader = new Loader();
+        $loader->add($namespace, $path.'src');
+        $loader->register();
 	}
 
 	protected static function passwordHash($pass)

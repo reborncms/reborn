@@ -648,10 +648,11 @@ class Module
     protected function getInstaller($module)
     {
         $path = $this->modules[$module]['path'];
-        $insFile = $this->modules[$module]['path'].$module.$this->installFile;
+        $installerName = ucfirst($module);
+        $insFile = $this->modules[$module]['path'].$installerName.$this->installFile;
 
         if (file_exists($insFile)) {
-            $classname = $module.'\\'.$module.'Installer';
+            $classname = $installerName.'\\'.$installerName.'Installer';
             if (! class_exists($classname)) {
                 require $insFile;
             }
@@ -661,7 +662,7 @@ class Module
                 return $class;
             } else {
                 throw new ModuleException(
-                            sprintf($this->notAbstract, $module, $classname, 'Installer')
+                            sprintf($this->notAbstract, $installerName, $classname, 'Installer')
                         );
             }
         }
