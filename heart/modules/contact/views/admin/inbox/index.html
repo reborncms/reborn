@@ -1,0 +1,52 @@
+{{ if(count($mails) > 0) }}
+{{ Form::start(ADMIN_URL.'/contact/delete') }}
+<table class="stripe">
+	<thead>
+		<tr>
+			<th width="5%">{{ Form::checkbox('action_to_all', '', array('class' => 'check-all')) }}</th>
+			<th>{{ t('label.name') }}</th>
+			<th>{{ t('label.email') }}</th>
+			<th>{{ t('contact::contact.labels.subject') }}</th>
+			<th width="140">{{ t('label.action') }}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{= $a=1 =}
+		{{ loop($mails as $mail) }}
+		<tr>
+			<td class="checkbox">{{ Form::checkbox('action_to[]', $mail->id, array('id' => 'action'.$a)) }}</td>
+			<td>{{ $mail->name }}</td>
+			<td>{{ $mail->email }}</td>
+			<td>{{ $mail->subject }}
+				{{ if(($mail->read_mail) == 0) }}
+					<span class="label label-success">{{ t('contact::contact.labels.new') }}</span>	 
+				{{ endif}}
+			</td>
+			<td>
+				<div class="icons-bar">
+					<a href="{{ adminUrl("contact/detail/".$mail->id) }}" title="{{ t('contact::contact.labels.detail') }}" class="tipsy-tip">
+						<i class="icon-view"></i>
+					</a>
+					<a href="{{ adminUrl("contact/send-mail/index/".$mail->id) }}" title="{{ t('contact::contact.labels.reply') }}" class="tipsy-tip">
+						<i class="icon-redo "></i>
+					</a>
+					<a href="{{ adminUrl("contact/delete/".$mail->id) }}" title="{{ t('global.delete') }}" class="tipsy-tip confirm_delete">
+						<i class="icon-remove"></i>
+					</a>
+				</div><!--- end of icons-bar -->
+			</td>
+			{= $a++ =}
+		</tr>
+		{{ endloop }}
+	</tbody>
+</table>
+	<div class="button-wrapper" id="delete_select">
+		{{ Form::submit('submit_delete', t('global.delete_selected') , array('class' => 'confirm_delete btn btn-red', 'disabled' => 'disabled')) }}
+		{{ Form::end() }}
+	</div>
+	{{ $pagination }}
+{{ else }}
+	<div id="no-index-data">
+		{{ t('contact::contact.no_mail') }}
+	</div>
+{{ endif }}

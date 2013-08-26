@@ -1,0 +1,45 @@
+<div class="widget widget-contact" >
+	<h2 class="widget-title">{{ $title }}</h2>
+	<div class="widget-body">
+		
+		{{ Form::start('contact','',true,array('class'=>'contact-form')) }}
+					
+			<div class="contact-form-block">
+				{{ Form::label('Name <span class="required"></span>', 'name') }}
+				<div class="form-field-block">
+					{{ Form::input('name', isset($mail->name) ? $mail->name : '', 'text', array('placeholder' => 'Your Name')) }}
+					
+				</div> 
+			</div>
+			
+			<div class="contact-form-block">
+				{{ Form::label('Email <span class="required"></span>', 'email') }}
+				<div class="form-field-block">
+					{{ Form::input('email', isset($mail->email) ? $mail->email : '', 'text', array('placeholder' => 'Your Email')) }}
+					
+				</div> 
+			</div> 
+
+			<div class="contact-form-block">
+				{{ Form::label('Subject <span class="required"></span>', 'subject') }}
+				<div class="form-field-block">
+					{{ Form::input('subject', isset($mail->subject) ? $mail->subject : '', 'text', array('placeholder' => 'Your Subject')) }}
+				</div> 
+			</div>
+
+			<div class="contact-form-block">
+				{{ Form::label('Message <span class="required"></span>', 'message') }}
+				<div class="form-field-block">
+					{{ Form::textarea('message', isset($mail->message) ? $mail->message :'',array('placeholder' => 'Your Message','cols'=>'30')) }}
+				</div>
+			</div>
+
+			<div class="contact-form-block contact-button">
+				{{ Form::submit('submit', 'Send', array('id' => 'create', 'class' => 'contact-btn btn')) }}
+			</div>
+			{= $widget=true =}
+			{{ Form::hidden('widget', $widget) }}
+
+		{{ Form::end() }}
+	</div>
+</div>
