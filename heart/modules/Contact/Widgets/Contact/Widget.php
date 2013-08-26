@@ -44,8 +44,9 @@ class Widget extends \Reborn\Widget\AbstractWidget
 		$title = $this->get('title', 'Contact Us');
 
 		\Module::load('Contact');
+		
 
-		return $this->show(array('title' => $title), 'display');
+		return $this->show(array('title' => $title ), 'display');
 	}
 
 	public function render()

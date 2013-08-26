@@ -79,7 +79,9 @@ class ContactController extends \PublicController
 				$errors = $v->getErrors();
 				$mail = (object)\Input::get('*');
 				if ($widget == true) {
-					 \Flash::error($errors);
+					
+						\Flash::error($errors->toArray());
+					
 					return \Redirect::to($referer);
 				}
 				
@@ -120,7 +122,7 @@ class ContactController extends \PublicController
 	 * @package Contact\Controller
 	 * @author RebornCMS Development Team
 	 **/
-	protected function validate()
+	public static function validate()
 	{
 		$rule = array(
 			        'name'   => 'required|maxLength:25',
@@ -133,6 +135,5 @@ class ContactController extends \PublicController
 
 		return $v;
 	}
-
 	
 }
