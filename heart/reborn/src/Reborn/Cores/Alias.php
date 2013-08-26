@@ -36,6 +36,7 @@ class Alias
             'Dir' => 'Reborn\Filesystem\Directory',
             'Eloquent' => 'Illuminate\Database\Eloquent\Model',
             'Event' => 'Reborn\Event\EventManager',
+            'Facade' => 'Reborn\Cores\Facade',
             'File' => 'Reborn\Filesystem\File',
             'Flash' => 'Reborn\Util\Flash',
             'Hash' => 'Reborn\Util\Hash',
