@@ -1,0 +1,99 @@
+<div class="media_wrap" id="{{ (isset($folder_id)) ? $folder_id : 0 }}">
+
+	{{ if(isset($folderPagi)) }}
+
+	<div id="m_pagi_area">
+		<ul id="m_pagi" class="overflow">
+			<li class="m_pagi_home f-left"><a href="{{ adminUrl('media') }}">Home</a></li>
+			{{ loop($folderPagi as $pagi) }}
+			<li class="f-left"><span class="sep f-left"></span><a href="{{ adminUrl('media/explode/' . $pagi->id) }}">{{ $pagi->name }}</a></li>
+			{{ endloop }}
+			<li class="f-left" id="m_current"><span class="sep f-left"></span><a href="javascript:void(0);">{{ $currentFolder->name }}</a></li>
+		</ul> <!-- end of m_pagi -->
+	</div> <!-- end of m_pagi_area -->
+
+	{{ endif }}
+
+	{{ if(count($folders) <= 0 and count($files) <= 0) }}
+	<div id="no-index-data">
+		{{ Translate::get('m.info.noFileFolder') }}
+	</div><!-- end of no-index-data -->
+	{{ endif }}
+
+	{{ if(isset($folders) and count($folders) > 0) }}
+
+		<div id="m_folder_area">
+
+			<ul id="m_folder_list">
+
+				{{ loop($folders as $folder) }}
+
+					<li class="drop_zone relative" folder-id = "{{ $folder->id }}">
+						<div class="btns-group absolute">
+							<a href="{{ rbUrl('admin/media/editFolder/' . $folder->id) }}" title="{{ \Translate::get('m.btn.edit') }}" class="btn-ico btn btn-green m_edit">
+								<i class="icon-edit icon-16"></i>
+							</a>
+							<a href="{{ rbUrl('admin/media/deleteFolder/' . $folder->id) }}" title="{{ \Translate::get('m.btn.delete') }}" class="btn-ico btn btn-red m_confirm_delete">
+								<i class="icon-remove icon-16"></i>
+							</a>
+						</div> <!-- end of btns-group -->
+
+						<a href="{{ rbUrl('admin/media/explode/' . $folder->id) }}" class="explorer">
+							<div class="m_thumb_area"></div>
+							<p>{{ $folder->name }}</p>
+						</a>
+
+					</li> <!-- end of drop_zone -->
+				{{ endloop }}
+			</ul> <!-- end of m_folder_list -->
+			<div class="clear"></div>
+		</div> <!-- end of m_folder_area -->
+
+	{{ endif }}
+
+	{{ if(isset($files) and count($files) > 0) }}
+
+		<div id="m_file_area">
+
+			<ul id="m_file_list" class="clearfix">
+
+				{{ loop($files as $file) }}
+
+					<li file-id = "{{ $file->id }}" class='relative'>
+						
+
+						<div class="btns-group absolute">
+							<a href="{{ rbUrl('admin/media/showFileData/' . $file->id) }}" title="View" class="btn-ico btn btn-blue m_view">
+								<i class="icon-view icon-16"></i>
+							</a>
+							<a href="{{ rbUrl('admin/media/editFile/' . $file->id) }}" title="{{ \Translate::get('m.btn.edit') }}" class="btn-ico btn btn-green m_edit">
+								<i class="icon-edit icon-16"></i>
+							</a>
+							<a href="{{ rbUrl('admin/media/deleteFile/' . $file->id) }}" title="{{ \Translate::get('m.btn.delete') }}" class="btn-ico btn btn-red m_confirm_delete">
+								<i class="icon-remove icon-16"></i>
+							</a>
+						</div> <!-- end of btn-group -->
+
+						{{ if($file->width != 0) }}
+							{= $imgLink = rbUrl('media/thumb/' . $file->id . '/90/') =}
+							<div class="dragger m_img_thumb overflow" style="background: url({{ $imgLink }}) center no-repeat">
+								
+							</div> <!-- end of m_img_thumb -->
+							<p class="overflow">{{ $file->name }}</p>
+						{{ else }}
+							<div class="dragger files_icon {{ $file->extension }}"></div>
+							<p class="overflow">{{ $file->name }}</p>
+						{{ endif }}
+
+
+					</li> <!-- end of drop_zone -->
+
+				{{ endloop }}
+				<div class="clear"></div>
+			</ul> <!-- end of m_folder_list -->
+			<div class="clear"></div>
+		</div> <!-- end of m_file_area -->
+
+	{{ endif }}
+
+</div> <!-- end of media_wrap -->
