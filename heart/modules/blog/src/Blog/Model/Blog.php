@@ -170,4 +170,22 @@ class Blog extends \Eloquent
         return $this->tags_data;
     }
 
+    /**
+     * Fill some of requirement in parent __call method
+     *
+     * @param  string  $method
+     * @param  array   $parameters
+     * @return mixed
+     **/
+    public function __call($method, $parameters)
+    {
+        $check_method = 'get'.studly_case($method).'Attribute';
+
+        if(method_exists($this, $check_method)) {
+            return call_user_func_array(array($this, $check_method), $parameters);
+        }
+
+        return parent::__call($method, $parameters);
+    }
+
 }
