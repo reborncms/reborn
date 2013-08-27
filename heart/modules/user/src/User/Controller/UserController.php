@@ -585,8 +585,8 @@ class UserController extends \PublicController
 	{
 		$rule = array(
 	        'email' => 'required|email',
-	        'first_name' =>'required|minLength:2|maxLength:15',
-	        'last_name' => 'required|minLength:2|maxLength:15',
+	        'first_name' =>'required|minLength:2|maxLength:40',
+	        'last_name' => 'required|minLength:2|maxLength:40',
 	    );
 
 		$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
