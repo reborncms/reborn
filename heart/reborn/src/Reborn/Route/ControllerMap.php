@@ -80,8 +80,16 @@ class ControllerMap
 			$this->setMapData();
 		}
 
-		if (isset($this->map[$key])) {
-			foreach ($this->map[$key] as $file) {
+		if(isset($this->map[$key])) {
+			$map = $this->map[$key];
+		} elseif (isset($this->map[ucfirst($key)])) {
+			$map = $this->map[ucfirst($key)];
+		} else {
+			$map = null;
+		}
+
+		if (! is_null($map)) {
+			foreach ($map as $file) {
 				if (true == strpos($file, $filename)) {
 					return $file;
 				}
@@ -105,7 +113,7 @@ class ControllerMap
 		$lists = array();
 
 		foreach ($this->mod_paths as $uri => $path) {
-			$path = $path.$this->ctrlFolder.DS.'*';
+			$path = $path.'src'.DS.$uri.DS.$this->ctrlFolder.DS.'*';
 			$lists[$uri] = $this->search($path);
 		}
 
@@ -191,7 +199,7 @@ class ControllerMap
 	protected function setModulePath($modules)
 	{
 		foreach ($modules as $name => $mod) {
-			$this->mod_paths[$mod['uri']] = $mod['path'];
+			$this->mod_paths[$mod['ns']] = $mod['path'];
 		}
 	}
 

@@ -235,7 +235,7 @@ class ModuleController extends \AdminController
 	{
 		$systems = \Config::get('app.module.system');
 
-		if (in_array($name, $systems)) {
+		if (in_array(strtolower($name), $systems)) {
 			return false;
 		}
 

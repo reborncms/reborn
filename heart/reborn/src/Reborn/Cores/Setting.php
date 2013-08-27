@@ -121,6 +121,20 @@ class Setting
     }
 
     /**
+     * Remove the data to setting table.
+     *
+     * @param string $key Slug name from the setting table
+     * @param mixed $value
+     * @return void
+     */
+    public static function remove($key)
+    {
+        DB::table(static::$_table)
+                ->where('slug', '=', $key)
+                ->delete();
+    }
+
+    /**
      * Check given key's real value is same with given value.
      * example:
      * <code>
