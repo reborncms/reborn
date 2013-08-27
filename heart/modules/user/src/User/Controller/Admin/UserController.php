@@ -217,6 +217,36 @@ class UserController extends \AdminController
 	}
 
 	/**
+	* Activate user account by using email address and activation code
+	*
+	* @param $email string
+	* @param $activationCode string
+	*/
+	public function activate($id)
+	{
+		try {
+			$user = Sentry::getUserProvider()->findById(1);
+
+			if ($user->isActivated()) {
+				\Flash::error(sprintf(t('user::user.activate.admin'), $email));			
+			} else {
+				$activationCode = $user->getActivationCode();
+
+			    if ($user->attemptActivation($activationCode)) {
+			       	\Flash::success(t('user::user.activate.success'));
+			    } else {
+			       \Flash::error(t('user::user.activate.admin'));
+			    }
+			}
+		} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
+    		\Flash::error(t('user::user.auth.dunexist'));
+		} catch (\Cartalyst\SEntry\Users\UserAlreadyActivatedException $e) {
+			\Flash::error(t('user::user.auth.admin'));
+		}
+		return \Redirect::toAdmin('user');
+	}
+
+	/**
 	 * User Delete
 	 *
 	 * @return void
