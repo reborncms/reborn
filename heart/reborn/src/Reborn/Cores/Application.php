@@ -182,6 +182,10 @@ class Application extends \Illuminate\Container\Container
 
             $this->started = true;
 
+            if(!$response instanceof SymfonyResponse) {
+                $response = new Response($response);
+            }
+
             // Send response to the end method
             $this->end($response);
         } catch(TokenNotMatchException $e) {

@@ -14,6 +14,7 @@ class Pages extends \Eloquent
             $all = \DB::table('pages')->orderBy('page_order')->get(); // add order_by
         }
 
+        $page_structure = $pages = array();
         foreach ($all as $row) {
             $pages[$row->id] = (array) $row;
         }
