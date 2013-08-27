@@ -43,8 +43,15 @@ class ModuleCommand extends SfCommand
      */
     protected function create($data)
     {
-    	$path = MODULES.$data['name'];
+    	$path = MODULES.strtolower($data['name']);
+        // make module folder path
     	Dir::make($path);
+        $moduleName = ucfirst($data['name']);
+        // make module src path
+        Dir::make($path.DS.'src');
+        // make module src/Namespace path
+        Dir::make($path.DS.'src'.DS.$moduleName);
+        $src = $path.DS.'src'.DS.$moduleName;
 
     	$dirs = array(
     			$path.DS.'lang',
@@ -55,8 +62,8 @@ class ModuleCommand extends SfCommand
     			$path.DS.'assets'.DS.'js',
     			$path.DS.'assets'.DS.'img',
     			$path.DS.'views',
-    			$path.DS.'Controller',
-    			$path.DS.'Model',
+    			$src.DS.'Controller',
+    			$src.DS.'Model',
     		);
 
     	foreach ($dirs as $d) {
@@ -64,9 +71,11 @@ class ModuleCommand extends SfCommand
     	}
 
         if (($data['backend'] == 'yes') or ($data['backend'] == 'Yes')) {
-            $admin = $path.DS.'Controller'.DS.'Admin';
+            $admin = $src.DS.'Controller'.DS.'Admin';
             Dir::make($admin);
         }
+
+        $data['src_path'] = $src;
 
     	$this->setInfo($data);
     	$this->setInstaller($data);
@@ -80,7 +89,7 @@ class ModuleCommand extends SfCommand
 // Route file for module {$data['module']}
 EOT;
 
-    	File::write(MODULES.$data['name'], 'routes.php', $route);
+    	File::write(MODULES.strtolower($data['name']), 'routes.php', $route);
     }
 
     /**
@@ -123,7 +132,7 @@ EOT;
     		$fileData = str_replace('{'.$k.'}', $data[$k], $fileData);
     	}
 
-    	File::write(MODULES.$data['name'], $data['name'].'Info.php', $fileData);
+    	File::write(MODULES.strtolower($data['name']), $data['module'].'Info.php', $fileData);
     }
 
     /**
@@ -140,7 +149,7 @@ EOT;
 
     	$fileData = str_replace('{module}', $data['module'], $fileData);
 
-    	File::write(MODULES.$data['name'], $data['name'].'Installer.php', $fileData);
+    	File::write(MODULES.strtolower($data['name']), $data['module'].'Installer.php', $fileData);
     }
 
     /**
@@ -157,7 +166,7 @@ EOT;
 
     	$fileData = str_replace('{module}', $data['module'], $fileData);
 
-    	File::write(MODULES.$data['name'], 'Bootstrap.php', $fileData);
+    	File::write(MODULES.strtolower($data['name']), 'Bootstrap.php', $fileData);
     }
 
     /**
@@ -177,7 +186,7 @@ EOT;
 
             $controller = $data['module'].'Controller.php';
 
-            $path = MODULES.$data['name'].DS.'Controller'.DS;
+            $path = $data['src_path'].DS.'Controller'.DS;
 
             File::write($path, $controller, $fileData);
         }
@@ -191,7 +200,7 @@ EOT;
 
             $adminCon = $data['module'].'Controller.php';
 
-            $path = MODULES.$data['name'].DS.'Controller'.DS.'Admin'.DS;
+            $path = $data['src_path'].DS.'Controller'.DS.'Admin'.DS;
 
             File::write($path, $adminCon, $adminData);
         }
@@ -215,7 +224,7 @@ EOT;
 
         $model = $data['module'].'.php';
 
-        File::write(MODULES.$data['name'].DS.'Model'.DS, $model, $fileData);
+        File::write($data['src_path'].DS.'Model'.DS, $model, $fileData);
     }
 
     /**

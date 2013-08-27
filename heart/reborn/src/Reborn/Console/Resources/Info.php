@@ -4,7 +4,7 @@ namespace {module};
 
 class {module}Info extends \Reborn\Module\AbstractInfo
 {
-	protected $name = '{name}';
+	protected $name = '{module}';
 
 	protected $version = '{version}';
 

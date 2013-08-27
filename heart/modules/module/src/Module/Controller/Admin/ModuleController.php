@@ -250,6 +250,7 @@ class ModuleController extends \AdminController
 		$mods = \Module::getAll();
 
 		foreach ($mods as $k => $mod) {
+
 			if ($mod['installed']) {
 				if (in_array($k, $sys)) {
 					$m['system'][$k] = $mod;
