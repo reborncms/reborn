@@ -144,7 +144,6 @@ class Config
                 $configs = array_merge($configs, require $path);
             }
         } else {
-            $module = ucfirst($module);
             if (file_exists($path = CORE_MODULES.$module.DS.'config'.DS.$file.EXT)) {
                 $configs = array_merge($configs, require $path);
             } elseif(file_exists($path = MODULES.$module.DS.'config'.DS.$file.EXT)) {
