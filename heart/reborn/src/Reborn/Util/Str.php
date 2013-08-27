@@ -108,4 +108,49 @@ class Str
 		return $random;
 	}
 
+	/**
+	 * Get word with limit
+	 *
+	 * @param string $string Given text
+	 * @param int $limit Word limit
+	 * @param string $ending Word limit ending eg:(...)
+	 * @return string
+	 **/
+	public static function words($string, $limit = 100, $ending = '...')
+	{
+		$words = array();
+		$words = explode(" ", $string);
+
+		if(count($words) < $limit){
+		   return $string;
+		}
+
+		$words = array_slice($words, 0, $limit);
+
+		return implode(' ', $words).$ending;
+	}
+
+	/**
+	 * Get word with text limit
+	 *
+	 * @param string $string Given text
+	 * @param int $limit Text limit
+	 * @param string $ending Word limit ending eg:(...)
+	 * @return string
+	 **/
+	public static function limit($string, $limit = 100, $ending = '...')
+	{
+		$shown_string = implode(" ", $words);
+		$string = strip_tags($string);
+		if (strlen($string) > $limit) {
+
+		    // truncate string
+		    $string_cut = substr($string, 0, $limit);
+
+		    $string = substr($string_cut, 0, strrpos($string_cut, ' ')).$ending;
+		}
+
+		return $string;
+	}
+
 } // END class Str

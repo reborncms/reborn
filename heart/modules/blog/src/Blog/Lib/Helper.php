@@ -23,7 +23,7 @@ class Helper {
 		$bcs .= '<div class="actions">';
 		$bcs .= '<a href="'.\Uri::create(ADMIN_URL.'/blog/category/edit/'.$category['id']).'" title="'. t('global.edit') .'" class="tipsy-tip c-edit-box"><i class="icon-edit icon-black"></i></a>';
 		if ($category['id'] != 1) {
-			$bcs .= '<a href="'.\Uri::create(ADMIN_URL.'/blog/category/delete/'.$category['id']).'" title="'. t('global.delete') .'" class="confirm_delete tipsy-tip"><i class="icon-remove icon-black"></i></a>';	
+			$bcs .= '<a href="'.\Uri::create(ADMIN_URL.'/blog/category/delete/'.$category['id']).'" title="'. t('global.delete') .'" class="confirm_delete tipsy-tip"><i class="icon-remove icon-black"></i></a>';
 		}
 		$bcs .= '</div>';
 		$bcs .= '</div>';
@@ -102,7 +102,7 @@ class Helper {
 		if (count($posts) > 0) {
 			foreach ($posts as $post) {
 				$widget['body'] .= '<li>
-										<span class="date">'.rbDate($post->created_at).'</span>
+										<span class="date">'.$post->post_date('d M Y').'</span>
 										<span class="blog-author"><i class="icon-user icon-white"></i>
 											<a href="'.rbUrl('user/profile/'.$post->author->id).'">'.$post->author->first_name.' '.$post->author->last_name.'</a>
 										</span>
