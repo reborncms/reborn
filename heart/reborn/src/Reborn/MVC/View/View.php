@@ -201,6 +201,32 @@ class View implements ArrayAccess
     }
 
     /**
+     * Loop for Partial
+     *
+     * @param string $file Partial file name
+     * @param array|object $model Data Model
+     * @param string $value_name value_name for loop eg: ($model as $value_name)
+     * @param string $key_name key_name for loop eg: ($model as $key_name as $value_name)
+     * @return string
+     **/
+    protected function partialLoop($file, $model = null, $value_name = '_value', $key_name = '_key')
+    {
+        $content = '';
+        if(!is_array($model) || !is_object($model)) {
+            if (is_null($model)) {
+                return $this->template->partialRender($file);
+            }
+            return $content;
+        }
+        foreach ($model as $key => $value) {
+            $this->data[$key_name] = $key;
+            $this->data[$value_name] = $value;
+            $content .= $this->template->partialRender($file);
+        }
+        return $content;
+    }
+
+    /**
      * Render the Module partial file
      *
      * @param string $file Partial file name
@@ -211,34 +237,6 @@ class View implements ArrayAccess
         // Trim the space
         $file = trim($file, ' ');
         return $this->template->partialRender($file);
-    }
-
-    /**
-     * This method will make inner call the view from the module action.
-     *
-     * example : View file is blog single view.
-     * We need to call comment list action from the Comment Moduel
-     * to show comments of this post.
-     *
-     * {{ action:comment/list/$post->id }}
-     * // will return the comment lists for this post id
-     *
-     * @param string $uri Uri for the request action
-     * @return string|false
-     **/
-    protected function callAction($uri)
-    {
-        $uri = rtrim($uri, ' ');
-        $module = explode('/', $uri);
-
-        $request = \Registry::get('app')->request;
-        $request->setInner();
-
-        \Uri::initialize(\Request::create($uri));
-
-        $response = \Registry::get('app')->router->dispatch();
-
-        return $response->getContent();
     }
 
     /**

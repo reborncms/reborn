@@ -507,30 +507,6 @@ if (! function_exists('checkOnline')) {
 }
 
 /**
- * Date Format Helper Function
- *
- * @param string|DateTime $date Date object ot date string
- * @param string $format Date output format
- * @param boolean $string Need to use strtotime function. (eg: $date = "now")
- * @return boolean
- **/
-if (! function_exists('rbDate')) {
-	function rbDate($date, $format = "Y-m-d", $string = false)
-	{
-		if ($string) {
-			$date = strtotime($date);
-			return date($format, $date);
-		}
-
-		if (! $date instanceof DateTime) {
-            $date = new DateTime($date);
-        }
-
-        return $date->format($format);
-	}
-}
-
-/**
  * Helper Function of Setting::get().
  *
  * @param string $key

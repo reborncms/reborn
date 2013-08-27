@@ -21,7 +21,7 @@ class Parser
     protected $handlers = array(
             'include'       => 'handleInclude',
             'partial'       => 'handlePartial',
-            'action'        => 'handleAction',
+            'partial_loop'  => 'handlePartialLoop',
             'loop'          => 'handleLoop',
             'if'            => 'handleIf',
             'ifnot'         => 'handleIfNot',
@@ -32,8 +32,7 @@ class Parser
             'elseif'        => 'handleElseIf',
             'else'          => 'handleElse',
             'breadcrumb'    => 'handleBreadcrumb',
-            'make'          => 'handlerMaker',
-            'Date'          => 'handleDateFormat',
+            'make'          => 'handlerMaker'
         );
 
     /**
@@ -92,7 +91,12 @@ class Parser
         return $content;
     }
 
-
+    /**
+     * Parse template string.
+     *
+     * @param string $template Template string
+     * @return string
+     */
     public function parseString($template)
     {
         $template = $this->handleUnParse($template);
@@ -251,17 +255,18 @@ class Parser
     }
 
     /**
-     * Handler the call the aother action.
+     * Handle the Module Parial Loop Render
      *
      * @param string $template
      * @return string
      **/
-    public function handleAction($template)
+    protected function handlePartialLoop($template)
     {
-        $pattern = '/\{\{\s*(action):(.*)\s*\}\}/';
+        $pattern = '/\{\{\spartial_loop(\s*\((.*)\))\s\}\}/';
 
-        return preg_replace($pattern, '<?php echo $this->callAction("$2"); ?>', $template);
+        return preg_replace($pattern, '<?php echo $this->partialLoop$1; ?>', $template);
     }
+
 
     /**
      * Handle the Loop(foreach only) for parser.
@@ -499,34 +504,13 @@ class Parser
      **/
     protected function handleCodeBlock($template)
     {
-        $pattern = '/\{=\s*([\s\S]*?)\s*=\}/';
+        $pattern[] = '/\{=\s*([\s\S]*?)\s*=\}/';
+        $pattern[]= '/\{@\s*([\s\S]*?)\s*@\}/';
 
-        return preg_replace($pattern, "<?php\n\r $1 \n\r?>", $template);
-    }
+        $replace[] = "<?php\n\r $1 \n\r?>";
+        $replace[] = "<?php\n\r $1 \n\r?>";
 
-    /**
-     * undocumented function
-     *
-     * @return void
-     **/
-    protected function handleDateFormat($template)
-    {
-        $pattern = '/\{\{\s*(Date)(.*)\s*\}\}/';
-
-        $callback = function($match) {
-            if (true == strpos($match[2], 'is')) {
-                list($var, $format) = explode(' as ', trim($match[2], ' '));
-                $var = '"'.substr($var, 3).'"';
-                $format = trim(trim($format, "'"), '"');
-                return '<?php echo rbDate('.$var.', "'.$format.'", true); ?>';
-            } else {
-                list($var, $format) = explode(' as ', trim($match[2], ' '));
-                $format = trim(trim($format, "'"), '"');
-                return '<?php echo rbDate('.$var.', "'.$format.'"); ?>';
-            }
-        };
-
-        return preg_replace_callback($pattern, $callback, $template);
+        return preg_replace($pattern, $replace, $template);
     }
 
     /**
