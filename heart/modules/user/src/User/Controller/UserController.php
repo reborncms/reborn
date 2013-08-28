@@ -51,7 +51,7 @@ class UserController extends \PublicController
 
 		if (\Input::isPost()) {
 			
-			//$redirect = \Input::server('HTTP_REFERER');
+			$redirect = \Input::server('HTTP_REFERER');
 			$rule = array(
 		        'email' => 'required|email',
 		        'password' => 'required|mixLength:6',
@@ -78,7 +78,7 @@ class UserController extends \PublicController
 				    if ($user = Sentry::authenticate($login, $remember)) {
 				    	$name = $user->first_name.' '.$user->last_name;
 				    	\Flash::success(sprintf(t('user::user.login.success'), $name));
-				        return \Redirect::to('/');
+				        return \Redirect::to($redirect);
 				    } else {
 				    	\Flash::error(t('user::user.login.fail'));
 				    }
@@ -118,7 +118,7 @@ class UserController extends \PublicController
 	public function logout()
 	{
 		if(!Sentry::check()) return \Redirect::to('login');
-		//$redirect = \Input::server('HTTP_REFERER');
+		\Event::call('reborn.user.logout');
 		Sentry::logout();
 		\Flash::success(t('user::user.logout'));
 		return \Redirect::to('/');
