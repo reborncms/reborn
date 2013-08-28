@@ -19,12 +19,9 @@ class UserController extends \PublicController
 
 		$user = Sentry::getUser();
 
-		$data['name'] = $user->first_name.' '.$user->last_name;
-		$data['email'] = $user->email;
-
 		$this->template->title(t('user::user.title.profile'))
 					->breadcrumb(t('user::user.title.profile'))
-					->set('user', $data)
+					->set('user', $user)
 					->setPartial('index');
 	}
 
@@ -37,12 +34,9 @@ class UserController extends \PublicController
 			$user = Sentry::getUserProvider()->findById($id);
 		}
 
-		$data['name'] = $user->first_name.' '.$user->last_name;
-		$data['email'] = $user->email;
-
 		$this->template->title(t('user::user.title.profile'))
 					->breadcrumb(t('user::user.title.profile'))
-					->set('user', $data)
+					->set('user', $user)
 					->setPartial('profile');
 	}
 
@@ -57,7 +51,7 @@ class UserController extends \PublicController
 
 		if (\Input::isPost()) {
 			
-			$redirect = \Input::server('HTTP_REFERER');
+			//$redirect = \Input::server('HTTP_REFERER');
 			$rule = array(
 		        'email' => 'required|email',
 		        'password' => 'required|mixLength:6',
@@ -84,7 +78,7 @@ class UserController extends \PublicController
 				    if ($user = Sentry::authenticate($login, $remember)) {
 				    	$name = $user->first_name.' '.$user->last_name;
 				    	\Flash::success(sprintf(t('user::user.login.success'), $name));
-				        return \Redirect::to($redirect);
+				        return \Redirect::to('/');
 				    } else {
 				    	\Flash::error(t('user::user.login.fail'));
 				    }
@@ -124,10 +118,10 @@ class UserController extends \PublicController
 	public function logout()
 	{
 		if(!Sentry::check()) return \Redirect::to('login');
-		$redirect = \Input::server('HTTP_REFERER');
+		//$redirect = \Input::server('HTTP_REFERER');
 		Sentry::logout();
 		\Flash::success(t('user::user.logout'));
-		return \Redirect::to($redirect);
+		return \Redirect::to('/');
 	}
 
 	public function edit()

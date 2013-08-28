@@ -1,5 +1,13 @@
-<h2>Hello World, {{ $user['name'] }}</h2>
+<div id="user-profile">
 
-<p>Your Mail Address is <a href="mailto:{{ $user['email'] }}">{{ $user['email'] }}</a></p>
+<h2>Hello World, {{ $user->first_name }} {{ $user->last_name }}</h2>
 
-<a href="{{ \Uri::create('user/logout/') }}">Logout</a>
+{{ gravatar($user->email, 60, $user['name']) }}
+<span><a href="https://gravatar.com/" target="_blank">{{ t('user::user.gravatar') }}</a></span>
+
+<ul>
+	<li><a href="{{ \Uri::create('user/edit/') }}">Edit Profile</a></li>
+	<li><a href="{{ \Uri::create('user/change-password/') }}">Change Password</a></li>
+</ul>
+
+</div>

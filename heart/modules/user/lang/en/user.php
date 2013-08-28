@@ -36,6 +36,7 @@ return array(
 	'lfacebook' => 'Facebook',
 	'ltwitter' => 'twitter',
 	'adminpanelaccess' => 'Can access to Dashboard?',
+	'gravatar' => 'Change your avatar at Gravatar',
 
 	'temail' => 'Please enter valid Email Address',
 	'tpassword' => 'Type a secure password',
