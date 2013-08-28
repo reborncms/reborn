@@ -39,7 +39,7 @@ class AdminController extends \AdminController
 			    );
 
 				try {
-					if ($user = Sentry::authenticateAndRemember($login)) {
+					if ($user = Sentry::authenticate($login)) {
 				    	$username = $user->first_name.' '.$user->last_name;
 				        \Flash::success(sprintf(t('global.welcome_ap'), $username));
 				        return \Redirect::toAdmin();
