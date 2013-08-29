@@ -65,7 +65,7 @@ if(! defined('GLOBAL_URL')) {
   		$protocol = ('80' == $_SERVER['SERVER_PORT']) ? 'http://' : 'https://';
 		$host = $_SERVER['HTTP_HOST'];
 		$script = str_replace('index.php', '', $_SERVER['SCRIPT_NAME']);
-		$fullUrl = $protocol.$host.$script.'heart/global/';
+		$fullUrl = $protocol.$host.$script.'global/';
 		define('GLOBAL_URL', $fullUrl);
 	}
 }

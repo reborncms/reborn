@@ -62,6 +62,18 @@ class Asset
 	}
 
 	/**
+	 * Set Asset Folder Name.
+	 *
+	 * @param string $foldername Asset folder name
+	 * @return \Reborn\Asset\Asset
+	 **/
+	public function setAssetFolder($foldername = 'assets')
+	{
+		$this->assetPath = $foldername;
+		return $this;
+	}
+
+	/**
 	 * Get the assets folder's URL path by given module or active theme.
 	 * example:
 	 * <code>

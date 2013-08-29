@@ -261,12 +261,13 @@
 </div> <!-- end of div#reborn-profiler -->
 
 <script type="text/javascript">
-	window.jQuery || document.write('<script type="text/javascript" src="<?php echo GLOBAL_URL.'js/jquery.min.js' ?>"><\/script>');
+	window.jQuery || document.write('<?php echo global_asset("js", "jquery.min.js"); ?>');
 </script>
 
-<script type="text/javascript" src="<?php echo GLOBAL_URL.'js/jquery.hashchange.min.js' ?>"></script>
-
-<script type="text/javascript" src="<?php echo GLOBAL_URL.'js/jquery.easytabs.min.js' ?>"></script>
+<?php
+	echo global_asset('js', 'jquery.hashchange.min.js');
+	echo global_asset('js', 'jquery.easytabs.min.js');
+?>
 
 <script type="text/javascript">
 	$('#reborn-profiler').easytabs();

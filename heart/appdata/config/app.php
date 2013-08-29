@@ -51,7 +51,7 @@ return array(
 			'path' => STORAGES.'logs'.DS,
 
 			// log file name use at saving process (eg: rebornlog-20121216.log)
-			'file_name' => 'rebornlog-'.Date('Ymd'),
+			'file_name' => 'rebornlog-'.date('Ymd'),
 
 			// Log file extension (default is .log). Don't forget "dot"!
 			'ext' => '.log',

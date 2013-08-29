@@ -202,9 +202,9 @@ if(! function_exists('array_get'))
  * @param  array   $array
  * @return boolean
  */
-if(! function_exists('arrIsMulti'))
+if(! function_exists('arr_is_multi'))
 {
-	function arrIsMulti($array)
+	function arr_is_multi($array)
 	{
 	    return count(array_filter($array, 'is_array')) > 0;
 	}
@@ -216,9 +216,9 @@ if(! function_exists('arrIsMulti'))
  * @param array $array
  * @return object
  */
-if(! function_exists('arrToObject'))
+if(! function_exists('arr_to_object'))
 {
-	function arrToObject($array)
+	function arr_to_object($array)
 	{
 	    return json_decode(json_encode((array) $array));
 	}
@@ -358,6 +358,35 @@ if(! function_exists('assetPath'))
 				break;
 			default :
 				return $asset->getAssetPath($module);
+				break;
+		}
+	}
+}
+
+/**
+ * Hlper Function for Global Assets Tags
+ *
+ * @param string $type Asset Type
+ * @param string $filename asset file name
+ * @return string
+ */
+if (! function_exists('global_asset')) {
+	function global_asset($type, $filename) {
+		$asset = new Reborn\Asset\Asset(BASE.'global'.DS);
+
+		switch($type) {
+			case 'css' :
+				return $asset->css($filename);
+				break;
+			case 'js' :
+				return $asset->js($filename);
+				break;
+			case 'img' :
+			case 'image' :
+				return $asset->img($filename);
+				break;
+			default :
+				return null;
 				break;
 		}
 	}

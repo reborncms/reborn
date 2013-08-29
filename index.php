@@ -97,6 +97,19 @@ if($app['env'] != 'production') {
 
 /**
  * ---------------------------------------------------------
+ * Set Application Timezone
+ * ---------------------------------------------------------
+ *
+ * Reborn set timezone for application.
+ * Set timezone for application with "UTC".
+ * But this timezone will override in Application::start()
+ * base on application setting.
+ *
+ */
+$app->setTimezone();
+
+/**
+ * ---------------------------------------------------------
  * Set Application Object to Facade Class
  * ---------------------------------------------------------
  *
