@@ -12,7 +12,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
-		$menu->add('widget', 'Widgets', 'widget', 'appearance', '', 35);
+		$menu->add('widget', 'Widgets', $modUri, 'appearance', '', 35);
 	}
 
 	public function moduleToolbar()
