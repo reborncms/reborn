@@ -173,8 +173,15 @@ class Mailer
 		
 		foreach ($config['to'] as $key) {
 			$message->setTo($key);
-			$mailer->send($message, $failedRecipients);
+			try {
+				$mailer->send($message, $failedRecipients);
+			} catch (\Swift_TransportException $e) {
+				$result['fail']	= 'Connection could not be established with Host';
+				return $result;
+			}
+			
 		}
+
 		if ($failedRecipients) {
 			static::$sendError = $failedRecipients;
 			$v = implode(', ' , $failedRecipients);

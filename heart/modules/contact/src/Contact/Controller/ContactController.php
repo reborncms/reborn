@@ -26,6 +26,7 @@ class ContactController extends \PublicController
 		$errors = new \Reborn\Form\ValidationError();
 		if (\Input::isPost()) {
 			$referer = \Input::server('HTTP_REFERER');
+
 			$v = $this->validate();
 			$widget = \Input::get('widget');
 			if ($v->valid()) {
@@ -58,8 +59,9 @@ class ContactController extends \PublicController
 						),
 				);
 				
+				
 				$contact = Mailer::send($config);
-
+				
 				$attName = Mailer::getAttName();
 				if ($attName) {
 					$data['attachment'] = UPLOAD.'contact_attachment'.DS.$attName;
