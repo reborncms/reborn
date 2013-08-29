@@ -12,8 +12,8 @@ class WidgetsController extends \AdminController
 
 		$this->menu->activeParent('appearance');
 
-		$this->template->style('widget.css', 'widget');
-		$this->template->script('widget.js', 'widget');
+		$this->template->style('widget.css', 'widgets');
+		$this->template->script('widget.js', 'widgets');
 
 		$ajax = $this->request->isAjax();
 
