@@ -701,3 +701,18 @@ if (!function_exists('first')) {
 	}
 }
 
+/**
+ * Helper function for Reborn Parser render for template string
+ *
+ * @param string $template Template string
+ * @param array $data Data array
+ * @return string
+ **/
+if (! function_exists('template_parse')) {
+	function template_parse($template, $data = array())
+	{
+		global $app;
+		return $app['view']->renderAsStr($template, $data);
+	}
+}
+
