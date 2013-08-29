@@ -79,9 +79,17 @@ select {
 	width: 269px;
 
 	background-color: #FCFCFC;
+
+	&.thin {
+		padding: 1px 10px 0px 5px;
+	}
 }
 select option {
 	padding: 4px;
+
+	&.thin {
+		padding: 2px;
+	}
 }
 
 input[disabled], input.disabled,
@@ -114,7 +122,7 @@ input.large, textarea.large, select.large {
 input.xx-large, textarea.xx-large, select.xx-large {
 	width: 90%;
 }
-input.thin, select.thin {
+input.thin {
 	padding: 4px 8px;
 }
 

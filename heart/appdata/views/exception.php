@@ -165,7 +165,7 @@
 		</div>
 	</div>
 
-	<script type="text/javascript" src="<?php echo GLOBAL_URL; ?>js/jquery.min.js"></script>
+	<?php echo global_asset('js', 'jquery.min.js'); ?>
 	<script type="text/javascript">
 		$('.trace_head').click(function() {
 			var par = $(this).parent(),

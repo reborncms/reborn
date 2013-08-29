@@ -88,6 +88,17 @@ class TranslateManager
     }
 
     /**
+     * Set Local for Translate
+     *
+     * @param string $locale Locale code
+     * @return void
+     **/
+    public static function setLocale($locale)
+    {
+        static::$locale = $locale;
+    }
+
+    /**
      * Set File Loader
      *
      * @param string $loader File Loader Key Name

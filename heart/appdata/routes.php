@@ -27,3 +27,4 @@ Route::add('register', 'register', 'User\User::register');
 Route::add('admin_login', $adminUrl.'/login', 'Admin\Admin\Admin::login');
 Route::add('admin_logout', $adminUrl.'/logout', 'Admin\Admin\Admin::logout');
 Route::add('admin_dashboard', $adminUrl, 'Admin\Admin\Admin::index');
+Route::add('admin_language', $adminUrl.'/language', 'Admin\Admin\Admin::language');

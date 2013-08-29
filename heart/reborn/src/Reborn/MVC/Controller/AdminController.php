@@ -36,6 +36,10 @@ class AdminController extends Controller
             define('ADMIN_URL', $this->getAdminLink());
         }
 
+        // Set AdminPanel Lanaguage
+        $lang = $this->app->session->get('reborn_dashboard_language', 'en');
+        $this->app->setLocale($lang);
+
         \Translate::load('label');
         \Translate::load('global');
         \Translate::load('navigation');
@@ -129,6 +133,10 @@ class AdminController extends Controller
 
         // Set the admin panel menu
         $this->template->adminMenus = $this->getMenu();
+
+        // Set Language Code
+        $lang = $this->app->session->get('reborn_dashboard_language', 'en');
+        $this->template->lang = $lang;
 
         // Set the current User
         $user = Sentry::getUser();

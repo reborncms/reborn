@@ -293,14 +293,16 @@ class Application extends \Illuminate\Container\Container
     {
         $this['locale'] = $locale;
 
+        \Translate::setLocale($locale);
+
         Event::call('reborn.app.locale_change', array($locale));
     }
 
     /**
-     * Set Locale for application
-     * Default locale is en
+     * Set Timezone for application
+     * Default timezone is UTC
      *
-     * @param string $locale
+     * @param string $tz
      * @return void
      **/
     public function setTimezone($tz = 'UTC')

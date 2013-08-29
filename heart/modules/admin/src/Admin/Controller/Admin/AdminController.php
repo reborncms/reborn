@@ -20,6 +20,18 @@ class AdminController extends \AdminController
 						->setPartial('dashboard');
 	}
 
+	public function language()
+	{
+		if (! \Input::isPost()) {
+			return $this->notFound();
+		}
+
+		$lang = \Input::get('lang', 'en');
+		$this->app->session->set('reborn_dashboard_language', $lang);
+
+        return \Redirect::to(\Input::server('HTTP_REFERER'));
+	}
+
 	public function login()
 	{
 		if(Sentry::check()) return \Redirect::toAdmin();

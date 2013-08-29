@@ -53,6 +53,13 @@
 					</ul>
 				</div> <!-- end of #header-right-panel -->
 
+				<div id="language-chooser">
+					{{ Form::start(adminUrl('language'), 'language', false, array('id' => 'language-form')) }}
+						{{ Form::label('Panel Language : ', 'lang') }}
+						{{ Form::select('lang', Config::get('app.support_langs'), $lang, array('class' => 'mini thin')) }}
+					{{ Form::end() }}
+				</div> <!-- end of #language-chooser -->
+
 			</header> <!-- end of #header-wrapper -->
 <!-- *********** END OF HEADER AREA **************** -->
 
