@@ -44,4 +44,19 @@ class Pages extends \Eloquent
 
         return $query;
     }
+
+    /**
+     * Get Page Content
+     */
+    public function getContentAttribute() 
+    {
+        $cont = html_entity_decode(htmlspecialchars_decode($this->attributes['content']), ENT_QUOTES);
+        //dump($cont, true);
+        return template_parse($cont);
+    }
+
+    public function getPageBodyAttribute() 
+    {
+        return (isset($this->attributes['content'])) ? $this->attributes['content'] : '';
+    }
 }

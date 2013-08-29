@@ -22,7 +22,7 @@ class optionsForm {
 
 			$form .= '<div id="error-options"></div>';
 
-			$form .= \Form::start(adminUrl('widget/options-save'), $name.'-option-form', false, array('class' => 'form'));
+			$form .= \Form::start(adminUrl('widgets/options-save'), $name.'-option-form', false, array('class' => 'form'));
 
 			$form .= \Form::hidden('widget_id', $id);
 

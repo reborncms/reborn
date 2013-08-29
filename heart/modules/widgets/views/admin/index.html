@@ -57,10 +57,10 @@
 		  				{{ endif }}
 		  				<div class="single_widget" id="{{ $widget->id }}">
 							<div class="widget_name">{{ $widget_title }}</div>
-							<a href="{{ adminUrl('widget/move-area/'.$widget->id) }}" class="widget_move_btn"><i class="icon-circleplus icon-gray icon-12 widget-ico"></i></a>
-							<a href="{{ adminUrl('widget/remove/'.$widget->id) }}" class="widget_remove_btn"><i class="icon-circleminus icon-gray icon-12 widget-ico"></i></a>
+							<a href="{{ adminUrl('widgets/move-area/'.$widget->id) }}" class="widget_move_btn"><i class="icon-circleplus icon-gray icon-12 widget-ico"></i></a>
+							<a href="{{ adminUrl('widgets/remove/'.$widget->id) }}" class="widget_remove_btn"><i class="icon-circleminus icon-gray icon-12 widget-ico"></i></a>
 							{{ if (\Widget::options($widget->name) != null) }}
-								<a href="{{ adminUrl('widget/settings/'.$widget->name.'/'.$widget->id) }}" class="widget_settings_btn" title="{{ $widget_title }} Widget Settings" style="display:none;"><i class="icon-setting icon-gray icon-12 widget-ico"></i></a>
+								<a href="{{ adminUrl('widgets/settings/'.$widget->name.'/'.$widget->id) }}" class="widget_settings_btn" title="{{ $widget_title }} Widget Settings" style="display:none;"><i class="icon-setting icon-gray icon-12 widget-ico"></i></a>
 							{{ endif }}
 							<!-- move button -->
 						</div> <!-- end of .single_wrapper -->
@@ -89,9 +89,9 @@
 				  				{{ endif }}
 				  				<div class="single_widget" id="{{ $widget->id }}">
 									<div class="widget_name">{{ $widget_title }}</div>
-									<a href="{{ adminUrl('widget/remove/'.$widget->id) }}" class="widget_remove_btn"><i class="icon-circleminus icon-gray icon-12 widget-ico"></i></a>
+									<a href="{{ adminUrl('widgets/remove/'.$widget->id) }}" class="widget_remove_btn"><i class="icon-circleminus icon-gray icon-12 widget-ico"></i></a>
 									{{ if (\Widget::options($widget->name) != null) }}
-										<a href="{{ adminUrl('widget/settings/'.$widget->name.'/'.$widget->id) }}" class="widget_settings_btn" title="{{ $widget_title }} Widget Settings"><i class="icon-setting icon-gray icon-12 widget-ico"></i></a>
+										<a href="{{ adminUrl('widgets/settings/'.$widget->name.'/'.$widget->id) }}" class="widget_settings_btn" title="{{ $widget_title }} Widget Settings"><i class="icon-setting icon-gray icon-12 widget-ico"></i></a>
 									{{ endif }}
 								</div> <!-- end of .single_wrapper -->
 				  			{{ endloop }}

@@ -45,6 +45,8 @@ class PagesController extends \AdminController
                 return $this->notFound();
         }
 
+        $page = new Pages;
+
         $val_errors = new \Reborn\Form\ValidationError();
 
         if (\Input::isPost()) {
@@ -72,6 +74,7 @@ class PagesController extends \AdminController
         $this->template->title('Create Page')
                     ->set('method','create')
                     ->set('errors', $val_errors)
+                    ->set('page', $page)
                     ->setPartial('admin/form');
     }
 
@@ -106,8 +109,9 @@ class PagesController extends \AdminController
             }
             $page = \Input::get('*');
         } else {
-            $page = Pages::find($id)->toArray();
+            $page = Pages::find($id);
         }
+
         self::formElements();
         $this->template->title('Edit Page')
                     ->set('method','edit')
@@ -179,7 +183,7 @@ class PagesController extends \AdminController
 
         $current_user = \Sentry::getUser();
         $button_save = \Input::get('page_save');
-        $status = ($button_save == 'Save' || $button_save == 'Publish') ? 'live' : 'draft';
+        $status = ($button_save == t('global.save') || $button_save == t('global.publish')) ? 'live' : 'draft';
         $page->title = (\Input::get('title') == '') ? 'Untitled' : \Input::get('title');
         $page->slug = $slug;
         $page->uri = $uri;

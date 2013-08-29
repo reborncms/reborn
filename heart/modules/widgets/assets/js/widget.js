@@ -21,7 +21,7 @@ jQuery(function() {
 		var widget_name = widget.attr('data-widget');
 
 		$.ajax({
-			url: SITEURL + ADMIN + '/widget/add',
+			url: SITEURL + ADMIN + '/widgets/add',
 			type: "POST",
 			data: {
 				name: widget_name,
@@ -39,13 +39,13 @@ jQuery(function() {
 
 					var icon = widget.find('a.widget_add_btn i');
 					var link = widget.children('a');
-					link.attr('href', SITEURL + ADMIN + '/widget/remove/' + obj.id);
+					link.attr('href', SITEURL + ADMIN + '/widgets/remove/' + obj.id);
 					widget.find('a.widget-info').remove();
 					link.removeClass('widget_add_btn').addClass('widget_remove_btn');
 					icon.removeClass('icon-circleplus').addClass('icon-circleminus');
 
 					$.ajax({
-						url: SITEURL + ADMIN + '/widget/has-options',
+						url: SITEURL + ADMIN + '/widgets/has-options',
 						type: "POST",
 						data: {
 							name: widget_name,
@@ -53,7 +53,7 @@ jQuery(function() {
 						success: function(data) {
 							var dt = data;
 							if (dt.status == 'ok') {
-								var setting_btn = '<a href="' + SITEURL + ADMIN + '/widget/settings/' + widget_name + '/' + obj.id + '" class="widget_settings_btn"><i class="icon-setting icon-gray icon-12 widget-ico"></i></a>';
+								var setting_btn = '<a href="' + SITEURL + ADMIN + '/widgets/settings/' + widget_name + '/' + obj.id + '" class="widget_settings_btn"><i class="icon-setting icon-gray icon-12 widget-ico"></i></a>';
 								widget.find('a.widget_remove_btn').after(setting_btn);
 							};
 						}
@@ -169,7 +169,7 @@ jQuery(function() {
 			var sorted = $(".ui-accordion-content-active").sortable("toArray");
 			var area = $(this).attr('id').replace('_area', '');
 			$.ajax({
-				url: SITEURL + ADMIN + '/widget/order',
+				url: SITEURL + ADMIN + '/widgets/order',
 				type: "POST",
 				data: {
 					area: area,
