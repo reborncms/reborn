@@ -25,6 +25,7 @@ class Theme
         foreach ( $themes as $key => $value ) {
             $themeinfo[$value] = self::load_info($value);
         }
+
         return $themeinfo;
     }
 
@@ -56,12 +57,17 @@ class Theme
 
         if(\File::is($path.DS.'info.php')) {
             $file = $path.DS.'info.php';
+            $info = require $file;
+            $screenshot = is_file($path.DS.'screenshot.png') ? $path.DS.'screenshot.png' : null;
+            if (isset($screenshot)) {
+                $info['screenshot'] = str_replace(array(BASE, DS), array('', '/'), $screenshot);
+            } else {
+                $info['screenshot'] = null;
+            }
+            return $info;
         }
 
-        $info = require $file;
-        $screenshot = is_file($path.DS.'screenshot.png') ? $path.DS.'screenshot.png' : '';
-        $info['screenshot'] = str_replace(array(BASE, DS), array('', '/'), $screenshot);
-        return $info;
+        return null;
     }
 
 }

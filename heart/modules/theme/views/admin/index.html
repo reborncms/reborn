@@ -4,7 +4,10 @@
 <div id="active-theme">
 	{{ loop($themes as $name => $theme) }}
 		{{ if ($active == $name) }}
+
+			{{ if (isset($theme['screenshot'])) }}
 			<img src="{{ rbUrl().$theme['screenshot'] }}" alt="{{ $theme['name'] }}" class="screenshot activeshot" />
+			{{ endif }}
 
 			<h2>{{ $theme['name'] }}</h2>	
 			<h3>By <a href="{{ $theme['website'] }}" target="_blank">{{ $theme['author'] }}</a></h3>
@@ -19,10 +22,12 @@
 <div id="list-themes">
 	<ul>	
 	{{ loop($themes as $name => $theme) }}
-		{{ if ($active != $name) }}
+		{{ if ($active != $name && $theme != null ) }}
 		
 		<li>
+			{{ if (isset($theme['screenshot'])) }}
 			<img src="{{ rbUrl().$theme['screenshot'] }}" alt="{{ $theme['name'] }}" class="screenshot" />
+			{{ endif }}
 
 			<h2>{{ $theme['name'] }}</h2>	
 			<h3>By <a href="{{ $theme['website'] }}" target="_blank">{{ $theme['author'] }}</a></h3>
