@@ -24,7 +24,7 @@
 					</div>
 				</div>
 				<div class="form-block">
-					{{ Form::textarea('content', isset($page['content']) ? $page['content'] : '', array('id' => 'wysiwyg-adv')) }}
+					{{ Form::textarea('content', $page->page_body, array('id' => 'wysiwyg-adv')) }}
 				</div>
 			</div> <!-- end of form-left -->
 			<div id="form-right">
