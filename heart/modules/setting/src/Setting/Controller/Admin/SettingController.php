@@ -28,8 +28,6 @@ class SettingController extends \AdminController
 			return $this->notFound();
 		}
 
-		$name = ucfirst($name);
-
 		if (!isset($this->settings['modules'][$name])) {
 			return $this->notFound();
 		}
@@ -46,7 +44,7 @@ class SettingController extends \AdminController
 		if (\Input::get('type') == 'system') {
 			$fields = $this->settings['system'];
 		} else {
-			$fields = $this->settings['modules'][ucfirst(\Input::get('type'))];
+			$fields = $this->settings['modules'][\Input::get('type')];
 		}
 
 		$rules = array();

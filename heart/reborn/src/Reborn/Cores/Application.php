@@ -193,7 +193,10 @@ class Application extends \Illuminate\Container\Container
             \Translate::load('global');
             \Flash::error(t('global.csrf_fail'));
 
-            return \Redirect::to(\Input::server('REDIRECT_URL'));
+            $basepath = $this['request']->getBasePath();
+            $redirect_url = str_replace($basepath, '', \Input::server('REDIRECT_URL'));
+
+            return \Redirect::to($redirect_url);
         } catch(HttpNotFoundException $e) {
             $view = new \Reborn\MVC\View\View(Config::get('template.cache_path'));
             $content = $view->render(APP.'views'.DS.'404.php');
