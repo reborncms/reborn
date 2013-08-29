@@ -30,7 +30,7 @@ class WidgetsInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = false;
 
-	protected $uriPrefix = 'widget';
+	protected $uriPrefix = 'widgets';
 
 	protected $allowToChangeUriPrefix = true;
 

@@ -117,7 +117,6 @@ abstract class AbstractInfo
 		// This is Temp
 		$uri = (is_null($this->uriPrefix)) ? Str::snake($ns, '-') : $this->uriPrefix;
 
-
 		$lang = \Config::get('app.lang');
 		// Dislpay Name
 		if (isset($this->displayName)) {
