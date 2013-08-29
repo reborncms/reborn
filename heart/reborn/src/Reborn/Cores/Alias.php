@@ -26,6 +26,7 @@ class Alias
      * @var array
      **/
     protected static $coreClasses = array(
+            'Facade' => 'Reborn\Cores\Facade',
             'Cache' => 'Reborn\Cache\CacheManager',
             'Config' => 'Reborn\Config\Config',
             'AdminController' => 'Reborn\MVC\Controller\AdminController',
@@ -34,9 +35,9 @@ class Alias
             'Controller' => 'Reborn\MVC\Controller\Controller',
             'DB' => 'Reborn\Connector\DB\DBManager',
             'Dir' => 'Reborn\Filesystem\Directory',
+            'Dummy' => 'Reborn\Dummy\Generator',
             'Eloquent' => 'Illuminate\Database\Eloquent\Model',
             'Event' => 'Reborn\Event\EventManager',
-            'Facade' => 'Reborn\Cores\Facade',
             'File' => 'Reborn\Filesystem\File',
             'Flash' => 'Reborn\Util\Flash',
             'Hash' => 'Reborn\Util\Hash',

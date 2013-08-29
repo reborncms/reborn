@@ -1,0 +1,46 @@
+<h1>Reborn CMS</h1>
+<h2>About Reborn CMS</h2>
+<p>Reborn CMS is lightweight and open source Content Management System. Reborn base on MVC (Model View Controller) structure and Modular System. Reborn is created and maintain by Myanmar Links Professional Web Development</p>
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEVAt+b///+H0u/P7fif2/Jvyey35PVXwOnn9vviQk8iAAAB2UlEQVRoge2Uz2+bMBTHX/iVHPuAOD6yqNp6DFJ2DyurcgyN2l6xlrEdmbYoO4Yui/izZ9zQNOApqOrxfQ7ImC8fP5snAAiCIAiCIAiCIAiCIAiCIIiau1e8Y4Q41c0X+fPQ/NvRlXhfMNfMv3AN3I6ucAbGmbo6u4rFf+ZfVxeAHeI+tx6F+xNTmN/jo3ItcVe75u/xQ8iecnCFX3dyyGdNV+LLAqx9HKYOrvDP3AVRxhhIl81jtVDlEizi0yJQOQNXJYNkd+03XQYytZvehcMgmhgMxASSrXQNhtDb1q7U8uBdqnKmCwNWnQ1vbfJXUflvr0aOK9O2ByIAqSnyH1swR7UrkIskE5XrXYDF+lIUtr+/hQsQiC9dTuVKeFkMG64qJ9cwmI1liZrPJlLHWwxOXG7l2mfZt1OXyj25eJZlmr6MUll2T7dHgFOXyj3vscVD1RbycXR0Hc9e44pGpg+/mbYvxfQ75qZ3w48ub1yonsBPl7NTl8rZuCrkjT+Om64l4kfoF3x5dF2jf+hVbLhUDpY8Vm3b6i/o5/WlrjTYHEab1uEecpbU9DfNhxpEcDZiDs9GOro+r8X2rVyInu6Pp2N9Lrged1URBEEQBEEQBEEQBEEQb8Y/KgNoVlXke/sAAAAASUVORK5CYII=">
+<h2>Credits</h2>
+<p>Thanks for opensource packages.</p>
+<ul>
+	<li>Symfony HttpFoundation Component</li>
+	<li>Symfony Console Component</li>
+	<li>Illuminate Container Component</li>
+	<li>Illuminate Database Component</li>
+	<li>Sentry</li>
+	<li>Swift Mailer</li>
+	<li>Monolog</li>
+	<li>tijsverkoyen/akismet</li>
+	<li>dflydev/markdown</li>
+	<li>leafo/lessphp</li>
+</ul>
+<blockquote>Reborn is MIT License. You can see details of license at license.txt</blockquote>
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAABkBAMAAADOLxDzAAAAG1BMVEVAt+b///9XwOmf2/LP7fjn9vtvyey35PWH0u99R6mfAAAEAUlEQVRoge2Yz1fTQBCAl7SUHh1orMeA/PDYquC1gfoeRyIIHFNRn0dAlCt9Ks8/253ZDdkkE7qVPPQw32FJ2p3ZL8nuZItSgiAIgiAIgiAIgiAIgiAIgiAIJdaiOTr/eDVP77/neQxwtOPdPYEb7uOr8aApIaKTAPLOt3+NVgKjpoyICVnBU9/+j6SVQP/2y+v/TasLkOo/z499Ax5Hawn68wU8jlYbns0X8C+0AqeEBdTk51FRK1ir0aJ+2ZdOQqd/KZbBfYgvvukluYd51seDLQhv1BbAJZ3etBI4iRyt1wC9tKwVjPeCCzhVuulHhYQq+AbhoDXe5WIZ7JQnTKnAuzeB73ikv4QwwtPLxH5jtT5hT3dWklYH+lhvbqa2EOYJFX4UbsEyF8uR5LVB98bRyYOKLObC4SbwFkIcL9Pq6DF0j/OKVkge2PQKCbt0eIRa1VgOPfS+PQx3Iiz651RjLwP9UjpWQ8ykT0+jTkzXSlob0IvUL7fYWS398Nb1sGmLZPKEi/qzQA+1zMVy4HUcRnRI7SocoEcfG/0AFzGejvTq6GdaQyPRq2qdY/MOz1M34RQ/C0irGsuCj7of3Z0uwhP00M0CzoolbCZ0bTprppXgvVAx5GGZlsJHp3tc3NURShjT6RS1qrE829m0JNrmqY0wnz5qwQqeHihKlRqtAEI8H+arJdPqKTvuEAZuQvLVF7rMxdbw0c5mpc6ux7F5aiObr2u0RibVwGh1zUKaOpXV0aIbMTVaNqF1wQtlYuvYsjuI7WwzwWtNcfKiVgvCsSaGfI/Fa2UJ7VRCLSa2lgmFbYC3liVf5azWXcKOuUVGqxJbSxfXc6D3OB+i9jxa99+tPGHhblVi68Fav2TLgI9W/zMR3auVJyxoVWLrwcGoRGWFitMqT/ligqpWnrA65f3A6kd1T7ecFlsgZmk5CU2xWs0LhBcdnFsmy5DVwtdOQC8UW05Tby1KeEFTaWjKaTmWEzrFdh0vYQHjO/xKxOGW3JfPgYdWIaE5XOZi2ft0+GHtLMHB23qGBkNeC3bxip1XdagvOXB+XXJaTsI2wMvNC/uqLseyWoYRVYkQNx+sFpzEZk3fbWyur5LqDqKg5SQMaKP0PtvYFGMZTH/ca+Dt0BFnrNY+dlpRmZbZyjEbm2I5zRNSZe1t5NvAmRubGANwKKp0ly2+QKxnG127aabXyu4MrTyhUj+Tk5Re/tVYns3fn+1R53fK9kDLzduoFFX6gKOUcAH3OL6xs5k09Gtr1WcR+tOU1rTZH5NNacUem6w5aEArVViP4cEqLg1ohV9vfyTz/mNhBg1o+e+x/GlK67QBF4cXNfVsDjbfXF37/4NWEARBEARBEAThYfwB0m37/l3BjMcAAAAASUVORK5CYII=">
+<h3>Requirements</h3>
+<ol>
+	<li>PHP Version 5.3.4 or greater</li>
+    <li>MySQL Version 5.x or greater</li>
+    <li>Web Server - Apache running on *nix platform</li>
+    <li>apache mod_rewrite - To remove the index.php from the URL and beautiful URI</li>
+    <li>PHP cURL Extension</li>
+</ol>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAGQBAMAAAAZ3DKDAAAAG1BMVEUqm8f///9Ep85ftNXJ5vHk8viUzeN5wNyv2eqHwtu/AAAC70lEQVR4nO3WTVPaUBSH8UvCi0sPEmQZsBWX0NqpS3EoujSOtVuxM7qF6owsxaGlH7vnBOQ1xWFGuunzWxhJzuV/c+8J4BwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA/9neh5WX9+/eIONQJLhZcb1cmH/tyfbaGTlRxQ2HlOWm0tt0SLekfyobDmnvvlLwJncyXqrqoPkrdO629tBy+03thOz33KD1EuIPzjqzIdMyr9c8s77JNof+rR6PmsOEiQZhfLT939F3GIg8RxLohWJD5GIU4um/hXAaMlOWsoE150UiLQndO311shSyJVfx6MLdYz/Q0cFjFBQf5Fo7omRn4pC0DI/keDZkUpZqPfbkXCtOe6IhjdJ9v7AU4hpSqulBk7JS8yTv6nZ40pCOnrmOQ2xN2/nZkEmZp6faO65uVRLmdEBWwqWQXPSyEr50PJ1vSuv1EO/F+NjP2/LNhkzKTH3X9Xecy0i4pQGeBi3xG7b0rvq7Kdc2Nxsdnbuy9XZjOw7Rly5Vmg2ZlOnODxpFK9SVDzOBzexpOUQ3Tcfbjo1CMjMhegsWYtdkIWRcZj2hnxgWpyFxGySG6PJrfeH+8+qQQmJIRk4/dhdCjpNCtqRmO5ZLCJku1+S+50OsJ7rzy5UsbTtm3TUXYjMfHxvbfw3Rabh2Md54fZu0JAb4o+Wytng/H6JnfGvlwvxnz2JIXve06Op633UJs9JJCimfVqq68Vl58qOFkBP3SYMsJKNjvU5iSLukVUW9i+eqPYyRTqe6HGI7daHDtH3mQwL5al80FuKLNKPjxBAb3y/GHyuXGlKXwpflJz6nLVgKnU4n+LGw8YcSdMYfkAfTxlwI0fv/Zs/pQXR1YE9if9Lrc8bf8Xvhwi2WZk95HxcuT69MfiKMdv2VnwxLIWta0b9vF9Jde8SaIf6wsi/5TYeMvrvWlW6tU+39lMtVv94AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPi3/gALjYZbfS7ErgAAAABJRU5ErkJggg==">
+<h4>Sample Image, Hr and Pre > Code</h4>
+<pre>
+	<code>
+		&lt;php
+			$a = "Hello";
+			$b = 'World';
+			echo $a.' '.$b.'!';
+	</code>
+</pre>
+<hr>
+<img src="data:image/png;base64,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">
