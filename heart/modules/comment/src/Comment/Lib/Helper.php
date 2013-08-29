@@ -114,7 +114,7 @@ class Helper
 		if (!empty($comments)) {
 			foreach ($comments as $comment) {
 				$widget['body'] .= '<li>
-										<span class="date">'.rbDate($comment->created_at).'</span>
+										<span class="date">'.date("d-m-Y", strtotime($comment->created_at)).'</span>
 										<span class="commenter">'.$comment->name.'</span>
 										commented at
 										<span class="cmt-module">'. ucfirst($comment->module) .'</span>
