@@ -3,7 +3,6 @@
 <h2>Hello, {{ $user->first_name }} {{ $user->last_name }}</h2>
 
 {{ gravatar($user->email, 60, $user->first_name) }}
-<span><a href="https://gravatar.com/" target="_blank">{{ t('user::user.gravatar') }}</a></span>
 
 <ul>
 	{{ if ($user->hasAccess('admin')) }}

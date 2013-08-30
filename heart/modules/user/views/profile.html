@@ -1,13 +1,44 @@
 <div id="user-profile">
 
-<h2>Hello World, {{ $user->first_name }} {{ $user->last_name }}</h2>
+	<h2>Hello World, {{ $user->first_name }} {{ $user->last_name }}</h2>
 
-{{ gravatar($user->email, 60, $user['name']) }}
-<span><a href="https://gravatar.com/" target="_blank">{{ t('user::user.gravatar') }}</a></span>
+	<div class="user-avatar">
+		{{ gravatar($user->email, 60, $user['name']) }}
+		<span><a href="https://gravatar.com/" target="_blank">{{ t('user::user.gravatar') }}</a></span>
+	</div>
 
-<ul>
-	<li><a href="{{ \Uri::create('user/edit/') }}">Edit Profile</a></li>
-	<li><a href="{{ \Uri::create('user/change-password/') }}">Change Password</a></li>
-</ul>
+	<ul>
+		<li><a href="{{ \Uri::create('user/edit/') }}" class="btn user-edit" >Edit Profile</a></li>
+		<li><a href="{{ \Uri::create('user/change-password/')}}" class="btn user-profile">Change Password</a></li>
+	</ul>
+
+	<div class="user-info">
+		<table>
+			<tr>
+				<td>Email :</td>
+				<td>{{ $user->email }}</td>
+			</tr>
+			<tr>
+				<td>Country :</td>
+				<td>{{ $userMeta->country }}</td>
+			</tr>
+			<tr>
+				<td>Website :</td>
+				<td><a href="{{ $userMeta->website }}">{{ $userMeta->website }}</a></td>
+			</tr>
+			<tr>
+				<td>Facebook :</td>
+				<td><a href="http://www.facebook.com/{{ $userMeta->facebook }}">/{{ $userMeta->facebook }}</a></td>
+			</tr>
+			<tr>
+				<td>Twitter :</td>
+				<td><a href="http://www.facebook.com/{{ $userMeta->twitter }}">@{{ $userMeta->twitter }}</a></td>
+			</tr>
+			<tr>
+				<td>About :</td>
+				<td>{{ $userMeta->biography }}</td>
+			</tr>
+		</table>
+	</div>
 
 </div>

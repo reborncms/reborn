@@ -34,9 +34,15 @@ class UserController extends \PublicController
 			$user = Sentry::getUserProvider()->findById($id);
 		}
 
+		$usermeta = UserMeta::where('user_id', '=', $user->id)->get();
+		foreach ($usermeta as $u) {
+			$usermeta = $u;
+		}
+
 		$this->template->title(t('user::user.title.profile'))
 					->breadcrumb(t('user::user.title.profile'))
 					->set('user', $user)
+					->set('userMeta', $usermeta)
 					->setPartial('profile');
 	}
 
@@ -157,7 +163,7 @@ class UserController extends \PublicController
 							$usermeta->save();
 							
 					        \Flash::success(t('user::user.profile.success'));
-					        return \Redirect::to('user');
+					        return \Redirect::to('user/profile');
 					    }
 
 					} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
