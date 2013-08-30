@@ -17,7 +17,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 			array('title' => t('contact::contact.s_mail'), 'uri' => 'send-mail' ),
 			array('title' => t('contact::contact.e_template'), 'uri' => 'email-template'),
 			);
-		$menu->group($modUri,'Email','icon-mail',27,$childs);
+		$menu->group($modUri,t('label.email'),'icon-mail',27,$childs);
 	}
 
 	public function moduleToolbar()
