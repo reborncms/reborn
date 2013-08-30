@@ -10,7 +10,7 @@ class UserController extends \AdminController
 {
 	public function before() 
 	{
-		$this->menu->activeParent('user_management');
+		$this->menu->activeParent(\Module::getData('user', 'uri'));
 		$this->template->style('user.css', 'user');
 		$this->template->header = t('user::user.title.usermod');
 

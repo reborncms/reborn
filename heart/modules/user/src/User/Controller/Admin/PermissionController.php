@@ -8,7 +8,7 @@ class PermissionController extends \AdminController
 {
 	public function before()
 	{
-		$this->menu->activeParent('user_management');
+		$this->menu->activeParent(\Module::getData('user', 'uri'));
 		$this->template->header = \Translate::get('user::permission.title');
 		if(!Sentry::check()) return \Redirect::to('login');
 	}
