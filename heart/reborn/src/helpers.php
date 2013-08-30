@@ -143,9 +143,9 @@ if(! function_exists('sanitize'))
  * @param integer $length Length of random string
  * @return string
  **/
-if(! function_exists('randomStr'))
+if(! function_exists('random_str'))
 {
-	function randomStr($length = 10)
+	function random_str($length = 10)
 	{
 		return \Reborn\Util\Str::random($length);
 	}

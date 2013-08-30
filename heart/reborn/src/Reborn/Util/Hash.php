@@ -68,7 +68,7 @@ class Hash
 	{
 		$salt = sprintf('$2a$%02d$', $this->rounds);
 
-		return $salt.randomStr(22);
+		return $salt.random_str(22);
 	}
 
 } // END class Hash
