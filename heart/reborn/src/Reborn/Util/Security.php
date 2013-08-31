@@ -73,7 +73,7 @@ class Security
         $csrf_key = static::getKey($key);
 
         if ($request->isAjax() && \Input::isPost()) {
-            $ckey = $request->headers->get('X-CSRF-Token');
+            $ckey = \Input::get($csrf_key, $request->headers->get('X-CSRF-Token'));
         } else {
             $ckey = \Input::get($csrf_key);
         }
