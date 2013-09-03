@@ -1,7 +1,9 @@
 <div id="user-login-nav">
-	<p>Holla, {{ $data['gravy'] }} {{ $data['name'] }} </p>
+	<p>Holla, {{{ gravatar($user->email, 40, $user->first_name) }} {{ $user->first_name }} </p>
 	<ul class="user-widget">
+	{{ if ($user->hasAccess('admin')) }}
 		<li><a href="{{ \Uri::create('admin/') }}">Dashboard</a></li>
+	{{ endif }}
 		<li><a href="{{ \Uri::create('user/edit/') }}">Edit Profile</a></li>
 		<li><a href="{{ \Uri::create('user/logout/') }}">Logout</a></li>
 	</ul>
