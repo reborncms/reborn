@@ -1,10 +1,13 @@
-<div id="user-login-nav">
-	<p>Holla, {{{ gravatar($user->email, 40, $user->first_name) }} {{ $user->first_name }} </p>
-	<ul class="user-widget">
-	{{ if ($user->hasAccess('admin')) }}
-		<li><a href="{{ \Uri::create('admin/') }}">Dashboard</a></li>
-	{{ endif }}
-		<li><a href="{{ \Uri::create('user/edit/') }}">Edit Profile</a></li>
-		<li><a href="{{ \Uri::create('user/logout/') }}">Logout</a></li>
-	</ul>
-</div>
+<ul id="user-login-nav">
+	<li>{{ gravatar($user->email, 25, $user->first_name) }}</li>
+	<li>
+		<a href="#" class="username">{{ $user->first_name.' '.$user->last_name }}</a>
+		<ul class="action-links">
+		{{ if ($user->hasAccess('admin')) }}
+			<li><a href="http://localhost/reborncms/admin/">Dashboard</a></li>
+		{{ endif }}
+			<li><a href="http://localhost/reborncms/user/edit/">Edit Profile</a></li>
+			<li><a href="http://localhost/reborncms/user/logout/">Logout</a></li>
+		</ul>
+	</li>
+</ul>
