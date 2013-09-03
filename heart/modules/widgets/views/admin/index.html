@@ -1,3 +1,4 @@
+{{ ifnotempty($areas) }}
 <div id="msg_area"></div>
 <div id="widget_wrapper">
 	<div id="left-side">
@@ -103,3 +104,6 @@
 			</div> <!-- end of #widget_areas -->			
 		</div> <!-- end of right-side -->
 </div> <!-- end of #widget_wrapper -->
+{{ else }}
+	<div id="no-index-data">There is no widget area in your current theme.</div>
+{{ endif }}

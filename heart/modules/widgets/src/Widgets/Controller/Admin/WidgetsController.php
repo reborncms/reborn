@@ -28,24 +28,29 @@ class WidgetsController extends \AdminController
 		$active_theme = \Setting::get('public_theme');
 		$theme_info = $this->theme->info($active_theme, true);
 
-		foreach ($theme_info['widget_areas'] as $name => $title) {
-			$area_widget[$name] = array(
-				'title'	=> $title,
-				'widgets' => array(),
-			);
-		}
-
-		$all_widgets = Widgets::all();
-
-		$areas = array_keys($theme_info['widget_areas']);
+		$area_widget = array();
 
 		$inactive_widget = array();
 
-		foreach ($all_widgets as $widget) {
-			if (in_array($widget->area, $areas)) {
-				$area_widget[$widget->area]['widgets'][] = $widget;
-			} else {
-				$inactive_widget[] = $widget;
+		if (isset($theme_info['widget_areas'])) {
+
+			foreach ($theme_info['widget_areas'] as $name => $title) {
+				$area_widget[$name] = array(
+					'title'	=> $title,
+					'widgets' => array(),
+				);
+			}
+
+			$areas = array_keys($theme_info['widget_areas']);
+
+			$all_widgets = Widgets::all();
+
+			foreach ($all_widgets as $widget) {
+				if (in_array($widget->area, $areas)) {
+					$area_widget[$widget->area]['widgets'][] = $widget;
+				} else {
+					$inactive_widget[] = $widget;
+				}
 			}
 		}
 
