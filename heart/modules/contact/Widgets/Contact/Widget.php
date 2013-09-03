@@ -31,7 +31,7 @@ class Widget extends \Reborn\Widget\AbstractWidget
 	}
 
 	/**
-	 * Query the Blog Posts
+	 * Contact For Widget
 	 *
 	 * @return string
 	 **/
