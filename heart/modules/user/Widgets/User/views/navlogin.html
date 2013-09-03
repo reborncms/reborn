@@ -2,8 +2,8 @@
 	{{ Form::start("user/login", false, 'login', array('class' => 'form-inline')) }}
 	{{ Form::input('email', '', 'text', array('class' => 'input-small', 'placeholder' => 'Email')) }}
 	{{ Form::password('password', '', array('class' => 'input-small', 'placeholder' => 'Password')) }}
-	{{ Form::label('Remember me', 'remember') }}
+	{{ Form::submit('submit', 'Login', array('class' => 'widget-login btn')) }}	
 	{{ Form::checkbox('remember', 1) }}
-	{{ Form::submit('submit', 'Login', array('class' => 'widget-login btn')) }}
+	{ Form::label('Remember me', 'remember') }}
 	{{ Form::end() }}
 </div>
