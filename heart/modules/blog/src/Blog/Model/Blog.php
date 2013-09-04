@@ -143,6 +143,11 @@ class Blog extends \Eloquent
         return $this->getTags('arr');
     }
 
+    public function getContentAttribute()
+    {
+        return html_entity_decode($this->attributes['body'], ENT_QUOTES);
+    }
+
     /**
      * Get Blog Post Tags
      *
@@ -169,6 +174,8 @@ class Blog extends \Eloquent
 
         return $this->tags_data;
     }
+
+
 
     /**
      * Fill some of requirement in parent __call method

@@ -58,8 +58,7 @@ class Comment extends \Facade
 			}
 		}
 
-		$app->template->setPartial('comment::index')
-						->set('comments', $restructured)
+		$app->template->set('comments', $restructured)
 						->set('total_comments', $total_comments)
 						->set('status', $status)
 						->set('module', $module)
@@ -75,7 +74,9 @@ class Comment extends \Facade
 			$comment_form = "Comment closed.";
 		}
 
-		return $comment_form;
+		$app->template->set('comment_form', $comment_form);
+
+		return $app->template->partialRender('comment::index');
 	}
 
 	protected static function getInstance()

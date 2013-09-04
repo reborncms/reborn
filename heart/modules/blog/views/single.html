@@ -25,7 +25,7 @@
 		</span>
 
 	</div> <!-- end of blog_meta -->
-	<div class="blog_body">{{ html_entity_decode($blog->body) }}</div>
+	<div class="blog_body">{{ $blog->content }}</div>
 </div>
 <!-- call comments -->
 {{ if (\Module::isEnabled('comment')) }}
