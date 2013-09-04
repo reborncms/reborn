@@ -95,13 +95,19 @@ class CommentController extends \PublicController
 					$comment = new Comment;
 					if (\Sentry::check()) {
 						$user = \Sentry::getUser();
-						$comment->status = 'approved';
 						$comment->user_id = $user->id;
 					} else {
-						$comment->status = 'pending';
 						$comment->name = \Input::get('name');
 						$comment->email = \Input::get('email');
 						$comment->url = \Input::get('url');
+					}
+
+					if (!\Sentry::check() and \Setting::get('comment_need_approve')) {
+						$comment->status = 'pending';
+						$msg = t('comment::comment.message.wait_approve');
+					} else {
+						$comment->status = 'approved';
+						$msg = t('comment::comment.message.success.comment_submit');
 					}
 
 					if (self::checkSpam($referer)) {
@@ -118,11 +124,7 @@ class CommentController extends \PublicController
 					$comment->ip_address = \Input::ip();
 					$save = $comment->save();
 					if ($save) {
-						if (\Sentry::check()) {
-							\Flash::success(t('comment::comment.message.success.comment_submit'));
-						} else {
-							\Flash::success(t('comment::comment.message.wait_approve'));
-						}
+						\Flash::success($msg);
 					} else {
 						\Flash::error(t('comment::comment.message.error.comment_submit'));
 					}	

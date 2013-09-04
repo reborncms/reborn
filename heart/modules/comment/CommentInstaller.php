@@ -69,6 +69,15 @@ class CommentInstaller extends \Reborn\Module\AbstractInstaller
 	    );
 	    \Setting::add($data);
 
+	    $data = array(
+	    	'slug'		=> 'comment_need_approve',
+	    	'name'		=> 'Need admin approval for non-member',
+	    	'desc'		=> 'Non-member comment will need admin approval',
+	    	'value'		=> '1',
+	    	'default'	=> '0',
+	    	'module'	=> 'Comment'
+	    );
+	    \Setting::add($data);
 		
 	}
 
