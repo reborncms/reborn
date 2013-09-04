@@ -48,12 +48,13 @@ class ContactInstaller extends \Reborn\Module\AbstractInstaller
             'detemp'       => '1',
             )
         );
+
 		$data = array(
 			'slug'		=> 'sever_mail',
 			'name'		=> 'Sever Mail',
 			'desc'		=> 'Email for outgoing Email',
 			'value'		=> '',
-			'default'	=> 'admin@localhost.com',
+			'default'	=> '',
 			'module'	=> 'Contact'
 			);
 	    \Setting::add($data);
@@ -63,7 +64,7 @@ class ContactInstaller extends \Reborn\Module\AbstractInstaller
 			'name'		=> 'Site Mail',
 			'desc'		=> 'Contact for your Website',
 			'value'		=> '',
-			'default'	=> 'gaara@localhost.com',
+			'default'	=> '',
 			'module'	=> 'Contact'
 			);
 	    \Setting::add($data);
