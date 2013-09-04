@@ -43,8 +43,10 @@ class SettingController extends \AdminController
 
 		if (\Input::get('type') == 'system') {
 			$fields = $this->settings['system'];
+			$url = 'setting/system';
 		} else {
 			$fields = $this->settings['modules'][\Input::get('type')];
+			$url = 'setting/module/'.$type;
 		}
 
 		$rules = array();
@@ -84,7 +86,7 @@ class SettingController extends \AdminController
 			\Flash::error($errors->toArray());
 		}
 
-		return \Redirect::toAdmin('setting/'.$type);
+		return \Redirect::toAdmin($url);
 	}
 
 	protected function getCheckBox($fields = array())

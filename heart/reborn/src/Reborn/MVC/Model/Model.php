@@ -2,41 +2,114 @@
 
 namespace Reborn\MVC\Model;
 
-use Reborn\Connector\DB\Manager as DB;
+use Reborn\Http\Input;
+use Reborn\Form\Validation;
+use Reborn\Form\ValidationError;
+use Illuminate\Database\Eloquent\Model as BaseModel;
 
 /**
  * Model Class for Reborn
- * Model Class will include some of basic CRUD method.
+ * This class is extended class of Illuminate\Eloquent
  *
  * @package Reborn\MVC\Model
  * @author Myanmar Links Professional Web Development Team
  **/
-class Model
+class Model extends BaseModel
 {
-    protected static $table = null;
 
-    protected static $pk = 'id';
+    /**
+     * Variable for validation rules
+     *
+     * @var array
+     **/
+    protected $rules = array();
 
-    public static function get($id)
+    /**
+     * Variable for validation errors
+     *
+     * @var array
+     **/
+    protected $validation_errors;
+
+    /**
+     * Change the rule by name.
+     *
+     * @param string $name Rule key name
+     * @param string $rule Rule for given name
+     * @return void
+     **/
+    public function changeRule($name, $rule)
     {
-        $result = DB::table(static::$table)->where(static::$pk, '=', $id)->get();
-        return (count($result) > 0) ? $result[0] : array();
+        $this->rules[$name] = $rule;
     }
 
-    public static function get_by($key, $value)
+    /**
+     * Get validation rules.
+     * If you have multiple validation rules base on action,
+     * you can override these method for your requirement.
+     *
+     * @return void
+     * @author
+     **/
+    protected function getRules()
     {
-        $result = DB::table(static::$table)->where($key, '=', $value)->get();
-        return (count($result) > 0) ? $result[0] : array();
+        return $this->rules;
     }
 
-    public static function get_all($limit, $offset)
+    /**
+     * Make Validation
+     *
+     * @return boolean
+     **/
+    public function valid(array $inputs = array())
     {
+        $inputs = empty($inputs) ? Input::get('*') : $inputs;
 
+        $v = new Validation($inputs, $this->getRules());
+
+        if($v->fail()) {
+            $this->validation_errors = $v->getErrors();
+            return false;
+        }
+
+        return true;
     }
 
-    public static function get_all_by($where, $limit, $offset)
+    /**
+     * Get Validation Errors
+     *
+     * @param null|string $key validation error key
+     * @return mixed
+     **/
+    public function errors($key = null)
     {
+        if( is_null($this->validation_errors) ) {
+            return null;
+        }
 
+        if( is_null($key) ) {
+            return $this->validation_errors;
+        }
+
+        return $this->validation_errors->{$key};
+    }
+
+    /**
+     * Save the model to the database.
+     * Reborn Model add validation process in this method.
+     *
+     * @param  array  $options
+     * @param boolean $need_validation Need to check validation
+     * @return bool
+     */
+    public function save(array $options = array(), $need_validation = true)
+    {
+        // check validation if needed
+        if ($need_validation and ! $this->valid()) {
+            return false;
+        }
+
+        return parent::save($options);
     }
 
 } // END class Model

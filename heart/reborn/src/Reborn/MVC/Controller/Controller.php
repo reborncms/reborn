@@ -198,7 +198,11 @@ class Controller
         try {
             $response = call_user_func_array(array($this, $method), (array)$params);
         } catch (\Exception $e) {
-            throw new HttpNotFoundException("Request params doesn't match for method!");
+            if ($this->app['env'] == 'dev') {
+                throw $e;
+            } else {
+                throw new HttpNotFoundException("Request params doesn't match for method!");
+            }
         }
 
         $response = $this->after($response);

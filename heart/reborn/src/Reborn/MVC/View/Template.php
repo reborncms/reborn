@@ -523,6 +523,8 @@ class Template
             $module = $this->getModule();
         }
 
+        $file = str_replace(array('\\', '/', '.'), DS, $file);
+
         $filename = $file.$this->ext;
 
         $modPath = $this->getModulePath($module);
