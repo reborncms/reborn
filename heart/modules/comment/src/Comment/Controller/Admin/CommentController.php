@@ -46,7 +46,7 @@ class CommentController extends \AdminController
 
 		$pagination = \Pagination::create($options);
 
-		$comments = Comment::where('status', '!=', 'spam')
+		$comments = Comment::with('author')->where('status', '!=', 'spam')
 							->orderBy('created_at', 'desc')
 							->skip(\Pagination::offset())
 							->take(\Pagination::limit())

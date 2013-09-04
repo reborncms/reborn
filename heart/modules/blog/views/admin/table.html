@@ -34,7 +34,7 @@
 					{{ $blog->category->name }}
 				</td>
 				<td>
-					{{ $blog->author->first_name.' '.$blog->author->last_name }}
+					<a href="{{ rbUrl('user/profile/'.$blog->author->id) }}">{{ $blog->author_name }}</a>
 				</td>
 				<td>
 					{= $date = date_create($blog->created_at) =}

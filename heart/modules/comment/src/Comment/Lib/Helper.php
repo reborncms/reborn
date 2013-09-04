@@ -85,7 +85,7 @@ class Helper
 
 	public static function getLatestComments($count) {
 
-		$comments = Comment::where('status', '!=', 'spam')
+		$comments = Comment::with('author')->where('status', '!=', 'spam')
 							->orderBy('created_at', 'desc')
 							->take($count)
 							->get();
@@ -93,13 +93,28 @@ class Helper
 							
 		foreach ($comments as $comment) {
 			if ($comment->name == null) {
-				$user = \Sentry::getUserProvider()->findById($comment->user_id);
-				$comment->name = $user->first_name.' '.$user->last_name;
+				$comment->name = $comment->author_name;
 			}
 			$comment->content_title = self::getContentTitle($comment->content_id, $comment->module, $comment->content_title_field);
 			$com[] = $comment;
 		}
 		return $com;
+	}
+
+	public static function getUserNameWithLink($comment)
+	{
+		if ($comment->user_id != null) {
+			$name = $comment->author_name;
+			$url = rbUrl('user/profile/'.$comment->user_id);
+		} else {
+			$name = $comment->name;
+			$url = $comment->url;
+		}
+		if ($url) {
+			return '<a href="'.$url.'" target="_blank">'.$name.'</a>';
+		} else {
+			return $name;
+		}
 	}
 
 	public static function dashboardWidget()
@@ -115,7 +130,7 @@ class Helper
 			foreach ($comments as $comment) {
 				$widget['body'] .= '<li>
 										<span class="date">'.date("d-m-Y", strtotime($comment->created_at)).'</span>
-										<span class="commenter">'.$comment->name.'</span>
+										<span class="commenter">'.self::getUserNameWithLink($comment).'</span>
 										commented at
 										<span class="cmt-module">'. ucfirst($comment->module) .'</span>
 										on

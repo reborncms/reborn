@@ -40,36 +40,20 @@
 
 		<tbody>
 			{{ loop($comments as $comment) }}
-			{{ if ($comment->user_id != null) }}
-
-				{= 
-					$user = Sentry::getUserProvider()->findById($comment->user_id);
-				 	$name = $user->first_name .' '. $user->last_name;
-					$email = $user->email;
-				 	$url = rbUrl('user/profile/'.$comment->user_id);
-				=}
-
-			{{ else }}
-
-				{= 
-					$name = $comment->name;
-				 	$email = $comment->email;
-			 		$url = $comment->url;
-			 	=}
-
-			{{ endif }}
 			<tr>
 				<td>{{ Form::checkbox('action_to[]', $comment->id) }}</td>
 				<td>#{{ $comment->id }}</td>
 				<td>
-					{{ if (!empty($url)) }}
-						<a href="{{ $url }}">{{ $name }}</a>
-					{{ else }}
-						{{ $name }}
-					{{ endif }}
+					{{ Comment\Lib\Helper::getUserNameWithLink($comment) }}
 				</td>
 
-				<td>{{ $email }}</td>
+				<td>
+					{{ if ($comment->user_id != null) }}
+						{{ $comment->author->email }}
+					{{ else }}
+						 {{ $comment->email }}
+					{{ endif }}
+				</td>
 
 				<td>
 					{{ if ($comment->edit_user != null) }}

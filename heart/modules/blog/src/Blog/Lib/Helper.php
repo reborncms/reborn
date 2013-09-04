@@ -104,7 +104,7 @@ class Helper {
 				$widget['body'] .= '<li>
 										<span class="date">'.$post->post_date('d M Y').'</span>
 										<span class="blog-author"><i class="icon-user icon-white"></i>
-											<a href="'.rbUrl('user/profile/'.$post->author->id).'">'.$post->author->first_name.' '.$post->author->last_name.'</a>
+											<a href="'.rbUrl('user/profile/'.$post->author->id).'">'.$post->author_name.'</a>
 										</span>
 										<a href="'.rbUrl('blog/'.$post->slug).'" target="_black">'.$post->title.'</a>
 									</li>';

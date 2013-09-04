@@ -35,7 +35,7 @@ class Comment extends \Facade
 
 		$restructured = array();
 
-		$comments = Model::where('content_id', $content_id)
+		$comments = Model::with('author')->where('content_id', $content_id)
 								->where('module', $module)
 								->where('status', 'approved')
 								->get()

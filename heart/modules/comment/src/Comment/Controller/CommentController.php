@@ -36,7 +36,7 @@ class CommentController extends \PublicController
 
 		$restructured = array();
 
-		$comments = Comment::where('content_id', $content_id)
+		$comments = Comment::with('author')->where('content_id', $content_id)
 								->where('module', $module)
 								->where('status', 'approved')
 								->get()
