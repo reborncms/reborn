@@ -1,20 +1,12 @@
 <div id="re-form-wrapper">
 	<h4>
-		{{ if ($comment->user_id != null) }}
+		{= $author = Comment\Lib\Helper::getUserNameWithLink($comment) =}
 
-			{= 
-				$user = Sentry::getUserProvider()->findById($comment->user_id);
-				$author = $user->first_name . ' ' . $user->last_name; 
-			=}
-
-		{{ else }}
-			{= $author = $comment->name =}
-		{{ endif }}
 		{{ if ($method == 'reply') }}
-			{{ sprintf(t('comment::comment.label.reply_to'), $author) }}
+			{{ t('comment::comment.label.reply_to', array('name' => $author)) }}
 			{= $btn_val = t('comment::comment.label.reply') =}
 		{{ else }}
-			{{ sprintf(t('comment::comment.label.edit_comment'), $author) }}
+			{{ t('comment::comment.label.edit_comment', array('name' => $author)) }}
 			{= $btn_val = t('global.edit') =}
 		{{ endif }}
 	</h4>

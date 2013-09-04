@@ -128,7 +128,7 @@ class CommentController extends \AdminController
 		if ($comment->status == 'approved' and $comment->parent_id != 0) {
 			$parent_status = Comment::where('id', $comment->parent_id)->pluck('status');
 			if ($parent_status != 'approved') {
-				\Flash::error(sprintf(t('comment::comment.message.error.parent_not_approved'), $comment->parent_id));
+				\Flash::error(t('comment::comment.message.error.parent_not_approved', array('id' => $comment->parent_id)));
 				return \Redirect::to(adminUrl('comment'));
 			}
 		}
@@ -293,12 +293,12 @@ class CommentController extends \AdminController
 
 			if (!empty($comments)) {
 				if (count($comments) == 1) {
-					\Flash::success(sprintf(t('comment::comment.message.success.multi_action'), $method));
+					\Flash::success(t('comment::comment.message.success.multi_action', array('method' => $method)));
 				} else {
-					\Flash::success(sprintf(t('comment::comment.message.success.multi_actions'), $method));
+					\Flash::success(t('comment::comment.message.success.multi_actions', array('method' => $method)));
 				}
 			} else {
-				\Flash::error(sprintf(t('comment::comment.message.error.multi_action'), $method));
+				\Flash::error(t('comment::comment.message.error.multi_action', array('method' => $method)));
 			}
 			return \Redirect::to(adminUrl('comment'));
 

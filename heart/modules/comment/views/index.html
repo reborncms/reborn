@@ -4,7 +4,7 @@
 	{{ if ($total_comments == 1) }}
 		<h3>{{ t('comment::comment.message.single_comment') }}</h3>
 	{{ else }}
-		<h3>{{ sprintf(t('comment::comment.message.multi_comment'), $total_comments) }}</h3>
+		<h3>{{ t('comment::comment.message.multi_comment', array('num' => $total_comments)) }}</h3>
 	{{ endif }}
 	<ul class="comments_wrapper" style="list-style:none;">
 		{{ loop ($comments as $comment) }}

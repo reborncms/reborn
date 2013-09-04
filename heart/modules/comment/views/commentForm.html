@@ -30,8 +30,8 @@
 		{{ else }}
 			{= $user = \Sentry::getUser() =}
 			<div id="login_info">
-				{= $cmt_author = $user->first_name . ' ' . $user->last_name =}
-				{{ sprintf(t('comment::comment.label.post_comment_as'), $cmt_author) }}.
+				{= $cmt_author = "<a href='". rbUrl('user/profile/'.$user->id) ."' target='_blank'>" . $user->first_name . " " . $user->last_name . "</a>" =}
+				{{ t('comment::comment.label.post_comment_as', array('name' => $cmt_author)) }}
 				<a href="{{ rbUrl('user/logout') }}" id="logout_link">{{ t('comment::comment.label.logout') }}</a>
 			</div>	
 		{{ endif }}
