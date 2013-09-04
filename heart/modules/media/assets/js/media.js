@@ -32,7 +32,7 @@ $(function(){
 		}
 	});
 
-	$('.file_ajax_submit').on('click', function(e){
+	$('.file_ajax_submit').livequery('click', function(e){
 		e.preventDefault();
 
 		var theUniqueId = '#'+$(this).attr('uniqueName');
@@ -107,6 +107,7 @@ $(function(){
 	$('#media_upload').colorbox({
 		width: '60%',
 		height: '400',
+		href: SITEURL + ADMIN + '/media/upload/' + $('.media_wrap').attr('id'),
 		onClosed: function() { window.location.reload(); }
 	});
 
@@ -140,20 +141,6 @@ $(function(){
 	$('.dragger').draggable({
 		zIndex: 20,
 		revert: true
-	});
-
-	$('.drop_zone').droppable({
-		drop: function(e, ui) {
-			ui.draggable.parent().hide();
-			$.ajax({
-				type: 'POST',
-				url: SITEURL + ADMIN + '/media/changeDir/' + ui.draggable.parent().attr('file-id') + '/' + $(this).attr('folder-id'),
-				success: function(e) {
-					/*var result = $.parseJSON(e);*/
-					/*if(e.success) ui.draggable.parent().hide();*/
-				}
-			});
-		}
 	});
 
 });

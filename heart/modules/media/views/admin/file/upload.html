@@ -3,7 +3,16 @@
 {{ endif }}
 
 <div class="media_wrap" id="{{ (isset($folder_id)) ? $folder_id : 0 }}">
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#msg-area').animate({opacity: 1.0},4000).fadeOut('slow');
+		});
+	</script>
+<div id="msg-area" class='alert alert-success' style='display: none;'>
+	Successfully uploaded.
+</div>
 
+{{ js('media.js', 'media') }}
 	{{ if (isset($btnsBar)) }} {{ $btnsBar }} {{ endif }}
 
 	{{ Form::hidden('maxUploadableSize', $maxUploadableSize) }}
@@ -71,6 +80,7 @@
 						var err = "<div class='m_upload_error'>[ "+data.result.error[0][0]+" ]</div>";
 						$('li#'+data.uniqueName+' div.progress_wrap').replaceWith(err);
 					} else {
+						$('#msg-area').show();
 						var btn = "<a href='javascript:void(0);' class='m_edit_btn btn btn-orange f-right'>Edit</a></div></li>";
 
 						$('li#'+data.uniqueName+' div.m_uploaded_header').append(btn);
@@ -171,6 +181,7 @@
 		</div> <!-- end of form-block -->
 
 		<div class="form-block form-action">
+			<div id="test" style='width:100px; height:100px; background: blue;'></div>
 			<input type="submit" value="Update" class="button button-green file_ajax_submit" uniqueName=[%= o.uniqueName%]>
 			<span class="loading" style="display: none;"></span>
 		</div> <!-- end of form-aciton -->
