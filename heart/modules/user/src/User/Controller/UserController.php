@@ -124,10 +124,13 @@ class UserController extends \PublicController
 	public function logout()
 	{
 		if(!Sentry::check()) return \Redirect::to('login');
+
+		$redirect = \Input::server('HTTP_REFERER');
 		\Event::call('reborn.user.logout');
+
 		Sentry::logout();
 		\Flash::success(t('user::user.logout'));
-		return \Redirect::to('/');
+		return \Redirect::to($redirect);
 	}
 
 	public function edit()
