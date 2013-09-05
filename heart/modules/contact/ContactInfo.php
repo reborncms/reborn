@@ -26,6 +26,8 @@ class ContactInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = false;
 
+	protected $allow_customfield = true;
+
 	protected $roles = array(
 		'contact.view' => 'View',
 		'contact.reply' => 'Reply',
