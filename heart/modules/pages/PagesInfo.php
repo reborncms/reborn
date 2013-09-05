@@ -34,6 +34,14 @@ class PagesInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = true;
 
+    /**
+    * Variable for Allow Custom Field.
+    * If you allow custom field in your module, set true
+    *
+    * @var boolean
+    **/
+    protected $allow_customfield = false;
+
     protected $roles = array(
             'pages.create'      => 'Create',
             'pages.edit'        => 'Edit',

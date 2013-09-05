@@ -34,6 +34,14 @@ class BlogInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = true;
 
+	/**
+	* Variable for Allow Custom Field.
+	* If you allow custom field in your module, set true
+	*
+	* @var boolean
+	**/
+	protected $allow_customfield = true;
+
 	protected $roles = array(
 						'blog.create' => 'Create',
 						'blog.edit' => 'Edit',
