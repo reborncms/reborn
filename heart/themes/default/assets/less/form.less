@@ -37,6 +37,16 @@ form {
 	.info {
 		color : @gray_light_color;
 	}
+	.required:before {
+		content: '*';
+		color: @red_color;
+	}
+
+	&.stripe {
+		.form-block:nth-child(even) {
+			background: #f9f9f9;
+		}
+	}
 }
 
 label {

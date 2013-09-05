@@ -74,6 +74,30 @@ class Uri
     }
 
     /**
+     * Get First Uri Segment
+     *
+     * @return string|null
+     **/
+    public static function first()
+    {
+        return reset(static::$segments);
+    }
+
+    /**
+     * Get Last Uri Segment.
+     *
+     * @param boolean $number If this param is true, return segment number
+     * @return string|integer|null
+     **/
+    public static function last($number = false)
+    {
+        if ($number) {
+            return count(static::$segments);
+        }
+        return end(static::$segments);
+    }
+
+    /**
      * Check given URI segment name has in given segment key.
      * example:
      * <code>

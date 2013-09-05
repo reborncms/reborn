@@ -98,6 +98,14 @@ abstract class AbstractInfo
 	protected $roles = array();
 
 	/**
+	 * Variable for Allow Custom Field.
+	 * If you allow custom field in your module, set true
+	 *
+	 * @var boolean
+	 **/
+	protected $allow_customfield = false;
+
+	/**
 	 * Get the All Module Info
 	 *
 	 * @return array
@@ -152,7 +160,8 @@ abstract class AbstractInfo
 				'frontendSupport' => $this->frontendSupport,
 				'backendSupport' => $this->backendSupport,
 				'useAsDefaultModule' => $this->useAsDefaultModule,
-				'allowUriChange' => $this->allowToChangeUriPrefix
+				'allowUriChange' => $this->allowToChangeUriPrefix,
+				'allowCustomField' => $this->allow_customfield
 			);
 	}
 

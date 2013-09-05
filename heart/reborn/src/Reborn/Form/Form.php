@@ -24,6 +24,12 @@ class Form
      **/
     public static function start($action = '', $name = null, $file = false, $attrs=array())
     {
+        // Skip $file
+        if(is_array($file)) {
+            $attrs = $file;
+            $file = false;
+        }
+
         if ($file == true && isset($attrs['enctype'])) {
             unset($attrs['enctype']);
         }
@@ -329,7 +335,11 @@ class Form
      **/
     public static function checkbox($name, $value, $attrs = array())
     {
-        return static::input($name, $value, 'checkbox', $attrs);
+        if(! is_null($value) and $value == '1') {
+            $checked = array('checked' => 'checked');
+            $attrs = array_merge($attrs, $checked);
+        }
+        return static::input($name, null, 'checkbox', $attrs);
     }
 
     /**
