@@ -46,4 +46,12 @@ class UserInfo extends \Reborn\Module\AbstractInfo
 		'user.permission.edit' => 'Edit Permission',
 	);
 
+	/**
+	* Variable for Allow Custom Field.
+	* If you allow custom field in your module, set true
+	*
+	* @var boolean
+	**/
+	protected $allow_customfield = false;
+
 }

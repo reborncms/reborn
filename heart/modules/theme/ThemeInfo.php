@@ -40,4 +40,12 @@ class ThemeInfo extends \Reborn\Module\AbstractInfo
 		'theme.delete' => 'Delete',
 		'theme.editor' => 'Editor',
 	);
+
+	/**
+	* Variable for Allow Custom Field.
+	* If you allow custom field in your module, set true
+	*
+	* @var boolean
+	**/
+	protected $allow_customfield = false;
 }
