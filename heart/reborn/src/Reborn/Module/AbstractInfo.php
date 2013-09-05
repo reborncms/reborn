@@ -27,6 +27,13 @@ abstract class AbstractInfo
 	protected $version;
 
 	/**
+	 * Module Display name variable.
+	 *
+	 * @var string
+	 **/
+	protected $displayName = array();
+
+	/**
 	 * Module description variable
 	 *
 	 * @var string
@@ -127,7 +134,7 @@ abstract class AbstractInfo
 
 		$lang = \Config::get('app.lang');
 		// Dislpay Name
-		if (isset($this->displayName)) {
+		if (isset($this->displayName) and !empty($this->displayName)) {
 			$displayName = isset($this->displayName[$lang]) ?
 								$this->displayName[$lang] :
 								$this->displayName['en'];
