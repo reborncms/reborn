@@ -34,6 +34,7 @@ class UserController extends \PublicController
 			$user = Sentry::getUserProvider()->findById($id);
 		}
 
+		$currentUser = Sentry::getUser();
 		$usermeta = UserMeta::where('user_id', '=', $user->id)->get();
 		foreach ($usermeta as $u) {
 			$usermeta = $u;
@@ -42,6 +43,7 @@ class UserController extends \PublicController
 		$this->template->title(t('user::user.title.profile'))
 					->breadcrumb(t('user::user.title.profile'))
 					->set('user', $user)
+					->set('currentUser', $currentUser)
 					->set('userMeta', $usermeta)
 					->setPartial('profile');
 	}

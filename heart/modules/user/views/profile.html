@@ -1,21 +1,22 @@
 <div id="user-profile">
 
-	<h2>Hello World, {{ $user->first_name }} {{ $user->last_name }}</h2>
+	<h2 id="displayname">{{ $user->first_name }} {{ $user->last_name }}</h2>
 
 	<div class="user-avatar">
-		{{ gravatar($user->email, 60, $user['name']) }}
+		{{ gravatar($user->email, 200, $user['name']) }}
+		{{ if($user->id == $currentUser->id) }}
 		<span><a href="https://gravatar.com/" target="_blank">{{ t('user::user.gravatar') }}</a></span>
+		<ul id="user-settings">
+			<li><a href="{{ \Uri::create('user/edit/') }}" class="btn user-edit" >Edit Profile</a></li>
+			<li><a href="{{ \Uri::create('user/change-password/')}}" class="btn user-profile">Change Password</a></li>
+		</ul>
+		{{ endif }}
 	</div>
-
-	<ul>
-		<li><a href="{{ \Uri::create('user/edit/') }}" class="btn user-edit" >Edit Profile</a></li>
-		<li><a href="{{ \Uri::create('user/change-password/')}}" class="btn user-profile">Change Password</a></li>
-	</ul>
 
 	<div class="user-info">
 		<table>
 			<tr>
-				<td>Email :</td>
+				<td width="100px;">Email :</td>
 				<td>{{ $user->email }}</td>
 			</tr>
 			<tr>
