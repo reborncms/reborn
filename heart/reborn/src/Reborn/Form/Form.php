@@ -311,11 +311,16 @@ class Form
      *
      * @param string $name Radio Name
      * @param string $value Radio Value
+     * @param boolean $checked Checked radio or not
      * @param array $attrs other attributes
      * @return string
      **/
-    public static function radio($name, $value, $attrs = array())
+    public static function radio($name, $value, $checked = false, $attrs = array())
     {
+        if ($checked == true) {
+           $checked = array('checked' => 'checked');
+           $attrs = array_merge($attrs, $checked);
+        }
         return static::input($name, $value, 'radio', $attrs);
     }
 
@@ -335,12 +340,13 @@ class Form
             $attr = array('id' => $label);
 
             if (($val == $checkedVal) and (!is_null($checkedVal)) ) {
-                $checked = array('checked' => 'checked');
-                $attr = array_merge($attr, $checked);
+                $checked = true;
+            } else {
+                $checked = false;
             }
 
             $radios .= '<label for="'.$label.'">';
-            $radios .= static::radio($name, $val, $attr);
+            $radios .= static::radio($name, $val, $checked, $attr);
             $radios .= $lab;
             $radios .= '</label>';
         }
@@ -353,12 +359,13 @@ class Form
      *
      * @param string $name Checkbox Name
      * @param string $value Checkbox Value
+     * @param boolean $checked Checked checkbox or not
      * @param array $attrs other attributes
      * @return string
      **/
-    public static function checkbox($name, $value, $attrs = array())
+    public static function checkbox($name, $value, $checked = false, $attrs = array())
     {
-        if(! is_null($value) and $value == '1') {
+        if($checked == true) {
             $checked = array('checked' => 'checked');
             $attrs = array_merge($attrs, $checked);
         }
@@ -381,12 +388,13 @@ class Form
             $label = $name . '_' . $val;
             $attr = array('id' => $label);
             if (in_array($val, $checkVals)) {
-                $checked = array('checked' => 'checked');
-                $attr = array_merge($attr, $checked);
+                $checked = true;
+            } else {
+                $checked = false;
             }
             $real_name = $name.'['.$n.']';
             $ckbox .= '<label for="'.$label.'">';
-            $ckbox .= static::checkbox($real_name, $val, $attr);
+            $ckbox .= static::checkbox($real_name, $val, $checked, $attr);
             $ckbox .= $lab;
             $ckbox .= '</label>';
             $n++;
