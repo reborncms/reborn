@@ -120,7 +120,7 @@ class Helper
 	public static function dashboardWidget()
 	{
 		$widget = array();
-		$widget['title'] = 'Latest Blog Posts';
+		$widget['title'] = t('label.last_comment');
 		$widget['icon'] = 'icon-comment';
 		$widget['id'] = 'comment';
 		$widget['body'] = '';

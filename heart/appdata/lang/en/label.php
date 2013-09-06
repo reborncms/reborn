@@ -64,9 +64,9 @@ return array(
 	'rb_server_info'	=> 'Server Informations',
 	'user_last_login'	=> 'User Last Login',
 	'last_login_text'	=> '<a class="fullname" href="%s" target="_blank">%s</a> is last login at <span class="date">%s</span>',
-	'last_post'			=> 'Blog Latest Post',
+	'last_post'			=> 'Latest Blog Posts',
 	'last_post_empty'	=> 'Blog post is empty now',
-	'last_comment'		=> 'Latest Comment',
+	'last_comment'		=> 'Latest Comments',
 	'last_comment_empty'=> 'Comment is empty now',
 
 );

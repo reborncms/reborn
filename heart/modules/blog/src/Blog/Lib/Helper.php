@@ -93,7 +93,7 @@ class Helper {
 	public static function dashboardWidget()
 	{
 		$widget = array();
-		$widget['title'] = 'Latest Blog Posts';
+		$widget['title'] = t('label.last_post');
 		$widget['icon'] = 'icon-archive';
 		$widget['id'] = 'blog';
 		$widget['body'] = '';
