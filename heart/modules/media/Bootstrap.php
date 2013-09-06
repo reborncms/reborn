@@ -33,14 +33,14 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
         $mod_toolbar = array(
                 'upload'    => array(
                     'url'   => 'media/upload/',
-                    'name'  => \Translate::get('m.btn.upload'),
-                    'info'  => \Translate::get('m.info.upload'),
+                    'name'  => \Translate::get('media::media.btn.upload'),
+                    'info'  => \Translate::get('media::media.info.upload'),
                     'id'    => 'media_upload',
                 ),
                 'folder'    => array(
                     'url'   => 'media/create-folder/',
-                    'name'  => \Translate::get('m.btn.create'),
-                    'info'  => \Translate::get('m.info.create'),
+                    'name'  => \Translate::get('media::media.btn.create'),
+                    'info'  => \Translate::get('media::media.info.create'),
                     'id'    => 'media_create_folder',
                 ),
             );
