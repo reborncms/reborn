@@ -355,6 +355,7 @@ class ModuleManager
     protected static function fileCheck($path, $name)
     {
         $name = ucfirst($name);
+
         // Check the {ModuleName}Info.php file at module main root
         if (!file_exists($path.$name.static::$infoFile)) {
             $msg = sprintf(static::$noInfoFile, static::$infoFile, $name);

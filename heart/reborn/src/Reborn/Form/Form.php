@@ -14,6 +14,29 @@ use Reborn\Config\Config;
 class Form
 {
     /**
+     * Extended Form Element Type
+     *
+     * @var array
+     **/
+    protected static $extends;
+
+    /**
+     * Extend the Form Element.
+     *
+     * @param string $name Element name
+     * @param Closure $callback Callback function for this element
+     * @return void
+     **/
+    public static function extend($name, $callback)
+    {
+        if(!is_callable($callback)) {
+            throw new \RbException("Second parameter for Form::extend() must be callable!");
+        }
+
+        static::$extends['ext_'.$name] = $callback;
+    }
+
+    /**
      * Open Form element
      *
      * @return string
@@ -465,4 +488,19 @@ class Form
 
         return $attr_str;
     }
+
+    /**
+     * Magic method for static call.
+     *
+     * @return null|string
+     **/
+    public static function __callStatic($method, $args)
+    {
+        if(! isset(static::$extends['ext_'.$method])) {
+            return null;
+        }
+
+        return call_user_func_array(static::$extends['ext_'.$method], $args);
+    }
+
 } // END class Form
