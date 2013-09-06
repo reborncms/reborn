@@ -12,7 +12,7 @@ class Version
 {
     const NAME = 'Reborn CMS';
 
-    const FULL = '2.0.0-alpha';
+    const FULL = '2.0.0-beta';
 
     const MAJOR = '2';
 
@@ -20,12 +20,12 @@ class Version
 
     const FIX = '0';
 
-    const EXTRA = 'alpha';
+    const EXTRA = 'beta';
 
     const CODE_NAME = 'rorb';
 
     // Release date of Reborn CMS Package
-    const RELEASE = '23/05/2013';
+    const RELEASE = '16/09/2013';
 
     // URL of Reborn CMS Official Site
     const URL = 'http://www.reborncms.com';
