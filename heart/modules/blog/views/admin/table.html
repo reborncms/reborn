@@ -4,7 +4,7 @@
 	<table class="stripe">
 		<thead>
 			<tr>
-				<th width="3%">{{ Form::checkbox('action_to_all', '', array('class' => 'check-all')) }}</th>
+				<th width="3%">{{ Form::checkbox('action_to_all', '', false, array('class' => 'check-all')) }}</th>
 				<th width="27%">{{ t('blog::blog.title') }}</th>
 				<th width="15%">{{ t('blog::blog.category') }}</th>
 				<th width="15%">{{ t('blog::blog.author') }}</th>
@@ -16,7 +16,7 @@
 			{= $a = 1 =}
 			{{ loop($blogs as $blog) }}
 			<tr>
-				<td class="checkbox">{{ Form::checkbox('action_to[]', $blog->id, array('id' => 'action'.$a)) }}</td>
+				<td class="checkbox">{{ Form::checkbox('action_to[]', $blog->id, false, array('id' => 'action'.$a)) }}</td>
 				<td>
 					<span class="bg-title">
 						<a href="{{ adminUrl('blog/edit/'.$blog->id) }}">{{ $blog->title }}</a>
