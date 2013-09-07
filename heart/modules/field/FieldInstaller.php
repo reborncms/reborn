@@ -14,9 +14,9 @@ class FieldInstaller extends \Reborn\Module\AbstractInstaller
 			$table->string('field_name');
 			$table->string('field_slug');
 			$table->string('field_type');
-			$table->text('description')->default('');
-			$table->text('options')->default('');
-			$table->text('default')->default('');
+			$table->text('description');
+			$table->text('options');
+			$table->text('default');
 		});
 
 		\Schema::table('field_data', function($table)
@@ -27,7 +27,7 @@ class FieldInstaller extends \Reborn\Module\AbstractInstaller
 			$table->integer('post_id');
 			$table->integer('group_id');
 			$table->string('field_name');
-			$table->text('field_value')->default('');
+			$table->text('field_value');
 		});
 
 		\Schema::table('field_groups', function($table)
@@ -35,10 +35,10 @@ class FieldInstaller extends \Reborn\Module\AbstractInstaller
 			$table->create();
 			$table->increments('id');
 			$table->string('name');
-			$table->text('description')->default('');
+			$table->text('description');
 			$table->string('relation'); // relation type name
 			$table->string('relation_type'); //module or content (in next)
-			$table->text('fields')->default('');
+			$table->text('fields');
 		});
 	}
 

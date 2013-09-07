@@ -23,7 +23,7 @@ class FieldProvider
 		$field->field_name = Input::get('field_name');
 		$field->field_slug = Input::get('field_slug');
 		$field->field_type = Input::get('field_type');
-		$field->description = Input::get('description');
+		$field->description = Input::get('description', '');
 		$field->options = Input::get('options', '');
 		$field->default = Input::get('default', '');
 

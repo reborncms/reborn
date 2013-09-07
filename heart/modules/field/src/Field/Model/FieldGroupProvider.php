@@ -41,7 +41,7 @@ class FieldGroupProvider
 	public function save(&$group)
 	{
 		$group->name = Input::get('name');
-		$group->description = Input::get('description');
+		$group->description = Input::get('description', '');
 		$group->relation = Input::get('relation');
 		$group->relation_type = Input::get('relation_type');
 		$group->fields = json_encode(Input::get('fields', array()));
