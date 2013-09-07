@@ -1,0 +1,13 @@
+<div id="fields">
+
+	{{ if($empty) }}
+		<div id="no-index-data">
+			No Field In This Moment
+		</div>
+	{{ else }}
+
+		{{ $table->build() }}
+
+	{{ endif }}
+
+</div>

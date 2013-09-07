@@ -478,7 +478,7 @@ class Table
 		if ($this->checkAll) {
 			$row .= "\n\t\t\t".'<td class="checkbox">';
 			$row .= "\n\t\t\t\t";
-			$row .= \Form::checkbox('action_to[]', $obj->id, array('id' => 'action'.$no));
+			$row .= \Form::checkbox('action_to[]', $obj->id, false, array('id' => 'action'.$no));
 			$row .= "\n\t\t\t</td>";
 		}
 

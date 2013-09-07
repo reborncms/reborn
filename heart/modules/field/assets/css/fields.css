@@ -1,0 +1,133 @@
+/* Field Form */
+#field-form {
+	border: 1px solid #efefef;
+	padding: 10px;
+}
+
+#field-form label {
+	width: 28%;
+}
+
+#field-form input[type="checkbox"] {
+	margin-top: 8px;
+}
+
+#field-form-left, #field-form-right {
+	float: left;
+	width: 48%;
+}
+
+#field-form-right {
+	margin-left: 2%;
+}
+
+#info-label label {
+	color: #1570A6;
+	width: 100%;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #1570A6;
+}
+
+
+#field-maker {
+	padding: 10px;
+	border: 1px solid #efefef;
+}
+
+#field-data {
+	padding: 10px;
+	margin-bottom: 10px;
+}
+#field-data label {
+	width: 20%;
+}
+
+#field-data div {
+	width: 48%;
+	float: left;
+}
+
+#field-data div span.msg {
+	display: block;
+	padding: 5px;
+	height: 16px;
+}
+#field-data textarea {
+	height: 100px;
+}
+
+#field-lists {
+	min-height: 300px;
+	background: #efefef;
+}
+
+#field-lists label {
+	color: #595959;
+	width: 20%;
+	margin-bottom: 4px;
+}
+
+.field-lists-header {
+	padding: 10px;
+	border: 1px solid #191919;
+	color: #fff;
+	background: #292929;
+	margin-bottom: 5px;
+	font-size: 16px;
+}
+
+#sortable, #available-fields {
+	list-style: none;
+	margin: 10px;
+	min-height: 230px;
+}
+
+#sortable li, #available-fields li {
+	position: relative;
+	padding: 0;
+	margin-bottom: 0px;
+	border: none;
+	background: none;
+}
+
+#sortable .ui-icon {
+	position: absolute;
+	top: 50%;
+	left: 5px;
+	margin-top: -8px;
+	border: 1px solid #efefef;
+}
+
+#sortable .field {
+	padding-left: 40px;
+}
+
+#field-insert {
+	background: #ddd;
+	overflow-y: auto;
+	height: 300px;
+}
+
+.field-icon {
+	position: absolute;
+	right: 5px;
+}
+
+
+/* (right column) */
+.field {
+	padding: 5px 10px;
+	margin-bottom: 5px;
+	background: #fff;
+	color: #585858;
+}
+.field span {
+	color: #787878;
+	margin-left: 10px;
+}
+
+.button-wrapper {
+	margin-top: 20px;
+	padding-top: 8px;
+}

@@ -1,0 +1,131 @@
+<div id="field-maker">
+
+	{{ Form::start(adminUrl('field/'.$method)) }}
+
+	<div id="field-data" class="clearfix">
+		<div>
+			{{ Form::label('Group Name') }}
+			{{ Form::text('name', $group->name) }}
+			<span class="msg error">{{ $group->errors('name') }}</span>
+			{{ Form::label('Module') }}
+			{{ Form::select('relation', module_select(), $group->relation) }}
+		</div>
+		<div>
+			{{ Form::label('Description') }}
+			{{ Form::textarea('description', $group->description) }}
+		</div>
+		{{ Form::hidden('relation_type', 'module') }}
+	</div>
+
+	<div class="clearfix">
+		<div id="field-form-left">
+			<div id="field-lists">
+				<h4 class='field-lists-header'>
+					<i class="icon-check icon-white icon-12"></i>
+					Selected Fields
+				</h4>
+
+				<ul id="sortable">
+				{{ ifset($group_fields) }}
+					{{ loop($group_fields as $field) }}
+					<li class="ui-state-default">
+						<div class="field">
+							{{ $field->field_name }}
+							<span>( {{ $field->field_type }} )</span>
+							<a class="field-remove-btn" href="#" data-id="{{ $field->id }}">
+								<i class="icon-circleminus icon-gray icon-12 field-icon"></i>
+							</a>
+						</div>
+						<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+						<input type="hidden" name="fields[]" value="{{ $field->id }}" />
+					</li>
+					{{ endloop }}
+				{{ endif }}
+				</ul>
+			</div> <!-- end of #field-lists -->
+		</div> <!-- end of #field-form-left -->
+
+		<div id="field-form-right">
+			<div id="field-insert" class="clearfix">
+				<h4 class='field-lists-header'>
+					<i class="icon-arrow-down icon-white icon-12"></i>
+					Available Fields
+				</h4>
+				<ul id="available-fields">
+					{{ loop($fields as $field) }}
+					<li>
+						<div class="field">
+							{{ $field->field_name }}
+							<span>( {{ $field->field_type }} )</span>
+							<a class="field-add-btn" href="#" data-id="{{ $field->id }}">
+								<i class="icon-circleplus icon-gray icon-12 field-icon"></i>
+							</a>
+						</div>
+					</li>
+					{{ endloop }}
+				</ul>
+			</div>
+		</div> <!-- end of #field-form-right -->
+	</div>
+
+	<div class="button-wrapper">
+		{{ Form::submit('submit', 'Save', array('class' => 'btn btn-green')) }}
+	</div>
+
+	{{ Form::end() }}
+
+</div>
+
+<div id="field-edit-box" style="display:none;">
+	{{ Form::text('edit_name') }}
+	{{ Form::select('edit_type', supported_field_types()) }}
+	{{ Form::submit('submit', 'Edit', array('class' => 'btn btn-green')) }}
+</div>
+
+<script type="text/javascript">
+	$( "#sortable" ).sortable();
+
+	$(function(){
+		// Select adder
+		var fieldContainer = $('#available-fields'),
+			acceptContainer = $('#sortable'),
+			addBtn = $('.field-add-btn');
+
+		// Make Adding
+		$(addBtn).on('click', function(e){
+			e.preventDefault();
+			var block = $(this).parent().parent(),
+				id = $(this).attr('data-id');
+
+
+			acceptContainer.append(block);
+			fieldContainer.find(block).remove();
+
+			block.append('<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>')
+						.append('<input type="hidden" name="fields[]" value="'+id+'" />')
+						.addClass('ui-state-default');
+
+			$(this).removeClass('field-add-btn').addClass('field-remove-btn');
+			$(this).find('.field-icon').removeClass('icon-circleplus').addClass('icon-circleminus');
+		});
+
+		// Make Removing
+		$('.field-remove-btn').livequery('click', function(e){
+			e.preventDefault();
+			var block = $(this).parent().parent(),
+				id = $(this).attr('data-id');
+
+
+			fieldContainer.append(block);
+			acceptContainer.find(block).remove();
+
+			block.find('.ui-icon').remove();
+			block.find('input').remove()
+			block.removeClass('ui-state-default');
+
+			$(this).removeClass('field-remove-btn').addClass('field-add-btn');
+			$(this).find('.field-icon').removeClass('icon-circleminus')
+										.addClass('icon-circleplus');
+		});
+	});
+</script>

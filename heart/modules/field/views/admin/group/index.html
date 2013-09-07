@@ -1,0 +1,13 @@
+<div id="field-groups">
+
+	{{ if($empty) }}
+		<div id="no-index-data">
+			No Field Group In This Moment
+		</div>
+	{{ else }}
+
+		{{ $table->build() }}
+
+	{{ endif }}
+
+</div>

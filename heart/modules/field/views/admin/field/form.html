@@ -1,0 +1,108 @@
+<div id="field-form">
+
+	{{ Form::start(adminUrl('field/'.$method), 'field', array('class' => 'form')) }}
+
+	<div id="form-wrapper" class="clearfix">
+
+		<div id="field-form-left">
+			<div class="form-block">
+	    		{{ Form::label('Field Name<span class="required"></span>', 'field_name') }}
+
+	  			<div class="form-right-block">
+	    			{{ Form::text('field_name', $field->field_name) }}
+	          		<span class="msg error">{{ $field->errors('field_name') }}</span>
+				</div> <!-- end of form-right-block -->
+	        </div> <!-- end of form block -->
+
+	        <div class="form-block">
+	    		{{ Form::label('Field Slug<span class="required"></span>', 'field_slug') }}
+
+	  			<div class="form-right-block">
+	    			{{ Form::text('field_slug', $field->field_slug) }}
+	          		<span class="msg error">{{ $field->errors('field_slug') }}</span>
+				</div> <!-- end of form-right-block -->
+	        </div> <!-- end of form block -->
+
+	        <div class="form-block">
+	    		{{ Form::label('Field Description', 'description') }}
+
+	  			<div class="form-right-block">
+	    			{{ Form::textarea('description', $field->description) }}
+				</div> <!-- end of form-right-block -->
+	        </div> <!-- end of form block -->
+		</div> <!-- end of #field-form-left -->
+
+		<div id="field-form-right">
+			<div class="form-block">
+	    		{{ Form::label('Field Type<span class="required"></span>', 'field_type') }}
+
+	  			<div class="form-right-block">
+	    			{{ Form::select('field_type', $supported_type, $field->field_type) }}
+				</div> <!-- end of form-right-block -->
+	        </div> <!-- end of form block -->
+
+	        <div class="form-block" id="info-label">
+	    		{{ Form::label('Field Information') }}
+	        </div> <!-- end of form block -->
+
+	        <div class="form-block" id="field-info">
+	        	{{ ifset($field_body) }}
+	        		{{ $field_body }}
+	        	{{ endif }}
+	        </div> <!-- end of form block -->
+
+		</div> <!-- end of #field-form-right -->
+	</div> <!-- end of #form-wrapper -->
+
+	<div class="form-block form-action button-wrapper">
+		{{ Form::submit('submit', 'Save', array('class' => 'btn btn-green')) }}
+	</div>
+
+	{{ Form::end() }}
+
+</div>
+
+<script type="text/javascript">
+
+	// Make Slug
+	jQuery(function($) {
+		Reborn.slugGenerator('#field_name', '#field_slug');
+	});
+
+	$('#field_type').on('change', function() {
+		var type = $(this).val();
+
+		if(type == '') return false;
+
+		fieldInfo(type);
+	});
+
+	// Fill Feild Info
+	function fieldInfo(type) {
+		$.ajax({
+			url: SITEURL + ADMIN + '/field/get-type-display/' + type,
+			type: 'POST',
+			beforeSend: function() {
+				//$('#filter-form').append('<span id="waiting" class="loading"></span>');
+			},
+			complete: function() {
+				//$('#waiting').remove();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				//$('#waiting').remove();
+				//$('#filter-form').append('<span id="result-error">'+errorThrown+'</span>');
+			},
+			success: function(data) {
+				$('#field-info').html(data.text);
+			}
+		});
+	}
+
+/*	var fieldType = "{{ $field->field_type }}";
+
+	if (typeof(fieldType) != 'undefined') {
+
+	}
+	console.log(fieldType);*/
+
+</script>
