@@ -35,7 +35,7 @@ class FieldInstaller extends \Reborn\Module\AbstractInstaller
 			$table->create();
 			$table->increments('id');
 			$table->string('name');
-			$table->text('description');
+			$table->text('description')->default('');
 			$table->string('relation'); // relation type name
 			$table->string('relation_type'); //module or content (in next)
 			$table->text('fields')->default('');
