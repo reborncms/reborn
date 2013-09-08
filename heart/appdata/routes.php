@@ -6,9 +6,9 @@ $adminUrl = \Config::get('app.adminpanel');
 // Don't delete this.
 $defaultModule = \Setting::get('default_module');
 if ('pages' == strtolower($defaultModule)) {
-	Route::add('default', '/', 'Pages\Pages::index');
+	$added = Route::add('default', '/', 'Pages\Pages::index');
 } else {
-	Route::add('default', '/', $defaultModule.'\\'.$defaultModule.'::index');
+	$added = Route::add('default', '/', ucfirst($defaultModule).'\\'.ucfirst($defaultModule).'::index');
 }
 
 // Add Page Not Found Route
