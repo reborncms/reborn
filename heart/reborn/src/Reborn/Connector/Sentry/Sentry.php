@@ -44,7 +44,7 @@ class Sentry {
 	public static function createSentry()
 	{
 		$hasher           = new BcryptHasher;
-		$session          = new SymfonySession();
+		$session          = new SymfonySession(\Config::get('app.sentry_keyname', 'reborn_cms'));
 		$cookie           = new NativeCookie;
 		$groupProvider    = new GroupProvider;
 		$userProvider     = new UserProvider($hasher);

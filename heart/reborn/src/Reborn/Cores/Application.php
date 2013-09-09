@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\Session\Session as Session;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 /**
  * Main Application Class for Reborn.
@@ -76,7 +77,10 @@ class Application extends \Illuminate\Container\Container
         });
 
         $this['session'] = $this->share( function() {
-            return new Session();
+            $lifetime = Config::get('app.session_lifetime', 30) * 60;
+            $options = array('gc_maxlifetime' => $lifetime);
+
+            return new Session(new NativeSessionStorage($options));
         });
 
         $this['cache'] = $this->share( function() {

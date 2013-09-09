@@ -83,4 +83,19 @@ return array(
 	 */
 	'adminpanel' => 'admin',
 
+	/**
+	 * Session Life Time.
+	 * Session life time with minute.
+	 * Default is 60 minute.
+	 *
+	 */
+	'session_lifetime' => 60,
+
+	/**
+	 * Key name for Cartalyst Sentry Authentication Packages.
+	 * Default key name is "reborn_cms"
+	 *
+	 */
+	'sentry_keyname' => 'reborn_cms'
+
 );
