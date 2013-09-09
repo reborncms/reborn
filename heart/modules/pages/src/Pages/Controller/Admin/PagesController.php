@@ -346,8 +346,7 @@ class PagesController extends \AdminController
     protected function formElements()
     {
         $layout_list = self::layoutList();
-        $this->template->useWysiwyg()
-                ->style(array(
+        $this->template->style(array(
                     'form.css',
                     'plugins/codemirror/codemirror.css'
                 ))

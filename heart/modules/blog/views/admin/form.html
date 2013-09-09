@@ -22,7 +22,7 @@
 
                 <div class="form-block">
                     <span class="msg error">{{ $val_errors['body'] }}</span>
-                    {{ Form::textarea('body', isset($blog->body) ? $blog->body : '', array('class' => '', 'id' => 'wysiwyg-adv')) }}
+					{{ Form::ckeditor('body', isset($blog->body) ? $blog->body : '') }}
                 </div> <!-- end of form-block -->
 
                 <div class="form-block">

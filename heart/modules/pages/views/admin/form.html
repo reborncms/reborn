@@ -24,7 +24,7 @@
 					</div>
 				</div>
 				<div class="form-block">
-					{{ Form::textarea('content', $page->page_body, array('id' => 'wysiwyg-adv')) }}
+					{{ Form::ckeditor('content', $page->page_body) }}
 				</div>
 			</div> <!-- end of form-left -->
 			<div id="form-right">

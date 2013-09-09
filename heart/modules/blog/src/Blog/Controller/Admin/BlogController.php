@@ -207,8 +207,7 @@ class BlogController extends \AdminController
 					   ->script(array(
 						 	'plugins/jquery-ui-timepicker-addon.js',
 						 	'plugins/jquery.tagsinput.min.js',
-						 	'form.js'))
-					   ->useWysiwyg();
+						 	'form.js'));
 	}
 
 	/**
