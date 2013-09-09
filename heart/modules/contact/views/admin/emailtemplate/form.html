@@ -40,7 +40,7 @@
 
 		<div class="form-block first-block">
 			<span class="msg error">{{ $errors['body'] }}</span>
-			{{ Form::textarea('body', isset($template->body) ? $template->body : '', array('class' => '', 'id' => 'wysiwyg-adv')) }}
+			{{ Form::ckeditor('body', isset($template->body) ? $template->body : '') }}
 		</div> <!-- end of form-right-block -->
 		
 		{{ if ($method == 'edit') }}

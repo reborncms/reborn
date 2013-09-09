@@ -83,7 +83,6 @@ class EmailTemplateController extends \AdminController
 		}
 
 		$this->template->title(\Translate::get('contact::contact.add_email_temp'))
-						->useWysiwyg()
 						->set('errors',$errors)
 						->set('method', 'create')
 						->set('template',$template)
@@ -152,7 +151,6 @@ class EmailTemplateController extends \AdminController
 		}
 
 		$this->template->title(\Translate::get('contact::contact.edit_email_temp'))
-						->useWysiwyg()
 						->set('errors',$errors)
 						->set('method', 'edit')
 						->set('template',$template)
@@ -169,8 +167,8 @@ class EmailTemplateController extends \AdminController
         $template = Etemplate::find($id);
         $this->template->title(\Translate::get('contact::contact.duplicate_template'))
                     ->set('template', $template)
+                    ->set('errors', new \Reborn\Form\ValidationError())
                     ->set('method', 'create')
-                    ->useWysiwyg()
                     ->setPartial('admin\emailtemplate\form');
     }
 
