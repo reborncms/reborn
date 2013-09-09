@@ -133,8 +133,9 @@ class Builder
 
 		$form = array();
 
-		$fields->each(function($f) use(&$form, $field_data, $this) {
-			if($ins = $this->getTypeInstance($f->field_type)) {
+		$builder = $this;
+		$fields->each(function($f) use(&$form, $field_data, $builder) {
+			if($ins = $builder->getTypeInstance($f->field_type)) {
 				$data = isset($field_data[$f->id]) ? $field_data[$f->id] : null;
 
 				$form[] = $ins->displayForm($f, $data);
@@ -165,9 +166,9 @@ class Builder
 		$model_id = (int) $model->id;
 
 		$field_data = $this->getFieldValue($group_id, $model_id);
-
-		$fields->each(function($f) use(&$inserts, $group_id, $model_id, $this) {
-			if($ins = $this->getTypeInstance($f->field_type)) {
+		$builder = $this;
+		$fields->each(function($f) use(&$inserts, $group_id, $model_id, $builder) {
+			if($ins = $builder->getTypeInstance($f->field_type)) {
 				if ( $ins->preSaveCheck($f) ) {
 					$inserts[] = array(
 							'field_id' => (int) $f->id,
@@ -203,8 +204,9 @@ class Builder
 
 		$field_data = $this->getFieldValue($group_id, $model_id);
 
-		$fields->each(function($f) use($group_id, $model_id, $field_data, $this) {
-			if($ins = $this->getTypeInstance($f->field_type)) {
+		$builder = $this;
+		$fields->each(function($f) use($group_id, $model_id, $field_data, $builder) {
+			if($ins = $builder->getTypeInstance($f->field_type)) {
 				$data = isset($field_data[$f->id]) ? $field_data[$f->id] : null;
 				if ( $val = $ins->preUpdateCheck($f, $data) ) {
 
@@ -305,7 +307,7 @@ class Builder
 	 * @param string $type Field type
 	 * @return null|Field\Type\$type
 	 **/
-	protected function getTypeInstance($type)
+	public function getTypeInstance($type)
 	{
 		$types = $this->all_type;
 
