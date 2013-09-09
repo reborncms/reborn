@@ -21,6 +21,13 @@ class Form
     protected static $extends;
 
     /**
+     * Variable for ckeditor js declare
+     *
+     * @var boolean
+     **/
+    protected static $ckeditor = false;
+
+    /**
      * Extend the Form Element.
      *
      * @param string $name Element name
@@ -418,6 +425,152 @@ class Form
         $id = (!isset($attrs['id'])) ? ' id = "'.$name.'"' : '';
 
         return '<textarea name="'.$name.'"'.$id.$attr.'>'.$value.'</textarea>';
+    }
+
+    /**
+     * Get textarea with CkEditor
+     *
+     * @param string $name TextArea Name
+     * @param string $value TextArea Value
+     * @param string $type Ckeditor config type (mini, sample, normal)
+     * @param array $attrs Attributes
+     * @return string
+     **/
+    public static function ckeditor($name, $value = null, $type = 'normal', $attrs = array())
+    {
+        static::$ckeditor;
+
+        $app = \Facade::getApplication();
+        $ck = global_asset('js', 'ckeditor/ckeditor.js');
+        $ck_jq = global_asset('js', 'ckeditor/adapters/jquery.js');
+        $rb = rbUrl();
+        $ad = \Setting::get('adminpanel');
+        $jq = $rb.'global/assets/js/jquery-1.9.0.min.js';
+
+        $ck_init = <<<ck
+<script>
+    if (SITEURL == 'undefined') {
+        var SITEURL = '$rb';
+        var ADMIN = '$ad';
+    }
+    window.jQuery || document.write('<script src="$jq"><\/script>')
+</script>
+$ck
+$ck_jq
+<script type="text/javascript">
+    var instance;
+
+    function update_instance()
+    {
+        instance = CKEDITOR.currentInstance;
+    }
+</script>
+<script type="text/javascript">
+(function($) {
+    $(function()
+    {
+        $('textarea#wysiwyg-mini').ckeditor({
+            skin : 'rb',
+            toolbar: [
+                ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
+              ],
+            width: '97%',
+            height: 100,
+            dialog_backgroundCoverColor: '#000',
+        });
+
+        $('textarea#wysiwyg-simple').ckeditor({
+            skin : 'rb',
+            toolbar: [
+                ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-', 'Source']
+              ],
+            width: '97%',
+            height: 200,
+            dialog_backgroundCoverColor: '#000',
+        });
+
+        $('textarea#wysiwyg').ckeditor({
+            skin : 'rb',
+            theme : 'reborn',
+            toolbar: [
+                ['Maximize'],
+                ['Image', 'Smiley'],
+                ['Undo','Redo','-','Find','Replace'],
+                ['Bold','Italic', 'Underline','Strike'],
+                ['Link','Unlink'],
+                ['Subscript','Superscript', 'NumberedList','BulletedList','Blockquote'],
+
+                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                ['ShowBlocks', 'RemoveFormat', 'Source','rbmedia'],
+            ],
+            extraPlugins: 'rbmedia',
+            resize_dir: 'vertical',
+            width: '97%',
+            height: 400,
+            dialog_backgroundCoverColor: '#000',
+            removePlugins: 'elementspath',
+        });
+    });
+})(jQuery);
+</script>
+
+ck;
+
+        if (is_array($type)) {
+            $type = 'normal';
+            $attrs = $type;
+        }
+
+        switch ($type) {
+            case 'mini':
+                $id = array('id' => 'wysiwyg-mini');
+                break;
+
+            case 'simple':
+                $id = array('id' => 'wysiwyg-simple');
+                break;
+
+            default:
+                $id = array('id' => 'wysiwyg');
+                break;
+        }
+
+        $attrs = array_merge($attrs, $id);
+
+        if (static::$ckeditor) {
+            return static::textarea($name, $value, $attrs);
+        }
+
+        // Make Wysiwyg is already used
+        static::$ckeditor = true;
+
+        return $ck_init.static::textarea($name, $value, $attrs);
+    }
+
+    /**
+     * Helper for ckeditor mini
+     *
+     * @param string $name TextArea Name
+     * @param string $value TextArea Value
+     * @param array $attrs Attributes
+     * @return string
+     **/
+    public static function ckmini($name, $value = null, $attrs = array())
+    {
+        return static::ckeditor($name, $value, 'mini', $attrs);
+    }
+
+    /**
+     * Helper for ckeditor simple
+     *
+     * @param string $name TextArea Name
+     * @param string $value TextArea Value
+     * @param array $attrs Attributes
+     * @return string
+     **/
+    public static function cksimple($name, $value = null, $attrs = array())
+    {
+        return static::ckeditor($name, $value, 'simple', $attrs);
     }
 
     /**

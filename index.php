@@ -28,6 +28,9 @@
  */
 define('DS', DIRECTORY_SEPARATOR);
 
+// Display Errors On
+ini_set('display_errors', 'On');
+
 // Change the current dir
 chdir(__DIR__);
 
