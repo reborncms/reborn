@@ -85,15 +85,6 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		$this->app->bind('\Field\Builder', function($c) {
 			return new \Field\Builder($c);
 		});
-
-		\Form::extend('sample', function($name){
-			return '<input type="text" value="sample ha ha" name="'.$name.'">';
-		});
-
-		\Form::extend('user', function($name, $value){
-			$arr = array('nlh' => 'NLH', 'k' => 'Khay', 'yn' => 'YN');
-			return \Form::select($name, $arr, $value);
-		});
 	}
 
 }

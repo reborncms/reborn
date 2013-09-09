@@ -6,5 +6,6 @@ return array(
 				'textarea' => 'Field\Type\Textarea',
 				'dropdown' => 'Field\Type\Dropdown',
 				'yesno' => 'Field\Type\Yesno',
+				'wysiwyg' => 'Field\Type\Wysiwyg'
 			)
 	);

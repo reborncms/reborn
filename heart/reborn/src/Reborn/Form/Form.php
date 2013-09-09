@@ -469,7 +469,7 @@ $ck_jq
 (function($) {
     $(function()
     {
-        $('textarea#wysiwyg-mini').ckeditor({
+        $('textarea.wysiwyg-mini').ckeditor({
             skin : 'rb',
             toolbar: [
                 ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
@@ -479,7 +479,7 @@ $ck_jq
             dialog_backgroundCoverColor: '#000',
         });
 
-        $('textarea#wysiwyg-simple').ckeditor({
+        $('textarea.wysiwyg-simple').ckeditor({
             skin : 'rb',
             toolbar: [
                 ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-', 'Source']
@@ -489,7 +489,7 @@ $ck_jq
             dialog_backgroundCoverColor: '#000',
         });
 
-        $('textarea#wysiwyg').ckeditor({
+        $('textarea.wysiwyg').ckeditor({
             skin : 'rb',
             theme : 'reborn',
             toolbar: [
@@ -523,15 +523,15 @@ ck;
 
         switch ($type) {
             case 'mini':
-                $id = array('id' => 'wysiwyg-mini');
+                $id = array('class' => 'wysiwyg-mini');
                 break;
 
             case 'simple':
-                $id = array('id' => 'wysiwyg-simple');
+                $id = array('class' => 'wysiwyg-simple');
                 break;
 
             default:
-                $id = array('id' => 'wysiwyg');
+                $id = array('class' => 'wysiwyg');
                 break;
         }
 

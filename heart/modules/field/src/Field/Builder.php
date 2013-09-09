@@ -133,7 +133,7 @@ class Builder
 
 		$form = array();
 
-		$fields->each(function($f) use(&$form, $field_data) {
+		$fields->each(function($f) use(&$form, $field_data, $this) {
 			if($ins = $this->getTypeInstance($f->field_type)) {
 				$data = isset($field_data[$f->id]) ? $field_data[$f->id] : null;
 
@@ -166,7 +166,7 @@ class Builder
 
 		$field_data = $this->getFieldValue($group_id, $model_id);
 
-		$fields->each(function($f) use(&$inserts, $group_id, $model_id) {
+		$fields->each(function($f) use(&$inserts, $group_id, $model_id, $this) {
 			if($ins = $this->getTypeInstance($f->field_type)) {
 				if ( $ins->preSaveCheck($f) ) {
 					$inserts[] = array(
@@ -203,7 +203,7 @@ class Builder
 
 		$field_data = $this->getFieldValue($group_id, $model_id);
 
-		$fields->each(function($f) use($group_id, $model_id, $field_data) {
+		$fields->each(function($f) use($group_id, $model_id, $field_data, $this) {
 			if($ins = $this->getTypeInstance($f->field_type)) {
 				$data = isset($field_data[$f->id]) ? $field_data[$f->id] : null;
 				if ( $val = $ins->preUpdateCheck($f, $data) ) {
