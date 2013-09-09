@@ -19,7 +19,7 @@
 <table class="stripe">
 	<thead>
 		<tr>
-			<th width="5%">{{ Form::checkbox('action_to_all', '', array('class' => 'check-all')) }}</th>
+			<th width="5%">{{ Form::checkbox('action_to_all', '',false, array('class' => 'check-all')) }}</th>
 			<th>{{ t('label.name') }}</th>
 			<th>{{ t('label.email') }}</th>
 			<th width="170">{{ t('label.action') }}</th>
@@ -30,7 +30,7 @@
 		{{ loop($templates as $template) }}
 		<tr>
 			{{ if($template->detemp == 0)}}
-			<td class="checkbox">{{ Form::checkbox('action_to[]', $template->id, array('id' => 'action'.$a)) }}</td>
+			<td class="checkbox">{{ Form::checkbox('action_to[]', $template->id,false, array('id' => 'action'.$a)) }}</td>
 			{= $a++ =}
 			{{ else }}
 			<td></td>
