@@ -15,6 +15,11 @@ use Media\Model\MediaFiles as MFiles;
 class Plugins
 {
 
+    public static function featured()
+    {
+        dump($this->request, true);
+    }
+
     public static function viewPdf($id, $type = 'link', $width = 600, $height = 780)
     {
         $file = MFiles::find($id);

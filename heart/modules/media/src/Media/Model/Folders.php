@@ -3,19 +3,19 @@
 namespace Media\Model;
 
 /**
- * Model for Media Module which served CRUD with media_files table.
+ * Model for Media Module which served CURD with media_folders table.
  *
  * @package Media\Model
  * @author RebornCMS Development Team
  **/
-class MediaFiles extends \Eloquent
+class Folders extends \Eloquent
 {
 
-    protected $table = 'media_files';
+    protected $table = 'media_folders';
 
     public function folder()
     {
-        return $this->belongsTo('Media\Model\MediaFolders');
+        return $this->belongsTo('Media\Model\Folders');
     }
 
     public function user()
@@ -23,6 +23,4 @@ class MediaFiles extends \Eloquent
         return $this->belongsTo('User\Model\User');
     }
 
-
-
-} // END class MediaFiles
+} // END class MediaFolders

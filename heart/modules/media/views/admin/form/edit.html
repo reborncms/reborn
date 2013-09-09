@@ -1,16 +1,15 @@
-<div class="media_wrap">
+<div id="media-wrapper" data-folder-id="{{ (isset($folder_id)) ? $folder_id : 0 }}">
 
-	{{ js('media.js', 'media') }}
+	{{ Form::start('admin/media/edit-file/' . $fileData->id, 'fileEdit', false, array('class' => 'form')) }}
 
-	{{ Form::start('admin/media/editFile/' . $fileData->id, 'fileEdit', false, array('class' => 'form')) }}
-
-		{{ Form::hidden('id', $fileData->id) }}
+		{{ Form::hidden('originName', $fileData->name) }}
 
 		<div class="form-block">
 			{{ Form::label(Translate::get('m.lbl.fileName'), 'name') }}
 			<div class="form-right-block">
-				{{ Form::input('name', $fileData->name, 'text', array('class' => 'medium rounded-corner required')) }}
-				<span class="msg error" style="display: none;">
+				{{ Form::input('name', $fileData->name, 'text', array('class' => 'medium thin required')) }}
+				{= $display = isset($error['name']) ? 'auto' : 'none' =}
+				<span class="msg error" style="display: {{ $display }};">
 					{{ Translate::get('m.warning.require') }}
 				</span>
 				<p>{{ Translate::get('m.info.fileName') }}</p>
@@ -20,8 +19,9 @@
 		<div class="form-block">
 			{{ Form::label(Translate::get('m.lbl.altText'), 'alt_text') }}
 			<div class="form-right-block">
-				{{ Form::input('alt_text', $fileData->alt_text, 'text', array('class' => 'medium rounded-corner required')) }}
-				<span class="msg error" style="display: none;">
+				{{ Form::input('alt_text', $fileData->alt_text, 'text', array('class' => 'medium thin required')) }}
+				{= $display = isset($error['alt_text']) ? 'auto' : 'none' =}
+				<span class="msg error" style="display: {{ $display }};">
 					{{ Translate::get('m.warning.require') }}
 				</span>
 				<p>{{ Translate::get('m.info.altText') }}</p>
@@ -31,7 +31,7 @@
 		<div class="form-block">
 			{{ Form::label(Translate::get('m.lbl.desc'), 'description') }}
 			<div class="form-right-block">
-				{{ Form::textarea('description', $fileData->description) }}
+				{{ Form::textarea('description', $fileData->description, array('class' => 'medium')) }}
 				<p>{{ Translate::get('m.info.fileDesc') }}</p>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form-block -->
@@ -41,7 +41,7 @@
 			<div class="form-right-block">
 				<select name="folder_id" class="medium required" id="folder_id">
 					<option value="0">{{ \Translate::get('m.lbl.none') }}</option>
-					{{ Media\Lib\Helper::folderTree($allFolders, 0, 0, $fileData->folder_id) }}
+					{{ folderTree($allFolders, 0, 0, $fileData->folder_id) }}
 	            </select>
 	            <span class="msg error" style="display: none;">
 	            	{{ Translate::get('m.warning.require') }}
@@ -51,10 +51,10 @@
 		</div> <!-- end of form-block -->
 
 		<div class="form-block form-action">
-			{{ Form::input('submit', Translate::get('m.btn.update'), 'submit', array('class' => 'button button-green', 'id' => 'ajax_submit')) }}
+			{{ Form::input('submit', Translate::get('m.btn.update'), 'submit', array('class' => 'btn btn-green', 'id' => 'ajax_submit')) }}
 			<span class="loading" style="display: none;"></span>
 		</div> <!-- end of form-aciton -->
 
 	{{ Form::end() }}
 
-</div> <!-- end of media_wrap -->
+</div> <!-- end of media-wrapper -->

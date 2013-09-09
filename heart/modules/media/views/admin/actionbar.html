@@ -1,0 +1,36 @@
+<div id="action-bar" class='clearfix'>
+	
+	<div id="searcher" class='f-left'>
+		<input id="media_search" type='text' placeholder='Type to search'></input>
+	</div> <!-- end of searcher -->
+
+	<div id="changer" class='f-left'>
+		<select name="folder_id" class="medium required" id="folder_id">
+			<option value="0">{{ t('media::media.lbl.none') }}</option>
+			{{ folderTree($allFolders, 0, 0, $selected) }}
+        </select>
+	</div> <!-- end of changer -->
+
+	<div id="action-holder" class='f-right'>
+		<div id="media_main_action" class="btns-group f-right">
+			<a id="media_main_move" class="btn btn-ico btn-dark" title="move to"><i class="icon-move"></i></a>
+			<a id="media_main_delete" class="btn btn-ico btn-dark" title="delete"><i class="icon-remove"></i></a>
+		</div> <!-- end of btns-group -->
+	</div> <!-- end of action-holder -->
+
+</div> <!-- end of action-bar -->
+
+<!-- <div class='info-wrap'>
+	<form action=''>
+		<div class='info-left'>
+			<label for='name'>Name</label>
+			<input name='name' placeholder='' type='text'/>
+			<label for='alt'>Alt</label>
+			<input name='alt' placeholder='' type='text' />
+		</div>
+		<div class='info-right'>
+			<textarea placeholder='Fill desctiption'></textarea>
+			<input class='btn btn-disabled' type='submit' value='Edit'>
+		</div>
+	</form>
+</div> -->

@@ -26,6 +26,9 @@ return array(
 		'chofol'	=> 'Choose Folder',
 		'upload'	=> 'Upload',
 		'create'	=> 'Create Folder',
+		'uploadAreaText' => 'Drop file here or click here to upload',
+		'author'	=> 'Uploader',
+		'name'		=> 'Name',
 		),
 	'btn'		=> array(
 		'submit'	=> 'Submit',

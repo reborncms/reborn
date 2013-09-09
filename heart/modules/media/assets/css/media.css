@@ -1,0 +1,231 @@
+.adjust-width {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.transi {
+	transition: width 0.2s ease 0s;
+    -webkit-transition: width 0.2s ease 0s;
+    -moz-transition: width 0.2s ease 0s;
+    -ms-transition: width 0.2s ease 0s;
+    -o-transition: width 0.2s ease 0s;
+}
+.p-relative { position: relative; }
+.p-absolute { position: absolute; }
+
+/* ===== Action Bar ===== */
+#action-bar{
+	background: #f0f0f0;
+	padding: 5px;
+}
+#searcher, #changer, #action-holder { width: 30%; }
+
+#media_search {
+	padding: 5px;
+}
+
+#media_main_action {
+	display: none;
+}
+#media_main_action a{
+	padding: 3px 10px;
+}
+
+/* ===== Icons ===== */
+.thumbs { width: 80px; height: 80px; background: url('../img/file-icons.png') no-repeat; }
+.folder-thumb { background-position: -630px 0; }
+.pdf-thumb { background-position: 8px 0; }
+.zip-thumb { background-position: -82px 0; }
+.doc-thumb { background-position: -172px 0; }
+.exec-thumb { background-position: -262px 0; }
+.audio-thumb { background-position: -353px 0; }
+.txt-thumb { background-position: -442px 0; }
+.vdo-thumb { background-position: -532px 0; }
+
+/* ===== Files and Folders ===== */
+.ff-wrapper:hover > .ff-actions {
+	display: block;
+}
+.ff-wrapper:hover {
+	background: #fafafa;
+	-webkit-box-shadow: 0 0 4px #e0e0e0;
+	-moz-box-shadow: 0 0 4px #e0e0e0;
+	-ms-box-shadow: 0 0 4px #e0e0e0;
+	box-shadow: 0 0 4px #e0e0e0;
+}
+.ff-actions{
+	display: none;
+}
+.ff-actions .btns-group { top: -10px; right: -10px; }
+.ff-actions .btns-group a {
+	padding: 0 2px;
+}
+.ff-actions .btns-group a i {
+	font-size: 18px;
+	line-height: 0em;
+}
+.ff-actions .btns-group a:last-child { padding: 0; }
+.ff-actions .btns-group a .icon-arrow-down { font-size: 14px; }
+
+.ff-wrapper {
+	width: 80px;
+	height: 95px;
+	padding: 10px;
+	margin: 10px;
+}
+
+.active-wrap{
+	background: lightblue;
+}
+.active-wrap:hover { background: lightblue; }
+
+.ff-name p {
+	text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+/* ===== Detail ===== */
+#detail-file-img {
+	width: 100%;
+	height: 180px;
+}
+
+#file-detail table {
+	margin-bottom: 0;
+}
+
+#file-detail td {
+	border: none;
+	font-size: 12px;
+	word-wrap: break-word;
+}
+
+#file-detail td:last-child {
+	width: 225px;
+	display: block;
+}
+
+#file-detail td:first-child {
+	text-align: right;
+	padding-right: 5px;
+}
+
+.semi-colom { padding: 8px 5px 8px 0; }
+
+/* ===== Actions ===== */
+.ff-actions a.active {
+	background: #DfDfDf;
+}
+
+/* ===== Options ===== */
+.options {
+	width: 65px;
+	background: #393939;
+	top: 10px;
+	right: -10px;
+	opacity: .85;
+	display: none;
+}
+.options li {
+	list-style: none;
+}
+.options li a{
+	display: block;
+	text-align: center;
+	color: #fff;
+}
+.options li a:hover {
+	background: #4f4f4f;
+}
+
+/* ===== Upload ===== */
+.dz-preview {
+	width: 100%;
+	border: 1px solid #d0d0d0;
+	padding: 10px;
+	margin: 5px 0;
+	background: #f0f0f0;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+
+	overflow: hidden;
+}
+
+.preview-wrap {
+	width: 150px;
+	float: left;
+}
+
+.info-wrap {
+	width: 660px;
+	float: right;
+}
+
+.info-left, .info-right {
+	width: 325px;
+}
+
+.info-left input[type="text"], .info-right textarea {
+	width: 95%;
+}
+
+.info-right textarea {
+	height: 100px;
+}
+
+.info-right .btn {
+	float: right;
+	margin-top: 10px;
+}
+
+.dz-default {
+	width: 100%;
+	height: 150px;
+	background: #393939;
+	font-size: 22px;
+	cursor: pointer;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.dz-default span {
+	display: block;
+	text-align: center;
+	color: #909090;
+	font-weight: bold;
+	padding-top: 50px;
+}
+
+.dz-progress {
+	position: relative;
+	width: 148px;
+	height: 8px;
+	overflow: hidden;
+	border: 1px double #fff;
+	outline: 1px solid green;
+}
+
+.dz-upload {
+	background: lightgreen;
+    position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 8px;
+	transition: width 0.2s ease 0s;
+    -webkit-transition: width 0.2s ease 0s;
+    -moz-transition: width 0.2s ease 0s;
+    -ms-transition: width 0.2s ease 0s;
+    -o-transition: width 0.2s ease 0s;
+}
+
+
+
+.dz-success-mark, .dz-error-mark, .dz-error-message, .dz-filename, .dz-size { display: none;}
+
+.dz-details { width: 160px; }

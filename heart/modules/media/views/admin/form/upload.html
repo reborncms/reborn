@@ -1,0 +1,44 @@
+<div id="media-wrapper" data-folder-id="{{ (isset($folder_id)) ? $folder_id : 0 }}">
+
+	{{ Form::start(adminUrl('media/upload/'), 'upload', true, array('class' => 'form  dropzone', 'id' => 'uploader')) }}
+
+		{{ Form::file('files[]', array('multiple' => '', 'id' => 'file-field')) }}
+		{{ Form::submit('submit', Translate::get('files.btn.upload'), array('id' => 'upload-submit')) }}
+
+	{{ Form::end() }}
+
+</div> <!-- end of media-wrapper -->
+
+<script type="text/javascript">
+/* *** ** * Remain bug in not ajax request * ** *** */
+
+	$('#uploader').dropzone({
+		paramName: "files",
+		dictDefaultMessage: "{{ Translate::get('m.lbl.uploadAreaText') }}",
+		thumbnailWidth: 150,
+		thumbnailHeight: 150,
+		init: function() {
+			$('#file-field').hide();
+			$('#upload-submit').hide();
+			this.on('selectedfiles', function(){  });
+		},
+		success: function (file) {
+			uploaded = $.parseJSON(file.xhr.response);
+
+			var wrapper = "<div class='preview-wrap'></div>"
+			if ('success' == uploaded.status) {
+				$(file.previewTemplate.children).wrapAll(wrapper/*'.preview-wrap'*/);
+				var sucElement = "<div class='info-wrap'><form class='clearfix' action=''><div class='info-left f-left'><label for='name'>Name</label><input name='name' placeholder='"+file.name+"' type='text'/><label for='alt'>Alt</label><input name='alt' placeholder='"+file.name+"' type='text' /></div><div class='info-right f-right'><textarea placeholder='Fill desctiption'></textarea><input class='btn btn-disabled' type='submit' value='Edit'></div></form></div>";
+
+				$(file.previewTemplate).append(sucElement);
+			} else {
+
+			}
+console.log(file);
+console.log(this.previewsContainer);
+
+		}
+	});
+		
+</script>
+

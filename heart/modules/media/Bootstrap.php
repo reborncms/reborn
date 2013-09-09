@@ -13,13 +13,13 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
     public function boot()
     {
-        /*require __DIR__ . DS . 'Lib' . DS .'Helpers.php';*/
+        require __DIR__ . DS . 'helpers.php';
         \Translate::load('media::media', 'm');
     }
 
     public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
     {
-        $menu->add('media', \Translate::get('media::media.title.title'), $modUri,
+        $menu->add('media', t('media::media.title.title'), $modUri,
         null,25);
     }
 
@@ -33,14 +33,14 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
         $mod_toolbar = array(
                 'upload'    => array(
                     'url'   => 'media/upload/',
-                    'name'  => \Translate::get('media::media.btn.upload'),
-                    'info'  => \Translate::get('media::media.info.upload'),
+                    'name'  => t('media::media.btn.upload'),
+                    'info'  => t('media::media.info.upload'),
                     'id'    => 'media_upload',
                 ),
                 'folder'    => array(
                     'url'   => 'media/create-folder/',
-                    'name'  => \Translate::get('media::media.btn.create'),
-                    'info'  => \Translate::get('media::media.info.create'),
+                    'name'  => t('media::media.btn.create'),
+                    'info'  => t('media::media.info.create'),
                     'id'    => 'media_create_folder',
                 ),
             );

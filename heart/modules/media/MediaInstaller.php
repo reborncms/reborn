@@ -29,8 +29,7 @@ class MediaInstaller extends \Reborn\Module\AbstractInstaller
             $table->string('mime_type');
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();
-            $table->integer('order')->default(0);
-            $table->text('module');
+            $table->integer('download')->default(0);
             $table->timestamps();
         });
 
@@ -45,7 +44,6 @@ class MediaInstaller extends \Reborn\Module\AbstractInstaller
             $table->integer('folder_id');
             $table->integer('user_id');
             $table->integer('depth');
-            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

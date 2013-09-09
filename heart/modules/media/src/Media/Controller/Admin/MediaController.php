@@ -2,9 +2,9 @@
 
 namespace Media\Controller\Admin;
 
-use Media\Model\MediaFolders as MFolders;
-use Media\Model\MediaFiles as MFiles;
-use Reborn\Util\Uploader as Uploader;
+use Media\Model\Folders as Folders;
+use Media\Model\Files as Files;
+use Reborn\Fileupload\Uploader as Uploader;
 
 /**
  * Admin Controller for Meda Module
@@ -16,6 +16,27 @@ class MediaController extends \AdminController
 {
 
     /**
+     * All folders queried object
+     *
+     * @var object
+     **/
+    public $allFoldes = null;
+
+    /**
+     * All Files queried object
+     *
+     * @var object
+     **/
+    public $allFiles = null;
+
+    /**
+     * Logged in user
+     *
+     * @var object
+     **/
+    public $user = null;
+
+    /**
      * Before function for admin MediaController
      *
      * @return void
@@ -23,8 +44,16 @@ class MediaController extends \AdminController
      **/
     public function before()
     {
-        $this->template->style('style.css', 'media');
+        $this->template->style('chosen.css', 'media');
+        $this->template->style('media.css', 'media');
+        $this->template->script('plugins.js', 'media');
         $this->template->script('media.js', 'media');
+
+        $this->allFolders = Folders::all();
+        $this->allFiles = Files::all();
+        $this->user = \Sentry::getUser();
+
+        $this->template->set('allFolders', $this->allFolders);
     }
 
     /**
@@ -35,187 +64,368 @@ class MediaController extends \AdminController
      **/
     public function index()
     {
-        $files = MFiles::where('module', '=', 'media')
-                        ->where('folder_id', '=', 0)->get();
-        $folders = MFolders::where('folder_id', '=', '0')->get();
+        $this->explore(0);
+    }
+
+# # # # # # # # # # Folders # # # # # # # # # #
+
+    /**
+     * This method will create folders
+     *
+     * @param int $folderId 
+     * @return void
+     **/
+    public function createFolder($folderId = 0)
+    {
+
+        if (\Input::isPost()) {
+
+            $validate = $this->validation();
+
+            if ($validate->valid()) {
+                if ($this->saveData()) {
+                    return \Redirect::toAdmin('media');
+                } else {
+                    \Flash::error(\Translate::get('m.error.create'));
+                }
+            } else {
+                $this->template->error = $validate->getErrors();
+                \Flash::error(\Translate::get('m.error.create'));
+            }
+        }
+
+        $this->checkAjax();
+
+        $this->template->title(\Translate::get('m.title.create'))
+                        ->set('parentId', $folderId)
+                        ->setPartial('admin'.DS.'form'.DS.'folder');
+    }
+
+    /**
+     * Folders can be edited by using this method.
+     *
+     * @param int $id Id of the folder you want to edit
+     *
+     * @return void
+     **/
+    public function editFolder ($id)
+    {
+        if (\Input::isPost()) {
+
+            $validate = $this->validation();
+
+            if ($validate->valid()) {
+                
+                if ($this->saveData(false, $id)) {
+                    \Flash::success(\Translate::get('m.success.folderUpdate'));
+                    return \Redirect::toAdmin('media');
+                } else {
+                    \Flash::error(\Translate::get('m.error.folderUpdate'));
+                }
+
+            } else {
+                $this->template->error = $validate->getErrors();
+                \Flash::error(\Translate::get('m.error.folderUpdate'));
+            }
+        }
+
+        $folderData = Folders::where('id', '=', $id)->first();
+
+        $this->checkAjax();
+
+        $this->template->title(\Translate::get('files.editFolder'))
+                        ->set('folderData', $folderData)
+                        ->setPartial('admin'.DS.'form'.DS.'folder');
+    }
+
+# # # # # # # # # # Files # # # # # # # # # #
+
+    /**
+     * File upload function
+     *
+     * @param int $folderId
+     * @param String $key name if file input field
+     *
+     * @return void
+     **/
+    public function upload ($folderId = 0, $key = 'files')
+    {
+        if (\Input::isPost()) {
+
+            $config = array(
+                'encName'   => true,
+                'path'      => UPLOAD . date('Y') . DS . date('m') . DS,
+                'prefix'    => 'rb_',
+                'maxFileSize'   => Uploader::maxUploadableFileSize(),
+                'createDir' => true,
+                'rename'    => true,
+                'dirChmod'      => 0777,
+                'recursive'     => true,
+                'allowedExt'    => array(
+                    'jpg', 'jpeg', 'png', 'gif', 'bmp', 'txt', 'rtf', 'doc', 'docx',
+                    'xls', 'xlsx', 'pdf', 'zip', 'tar', 'rar', 'mp3', 'wav', 'wma',
+                    ),
+                );
+
+            $fileObj = Uploader::fileUpload();
+
+            $fileObj->setConfig($config);
+            $fileObj->uploadInit();
+            $errors = $fileObj->getErrors();
+
+            if (empty($errors)) {
+
+                if ($fileObj->upload()) {
+                    $fileInfo = $fileObj->getFileInfo();
+
+                    $data = new Files();
+
+                    $returnData['name'] = $data->name = $fileInfo['originBaseName'];
+                    $data->alt_text = $fileInfo['originBaseName'];
+                    $data->description = null;
+                    $data->folder_id = $folderId;
+                    $data->user_id = $this->user->id;
+                    $data->filename = $fileInfo['savedName'];
+                    $data->filesize = $fileInfo['fileSize'];
+                    $data->extension = $fileInfo['extension'];
+                    $data->mime_type = $fileInfo['mimeType'];
+
+                    $dimension = getImgDimension($config['path']
+                        .$data->filename, $data->mime_type);
+
+                    $data->width = $dimension['width'];
+                    $data->height = $dimension['height'];
+
+                    if ($data->save()) {
+                        if ($this->request->isAjax()) {
+                            return $this->json(array('status' => 'success'));
+                        }
+                        \Flash::success(\Translate::get('m.success.upload'));
+                    } else {
+                        \Flash::error(\Translate::get('m.error.upload'));
+                    }
+                }
+            } else {
+                $errors = $file->getErrors();
+            }
+
+            return \Redirect::toAdmin('media');
+        }
+
+        $this->checkAjax();
+
+        $this->template->title(\Translate::get('m.title.upload'))
+                        ->set('folderId', $folderId)
+                        ->setPartial('admin'.DS.'form'.DS.'upload');
+    }
+
+    /**
+     * This method will explore folders
+     *
+     * @param int $id Folder it to be explore
+     *
+     * @return void
+     **/
+    public function explore($id)
+    {
+        $files = Files::with(array('folder', 'user'))->where('folder_id', '=', $id)->get();
+
+        $folders = Folders::with(array('folder', 'user'))->where('folder_id', '=', $id)->get();
+
+        $actionBar = $this->template->set('currentFolder', 0)
+                        ->set('selected', $id)
+                        ->partialRender('admin/actionbar');
+
         $this->template->title(\Translate::get('m.title.title'))
+                        ->set('selected', $id)
                         ->set('files', $files)
                         ->set('folders', $folders)
+                        ->set('actionBar', $actionBar)
                         ->setPartial('admin/index');
     }
 
-# # # # # # # # # # Public Function for Folder # # # # # # # # # #
-
     /**
-     * This method can be used to create folder.
+     * Can edit file data by using this method
      *
+     * @param int $id File id to be edited
      * @author RebornCMS Development Team
-     * @param int $folderId Id of current folder
      **/
-    public function createFolder($folder_id = 0)
+    public function editFile($id)
     {
-        $allFolders = MFolders::all();
-
         if (\Input::isPost()) {
-
             $validate = $this->validation();
 
             if ($validate->valid()) {
-
-                $data = $this->setData();
-
-                $depth = ($data['folder_id'] != 0) ? $this->defineDepth(
-                    $data['folder_id']) : 0;
-
-                if (! $this->duplication($data['name'], $data['slug'],
-                    $data['folder_id'])) {
-
-                    $toSave = new MFolders();
-
-                    $toSave->name = $data['name'];
-                    $toSave->slug = $data['slug'];
-                    $toSave->description = $data['description'];
-                    $toSave->folder_id = $data['folder_id'];
-                    $toSave->user_id = $data['user_id'];
-                    $toSave->depth = ((int)$depth) + 1;
-
-                    if ($toSave->save()) {
-                        if ($this->request->isAjax()) {
-                            return $this->returnJson(array('success' => true));
-                        }
-                        \Flash::success(\Translate::ger('m.success.create'));
-
-                        return \Redirect::to('admin/media/');
-                    } else {
-                        if ($this->request->isAjax()) {
-                            $inform = array(
-                                'success'   => false,
-                                'error' => \Translate::get('m.fail.create')
-                                );
-
-                            return $this->returnJson($inform);
-                        }
-                        \Flash::error(\Translate::get('m.fail.create'));
-                    }
+                
+                if ($this->saveData(true, $id)) {
+                    \Flash::success(\Translate::get('m.success.fileUpdate'));
+                    return \Redirect::toAdmin('media');
                 } else {
-                    if ($this->request->isAjax()) {
-                        $inform = array(
-                            'success' => false,
-                            'error' => \Translate::get('m.error.folderExist')
-                            );
-
-                        return $this->returnJson($inform);
-                    }
-                    \Flash::error(\Translate::get('m.error.folderExist'));
+                    \Flash::error(\Translate::get('m.error.fileUpdate'));
                 }
 
             } else {
-                if ($this->request->isAjax()) {
-                    $inform = array(
-                        'success'   => false,
-                        'error'     => $validate->getErrors(),
-                        );
-
-                    return $this->returnJson($inform);
-                }
-                $this->template->errors = $validate->getErrors();
+                $this->template->error = $validate->getErrors();
+                \Flash::error(\Translate::get('m.error.fileUpdate'));
             }
         }
 
-        // For ajax
-        if ($this->request->isAjax()) { $this->template->partialOnly(); }
+        $this->checkAjax();
 
-        $this->template->title(\Translate::get('m.title.create'))
-                        ->set('allFolders', $allFolders)
-                        ->set('folder_id', $folder_id)
-                        ->setPartial('admin/folder/folder');
+        $this->template->fileData = Files::find($id);
+
+        $this->template->allFolders = Folders::all();
+
+        $this->template->title(\Translate::get('m.title.fileEdit'))
+                        ->setPartial('admin' . DS . 'form' . DS . 'edit');
     }
 
     /**
-     * This method can be used to edit folders
+     * This method will save data.
+     *
+     * @param String $saveFor Which for
+     * @param int $id id of the file or folder to be edit
+     *
+     * @return boolean
+     **/
+    protected function saveData ($file = false, $id = 0)
+    {
+        if ($file) {
+            $data = Files::find($id);
+
+            $data->name = \Input::get('name');
+            $data->alt_text = \Input::get('alt_text');
+            $data->description = \Input::get('description');
+            $data->folder_id = \Input::get('folder_id');
+            $data->user_id = $this->user->id;
+           
+            $data->name = duplication($data->name, $data->folder_id, true, 
+                \Input::get('originName'));
+
+            return $data->save();
+
+        } else {
+            $data = (0 === $id) ? new Folders() : Folders::find($id);
+
+            $data->name = \Input::get('name');
+            $data->slug = \Input::get('name');
+            $data->description = \Input::get('description');
+            $data->folder_id = \Input::get('folder_id');
+            $data->user_id = $this->user->id;
+            $data->depth = 1;
+
+            if (0 === $id) {
+                $data->name = duplication($data->name, $data->folder_id);
+            } else {
+                $data->name = duplication($data->name, $data->folder_id, $file,
+                    \Input::get('originName'));
+            }
+
+            $data->slug = strtolower(str_replace(' ', '-', $data->name));
+
+            $data->depth = defineDepth($data->folder_id);
+
+            return $data->save();
+
+        }
+    }
+
+    /**
+     * This method will check validation for forms
+     *
+     * @param String $validationFor which for ('folder', 'file')
+     *
+     * @return Object $validate Validation Object
+     **/
+    protected function validation ($validateFor = 'folder')
+    {
+        switch ($validateFor) {
+            case 'folder':
+                $rule = array(
+                    'name'      => 'required|maxLength:200',
+                    'folder_id' => 'required|integer',
+                    );
+                break;
+            
+            case 'file':
+                $rule = array(
+                    'name'      => 'required|maxLength:200',
+                    'folder_id' => 'required|integer',
+                    );
+                break;
+        }
+
+        $validate = new \Validation(\Input::get('*'), $rule);
+
+        return $validate;
+    }
+
+    /**
+     * This method can be used to delete file or folder
      *
      * @return void
-     * @author RebornCMS Development Team
-     * @param int $id Id of the folder you want to edit
+     * @author 
      **/
-    public function editFolder($id)
+    public function delete($target, $id)
     {
-        $allFolders = MFolders::all();
+        switch ($target) {
+            case 'file':
+                $file = Files::find($id);
 
-        $fData = MFolders::where('id', '=', $id)->first();
+                if (!empty($file)) {
 
-        if (\Input::isPost()) {
-            $validate = $this->validation();
+                    $path = UPLOAD . date('Y', strtotime($file->created_at)).DS
+                        .date('m', strtotime($file->created_at)) . DS  . $file->filename;
 
-            if ($validate->valid()) {
+                    if (\File::is($path)) \File::delete($path);
 
-                $data = $this->setData();
+                    if ($file->delete()) {
+                        \Event::call('file_delete', $file);
 
-                $depth = ($data['folder_id'] != 0) ? $this->defineDepth(
-                    $data['folder_id']) : 0;
-
-                if (! $this->duplication($data['name'], $data['slug'],
-                    $data['folder_id'], \Input::get('orName'), \Input::get('orSlug'))) {
-
-                    $updateData = MFolders::find(\Input::get('id'));
-
-                    $updateData->name = $data['name'];
-                    $updateData->slug = $data['slug'];
-                    $updateData->description = $data['description'];
-                    $updateData->folder_id = $data['folder_id'];
-                    $updateData->user_id = $data['user_id'];
-                    $updateData->depth = $depth + 1;
-
-                    if ($updateData->save()) {
                         if ($this->request->isAjax()) {
-                            return $this->returnJson(array('success' => true));
+                            return $this->json(array('status' => 'success'));
                         }
-                        \Flash::success(\Translate::get('m.success.create'));
 
-                        return \Redirect::to('admin/media/');
-                    } else {
-                        if ($this->request->isAjax()) {
-                            $inform = array(
-                                'success' => false,
-                                'error' => \Translate::get('m.error.create'),
-                                );
+                        \Flash::success(t('m.success.fileDel'));
 
-                            return $this->returnJson($inform);
-                        }
-                        \Flash::error(\Translate::get('m.error.create'));
+                        return \Redirect::toAdmin('media');
                     }
-                } else {
-                    if ($this->request->isAjax()) {
-                        $inform = array(
-                            'success' => false,
-                            'error' => \Translate::get('m.error.folderExist'),
-                            );
-
-                        return $this->returnJson($inform);
-                    }
-                    \Flash::error(\Translate::get('m.error.folderExist'));
                 }
 
-            } else {
-                if ($this->request->isAjax()) {
-                    $inform = array(
-                        'success'   => false,
-                        'error'     => $validate->getErrors(),
-                        );
+                break;
+            
+            case 'folder':
+                break;
 
-                    return $this->returnJson($inform);
-                }
-                $this->template->errors = $validate->getErrors();
-            }
+            default:
+                trigger_error("Wrong parameter [$target]");
+
+                break;
         }
 
-        if ($this->request->isAjax()) { $this->template->partialOnly(); }
+        \Flash::error(t('m.error.fileDel'));
 
-        $this->template->title(\Translate::get('m.title.folderEdit'))
-                        ->set('fData', $fData)
-                        ->set('allFolders', $allFolders)
-                        ->setPartial('admin/folder/folder');
+        return \Redirect::toAdmin('media');
     }
+
+    /**
+     * Lazy method
+     *
+     * @return void 
+     **/
+    private function checkAjax()
+    {
+        if ($this->request->isAjax()) {
+            $this->template->partialOnly();
+        }
+    }
+
+
+
+
+
+
+
 
     /**
      * Folders can be deleted by using this method
@@ -264,28 +474,6 @@ class MediaController extends \AdminController
         }
     }
 
-    /**
-     * This method can be explore folders. (Method name spelling is wrong)
-     *
-     * @param int $id Id of the folder you want to explore
-     * @author RebornCMS Development Team
-     **/
-    public function explode($id)
-    {
-        $folders = MFolders::where('folder_id', '=', $id)->get();
-        $files = MFiles::where('folder_id', '=', $id)->get();
-        $currentFolder = MFolders::where('id', '=', $id)->first();
-        $folderPagi = array_reverse($this->folderPagi($id));
-
-        $this->template->title(\Translate::get('m.title.title'))
-                        ->set('folders', $folders)
-                        ->set('files', $files)
-                        ->set('folder_id', $id)
-                        ->set('currentFolder', $currentFolder)
-                        ->set('folderPagi', $folderPagi)
-                        ->setPartial('admin/index');
-    }
-
     # # # # # # # # # # Public Function for Files # # # # # # # # # #
 
     /**
@@ -318,38 +506,6 @@ class MediaController extends \AdminController
                         ->setPartial('admin'.DS.'outside'.DS.'featuredImage');
     }
 
-    /*public function mediaUpload($folderId = 0, $usrOptions = array())
-    {
-        $options = array(
-            'dimension'     => false,
-            'align'         => false,
-            'altText'       => false,
-            'onClick'       => true,
-            'multiSelect'   => true,
-            'btnName'       => 'Insert',
-            'preview'       => false,
-            'moduleName'    => 'media',
-            );
-
-        if (! empty($usrOptions)) { array_replace_recursive($options, $usrOptions); }
-
-        $files = MFiles::where('folder_id', '=', $folderId)
-                        ->where('width', '!=', 0)
-                        ->get();
-        $allFolders = MFolders::all();
-
-        if ($this->request->isAjax()) {
-            $this->template->partialOnly();
-            $this->template->set('ajax', true);
-        }
-
-        $this->template->title('Media &#124; Edit Folder')
-                        ->set('options', $options)
-                        ->set('files', $files)
-                        ->set('allFolders', $allFolders)
-                        ->setPartial('admin/outside/upload');
-    }*/
-
     /**
      * This is the real upload function.
      * This function was created to solve the problem, parsing array parameter.
@@ -361,7 +517,7 @@ class MediaController extends \AdminController
      * @param String $module
      * @author RebornCMS Development Team
      **/
-    public function realUpload($key, $folderId, $config, $module)
+    /*public function realUpload($key, $folderId, $config, $module)
     {
         Uploader::initialize($key, $config);
 
@@ -416,213 +572,9 @@ class MediaController extends \AdminController
             return $inform;
         }
 
-    }
+    }*/
 
-    /**
-     * Upload Function
-     *
-     * @return void
-     * @param int $folderId Current folder id
-     * @param String $key File input field name
-     * @param mix $userConfig Upload configuration ('default', 'other', 'ck' or defined array)
-     * @author RebornCMS Development Team
-     **/
-    public function upload($folderId = 0, $key = 'files', $userConfig = 'other',
-        $module = 'media')
-    {
-        if (\Input::isPost()) {
 
-            \Config::load('media');
-
-            $config = array(
-                'savePath'  => \Config::get('media::media.upload_path'),
-                'rename'    => \Config::get('media::media.file_rename'),
-                'createDir' => \Config::get('media::media.create_dir'),
-                'encryptFileName'   => \Config::get('media::media.encrypt'),
-                );
-
-            if (!is_array($userConfig)) {
-                if ($userConfig == 'default') {
-                    array_unshift($config, \Config::get('media::media.allow.default'));
-                } elseif ($userConfig == 'ck') {
-                    array_unshift($config, \Config::get('media::media.allow.ck'));
-                } else {
-                    array_unshift($config, \Config::get('media::media.allow.other'));
-                }
-            } else {
-                array_replace_recursive($config, $userConfig);
-            }
-
-            $uploaded = $this->realUpload($key, $folderId, $config, $module);
-
-            if ($this->request->isAjax()) {
-                return $this->returnJson($uploaded);
-            }
-
-            if ($uploaded['success']) {
-                \Flash::success(\Translate::get('m.success.upload'));
-            } else {
-                foreach ($uploaded['error'] as $error) {
-                    \Flash::error('The file ' . $error['errorAt'] .
-                        ' cannot be uploaded!');
-                }
-
-                return \Redirect::toAdmin('media/upload/');
-            }
-        }
-
-        $allFolders = MFolders::all();
-        $maxUploadableSize = Uploader::getMaxFilesize();
-
-        if ($userConfig == 'ck') {
-            $header = $this->template->partialRender('admin/outside/header');
-            $footer = $this->template->partialRender('admin/outside/footer');
-            $btnsBar = $this->template->partialRender('admin/outside/btns');
-            $this->template->title(\Translate::get('m.title.upload'))
-                            ->partialOnly()
-                            ->set('folder_id', $folderId)
-                            ->set('allFolders', $allFolders)
-                            ->set('btnsBar', $btnsBar)
-                            ->set('header', $header)
-                            ->setPartial('admin/file/upload');
-        }
-
-        if ($this->request->isAjax()) { $this->template->partialOnly(); }
-
-        $this->template->title(\Translate::get('m.title.upload'))
-                        ->set('folder_id', $folderId)
-                        ->set('allFolders', $allFolders)
-                        ->set('maxUploadableSize', $maxUploadableSize)
-                        ->setPartial('admin/file/upload');
-
-    }
-
-    /**
-     * Can edit file data by using this method
-     *
-     * @param int $id File id to be edited
-     * @author RebornCMS Development Team
-     **/
-    public function editFile($id)
-    {
-        $allFolders = MFolders::all();
-
-        $fileData = MFiles::where('id', '=', $id)->first();
-
-        if (\Input::isPost()) {
-            $rules = array(
-                    'name'      => 'required',
-                    'alt_text'  => 'required',
-                    'folder_id' => 'required|numeric',
-                );
-
-            $postData = array(
-                    'name'      => \Input::get('name'),
-                    'alt_text'  => \Input::get('alt_text'),
-                    'description'   => \Input::get('description'),
-                    'folder_id' => (\Input::get('folder_id')) ? \Input::get('folder_id') : 0,
-                    'user_id' => \Sentry::getUser()->id,
-                );
-
-            $val = new \Validation($postData, $rules);
-
-            if ($val->valid()) {
-                $updateData = MFiles::find(\Input::get('id'));
-
-                $updateData->name = $postData['name'];
-                $updateData->alt_text = $postData['alt_text'];
-                $updateData->description = $postData['description'];
-                $updateData->folder_id = $postData['folder_id'];
-                $updateData->user_id = $postData['user_id'];
-
-                if ($updateData->save()) {
-                    if ($this->request->isAjax()) {
-                        return $this->returnJson(array('success' => true));
-                    }
-                    \Flash::success(\Translate::get('m.success.fileUpdate'));
-
-                    return \Redirect::to('admin/media/');
-                } else {
-                    if ($this->request->isAjax()) {
-                        $inform = array(
-                            'success'   => false,
-                            'error'     => \Translate::get('m.error.fileUpdate'),
-                            );
-
-                        return $this->returnJson($inform);
-                    }
-                    \Flash::error(\Translate::get('m.error.fileUpdate'));
-
-                    return \Redirect::to('admin/media/');
-                }
-            } else {
-                if ($this->request->isAjax()) {
-                    $inform = array(
-                        'success'   => false,
-                        'error'     => $val->getErrors(),
-                        );
-
-                    return $this->returnJson($inform);
-                }
-                foreach ($val->getErrors() as $error) {
-                    \Flash::error($error);
-                }
-
-                return \Response::to('admin/media/');
-            }
-
-        }
-
-        if ($this->request->isAjax()) { $this->template->partialOnly(); }
-
-        $this->template->title(\Translate::get('m.title.fileEdit'))
-                        ->set('allFolders', $allFolders)
-                        ->set('fileData', $fileData)
-                        ->setPartial('admin/file/edit');
-    }
-
-    /**
-     * Used to delete file
-     *
-     * @return void
-     * @param int $id File id to be deleted
-     * @author RebornCMS Development Team
-     **/
-    public function deleteFile($id)
-    {
-        $deleteFile = MFiles::find($id);
-
-        $fileDir = UPLOAD.date('Y', strtotime($deleteFile->created_at)).DS.date(
-            'm', strtotime($deleteFile->created_at)).DS.$deleteFile->filename;
-
-        \File::delete($fileDir);
-
-        if ($deleteFile->delete()) {
-            if ($this->request->isAjax()) {
-                return $this->returnJson(array('success' => true));
-            }
-            \Flash::success('m.success.fileDel');
-        }
-    }
-
-    /**
-     * This method serve to show file data
-     *
-     * @param int $id Id of the file you want to view
-     * @author RebornCMS Development Team
-     **/
-    public function showFileData($id)
-    {
-        // @TODO - Show folder tree
-
-        $fileData = MFiles::with(array('folder', 'user'))->where('id', '=', $id)->first();
-
-        if ($this->request->isAjax()) { $this->template->partialOnly(); }
-
-        $this->template->title(\Translate::get('m.title.detail'))
-                        ->set('fileData', $fileData)
-                        ->setPartial('admin/file/show');
-    }
 
     # # # # # # # # # # # Public function for WYSIWYG # # # # # # # # # #
 
@@ -700,82 +652,6 @@ class MediaController extends \AdminController
             );
 
         return $data;
-    }
-
-    /**
-     * Define folder depth
-     *
-     * @return int
-     * @param int $folderId
-     * @author RebornCMS Development Team
-     **/
-    private function defineDepth($folderId)
-    {
-        $result = MFolders::where('id', '=', $folderId)->first();
-
-        return $result['depth'];
-    }
-
-    /**
-     * Validation function
-     *
-     * @return Object $val
-     * @param Strinf $fof File or folder ('file', 'folder')
-     * @author RebornCMS Development Team
-     **/
-    private function validation($fof = 'folder')
-    {
-        $rule = array();
-
-        if ($fof == 'folder') {
-            $rule = array(
-                    'name'      => 'required|maxLength:200',
-                    'slug'      => 'required|alphaDashDot',
-                    'folder_id' => 'required|integer',
-                );
-        }
-
-        if ($fof == 'file') {
-            $rule = array(
-                    'name'      => 'required|maxLength:200',
-                    'folder_id' => 'required|integer',
-                );
-        }
-
-        $val = new \Validation(\Input::get('*'), $rule);
-
-        return $val;
-    }
-
-    /**
-     * This method will check folder name is exist or not
-     *
-     * @param String $name Folder name
-     * @param int $folderId Parent folder's id
-     * @return boolean
-     * @author RebornCMS Development Team
-     **/
-    private function duplication($name, $slug, $folderId, $exceptName = '',
-        $exceptSlug = '')
-    {
-        if ($exceptName == '' or $exceptSlug == '') {
-            $slugExist = MFolders::where('slug', '=', $slug)->first();
-            $nameExist = MFolders::where('name', '=', $name)
-                            ->where('folder_id', '=', $folderId)
-                            ->first();
-
-            return (isset($slugExist->id) or isset($nameExist->id)) ? true : false;
-        } else {
-            $slugExist = MFolders::where('slug', '=', $slug)
-                                    ->where('slug', '!=', $exceptSlug)
-                                    ->first();
-            $nameExist = MFolders::where('name', '=', $name)
-                                    ->where('folder_id', '=', $folderId)
-                                    ->where('name', '!=', $exceptName)
-                                    ->first();
-
-            return (isset($slugExist->id) or isset($nameExist->id)) ? true : false;
-        }
     }
 
     /**
@@ -876,6 +752,11 @@ class MediaController extends \AdminController
                         ->set('files', $files)
                         ->set('allFolders', $allFolders)
                         ->setPartial('admin/outside/upload');
+    }
+
+    public function testing()
+    {
+        dump(Files::active(), true);
     }
 
 } // END class MediaController
