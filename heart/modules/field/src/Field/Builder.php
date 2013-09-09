@@ -175,7 +175,7 @@ class Builder
 							'post_id' => $model_id,
 							'group_id' => $group_id,
 							'field_name' => $f->field_name,
-							'field_value' => Input::get($f->field_slug))
+							'field_value' => Input::get($f->field_slug)
 						);
 				}
 			}
@@ -218,7 +218,7 @@ class Builder
 								'post_id' => $model_id,
 								'group_id' => $group_id,
 								'field_name' => $f->field_name,
-								'field_value' => Input::get($f->field_slug))
+								'field_value' => Input::get($f->field_slug)
 							);
 					}
 				} elseif ( $val = $ins->preUpdateCheck($f, $data) ) {

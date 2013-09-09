@@ -77,7 +77,7 @@ abstract class AbstractType
 	 **/
 	public function preSaveCheck($field)
 	{
-		$key = $this->makeKey($field->field_name);
+		$key = $field->field_slug;
 
 		$value = Input::get($key);
 
