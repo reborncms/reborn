@@ -120,6 +120,9 @@ class Builder
 	{
 		$group = $this->getGroupData($relation);
 
+		// Empty Group for $relation, return empty array()
+		if(is_null($group)) return array();
+
 		$fields = FieldModel::whereIn('id', $group->fields)->get();
 
 		if(! is_null($model)) {
@@ -151,6 +154,8 @@ class Builder
 	public function save($relation, $model)
 	{
 		$group = $this->getGroupData($relation);
+
+		if(is_null($group)) return true;
 
 		$fields = FieldModel::whereIn('id', $group->fields)->get();
 
@@ -189,6 +194,8 @@ class Builder
 	{
 		$group = $this->getGroupData($relation);
 
+		if(is_null($group)) return true;
+
 		$fields = FieldModel::whereIn('id', $group->fields)->get();
 
 		$group_id = (int) $group->id;
@@ -223,6 +230,8 @@ class Builder
 	{
 		$group = $this->getGroupData($relation);
 
+		if(is_null($group)) return true;
+
 		$group_id = (int) $group->id;
 		$model_id = (int) $model->id;
 
@@ -242,6 +251,8 @@ class Builder
 	public function get($relation, $model, $key = 'extended_fields')
 	{
 		$group = $this->getGroupData($relation);
+
+		if(is_null($group)) return $model;
 
 		$group_id = (int) $group->id;
 
@@ -268,6 +279,8 @@ class Builder
 	public function getAll($relation, $collection, $key = 'extended_fields')
 	{
 		$group = $this->getGroupData($relation);
+
+		if(is_null($group)) return $collection;
 
 		$group_id = (int) $group->id;
 
@@ -358,7 +371,7 @@ class Builder
 	 * Everybody can extend field type with Event::custom_field.extended.
 	 * example :
 	 * Event::on('custom_field.extended', function() {
-	 * 		return array('wusiwyg' => '\My\FieldType\Wysiwyg');
+	 * 		return array('wysiwyg' => '\My\FieldType\Wysiwyg');
 	 * });
 	 *
 	 * @return void

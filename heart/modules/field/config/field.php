@@ -5,6 +5,6 @@ return array(
 				'text' => 'Field\Type\Text',
 				'textarea' => 'Field\Type\Textarea',
 				'dropdown' => 'Field\Type\Dropdown',
-				'datepicker' => 'Field\Type\Datepicker'
+				'yesno' => 'Field\Type\Yesno',
 			)
 	);
