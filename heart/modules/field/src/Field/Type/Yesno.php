@@ -30,7 +30,7 @@ FIELD;
 	public function displayForm($field, $value = null)
 	{
 		$options = array('1' => 'Yes', '0' => 'No');
-		$key = $this->makeKey($field->field_name);
+		$key = $field->field_slug;
 		$label = \Form::label($field->field_name, $key);
 		$info = $this->makeInfo($field->description);
 

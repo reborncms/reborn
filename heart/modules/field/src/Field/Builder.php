@@ -138,7 +138,7 @@ class Builder
 			if($ins = $builder->getTypeInstance($f->field_type)) {
 				$data = isset($field_data[$f->id]) ? $field_data[$f->id] : null;
 
-				$form[] = $ins->displayForm($f, $data);
+				$form[$f->field_slug] = $ins->displayForm($f, $data);
 			}
 		});
 
@@ -175,7 +175,7 @@ class Builder
 							'post_id' => $model_id,
 							'group_id' => $group_id,
 							'field_name' => $f->field_name,
-							'field_value' => Input::get(slug($f->field_name))
+							'field_value' => Input::get($f->field_slug))
 						);
 				}
 			}
@@ -202,13 +202,26 @@ class Builder
 		$group_id = (int) $group->id;
 		$model_id = (int) $model->id;
 
+		$inserts = array();
+
 		$field_data = $this->getFieldValue($group_id, $model_id);
 
 		$builder = $this;
-		$fields->each(function($f) use($group_id, $model_id, $field_data, $builder) {
+		$fields->each(function($f) use(&$inserts, $group_id, $model_id, $field_data, $builder) {
 			if($ins = $builder->getTypeInstance($f->field_type)) {
 				$data = isset($field_data[$f->id]) ? $field_data[$f->id] : null;
-				if ( $val = $ins->preUpdateCheck($f, $data) ) {
+				if (is_null($data)) {
+					// Need to save for new data
+					if ( $ins->preSaveCheck($f) ) {
+						$inserts[] = array(
+								'field_id' => (int) $f->id,
+								'post_id' => $model_id,
+								'group_id' => $group_id,
+								'field_name' => $f->field_name,
+								'field_value' => Input::get($f->field_slug))
+							);
+					}
+				} elseif ( $val = $ins->preUpdateCheck($f, $data) ) {
 
 					\DB::table('field_data')
 								->where('group_id', $group_id)
@@ -219,6 +232,12 @@ class Builder
 				}
 			}
 		});
+
+		if (empty($insert)) {
+			return true;
+		} else {
+			return \DB::table('field_data')->insert($inserts);
+		}
 	}
 
 	/**
@@ -263,7 +282,7 @@ class Builder
 									->get()->toArray();
 		$data = array();
 		foreach ($fields as $f) {
-			$data[$f['field_name']] = $f['field_value'];
+			$data[$f['field_name']] = htmlspecialchars_decode($f['field_value']);
 		}
 
 		$model->{$key} = $data;
@@ -293,7 +312,7 @@ class Builder
 									->get()->toArray();
 			$data = array();
 			foreach ($fields as $f) {
-				$data[$f['field_name']] = $f['field_value'];
+				$data[$f['field_name']] = htmlspecialchars_decode($f['field_value']);
 			}
 			$m->{$key} = $data;
 		});

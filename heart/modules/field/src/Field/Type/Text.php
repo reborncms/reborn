@@ -22,7 +22,7 @@ class Text extends \Field\AbstractType
 
 	public function displayForm($field, $value = null)
 	{
-		$key = $this->makeKey($field->field_name);
+		$key = $field->field_slug;
 		$label = \Form::label($field->field_name, $key);
 		$info = $this->makeInfo($field->description);
 		$value = $value ? $value : $this->getValue($key, $field->field_default);

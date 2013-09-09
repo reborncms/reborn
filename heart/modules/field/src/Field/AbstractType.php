@@ -46,17 +46,6 @@ abstract class AbstractType
 	}
 
 	/**
-	 * Make Field Name to Key Name with "_"
-	 *
-	 * @param string $name Field name
-	 * @return string
-	 **/
-	protected function makeKey($name)
-	{
-		return slug($name, '_');
-	}
-
-	/**
 	 * Make field info.
 	 * eg: <p class="info">This field is what</p>
 	 *
@@ -112,7 +101,7 @@ abstract class AbstractType
 	 **/
 	public function preUpdateCheck($field, $value)
 	{
-		$key = $this->makeKey($field->field_name);
+		$key = $field->field_slug;
 
 		$new_value = Input::get($key);
 
