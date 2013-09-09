@@ -38,13 +38,6 @@ class Template
         );
 
     /**
-     * Variable for WYSIWYG use or not at admin panel view
-     *
-     * @var string
-     **/
-    protected $wysiwyg = false;
-
-    /**
      * Variable for the View Object
      *
      * @var \Reborn\MVC\View\View
@@ -197,17 +190,6 @@ class Template
 
         $this->path = $this->theme->getThemePath().'views'.DS;
 
-        return $this;
-    }
-
-    /**
-     * Use Wysiwyg editor
-     *
-     * @return void
-     **/
-    public function useWysiwyg()
-    {
-        $this->wysiwyg = true;
         return $this;
     }
 
@@ -587,8 +569,7 @@ class Template
                 $this->defaultKeys['footerScript'] => $footerScript,
                 $this->defaultKeys['footerScriptInline'] => $footerScriptInline,
                 $this->defaultKeys['metadata'] => $metadata,
-                $this->defaultKeys['breadcrumb'] => $this->breadcrumb,
-                'wysiwyg' => $this->wysiwyg
+                $this->defaultKeys['breadcrumb'] => $this->breadcrumb
             );
         $this->view->set($data);
     }
