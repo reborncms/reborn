@@ -32,7 +32,6 @@ class MediaController extends \PublicController
      * Before function for Media Controller
      *
      * @return void
-     * @author
      **/
     public function before()
     {
