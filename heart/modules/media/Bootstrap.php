@@ -50,6 +50,9 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
     public function register ()
     {
+        // Load Zebra_Image
+        require __DIR__.DS.'vendor'.DS.'Zebra'.DS.'Zebra_Image.php';
+
         // Make Class Alias
         \Alias::aliasRegister(array('Media' => 'Media\Facade\Media'));
 
