@@ -1,17 +1,18 @@
+{{ if($ajax) }}
+	{{ css('style.css', 'all', 'media') }}
+{{ endif }}
+
 <div id="featured_container">
-	{{ css('chosen.css', 'all', 'media') }}
-
-	{{ if ($ajax) }}
-		{{ css('style.css', 'all', 'media') }}
-	{{ endif }}
-
-	{{ js('chosen.jquery.min.js', 'media') }}
 	{{ js('featureImg.js', 'media') }}
 	<div id="tabs" class="tabs-bottom">
 
 		<ul id="m_tab_head" class="clearfix">
-			<li><a id="m_tab_media" href="#tab_media" m-data-url="{{ adminUrl('media/feature-image/') }}">Media</a></li>
-			<li><a id="m_calling_upload" href="{{ adminUrl('media/upload/') }}">Upload</a></li>
+			<li>
+				<a id="m_tab_media" href="#tab_media" m-data-url="{{ adminUrl('media/feature-image/') }}">Media</a>
+			</li>
+			<li>
+				<a id="m_calling_upload" href="{{ adminUrl('media/upload/') }}">Upload</a>
+			</li>
 		</ul>
 
 		<div id="tab_media" class="m_tab_body clearfix">
@@ -22,7 +23,7 @@
 						{= $current = (isset($current)) ? $current : 0 =}
 						<select name="folder_id" id="folder_id" style="width: 100%;">
 							<option value="0">{{ \Translate::get('none') }}</option>
-							{{ Media\Lib\Helper::folderTree($allFolders, 0, 0, $current, '&nbsp;&raquo;') }}
+							{{ folderTree($allFolders, 0, 0, $current, '&nbsp;&raquo;') }}
 				        </select>
 				    </div> <!-- end of m_input_wrap -->
 			    </div> <!-- end of m_folder_chooser -->
@@ -38,7 +39,9 @@
 			    <div id="m_align_area" class="m_option">
 			    	{{ Form::label(Translate::get('m.lbl.align'), 'float') }}
 			    	<div class="m_input_wrap">
-				        {= $float = array('left' => 'Left', 'right' => 'Right', 'auto' => 'None') =}
+				        {=
+				        	$float = array('left' => 'Left', 'right' => 'Right', 'auto' => 'None')
+				        =}
 				        {{ Form::select('float', $float, 'auto', array('id' => 'float')) }}
 				    </div> <!-- end of m_input_wrap -->
 			    </div> <!-- end of m_align_area -->
@@ -72,7 +75,7 @@
 						<div class="m_images">
 							<div class="m_img_wrap overflow">
 
-								<img src="{{rbUrl('media/thumb/'.$file->id.'/70/')}}" alt="{{$file->alt_text}}" title="{{ $file->name }}" onclick="javascript:imgPreview({{$file->id}}, '{{$file->name}}', '{{$file->alt_text}}', {{$file->width}}, {{$file->height}});">
+								<img src="{{rbUrl('media/image/'.$file->filename.'/70')}}" alt="{{$file->alt_text}}" title="{{ $file->name }}" onclick="javascript:imgPreview('{{$file->filename}}', '{{$file->name}}', '{{$file->alt_text}}', {{$file->width}}, {{$file->height}});">
 
 							</div> <!-- end of m_img_wrap -->
 						</div>

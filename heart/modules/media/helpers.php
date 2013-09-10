@@ -7,8 +7,8 @@
  * @author RebornCMS Development Team
  **/
 if (! function_exists('folderTree')) {
-    
-    function folderTree($folders, $parent, $depth, $selected = 0, 
+
+    function folderTree($folders, $parent, $depth, $selected = 0,
     $style = '&nbsp;&#187;&nbsp;')
     {
         foreach($folders as $folder)
@@ -46,7 +46,7 @@ if (! function_exists('folderTree')) {
  * @param String $name File or folder name
  * @param int $folderId Parent folder id
  * @param String $fof For files or folders. Avilable ('file', 'folder')
- * @param String $except except from 
+ * @param String $except except from
  *
  * @return String $name Name
  **/
@@ -69,7 +69,7 @@ if (! function_exists('duplication')) {
 
         $nameArray = array();
 
-        for ($i=0; $i < count($names); $i++) { 
+        for ($i=0; $i < count($names); $i++) {
             $nameArray[$i] = $names[$i]['name'];
         }
 
@@ -90,7 +90,7 @@ if (! function_exists('duplication')) {
  *
  * @param String $target String to be increased
  *
- * @return String $target 
+ * @return String $target
  **/
 if (! function_exists('increasemental')) {
 
@@ -112,7 +112,7 @@ if (! function_exists('increasemental')) {
 }
 
 /**
- * This method will return depth of 
+ * This method will return depth of
  *
  * @param int $id Id of parent folder
  *
@@ -164,7 +164,7 @@ if (! function_exists('getImgDimension')) {
 /**
  * Scaling
  *
- * @param int $originWidth 
+ * @param int $originWidth
  * @param int $originHeight
  * @param int $expected
  * @param String $scaleFor
@@ -184,13 +184,13 @@ if (! function_exists('doScale')) {
                 $scaled = ($expected / $originHeight) * $originWidth;
 
                 break;
-            
+
             default:
                 trigger_error("The third parameter is wrong!", E_USER_ERROR);
 
                 break;
         }
 
-        return $scaled;
+        return (int) round($scaled);
     }
 }

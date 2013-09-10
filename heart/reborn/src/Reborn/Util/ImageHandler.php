@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Reborn\Util;
 
@@ -28,7 +28,7 @@ class ImageHandler
     /**
      * Image original width
      *
-     * @var int 
+     * @var int
      **/
     public $originWidth = 0;
 
@@ -56,7 +56,7 @@ class ImageHandler
     /**
      * Image resource identifier
      *
-     * @var 
+     * @var
      **/
     protected $rawImage = null;
 
@@ -71,8 +71,8 @@ class ImageHandler
      * Constructor method for ImageHandler class
      *
      * @param String $file File name with extension
-     * 
-     * @return void 
+     *
+     * @return void
      **/
     function __construct($file)
     {
@@ -110,7 +110,7 @@ class ImageHandler
             'Cannot initialize new GD image stream.');
 
         $createdImg = $this->createImage();
-        
+
         @imagecopyresampled($this->rawImage, $createdImg, 0, 0, 0, 0,
             $width, $height, $this->originWidth, $this->originHeight);
     }
@@ -129,33 +129,33 @@ class ImageHandler
     {
         $this->sizeAdjustment($width, $height);
 
-        $this->rawImage = @imagecreatetruecolor($this->expectedWidth, 
+        $this->rawImage = @imagecreatetruecolor($this->expectedWidth,
             $this->expectedHeight) or new \RbException(
             'Cannot initialize new GD image stream.');
 
         $createdImg = $this->createImage();
-        
+
         imagecopy($this->rawImage, $createdImg, 0, 0, $x, $y, $width, $height);
     }
 
     /**
      * Save image to a specific directory
      *
-     * @param String $path A directory 
+     * @param String $path A directory
      *
      * @return void
      **/
     public function saveImage($path, $quality = 100)
     {
-        $path = (\File::is($path)) ? $path : $path . $this->fileObj->getFilename();
-
+        $path = (preg_match('/(.*)(.)(jpg|jpeg|png|gif)$/', $path)) ? $path
+                                        : $path . $this->fileObj->getFilename();
         ob_start();
 
         switch (strtolower($this->fileObj->getExtension())) {
             case 'jpg':
             case 'jpeg':
                 if (imagetypes() & IMG_JPG) {
-                    
+
                     imagejpeg($this->rawImage, $path, $quality);
                 }
 
@@ -178,7 +178,11 @@ class ImageHandler
                 break;
         }
 
-        @imagedestroy($this->newImage);
+        //$data = ob_get_contents();
+
+        //ob_end_clean();
+
+        return imagedestroy($this->rawImage);
     }
 
     /**
@@ -194,7 +198,7 @@ class ImageHandler
                 $img = @imagecreatefromjpeg($this->file);
 
                 break;
-            
+
             case 'png':
                 @imagealphablending($this->rawImage, false);
                 @imagesavealpha($this->rawImage, true);
@@ -213,7 +217,7 @@ class ImageHandler
                 break;
 
             default:
-                
+
                 break;
         }
 
@@ -233,13 +237,16 @@ class ImageHandler
             $this->expectedHeight = $this->originHeight;
 
         } elseif (0 === $height) {
-            
+
             $this->expectedHeight = $this->doScale($width, 'height');
 
         } elseif (0 === $width) {
-            
+
             $this->expectedWidth = $this->doScale($height, 'width');
 
+        } else {
+            $this->expectedWidth = $width;
+            $this->expectedHeight = $height;
         }
     }
 
@@ -256,7 +263,7 @@ class ImageHandler
             case 'width':
                 $result = ($expected / $this->originHeight) * $this->originWidth;
                 break;
-                
+
             case 'height':
                 $result = ($expected / $this->originWidth) * $this->originHeight;
                 break;

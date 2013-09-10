@@ -4,14 +4,15 @@
 
 <IfModule mod_rewrite.c>
 
-    # Make sure directory listing is disabled
+  # Make sure directory listing is disabled
 	#don't access folder
 	Options +FollowSymLinks -Indexes
 	RewriteEngine on
 
-    # Send request via index.php (again, not if its a real file or folder)
+  # Send request via index.php (again, not if its a real file or folder)
 	RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^(.*)$ index.php [QSA,L]
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ index.php [QSA,L]
 
 </IfModule>
 
@@ -85,4 +86,6 @@
 # ------------------------------------------------------------------------------
 
 FileETag MTime Size
+
+
 

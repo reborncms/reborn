@@ -73,31 +73,26 @@ class MediaController extends \PublicController
 
         }
 
-        $this->cacheImage = static::$cachePath.'reborn-'.$width.'-'.$height.'-'
-            .$file->filename;
-
         $filePath = UPLOAD . date('Y', strtotime($file->created_at)).DS.date(
                 'm', strtotime($file->created_at)) . DS  . $file->filename;
+        $this->cacheImage = static::$cachePath.'r-'.$width.'-'.$height.'-'
+            .$file->filename;
 
-        if (!\File::is($this->cacheImage) or (filemtime($filePath) > 
+        if (!\File::is($this->cacheImage) or (filemtime($filePath) >
             filemtime($this->cacheImage))) {
-
-            $image = new Image($filePath);
-
-            $image->resize($width, $height);
-
-            if($image->saveImage($this->cacheImage))
-            {
-                return $this->showImage($file);
-            }
+            $image = new \Zebra_Image();
+            $image->source_path = $filePath;
+            $image->target_path = $this->cacheImage;
+            $image->resize($width, $height, ZEBRA_IMAGE_CROP_CENTER, -1);
         }
 
-        return $this->showImage($file, true);
-
+        return $this->showImage($file);
     }
 
     protected function showImage($file, $notModify = false)
     {
+        $status = 200;
+
         $expire = 6 * 60 * 60; // 6 hours
 
         $headers['Pragma'] = 'public';
@@ -106,21 +101,19 @@ class MediaController extends \PublicController
         $headers['Content-Type'] = $file->mime_type;
 
         if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])
-            AND (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == 
+            AND (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) ==
                 filemtime($this->cacheImage)) AND $expire) {
-
-            header('Last-Modified : '.gmdate('D, d M Y H:i:s', 
-                filemtime($this->cacheImage)) . ' GMT', true, 304);
-
+            $status = 304;
         }
 
         $cacheImg = $this->cacheImage;
 
+        $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', filemtime($cacheImg)) . ' GMT';
+
         return StreamedResponse::create(function() use($cacheImg){
-                ob_flush();
-                flush();
+                ob_end_clean();
                 readfile($cacheImg);
-            }, 200, $headers)->send();
+            }, $status, $headers)->send();
     }
 
     public function download ($id)

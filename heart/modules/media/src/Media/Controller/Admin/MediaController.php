@@ -72,7 +72,7 @@ class MediaController extends \AdminController
     /**
      * This method will create folders
      *
-     * @param int $folderId 
+     * @param int $folderId
      * @return void
      **/
     public function createFolder($folderId = 0)
@@ -115,7 +115,7 @@ class MediaController extends \AdminController
             $validate = $this->validation();
 
             if ($validate->valid()) {
-                
+
                 if ($this->saveData(false, $id)) {
                     \Flash::success(\Translate::get('m.success.folderUpdate'));
                     return \Redirect::toAdmin('media');
@@ -256,7 +256,7 @@ class MediaController extends \AdminController
             $validate = $this->validation();
 
             if ($validate->valid()) {
-                
+
                 if ($this->saveData(true, $id)) {
                     \Flash::success(\Translate::get('m.success.fileUpdate'));
                     return \Redirect::toAdmin('media');
@@ -298,8 +298,8 @@ class MediaController extends \AdminController
             $data->description = \Input::get('description');
             $data->folder_id = \Input::get('folder_id');
             $data->user_id = $this->user->id;
-           
-            $data->name = duplication($data->name, $data->folder_id, true, 
+
+            $data->name = duplication($data->name, $data->folder_id, true,
                 \Input::get('originName'));
 
             return $data->save();
@@ -346,7 +346,7 @@ class MediaController extends \AdminController
                     'folder_id' => 'required|integer',
                     );
                 break;
-            
+
             case 'file':
                 $rule = array(
                     'name'      => 'required|maxLength:200',
@@ -364,7 +364,7 @@ class MediaController extends \AdminController
      * This method can be used to delete file or folder
      *
      * @return void
-     * @author 
+     * @author
      **/
     public function delete($target, $id)
     {
@@ -393,7 +393,7 @@ class MediaController extends \AdminController
                 }
 
                 break;
-            
+
             case 'folder':
                 break;
 
@@ -411,7 +411,7 @@ class MediaController extends \AdminController
     /**
      * Lazy method
      *
-     * @return void 
+     * @return void
      **/
     private function checkAjax()
     {
@@ -485,22 +485,23 @@ class MediaController extends \AdminController
      **/
     public function featureImage($folderId = 0)
     {
+        $ajax = false;
         # @TODO - Do more flexible
-        $images = MFiles::where('folder_id', '=', $folderId)
-                            ->where('module', '=', 'media')
+        $images = Files::where('folder_id', '=', $folderId)
                             ->whereIn('mime_type', array(
                                 'image/jpeg', 'image/gif', 'image/png',
                                 'image/tiff', 'image/bmp'))
                             ->get();
 
-        $allFolders = MFolders::all();
+        $allFolders = Folders::all();
 
         if ($this->request->isAjax()) {
             $this->template->partialOnly();
-            $this->template->set('ajax', true);
+            $ajax = true;
         }
 
         $this->template->title(\Translate::get('m.ext.featureTitle'))
+                        ->set('ajax', $ajax)
                         ->set('images', $images)
                         ->set('allFolders', $allFolders)
                         ->setPartial('admin'.DS.'outside'.DS.'featuredImage');

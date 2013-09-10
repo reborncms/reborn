@@ -1,0 +1,57 @@
+<div class="thumbnail-wrapper">
+{{ if(is_null($value) || ('' == $value)) }}
+    <div class="thumbnail_preview"></div>
+    {{ Form::hidden($name, $value) }}
+    <a href="{{ adminUrl('media/feature-image') }}" class="thumbnail_add_btn">
+        <i class="icon-circleplus icon-12 icon-gray"></i>
+        {{ $labels['add'] }}
+    </a>
+    <a href="javascript:void(0);" class="thumbnail_remove_btn" style="display:none">
+        <i class="icon-circleminus icon-12 icon-gray"></i>
+        {{ $labels['remove'] }}
+    </a>
+{{ else }}
+    <div class="thumbnail_preview">
+        <img class='thumbnail_image' src='{{ rbUrl('media/image/'.$value.'/'.$width) }}'>
+    </div>
+    {{ Form::hidden($name) }}
+    <a href="{{ adminUrl('media/feature-image') }}" class="thumbnail_add_btn" style="display:none">
+        <i class="icon-circleplus icon-12 icon-gray"></i>
+        {{ $labels['add'] }}
+    </a>
+    <a href="javascript:void(0);" class="thumbnail_remove_btn">
+        <i class="icon-circleminus icon-12 icon-gray"></i>
+        {{ $labels['remove'] }}
+    </a>
+{{ endif }}
+</div>
+
+<script type="text/javascript">
+    var THUMB_TARGET = '{{ $name }}',
+        THUMB_WIDTH = {{ $width }};
+
+    // Thumbnail Image Add Function
+    $('.thumbnail_add_btn').colorbox({
+        scrollable: false,
+        innerWidth: "70%",
+        opacity: 0.5,
+        onComplete : function() {
+            $.colorbox.resize();
+        }
+    });
+
+    // Thumbnail Image Remove Function
+    $('.thumbnail_remove_btn').on('click', function(e){
+        e.preventDefault();
+
+        var parent = $(this).parent(),
+            thumb = $(parent).find('.thumbnail_image'),
+            input = $(parent).find('#' + THUMB_TARGET),
+            add_btn = $(parent).find('.thumbnail_add_btn');
+            console.log(input);
+        $(thumb).remove();
+        $(input).val('');
+        $(add_btn).show();
+        $(this).hide();
+    })
+</script>

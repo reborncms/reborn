@@ -50,7 +50,13 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
     public function register ()
     {
-        // Nothing to do now
+        // Make Class Alias
+        \Alias::aliasRegister(array('Media' => 'Media\Facade\Media'));
+
+        // Extend Form for featured thumbnail
+        \Form::extend('thumbnail', function($name, $value, $width = null, $labels = array()){
+            return \Media::thumbnailForm($name, $value, $width, $labels);
+        });
     }
 
 } // END class Bootstrap

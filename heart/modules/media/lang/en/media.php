@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 return array(
 	'title'	=> array(
@@ -29,6 +29,8 @@ return array(
 		'uploadAreaText' => 'Drop file here or click here to upload',
 		'author'	=> 'Uploader',
 		'name'		=> 'Name',
+		'add_thumb' => 'Add Thumbnail',
+		'remove_thumb' => 'Remove Thumbnail'
 		),
 	'btn'		=> array(
 		'submit'	=> 'Submit',
