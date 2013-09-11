@@ -1,7 +1,11 @@
 $(function(){
 	$('#media_upload').colorbox({
 		width: "900",
-		height: "400"
+		height: "400",
+		href: SITEURL + ADMIN + '/media/upload/' + $('#media-wrapper').attr('data-folder-id'),
+		onClosed: function() {
+			window.location.reload();
+		}
 	});
 
 	$('#folder_id').chosen();

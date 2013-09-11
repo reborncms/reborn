@@ -200,13 +200,22 @@ class MediaController extends \AdminController
                         if ($this->request->isAjax()) {
                             return $this->json(array('status' => 'success'));
                         }
+
                         \Flash::success(\Translate::get('m.success.upload'));
+
+                        return \Redirect::toAdmin('media');
                     } else {
+                        if ($this->request->isAjax()) {
+                            return $this->json(array('status' => 'fail'));
+                        }
+
                         \Flash::error(\Translate::get('m.error.upload'));
+
+                        return \Redirect::toAdmin('media');
                     }
                 }
             } else {
-                $errors = $file->getErrors();
+                $errors = $fileObj->getErrors();
             }
 
             return \Redirect::toAdmin('media');
@@ -236,8 +245,8 @@ class MediaController extends \AdminController
                         ->set('selected', $id)
                         ->partialRender('admin/actionbar');
 
-        $this->template->title(\Translate::get('m.title.title'))
-                        ->set('selected', $id)
+        $this->template->title(t('media::media.title.title'))
+                        ->set('current', $id)
                         ->set('files', $files)
                         ->set('folders', $folders)
                         ->set('actionBar', $actionBar)
@@ -386,7 +395,7 @@ class MediaController extends \AdminController
                             return $this->json(array('status' => 'success'));
                         }
 
-                        \Flash::success(t('m.success.fileDel'));
+                        \Flash::success(t('media::media.success.fileDel'));
 
                         return \Redirect::toAdmin('media');
                     }
@@ -395,6 +404,35 @@ class MediaController extends \AdminController
                 break;
 
             case 'folder':
+                $status = 'fail';
+
+                if (hasChild($id, 'folder')) {
+                    
+                } elseif (hasChild($id, 'file')) {
+
+                } else {
+                    $folder = Folders::find($id);
+
+                    if ($folder->delete()) {
+                        \Event::call('folder_delete', $folder);
+
+                        
+                    }
+
+                }
+
+                if ($this->request->isAjax()) {
+                    return $this->json(array('status' => $status));
+                }
+
+                if ('success' == $status) {
+                    \Flash::success(t('media::media.success.folderDel'));
+                } else {
+                    \Flash::error(t('media::media.success.folderDel'));
+                }
+
+                return \Redirect::toAdmin('media');
+
                 break;
 
             default:
@@ -402,10 +440,6 @@ class MediaController extends \AdminController
 
                 break;
         }
-
-        \Flash::error(t('m.error.fileDel'));
-
-        return \Redirect::toAdmin('media');
     }
 
     /**
@@ -506,74 +540,6 @@ class MediaController extends \AdminController
                         ->set('allFolders', $allFolders)
                         ->setPartial('admin'.DS.'outside'.DS.'featuredImage');
     }
-
-    /**
-     * This is the real upload function.
-     * This function was created to solve the problem, parsing array parameter.
-     *
-     * @return void
-     * @param String $key File input field name
-     * @param id $folderId The folder, files to be uploaded to
-     * @param array $config Configuration for upload
-     * @param String $module
-     * @author RebornCMS Development Team
-     **/
-    /*public function realUpload($key, $folderId, $config, $module)
-    {
-        Uploader::initialize($key, $config);
-
-        if (Uploader::isSuccess()) {
-            $uploaded = Uploader::upload('files');
-
-            foreach ($uploaded as $save) {
-                preg_match_all('/^(image)\/(\w*)$/', $save['fileType'], $match);
-
-                $size = array('width' => 0, 'height' => 0);
-                if (! empty($match[1])) {
-                    $size = $this->getImageSize($config['savePath'] . $save['savedName']);
-                }
-
-                $data = new MFiles();
-
-                $data->name = $save['baseName'];
-                $data->alt_text = $save['baseName'];
-                $data->folder_id = $folderId;
-                $data->user_id = \Sentry::getUser()->id;
-                $data->filename = $save['savedName'];
-                $data->filesize = $save['fileSize'];
-                $data->extension = $save['extension'];
-                $data->mime_type = $save['fileType'];
-                $data->width = $size['width'];
-                $data->height = $size['height'];
-                $data->module = $module;
-
-                if ($data->save()) {
-                    $folderName = MFolders::where('id', '=', $data->folder_id)
-                                            ->first();
-                    $inform = array(
-                        'success'   => true,
-                        'id'    => $data->id,
-                        'name'  => $data->name,
-                        'desctiption'   => $data->description,
-                        'alt_text'  => $data->alt_text,
-                        'folder_id' => $data->folder_id,
-                        'folder_name'   => $folderName['name'],
-                        'user_id'   => $data->user_id,
-                        );
-
-                    return $inform;
-                } # @TODO - check db error
-            }
-        } else {
-            $inform = array(
-                'success'   => false,
-                'error'     => Uploader::errors(),
-                );
-
-            return $inform;
-        }
-
-    }*/
 
 
 
