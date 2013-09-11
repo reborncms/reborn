@@ -1,0 +1,17 @@
+<div class="widget widget-twitter-timeline">
+	<h2 class="widget-title">{{ $title }}</h2>
+	<div class="widget-body">
+		<a class="twitter-timeline" 
+			data-widget-id="{{ $widgetid }}"
+			data-theme="{{ $timeline_theme }}"
+			data-link-color="{{ $timeline_linkcolor }}"
+			data-border-color="{{ $timeline_bordercolor }}"
+			data-tweet-limit="{{ $timeline_limit }}"
+			data-chrome="{{ $timeline_noheader }} {{ $timeline_nofooter }} {{ $timeline_noborders }} {{ $timeline_noscrollbar }} {{ $timeline_transparent }}"
+			width="{{ $timeline_width }}"
+			height="{{ $timeline_height }}"
+			lang="EN">My Tweets</a>
+		
+		<script type='text/javascript' src='//platform.twitter.com/widgets.js?ver=3.6'></script>
+	</div>
+</div>
