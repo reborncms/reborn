@@ -36,6 +36,10 @@ class BlogController extends \PublicController
 						->take(\Pagination::limit())
 						->get();
 
+		if (!$blogs->isEmpty()) {
+			$blogs = \Field::getAll('blog', $blogs, 'custom_field');
+		}
+
 		$this->template->title('Blog')
 						->setPartial('index')
 						->set('blogs', $blogs)
@@ -63,6 +67,8 @@ class BlogController extends \PublicController
 
 		$update_view_count = Blog::where('id', '=', $blog->id)->update(array('view_count' => $view_count));
 
+		$blog = \Field::get('blog', $blog, 'custom_field'); 
+
 		$this->template->title($blog['title'])
 						->setPartial('single')
 						->set('blog', $blog)
@@ -81,6 +87,8 @@ class BlogController extends \PublicController
 		$blog = Blog::with(array('category', 'author'))
 						->where('slug', $slug)
 						->first();
+
+		$blog = \Field::get('blog', $blog, 'custom_field');
 
 		if($blog == null or !\Sentry::getUser()->hasAccess('admin')) {
 
@@ -139,6 +147,10 @@ class BlogController extends \PublicController
 						->take(\Pagination::limit())
 						->get();
 
+		if (!$blogs->isEmpty()) {
+			$blogs = \Field::getAll('blog', $blogs, 'custom_field');
+		}
+
 		$this->template->title('Blog - Category:'.$cat_info->name)
 						->setPartial('category')
 						->set('blogs', $blogs)
@@ -185,6 +197,10 @@ class BlogController extends \PublicController
 						->orderBy('created_at', 'desc')
 						->get();
 
+		if (!$blogs->isEmpty()) {
+			$blogs = \Field::getAll('blog', $blogs, 'custom_field');
+		}
+
 		$this->template->title('Blog')
 						->setPartial('tag')
 						->set('blogs', $blogs)
@@ -225,6 +241,10 @@ class BlogController extends \PublicController
 						->take(\Pagination::limit())
 						->orderBy('created_at', 'desc')
 						->get();
+
+		if (!$blogs->isEmpty()) {
+			$blogs = \Field::getAll('blog', $blogs, 'custom_field');
+		}
 
 		$this->template->title('Blog')
 						->setPartial('author')
@@ -291,6 +311,10 @@ class BlogController extends \PublicController
 								->get();
 		}
 
+		if (!$blogs->isEmpty()) {
+			$blogs = \Field::getAll('blog', $blogs, 'custom_field');
+		}
+
 		$this->template->title('Blog')
 						->setPartial('archives')
 						->set('blogs', $blogs)
@@ -316,6 +340,10 @@ class BlogController extends \PublicController
 							->orderBy('created_at', 'desc')
 							->take(\Setting::get('blog_rss_items'))
 							->get();
+
+		if (!$blogs->isEmpty()) {
+			$blogs = \Field::getAll('blog', $blogs, 'custom_field');
+		}
 
 		$this->template->set('blogs', $blogs);
 

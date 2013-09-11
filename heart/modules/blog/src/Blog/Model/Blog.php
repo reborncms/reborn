@@ -19,6 +19,14 @@ class Blog extends \Eloquent
     protected $tags_data;
 
     /**
+     * Blog custom field
+     *
+     * @var string
+     **/
+    public $custom_field;
+
+
+    /**
      * Relationship with Blog Category
      */
     public function category()
