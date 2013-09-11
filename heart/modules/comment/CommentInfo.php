@@ -40,7 +40,7 @@ class CommentInfo extends \Reborn\Module\AbstractInfo
 	*
 	* @var boolean
 	**/
-	protected $allow_customfield = true;
+	protected $allow_customfield = false;
 
 	protected $roles = array(
 		'comment.reply'		=> 'Reply',
