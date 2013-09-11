@@ -50,7 +50,7 @@ class optionsForm {
 						break;
 					
 					default:
-						$form .= \Form::input($name, $value);
+						$form .= \Form::input($name, $value, $type);
 						break;
 				}
 
