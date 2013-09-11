@@ -1,6 +1,9 @@
-<div id="media-wrapper" data-folder-id="{{ (isset($folder_id)) ? $folder_id : 0 }}">
+{=
+	$current = (isset($folderId)) ? $folderId : 0;
+=}
+<div id="media-wrapper" data-folder-id="{{ $current }}">
 
-	{{ Form::start(adminUrl('media/upload/'), 'upload', true, array('class' => 'form  dropzone', 'id' => 'uploader')) }}
+	{{ Form::start(adminUrl('media/upload/'.$current), 'upload', true, array('class' => 'form  dropzone', 'id' => 'uploader')) }}
 
 		{{ Form::file('files[]', array('multiple' => '', 'id' => 'file-field')) }}
 		{{ Form::submit('submit', Translate::get('files.btn.upload'), array('id' => 'upload-submit')) }}
