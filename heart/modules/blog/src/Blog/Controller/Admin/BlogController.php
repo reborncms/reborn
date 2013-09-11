@@ -85,7 +85,10 @@ class BlogController extends \AdminController
 			}
 		}
 		self::formEle();
-		$fields = \Field::getForm('blog');
+		$fields = array();
+		if (\Module::isEnabled('field')) {
+			$fields = \Field::getForm('blog');
+		}
 		$this->template->title(t('blog::blog.title_create'))
 						->setPartial('admin/form')
 						->set('val_errors',$val_errors)
@@ -126,7 +129,10 @@ class BlogController extends \AdminController
 			$blog = (object) $blog;
 		}
 		self::formEle();
-		$fields = \Field::getForm('blog', $blog);
+		$fields = array();
+		if (\Module::isEnabled('field')) {
+			$fields = \Field::getForm('blog', $blog);
+		}
 		$this->template->title('Edit Blog')
 						->setPartial('admin/form')
 						->set('val_errors',$val_errors)
@@ -170,7 +176,9 @@ class BlogController extends \AdminController
 
 		foreach ($ids as $id) {
 			if ($blog = Blog::find($id)) {
-				\Field::delete('blog', $blog);
+				if (\Module::isEnabled('field')) {
+					\Field::delete('blog', $blog);
+				}
 				$blog->delete();
 				\Module::load('Tag');
 				$tag = \Tag\Model\TagsRelationship::where('object_id', $id)
@@ -298,10 +306,12 @@ class BlogController extends \AdminController
 
 		$blog_save = $blog->save();
 		if ($blog_save) {
-			if ($method == 'create') {
-				\Field::save('blog', $blog);
-			} else {
-				\Field::update('blog', $blog);
+			if (\Module::isEnabled('field')) {
+				if ($method == 'create') {
+					\Field::save('blog', $blog);
+				} else {
+					\Field::update('blog', $blog);
+				}
 			}
 			\Module::load('Tag');
 			$tag = \Tag\Controller\Admin\TagController::import($blog->id, 'blog', \Input::get('blog_tag'));

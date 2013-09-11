@@ -24,15 +24,15 @@
                     <span class="msg error">{{ $val_errors['body'] }}</span>
 					{{ Form::ckeditor('body', isset($blog->body) ? $blog->body : '') }}
                 </div> <!-- end of form-block -->
-                {{ loop ($custom_field as $field) }}
-                    {{ $field }}
-                {{ endloop }}
                 <div class="form-block">
                     {{ Form::label(t('blog::blog.excerpt'), 'form_excerpt') }}
                     <div class="form-right-block">
                         {{ Form::textarea('excerpt', isset($blog->excerpt) ? $blog->excerpt : '', array('style' => 'width:90%')) }}
                     </div> <!-- end of form-right-block -->
                 </div> <!-- end of form block -->
+                {{ loop ($custom_field as $field) }}
+                    {{ $field }}
+                {{ endloop }}
             </div> <!-- end of form-left -->
         <!-- ***** END of LEFT Wrapper ***** -->
             <div id="form-right">
