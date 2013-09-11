@@ -132,11 +132,14 @@ class PagesController extends \AdminController
                 return $this->notFound();
         }
 
-        $page = Pages::find($id)->toArray();
+        $val_errors = new \Reborn\Form\ValidationError();
+
+        $page = Pages::find($id);
         self::formElements();
         $this->template->title('Add new Page')
                     ->set('method','create')
                     ->set('page', $page)
+                    ->set('errors', $val_errors)
                     ->setPartial('admin/form');
     }
 
@@ -272,14 +275,31 @@ class PagesController extends \AdminController
                 $child_page = Pages::find((int) $child->id);
                 $child_uri = $parent_uri.'/'.$child_page->slug;
                 $child_page->parent_id = $parent_id;
-                $child_page->uri = $parent_uri;
+                $child_page->uri = $child_uri;
                 $child_page->save();
+                self::changeChildrenUri($child->id, $child_page->uri);
             }
         } else {
             //error
         }
 
         return \Redirect::to(adminUrl('pages'));
+    }
+
+    public function changeChildrenUri($id, $parent_uri)
+    {
+        $second_gen =  Pages::where('parent_id', '=', $id)->get();
+
+        if (count($second_gen) > 0) {
+            foreach ($second_gen as $child) {
+                $cPage = Pages::find((int) $child->id);
+                $cPage->uri = $parent_uri.'/'.$child->slug;
+                $cPage->save();
+                self::changeChildrenUri($child->id, $cPage->uri);
+            }
+        }
+
+        return;
     }
 
     /**
