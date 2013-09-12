@@ -138,9 +138,22 @@ class Builder
 			if($ins = $builder->getTypeInstance($f->field_type)) {
 				$data = isset($field_data[$f->id]) ? $field_data[$f->id] : null;
 
-				$form[$f->field_slug] = $ins->displayForm($f, $data);
+				$form[$f->id] = $ins->displayForm($f, $data);
 			}
 		});
+
+		// Make Sorting by $group->fields
+		$makeSorting = function($array, $orderArray) {
+			$ordered = array();
+		    foreach($orderArray as $key) {
+		    	if(array_key_exists($key,$array)) {
+		    		$ordered[$key] = $array[$key];
+		    		unset($array[$key]);
+		    	}
+		    }
+		    return $ordered + $array;
+		};
+		$form = $makeSorting($form, $group->fields);
 
 		return $form;
 	}

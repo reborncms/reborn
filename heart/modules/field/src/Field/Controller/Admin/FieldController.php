@@ -94,10 +94,31 @@ class FieldController extends \AdminController
 	}
 
 	/**
-	 * undocumented function
+	 * Delete the field
 	 *
 	 * @return void
-	 * @author
+	 **/
+	public function delete($id)
+	{
+		$field = Field::find($id);
+
+		if (is_null($field)) {
+			Flash::error('Field not found');
+			return Redirect::toAdmin('field');
+		}
+
+		\Event::call('field'.$field->field_slug.'.delete', $field);
+		$field->delete();
+
+		Flash::success('Field is successfully deleted');
+
+		return Redirect::toAdmin('field');
+	}
+
+	/**
+	 * Get Field Type Form Display
+	 *
+	 * @return string
 	 **/
 	public function getTypeDisplay($type, $default = null, $options = null)
 	{
@@ -192,6 +213,29 @@ class FieldController extends \AdminController
 						->set('group_fields', $group_fields)
 						->set('method', 'group-edit/'.$group->id)
 						->setPartial('admin/group/form');
+	}
+
+	/**
+	 * Delete Given Field Group
+	 *
+	 * @return void
+	 **/
+	public function groupDelete($id)
+	{
+		$group = FieldGroup::find($id);
+
+		if (is_null($group)) {
+			Flash::error('Field Group not found');
+			return Redirect::toAdmin('field/group');
+		}
+
+		\Event::call('field.group.delete', $group);
+
+		$group->delete();
+
+		Flash::success('Field Group successfully deleted');
+
+		return Redirect::toAdmin('field/group');
 	}
 }
 

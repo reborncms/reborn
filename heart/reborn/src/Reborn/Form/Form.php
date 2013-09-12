@@ -28,6 +28,13 @@ class Form
     protected static $ckeditor = false;
 
     /**
+     * Variable for datepicker js declare
+     *
+     * @var boolean
+     **/
+    protected static $datepicker = false;
+
+    /**
      * Extend the Form Element.
      *
      * @param string $name Element name
@@ -571,6 +578,56 @@ ck;
     public static function cksimple($name, $value = null, $attrs = array())
     {
         return static::ckeditor($name, $value, 'simple', $attrs);
+    }
+
+    /**
+     * jQueryUI Datepicker field
+     *
+     * @param string $name Field name
+     * @param string $value Field Value
+     * @param string $format Date Picker Format
+     * @param array $attrs Field attributes
+     * @return string
+     **/
+    public static function datepicker($name, $value = null, $format = 'mm-dd-yy', $attrs = array())
+    {
+        if (!defined('ADMIN')) {
+            $ui = global_asset('js', 'jqueryui/jquery-ui-1.10.3.custom.min.js');
+            $ui_css = global_asset('css', 'jqueryui/stupid/jquery-ui-1.10.3.custom.css');
+        } else {
+            $ui = '';
+            $ui_css = '';
+        }
+        $rb = rbUrl();
+        $jq = $rb.'global/assets/js/jquery-1.9.0.min.js';
+
+        $dp_init = <<<dp
+$ui_css
+<script>
+    window.jQuery || document.write('<script src="$jq"><\/script>')
+</script>
+$ui
+<script type="text/javascript">
+(function($) {
+    $(function()
+    {
+        $( ".datepicker" ).datepicker({dateFormat: "$format"});
+    });
+})(jQuery);
+</script>
+
+dp;
+
+        $attrs = array_merge($attrs, array('class' => 'datepicker'));
+
+        if (static::$datepicker) {
+            return static::text($name, $value, $attrs);
+        }
+
+        // Make Datepicker is already used
+        static::$datepicker = true;
+
+        return $dp_init.static::text($name, $value, $attrs);
     }
 
     /**

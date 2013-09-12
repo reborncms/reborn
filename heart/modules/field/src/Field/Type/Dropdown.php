@@ -57,18 +57,4 @@ FORM;
 		return $f;
 	}
 
-	protected function makeOptions($str)
-	{
-		$lines = explode("\n", $str);
-
-		$options = array();
-
-		foreach ($lines as $line) {
-			list($key, $value) = explode('=', $line);
-			$options[$key] = $value;
-		}
-
-		return $options;
-	}
-
 } // END class Dropdown extends \Field\AbstractType

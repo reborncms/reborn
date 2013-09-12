@@ -70,6 +70,26 @@ abstract class AbstractType
 	}
 
 	/**
+	 * Make Options string to array for dropdown|checkbox|radio
+	 *
+	 * @param string $str options string
+	 * @return array
+	 **/
+	protected function makeOptions($str)
+	{
+		$lines = explode("\n", $str);
+
+		$options = array();
+
+		foreach ($lines as $line) {
+			list($key, $value) = explode('=', $line);
+			$options[$key] = $value;
+		}
+
+		return $options;
+	}
+
+	/**
 	 * Pre Check before saving.
 	 *
 	 * @param Field\Model\Field $field Field Model Object

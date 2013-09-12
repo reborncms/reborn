@@ -7,6 +7,7 @@ return array(
 				'dropdown' => 'Field\Type\Dropdown',
 				'yesno' => 'Field\Type\Yesno',
 				'wysiwyg' => 'Field\Type\Wysiwyg',
-				'image' => 'Field\Type\Image'
+				'image' => 'Field\Type\Image',
+				'datepicker' => 'Field\Type\Datepicker'
 			)
 	);
