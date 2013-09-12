@@ -233,7 +233,7 @@ class Builder
 			}
 		});
 
-		if (empty($insert)) {
+		if (empty($inserts)) {
 			return true;
 		} else {
 			return \DB::table('field_data')->insert($inserts);

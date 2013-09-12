@@ -77,6 +77,11 @@ class Media extends \Facade
 
 		$template = File::getContent(__DIR__.DS.'template.html');
 
+		if (! is_null($value)) {
+			$values = explode('/', $value);
+			$value = $values[0];
+		}
+
 		$data['labels'] = $labels;
 		$data['value'] = $value;
 		$data['name'] = $name;

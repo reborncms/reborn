@@ -24,7 +24,11 @@ class FieldProvider
 		$field->field_slug = Input::get('field_slug');
 		$field->field_type = Input::get('field_type');
 		$field->description = Input::get('description', '');
-		$field->options = Input::get('options', '');
+		$options = Input::get('options', '');
+		if (is_array($options)) {
+			$options = json_encode($options);
+		}
+		$field->options = $options;
 		$field->default = Input::get('default', '');
 
 		return $field->save();
