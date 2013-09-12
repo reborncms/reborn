@@ -528,7 +528,13 @@ class Table
 	protected function getObjectAttribute($obj, $key)
 	{
 		if (false === strpos($key, '.')) {
-			return $obj->{$key};
+			if(is_object($obj)) {
+				return $obj->{$key};
+			} elseif(is_array($obj)) {
+				return $obj[$key];
+			} else {
+				return $obj;
+			}
 		}
 
 		$keys = explode('.', $key, 2);

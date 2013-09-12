@@ -108,6 +108,11 @@ class FieldController extends \AdminController
 		}
 
 		\Event::call('field'.$field->field_slug.'.delete', $field);
+
+		// Delete Field Data
+		$provider = new FieldProvider();
+		$provider->delete($field->id);
+
 		$field->delete();
 
 		Flash::success('Field is successfully deleted');
@@ -191,9 +196,15 @@ class FieldController extends \AdminController
 
 		if (is_null($group)) return $this->notFound();
 
-		$fields = Field::whereNotIn('id', $group->fields)->get();
+		if(empty($group->fields)) {
+			$fields = Field::all();
+		} else {
+			$fields = Field::whereNotIn('id', $group->fields)->get();
 
-		$group_fields = Field::whereIn('id', $group->fields)->get();
+			$group_fields = Field::whereIn('id', $group->fields)->get();
+
+			$this->template->set('group_fields', $group_fields);
+		}
 
 		if(Input::isPost()) {
 
@@ -210,7 +221,6 @@ class FieldController extends \AdminController
 		$this->template->title('Field Group Edit')
 						->set('group', $group)
 						->set('fields', $fields)
-						->set('group_fields', $group_fields)
 						->set('method', 'group-edit/'.$group->id)
 						->setPartial('admin/group/form');
 	}
@@ -230,6 +240,9 @@ class FieldController extends \AdminController
 		}
 
 		\Event::call('field.group.delete', $group);
+
+		$provider = new FieldGroupProvider();
+		$provider->delete($group->id);
 
 		$group->delete();
 

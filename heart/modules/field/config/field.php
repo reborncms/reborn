@@ -8,6 +8,7 @@ return array(
 				'yesno' => 'Field\Type\Yesno',
 				'wysiwyg' => 'Field\Type\Wysiwyg',
 				'image' => 'Field\Type\Image',
-				'datepicker' => 'Field\Type\Datepicker'
+				'datepicker' => 'Field\Type\Datepicker',
+				'checkbox' => 'Field\Type\Checkbox'
 			)
 	);

@@ -121,7 +121,7 @@ class Builder
 		$group = $this->getGroupData($relation);
 
 		// Empty Group for $relation, return empty array()
-		if(is_null($group)) return array();
+		if(is_null($group) || empty($group->fields)) return array();
 
 		$fields = FieldModel::whereIn('id', $group->fields)->get();
 
@@ -169,7 +169,7 @@ class Builder
 	{
 		$group = $this->getGroupData($relation);
 
-		if(is_null($group)) return true;
+		if(is_null($group) || empty($group->fields)) return true;
 
 		$fields = FieldModel::whereIn('id', $group->fields)->get();
 
@@ -208,7 +208,7 @@ class Builder
 	{
 		$group = $this->getGroupData($relation);
 
-		if(is_null($group)) return true;
+		if(is_null($group) || empty($group->fields)) return true;
 
 		$fields = FieldModel::whereIn('id', $group->fields)->get();
 
@@ -264,7 +264,7 @@ class Builder
 	{
 		$group = $this->getGroupData($relation);
 
-		if(is_null($group)) return true;
+		if(is_null($group) || empty($group->fields)) return true;
 
 		$group_id = (int) $group->id;
 		$model_id = (int) $model->id;
@@ -286,7 +286,7 @@ class Builder
 	{
 		$group = $this->getGroupData($relation);
 
-		if(is_null($group)) return $model;
+		if(is_null($group) || is_null($model)) return $model;
 
 		$group_id = (int) $group->id;
 
@@ -295,10 +295,24 @@ class Builder
 									->get()->toArray();
 		$data = array();
 		foreach ($fields as $f) {
-			$data[$f['field_name']] = htmlspecialchars_decode($f['field_value']);
+			$event = 'field.'.$f['field_name'].'.value.hook';
+
+			$original = htmlspecialchars_decode($f['field_value']);
+
+			if (\Event::has($event)) {
+
+				$value = \Event::first($event, array($f['field_value']));
+
+				if(is_null($value)) {
+					$value = $original;
+				}
+				$original = $value;
+			}
+
+			$data[$f['field_name']] = $original;
 		}
 
-		$model->{$key} = $data;
+		$model->{$key} = new \Field\Model\Data($data);
 
 		return $model;
 	}

@@ -22,7 +22,7 @@ class FieldGroupTable
 				'delete' => array(
 						'title' => 'Table Delete',
 						'icon' => 'icon-remove',
-						'btn-class' => 'btn btn-red'
+						'btn-class' => 'btn btn-red confirm_delete'
 					)
 			);
 

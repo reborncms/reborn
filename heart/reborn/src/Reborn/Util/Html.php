@@ -63,6 +63,54 @@ class Html
 	}
 
 	/**
+	 * Html img tag
+	 *
+	 * @param string $src Image source file
+	 * @param string|null $alt Alternative text
+	 * @param array $attrs Img tag attribtues
+	 * @return string
+	 **/
+	public static function img($src, $alt = null, $attrs = array(), $reborn = false)
+	{
+		if (is_array($alt)) {
+			if (is_bool($attrs)) {
+				$reborn = $attrs;
+			}
+			$attrs = $alt;
+			$alt = null;
+		}
+
+		if(is_bool($alt)) {
+			$reborn = $alt;
+			$alt = null;
+		}
+
+		$attrs['src'] = $reborn ? rbUrl('media/image/'.$src) : $src;
+
+		if(!is_null($alt)) {
+			$attrs['alt'] = $alt;
+		}
+
+		return static::tag('img', '', $attrs);
+	}
+
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author
+	 **/
+	protected static function makeTableWithKey($data)
+	{
+		$content = '';
+
+		foreach ($data as $k => $v) {
+			$content .= '<tr>';
+			$content .= '</tr>';
+		}
+	}
+
+	/**
 	 * HTML Unorder List Tag. (<ul>)
 	 *
 	 * @param array $lists_array
@@ -71,6 +119,8 @@ class Html
 	 **/
 	public static function ul($lists_array, $options = array())
 	{
+		if (empty($lists_array)) return null;
+
 		$lists = static::li($lists_array);
 
 		return static::tag('ul', "\n".$lists."\n", $options);
@@ -85,6 +135,8 @@ class Html
 	 **/
 	public static function ol($lists_array, $options = array())
 	{
+		if (empty($lists_array)) return null;
+
 		$lists = static::li($lists_array);
 
 		return static::tag('ol', "\n".$lists."\n", $options);

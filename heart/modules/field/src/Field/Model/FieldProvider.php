@@ -34,4 +34,20 @@ class FieldProvider
 		return $field->save();
 	}
 
+	/**
+	 * Delete field_data
+	 *
+	 * @param int $id Field Id
+	 * @return void
+	 **/
+	public function delete($id)
+	{
+		// First delete field_data where field_id = $id
+		$fields = FieldData::where('field_id', $id)->get();
+
+		foreach ($fields as $f) {
+			$f->delete();
+		}
+	}
+
 } // END class FieldProvider
