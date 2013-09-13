@@ -182,13 +182,13 @@ class Builder
 		$builder = $this;
 		$fields->each(function($f) use(&$inserts, $group_id, $model_id, $builder) {
 			if($ins = $builder->getTypeInstance($f->field_type)) {
-				if ( $ins->preSaveCheck($f) ) {
+				if ( $val = $ins->preSaveCheck($f) ) {
 					$inserts[] = array(
 							'field_id' => (int) $f->id,
 							'post_id' => $model_id,
 							'group_id' => $group_id,
 							'field_name' => $f->field_name,
-							'field_value' => Input::get($f->field_slug)
+							'field_value' => $val
 						);
 				}
 			}
@@ -225,13 +225,13 @@ class Builder
 				$data = isset($field_data[$f->id]) ? $field_data[$f->id] : null;
 				if (is_null($data)) {
 					// Need to save for new data
-					if ( $ins->preSaveCheck($f) ) {
+					if ( $val = $ins->preSaveCheck($f) ) {
 						$inserts[] = array(
 								'field_id' => (int) $f->id,
 								'post_id' => $model_id,
 								'group_id' => $group_id,
 								'field_name' => $f->field_name,
-								'field_value' => Input::get($f->field_slug)
+								'field_value' => $val
 							);
 					}
 				} elseif ( $val = $ins->preUpdateCheck($f, $data) ) {

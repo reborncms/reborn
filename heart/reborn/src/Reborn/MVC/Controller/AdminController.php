@@ -149,6 +149,7 @@ class AdminController extends Controller
         $toolbar = \Module::moduleToolbar($this->module);
         $this->template->set('modToolbar', $toolbar);
         $module = \Module::getData($this->module);
+
         $this->template->set('module', $module);
 
         $start_year = '2012';

@@ -225,6 +225,22 @@ if(! function_exists('arr_to_object'))
 }
 
 /**
+ * Check given string is Json or not.
+ * This function is original from
+ * http://stackoverflow.com/questions/6041741/fastest-way-to-check-if-a-string-is-json-in-php
+ *
+ * @param string $string
+ * @return boolean
+ **/
+if(! function_exists('is_json')) {
+	function is_json($string)
+	{
+		json_decode($string);
+		return (json_last_error() == JSON_ERROR_NONE);
+	}
+}
+
+/**
  * Helper function fto remove baseUrl from given url
  *
  * @param string $url

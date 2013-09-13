@@ -109,7 +109,7 @@ abstract class AbstractType
 			return isset($res[0]) ? $res[0] : false;
 		}
 
-		return true;
+		return is_array($value) ? json_encode($value) : $value;
 	}
 
 	/**
@@ -124,6 +124,8 @@ abstract class AbstractType
 		$key = $field->field_slug;
 
 		$new_value = Input::get($key);
+
+		$new_value = is_array($new_value) ? json_encode($new_value) : $new_value;
 
 		if ('' == $new_value) return false;
 
