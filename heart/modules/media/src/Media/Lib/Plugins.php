@@ -40,7 +40,7 @@ class Plugins
     {
         $files = Files::where('folder_id', '=', $id)->get();
 
-        return ($json) ? $files->toJson() : $file;
+        return ($json) ? json_encode($files->toJson()) : $file;
     }
 
     /**
