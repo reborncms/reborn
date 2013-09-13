@@ -383,7 +383,7 @@ class Form
             $checked = array('checked' => 'checked');
             $attrs = array_merge($attrs, $checked);
         }
-        return static::input($name, null, 'checkbox', $attrs);
+        return static::input($name, $value, 'checkbox', $attrs);
     }
 
     /**
