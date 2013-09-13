@@ -9,6 +9,7 @@ return array(
 				'wysiwyg' => 'Field\Type\Wysiwyg',
 				'image' => 'Field\Type\Image',
 				'datepicker' => 'Field\Type\Datepicker',
-				'checkbox' => 'Field\Type\Checkbox'
+				'checkbox' => 'Field\Type\Checkbox',
+				'checkbox_group' => 'Field\Type\Ckgroup'
 			)
 	);
