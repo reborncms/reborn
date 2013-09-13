@@ -40,6 +40,7 @@ jQuery(function() {
 					var icon = widget.find('a.widget_add_btn i');
 					var link = widget.children('a');
 					link.attr('href', SITEURL + ADMIN + '/widgets/remove/' + obj.id);
+					widget.attr('id', obj.id);
 					widget.find('a.widget-info').remove();
 					link.removeClass('widget_add_btn').addClass('widget_remove_btn');
 					icon.removeClass('icon-circleplus').addClass('icon-circleminus');
