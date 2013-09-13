@@ -7,7 +7,7 @@
                 <div class="form-block first-block" id="title-slug">
                     {{ Form::label(t('blog::blog.title').'<span class="required"></span>','title') }}
                     <div class="form-right-block">
-                        <span class="msg error">{{ $val_errors['title'] }}</span>
+                        <span class="msg error">{{ $blog->errors('title') }}</span>
                         {{ Form::input('title', isset($blog->title) ? $blog->title : '' ,'text',array('class' => 'xx-large', 'id' => 'form_title', 'required' => 'required')) }}
                     </div> <!-- end of form-right-block -->
                 </div> <!-- end of form-block -->
@@ -15,13 +15,13 @@
                 <div class="form-block first-block" id="title-slug">
                     {{ Form::label(t('blog::blog.slug').'<span class="required"></span>','slug') }}
                     <div class="form-right-block">
-                        <span class="msg error" id="slug_error">{{ $val_errors['slug'] }}</span>
+                        <span class="msg error" id="slug_error">{{ $blog->errors('slug') }}</span>
                         {{ Form::input('slug', isset($blog->slug) ? $blog->slug : '','text',array('class' => 'xx-large', 'id' => 'form_slug', 'required' => 'required')) }}
                     </div> <!-- end of form-right-block -->
                 </div> <!-- end of form block -->
                 
                 <div class="form-block">
-                    <span class="msg error">{{ $val_errors['body'] }}</span>
+                    <span class="msg error">{{ $blog->errors('body') }}</span>
 					{{ Form::ckeditor('body', isset($blog->body) ? $blog->body : '') }}
                 </div> <!-- end of form-block -->
                 <div class="form-block">
@@ -70,7 +70,7 @@
                     </a>
 
                     <div class="r-i-b-h">
-                        {{ Form::input('blog_tag', isset($blog->tags) ? $blog->tags : '', 'text', array('class' => 'thin large', 'id' => 'tags')) }}
+                        {{ Form::input('blog_tag', $blog->tags_val, 'text', array('class' => 'thin large', 'id' => 'tags')) }}
                         <p>{{ t('blog::blog.tag_help') }}</p>
                     </div>
 
@@ -148,19 +148,7 @@
                     </a>
 
                     <div class="r-i-b-h">
-                        {{ if ($method == 'edit' and $blog->attachment != null) }}
-                            <div id="featured_preview">
-                                <img id='featured_image' src='{{ $blog->attachment }}'>
-                            </div>
-                            {{ Form::hidden('featured_id', $blog->attachment) }}
-                            <a href="{{ adminUrl('media/featureImage') }}" id="featured_add_btn" style="display:none"><i class="icon-circleplus icon-12 icon-gray"></i>{{ t('blog::blog.add_featured_img') }}</a>
-                            <a href="javascript:void(0);" id="featured_remove_btn"><i class="icon-circleminus icon-12 icon-gray"></i>{{ t('blog::blog.remove_featured_img') }}</a>
-                        {{ else }}
-                            <div id="featured_preview"></div>
-                            {{ Form::hidden('featured_id') }}
-                            <a href="{{ adminUrl('media/featureImage') }}" id="featured_add_btn"><i class="icon-circleplus icon-12 icon-gray"></i>{{ t('blog::blog.add_featured_img') }}</a>
-                            <a href="javascript:void(0);" id="featured_remove_btn" style="display:none"><i class="icon-circleminus icon-12 icon-gray"></i>{{ t('blog::blog.remove_featured_img') }}</a>
-                        {{ endif }}
+                        {{ Form::thumbnail('attachment', $blog->attachment, array('add' => t('blog::blog.add_featured_img'), 'remove' => t('blog::blog.remove_featured_img'))) }}
                     </div>
 
                 </div> <!-- end of div.r-container -->
