@@ -77,7 +77,7 @@ $(function(){
 
 			for(var i = 0; i < selected.length; i++) {
 				$.ajax({
-					url: SITEURL + ADMIN + '/media/delete/file/' + selected[i]
+					url: SITEURL + ADMIN + '/media/delete-file/' + selected[i]
 				});
 			}
 		}
