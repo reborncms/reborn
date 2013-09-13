@@ -189,10 +189,14 @@ class BlogController extends \AdminController
 					\Field::delete('blog', $blog);
 				}
 				$blog->delete();
-				\Module::load('Tag');
-				$tag = \Tag\Model\TagsRelationship::where('object_id', $id)
+				if (\Module::isEnabled('tag')) {
+					$tag = \Tag\Model\TagsRelationship::where('object_id', $id)
 													->where('object_name', 'blog')
 													->delete();
+				}
+				if (\Module::isEnabled('comment')) {
+					$comment_delete = \Comment\Lib\Helper::commentDelete($id, 'blog');
+				}
 				$blogs[] = "success";
 			}
 		}

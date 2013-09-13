@@ -255,6 +255,9 @@ class PagesController extends \AdminController
         $page_delete = $page->delete();
 
         if ($page_delete) {
+            if (\Module::isEnabled('comment')) {
+                $comment_delete = \Comment\Lib\Helper::commentDelete($id, 'pages');
+            }
             $child_pages = Pages::where('parent_id', '=', $id)->get();
             foreach ($child_pages as $child) {
                 $child_page = Pages::find((int) $child->id);

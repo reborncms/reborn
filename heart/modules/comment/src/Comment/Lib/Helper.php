@@ -145,4 +145,15 @@ class Helper
 		return $widget;
 	}
 
+	/**
+	 * Delete comment if comment delete
+	 *
+	 * @return boolean
+	 **/
+	public static function commentDelete($id, $type) 
+	{
+		$comment_delete = Comment::where('content_id', $id)->where('module', $type)->delete();
+		return true;
+	}
+
 }
