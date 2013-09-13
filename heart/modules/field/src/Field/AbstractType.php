@@ -125,6 +125,8 @@ abstract class AbstractType
 
 		$new_value = Input::get($key);
 
+		$new_value = is_array($new_value) ? json_encode($new_value) : $new_value;
+
 		if ('' == $new_value) return false;
 
 		// Same value, not need to update
