@@ -140,7 +140,13 @@ class Html
 
 		foreach ($list_array as $li) {
 			if (is_array($li)) {
-				$list .= '<li>'.static::{$type}($li).'</li>';
+				// Fixed for PHP5.3.*
+				if ('ol' == $type) {
+					$content = static::ol($li);
+				} else {
+					$content = static::ul($li);
+				}
+				$list .= '<li>'.$content.'</li>';
 			} else {
 				$list .= static::tag('li', "\n".$li."\n", $options);
 			}

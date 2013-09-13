@@ -1,0 +1,9 @@
+<div class="blog_single">
+	<h2 class="page_title">{{ $page->title }}</h2>
+
+	{{ $page->content }}
+
+	{{ if (\Module::isEnabled('comment')) }}
+	{{ Comment::get($page->id, 'pages', $page->comments_enable) }}
+	{{ endif }}
+</div>

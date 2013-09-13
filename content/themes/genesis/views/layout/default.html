@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	{{ include:metadata }}
+</head>
+<body>
+
+	{{ include:header }}
+
+	<div id="main">
+
+		<div id="breadcrumb" class="container clearfix">
+			You are Here! : {{ breadcrumb }}
+		</div>
+
+		<div class="container clearfix">
+
+			<div id="content">
+				{{ $layoutBody }}
+			</div>
+
+			<div class="sidebar">
+				{{ widgetArea:sidebar }}
+			</div>
+
+		</div>
+	</div>
+
+	{{ include:footer }}
+
+</body>
+</html>
