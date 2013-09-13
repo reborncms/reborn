@@ -5,8 +5,8 @@
 	{= $name = (isset($folderData)) ? $folderData->name : '' =}
 	{= $description = (isset($folderData)) ? $folderData->description : '' =}
 	{= $folderId = (isset($parentId)) ? $parentId : $folderData->folderId =}
-	{= $btnValue = (isset($folderData)) ? \Translate::get('m.btn.update') :
-		\Translate::get('m.btn.create') =}
+	{= $btnValue = (isset($folderData)) ? t('media::media.btn.update') :
+		t('media::media.btn.create') =}
 
 	{{ Form::start(adminUrl("media/$url/"), $formName, false, array('class' => 'form')) }}
 
@@ -16,36 +16,36 @@
 		{{ endif }}
 
 		<div class="form-block">
-			{{ Form::label(Translate::get('m.lbl.folderName'), 'name') }}
+			{{ Form::label(t('media::media.lbl.folderName'), 'name') }}
 			<div class="form-right-block">
 				{{ Form::input('name', $name, 'text', array('class' => 'medium thin required')) }}
 				{= $display = isset($error['name']) ? 'auto' : 'none' =}
 				<span class="msg error" style="display: {{ $display }};">
-					{{ Translate::get('m.warning.require') }}
+					{{ t('media::media.warning.require') }}
 				</span>
-				<p>{{ Translate::get('m.info.folderName') }}</p>
+				<p>{{ t('media::media.info.folderName') }}</p>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form-block -->
 
 		<div class="form-block">
-			{{ Form::label(Translate::get('m.lbl.desc'), 'description') }}
+			{{ Form::label(t('media::media.lbl.desc'), 'description') }}
 			<div class="form-right-block">
 				{{ Form::textarea('description', $description, array('class' => 'medium')) }}
-				<p>{{ Translate::get('m.info.folderDesc') }}</p>
+				<p>{{ t('media::media.info.folderDesc') }}</p>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form-block -->
 
 		<div class="form-block">
-			{{ Form::label(Translate::get('m.lbl.chofol'), 'folder_id') }}
+			{{ Form::label(t('media::media.lbl.chofol'), 'folder_id') }}
 			<div class="form-right-block">
 				<select name="folder_id" class="medium required" id="folder_id">
-					<option value="0">{{ \Translate::get('m.lbl.none') }}</option>
+					<option value="0">{{ t('media::media.lbl.none') }}</option>
 					{{ folderTree($allFolders, 0, 0, $folderId) }}
 	            </select>
 	            <span class="msg error" style="display: none;">
-					{{ Translate::get('m.warning.require') }}
+					{{ t('media::media.warning.require') }}
 				</span>
-	            <p>{{ Translate::get('m.info.choFolder') }}</p>
+	            <p>{{ t('media::media.info.choFolder') }}</p>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form-block -->
 
