@@ -25,13 +25,13 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		$mod_toolbar = array(
 				'links'	=> array(
 					'url'	=> 'navigation',
-					'name'	=> t('nav.toolbar.link'),
-					'info'	=> t('nav.toolbar.link_info')
+					'name'	=> t('navigation::navigation.toolbar.link'),
+					'info'	=> t('navigation::navigation.toolbar.link_info')
 				),
 				'group'	=> array(
 					'url'	=> 'navigation/group',
-					'name'	=> t('nav.toolbar.group'),
-					'info'	=> t('nav.toolbar.group_info')
+					'name'	=> t('navigation::navigation.toolbar.group'),
+					'info'	=> t('navigation::navigation.toolbar.group_info')
 				));
 
 		return $mod_toolbar;

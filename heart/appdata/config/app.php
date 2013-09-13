@@ -72,9 +72,9 @@ return array(
 	'module' => array(
 			'cores' => array(
 					'admin', 'blog', 'comment', 'contact', 'media', 'module',
-					'navigation', 'pages', 'setting', 'tag', 'user'
+					'navigation', 'pages', 'setting', 'tag', 'user', 'field'
 				),
-			'system' => array('admin', 'pages', 'navigation', 'user', 'module', 'setting'),
+			'system' => array('admin', 'pages', 'navigation', 'user', 'module', 'setting', 'field'),
 		),
 
 	/**

@@ -38,7 +38,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 			),
 			'create' => array(
 				'url' => 'field/create',
-				'name' => 'Create',
+				'name' => 'Create Field',
 				'info' => 'Create new field',
 				'class' => ''
 			),
