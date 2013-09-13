@@ -72,27 +72,3 @@ function insert()
 
 	$.colorbox.close();
 }
-
-function imgPreview(id, name, alt, width, height)
-{
-	$('#m_preview_area').show('fast');
-
-	var src = SITEURL + "media/image/"+id+"/185/";
-	var current = $('#img_set_preview img').attr('src');
-	var hiddenField = "<input type='hidden' id='image_url' value='"+id+"/'>";
-
-	if (current) {
-		if (src != current) {
-			$('#img_set_preview img').remove();
-			$('#img_set_preview #image_url').remove();
-			$('#img_set_preview p').remove();
-		} else { return; }
-	}
-
-	$('#img_set_preview').append("<img src='"+src+"'>");
-	$('#img_set_preview').append('<p>'+name+'</p>');
-	$('#img_set_preview').append(hiddenField);
-	$('#width').val(width);
-	$('#height').val(height);
-	$('#fileId').val(id);
-}

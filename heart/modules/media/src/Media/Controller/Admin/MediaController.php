@@ -487,42 +487,6 @@ class MediaController extends \AdminController
 
 
 
-
-
-
-    /**
-     * Set feature image (eg.blog featured image)
-     *
-     * @return void
-     * @param int $folderId
-     * @author RebornCMS Development Team
-     **/
-    public function featureImage($folderId = 0)
-    {
-        $ajax = false;
-        # @TODO - Do more flexible
-        $images = Files::where('folder_id', '=', $folderId)
-                            ->whereIn('mime_type', array(
-                                'image/jpeg', 'image/gif', 'image/png',
-                                'image/tiff', 'image/bmp'))
-                            ->get();
-
-        $allFolders = Folders::all();
-
-        if ($this->request->isAjax()) {
-            $this->template->partialOnly();
-            $ajax = true;
-        }
-
-        $this->template->title(\Translate::get('m.ext.featureTitle'))
-                        ->set('ajax', $ajax)
-                        ->set('images', $images)
-                        ->set('allFolders', $allFolders)
-                        ->setPartial('admin'.DS.'outside'.DS.'featuredImage');
-    }
-
-
-
     # # # # # # # # # # # Public function for WYSIWYG # # # # # # # # # #
 
     /**
@@ -530,9 +494,26 @@ class MediaController extends \AdminController
      *
      * @author RebornCMS Development Team
      **/
-    public function rbCK()
+    public function rbCK($folderId = 0)
     {
-        $args = func_get_args();
+        $meta = $this->template->partialRender('ck/meta');
+        $actionbar = $this->template->partialRender('ck/actionbar');
+
+        $images = Files::where('folder_id', '=', $folderId)
+                            ->whereIn('mime_type', array(
+                                'image/jpeg', 'image/gif', 'image/png',
+                                'image/tiff', 'image/bmp'))
+                            ->get();
+
+        $this->template->title(t('media::media.ext.insertTitle'))
+                        ->set('meta', $meta)
+                        ->set('actionbar', $actionbar)
+                        ->set('current', $folderId)
+                        ->set('images', $images)
+                        ->partialOnly()
+                        ->setPartial('ck/ck');
+
+        /*$args = func_get_args();
 
         $folder_id = (empty($args)) ? 0 : $args[0];
 
@@ -559,7 +540,7 @@ class MediaController extends \AdminController
                         ->set('footer', $footer)
                         ->set('btnsBar', $btnsBar)
                         ->set('ajax', true)
-                        ->setPartial('admin/plugin/ck');
+                        ->setPartial('admin/plugin/ck');*/
     }
 
     /**

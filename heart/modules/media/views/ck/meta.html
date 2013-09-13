@@ -1,0 +1,17 @@
+	<script type="text/javascript">
+		var ADMIN = '{{ $adminUrl }}',
+			SITEURL = '{{ rbUrl() }}';
+	</script>
+
+	{{ less('import.less') }}
+	{{ css('chosen.css', 'all', 'media') }}
+	{{ css('media.css', 'all', 'media') }}
+
+	{{ js('jquery.min.js') }}
+	{{ js('plugins/jquery-plugins.js') }}
+	{{ js('plugins/jquery-ui.min.js') }}
+	{{ js('plugins/jquery.colorbox.js') }}
+	{{ js('reborn.js') }}
+	{{ js('plugins.js', 'media') }}
+	{{ js('ck.js', 'media') }}
+	{{ js('wysiwyg.js', 'media') }}

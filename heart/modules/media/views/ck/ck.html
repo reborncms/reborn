@@ -1,7 +1,12 @@
-<div id="thumbnail-wrap">
+{{ ifset ($meta) }}
+	{{ $meta }}
+{{ endif }}
+
+<div id="m-ck-wrap" class="clearfix">
 	
-	{{ ifset ($actionBar) }}
-		{{ $actionBar }}
+	
+	{{ ifset ($actionbar) }}
+		{{ $actionbar }}
 	{{ endif }}
 
 	<div id="m-thumb-media-wrap">
@@ -76,15 +81,6 @@
 			</div> <!-- end of m-thumb-body -->
 
 		</div> <!-- end of m-thumb-ajax-wrap -->
-
 	</div> <!-- end of m-thumb-media-wrap -->
 
-</div> <!-- end of thumbnail-wrap -->
-
-{{ if ($ajax) }}
-	{{ css('chosen.css', 'all', 'media') }}
-	{{ css('media.css', 'all', 'media') }}
-	{{ js('plugins.js', 'media') }}
-	{{ js('setthumbnail.js', 'media') }}
-	{{ js('media.js', 'media') }}
-{{ endif }}
+</div> <!-- end of m-ck-wrap -->

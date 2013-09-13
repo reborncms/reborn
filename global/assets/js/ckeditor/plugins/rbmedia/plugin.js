@@ -16,6 +16,6 @@ CKEDITOR.plugins.add('rbmedia', {
 			command: pluginName,
 			icon: this.path + 'img/rbmedia.png'
 		});
-		CKEDITOR.dialog.addIframe( 'rbmedia', 'Insert Image', SITEURL + ADMIN + '/media/rbCK/', 750, 400);
+		CKEDITOR.dialog.addIframe( 'rbmedia', 'Insert Image', SITEURL + ADMIN + '/media/rbCK/', 850, 400);
 	}
 });

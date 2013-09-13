@@ -252,6 +252,8 @@
 #m-thumb-option-pane {
 	width: 30%;
 	padding-right: 10px;
+	height: 340px;
+	overflow: auto;
 }
 
 .m-thumb-option {
@@ -276,6 +278,8 @@
 
 #m-thumb-body {
 	width: 68%;
+	height: 340px;
+	overflow: auto;
 }
 
 .m-thumbs {
@@ -293,4 +297,10 @@
 #m-thumb-preview-wrap p {
 	text-align: center;
 	word-wrap: break-word;
+}
+
+/* ===== CK ===== */
+#m-ck-wrap {
+	background: #fff;
+	min-height: 390px;
 }
