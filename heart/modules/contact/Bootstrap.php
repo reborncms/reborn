@@ -62,6 +62,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 	public function settings()
 	{
+		if(\Module::isEnabled('Contact')) {
 		\Module::load('Contact');
 
 		return array(
@@ -100,6 +101,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 				'options' => $data = Lib\Helper::getSlug()
 				)
 			);
+		}
 	}
 
 	public function register()
