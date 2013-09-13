@@ -1,7 +1,13 @@
 <div id="action-bar" class='clearfix'>
 	
 	<div id="searcher" class='f-left'>
-		<input id="media_search" type='text' placeholder='Type to search'></input>
+
+		{{ Form::start(adminUrl('media/search/'), 'search', false) }}
+
+			<input id="media_search" name="keyword" type='text' placeholder='Type to search'></input>
+
+		{{ Form::end() }}
+
 	</div> <!-- end of searcher -->
 
 	<div id="changer" class='f-left'>

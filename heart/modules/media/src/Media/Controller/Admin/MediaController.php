@@ -342,6 +342,10 @@ class MediaController extends \AdminController
 
         $folders = Folders::with(array('folder', 'user'))->where('folder_id', '=', $id)->get();
 
+        if ($files->isEmpty() and $folders->isEmpty()) {
+            $this->template->set('isEmpty', true);
+        }
+
         $actionBar = $this->template->set('currentFolder', 0)
                         ->set('selected', $id)
                         ->partialRender('admin/actionbar');
@@ -485,6 +489,27 @@ class MediaController extends \AdminController
                         ->setPartial('admin'.DS.'plugin'.DS.'thumbnail');
     }
 
+
+    public function search()
+    {
+        if (!\Input::isPost()) {
+            return \Redirect::toAdmin('media');
+        }
+
+        $keyword = \Input::get('keyword');
+        $files = Files::make()->contain('name', $keyword)->get();
+
+        $actionBar = $this->template->partialRender('admin/actionbar');
+
+        if ($files->isEmpty()) {
+            $this->template->set('isEmpty', true);
+        }
+
+        $this->template->title(t('media::media.title.title'))
+                        ->set('files', $files)
+                        ->set('actionBar', $actionBar)
+                        ->setPartial('admin/index');
+    }
 
 
     # # # # # # # # # # # Public function for WYSIWYG # # # # # # # # # #
