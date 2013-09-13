@@ -47,33 +47,21 @@ class PagesController extends \AdminController
 
         $page = new Pages;
 
-        $val_errors = new \Reborn\Form\ValidationError();
-
         if (\Input::isPost()) {
 
-            $validation = self::validate();
+            $page = self::setValues('create');
 
-            if ($validation->valid()) {
+            if ($page->save()) {
 
-                $page_insert = self::saveValues('create');
+                \Event::call('reborn.page.create');
+                \Flash::success(t('pages::pages.messages.success.add'));
 
-                if ($page_insert) {
-
-                    \Event::call('reborn.page.create');
-                    \Flash::success(t('pages::pages.messages.success.add'));
-
-                    return \Redirect::to(adminUrl('pages'));
-                }
-            } else {
-                $val_errors = $validation->getErrors();
+                return \Redirect::to(adminUrl('pages'));
             }
-            $page = \Input::get('*');
-            $this->template->set('page',$page);
         }
         self::formElements();
         $this->template->title('Create Page')
                     ->set('method','create')
-                    ->set('errors', $val_errors)
                     ->set('page', $page)
                     ->setPartial('admin/form');
     }
@@ -90,32 +78,23 @@ class PagesController extends \AdminController
                 return $this->notFound();
         }
 
-        $val_errors = new \Reborn\Form\ValidationError();
+        $page = Pages::find($id);
 
         if (\Input::isPost()) {
-            $validation = self::validate();
 
-            if ($validation->valid()) {
-                //get parent id
-                $page_insert = self::saveValues('edit', \Input::get('id'));
+            //get parent id
+            $page = self::setValues('edit', \Input::get('id'));
 
-                if ($page_insert) {
-                    \Flash::success(t('pages::pages.messages.success.edit'));
+            if ($page->save()) {
+                \Flash::success(t('pages::pages.messages.success.edit'));
 
-                    return \Redirect::to(adminUrl('pages'));
-                }
-            } else {
-                $val_errors = $validation->getErrors();
+                return \Redirect::to(adminUrl('pages'));
             }
-            $page = \Input::get('*');
-        } else {
-            $page = Pages::find($id);
         }
 
         self::formElements();
         $this->template->title('Edit Page')
                     ->set('method','edit')
-                    ->set('errors', $val_errors)
                     ->set('page', $page)
                     ->setPartial('admin/form');
     }
@@ -148,7 +127,7 @@ class PagesController extends \AdminController
      *
      * @return object
      **/
-    protected function saveValues($method, $id = null)
+    protected function setValues($method, $id = null)
     {
         if ($method == 'create') {
             $page = new Pages;
@@ -201,13 +180,15 @@ class PagesController extends \AdminController
         $page->status = $status;
         $page->author_id = $current_user->id; //get author_id
 
-        $page_save = $page->save();
+        return $page;
+
+        /*$page_save = $page->save();
 
         if ($page_save) {
             return $page->id;
         } else {
             return $page_save;
-        }
+        }*/
     }
 
     protected function slugDuplicateCheck($slug, $id)
@@ -239,12 +220,12 @@ class PagesController extends \AdminController
                         
                     }
                     if (\Input::get('id') == '') {
-                        $save = self::saveValues('create');
+                        $page = self::setValues('create');
                     } else {
-                        $save = self::saveValues('edit', \Input::get('id'));
+                        $page = self::setValues('edit', \Input::get('id'));
                     }
 
-                    if ($save) {
+                    if ($page->save()) {
                         return json_encode(array('status' => 'save', 'post_id' => $save, 'time' => sprintf(t('pages::pages.messages.success.autosave_on'), date('d - M - Y H:i A', time()))));
                     }
                 }

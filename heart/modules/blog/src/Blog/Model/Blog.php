@@ -12,6 +12,13 @@ class Blog extends \Eloquent
 
     protected $fillable = array('view_count');
 
+    protected $rules = array(
+        'title' => 'required|maxLength:250',
+        'slug' => 'required|maxLength:250',
+        'body' => 'required',
+        'comment_status' => 'alpha',
+    );
+
     /**
      * Blog Post Tags
      * @var array|null
@@ -71,7 +78,7 @@ class Blog extends \Eloquent
      */
     public function getFeatureImageAttribute()
     {
-        return rbUrl($this->attributes['attachment']);
+        return rbUrl('media/image/'.$this->attributes['attachment']);
     }
 
     /**
@@ -149,6 +156,11 @@ class Blog extends \Eloquent
     public function getTagsArrayAttribute()
     {
         return $this->getTags('arr');
+    }
+
+    public function getTagsValAttribute()
+    {
+        return \Tag\Lib\Helper::getTags($this->attributes['id'], 'blog');
     }
 
     public function getContentAttribute()

@@ -1,0 +1,26 @@
+<div id="header">
+
+	<div id="userbar">
+		<div class="container clearfix">
+
+			{{ flash() }}
+					
+			{{ widgetArea:header }}
+
+		</div>
+	</div>
+	
+	<div id="menubar" class="container clearfix">
+		<div id="logo" class="clearfix">
+			<h1>
+				<a href="{{ rbUrl() }}">{{ setting('site_title') }}</a> | <span id="slogan">{{ setting('site_slogan') }}</span>
+			</h1>
+		</div>
+
+		<nav>
+			{{ nav:header }}
+		</nav>
+
+	</div>
+
+</div>

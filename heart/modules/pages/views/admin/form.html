@@ -10,7 +10,7 @@
 				<div class="form-block">
 					{{ Form::label(t('pages::pages.labels.page_title').'<span class="required"></span>', 'title') }}
 					<div class="form-right-block">
-						<span class="msg error">{{ $errors['title'] }}</span>
+						<span class="msg error">{{ $page->errors('title') }}</span>
 						{{ Form::input('title', isset($page['title']) ? $page['title'] : '','text', array('class' => 'xx-large','required' => 'required','id' => 'form_title')) }}
 					</div> <!-- end of form-right-block --> 
 				</div> <!-- end of form block -->
@@ -18,7 +18,7 @@
 					{{ Form::label(t('pages::pages.labels.page_slug').'<span class="required"></span>', 'slug') }}
 					<div class="form-right-block">
 						<span class="msg error" id="slug_error" style="display:block;">
-							{{ $errors['slug'] }}
+							{{ $page->errors('slug') }}
 						</span>
 						{{ Form::input('slug', isset($page['slug']) ? $page['slug'] : '','text', array('class' => 'xx-large','required' => 'required','id' => 'form_slug')) }}
 					</div>

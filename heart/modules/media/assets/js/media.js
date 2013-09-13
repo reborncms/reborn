@@ -8,7 +8,7 @@ $(function(){
 		}
 	});
 
-	$('#folder_id').chosen();
+	$('#folder_id').chosen({ 'width' : '100%' });
 
 	$('#folder_id').chosen().change(function() {
 		if (0 != $(this).val()) {
@@ -16,6 +16,10 @@ $(function(){
 		} else {
 			window.location.assign(SITEURL + ADMIN + '/media/');
 		}
+	});
+
+	$('.folder-thumb').dblclick(function(){
+		window.location.assign(SITEURL + ADMIN + '/media/explore/' + $(this).attr('data-id'));
 	});
 
 	$('#media_create_folder').colorbox({
@@ -29,19 +33,22 @@ $(function(){
 
 	var selected = [];
 
-	$('.ff-wrapper').bind('click', function(){
-		if (!$(this).hasClass('active-wrap')) {
-			$(this).addClass('active-wrap');
+	$('.thumb-body').bind('click', function(e){
 
-			selected.push($(this).attr('data-id'));
+		var parent = $(this).parent();
+
+		if (! $(parent).hasClass('active-wrap')) {
+			$(parent).addClass('active-wrap');
+
+			selected.push($(parent).attr('data-id'));
 
 			if (selected.length > 1) {
 				$('#media_main_action').show();
 			}
 		} else {
-			$(this).removeClass('active-wrap');
+			$(parent).removeClass('active-wrap');
 
-			var indexer = selected.indexOf($(this).attr('data-id'));
+			var indexer = selected.indexOf($(parent).attr('data-id'));
 
 			selected.splice(indexer, 1);
 
@@ -49,6 +56,18 @@ $(function(){
 				$('#media_main_action').hide();
 			}
 		}
+
+		$(parent).parent().addClass('clicked');
+	});
+
+	$(document).on('click', function(e) {
+
+		var clicked = $(e.target);
+		if (! clicked.parents().hasClass("clicked")){
+			$('.thumb-body').parent().removeClass('active-wrap');
+			selected = [];
+		}
+
 	});
 
 	$('#media_main_delete').bind('click', function(){

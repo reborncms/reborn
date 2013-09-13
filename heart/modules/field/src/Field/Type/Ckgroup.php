@@ -55,7 +55,7 @@ FIELD;
 			$default[] = trim($val);
 		}
 
-		$value = ($value !== null) ? $value : $default;
+		$value = $value ? $value : $this->getValue($key, $default);
 
 		$ckgroup= \Form::ckboxGroup($field->field_slug ,$options, $value);
 
