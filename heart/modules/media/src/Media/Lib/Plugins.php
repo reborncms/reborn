@@ -2,8 +2,8 @@
 
 namespace Media\Lib;
 
-use Media\Model\MediaFolders as MFolders;
-use Media\Model\MediaFiles as MFiles;
+use Media\Model\Folders;
+use Media\Model\Files;
 
 /**
  * Plugins class for media module.
@@ -14,41 +14,47 @@ use Media\Model\MediaFiles as MFiles;
  **/
 class Plugins
 {
-
-    public static function featured()
+    /**
+     * Getting file
+     *
+     * @param mix $target Filename or id
+     *
+     * @return Object 
+     **/
+    public static function getFile($target, $json = false)
     {
-        dump($this->request, true);
-    }
+        $file = (is_numeric($target)) ? Files::find($target) : 
+                                Files::where('filename', '=', $target)->get();
 
-    public static function viewPdf($id, $type = 'link', $width = 600, $height = 780)
-    {
-        $file = MFiles::find($id);
-
-        $filePath = rbUrl() . date('Y', strtotime($file->created_at)) . DS
-            . date('m', strtotime($file->created_at)) . DS  . $file->filename;
-
-        $filePath = 'https://docs.google.com.viewer?url=' . rawurlencode($filePath);
-
-        $iframe = "<iframe src=".$filePath." width = '".$width."' height = '"
-            .$height."' style = 'border: none;'></iframe>";
-
-        return ($type == 'link') ? $filePath : $iframe;
+        return ($json) ? $file->toJson() : $file;
     }
 
     /**
-     * By using this method, can get files by name.
-     * **! Warnging !**
-     * Using this method is not good.
+     * Getting files by folder id
      *
-     * @param String $name File name
-     * @return Object 
-     * @author RebornCMS Development Team
+     * @param int $id folder id
+     *
+     * @return object
      **/
-    public static function getFileByName ($name)
+    public static function getFilesByFolderId($id, $json = false)
     {
-        $result = MFiles::where('name', '=', $name)->get();
+        $files = Files::where('folder_id', '=', $id)->get();
 
-        return $result;
+        return ($json) ? $files->toJson() : $file;
+    }
+
+    /**
+     * Getting folders by folder id
+     *
+     * @param int $id folder id
+     *
+     * @return void
+     **/
+    public static function getFoldersByFolderId($id, $json = false)
+    {
+        $folders = Folders::where('folder_id', '=', $id)->get();
+
+        return ($json) ? $folders->toJson() : $folders;
     }
 
     /**

@@ -229,3 +229,68 @@
 .dz-success-mark, .dz-error-mark, .dz-error-message, .dz-filename, .dz-size { display: none;}
 
 .dz-details { width: 160px; }
+
+/* ===== Thumbnail Image ===== */
+#thumb-action-bar {
+	/*border-bottom: 1px solid #dfdfdf;*/
+	box-shadow: 0 0 4px #f0f0f0;
+	padding: 10px;
+}
+
+#thumb-action-bar .btn-group a{
+	/*background: grey;
+	padding: 5px 10px;
+	margin: 0 5px;*/
+
+	width: 93px;
+	display: inline-block;
+	text-align: center;
+	padding: 5px 0;
+	font-size: 17px;
+}
+
+#m-thumb-option-pane {
+	width: 30%;
+	padding-right: 10px;
+}
+
+.m-thumb-option {
+	margin-bottom: 10px;
+}
+
+.m-thumb-option label {
+	width: 100%;
+	margin: 5px 0;
+	font-size: 14px;
+}
+
+#m-thumb-dimension input {
+	width: 48%;
+}
+
+#height {
+	margin-left: 10px;
+}
+
+
+
+#m-thumb-body {
+	width: 68%;
+}
+
+.m-thumbs {
+	cursor: pointer;
+	margin: 15px;
+}
+
+#m-thumb-preview-wrap {
+	width: 100%;
+	border: 1px solid #e0e0e0;
+	background: #f0f0f0;
+	padding: 5px;
+	display: none;
+}
+#m-thumb-preview-wrap p {
+	text-align: center;
+	word-wrap: break-word;
+}

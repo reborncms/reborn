@@ -10,17 +10,90 @@ namespace Media\Model;
  **/
 class Folders extends \Eloquent
 {
-
+	/**
+	 * Table name
+	 *
+	 * @access protected
+	 * @var string
+	 **/
     protected $table = 'media_folders';
 
+    /**
+     * Parent folder's data
+     *
+     * @return object Media\Model\Folders
+     **/
     public function folder()
     {
         return $this->belongsTo('Media\Model\Folders');
     }
 
+    /**
+     * Folder creater's data
+     *
+     * @return object User\Model\User
+     **/
     public function user()
     {
         return $this->belongsTo('User\Model\User');
+    }
+
+    /**
+     * Find parent folder
+     *
+     * @return object Media\Model\Folders
+     **/
+    public function parent()
+    {
+        return $this->hasOne('Media\Model\Folders', 'id', 'folder_id');
+    }
+
+    /**
+     * Find child Folders
+     *
+     * @return object Media\Model\Folders
+     **/
+    public function children()
+    {
+        return $this->hasMany('Media\Model\Folders', 'folder_id', 'id');
+    }
+
+    /**
+     * Getting folder tree
+     *
+     * @param int $id
+     *
+     * @return array $ids
+     **/
+    public function folderTreeIds($id)
+    {
+    	$result = static::find($id);
+
+    	$ids = array();
+
+    	$ids[] = $result->id;
+
+    	if ($result->children) {
+            $ids = $this->findChild($ids, $result->children);
+        }
+
+        return $ids;
+    }
+
+    public function findChild(&$id, $qw)
+    {
+        foreach ($qw as $q) {
+
+            if ($q->children) {
+                $id[] = $q->id;
+                $this->findChild($id, $q->children);
+            } else {
+               $id[] = $q->id;
+            }
+        }
+        
+
+        return $id;
     }
 
 } // END class MediaFolders

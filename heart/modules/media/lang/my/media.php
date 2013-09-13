@@ -40,6 +40,8 @@ return array(
 		'delete'	=> 'ဖျက်ရန်',
 		'upload'	=> 'ဖိုင်လ်ပို့မည်',
 		'create'	=> 'ဖိုလ်ဒါ တည်ဆောက်မည်',
+		'media'		=> 'Media',
+		'link'		=> 'Link',
 		),
 	'warning'	=> array(
 		'require'	=> 'ဖြည့်စွက်ရန်လိုအပ်ပါသည်',
@@ -75,7 +77,7 @@ return array(
 		'create'		=> 'ဖိုလ်ဒါ တစ်ခု တည်ဆောက်ရန်',
 		),
 	'ext'	=> array(
-		'featureTitle'	=> 'သရုပ်ပြပုံ ထည့်ခြင်း',
+		'thunbnail'	=> 'သရုပ်ပြပုံ ထည့်ခြင်း',
 		'insertTitle'	=> '',
 		'media'		=> 'ပုံရွေးမည်',
 		'mediaInfo'	=> 'ရှိပြီးသားပုံများထဲမှ ပြန်ရွေးရန်',
@@ -84,5 +86,10 @@ return array(
 		'link'		=> 'လင့်ခ်မှထည့်မည်',
 		'linkInfo'	=> 'တခြား ဝက်ဘ်ဆိုဒ်တစ်ခုခုမှ ပုံကို ထည့်ရန်',
 		'insert'	=> 'ထည့်မည်',
+		),
+	'tips'	=> array(
+		'choFromMedia'	=> 'Choose From Media',
+		'upload'	=> 'Upload New File',
+		'crossLink'	=> 'File link from other website'
 		),
 	);

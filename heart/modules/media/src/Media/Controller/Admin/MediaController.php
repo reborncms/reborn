@@ -138,6 +138,34 @@ class MediaController extends \AdminController
                         ->setPartial('admin'.DS.'form'.DS.'folder');
     }
 
+    /**
+     * Deleting folder or folders
+     *
+     * @param int $id Id of folder to be delete
+     *
+     * @return void
+     **/
+    public function deleteFolder ($id)
+    {
+        $result = with(new Folders)->folderTreeIds($id);
+
+        $files = Files::whereIn('folder_id', $result)->get(array('id'))->toArray();
+
+        if (! empty($files)) {
+            $this->deleteFile(array_pluck($files, 'id'), false);
+        }
+
+        Folders::destroy($result);
+
+        if ($this->request->isAjax()) {
+            return $this->json(array('status' => 'success'));
+        }
+
+        \Flash::success(t('media::media.success.folderDel'));
+
+        return \Redirect::toAdmin('media');
+    }
+
 # # # # # # # # # # Files # # # # # # # # # #
 
     /**
@@ -228,32 +256,7 @@ class MediaController extends \AdminController
                         ->setPartial('admin'.DS.'form'.DS.'upload');
     }
 
-    /**
-     * This method will explore folders
-     *
-     * @param int $id Folder it to be explore
-     *
-     * @return void
-     **/
-    public function explore($id)
-    {
-        $files = Files::with(array('folder', 'user'))->where('folder_id', '=', $id)->get();
-
-        $folders = Folders::with(array('folder', 'user'))->where('folder_id', '=', $id)->get();
-
-        $actionBar = $this->template->set('currentFolder', 0)
-                        ->set('selected', $id)
-                        ->partialRender('admin/actionbar');
-
-        $this->template->title(t('media::media.title.title'))
-                        ->set('current', $id)
-                        ->set('files', $files)
-                        ->set('folders', $folders)
-                        ->set('actionBar', $actionBar)
-                        ->setPartial('admin/index');
-    }
-
-    /**
+     /**
      * Can edit file data by using this method
      *
      * @param int $id File id to be edited
@@ -287,6 +290,68 @@ class MediaController extends \AdminController
 
         $this->template->title(\Translate::get('m.title.fileEdit'))
                         ->setPartial('admin' . DS . 'form' . DS . 'edit');
+    }
+
+    /**
+     * Deleting files
+     *
+     * @param int $id
+     * @param boolean $redirect
+     *
+     * @return void
+     **/
+    public function deleteFile($id, $redirect = true)
+    {
+        $ids = (array) $id;
+
+        $files = Files::whereIn('id', $ids)->get();
+
+        foreach ($files as $file) {
+            $path = UPLOAD . date('Y', strtotime($file->created_at)).DS
+                .date('m', strtotime($file->created_at)) . DS  . $file->filename;
+
+            if (\File::is($path)) \File::delete($path);
+
+            $file->delete();
+        }
+
+        if ($redirect) {
+            if ($this->request->isAjax()) {
+                return $this->json(array('status' => 'success'));
+            }
+
+            \Flash::success(t('media::media.success.fileDel'));
+
+            return \Redirect::toAdmin('media');
+        }
+
+        return true;
+
+    }
+
+    /**
+     * This method will explore folders
+     *
+     * @param int $id Folder it to be explore
+     *
+     * @return void
+     **/
+    public function explore($id)
+    {
+        $files = Files::with(array('folder', 'user'))->where('folder_id', '=', $id)->get();
+
+        $folders = Folders::with(array('folder', 'user'))->where('folder_id', '=', $id)->get();
+
+        $actionBar = $this->template->set('currentFolder', 0)
+                        ->set('selected', $id)
+                        ->partialRender('admin/actionbar');
+
+        $this->template->title(t('media::media.title.title'))
+                        ->set('current', $id)
+                        ->set('files', $files)
+                        ->set('folders', $folders)
+                        ->set('actionBar', $actionBar)
+                        ->setPartial('admin/index');
     }
 
     /**
@@ -370,79 +435,6 @@ class MediaController extends \AdminController
     }
 
     /**
-     * This method can be used to delete file or folder
-     *
-     * @return void
-     * @author
-     **/
-    public function delete($target, $id)
-    {
-        switch ($target) {
-            case 'file':
-                $file = Files::find($id);
-
-                if (!empty($file)) {
-
-                    $path = UPLOAD . date('Y', strtotime($file->created_at)).DS
-                        .date('m', strtotime($file->created_at)) . DS  . $file->filename;
-
-                    if (\File::is($path)) \File::delete($path);
-
-                    if ($file->delete()) {
-                        \Event::call('file_delete', $file);
-
-                        if ($this->request->isAjax()) {
-                            return $this->json(array('status' => 'success'));
-                        }
-
-                        \Flash::success(t('media::media.success.fileDel'));
-
-                        return \Redirect::toAdmin('media');
-                    }
-                }
-
-                break;
-
-            case 'folder':
-                $status = 'fail';
-
-                if (hasChild($id, 'folder')) {
-                    
-                } elseif (hasChild($id, 'file')) {
-
-                } else {
-                    $folder = Folders::find($id);
-
-                    if ($folder->delete()) {
-                        \Event::call('folder_delete', $folder);
-
-                        
-                    }
-
-                }
-
-                if ($this->request->isAjax()) {
-                    return $this->json(array('status' => $status));
-                }
-
-                if ('success' == $status) {
-                    \Flash::success(t('media::media.success.folderDel'));
-                } else {
-                    \Flash::error(t('media::media.success.folderDel'));
-                }
-
-                return \Redirect::toAdmin('media');
-
-                break;
-
-            default:
-                trigger_error("Wrong parameter [$target]");
-
-                break;
-        }
-    }
-
-    /**
      * Lazy method
      *
      * @return void
@@ -458,57 +450,45 @@ class MediaController extends \AdminController
 
 
 
-
-
-
     /**
-     * Folders can be deleted by using this method
+     * Inserting thumbnail images
      *
-     * @param int $id The id of the folder you wish to delete
+     * @param int $folderId 
+     *
      * @return void
-     * @author RebornCMS Development Team
      **/
-    public function deleteFolder($id)
+    public function thumbnail($folderId = 0)
     {
-        if ($this->hasChild($id)) {
-            $files = MFiles::where('folder_id', '=', $id)->get();
-            foreach ($files as $file) {
-                $this->deleteFile($file->id);
-            }
+         $images = Files::where('folder_id', '=', $folderId)
+                            ->whereIn('mime_type', array(
+                                'image/jpeg', 'image/gif', 'image/png',
+                                'image/tiff', 'image/bmp'))
+                            ->get();
 
-            $folders = MFolders::where('folder_id', '=', $id)->get();
-            foreach ($folders as $folder) {
-                $this->deleteFolder($folder->id);
-            }
-        }
-        $delFolder = MFolders::find($id);
-        $delFolder->delete();
+        
+
         if ($this->request->isAjax()) {
-            return $this->returnJson(array('success' => true));
+            $this->template->partialOnly();
+            $this->template->set('ajax', true);
+        } else {
+            $this->template->script('setthumbnail.js', 'media', 'footer');
+            $this->template->set('ajax', false);
         }
-        \Flash::success('m.success.folderDel');
+        
+        $actionBar = $this->template
+                        ->partialRender('admin'.DS.'plugin'.DS.'actionbar');
+
+        $this->template->title(t('media::media.ext.thumbnail'))
+                        ->set('actionBar', $actionBar)
+                        ->set('images', $images)
+                        ->set('allFolders', $this->allFolders)
+                        ->setPartial('admin'.DS.'plugin'.DS.'thumbnail');
     }
 
-    /**
-     * This method is for drag and drop
-     *
-     * @param int $id Id of dragged file
-     * @param int $folder_id Id of dropped folder
-     * @author RebornCMS Development Team
-     **/
-    public function changeDir($id, $folderId)
-    {
-        $updateData = MFiles::find($id);
 
-        $updateData->folder_id = $folderId;
-        $updateData->user_id = \Sentry::getUser()->id;
 
-        if ($updateData->save()) {
-            return $this->returnJson(array('success' => true));
-        }
-    }
 
-    # # # # # # # # # # Public Function for Files # # # # # # # # # #
+
 
     /**
      * Set feature image (eg.blog featured image)
@@ -643,32 +623,6 @@ class MediaController extends \AdminController
         return $folders;
     }
 
-    /**
-     * Check parent folder
-     *
-     * @param int $id Current folder id
-     * @author RebornCMS Development Team
-     **/
-    private function hasParent($id)
-    {
-        $exist = MFolders::where('id', '=', $id)->first();
-
-        return ($exist->folder_id != 0) ? true : false;
-    }
-
-    /**
-     * Check child folder
-     *
-     * @param int $id Folder id
-     * @author RebornCMS Development Team
-     **/
-    private function hasChild($id)
-    {
-        $folderExist = MFolders::where('folder_id', '=', $id)->first();
-        $fileExist = MFiles::where('folder_id', '=', $id)->first();
-
-        return (isset($folderExist->id) OR isset($fileExist)) ? true : false;
-    }
 
     # # # # # # # # # # Private functions for files # # # # # # # # # #
 

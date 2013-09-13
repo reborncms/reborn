@@ -40,6 +40,8 @@ return array(
 		'delete'	=> 'Delete',
 		'upload'	=> 'Upload',
 		'create'	=> 'Create Folder',
+		'media'		=> 'Media',
+		'link'		=> 'Link',
 		),
 	'warning'	=> array(
 		'require'	=> 'Required',
@@ -75,7 +77,7 @@ return array(
 		'create'		=> 'Create New Folders',
 		),
 	'ext'	=> array(
-		'featureTitle'	=> 'Featurer Image',
+		'thumbnail'	=> 'Thumbnail Image',
 		'insertTitle'	=> 'Insert Image',
 		'media'		=> 'Media',
 		'mediaInfo'	=> 'Choose From Media Manager',
@@ -84,5 +86,11 @@ return array(
 		'link'		=> 'Link',
 		'linkInfo'	=> 'External Link',
 		'insert'	=> 'Insert',
+		),
+
+	'tips'	=> array(
+		'choFromMedia'	=> 'Choose from media',
+		'upload'	=> 'Upload New File',
+		'crossLink'	=> 'File link from other website'
 		),
 	);

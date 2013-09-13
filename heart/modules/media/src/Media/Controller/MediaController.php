@@ -46,7 +46,8 @@ class MediaController extends \PublicController
     public function image($target, $width = 0, $height = 0, $crop = false,
         $x = 0, $y = 0)
     {
-        $file = (is_int($target)) ? Files::find($target) : Files::where('filename',
+
+        $file = (is_numeric($target)) ? Files::find($target) : Files::where('filename',
             '=', $target)->first();
 
         if (empty($file)) {
