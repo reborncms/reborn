@@ -49,7 +49,11 @@ class PagesController extends \AdminController
 
         if (\Input::isPost()) {
 
-            $page = self::setValues('create');
+            if (\Input::get('id') != '') {
+                $page = self::setValues('edit', \Input::get('id'));
+            } else {
+                $page = self::setValues('create');
+            }
 
             if ($page->save()) {
 
@@ -214,7 +218,7 @@ class PagesController extends \AdminController
         if ($ajax) {
             if (\Input::isPost()) {
                 if ((\Input::get('title') == '') and (\Input::get('slug') == '') and (\Input::get('content') == '')) {
-                    return json_encode(array('status' => 'no_save'));
+                    return $this->returnJson(array('status' => 'no_save'));
                 } else {
                     if (\Input::get('name') == '') {
                         
@@ -226,7 +230,7 @@ class PagesController extends \AdminController
                     }
 
                     if ($page->save()) {
-                        return json_encode(array('status' => 'save', 'post_id' => $save, 'time' => sprintf(t('pages::pages.messages.success.autosave_on'), date('d - M - Y H:i A', time()))));
+                        return $this->returnJson(array('status' => 'save', 'post_id' => $page->id, 'time' => sprintf(t('pages::pages.messages.success.autosave_on'), date('d - M - Y H:i A', time()))));
                     }
                 }
             }

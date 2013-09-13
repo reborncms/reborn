@@ -70,7 +70,12 @@
                     </a>
 
                     <div class="r-i-b-h">
-                        {{ Form::input('blog_tag', $blog->tags_val, 'text', array('class' => 'thin large', 'id' => 'tags')) }}
+                        {{ if ($method == 'edit') }}
+                            {= $tags = $blog->tags_val =}
+                        {{ else }}
+                            {= $tags = '' =}
+                        {{ endif }}
+                        {{ Form::input('blog_tag', $tags, 'text', array('class' => 'thin large', 'id' => 'tags')) }}
                         <p>{{ t('blog::blog.tag_help') }}</p>
                     </div>
 

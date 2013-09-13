@@ -446,7 +446,7 @@ class BlogController extends \AdminController
 		if ($ajax) {
 			if (\Input::isPost()) {
 				if ((\Input::get('title') == '' ) and (\Input::get('slug') == '') and (\Input::get('body') == ''))  {
-					return json_encode(array('status' => 'no_save'));
+					return $this->returnJson(array('status' => 'no_save'));
 				} else {
 					if (\Input::get('id') == '') {
 						$blog = self::setValues('create');
@@ -456,7 +456,7 @@ class BlogController extends \AdminController
 					}
 
 					if ($blog->save()) {
-						return json_encode(array('status' => 'save', 'post_id' => $save, 'time' => sprintf(t('blog::blog.autosave_on'), date('d - M - Y H:i A', time()))));
+						return $this->returnJson(array('status' => 'save', 'post_id' => $blog->id, 'time' => sprintf(t('blog::blog.autosave_on'), date('d - M - Y H:i A', time()))));
 					}
 
 				}

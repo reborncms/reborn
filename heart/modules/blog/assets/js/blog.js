@@ -57,7 +57,7 @@
 				type: 'POST',
 				data:$('.blog_form').serialize(),
 				success: function(data){
-					var result = jQuery.parseJSON(data);
+					var result = data;
 					if(result.status != 'no_save') {
 						$('#post_id').val(result.post_id);
 						$('#autosave-msg').html(result.time);
