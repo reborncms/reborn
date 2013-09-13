@@ -132,21 +132,9 @@ abstract class AbstractInfo
 		// This is Temp
 		$uri = (is_null($this->uriPrefix)) ? Str::snake($ns, '-') : $this->uriPrefix;
 
-		$lang = \Config::get('app.lang');
-		// Dislpay Name
-		if (isset($this->displayName) and !empty($this->displayName)) {
-			$displayName = isset($this->displayName[$lang]) ?
-								$this->displayName[$lang] :
-								$this->displayName['en'];
-		} else {
-			$displayName = $this->name;
-		}
-
 		// Description of Module
-		if (is_array($this->description)) {
-			$desc = isset($this->description[$lang]) ?
-								$this->description[$lang] :
-								$this->description['en'];
+		if (!is_array($this->description)) {
+			$desc = array('en' => $this->description);
 		} else {
 			$desc = $this->description;
 		}
@@ -156,7 +144,7 @@ abstract class AbstractInfo
 				'uri' => $uri, //$this->uriPrefix,
 				'path' => $path.DS, // Module path
 				'name' => $this->name, // Name of $this module
-				'displayName' => $displayName, // DisplayName of $this module
+				'displayName' => $this->displayName, // DisplayName of $this module
 				'roles' => $this->roles, // Module Action roles
 				'isCore' => $isCore, // Module is Core Module or not
 				'version' => $this->version, // Version no. string of $this module

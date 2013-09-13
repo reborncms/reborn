@@ -109,7 +109,7 @@ abstract class AbstractType
 			return isset($res[0]) ? $res[0] : false;
 		}
 
-		return true;
+		return is_array($value) ? json_encode($value) : $value;
 	}
 
 	/**

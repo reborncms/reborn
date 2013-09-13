@@ -17,7 +17,11 @@
 			<h4 class="{{ $class }}">{{ $m['name'] }} <span>V [ {{ $m['version'] }} ]</span></h4>
 			<div class="mod-body clearfix">
 				<div class="mod-desc">
-					{{ $m['description'] }}
+					{{ ifset($m['description'][$lang]) }}
+					{{ $m['description'][$lang] }}
+					{{ else }}
+					{{ $m['description']['en'] }}
+					{{ endif }}
 				</div> <!-- end of div.mod-desc -->
 				<div class="mod-body-left">
 					<div class="mod-author">

@@ -14,6 +14,14 @@
 		<div id="main-container">
 			<header id="header-wrapper">
 
+				<span
+					class="icon-list icon-white icon-24 tipsy-tip"
+					title="Menu Toggle"
+					data-gravity="n"
+					data-target="#sidebar"
+					id="nav-toggle">
+				</span>
+
 				<div id="logo">
 					<h1>
 						<a href="{{ rbUrl() }}" target="_blank">
@@ -70,13 +78,6 @@
 				<aside id="sidebar" class="">
 
 					<div id="nav-panel">
-						<span
-							class="icon-list icon-white icon-16 tipsy-tip"
-							title="Navigation Toggle"
-							data-gravity="w"
-							data-target="#sidebar"
-							id="nav-toggle">
-						</span>
 						<h1 id="reborn"><a href="{{ adminUrl() }}">Reborn CMS</a></h1>
 						<ul id="admin-nav">
 							{{ $adminMenus->generate() }}
@@ -88,7 +89,11 @@
 				<div id="content-panel" class="container">
 
 					<h2 id="welcome"><span>{{ t('global.welcome_reborn') }} -</span>
-						{{ $module['description'] }}
+						{{ ifset($module['description'][$lang]) }}
+						{{ $module['description'][$lang] }}
+						{{ else }}
+						{{ $module['description']['en'] }}
+						{{ endif }}
 					</h2>
 
 					{{ if(isset($modToolbar) and (!empty($modToolbar))) }}
