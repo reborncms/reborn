@@ -232,21 +232,21 @@
 
 /* ===== Thumbnail Image ===== */
 #thumb-action-bar {
-	/*border-bottom: 1px solid #dfdfdf;*/
 	box-shadow: 0 0 4px #f0f0f0;
 	padding: 10px;
 }
 
 #thumb-action-bar .btn-group a{
-	/*background: grey;
-	padding: 5px 10px;
-	margin: 0 5px;*/
-
 	width: 93px;
 	display: inline-block;
 	text-align: center;
 	padding: 5px 0;
 	font-size: 17px;
+}
+
+.action-active {
+	background: #f5f5f5;
+	cursor: text;
 }
 
 #m-thumb-option-pane {

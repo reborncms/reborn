@@ -4,12 +4,16 @@
 		{{ $actionBar }}
 	{{ endif }}
 
+	<div id="m-thumb-media-wrap">
+
+		<div id="m-thumb-ajax-wrap">
+
 			<div id="m-thumb-option-pane" class="f-left adjust-width">
 				<div id="m-thumb-folder-choose" class="m-thumb-option">
 					{{ Form::label(t('media::media.lbl.chofol'), 'folder_id') }}
 					<div class="m_input_wrap">
 						{= $current = (isset($current)) ? $current : 0 =}
-						<select name="folder_id" id="folder_id" style="width: 100%;">
+						<select name="folder_id" id="m-thumb-choose-folder" style="width: 100%;">
 							<option value="0">{{ t('media::media.lbl.none') }}</option>
 							{{ folderTree($allFolders, 0, 0, $current, '&nbsp;&raquo;') }}
 				        </select>
@@ -71,13 +75,16 @@
 
 			</div> <!-- end of m-thumb-body -->
 
+		</div> <!-- end of m-thumb-ajax-wrap -->
 
-	{{ if ($ajax) }}
-		{{ css('chosen.css', 'all', 'media') }}
-		{{ css('media.css', 'all', 'media') }}
-		{{ js('plugins.js', 'media') }}
-		{{ js('setthumbnail.js', 'media') }}
-		{{ js('media.js', 'media') }}
-	{{ endif }}
+	</div> <!-- end of m-thumb-media-wrap -->
 
 </div> <!-- end of thumbnail-wrap -->
+
+{{ if ($ajax) }}
+	{{ css('chosen.css', 'all', 'media') }}
+	{{ css('media.css', 'all', 'media') }}
+	{{ js('plugins.js', 'media') }}
+	{{ js('setthumbnail.js', 'media') }}
+	{{ js('media.js', 'media') }}
+{{ endif }}

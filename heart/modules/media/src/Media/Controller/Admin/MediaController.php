@@ -145,7 +145,7 @@ class MediaController extends \AdminController
      *
      * @return void
      **/
-    public function deleteFolder ($id)
+    public function deleteFolder($id)
     {
         $result = with(new Folders)->folderTreeIds($id);
 
@@ -536,20 +536,20 @@ class MediaController extends \AdminController
 
         $folder_id = (empty($args)) ? 0 : $args[0];
 
-        $images = MFiles::where('width', '!=', 0)
+        $images = Files::where('width', '!=', 0)
                             ->where('height', '!=', 0)
                             ->where('folder_id', '=', $folder_id)
                             ->get();
 
-        $allFolders = MFolders::all();
+        $allFolders = $this->allFolders;
 
         if (! empty($args)) {
             $this->template->set('current', $args[0]);
         }
 
-        $header = $this->template->partialRender('admin/outside/header');
-        $footer = $this->template->partialRender('admin/outside/footer');
-        $btnsBar = $this->template->partialRender('admin/outside/btns');
+        $header = $this->template->partialRender('admin/plugin/header');
+        $footer = $this->template->partialRender('admin/plugin/footer');
+        $btnsBar = $this->template->partialRender('admin/plugin/btns');
 
         $this->template->title(\Translate::get('m.ext.insertTitle'))
                         ->partialOnly()
@@ -558,7 +558,8 @@ class MediaController extends \AdminController
                         ->set('header', $header)
                         ->set('footer', $footer)
                         ->set('btnsBar', $btnsBar)
-                        ->setPartial('admin/outside/ck');
+                        ->set('ajax', true)
+                        ->setPartial('admin/plugin/ck');
     }
 
     /**
