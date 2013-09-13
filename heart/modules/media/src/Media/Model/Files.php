@@ -8,7 +8,7 @@ namespace Media\Model;
  * @package Media\Model
  * @author RebornCMS Development Team
  **/
-class Files extends \Eloquent
+class Files extends \Reborn\MVC\Model\Search
 {
 
     protected $table = 'media_files';

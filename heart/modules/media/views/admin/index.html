@@ -46,7 +46,7 @@
 
 		{{ endif }}
 
-		{{ if (isset($files) and !$files->isEmpty()) }}
+		{{ if (isset($files) and !is_null($files) and !$files->isEmpty()) }}
 
 			{{ loop ($files as $file) }}
 
@@ -93,7 +93,7 @@
 
 	</div> <!-- end of ff-mix-container -->
 
-	{{ if ((!isset($folders) and !isset($files)) or ($files->isEmpty() and $folders->isEmpty())) }}
+	{{ if (isset($isEmpty)) }}
 
 		<div id="no-index-data">
 			{{ t('media::media.info.noFileFolder') }}
