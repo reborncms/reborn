@@ -631,6 +631,50 @@ dp;
     }
 
     /**
+     * Jquery Tagsinput field
+     *
+     * @param string $name Field name
+     * @param string $value Field Value
+     * @param array $attrs Field attributes
+     * @return string
+     **/
+    public static function tags($name, $value = null, $attrs = array())
+    {
+        if (is_array($value)) {
+            $value = implode(',', $value);
+        }
+        $js = global_asset('js', 'jquery.tagsinput.min.js');
+        $css = global_asset('css', 'jquery.tagsinput_custom.css');
+
+        $rb = rbUrl();
+        $jq = $rb.'global/assets/js/jquery-1.9.0.min.js';
+
+        $tag_init = <<<TAG
+$css
+<script>
+    window.jQuery || document.write('<script src="$jq"><\/script>')
+</script>
+$js
+<script type="text/javascript">
+(function($) {
+    $(function()
+    {
+        $('.tags').tagsInput({
+            width:'auto',
+            autocomplete_url: SITEURL + ADMIN + '/tag/autocomplete'
+        });
+    });
+})(jQuery);
+</script>
+
+TAG;
+
+        $attrs = array_merge($attrs, array('class' => 'tags'));
+
+        return $tag_init.static::text($name, $value, $attrs);
+    }
+
+    /**
      * Select Box
      *
      * @param string $name Selectbox Name

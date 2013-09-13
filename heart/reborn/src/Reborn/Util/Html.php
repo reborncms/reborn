@@ -95,22 +95,6 @@ class Html
 	}
 
 	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author
-	 **/
-	protected static function makeTableWithKey($data)
-	{
-		$content = '';
-
-		foreach ($data as $k => $v) {
-			$content .= '<tr>';
-			$content .= '</tr>';
-		}
-	}
-
-	/**
 	 * HTML Unorder List Tag. (<ul>)
 	 *
 	 * @param array $lists_array
@@ -137,7 +121,7 @@ class Html
 	{
 		if (empty($lists_array)) return null;
 
-		$lists = static::li($lists_array);
+		$lists = static::li($lists_array, array(), 'ol');
 
 		return static::tag('ol', "\n".$lists."\n", $options);
 	}
@@ -147,14 +131,19 @@ class Html
 	 *
 	 * @param array $lists_array
 	 * @param array $options
+	 * @param string $type List type (ul or ol)
 	 * @return string
 	 **/
-	public static function li($list_array, $options = array())
+	public static function li($list_array, $options = array(), $type = 'ul')
 	{
 		$list = '';
 
 		foreach ($list_array as $li) {
-			$list .= static::tag('li', "\n".$li."\n", $options);
+			if (is_array($li)) {
+				$list .= '<li>'.static::{$type}($li).'</li>';
+			} else {
+				$list .= static::tag('li', "\n".$li."\n", $options);
+			}
 		}
 		return $list;
 	}

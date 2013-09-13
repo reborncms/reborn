@@ -62,37 +62,42 @@ class BlogController extends \AdminController
 		if (!user_has_access('blog.create')) {
 				return $this->notFound();
 		}
-		$val_errors = new \Reborn\Form\ValidationError();
+
+		$blog = new Blog();
+		
 		if (\Input::isPost()) {
-			$val = self::validate();
-			if ($val->valid()) {
-				if (\Input::get('id') != '') {
-					$save = self::saveValues('edit', \Input::get('id'));
-				} else {
-					$save = self::saveValues('create');
+
+			if (\Input::get('id') != '') {
+				$blog = self::setValues('edit', \Input::get('id'));
+			} else {
+				$blog = self::setValues('create');
+			}
+
+			if ($blog->save()) {
+
+				self::tagSave($blog->id);
+
+				if (\Module::isEnabled('field')) {
+
+					\Field::save('blog', $blog);
+						
 				}
 
-				if ($save) {
-					\Event::call('reborn.blog.create');
-					\Flash::success(t('blog::blog.create_success'));
-				} else {
-					\Flash::error(t('blog::blog.create_error'));
-				}
+				\Event::call('reborn.blog.create');
+				\Flash::success(t('blog::blog.create_success'));
 				return \Redirect::to(adminUrl('blog'));
+
 			} else {
-				$val_errors = $val->getErrors();
-				$this->template->set('blog', (object)\Input::get('*'));
+
+				\Flash::error(t('blog::blog.create_error'));
+
 			}
+
 		}
-		self::formEle();
-		$fields = array();
-		if (\Module::isEnabled('field')) {
-			$fields = \Field::getForm('blog');
-		}
+
+		self::formEle($blog);
+
 		$this->template->title(t('blog::blog.title_create'))
-						->setPartial('admin/form')
-						->set('val_errors',$val_errors)
-						->set('custom_field', $fields)
 						->set('method', 'create');
 	}
 
@@ -103,41 +108,45 @@ class BlogController extends \AdminController
 	 **/
 	public function edit($id = null)
 	{
-		$val_errors = new \Reborn\Form\ValidationError();
+		$blog = Blog::find($id);
+		
 		if (\Input::isPost()) {
-			$val = self::validate();
-			if ($val->valid()) {
-				$save = self::saveValues('edit', \Input::get('id'));
-				if ($save) {
+			
+				$blog = self::setValues('edit', \Input::get('id'));
+
+				if ($blog->save()) {
+
+					self::tagSave($blog->id);
+
+					if (\Module::isEnabled('field')) {
+
+						\Field::update('blog', $blog);
+							
+					}
+
 					\Flash::success(t('blog::blog.edit_success'));
+
+					return \Redirect::to(adminUrl('blog'));
+
 				} else {
+
 					\Flash::error(t('blog::blog.edit_error'));
+
 				}
-				return \Redirect::to(adminUrl('blog'));
-			} else {
-				$val_errors = $val->getErrors();
-				$blog = (object)\Input::get('*');
-			}
+			
 		} else {
+
 			if ($id == null) {
+
 				return \Redirect::to(adminUrl('blog'));
+
 			}
-			$blog = Blog::find($id)->toArray();
-			\Module::load('Tag');
-			$tags = \Tag\Lib\Helper::getTags($id, 'blog');
-			$blog['tags'] = $tags;
-			$blog = (object) $blog;
+
 		}
-		self::formEle();
-		$fields = array();
-		if (\Module::isEnabled('field')) {
-			$fields = \Field::getForm('blog', $blog);
-		}
+
+		self::formEle($blog);
+		
 		$this->template->title('Edit Blog')
-						->setPartial('admin/form')
-						->set('val_errors',$val_errors)
-						->set('blog', $blog)
-						->set('custom_field', $fields)
 					   	->set('method', 'edit');
 	}
 
@@ -206,29 +215,36 @@ class BlogController extends \AdminController
 	 *
 	 * @return void
 	 **/
-	protected function formEle()
+	protected function formEle($blog)
 	{
+		$fields = array();
+		if (\Module::isEnabled('field')) {
+			$fields = \Field::getForm('blog', $blog);
+		}
 		$authors[0] = '-- '. t('blog::blog.auto_detect') .' -- ';
 		$users = \Sentry::getUserProvider()->findAllWithAccess('admin');
 		foreach ($users as $user) {
 			$authors[$user->id] = $user->first_name . ' ' . $user->last_name;
 		}
-		$this->template->set('authors', $authors);
-		$this->template->style(array(
+		$this->template->setPartial('admin/form')
+						->set('authors', $authors)
+						->set('blog', $blog)
+						->set('custom_field', $fields)
+						->style(array(
 							'plugins/jquery.tagsinput_custom.css',
 							'form.css'))
-					   ->script(array(
+					   	->script(array(
 						 	'plugins/jquery-ui-timepicker-addon.js',
 						 	'plugins/jquery.tagsinput.min.js',
 						 	'form.js'));
 	}
 
 	/**
-	 * Save Form Values of Create and Edit Blog
+	 * Set Form Values of Create and Edit Blog
 	 *
 	 * @return boolean
 	 **/
-	protected function saveValues($method, $id = null) {
+	protected function setValues($method, $id = null) {
 		if ($method == 'create') {
 			$blog = new Blog;
 		} else {
@@ -274,7 +290,6 @@ class BlogController extends \AdminController
 				$check = self::slugDuplicateCheck($slug, $id);
 				$n++;
 			} while ($check);
-			//change to slug_1 , slug_2, slug_3
 		}
 
 		$blog->title = (\Input::get('title') == '') ? 'Untitled' : \Input::get('title');
@@ -300,26 +315,30 @@ class BlogController extends \AdminController
 		if ($method == 'edit') {
 			$blog->updated_at = new \DateTime();
 		}
+		
 		// Remove Base Url from Attachment
-		$blog->attachment = remove_base_url(\Input::get('featured_id'));
+		$blog->attachment = remove_base_url(\Input::get('attachment'));
 		//type
 
-		$blog_save = $blog->save();
-		if ($blog_save) {
-			if (\Module::isEnabled('field')) {
-				if ($method == 'create') {
-					\Field::save('blog', $blog);
-				} else {
-					\Field::update('blog', $blog);
-				}
-			}
-			\Module::load('Tag');
-			$tag = \Tag\Controller\Admin\TagController::import($blog->id, 'blog', \Input::get('blog_tag'));
-			return $blog->id;
-		} else {
-			return $blog_save;
-		}
+		return $blog;
 
+	}
+
+	/**
+	 * Save Blog Tags
+	 *
+	 * @return boolean
+	 **/
+	protected function tagSave($id)
+	{
+		\Module::load('Tag');
+		$tag = \Tag\Controller\Admin\TagController::import($id, 'blog', \Input::get('blog_tag'));
+
+		if ($tag) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -430,13 +449,13 @@ class BlogController extends \AdminController
 					return json_encode(array('status' => 'no_save'));
 				} else {
 					if (\Input::get('id') == '') {
-						$save = self::saveValues('create');
+						$blog = self::setValues('create');
 					} else {
 						// update
-						$save = self::saveValues('edit', \Input::get('id'));
+						$blog = self::setValues('edit', \Input::get('id'));
 					}
 
-					if ($save) {
+					if ($blog->save()) {
 						return json_encode(array('status' => 'save', 'post_id' => $save, 'time' => sprintf(t('blog::blog.autosave_on'), date('d - M - Y H:i A', time()))));
 					}
 
@@ -444,27 +463,6 @@ class BlogController extends \AdminController
 			}
 		}
 		return \Redirect::to(adminUrl('blog'));
-	}
-
-	/**
-	 * Validate Form
-	 *
-	 * @return void
-	 **/
-	protected function validate()
-	{
-		$rule = array(
-		    'title' => 'required|maxLength:250',
-		    'slug' => 'required|maxLength:250',
-		    'body' => 'required',
-		    'comment_status' => 'alpha',
-		    //'type' => 'alphaDash',
-		    //'attachment' => 'maxLength:250'
-		);
-
-		$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
-
-		return $v;
 	}
 
 	public function after($response)

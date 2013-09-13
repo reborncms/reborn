@@ -30,7 +30,12 @@ class Data implements ArrayAccess, IteratorAggregate
 	 **/
 	public function __construct($data = array())
 	{
-		$this->data = $data;
+		if (! empty($data) ) {
+			foreach ($data as $k => $v) {
+				$val = is_json($v) ? (array) json_decode($v) : $v;
+				$this->data[$k] = $val;
+			}
+		}
 	}
 
 	/**
@@ -74,6 +79,9 @@ class Data implements ArrayAccess, IteratorAggregate
 
 		if ($with_label) {
 			foreach ($this->data as $k => $v) {
+				if (is_array($v)) {
+					$v = implode(', ', $v);
+				}
 				$table .= '<tr>';
 				$table .= '<td>'.$k.'</td>';
 				$table .= '<td>'.$v.'</td>';
@@ -81,6 +89,9 @@ class Data implements ArrayAccess, IteratorAggregate
 			}
 		} else {
 			foreach ($this->data as $v) {
+				if (is_array($v)) {
+					$v = implode(', ', $v);
+				}
 				$table .= '<tr>';
 				$table .= '<td>'.$v.'</td>';
 				$table .= '<tr>';

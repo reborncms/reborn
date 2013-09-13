@@ -6,6 +6,11 @@ class Pages extends \Eloquent
 {
     protected $table = 'pages';
 
+    protected $rules = array(
+        'title' => 'required|maxLength:225',
+        'slug' => 'required|maxLength:225'
+    );
+
     public static function page_structure($no_draft = false)
     {
         if ($no_draft == true) {
