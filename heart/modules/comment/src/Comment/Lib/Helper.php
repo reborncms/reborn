@@ -135,6 +135,9 @@ class Helper
 										<span class="cmt-module">'. ucfirst($comment->module) .'</span>
 										on
 										<span class="cmt-title">'. $comment->content_title .'</span>
+										<span class="dashboard_widget_action">
+											'.self::commentStatusLabel($comment->id, $comment->status).'
+										</span>
 									</li>';
 			}
 		} else {
@@ -143,6 +146,27 @@ class Helper
 		$widget['body'] .= '</ul>';
 
 		return $widget;
+	}
+
+	public static function commentStatusLabel($id, $status)
+	{
+		if ($status == 'approved') {
+			$status_class = 'label-success';
+			$change_info = t('comment::comment.info.unapprove'); 
+		} elseif ($status == 'pending') {
+			$status_class = 'label-warning';
+			$change_info = t('comment::comment.info.approve');
+		} else {
+			$status_class = 'label-error';
+			$change_info = t('comment::comment.info.approve'); 
+		}
+
+		$content = '<a href="'. adminUrl('comment/change-status/'.$id) .'" class="tipsy-tip" title="'. $change_info .'">
+						<span class="label '. $status_class .'">'. t('comment::comment.label.'.$status).'</span>
+					</a>';
+
+		return $content;
+		
 	}
 
 	/**

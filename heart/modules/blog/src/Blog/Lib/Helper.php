@@ -107,6 +107,9 @@ class Helper {
 											<a href="'.rbUrl('user/profile/'.$post->author->id).'">'.$post->author_name.'</a>
 										</span>
 										<a href="'.rbUrl('blog/'.$post->slug).'" target="_black">'.$post->title.'</a>
+										<span class="dashboard_widget_action">
+											<a href="'.adminUrl('blog/edit/'.$post->id) .'" title="'. t('global.edit') .'" class="tipsy-tip"><i class="icon-edit icon-white"></i></a>
+										</span>
 									</li>';
 			}
 		} else {

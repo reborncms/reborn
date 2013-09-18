@@ -105,6 +105,8 @@ class CommentController extends \AdminController
 	 **/
 	public function changeStatus($id, $status = null)
 	{
+		$referer = \Input::server('HTTP_REFERER');
+
 		if (!user_has_access('comment.create')) {
              return $this->notFound();
         }
@@ -129,7 +131,7 @@ class CommentController extends \AdminController
 			$parent_status = Comment::where('id', $comment->parent_id)->pluck('status');
 			if ($parent_status != 'approved') {
 				\Flash::error(t('comment::comment.message.error.parent_not_approved', array('id' => $comment->parent_id)));
-				return \Redirect::to(adminUrl('comment'));
+				return \Redirect::to($referer);
 			}
 		}
 
@@ -155,7 +157,7 @@ class CommentController extends \AdminController
 			\Flash::error(t('comment::comment.message.error.general'));
 		}
 
-		return \Redirect::to(adminUrl('comment'));
+		return \Redirect::to($referer);
 
 	}
 

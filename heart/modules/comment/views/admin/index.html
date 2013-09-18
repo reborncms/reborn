@@ -70,31 +70,7 @@
 				</td>
 
 				<td>
-					{{ if ($comment->status == 'approved') }}
-
-						{= 
-							$status_class = 'label-success';
-							$change_info = t('comment::comment.info.unapprove'); 
-						=}
-
-					{{ elseif ($comment->status == 'pending') }}
-
-						{= 
-							$status_class = 'label-warning';
-							$change_info = t('comment::comment.info.approve');
-						=}
-
-					{{ else }}
-
-						{= 
-							$status_class = 'label-error';
-							$change_info = t('comment::comment.info.approve'); 
-						=}
-
-					{{ endif }}
-					<a href="{{ adminUrl('comment/change-status/'.$comment->id) }}" class="tipsy-tip" title="{{ $change_info }}">
-						<span class="label {{ $status_class }}">{{ t('comment::comment.label.'.$comment->status)}}</span>
-					</a>
+					{{ Comment\Lib\Helper::commentStatusLabel($comment->id, $comment->status) }}
 				</td>
 
 				<td>
