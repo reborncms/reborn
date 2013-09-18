@@ -1,4 +1,16 @@
 <div id="thumb-action-bar" class='clearfix'>
+
+	<div id="m-thumb-folder-choose" class="m-thumb-option f-left">
+		<div class="m_input_wrap clearfix">
+			{{ Form::label(t('media::media.lbl.chofol'), 'folder_id', array('class' => 'f-left')) }}
+			{= $current = (isset($current)) ? $current : 0 =}
+			<select name="folder_id" id="m-thumb-choose-folder" style="width: 100%;" class='f-left'>
+				<option value="0">{{ t('media::media.lbl.none') }}</option>
+				{{ folderTree($allFolders, 0, 0, $current, '&nbsp;&raquo;') }}
+	        </select>
+	    </div> <!-- end of m_input_wrap -->
+    </div> <!-- end of m-thumb-folder-choose -->
+
 	<div class="btn-group f-right">
 		<a class="action-active" id="m-thumb-action-media" href="{{ adminUrl('media/thumbnail/') }}" title="{{ t('media::media.tips.choFromMedia') }}">
 			{{ t('media::media.btn.media') }}

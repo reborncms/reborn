@@ -14,16 +14,17 @@
 		<div id="m-thumb-ajax-wrap">
 
 			<div id="m-thumb-option-pane" class="f-left adjust-width">
-				<div id="m-thumb-folder-choose" class="m-thumb-option">
-					{{ Form::label(t('media::media.lbl.chofol'), 'folder_id') }}
-					<div class="m_input_wrap">
-						{= $current = (isset($current)) ? $current : 0 =}
-						<select name="folder_id" id="m-thumb-choose-folder" style="width: 100%;">
-							<option value="0">{{ t('media::media.lbl.none') }}</option>
-							{{ folderTree($allFolders, 0, 0, $current, '&nbsp;&raquo;') }}
-				        </select>
-				    </div> <!-- end of m_input_wrap -->
-			    </div> <!-- end of m-thumb-folder-choose -->
+
+			    <div id="m-thumb-preview" class="m-thumb-option">
+			    	<div id="m-thumb-preview-wrap" class="adjust-width">
+
+			    		<p id="m-thumb-img-name"></p>
+			    	</div> <!-- end of m_img_preview -->
+			    </div> <!-- end of m-thumb-preview -->
+
+			    <div id="m-thumb-button">
+			    	<button onclick="javascript:insert();" class="btn btn-green" style="display: none;">{{ t('media::media.ext.insert') }}</button>
+			    </div> <!-- end of m-thumb-button -->
 
 			    <div id="m-thumb-dimension" class="m-thumb-option">
 			    	{{ Form::label(t('media::media.lbl.dimension')) }}
@@ -49,17 +50,6 @@
 			    		{{ Form::input('alt_text') }}
 			    	</div> <!-- end of m_input_wrap -->
 				</div> <!-- end of m-thumb-alt -->
-
-			    <div id="m-thumb-preview" class="m-thumb-option">
-			    	<div id="m-thumb-preview-wrap" class="adjust-width">
-
-			    		<p id="m-thumb-img-name"></p>
-			    	</div> <!-- end of m_img_preview -->
-			    </div> <!-- end of m-thumb-preview -->
-
-			    <div id="m-thumb-button">
-			    	<button onclick="javascript:insert();" class="btn btn-green">{{ t('media::media.ext.insert') }}</button>
-			    </div> <!-- end of m-thumb-button -->
 
 			</div> <!-- end of m-thumb-option-pane -->
 

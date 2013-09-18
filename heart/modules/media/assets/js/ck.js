@@ -19,20 +19,12 @@ function insert()
 
 	var floating = "float: " + $('#float').val();
 
-	var path = SITEURL + 'media/image/' + $('#image_url').val();
+	var path = SITEURL + 'media/image/' + $('#image_url').val() + '/' + width + '/' + height;
 
-	window.parent.instance.insertHtml("<img src='"+path+"' style='"+floating+"; width: "+width+"px; height: "+height+"px;' alt='"+ alt +"'>");
+	window.parent.instance.insertHtml("<img src='"+path+"' style='"+floating+";' alt='"+ alt +"'>");
 
 	window.parent.CKEDITOR.dialog.getCurrent().hide();
 }
-
-/*var button = document.getElementById('m-thumb-action-upload');
-
-CKEDITOR.event.implementOn( button };
-
-button.on('click', function() { alert('click tel ha'); });
-
-button.fire('click');*/
 
 function change()
 {
@@ -43,7 +35,7 @@ function change()
 
 $(document).ready(function(){
 
-	$('#m-thumb-choose-folder').chosen();
+	$('#m-thumb-choose-folder').chosen({ "width" : '60%' });
 
 	$('#m-thumb-choose-folder').chosen().change(function(){
 		window.location.assign(SITEURL + ADMIN + '/media/rbCK/' + $(this).val());
@@ -69,16 +61,11 @@ $(document).ready(function(){
 		$('#m-thumb-preview-wrap').html(image+imageName+imageUrl);
 
 		$('#m-thumb-preview-wrap').show();
+		$('#m-thumb-button button').show();
 	});
 
 	$('#m-thumb-action-upload').on('click', function(e){
 		e.preventDefault();
-
-		/*var ck = window.parent.CKEDITOR;
-
-		var data = ck.ajax.load(SITEURL + ADMIN + '/media/upload/');
-
-		console.log(data);*/
 
 		if (! $(this).hasClass('action-active')) {
 			$('#thumb-action-bar a').removeClass('action-active');

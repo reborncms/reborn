@@ -20,14 +20,14 @@ CKEDITOR.plugins.add('rbmedia', {
 		CKEDITOR.dialog.add('rbmedia', function(editor){
 			return {
 				title : 'Insert Image from Gallery',
-				minWidth: 750,
-				minHeight: 400,
+				minWidth: 900,
+				minHeight: 395,
 				contents : [ {
 				    id : 'tab1', label : '', title : '', expand : true, padding : 0,
 				    elements : [ {
 				           type : 'iframe',
 				           src : SITEURL + ADMIN + '/media/rbCK/',
-				           width : 750, height : 392 - (CKEDITOR.env.ie ? 10 : 0)
+				           width : 900, height : 395 - (CKEDITOR.env.ie ? 10 : 0)
 				    } ]
 				} ]
 				, buttons : []   // don't show the default buttons
