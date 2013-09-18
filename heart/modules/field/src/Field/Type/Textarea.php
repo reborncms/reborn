@@ -25,7 +25,7 @@ class Textarea extends \Field\AbstractType
 		$key = $field->field_slug;
 		$label = \Form::label($field->field_name, $key);
 		$info = $this->makeInfo($field->description);
-		$value = $value ? $value : $this->getValue($key, $field->field_default);
+		$value = $value ? $value : $this->getValue($key, $field->default);
 
 		$area = \Form::textarea($key, $value);
 

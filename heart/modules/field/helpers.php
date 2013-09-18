@@ -52,7 +52,7 @@ function supported_field_types($with_empty_option = true)
 	}
 
 	foreach ($lists as $key => $list) {
-		$types[$key] = ucfirst($key);
+		$types[$key] = \Str::title($key);
 	}
 
 	return $types;

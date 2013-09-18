@@ -153,4 +153,31 @@ class Str
 		return $string;
 	}
 
+	/**
+	 * Convert given string to Title String Style.
+	 *
+	 * example ::
+	 *  // $str = 'hello_world';
+	 *  Str::title($str); // output : Hello World
+	 *
+	 * If you want to stay separator word form your string, use $remove_separator = false
+	 *  // $str = 'hello_world';
+	 *  Str::title($str); // output : Hello_World
+	 *
+	 * @param string $value
+	 * @param boolean $remove_separator Remove separator (_ or -) form str. Default is true.
+	 * @param string $separator This is require in $remove_separator=false only. Default _
+	 * @return string
+	 **/
+	public static function title($value, $remove_separator = true, $separator = '_')
+	{
+		$val = ucwords(str_replace(array('_', '-'), ' ', $value));
+
+		if (! $remove_separator) {
+			return str_replace(' ', $separator, $val);
+		}
+
+		return $val;
+	}
+
 } // END class Str
