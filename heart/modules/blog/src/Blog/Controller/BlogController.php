@@ -54,6 +54,8 @@ class BlogController extends \PublicController
 	 **/
 	public function view($slug)
 	{
+		$slug = urldecode($slug);
+
 		$blog = Blog::active()
 						->with(array('category', 'author'))
 						->where('slug', $slug)
@@ -83,6 +85,8 @@ class BlogController extends \PublicController
 
 			return $this->notFound();
 		}
+
+		$slug = urldecode($slug);
 
 		$blog = Blog::with(array('category', 'author'))
 						->where('slug', $slug)
@@ -119,6 +123,8 @@ class BlogController extends \PublicController
 
 			return $this->notFound();
 		}
+
+		$slug = urldecode($slug);
 
 		$cat_info = BlogCategory::where('slug', $slug)->first();
 
@@ -169,6 +175,8 @@ class BlogController extends \PublicController
 		//Check tag ..
 		// Fix status live
 		\Module::load('Tag');
+
+		$name = urldecode($name);
 
 		$blog_ids = \Tag\Lib\Helper::getObjectIds($name, 'blog');
 

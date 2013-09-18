@@ -152,8 +152,15 @@ class TagController extends \AdminController
 		} else {
 			$tag = Tag::find($id);
 		}
+
+		$slug = \Input::get('name');
+
+		if (strlen($slug) == strlen(utf8_decode($slug))) {
+
+			$slug = strtolower(preg_replace("/[^a-zA-Z 0-9-]/", "", \Input::get('name')));
+			
+		}
 		
-		$slug = strtolower(preg_replace("/[^a-zA-Z 0-9-]/", "", \Input::get('name')));
 		$final_slug = str_replace(" ", "-", $slug);
 
 		$check_duplicate = (int)Tag::where('name', '=', $final_slug)->count();
@@ -254,9 +261,15 @@ class TagController extends \AdminController
 			}
 
 			foreach ($tags as $tag) {
-				$tag = strtolower(preg_replace("/[^a-zA-Z 0-9-]/", "", $tag));
+
+				if (strlen($tag) == strlen(utf8_decode($tag))) {		
+					$tag = strtolower(preg_replace("/[^a-zA-Z 0-9-]/", "", $tag));
+				}
+
 				$tag = str_replace(" ", "-", $tag);
+
 				$result = Tag::where('name', '=', $tag)->first();
+
 				if(count($result) > 0) {
 					$tag_id = $result->id;
 				} else {

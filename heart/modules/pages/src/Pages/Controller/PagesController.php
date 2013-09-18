@@ -22,6 +22,8 @@ class PagesController extends \PublicController
 
     public function view($uri)
     {
+        $uri = urldecode($uri);
+
         $query = Pages::where('uri' , '=', $uri)->first();
 
         if ($query == null or $query->status == 'draft') {
@@ -46,7 +48,8 @@ class PagesController extends \PublicController
             foreach ($segments as $key => $val) {
                 $u = Pages::where('slug', '=', $val)->select('uri', 'title')->first();
 
-                $this->template->breadcrumb($u->title, rbUrl($u->uri));
+                $this->template->breadcrumb('Home', rbUrl())
+                            ->breadcrumb($u->title, rbUrl($u->uri));
             }
         }
 
@@ -55,7 +58,9 @@ class PagesController extends \PublicController
     public function preview()
     {
         $uri = \Uri::segments();
+
         $uri = array_slice($uri, 2);
+
         if (empty($uri)) {
 
            return $this->notFound();
@@ -63,6 +68,8 @@ class PagesController extends \PublicController
         }
 
         $uri_string = implode("/", $uri);
+
+        $uri_string = urldecode($uri_string);
 
         if (\Sentry::check()) {
 
