@@ -10,6 +10,7 @@ return array(
 				'image' => 'Field\Type\Image',
 				'datepicker' => 'Field\Type\Datepicker',
 				'checkbox' => 'Field\Type\Checkbox',
-				'checkbox_group' => 'Field\Type\Ckgroup'
+				'checkbox_group' => 'Field\Type\Ckgroup',
+				'radio_group'	=> 'Field\Type\RadioGroup'
 			)
 	);

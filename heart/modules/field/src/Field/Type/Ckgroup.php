@@ -45,6 +45,8 @@ FIELD;
 
 		$options = $this->makeOptions($field->options);
 
+		$info = $this->makeInfo($field->description);
+
 		$ckvalues = explode(',', $field->default);
 
 		if ($value != null) {
@@ -64,6 +66,7 @@ FIELD;
 			$label
 			<div class="form-right-block">
 			$ckgroup
+			$info
 			</div>
 		</div>
 FORM;
