@@ -162,7 +162,8 @@ class Str
 	 *
 	 * If you want to stay separator word form your string, use $remove_separator = false
 	 *  // $str = 'hello_world';
-	 *  Str::title($str); // output : Hello_World
+	 *  Str::title($str, false); // output : Hello_World
+	 *  Str::title($str, false, '-'); // output : Hello-World
 	 *
 	 * @param string $value
 	 * @param boolean $remove_separator Remove separator (_ or -) form str. Default is true.
@@ -178,6 +179,24 @@ class Str
 		}
 
 		return $val;
+	}
+
+	/**
+	 * Increment +1 number to given string
+	 *
+	 * @param string $str
+	 * @return string
+	 **/
+	public static function increment($str)
+	{
+		preg_match('#(.*)_(\d+)#', $str, $m);
+
+		if ($m) {
+			$next = 1 + (int) $m[2];
+			return $m[1].'_'.$next;
+		}
+
+		return $str.'_1';
 	}
 
 } // END class Str

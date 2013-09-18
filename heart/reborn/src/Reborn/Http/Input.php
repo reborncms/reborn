@@ -83,6 +83,16 @@ class Input
     }
 
     /**
+     * Return all input value are json format
+     *
+     * @return string
+     **/
+    public static function json()
+    {
+        return json_encode(static::get('*'));
+    }
+
+    /**
      * Get request file information. Same with ($_FILES).
      *
      * @param string $key
