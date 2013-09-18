@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+    <!-- head -->
+    <head>
+        <!-- title -->
+        <title>Moono Color - A custom skin for CKEditor 4.x</title>
+        <!-- meta -->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="description" content="Moono Color is a custom skin for based on the default skin Moono of CKEditor 4.x. The Moono Color skin brings some color to your toolbar! :-)" />
+        <meta name="keywords" content="Moono Color,moonocolor,CKEditor skin,CKEditor 4.x" />
+        <meta name="author" content="Maarten Tibau - Webtrix" />
+        <meta name="googlebot" content="index, follow, noarchive" />
+        <meta name="robots" content="index, follow, noarchive" />
+        <!-- stylesheets -->
+        <link href="css/reset.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="css/style.css" media="screen" rel="stylesheet" type="text/css" />
+        <!-- javascript -->
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <!-- google analytics async -->
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+                _gaq.push(['_setAccount', 'UA-6353804-39'],
+                      ['_trackPageview']);
+        </script>
+    </head>
+    <!-- /head -->
+    <body>
+        <h1>Moono Color Skin - A custom skin for CKEditor 4.x</h1>
+        <div class="editor">
+            <textarea id="ckeditor">Current CKEditor: v4.2.0</textarea>
+        </div>
+        <!-- CKEditor -->
+        <script type="text/javascript">
+            $(document).ready(function() {
+                CKEDITOR.replace('ckeditor',{skin:'moonocolor',resize_enabled:0,toolbarCanCollapse:0,startupShowBorders:0,enterMode:1});CKEDITOR.add;
+            });
+        </script>
+        <!-- /CKEditor -->
+        <!-- bottom javascript -->
+        <script type="text/javascript" src="//hosted-libraries.sygamo.com/js/ckeditor/4.2.0/ckeditor.js"></script>
+        <!-- async loading scripts & google analytics -->
+        <script type="text/javascript">
+        //<![CDATA[
+            (function(doc, script) {
+                var js,
+                    fjs = doc.getElementsByTagName(script)[0],
+                    load = function(url, id) {
+                        if (doc.getElementById(id)) {return;}
+                        js = doc.createElement(script);
+                        js.src = url;
+                        id && (js.id = id);
+                        fjs.parentNode.insertBefore(js, fjs);
+                    };
+
+                /**
+                 * default load Google Analytics async
+                 */
+                load(('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js', 'ga');
+                                            }(document, 'script'));
+
+        //]]>
+        </script>
+    </body>
+</html>
