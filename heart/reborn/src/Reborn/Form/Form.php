@@ -477,7 +477,7 @@ $ck_jq
     $(function()
     {
         $('textarea.wysiwyg-mini').ckeditor({
-            skin : 'rb',
+            skin : 'reborn',
             toolbar: [
                 ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
               ],
@@ -487,7 +487,7 @@ $ck_jq
         });
 
         $('textarea.wysiwyg-simple').ckeditor({
-            skin : 'rb',
+            skin : 'reborn',
             toolbar: [
                 ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-', 'Source']
               ],
@@ -497,10 +497,10 @@ $ck_jq
         });
 
         $('textarea.wysiwyg').ckeditor({
-            skin : 'rb',
-            theme : 'reborn',
+            skin : 'reborn',
             toolbar: [
                 ['Maximize'],
+                ['PasteFromWord', 'Paste'],
                 ['Image', 'Smiley'],
                 ['Undo','Redo','-','Find','Replace'],
                 ['Bold','Italic', 'Underline','Strike'],
@@ -508,14 +508,16 @@ $ck_jq
                 ['Subscript','Superscript', 'NumberedList','BulletedList','Blockquote'],
 
                 ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-                ['ShowBlocks', 'RemoveFormat', 'Source','rbmedia'],
+                ['Format', 'Font', 'FontSize'],
+                ['ShowBlocks', 'RemoveFormat'],
+                ['rbmedia'],
+                ['Source']
             ],
-            extraPlugins: 'rbmedia',
+            extraPlugins: 'rbmedia,iframedialog',
             resize_dir: 'vertical',
             width: '97%',
             height: 400,
-            dialog_backgroundCoverColor: '#000',
-            removePlugins: 'elementspath',
+            dialog_backgroundCoverColor: '#000'
         });
     });
 })(jQuery);

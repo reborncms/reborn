@@ -3,6 +3,8 @@
 namespace Reborn\Form;
 
 use ArrayAccess;
+use ArrayIterator;
+use IteratorAggregate;
 
 /**
  * ValidationError Class
@@ -10,7 +12,7 @@ use ArrayAccess;
  * @package Reborn\Form
  * @author Myanmar Links Professional Web Development
  **/
-class ValidationError implements ArrayAccess
+class ValidationError implements ArrayAccess, IteratorAggregate
 {
 
 	/**
@@ -63,6 +65,16 @@ class ValidationError implements ArrayAccess
 
     public function offsetGet($key) {
         return isset($this->errors[$key]) ? $this->errors[$key] : null;
+    }
+
+    /**
+     * Get an iterator for the data.
+     *
+     * @return ArrayIterator
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->errors);
     }
 
     /**

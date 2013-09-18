@@ -21,8 +21,9 @@ function validation() {
 // Email validation
 // Original from http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
 function emailValid(email) {
+	trim_email = $.trim(email);
 	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
+    return re.test(trim_email);
 }
 
 $('#login-box-submit').click(function(e) {

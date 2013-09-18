@@ -111,9 +111,15 @@ class Flash
 	{
 		$class = is_null($class) ? "alert" : $class;
 		$output = '<div class="'.$class.' '.$class.'-'.$type.'" >';
-		foreach ($msg as $m) {
-			$output .= $m;
+
+		if (is_string($msg)) {
+			$output .= $msg;
+		} else {
+			foreach ($msg as $m) {
+				$output .= $m;
+			}
 		}
+
 		$output .= '</div>';
 
 		return $output;

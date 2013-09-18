@@ -36,17 +36,23 @@ class AdminController extends \AdminController
 	{
 		if(Sentry::check()) return \Redirect::toAdmin();
 
-		$rule = array(
+		if (\Input::isPost())
+		{
+			$login = array(
+			        'email'    => rtrim(\Input::get('email'), ' '),
+			        'password' => \Input::get('password')
+			    );
+
+			$rule = array(
 				'email' => 'required|email',
 			    'password' => 'required',
 			);
-		$v = new \Validation(\Input::get('*'), $rule);
 
-		if (\Input::isPost())
-		{
+			$v = new \Validation($login, $rule);
+
 			if ($v->valid()) {
 				$login = array(
-			        'email'    => \Input::get('email'),
+			        'email'    => rtrim(\Input::get('email'), ' '),
 			        'password' => \Input::get('password')
 			    );
 
@@ -66,7 +72,7 @@ class AdminController extends \AdminController
 
 			} else {
 				$err = $v->getErrors();
-				\Flash::error($msg);
+				\Flash::error($err->toArray());
 				return \Redirect::toAdmin('login');
 			}
 		}
