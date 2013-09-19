@@ -12,13 +12,56 @@ use Blog\Model\BlogCategory as CategoryModel;
  */
 class Blog
 {
+
+	/**
+	 * Blog Model Cache
+	 *
+	 * @var array
+	 **/
+	protected static $cache;
+
+	/**
+	 * Get the posts form cache model
+	 *
+	 * @param string $name Model cache name
+	 * @param array $options Options to fetch blog posts
+	 * @return Illuminate\Database\Eloquent\Collection
+	 **/
+	public static function magicPosts($name = 'default', $options = array(), $skip = null, $limit = null)
+	{
+		if(!isset(static::$cache[$name])) {
+			$posts = static::posts($options);
+			static::$cache[$name]['model'] = $posts;
+			static::$cache[$name]['options'] = $options;
+		} else {
+			$diff = array_diff($options, static::$cache[$name]['options']);
+
+			if (! empty($diff)) {
+				$posts = static::posts($options);
+				static::$cache[$name]['model'] = $posts;
+				static::$cache[$name]['options'] = $options;
+			}
+		}
+
+		$slice = static::$cache[$name]['model'];
+
+		if (isset($skip)) {
+			$slice = $slice->slice($skip);
+		}
+
+		if(isset($limit)) {
+			$slice = $slice->take($limit);
+		}
+
+		return $slice;
+	}
+
 	/**
 	 * Get Blog Posts.
 	 *
 	 *
 	 * @param array $options Options to fetch blog posts
-	 * @return void
-	 * @author
+	 * @return Illuminate\Database\Eloquent\Collection
 	 **/
 	public static function posts($options = array())
 	{
