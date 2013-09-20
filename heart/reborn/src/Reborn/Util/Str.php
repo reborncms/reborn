@@ -199,4 +199,27 @@ class Str
 		return $str.'_1';
 	}
 
+	/**
+	 * Join the string.
+	 *
+	 * @param string $separator String join separator
+	 * @return string
+	 **/
+	public static function join($separator)
+	{
+		$args = func_get_args();
+
+		$separator = array_shift($args);
+
+		$str = '';
+
+		if (empty($args)) return $str;
+
+		foreach ($args as $s) {
+			$str .= $s.$separator;
+		}
+
+		return rtrim($str, $separator);
+	}
+
 } // END class Str
