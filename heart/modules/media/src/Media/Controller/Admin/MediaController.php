@@ -44,8 +44,7 @@ class MediaController extends \AdminController
      **/
     public function before()
     {
-        $this->template->style('chosen.css', 'media');
-        $this->template->style('perfect-scrollbar.css', 'media');
+        $this->template->style('plugins.css', 'media');
         $this->template->style('media.css', 'media');
         $this->template->script('plugins.js', 'media');
         $this->template->script('media.js', 'media');
@@ -538,6 +537,7 @@ class MediaController extends \AdminController
                             ->get();
 
         $body = $this->template
+                    ->set('ajax', false)
                     ->set('images', $images)
                     ->partialRender('admin'.DS.'plugin'.DS.'thumbnail');
 
@@ -548,35 +548,6 @@ class MediaController extends \AdminController
                         ->set('body', $body)
                         ->partialOnly()
                         ->setPartial('ck/ck');
-
-        /*$args = func_get_args();
-
-        $folder_id = (empty($args)) ? 0 : $args[0];
-
-        $images = Files::where('width', '!=', 0)
-                            ->where('height', '!=', 0)
-                            ->where('folder_id', '=', $folder_id)
-                            ->get();
-
-        $allFolders = $this->allFolders;
-
-        if (! empty($args)) {
-            $this->template->set('current', $args[0]);
-        }
-
-        $header = $this->template->partialRender('admin/plugin/header');
-        $footer = $this->template->partialRender('admin/plugin/footer');
-        $btnsBar = $this->template->partialRender('admin/plugin/btns');
-
-        $this->template->title(\Translate::get('m.ext.insertTitle'))
-                        ->partialOnly()
-                        ->set('images', $images)
-                        ->set('allFolders', $allFolders)
-                        ->set('header', $header)
-                        ->set('footer', $footer)
-                        ->set('btnsBar', $btnsBar)
-                        ->set('ajax', true)
-                        ->setPartial('admin/plugin/ck');*/
     }
 
     /**
