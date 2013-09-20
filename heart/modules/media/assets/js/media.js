@@ -1,11 +1,17 @@
 $(function(){
+	$('.ff-mix-container').perfectScrollbar();
+
 	$('#media_upload').colorbox({
 		width: "900",
-		height: "400",
+		height: "600",
 		href: SITEURL + ADMIN + '/media/upload/' + $('#media-wrapper').attr('data-folder-id'),
 		onClosed: function() {
 			window.location.reload();
 		}
+	});
+
+	$('.ff-wrapper').bind('mouseleave', function() {
+		$(this).find('.options').hide();
 	});
 
 	$('#folder_id').chosen({ 'width' : '100%' });
@@ -129,4 +135,31 @@ $(function(){
 
 	// tweak the jquery plugin tmpl
 	$.tmpl.regexp = /([\s'\\])(?![^%]*%\})|(?:\[%(=|#)([\s\S]+?)%\])|(\[%)|(%\])/g;
+
+	/* ===== Drag and Drop ===== */
+	$('.draggable').draggable({
+		revert: true,
+		zIndex: 100,
+		start: function(event, ui) {
+			var mPosX = event.pageX - $(this).offset().left;
+			var mPosY = event.pageY - $(this).offset().top;
+
+			$(this).css('margin-top', mPosY);
+			$(this).css('margin-left', mPosX);
+			$(this).switchClass('ff-wrapper', 'small');
+			
+			$(this).bind('mouseleave', function(){ $(this).switchClass('small', 'ff-wrapper') });
+		}
+	});
+
+	$('.droppable').droppable({
+		drop: function(event, ui) {
+			ui.draggable.hide();
+		}
+	});
+
+	/* ===== Upload ===== */
+	$('#uploaded-files').livequery(function(){
+		$(this).perfectScrollbar();
+	});
 });

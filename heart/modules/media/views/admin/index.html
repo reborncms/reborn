@@ -6,13 +6,13 @@
 		{{ $actionBar }}
 	{{ endif }}
 
-	<div class="ff-mix-container clearfix">
+	<div class="ff-mix-container clearfix p-relative">
 
 		{{ if (isset($folders) and !$folders->isEmpty()) }}
 
 			{{ loop ($folders as $folder) }}
 
-			<div class="ff-wrapper f-left folder">
+			<div class="ff-wrapper droppable f-left folder">
 
 			{= $parent = (is_null($folder->folder)) ? t('m.lbl.none') : $folder->folder->name =}
 
@@ -33,9 +33,7 @@
 
 				<div class="thumb-body">
 
-					<!-- <a href="{{ adminUrl('media/explore/'.$folder->id) }}"> -->
-						<div data-id="{{ $folder->id }}" class="thumbs folder-thumb" title="{{ $folder->name }}"></div> <!-- end of folder-thumb -->
-					<!-- </a> -->				
+					<div data-id="{{ $folder->id }}" class="thumbs folder-thumb" title="{{ $folder->name }}"></div> <!-- end of folder-thumb -->			
 
 				</div> <!-- end of thumb-body -->
 
@@ -50,7 +48,7 @@
 
 			{{ loop ($files as $file) }}
 
-			<div class="ff-wrapper f-left file" data-id='{{ $file->id }}'>
+			<div class="ff-wrapper draggable f-left file" data-id='{{ $file->id }}'>
 
 				{= $imgUrl = rbUrl('media/image/'.$file->filename); =}
 				{= $parent = (is_null($file->folder)) ? t('m.lbl.none') : $file->folder->name =}

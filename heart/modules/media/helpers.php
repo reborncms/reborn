@@ -52,7 +52,7 @@ if (! function_exists('folderTree')) {
  **/
 if (! function_exists('duplication')) {
 
-    function duplication($name, $folderId, $file = fasle, $except = null)
+    function duplication($name, $folderId, $file = false, $except = null)
     {
         $names = null;
 

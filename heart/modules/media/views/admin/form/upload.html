@@ -1,6 +1,7 @@
 {=
 	$current = (isset($folderId)) ? $folderId : 0;
 =}
+
 <div id="media-wrapper" data-folder-id="{{ $current }}">
 
 	{{ Form::start(adminUrl('media/upload/'.$current), 'upload', true, array('class' => 'form  dropzone', 'id' => 'uploader')) }}
@@ -10,30 +11,41 @@
 
 	{{ Form::end() }}
 
+	<div id="uploaded-files">
+		
+	</div> <!-- end of uploaded-files -->
+
 </div> <!-- end of media-wrapper -->
 
 <script type="text/javascript">
 /* *** ** * Remain bug in not ajax request * ** *** */
+
+	//var selectBox = $('#uploaded-folder').clone();
 
 	$('#uploader').dropzone({
 		paramName: "files",
 		dictDefaultMessage: "{{ t('media::media.lbl.uploadAreaText') }}",
 		thumbnailWidth: 150,
 		thumbnailHeight: 150,
+		previewsContainer: '#uploaded-files',
+		acceptedFiles: '.jpg,.jpeg,.png,.gif,.bmp,.txt,.rtf,.doc,.docx,.xls,.xlsx,.pdf,.zip,.tar,.rar,.mp3,.wav,.wma',
+		//uploadMultiple: true,
 		init: function() {
 			$('#file-field').hide();
 			$('#upload-submit').hide();
-			this.on('selectedfiles', function(){  });
 		},
 		success: function (file) {
 			uploaded = $.parseJSON(file.xhr.response);
 
 			var wrapper = "<div class='preview-wrap'></div>"
 			if ('success' == uploaded.status) {
-				$(file.previewTemplate.children).wrapAll(wrapper/*'.preview-wrap'*/);
+				$(file.previewTemplate).find('.dz-progress').fadeOut('slow');
+
+				$(file.previewTemplate.children).wrapAll(wrapper);
 				var sucElement = "<div class='info-wrap'><form class='clearfix' action=''><div class='info-left f-left'><label for='name'>Name</label><input name='name' placeholder='"+file.name+"' type='text'/><label for='alt'>Alt</label><input name='alt' placeholder='"+file.name+"' type='text' /></div><div class='info-right f-right'><textarea placeholder='Fill desctiption'></textarea><input class='btn btn-disabled' type='submit' value='Edit'></div></form></div>";
 
 				$(file.previewTemplate).append(sucElement);
+
 			} else {
 
 			}
@@ -42,4 +54,3 @@
 	});
 		
 </script>
-

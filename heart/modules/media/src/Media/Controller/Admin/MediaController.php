@@ -45,6 +45,7 @@ class MediaController extends \AdminController
     public function before()
     {
         $this->template->style('chosen.css', 'media');
+        $this->template->style('perfect-scrollbar.css', 'media');
         $this->template->style('media.css', 'media');
         $this->template->script('plugins.js', 'media');
         $this->template->script('media.js', 'media');
@@ -64,6 +65,10 @@ class MediaController extends \AdminController
      **/
     public function index()
     {
+        /*$file = file_get_contents(STORAGES . 'cache/media/test');
+        
+        dump(eval($file), true);*/
+
         $this->explore(0);
     }
 
@@ -178,6 +183,11 @@ class MediaController extends \AdminController
      **/
     public function upload ($folderId = 0, $key = 'files')
     {
+        /*$some = array('testing', 'ma kyi woo kwer');
+        \Cache::set('name', $some);
+        \Cache::set('name', 'Another');
+        dump(\Cache::get('name'), true);*/
+
         if (\Input::isPost()) {
 
             $config = array(
@@ -450,10 +460,6 @@ class MediaController extends \AdminController
         }
     }
 
-
-
-
-
     /**
      * Inserting thumbnail images
      *
@@ -480,12 +486,13 @@ class MediaController extends \AdminController
         }
         
         $actionBar = $this->template
+                        ->set('allFolders', $this->allFolders)
                         ->partialRender('admin'.DS.'plugin'.DS.'actionbar');
+
 
         $this->template->title(t('media::media.ext.thumbnail'))
                         ->set('actionBar', $actionBar)
                         ->set('images', $images)
-                        ->set('allFolders', $this->allFolders)
                         ->setPartial('admin'.DS.'plugin'.DS.'thumbnail');
     }
 
@@ -530,11 +537,15 @@ class MediaController extends \AdminController
                                 'image/tiff', 'image/bmp'))
                             ->get();
 
+        $body = $this->template
+                    ->set('images', $images)
+                    ->partialRender('admin'.DS.'plugin'.DS.'thumbnail');
+
         $this->template->title(t('media::media.ext.insertTitle'))
                         ->set('meta', $meta)
                         ->set('actionbar', $actionbar)
                         ->set('current', $folderId)
-                        ->set('images', $images)
+                        ->set('body', $body)
                         ->partialOnly()
                         ->setPartial('ck/ck');
 

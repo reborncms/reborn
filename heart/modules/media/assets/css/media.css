@@ -13,6 +13,12 @@
 .p-relative { position: relative; }
 .p-absolute { position: absolute; }
 
+.ff-mix-container {
+	margin-top: 10px;
+	height: 400px;
+	overflow: hidden;
+}
+
 /* ===== Action Bar ===== */
 #action-bar{
 	background: #f0f0f0;
@@ -206,27 +212,75 @@
 	height: 8px;
 	overflow: hidden;
 	border: 1px double #fff;
-	outline: 1px solid green;
+	outline: 1px solid darkblue;
 }
-
-.dz-upload {
-	background: lightgreen;
-    position: absolute;
-	top: 0px;
-	left: 0px;
-	height: 8px;
-	transition: width 0.2s ease 0s;
-    -webkit-transition: width 0.2s ease 0s;
-    -moz-transition: width 0.2s ease 0s;
-    -ms-transition: width 0.2s ease 0s;
-    -o-transition: width 0.2s ease 0s;
-}
-
 
 
 .dz-success-mark, .dz-error-mark, .dz-error-message, .dz-filename, .dz-size { display: none;}
 
 .dz-details { width: 160px; }
+
+#uploaded-files {
+	height: 380px;
+	position: relative;
+	overflow: hidden;
+}
+
+.dz-upload{ 
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 8px;
+    transition: width 0.2s ease 0s;
+    -webkit-transition: width 0.2s ease 0s;
+    -moz-transition: width 0.2s ease 0s;
+    -ms-transition: width 0.2s ease 0s;
+    -o-transition: width 0.2s ease 0s;
+
+    background-color: #05a833;
+
+     -webkit-background-size: 10px 10px;
+        -moz-background-size: 10px 10px;
+        background-size: 10px 10px;
+        background-image: -webkit-gradient(linear, left top, right bottom,
+                                                color-stop(.25, rgba(255, 255, 255, .15)), color-stop(.25, transparent),
+                                                color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .15)),
+                                                color-stop(.75, rgba(255, 255, 255, .15)), color-stop(.75, transparent),
+                                                to(transparent));
+        background-image: -webkit-linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%,
+                                                transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%,
+                                                transparent 75%, transparent);
+        background-image: -moz-linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%,
+                                                transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%,
+                                                transparent 75%, transparent);
+        background-image: -ms-linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%,
+                                                transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%,
+                                                transparent 75%, transparent);
+        background-image: -o-linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%,
+                                                transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%,
+                                                transparent 75%, transparent);
+        background-image: linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%,
+                                                transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%,
+                                                transparent 75%, transparent);
+
+        -webkit-animation: animate-stripes 3s linear infinite;
+        -moz-animation: animate-stripes 3s linear infinite;
+}
+@-webkit-keyframes animate-stripes {
+    0% {background-position: 0 0;} 100% {background-position: 60px 0;}
+}
+
+@-moz-keyframes animate-stripes {
+    0% {background-position: 0 0;} 100% {background-position: 60px 0;}
+}
+.fade{
+
+	-webkit-transition: opacity 0.3s linear 0s;
+	-moz-transition: opacity 0.3s linear 0s;
+	-ms-transition: opacity 0.3s linear 0s;
+	-o-transition: opacity 0.3s linear 0s;
+	transition: opacity 0.3s linear 0s;
+}
 
 /* ===== Thumbnail Image ===== */
 #thumb-action-bar {

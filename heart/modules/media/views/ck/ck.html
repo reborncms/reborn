@@ -9,68 +9,6 @@
 		{{ $actionbar }}
 	{{ endif }}
 
-	<div id="m-thumb-media-wrap">
-
-		<div id="m-thumb-ajax-wrap">
-
-			<div id="m-thumb-option-pane" class="f-left adjust-width">
-
-			    <div id="m-thumb-preview" class="m-thumb-option">
-			    	<div id="m-thumb-preview-wrap" class="adjust-width">
-
-			    		<p id="m-thumb-img-name"></p>
-			    	</div> <!-- end of m_img_preview -->
-			    </div> <!-- end of m-thumb-preview -->
-
-			    <div id="m-thumb-button">
-			    	<button onclick="javascript:insert();" class="btn btn-green" style="display: none;">{{ t('media::media.ext.insert') }}</button>
-			    </div> <!-- end of m-thumb-button -->
-
-			    <div id="m-thumb-dimension" class="m-thumb-option">
-			    	{{ Form::label(t('media::media.lbl.dimension')) }}
-			    	<div class="m_input_wrap clearfix">
-			        	{{ Form::input('width', '', 'text', array('placeholder' => 'width', 'class' => 'f-left adjust-width')) }}
-			        	{{ Form::input('height', '', 'text', array('placeholder' => 'height', 'class' => 'f-left adjust-width')) }}
-			        </div> <!-- end of m_input_wrap -->
-			    </div> <!-- end of m-thumb-dimension -->
-
-			    <div id="m-thumb-align" class="m-thumb-option">
-			    	{{ Form::label(t('media::media.lbl.align'), 'float') }}
-			    	<div class="m_input_wrap">
-				        {=
-				        	$float = array('left' => 'Left', 'right' => 'Right', 'auto' => 'None')
-				        =}
-				        {{ Form::select('float', $float, 'auto', array('id' => 'float')) }}
-				    </div> <!-- end of m_input_wrap -->
-			    </div> <!-- end of m-thumb-align -->
-
-			    <div id="m-thumb-alt" class="m-thumb-option">
-			    	{{ Form::label(t('media::media.lbl.altText'), 'alt_text') }}
-			    	<div class="m_input_wrap">
-			    		{{ Form::input('alt_text') }}
-			    	</div> <!-- end of m_input_wrap -->
-				</div> <!-- end of m-thumb-alt -->
-
-			</div> <!-- end of m-thumb-option-pane -->
-
-			<div id="m-thumb-body" class="f-left">
-				<div id="ajax_wrap">
-
-						{{ loop($images as $file) }}
-
-							{=
-								$imgSrc = rbUrl('media/image/'.$file->filename.'/80/60');
-							=}
-
-							<img src="{{ $imgSrc }}" alt="{{ $file->alt_text }}" class="m-thumbs f-left" title="{{ $file->name }}" data-name="{{ $file->name }}" data-filename="{{ $file->filename }}" data-width="{{ $file->width }}" data-height="{{ $file->height }}" data-alt="{{ $file->alt_text }}" data-id="{{ $file->id }}">
-
-						{{ endloop }}
-
-				</div> <!-- end of ajax_wrap -->
-
-			</div> <!-- end of m-thumb-body -->
-
-		</div> <!-- end of m-thumb-ajax-wrap -->
-	</div> <!-- end of m-thumb-media-wrap -->
+	{{ $body }}
 
 </div> <!-- end of m-ck-wrap -->

@@ -1,8 +1,10 @@
 $(function(){
 
-	$('#m-thumb-choose-folder').chosen({'width': '100%'});
+	$('#m-thumb-choose-folder').chosen({'width': '60%'});
 
-	$('.m-thumbs').bind('click', function(){
+	//$('#m-thumb-option-pane').perfectScrollbar();
+
+	$('.m-thumbs').livequery('click', function(){
 
 		if (! $(this).hasClass('m-thumb-active')) {
 			$('.m-thumbs').removeClass('m-thumb-active');
