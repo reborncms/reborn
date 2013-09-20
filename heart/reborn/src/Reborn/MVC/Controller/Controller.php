@@ -45,7 +45,7 @@ class Controller
     protected $theme = null;
 
     /**
-     * undocumented class variable
+     * Variable for session object
      *
      * @var string
      **/

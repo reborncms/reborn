@@ -50,6 +50,8 @@ class Application extends \Illuminate\Container\Container
      **/
     public function __construct()
     {
+        $this['error_handler'] = new ErrorHandler($this);
+
         $this['request'] = Request::createFromGlobals();
 
         $this['router'] =  $this->share(function ($this) {
@@ -201,13 +203,6 @@ class Application extends \Illuminate\Container\Container
             $redirect_url = str_replace($basepath, '', \Input::server('REDIRECT_URL'));
 
             return \Redirect::to($redirect_url);
-        } catch(HttpNotFoundException $e) {
-            $view = new \Reborn\MVC\View\View(Config::get('template.cache_path'));
-            $content = $view->render(APP.'views'.DS.'404.php');
-            $response = new Response($content, 404);
-            $this->end($response);
-
-            exit(1);
         }
     }
 
@@ -321,8 +316,7 @@ class Application extends \Illuminate\Container\Container
      */
     public function setErrorHandler()
     {
-        $handler = new ErrorHandler();
-        $handler->register();
+        $this['error_handler']->register();
     }
 
     /**

@@ -1,4 +1,4 @@
-Reborn CMS Version2.0 (alpha)
+Reborn CMS Version2.0 (beta)
 =============================
 
 		 _____      _                         _____ __  __  _____
