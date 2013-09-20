@@ -56,6 +56,8 @@ class Validation
      * 17) - color [Input value is valid 6-digits color hexadecimal code eg:#efefef]
      * 18) - patterm [Input value is valid regex pattern eg:"/\d{4}-\d{2}-\d{2}/"]
      * 19) - unique [Input value is unique in mysql database. eg: unique:tablename.keyname]
+     * 20) - type [Input value's type must be $type. eg: type:string [string,array,float]
+     * 21) - boolean [Input value type must be boolean. [0, 1, on, off, true, false]
      *
      * @var array
      **/
@@ -78,7 +80,9 @@ class Validation
                 'equal',
                 'color',
                 'pattern',
-                'unique'
+                'unique',
+                'type',
+                'boolean'
             );
 
     /**
@@ -221,21 +225,26 @@ class Validation
     {
         list($rule, $param) = $this->ruleParser($rule);
 
-        if (in_array($rule, $this->methods)) {
-            // First param is Input value and second is Rule's value
-            $args = array($this->inputs[$input], $param);
+        // Check given input key is isset or not
+        if (!isset($this->inputs[$input])) {
+            $this->setError('kye_not_found', $input, $param);
+        } else {
+            if (in_array($rule, $this->methods)) {
+                // First param is Input value and second is Rule's value
+                $args = array($this->inputs[$input], $param);
 
-            if (! call_user_func_array(array($this, 'valid'.ucfirst($rule)), $args)) {
-                $this->setError($rule, $input, $param);
-            }
+                if (! call_user_func_array(array($this, 'valid'.ucfirst($rule)), $args)) {
+                    $this->setError($rule, $input, $param);
+                }
 
-        } elseif (array_key_exists($rule, $this->addedMethods)) {
-            // First param is Input value and second is Rule's value
-            $args = array($this->inputs[$input], $param);
-            $method = $this->addedMethods[$rule]['call'];
+            } elseif (array_key_exists($rule, $this->addedMethods)) {
+                // First param is Input value and second is Rule's value
+                $args = array($this->inputs[$input], $param);
+                $method = $this->addedMethods[$rule]['call'];
 
-            if (! call_user_func_array($method, $args)) {
-                $this->setError($rule, $input, $param, true);
+                if (! call_user_func_array($method, $args)) {
+                    $this->setError($rule, $input, $param, true);
+                }
             }
         }
     }
@@ -436,5 +445,32 @@ class Validation
         return false;
     }
 
+    protected function validType($value, $type)
+    {
+        switch ($type) {
+            case 'string':
+                return is_string($value);
+                break;
+
+            case 'array':
+                return is_array($value);
+                break;
+
+            case 'float':
+                return filter_var($value, FILTER_VALIDATE_FLOAT);
+                break;
+
+            default:
+                throw new \Exception("Validation Type {$type} is not supported type.");
+                break;
+        }
+    }
+
+    protected function validBoolean($value)
+    {
+        $bool = array('1', '0', 'true', 'false', 'on', 'off');
+
+        return in_array(strtolower($value), $bool);
+    }
 
 } // END class Validation
