@@ -1,4 +1,4 @@
-<div id="media-wrapper" data-folder-id="{{ (isset($current)) ? $current : 0 }}">
+<div id="main-media-wrapper" data-folder-id="{{ (isset($current)) ? $current->id : 0 }}">
 
 {= $f = \Media\Lib\Plugins::getFilesByFolderId(0, true); =}
 
@@ -85,18 +85,22 @@
 
 			{{ endloop }}
 
-			
+		{{ endif }}
+
+		{{ if (isset($isEmpty)) }}
+
+			<div id="no-index-data">
+				{{ t('media::media.info.noFileFolder') }}
+			</div><!-- end of no-index-data -->
 
 		{{ endif }}
 
 	</div> <!-- end of ff-mix-container -->
 
-	{{ if (isset($isEmpty)) }}
+	
 
-		<div id="no-index-data">
-			{{ t('media::media.info.noFileFolder') }}
-		</div><!-- end of no-index-data -->
-
+	{{ ifset ($statusBar) }}
+		{{ $statusBar }}
 	{{ endif }}
 
 </div> <!-- end of media-wrapper -->
@@ -180,5 +184,3 @@
 	</div> <!-- end of folder-detail -->
 
 </div>
-
-

@@ -1,0 +1,54 @@
+<div id="m-status-bar" class='clearfix adjust-width'>
+
+	<div id="m-status-thumb" class='f-left'>
+		<div class="thumbs-lg folder-thumb-lg">
+			
+		</div> <!-- end of folder-thumb-lg -->
+	</div> <!-- end of m-status-thumb -->
+
+	{=
+		$fileCount = count($files);
+		$folderCount = count($folders);
+	=}
+
+	<div id="m-statuses" class="f-left">
+		<p>This folder contain {{ $folderCount }} folders and {{ $fileCount }} files</p>
+	</div> <!-- end of m-statuses -->
+
+	<div id="m-status-desc" class="f-left">
+
+		<table>
+			<tr style="display: none;">
+				<td>{{ t('media::media.lbl.fileName') }}</td>
+				<td class='semi-colom'>:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>{{ t('media::media.lbl.folderName') }}</td>
+				<td class='semi-colom'>:</td>
+				<td>{{ $current->name }}</td>
+			</tr>
+			<tr>
+				<td>{{ t('media::media.lbl.desc') }}</td>
+				<td class='semi-colom'>:</td>
+				<td>{{ $current->desc }}</td>
+			</tr>
+			<tr style="display: none;">
+				<td>{{ t('media::media.lbl.dimension') }}</td>
+				<td class='semi-colom'>:</td>
+				<td></td>
+			</tr>
+			<tr style="display: none;">
+				<td>{{ t('media::media.lbl.size') }}</td>
+				<td class='semi-colom'>:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>{{ t('media::media.lbl.author') }}</td>
+				<td class='semi-colom'>:</td>
+				<td>{{ $current->user->first_name.' '.$current->user->last_name }}</td>
+			</tr>
+		</table>
+	</div> <!-- end of m-statuses -->
+
+</div> <!-- end of m-status-bar -->

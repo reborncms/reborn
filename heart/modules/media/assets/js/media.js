@@ -3,8 +3,12 @@ $(function(){
 
 	$('#media_upload').colorbox({
 		width: "900",
-		height: "600",
+		innerHeight: "360",
+		closeButton: false,
 		href: SITEURL + ADMIN + '/media/upload/' + $('#media-wrapper').attr('data-folder-id'),
+		onComplete: function() {
+			$('#cboxClose').hide();
+		},
 		onClosed: function() {
 			window.location.reload();
 		}
@@ -162,4 +166,7 @@ $(function(){
 	$('#uploaded-files').livequery(function(){
 		$(this).perfectScrollbar();
 	});
+
+	/* ===== Status ===== */
+	
 });

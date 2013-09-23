@@ -27,10 +27,11 @@ return array(
 		'upload'	=> 'Upload',
 		'create'	=> 'Create Folder',
 		'uploadAreaText' => 'Drop file here or click here to upload',
-		'author'	=> 'Uploader',
+		'fileAuthor'	=> 'Uploader',
+		'folderAuthor'	=> 'Creator',
 		'name'		=> 'Name',
 		'add_thumb' => 'Add Thumbnail',
-		'remove_thumb' => 'Remove Thumbnail'
+		'remove_thumb' => 'Remove Thumbnail',
 		),
 	'btn'		=> array(
 		'submit'	=> 'Submit',

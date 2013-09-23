@@ -27,7 +27,8 @@ return array(
 		'upload'	=> 'ဖိုင်လ်ပို့ရန်',
 		'create'	=> 'ဖိုလ်ဒါ တည်ဆောက်ရန်',
 		'uploadAreaText' => 'Drop file here or click here to upload',
-		'author'	=> 'Uploader',
+		'fileAuthor'	=> 'Uploader',
+		'folderAuthor'	=> 'Creator',
 		'name'		=> 'Name',
 		'add_thumb' => 'Add Thumbnail',
 		'remove_thumb' => 'Remove Thumbnail'

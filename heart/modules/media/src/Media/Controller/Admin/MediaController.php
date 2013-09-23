@@ -64,9 +64,6 @@ class MediaController extends \AdminController
      **/
     public function index()
     {
-        /*$file = file_get_contents(STORAGES . 'cache/media/test');
-        
-        dump(eval($file), true);*/
 
         $this->explore(0);
     }
@@ -351,16 +348,34 @@ class MediaController extends \AdminController
 
         $folders = Folders::with(array('folder', 'user'))->where('folder_id', '=', $id)->get();
 
+        $current = Folders::find($id);
+
+        if (is_null($current)) {
+            $current = new \stdClass();
+
+            $current->id = 0;
+            $current->name = t('media;:media.lbl.none');
+            $current->desc = 'Default folder of media module.';
+            $current->user = \User\Model\User::find(1);
+        }
+
         if ($files->isEmpty() and $folders->isEmpty()) {
             $this->template->set('isEmpty', true);
         }
+
+        $statusBar = $this->template
+                        ->set('current', $current)
+                        ->set('files', $files)
+                        ->set('folders', $folders)
+                        ->partialRender('admin/statusbar');
 
         $actionBar = $this->template->set('currentFolder', 0)
                         ->set('selected', $id)
                         ->partialRender('admin/actionbar');
 
         $this->template->title(t('media::media.title.title'))
-                        ->set('current', $id)
+                        ->set('statusBar', $statusBar)
+                        ->set('current', $current)
                         ->set('files', $files)
                         ->set('folders', $folders)
                         ->set('actionBar', $actionBar)
