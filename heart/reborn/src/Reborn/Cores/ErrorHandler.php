@@ -2,6 +2,12 @@
 
 namespace Reborn\Cores;
 
+use Closure;
+use Exception;
+use ReflectionFunction;
+use Reborn\Exception\HttpNotFoundException;
+use Reborn\Http\Response;
+
 /**
  * Error Handler class
  *
@@ -10,6 +16,31 @@ namespace Reborn\Cores;
  **/
 class ErrorHandler
 {
+
+    /**
+     * Exception Handlers
+     *
+     * @var array
+     **/
+    protected $handlers = array();
+
+    /**
+     * Application (IOC) Container
+     *
+     * @var \Reborn\Cores\Application
+     **/
+    protected $app;
+
+    /**
+     * Default instance method
+     *
+     * @param \Reborn\Cores\Application $app
+     * @return void
+     **/
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * Register the error handler.
@@ -23,12 +54,89 @@ class ErrorHandler
     }
 
     /**
+     * Bind to Exception Hanlder
+     *
+     * @param Closure $handler Closure function for handler
+     * @param boolean $append Handler is append in $this->handlers
+     * @return \Reborn\Cores\ErrorHandler
+     */
+    public function bind(Closure $handler, $append = false)
+    {
+        if ($append) {
+            array_push($this->handlers, $handler);
+        } else {
+            array_unshift($this->handlers, $handler);
+        }
+
+        return $this;
+    }
+
+    /**
      * Handler for the Exception Error.
      *
      * @param \Exception
      * @return mixed
      */
-    public function exceptionHandler(\Exception $e)
+    public function exceptionHandler(Exception $e)
+    {
+        // Response Status Code
+        if ($e instanceof HttpNotFoundException) {
+            $status = 404;
+        } else {
+            $status = 500;
+        }
+
+        $response = null;
+
+        // Resolve Binding From Register Handlers
+        if ($handler = $this->resolveBinding($e)) {
+            try {
+                $response = $handler($e);
+            } catch (Exception $e) {
+                $response = null;
+            }
+        }
+
+        if ($response instanceof Response) {
+            $response->send();
+        } else {
+            $this->defaultHandling($e, $status);
+        }
+
+        exit(1);
+    }
+
+    /**
+     * Resolve Handler Binding
+     *
+     * @param \Exception $e
+     * @return boolean|Closure
+     **/
+    protected function resolveBinding($e)
+    {
+        foreach ($this->handlers as $handler) {
+            $reflection = new ReflectionFunction($handler);
+            $parameters = $reflection->getParameters();
+            $hint = $parameters[0];
+            $exception = $hint->getClass();
+
+            if (! $exception->isInstance($e)) {
+                continue;
+            }
+
+            return $handler;
+        }
+
+        return false;
+    }
+
+    /**
+     * Default Exception Handling
+     *
+     * @param \Exception $e
+     * @return \Reborn\Http\Response
+     **/
+    protected function defaultHandling($e, $status)
     {
         $message = $e->getMessage();
         $file = $e->getFile();
@@ -40,9 +148,7 @@ class ErrorHandler
 
         \Log::debug($message);
 
-        $app = \Registry::get('app');
-
-        if ($app['env'] == 'production') {
+        if ($this->app['env'] == 'production') {
             $view = new \Reborn\MVC\View\View(\Config::get('template.cache_path'));
             $content = $view->render(APP.'views'.DS.'production-error.php');
             //echo $content;
@@ -50,14 +156,20 @@ class ErrorHandler
             $content = require APP.'views'.DS.'exception.php';
         }
 
-        return new \Reborn\Http\Response($content, 503);
+        return new Response($content, $status);
     }
 
+    /**
+     * Get Class Name From Exception
+     */
     protected function getClass($t)
     {
         return isset($t['class']) ? $t['class'] : null;
     }
 
+    /**
+     * Get Class Name From Exception
+     */
     protected function getFunction($t)
     {
         return isset($t['function']) ? '::'.$t['function'] : null;
