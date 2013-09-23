@@ -14,6 +14,14 @@
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^(.*)$ index.php [QSA,L]
 
+  # Deny view file (*.html)
+  <FilesMatch "(.*)\.html$">
+    Deny from all
+  </FilesMatch>
+
+  # 403 for Folder Access
+  RedirectMatch 403 ^/.*/(heart/vendor|composer\.json|composer\.lock|storages).*$
+
 </IfModule>
 
 # ------------------------------------------------------------------------------
@@ -52,7 +60,7 @@
     ExpiresByType text/html "access plus 0 seconds"
 
   # JavaScript
-    ExpiresByType application/javascript "access plus 1 year"
+   # ExpiresByType application/javascript "access plus 1 year"
 
   # Manifest files
     ExpiresByType application/x-web-app-manifest+json "access plus 0 seconds"
@@ -85,7 +93,7 @@
 # | ETag for Static File |
 # ------------------------------------------------------------------------------
 
-FileETag MTime Size
+# FileETag MTime Size
 
 
 
