@@ -169,4 +169,21 @@ $(function(){
 
 	/* ===== Status ===== */
 	
+
+	/* ===== Main Actions ===== */
+	$('#media_search_btn').bind('click', function(e){
+		e.preventDefault();
+
+		$('#jump-box').fadeOut();
+
+		$('#search-box').fadeToggle();
+	});
+
+	$('#media_jump_btn').bind('click', function(e){
+		e.preventDefault();
+
+		$('#search-box').fadeOut();
+
+		$('#jump-box').fadeToggle();
+	});
 });

@@ -45,7 +45,7 @@ class Folders extends \Eloquent
      **/
     public function parent()
     {
-        return $this->hasOne('Media\Model\Folders', 'id', 'folder_id');
+        return $this->hasOne('Media\Model\Folders', 'folder_id');
     }
 
     /**
@@ -78,6 +78,37 @@ class Folders extends \Eloquent
         }
 
         return $ids;
+    }
+
+    public function pagination($id)
+    {
+        $result = static::find($id);
+
+        $parents = array();
+
+        $paretns[] = $result;
+
+        $res = $this->findParent($result);
+
+        return array_flatten($res);
+    }
+
+    public function findParent(&$obj)
+    {
+        $i = 0;
+        $a = array();
+
+        if (0 !== (int)$obj['folder_id']) {
+            $test = static::find($obj['folder_id']);
+
+            $a[] = $test;
+
+            $a[] = $this->findParent($test);
+        }/* else {
+            $a[] = $obj->id;
+        }*/
+
+        return $a;
     }
 
     public function findChild(&$id, $qw)

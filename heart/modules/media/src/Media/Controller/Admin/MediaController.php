@@ -64,7 +64,6 @@ class MediaController extends \AdminController
      **/
     public function index()
     {
-
         $this->explore(0);
     }
 
@@ -344,6 +343,8 @@ class MediaController extends \AdminController
      **/
     public function explore($id)
     {
+        $pagination = with(new Folders)->pagination($id);
+
         $files = Files::with(array('folder', 'user'))->where('folder_id', '=', $id)->get();
 
         $folders = Folders::with(array('folder', 'user'))->where('folder_id', '=', $id)->get();
@@ -370,6 +371,8 @@ class MediaController extends \AdminController
                         ->partialRender('admin/statusbar');
 
         $actionBar = $this->template->set('currentFolder', 0)
+                        ->set('pagination', array_reverse($pagination))
+                        ->set('current', $current)
                         ->set('selected', $id)
                         ->partialRender('admin/actionbar');
 
@@ -520,15 +523,13 @@ class MediaController extends \AdminController
         $keyword = \Input::get('keyword');
         $files = Files::make()->contain('name', $keyword)->get();
 
-        $actionBar = $this->template->partialRender('admin/actionbar');
-
         if ($files->isEmpty()) {
             $this->template->set('isEmpty', true);
         }
 
         $this->template->title(t('media::media.title.title'))
                         ->set('files', $files)
-                        ->set('actionBar', $actionBar)
+                        //->set('actionBar', $actionBar)
                         ->setPartial('admin/index');
     }
 

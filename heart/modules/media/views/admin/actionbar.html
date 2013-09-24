@@ -1,27 +1,66 @@
 <div id="action-bar" class='clearfix'>
-	
-	<div id="searcher" class='f-left'>
+	<div id="pagination" class="f-left">
+		<ul class="clearfix">
+			<li class="f-left">
+				<a href="{{ adminUrl('media') }}">Home</a>
+				<i class="icon-arrow-right  icon-16 icon-gray"></i>
+			</li>
 
-		{{ Form::start(adminUrl('media/search/'), 'search', false) }}
+			{{ loop($pagination as $pagi) }}
+				<li class="f-left">
+					<a href="{{ adminUrl('media/explore/'.$pagi->id) }}">
+						{{ $pagi->name }}
+					</a>
+					<i class="icon-arrow-right icon-16 icon-gray"></i>
+				</li>
+			{{ endloop }}
 
-			<input id="media_search" name="keyword" type='text' placeholder='Type to search'></input>
+			<li class="f-left">
+				{{ $current->name }}
+			</li>
 
-		{{ Form::end() }}
+		</ul>
 
-	</div> <!-- end of searcher -->
+	</div><!-- end of pagination -->
 
-	<div id="changer" class='f-left'>
-		<select name="folder_id" class="medium required" id="folder_id">
-			<option value="0">{{ t('media::media.lbl.none') }}</option>
-			{{ folderTree($allFolders, 0, 0, $selected) }}
-        </select>
-	</div> <!-- end of changer -->
+	<div id="action-holder" class='f-right p-relative'>
+		<div id="media_main_action" class="btns-group f-left">
 
-	<div id="action-holder" class='f-right'>
-		<div id="media_main_action" class="btns-group f-right">
-			<a id="media_main_move" class="btn btn-ico btn-dark" title="move to"><i class="icon-move"></i></a>
-			<a id="media_main_delete" class="btn btn-ico btn-dark" title="delete"><i class="icon-remove"></i></a>
+			<a id="media_main_move" class="btn btn-ico btn-dark" title="move to">
+				<i class="icon-move"></i>
+			</a>
+
+			<a id="media_main_delete" class="btn btn-ico btn-dark" title="delete">
+				<i class="icon-remove"></i>
+			</a>
+
 		</div> <!-- end of btns-group -->
+
+		<div id="media-extra-feature" class="btns-group f-left">
+			<a id="media_search_btn" href="" class="btn btn-ico btn-dark" title="search">
+				<i class="icon-search"></i>
+			</a>
+
+			<a id="media_jump_btn" href="" class="btn btn-ico btn-dark" title="jump to">
+				<i class="icon-sitemap"></i>
+			</a>
+		</div> <!-- end of media_extra_feature -->
+
+		<div id="search-box" class="p-absolute">
+			{{ Form::start(adminUrl('media/search/'), 'search', false) }}
+
+				<input id="media_search" name="keyword" type='text' placeholder='Type to search'></input>
+
+			{{ Form::end() }}
+		</div> <!-- end of search-box -->
+
+		<div id="jump-box" class="p-absolute">
+			<select name="folder_id" class="medium required" id="folder_id">
+				<option value="0">{{ t('media::media.lbl.none') }}</option>
+				{{ folderTree($allFolders, 0, 0, $selected) }}
+	        </select>
+		</div> <!-- end of jump-box -->
+
 	</div> <!-- end of action-holder -->
 
 </div> <!-- end of action-bar -->
