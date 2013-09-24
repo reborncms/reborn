@@ -50,6 +50,7 @@ class Alias
             'Redirect' => 'Reborn\Http\Redirect',
             'Response' => 'Reborn\Http\Response',
             'Form' => 'Reborn\Form\Form',
+            'FormBuilder' => 'Reborn\Form\AbstractFormBuilder',
             'Input' => 'Reborn\Http\Input',
             'Log' => 'Reborn\Connector\Log\LogManager',
             'Module' => 'Reborn\Module\ModuleManager',

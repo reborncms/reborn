@@ -31,6 +31,7 @@ return array(
 		 *  value :
 		 */
 		'elements' => array(
-				'noo' => array('NoForm', THEMES.'default'.DS.'NoForm.php')
+				// example
+				//'noo' => array('NoForm', THEMES.'default'.DS.'NoForm.php')
 			),
 	);

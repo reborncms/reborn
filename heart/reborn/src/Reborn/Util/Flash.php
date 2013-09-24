@@ -10,6 +10,14 @@ namespace Reborn\Util;
  **/
 class Flash
 {
+
+	/**
+	 * Symfony FlashBag Instance
+	 *
+	 * @var \Symfony\Component\HttpFoundation\Session\Flash\FlashBag
+	 **/
+	protected static $flashBag;
+
 	/**
 	 * Get the Flash Bag [Symfony Session Flashbag]
 	 *
@@ -17,8 +25,12 @@ class Flash
 	 **/
 	public static function getFlash()
 	{
-		 $session = \Registry::get('app')->session;
-		 return $session->getFlashBag();
+		//if (is_null(static::$flashBag)) {
+			$session = \Registry::get('app')->session;
+			return $session->getFlashBag();
+		//}
+
+		return static::$flashBag;
 	}
 
 	/**
@@ -66,14 +78,36 @@ class Flash
 	}
 
 	/**
-	 * Get the Flash Message by type
+	 * Check key is has or not
 	 *
-	 * @param string $type Message Type (info, error, success, warning)
+	 * @param string $key key name
+	 * @return boolean
+	 **/
+	public static function has($key)
+	{
+		return static::getFlash()->has($key);
+	}
+
+	/**
+	 * Get the Flash Message by key
+	 *
+	 * @param string $key Key Name (info, error, success, warning)
 	 * @return mixed
 	 **/
-	public static function get($type)
+	public static function get($key)
 	{
-		return static::getFlash()->get($type);
+		return static::getFlash()->get($key);
+	}
+
+	/**
+	 * Set the Flash Message by key
+	 *
+	 * @param string $key Message key (eg: info, error, success, warning)
+	 * @param mixed $data
+	 **/
+	public static function set($key, $data)
+	{
+		return static::getFlash()->set($key, $data);
 	}
 
 	/**
