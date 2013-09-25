@@ -1,3 +1,5 @@
+'use stripe';
+
 $(function(){
 	$('.ff-mix-container').perfectScrollbar();
 
@@ -13,6 +15,17 @@ $(function(){
 			window.location.reload();
 		}
 	});
+
+	$('#media_create_folder').colorbox({
+		width: "50%",
+		height: "400",
+		scroll: false,
+		onComplete: function () {
+			$.colorbox.resize();
+		}
+	});
+
+/* ===== Files and Folders actions ===== */
 
 	$('.ff-wrapper').bind('mouseleave', function() {
 		$(this).find('.options').hide();
@@ -32,62 +45,111 @@ $(function(){
 		window.location.assign(SITEURL + ADMIN + '/media/explore/' + $(this).attr('data-id'));
 	});
 
-	$('#media_create_folder').colorbox({
-		width: "50%",
-		height: "400",
-		scroll: false,
-		onComplete: function () {
-			$.colorbox.resize();
-		}
-	});
-
-	var selected = [];
+	var selected = {'file':[], 'folder':[]};
 
 	$('.thumb-body').bind('click', function(e){
 
 		var parent = $(this).parent();
 
 		if (! $(parent).hasClass('active-wrap')) {
-			$(parent).addClass('active-wrap');
+			parent.addClass('active-wrap');
 
-			selected.push($(parent).attr('data-id'));
+			('file' == $(this).attr('data-target')) ? selected.file.push($(this)) : selected.folder.push($(this));
 
-			if (selected.length > 1) {
+			if (selected.file.length+selected.folder.length > 1) {
 				$('#media_main_action').show();
 			}
+
 		} else {
-			$(parent).removeClass('active-wrap');
+			parent.removeClass('active-wrap');
 
-			var indexer = selected.indexOf($(parent).attr('data-id'));
+			if ('file' == parent.attr('data-target')) {
+				var indexer = selected.file.indexOf($(this));
+				selected.file.splice(indexer, 1);
+			} else {
+				var indexer = selected.folder.indexOf($(this));
+				selected.folder.splice(indexer, 1);
+			}
 
-			selected.splice(indexer, 1);
-
-			if (selected.length <= 1) {
+			if (selected.file.length+selected.folder.length <= 1) {
 				$('#media_main_action').hide();
 			}
 		}
 
+		
+
 		$(parent).parent().addClass('clicked');
+
+		var datas = $(this).parent().find('.action-detail');
+
+		status(datas);
 	});
+
+	function status(data) {
+
+		if (0 != selected.file.length && 0 != selected.folder.length) {
+			$('#m-statuses p').text(selected.folder.length+' folders and '+selected.file.length+' files have been selected.');
+		} else if (0 != selected.file.length) {
+			$('#m-statuses p').text(selected.file.length+' files have been selected.');
+		} else if (0 != selected.folder.length) {
+			$('#m-statuses p').text(selected.folder.length+' folders have been selected.');
+		}
+
+		if ('file' == data.attr('data-target')) {
+			$('#status_file_name td:last-child').text(data.attr('data-name'));
+			$('#status_file_name').show();
+			$('#status_folder_name').hide();
+
+			$('#status_desc td:last-child').text(data.attr('data-desc'));
+
+			$('#status_dimension td:last-child').text(data.attr('data-width')+' X '+data.attr('data-height'));
+			$('#status_dimension').show();
+
+			$('#status_size td:last-child').text(data.attr('data-size'));
+			$('#status_size').show();
+
+			$('#status_folder_auth').hide();
+			$('#status_file_auth td:last-child').text(data.attr('data-user'));
+			$('#status_file_auth').show();
+		} else {
+
+		}
+	}
 
 	$(document).on('click', function(e) {
 
 		var clicked = $(e.target);
 		if (! clicked.parents().hasClass("clicked")){
 			$('.thumb-body').parent().removeClass('active-wrap');
-			selected = [];
+			$('#media_main_action').hide();
+			selected = { 'file':[], 'folder':[] };
 		}
 
 	});
 
 	$('#media_main_delete').bind('click', function(){
+
 		var del = confirm("Are you sure you want to delete selected items ?");
 
 		if (del) {
 
-			for(var i = 0; i < selected.length; i++) {
+			for (var i = 0; i < selected.file.length; i++) {
+				var theFile = selected.file[i].parent();
+
+				$('#file_'+theFile.attr('data-id')).remove();
+
 				$.ajax({
-					url: SITEURL + ADMIN + '/media/delete-file/' + selected[i]
+					url: SITEURL + ADMIN + '/media/delete-file/' + theFile.attr('data-id')
+				});
+			}
+
+			for(var j = 0; j < selected.folder.length; j++) {
+				var theFolder = selected.folder[j].parent();
+
+				$('#folder_'+theFolder.attr('data-id')).remove();
+
+				$.ajax({
+					url: SITEURL + ADMIN + '/media/delete-folder/' + theFolder.attr('data-id')
 				});
 			}
 		}
@@ -141,7 +203,7 @@ $(function(){
 	$.tmpl.regexp = /([\s'\\])(?![^%]*%\})|(?:\[%(=|#)([\s\S]+?)%\])|(\[%)|(%\])/g;
 
 	/* ===== Drag and Drop ===== */
-	$('.draggable').draggable({
+	/*$('.draggable').draggable({
 		revert: true,
 		zIndex: 100,
 		start: function(event, ui) {
@@ -160,7 +222,7 @@ $(function(){
 		drop: function(event, ui) {
 			ui.draggable.hide();
 		}
-	});
+	});*/
 
 	/* ===== Upload ===== */
 	$('#uploaded-files').livequery(function(){

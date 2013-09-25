@@ -12,7 +12,7 @@
 
 			{{ loop ($folders as $folder) }}
 
-			<div class="ff-wrapper droppable f-left folder">
+			<div class="ff-wrapper droppable f-left folder" id="folder_{{ $folder->id }}" data-id='{{ $folder->id }}'>
 
 			{= $parent = (is_null($folder->folder)) ? t('m.lbl.none') : $folder->folder->name =}
 
@@ -31,7 +31,7 @@
 					</ul> <!-- end of options -->
 				</div> <!-- end of ff-actions -->
 
-				<div class="thumb-body">
+				<div class="thumb-body" data-target="folder">
 
 					<div data-id="{{ $folder->id }}" class="thumbs folder-thumb" title="{{ $folder->name }}"></div> <!-- end of folder-thumb -->			
 
@@ -48,7 +48,7 @@
 
 			{{ loop ($files as $file) }}
 
-			<div class="ff-wrapper draggable f-left file" data-id='{{ $file->id }}'>
+			<div class="ff-wrapper draggable f-left file" id="file_{{ $file->id }}" data-id='{{ $file->id }}'>
 
 				{= $imgUrl = rbUrl('media/image/'.$file->filename); =}
 				{= $parent = (is_null($file->folder)) ? t('m.lbl.none') : $file->folder->name =}
@@ -69,7 +69,7 @@
 
 				</div> <!-- end of ff-actions -->
 
-				<div class="thumb-body">
+				<div class="thumb-body" data-target="file">
 					{{ if ('' == $file->thumb) }}
 						<div class="thumbs" title="{{ $file->name }}" style="background: url({{ $imgUrl.'80/60/' }}) center no-repeat">
 						</div> <!-- end of folder-thumb -->

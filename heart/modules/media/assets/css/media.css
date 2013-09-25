@@ -28,6 +28,7 @@
 #action-bar{
 	padding: 5px;
 	border-bottom: 1px solid #f0f0f0;
+	background: #fdfdfd;
 }
 
 /* Pagination */
@@ -50,6 +51,11 @@
 
 #pagination ul li i {
 	font-weight: lighter;
+}
+
+/* Actions */
+#media_main_action {
+	display: none;
 }
 
 #media_main_action a#media_search_btn {
@@ -84,10 +90,10 @@
 /* ===== Status Bar ===== */
 #m-status-bar {
 	width: 100%;
-	height: 100px;
+	height: 125px;
 	padding: 10px;
 	border-top: 1px solid #f0f0f0;
-	background: #fcfcfc;
+	background: #fdfdfd;
 }
 
 #m-status-thumb {
@@ -96,6 +102,10 @@
 
 #m-statuses {
 	width: 30%;
+}
+
+#m-statuses p {
+	color: #a0a0a0;
 }
 
 #m-status-desc {

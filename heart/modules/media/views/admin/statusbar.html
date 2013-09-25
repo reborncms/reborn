@@ -18,35 +18,40 @@
 	<div id="m-status-desc" class="f-left">
 
 		<table>
-			<tr style="display: none;">
+			<tr id="status_file_name" style="display: none;">
 				<td>{{ t('media::media.lbl.fileName') }}</td>
 				<td class='semi-colom'>:</td>
 				<td></td>
 			</tr>
-			<tr>
+			<tr id="status_folder_name">
 				<td>{{ t('media::media.lbl.folderName') }}</td>
 				<td class='semi-colom'>:</td>
 				<td>{{ $current->name }}</td>
 			</tr>
-			<tr>
+			<tr id="status_desc">
 				<td>{{ t('media::media.lbl.desc') }}</td>
 				<td class='semi-colom'>:</td>
 				<td>{{ $current->desc }}</td>
 			</tr>
-			<tr style="display: none;">
+			<tr id="status_dimension" style="display: none;">
 				<td>{{ t('media::media.lbl.dimension') }}</td>
 				<td class='semi-colom'>:</td>
 				<td></td>
 			</tr>
-			<tr style="display: none;">
+			<tr id="status_size" style="display: none;">
 				<td>{{ t('media::media.lbl.size') }}</td>
 				<td class='semi-colom'>:</td>
 				<td></td>
 			</tr>
-			<tr>
-				<td>{{ t('media::media.lbl.author') }}</td>
+			<tr id="status_folder_auth">
+				<td>{{ t('media::media.lbl.folderAuthor') }}</td>
 				<td class='semi-colom'>:</td>
 				<td>{{ $current->user->first_name.' '.$current->user->last_name }}</td>
+			</tr>
+			<tr id="status_file_auth" style="display: none;">
+				<td>{{ t('media::media.lbl.fileAuthor') }}</td>
+				<td class="semi-colom">:</td>
+				<td></td>
 			</tr>
 		</table>
 	</div> <!-- end of m-statuses -->
