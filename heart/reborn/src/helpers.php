@@ -15,22 +15,42 @@
  * </code>
  *
  * @param mixed $value
- * @param bool $die
- *
+ * @param boolean $die
+ * @param boolean $export Use var_export instead of var_dump
+ * @param string $title Title for Dump
+ * @return string
  */
 if(! function_exists('dump'))
 {
-	function dump($value, $die = false)
+	function dump($value, $die = false, $export = false, $title = null)
 	{
+		if (is_string($die)) {
+			$title = $die;
+			$export = false;
+			$die = false;
+		}
+
+		if (is_string($export)) {
+			$title = $export;
+			$export = false;
+		}
+
 		$backtrace = debug_backtrace();
 		$file = $backtrace[0]['file'];
 		$line = $backtrace[0]['line'];
 
 		echo '<pre style="border: 1px dashed #71CF4D; padding: 5px 10px; background: #F2F2F2; margin: 10px 15px;">';
+		if ($title) {
+			echo '<h2 style="color: #565656; margin: 0px; padding-bottom: 5px; font-size: 13px; font-weight: normal;">Dump Title : '.$title.'</h2>';
+		}
 		echo '<h3 style="color: #990000; margin-top: 0px; padding-bottom: 5px; border-bottom: 1px dashed #999; font-size: 13px; font-weight: normal;">';
-		echo 'Dump at <span style="color: #000099;">'.$file.'</span> ';
+		echo 'Dump at &raquo; <span style="color: #000099;">'.$file.'</span> ';
 		echo 'line number <span style="color: #009900;">'.$line.'</span>.</h3>';
-		var_dump($value);
+		if ($export) {
+			var_export($value);
+		} else {
+			var_dump($value);
+		}
 		echo '</pre>';
 		if ($die) {
 			die;

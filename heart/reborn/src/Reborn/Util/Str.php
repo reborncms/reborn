@@ -222,4 +222,170 @@ class Str
 		return rtrim($str, $separator);
 	}
 
+	/**
+	 * Highlight span class wrapping for $term from $text
+	 *
+	 * @param string $text
+	 * @param string $term Highlight term
+	 * @param string $class Class name for span tag. Default is 'highlight'
+	 * @param string $flag Flag for regular expression
+	 * @return string
+	 **/
+	public static function highlight($text, $term, $class = 'highlight', $flag = 'i')
+	{
+		// $term is empty or $text is empty
+		if (empty($term) || '' == $text) {
+			return '';
+		}
+
+		$term = '#(' . preg_quote($term, '|') . ')#'.$flag;
+
+		$format = '<span class="'.$class.'">$0</span>';
+
+		return preg_replace($term, $format, $text);
+	}
+
+	/**
+	 * Check needle string is start from haystack
+	 *
+	 * @param string $needle
+	 * @param string $haystack
+	 * @param boolean $ignorecase Ignore Case Sensitive. Default is true
+	 * @return boolean
+	 **/
+	public static function startWith($needle, $haystack, $ignorecase = true)
+	{
+		$needle_len = strlen($needle);
+
+		if ($ignorecase) {
+			list($needle, $haystack) = static::lowercase($needle, $haystack);
+		}
+
+		$sub = substr($haystack, 0, $needle_len);
+
+		return ($needle_len <= strlen($haystack) && $sub === $needle);
+	}
+
+	/**
+	 * Check needle string is ending from haystack
+	 *
+	 * @param string $needle
+	 * @param string $haystack
+	 * @param boolean $ignorecase Ignore Case Sensitive. Default is true
+	 * @return boolean
+	 **/
+	public static function endWith($needle, $haystack, $ignorecase = true)
+	{
+		$needle_len = strlen($needle);
+
+		if ($ignorecase) {
+			list($needle, $haystack) = static::lowercase($needle, $haystack);
+		}
+
+		$sub = substr($haystack, - $needle_len);
+
+		return ($needle_len <= strlen($haystack) && $sub === $needle);
+	}
+
+	/**
+	 * Check needle string contain in haystack
+	 *
+	 * @param string $needle
+	 * @param string $haystack
+	 * @param boolean $ignorecase Ignore Case Sensitive. Default is true
+	 * @return boolean
+	 **/
+	public static function contain($needle, $haystack, $ignorecase = true)
+	{
+		if ($ignorecase) {
+			list($needle, $haystack) = static::lowercase($needle, $haystack);
+		}
+
+		return (false !== strpos($haystack, $needle));
+	}
+
+	/**
+	 * Check atleast one of list from give array lists
+	 * contain in the haystack string
+	 * example ::
+	 * // return true
+	 * Str::containIn(array('list', 'array'), 'list must be array');
+	 * // return true. Because "list" is contain in given string
+	 * Str::containIn(array('list', 'object'), 'list must be array');
+	 * // return false
+	 * Str::containIn(array('list', 'object'), 'lists must be array');
+	 *
+	 * @param array $lists
+	 * @param string $haystack
+	 * @param boolean $ignorecase Ignore Case Sensitive. Default is true
+	 * @return boolean
+	 **/
+	public static function containIn($lists, $haystack, $ignorecase = true)
+	{
+		$has_false = 0;
+
+		foreach ($lists as $list) {
+			if (! static::contain($list, $haystack, $ignorecase)) {
+				$has_false++;
+			}
+		}
+
+		return (count($lists) > $has_false);
+	}
+
+	/**
+	 * Check must be given all array lists
+	 * contain in the haystack string
+	 *
+	 * @param array $lists
+	 * @param string $haystack
+	 * @param boolean $ignorecase Ignore Case Sensitive. Default is true
+	 * @return boolean
+	 **/
+	public static function containAll($lists, $haystack, $ignorecase = true)
+	{
+		$contain = true;
+
+		foreach ($lists as $list) {
+			if (! static::contain($list, $haystack, $ignorecase)) {
+				$contain = false;
+			}
+		}
+
+		return $contain;
+	}
+
+	/**
+	 * Check given string's length must be between min and max.
+	 *
+	 * @param string $string
+	 * @param integer $min Min length
+	 * @param integer $max Max length
+	 * @return boolean
+	 **/
+	public static function lengthBetween($string, $min, $max)
+	{
+		$length = strlen($string);
+
+		return (($length > $min) && ($length < $max));
+	}
+
+	/**
+	 * Convert given string to lowercase
+	 *
+	 * @param string
+	 * @return array
+	 **/
+	public static function lowercase()
+	{
+		$strs = func_get_args();
+		$result = array();
+
+		foreach ($strs as $s) {
+			$result[] = strtolower($s);
+		}
+
+		return $result;
+	}
+
 } // END class Str
