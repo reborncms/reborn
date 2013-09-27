@@ -24,6 +24,21 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		return array();
 	}
 
-	public function register() {}
+	public function register()
+	{
+		// Exception Binding for NotAuthException
+		\Error::bind(
+			function(\NotAuthException $e) {
+				return \Redirect::toAdmin('login');
+			}
+		);
+
+		// Exception Binding for NotAdminAccessException
+		\Error::bind(
+			function(\NotAdminAccessException $e) {
+				return \Redirect::to('login');
+			}
+		);
+	}
 
 }
