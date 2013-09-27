@@ -6,6 +6,8 @@ use Reborn\Cores\Setting;
 use Reborn\Config\Config;
 use Reborn\Http\Redirect;
 use Reborn\Connector\Sentry\Sentry;
+use Reborn\MVC\Controller\Exception\NotAuthException;
+use Reborn\MVC\Controller\Exception\NotAdminAccessException;
 
 /**
  * Admin controller for Reborn
@@ -59,7 +61,7 @@ class AdminController extends Controller
 
             // Check for Module Access
             if (!$user->hasAccess(strtolower($this->request->module))) {
-                return $this->notFound();
+                throw new NotAuthException();
             }
         }
     }
@@ -101,18 +103,21 @@ class AdminController extends Controller
         $current = rtrim(implode('/', \Uri::segments()), '/');
 
         if (!Sentry::check()) {
+
             if (in_array($current, $allow)) {
                 return true;
             }
-            return Redirect::to(ADMIN_URL.'/login');
+
+            // Don't make Redirect. Because Security Problem
+            throw new NotAuthException();
         } else {
             $user = Sentry::getUser();
 
-            // We are check user hasAccess Admin (Group Permission)
+            // We are check user hasAccess for Admin Panel
             if ( ! $user->hasAccess('admin')) {
                 Sentry::logout();
                 \Flash::error(t('global.not_ap_access'));
-                return Redirect::toAdmin('login');
+                throw new NotAdminAccessException();
             }
 
             return true;

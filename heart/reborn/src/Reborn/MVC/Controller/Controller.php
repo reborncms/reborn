@@ -5,6 +5,8 @@ namespace Reborn\MVC\Controller;
 use Reborn\Cores\Application;
 use Reborn\Http\Response;
 use Reborn\Exception\HttpNotFoundException;
+use Reborn\MVC\Controller\Exception\NotAuthException;
+use Reborn\MVC\Controller\Exception\NotAdminAccessException;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
@@ -186,7 +188,13 @@ class Controller
         \Event::call('reborn.controller.process.starting', array($this, $method));
 
         // Call Inital Method
-        $this->init();
+        try {
+            $this->init();
+        } catch (NotAuthException $e) {
+            throw $e;
+        } catch (NotAdminAccessException $e) {
+            throw $e;
+        }
 
         $this->before();
 

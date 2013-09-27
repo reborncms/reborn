@@ -29,6 +29,8 @@ class Alias
             'Facade' => 'Reborn\Cores\Facade',
             'Cache' => 'Reborn\Cache\CacheManager',
             'Config' => 'Reborn\Config\Config',
+            'NotAuthException' => 'Reborn\MVC\Controller\Exception\NotAuthException',
+            'NotAdminAccessException' => 'Reborn\MVC\Controller\Exception\NotAdminAccessException',
             'AdminController' => 'Reborn\MVC\Controller\AdminController',
             'PublicController' => 'Reborn\MVC\Controller\PublicController',
             'PrivateController' => 'Reborn\MVC\Controller\PrivateController',

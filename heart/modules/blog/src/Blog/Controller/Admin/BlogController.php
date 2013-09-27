@@ -163,7 +163,7 @@ class BlogController extends \AdminController
 		} else {
 			$blog->status = 'draft';
 		}
-		$save = $blog->save();
+		$save = $blog->save(array(), false);
 		if ($save) {
 			\Flash::success(t('blog::blog.change_status_success'));
 		} else {

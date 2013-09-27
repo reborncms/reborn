@@ -116,10 +116,10 @@
           <label for="checkbox">{{ Form::label(t('user::user.adminpanelaccess'), 'admin_access') }}</label>
           <div class="form-right-block clearfix">
             <label for="ckeckbox" class="inline-label">
-              {{ if($adminAccess['dashboard']) }}
-                {{ Form::checkbox('admin_access', 1, array('checked' => 'checked', 'id'=>'ckeckbox')) }}
+              {{ if($adminAccess['dashboard']) }}                
+                {{ Form::checkbox('admin_access', 1, true, array('id'=>'ckeckbox')) }}                
               {{ else }}
-                {{ Form::checkbox('admin_access', 1, array('id'=>'ckeckbox')) }}
+                {{ Form::checkbox('admin_access', 1, false, array('id'=>'ckeckbox')) }}
               {{ endif }}
             </label>
         </div> <!-- end of form-right-block -->

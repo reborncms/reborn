@@ -28,9 +28,9 @@ class NavigationInstaller extends \Reborn\Module\AbstractInstaller
 	        $table->string('url');
 	        $table->integer('parent_id');
 	        $table->integer('link_order');
-	        $table->string('class');
-	        $table->string('target', 10);
-	        $table->string('permission');
+	        $table->string('class')->default('');
+	        $table->string('target', 10)->default('');
+	        $table->string('permission')->default('');
 	    });
 
 	    \DB::table('navigation_links')->insert(array(

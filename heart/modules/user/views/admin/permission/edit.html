@@ -7,7 +7,7 @@
 <table class="stripe">
 	<thead>
 		<tr>
-			<th>{{ Form::checkbox('', 1, array('id'=>'check-all', 'name' => 'action_to_all', 'class' => 'check-all', 'title' => 'Check All')) }}
+			<th>{{ Form::checkbox('', 1, true, array('id'=>'check-all', 'name' => 'action_to_all', 'class' => 'check-all', 'title' => 'Check All')) }}
 			<th>{{ t('user::permission.modules') }}</th>
 			<th>{{ t('user::permission.moduleAcitons') }}</th>
 		</tr>
@@ -24,9 +24,9 @@
 			{{ endloop }}
 
 		{{ if($check) }}
-			<td class="module-role">{{ Form::checkbox("modules[$module->uri]", 1, array('checked' => 'checked', 'data-module' => $module->uri)) }}</td>
+			<td class="module-role">{{ Form::checkbox("modules[$module->uri]", 1, true, array('data-module' => $module->uri)) }}</td>
 		{{ else }}
-			<td class="module-role">{{ Form::checkbox("modules[$module->uri]", 1, array('data-module' => $module->uri)) }}</td>
+			<td class="module-role">{{ Form::checkbox("modules[$module->uri]", 1, false, array('data-module' => $module->uri)) }}</td>
 		{{ endif }}
 			<td>{{ $module->name }}</td>
 			<td class="action_roles">

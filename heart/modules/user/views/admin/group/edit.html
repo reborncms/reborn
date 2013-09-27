@@ -17,9 +17,9 @@
       		<div class="form-right-block clearfix">
         		<label for="ckeckbox" class="inline-label">
          			{{ if($permission) }}
-						    {{ Form::checkbox('is_admin', 1, array('checked' => 'checked', 'id'=>'ckeckbox')) }}
+						    {{ Form::checkbox('is_admin', 1, true, array('id'=>'ckeckbox')) }}
 					    {{ else }}
-						    {{ Form::checkbox('is_admin', 1, array('id'=>'ckeckbox')) }}
+						    {{ Form::checkbox('is_admin', 1, false, array('id'=>'ckeckbox')) }}
 					    {{ endif }}
        			</label>
      		</div> <!-- end of form-right-block -->

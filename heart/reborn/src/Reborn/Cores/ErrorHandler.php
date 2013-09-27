@@ -151,7 +151,6 @@ class ErrorHandler
         if ($this->app['env'] == 'production') {
             $view = new \Reborn\MVC\View\View(\Config::get('template.cache_path'));
             $content = $view->render(APP.'views'.DS.'production-error.php');
-            //echo $content;
         } else {
             $content = require APP.'views'.DS.'exception.php';
         }

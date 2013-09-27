@@ -48,7 +48,7 @@
 
 				$('#ajax-alert').animate({opacity: 1.0},4000).fadeOut('slow');
 				
-				$('#ajax-alert > a.close').live('click', function(){
+				$('#ajax-alert > a.close').on('click', function(){
 					$('#message-area').fadeOut('slow');
 					return false;
 				});
