@@ -264,7 +264,7 @@ class PagesController extends \AdminController
                 $child_uri = $parent_uri.'/'.$child_page->slug;
                 $child_page->parent_id = $parent_id;
                 $child_page->uri = $child_uri;
-                $child_page->save();
+                $child_page->save(array(), false);
                 self::changeChildrenUri($child->id, $child_page->uri);
             }
         } else {
@@ -282,7 +282,7 @@ class PagesController extends \AdminController
             foreach ($second_gen as $child) {
                 $cPage = Pages::find((int) $child->id);
                 $cPage->uri = $parent_uri.'/'.$child->slug;
-                $cPage->save();
+                $cPage->save(array(), false);
                 self::changeChildrenUri($child->id, $cPage->uri);
             }
         }
@@ -309,7 +309,7 @@ class PagesController extends \AdminController
             $page->status = 'draft';
         }
 
-        $status_update = $page->save();
+        $status_update = $page->save(array(), false);
 
         if ($status_update) {
             \Flash::success(t('pages::pages.messages.success.status_update'));
@@ -411,13 +411,16 @@ class PagesController extends \AdminController
             $page->page_order = $order;
             $page->parent_id = null;
             $page->uri = $page->slug;
+            //dump($page);
             if (isset($page_order['children'])) {
                 self::orderChild($page_order['children'],$id);
             }
-            $order_save = $page->save();
+            $order_save = $page->save(array(), false);
             $order++;
         }
+        //dump($result, true);
         $get_pages = Pages::page_structure();
+        //dump($get_pages, true);
         $this->template->setPartial('admin/index')
                     ->set('pages', $get_pages)
                     ->partialOnly();
@@ -440,7 +443,8 @@ class PagesController extends \AdminController
             $page->page_order = $order;
             $page->parent_id = $parent_id;
             $page->uri = $new_uri;
-            $page->save();
+            $save = $page->save(array(), false);
+            //dump($save);
             if (isset($child['children'])) {
                 self::orderChild($child['children'],$id);
             }
