@@ -20,17 +20,17 @@ CKEDITOR.plugins.add('rbmedia', {
 		CKEDITOR.dialog.add('rbmedia', function(editor){
 			return {
 				title : 'Insert Image from Gallery',
-				minWidth: 900,
-				minHeight: 395,
+				minWidth: 1100,
+				minHeight: 462,
 				contents : [ {
 				    id : 'tab1', label : '', title : '', expand : true, padding : 0,
 				    elements : [ {
 				           type : 'iframe',
-				           src : SITEURL + ADMIN + '/media/rbCK/',
-				           width : 900, height : 395 - (CKEDITOR.env.ie ? 10 : 0)
+				           src : SITEURL + ADMIN + '/media/thumbnail/0/wysiwyg',
+				           width : 1100, height : 462 - (CKEDITOR.env.ie ? 10 : 0)
 				    } ]
 				} ]
-				, buttons : []   // don't show the default buttons
+				, buttons : []
 			};
 		});
 	}

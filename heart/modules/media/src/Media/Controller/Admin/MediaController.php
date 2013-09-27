@@ -178,10 +178,6 @@ class MediaController extends \AdminController
      **/
     public function upload ($folderId = 0, $key = 'files')
     {
-        /*$some = array('testing', 'ma kyi woo kwer');
-        \Cache::set('name', $some);
-        \Cache::set('name', 'Another');
-        dump(\Cache::get('name'), true);*/
 
         if (\Input::isPost()) {
 
@@ -484,7 +480,7 @@ class MediaController extends \AdminController
      *
      * @return void
      **/
-    public function thumbnail($folderId = 0)
+    public function thumbnail($folderId = 0, $target = null)
     {
          $images = Files::where('folder_id', '=', $folderId)
                             ->whereIn('mime_type', array(
@@ -492,11 +488,18 @@ class MediaController extends \AdminController
                                 'image/tiff', 'image/bmp'))
                             ->get();
 
-        
-
         if ($this->request->isAjax()) {
+
             $this->template->partialOnly();
             $this->template->set('ajax', true);
+
+        } elseif ('wysiwyg' == $target) {
+
+            $this->template->partialOnly();
+            $meta = $this->template->partialRender('admin'.DS.'plugin'.DS.'meta');
+            $this->template->set('meta', $meta);
+            $this->template->set('ajax', false);
+
         } else {
             $this->template->script('setthumbnail.js', 'media', 'footer');
             $this->template->set('ajax', false);
@@ -506,10 +509,12 @@ class MediaController extends \AdminController
                         ->set('allFolders', $this->allFolders)
                         ->partialRender('admin'.DS.'plugin'.DS.'actionbar');
 
+        $option = $this->template->partialRender('admin'.DS.'plugin'.DS.'option');
 
         $this->template->title(t('media::media.ext.thumbnail'))
                         ->set('actionBar', $actionBar)
                         ->set('images', $images)
+                        ->set('option', $option)
                         ->setPartial('admin'.DS.'plugin'.DS.'thumbnail');
     }
 
@@ -529,7 +534,6 @@ class MediaController extends \AdminController
 
         $this->template->title(t('media::media.title.title'))
                         ->set('files', $files)
-                        //->set('actionBar', $actionBar)
                         ->setPartial('admin/index');
     }
 
@@ -544,7 +548,7 @@ class MediaController extends \AdminController
     public function rbCK($folderId = 0)
     {
         $meta = $this->template->partialRender('ck/meta');
-        $actionbar = $this->template->partialRender('ck/actionbar');
+        $actionbar = $this->template->partialRender('admin/plugin/actionbar');
 
         $images = Files::where('folder_id', '=', $folderId)
                             ->whereIn('mime_type', array(

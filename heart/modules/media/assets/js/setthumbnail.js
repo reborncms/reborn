@@ -1,8 +1,8 @@
 $(function(){
 
-	$('#m-thumb-choose-folder').chosen({'width': '60%'});
+	$('#m-thumb-choose-folder').chosen({'width': '97%'});
 
-	//$('#m-thumb-option-pane').perfectScrollbar();
+	$('#m-thumb-main').perfectScrollbar();
 
 	$('.m-thumbs').livequery('click', function(){
 
@@ -15,7 +15,7 @@ $(function(){
 		$('#height').val($(this).attr('data-height'));
 		$('#alt_text').val($(this).attr('data-alt'));
 
-		var image = "<img src='"+SITEURL+"media/image/"+$(this).attr('data-filename')+"/300/200'>";
+		var image = "<p style='text-align: center;'><img src='"+SITEURL+"media/image/"+$(this).attr('data-filename')+"/300'></p>";
 
 		var imageName = "<p>"+$(this).attr('data-name')+"</p>";
 
@@ -39,7 +39,7 @@ $(function(){
 			$(this).addClass('action-active');
 		}
 
-		$('#m-thumb-media-wrap').load($(this).attr('href')/* + ' #ajax_wrap'*/);
+		$('#m-thumb-media-wrap').load($(this).attr('href'));
 		$(window).unload();
 	});
 
@@ -52,7 +52,7 @@ $(function(){
 function insert()
 {
 	var target = window.parent.document;
-	console.log(target);
+
 	var targetImg = $('.thumbnail_preview', target),
 		targetInput = target.getElementById(THUMB_TARGET),
 		targetRmBtn = $('.thumbnail_remove_btn', target);
