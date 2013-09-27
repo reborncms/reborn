@@ -16,7 +16,7 @@
 				<?php echo $this->fields[$name]['html']; ?>
 
 				<?php if(isset($this->errors[$name])) : ?>
-				<p class="error"><?php echo $this->errors[$name]; ?></p>
+				<span class="error"><?php echo $this->errors[$name]; ?></span>
 				<?php endif; ?>
 
 				<p class="info"><?php echo $this->fields[$name]['info']; ?></p>

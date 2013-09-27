@@ -139,7 +139,8 @@ abstract class AbstractFormBuilder
 			return false;
 		}
 
-		$this->validation();
+		$this->prepareValidation();
+
 		if ($this->validator->valid()) {
 			return true;
 		}
@@ -199,10 +200,15 @@ abstract class AbstractFormBuilder
 	/**
 	 * Set the model object for form
 	 *
+	 * @param array|object $model Data Model
 	 * @return \Reborn\Form\AbstractFormBuilder
 	 **/
-	public function setModel(\Eloquent $model)
+	public function setModel($model)
 	{
+		if (!is_array($model) and !is_object($model)) {
+			throw new \InvalidArgumentException("Model must be array or object");
+		}
+
 		$this->model = $model;
 
 		return $this;
@@ -235,7 +241,7 @@ abstract class AbstractFormBuilder
 	/**
 	 * Save the current model object
 	 *
-	 * @return void
+	 * @return boolean
 	 **/
 	public function save()
 	{
@@ -287,7 +293,8 @@ abstract class AbstractFormBuilder
 			if (isset($old[$name])) {
 				$val['value'] = $old[$name];
 			} elseif ($this->model and !is_string($this->model)) {
-				$val['value'] = $this->model->$name;
+				$model = $this->model;
+				$val['value'] = (is_array($model)) ? $model[$name] : $model->{$name};
 			} elseif (isset($val['value'])) {
 				$val['value'] = $val['value'];
 			}
@@ -318,7 +325,7 @@ abstract class AbstractFormBuilder
 	 *
 	 * @return void
 	 */
-	protected function validation()
+	protected function prepareValidation()
 	{
 		foreach ($this->fields as $name => $val) {
 			// Set validation
@@ -331,10 +338,9 @@ abstract class AbstractFormBuilder
 	}
 
 	/**
-	 * undocumented function
+	 * Set Input Values to Flash for next request
 	 *
 	 * @return void
-	 * @author
 	 **/
 	protected function setInputsInFlash()
 	{

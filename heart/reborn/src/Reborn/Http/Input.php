@@ -2,7 +2,7 @@
 
 namespace Reborn\Http;
 
-use Reborn\Cores\Registry as Registry;
+use Reborn\Cores\Facade;
 
 /**
  * Input Class for Reborn
@@ -16,13 +16,24 @@ class Input
 {
 
     /**
+     * Instance for Reborn\Http\Request
+     *
+     * @var Reborn\Http\Request
+     **/
+    protected static $instance;
+
+    /**
      * Get the Request Instance
      *
      * @return Reborn\Http\Request
      */
     public static function getIns()
     {
-        return Registry::get('app')->request;
+        if (is_null(static::$instance)) {
+            static::$instance = Facade::getApplication()->request;
+        }
+
+        return static::$instance;
     }
 
     /**
@@ -195,6 +206,9 @@ class Input
         foreach ($results as $k => $v) {
             $r[$k] = static::sanitize($v);
         }
+
+        // Remove CSRF Token
+        unset($r[\Config::get('app.security.csrf_key')]);
 
         return $r;
     }

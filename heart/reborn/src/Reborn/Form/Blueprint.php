@@ -135,6 +135,12 @@ class Blueprint
 	{
 		$name = isset($value['name']) ? $value['name'] : 'submit';
 		$attrs = isset($value['attr']) ? $value['attr'] : array();
+
+		// Set Btn Class From Reborn Admin Theme
+		if (!isset($attrs['class'])) {
+			$attrs['class'] = 'btn btn-green';
+		}
+
 		$this->submit = Form::submit($name, $value['value'], $attrs);
 	}
 
