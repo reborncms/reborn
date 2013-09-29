@@ -20,7 +20,7 @@ class UserInfo extends \Reborn\Module\AbstractInfo
 
 	protected $author = 'K';
 
-	protected $authorUrl = 'http://khaynote.com';
+	protected $authorUrl = 'http://khay.me';
 
 	protected $authorEmail = 'khayusaki@gmail.com';
 

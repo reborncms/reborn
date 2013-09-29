@@ -1,6 +1,6 @@
 <div id="user-profile">
 
-<h2>Hello, {{ $user->first_name }} {{ $user->last_name }}</h2>
+<h2>Hello, {{ $user->fullname }}</h2>
 
 {{ gravatar($user->email, 60, $user->first_name) }}
 
@@ -8,7 +8,7 @@
 	{{ if ($user->hasAccess('admin')) }}
 	<li><a href="{{ \Uri::create('admin/') }}">Dashboard</a></li>
 	{{ endif }}
-	<li><a href="{{ \Uri::create('user/profile/') }}">View Profile</a></li>
+	<li><a href="{{ \Uri::create('user/profile/'.$user->id) }}">View Profile</a></li>
 </ul>
 
 </div>

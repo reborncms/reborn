@@ -1,6 +1,6 @@
 <div id="user-profile">
 
-	<h2 id="displayname">{{ $user->first_name }} {{ $user->last_name }}</h2>
+	<h2 id="displayname">{{ $user->fullname }}</h2>
 
 	<div class="user-avatar">
 		{{ gravatar($user->email, 200, $user['name']) }}
@@ -40,6 +40,28 @@
 				<td>{{ $userMeta->biography }}</td>
 			</tr>
 		</table>
+	</div>
+
+	<div class="latest-author-posts">
+		<h3>Latest Posts from {{ $user->fullname }}</h3>
+
+		{{ if(count($blogs) > 0) }}
+			{{ loop($blogs as $blog) }}
+
+				<h3 class="blog_title">
+					<a href="{{ $blog->url }}">{{ $blog->title }}</a> 
+					<span>In <a href="{{ $blog->category_url }}"> {{ $blog->category_name }}</a></span>
+				</h3> 
+
+			{{ endloop }}
+
+		{{ else }}
+			<p>
+				Sorry, {{ $user->fullname }} doesn't blog anything yet.
+			</p>
+		{{ endif }}
+
+			
 	</div>
 
 </div>

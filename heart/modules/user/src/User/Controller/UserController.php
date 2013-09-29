@@ -5,6 +5,8 @@ namespace User\Controller;
 use Reborn\Connector\Sentry\Sentry;
 use Reborn\Util\Mailer as Mailer;
 use User\Model\UserMeta as UserMeta;
+use User\Model\User;
+use Blog\Model\Blog;
 
 class UserController extends \PublicController
 {
@@ -18,6 +20,7 @@ class UserController extends \PublicController
 		if(!Sentry::check()) return \Redirect::to('user/login');
 
 		$user = Sentry::getUser();
+		$user->fullname = $user->first_name.' '.$user->last_name;
 
 		$this->template->title(t('user::user.title.profile'))
 					->breadcrumb(t('user::user.title.profile'))
@@ -25,14 +28,13 @@ class UserController extends \PublicController
 					->setPartial('index');
 	}
 
-	public function profile($id = null)
+	public function profile($id)
 	{
-		if(!Sentry::check()) return \Redirect::to('user/login');
-		if (is_null($id)) {
-			$user = Sentry::getUser();
-		} else {
-			$user = Sentry::getUserProvider()->findById($id);
-		}
+		if(!Sentry::check() and is_null($id)) return \Redirect::to('user/login');
+		
+		$user = User::where('id', $id)->first();
+
+		if(is_null($user)) return \Redirect::to('/');
 
 		$currentUser = Sentry::getUser();
 		$usermeta = UserMeta::where('user_id', '=', $user->id)->get();
@@ -40,11 +42,19 @@ class UserController extends \PublicController
 			$usermeta = $u;
 		}
 
+		$blogs = Blog::active()
+						->with(array('category','author'))
+						->where('author_id', $id)
+						->take(10)
+						->orderBy('created_at', 'desc')
+						->get();
+
 		$this->template->title(t('user::user.title.profile'))
 					->breadcrumb(t('user::user.title.profile'))
 					->set('user', $user)
 					->set('currentUser', $currentUser)
 					->set('userMeta', $usermeta)
+					->set('blogs', $blogs)
 					->setPartial('profile');
 	}
 
@@ -347,7 +357,7 @@ class UserController extends \PublicController
 		} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
     		\Flash::error(t('user::user.auth.dunexist'));
     		return \Redirect::to('user/register');
-		} catch (\Cartalyst\SEntry\Users\UserAlreadyActivatedException $e) {
+		} catch (\Cartalyst\Sentry\Users\UserAlreadyActivatedException $e) {
 			\Flash::error(t('user::user.auth.activated'));
 		}
 		return \Redirect::to('user/login');		

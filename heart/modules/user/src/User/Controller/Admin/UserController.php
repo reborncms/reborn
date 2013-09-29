@@ -20,7 +20,7 @@ class UserController extends \AdminController
 	public function index()
 	{
 		$options = array(
-		    'total_items'       => User::all()->count(),
+		    'total_items'       => User::count(),
 		    'url'               => ADMIN_URL.'/user/index',
 		    'items_per_page'    => 10,
 		    'uri_segment'		=> 4

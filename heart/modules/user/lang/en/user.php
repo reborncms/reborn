@@ -25,6 +25,7 @@ return array(
 	'namexample'	=> 'e.g. John Doe',
 	'group'			=> 'Group',
 	'email'			=> 'Email',
+	'view'			=> 'View {:name} Profile',
 
 	'lpassword' => 'Password',
 	'lconfPass' => 'Confirm Password',
