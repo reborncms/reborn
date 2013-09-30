@@ -21,7 +21,7 @@ class Profiler
     protected $profilers = array();
 
     /**
-     * Stop the Timer
+     * Start the Profiling.
      *
      * @param string $name Profiler name
      * @return void
@@ -33,7 +33,7 @@ class Profiler
     }
 
     /**
-     * Stop the Timer
+     * Stop the Profiling
      *
      * @param string $name Profiler name
      * @return void
@@ -171,7 +171,7 @@ class Profiler
      **/
     protected function stopMemory()
     {
-        return memory_get_peak_usage(); //memory_get_usage();
+        return memory_get_peak_usage();
     }
 
 } // END class Profiler

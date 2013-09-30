@@ -13,36 +13,86 @@ use Reborn\Filesystem\File;
 
 class Blueprint
 {
-	// Form class name
+
+	/**
+	 * Form name
+	 *
+	 * @var string
+	 **/
 	protected $name;
 
-	// Form start
+	/**
+	 * Form strat variable
+	 *
+	 * @var string
+	 **/
 	protected $start;
 
-	// Form fields array
+	/**
+	 * Form element fields
+	 *
+	 * @var array
+	 **/
 	protected $fileds = array();
 
-	// Form submit button
+	/**
+	 * Form submit button
+	 *
+	 * @var string
+	 **/
 	protected $submit;
 
-	// From reset button
+	/**
+	 * Form reset button
+	 *
+	 * @var string
+	 **/
 	protected $reset;
 
-	// Cancel button for form
+	/**
+	 * Cancel button for form
+	 *
+	 * @var string
+	 **/
 	protected $cancel;
 
-	// Form legent value
+	/**
+	 * Form legent value
+	 *
+	 * @var string
+	 **/
 	protected $legent;
 
-	// Form validation errors
+	/**
+	 * Form validation errors
+	 *
+	 * @var array
+	 **/
 	protected $errors = array();
 
-	// Label array
+	/**
+	 * Form label array
+	 *
+	 * @var array
+	 **/
 	protected $labels = array();
 
-	// Extend Form Elements array
+	/**
+	 * Extend Form Elements array
+	 *
+	 * @var array
+	 **/
 	protected $exElements = array();
 
+	/**
+	 * Instance method for Blueprint
+	 *
+	 * @param string $action Form action url
+	 * @param string $name Form name
+	 * @param boolean $file Use multipart/form-data
+	 * @param array $attrs Form attributes
+	 * @return void
+	 **/
 	public function __construct($action, $name, $file, $attrs)
 	{
 		$default = \Config::get('form.default');
@@ -56,8 +106,6 @@ class Blueprint
 		foreach ($elements as $name => $v) {
 			$this->addElement($name, $v);
 		}
-
-		return $this;
 	}
 
 	/**

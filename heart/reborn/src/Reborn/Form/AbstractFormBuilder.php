@@ -8,7 +8,6 @@ use Reborn\Util\Flash;
 
 /**
  * FormBuilder class for Reborn.
- * Model is only support the Illuminate\Database\Eloquent
  *
  * @package Reborn\Form
  * @author Myanmar Links Professional Web Development Team
@@ -18,6 +17,8 @@ abstract class AbstractFormBuilder
 
 	/**
 	 * Input key name constant for Flash
+	 *
+	 * @var string
 	 **/
 	const INPUT_KEY = '_inputs';
 
@@ -119,7 +120,7 @@ abstract class AbstractFormBuilder
 	 * @param string $action From action URL
 	 * @param string $name Form name
 	 * @param string $attrs Form Attributes
-	 * @return void
+	 * @return \Reborn\Form\AbstractFormBuilder
 	 **/
 	public static function create($action = '', $name = 'default', $attrs = array())
 	{
@@ -269,6 +270,7 @@ abstract class AbstractFormBuilder
 	/**
 	 * Add the Form fields to Builder
 	 *
+	 * @return boolean
 	 */
 	protected function add()
 	{

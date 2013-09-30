@@ -3,11 +3,12 @@
 namespace Reborn\Cache;
 
 use Reborn\Config\Config;
+use Reborn\Cores\Facade;
 
 /**
- * Cache class for Reborn
+ * Cache Manager class for Reborn
  *
- * @package Cores
+ * @package Reborn\Cache
  * @author Myanmar Links Professional Web Development Team
  **/
 class CacheManager
@@ -16,7 +17,7 @@ class CacheManager
     /**
      * Cache Driver Object
      *
-     * @var Reborn\Cores\Cache\CacheDriverInterface
+     * @var Reborn\Cache\CacheDriverInterface
      */
     protected $cacheInstance;
 
@@ -184,7 +185,7 @@ class CacheManager
      **/
     protected static function getIns()
     {
-        return \Registry::get('app')->cache->getDriver();
+        return Facade::getApplication()->cache->getDriver();
     }
 
 } // END class CacheManager

@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 /**
  * Main Application Class for Reborn.
- * This class is extend the Pimple DIC.
+ * This class is extend the Illuminate\Container (IOC Container).
  *
  * @package Reborn\Cores
  * @author Myanmar Links Professional Web Development Team
@@ -43,7 +43,7 @@ class Application extends \Illuminate\Container\Container
     protected $started = false;
 
     /**
-     * Constructor Method
+     * Constructor Method.
      * Create new object for Reborn Application
      *
      * @return void
@@ -102,11 +102,13 @@ class Application extends \Illuminate\Container\Container
     }
 
     /**
-     * Set the Reborn CMS Environment
+     * Set the Reborn CMS Environment.
      * Reborn accept 3 type of environment
-     *  1) - dev (For Development Stage)
-     *  2) - test (For Testing Stage)
-     *  3) - production (For Production Stage)
+     * <code>
+     *  (1) - dev (For Development Stage)
+     *  (2) - test (For Testing Stage)
+     *  (3) - production (For Production Stage)
+     * </code>
      *
      * @param string $env
      * @return void
@@ -282,7 +284,7 @@ class Application extends \Illuminate\Container\Container
     }
 
     /**
-     * Set Locale for application
+     * Set Locale for application.
      * Default locale is en
      *
      * @param string $locale
@@ -298,7 +300,7 @@ class Application extends \Illuminate\Container\Container
     }
 
     /**
-     * Set Timezone for application
+     * Set Timezone for application.
      * Default timezone is UTC
      *
      * @param string $tz
@@ -310,7 +312,7 @@ class Application extends \Illuminate\Container\Container
     }
 
     /**
-     * Set the Error Handler
+     * Set the Error Handler for Reborn CMS
      *
      * @return void
      */
@@ -320,7 +322,7 @@ class Application extends \Illuminate\Container\Container
     }
 
     /**
-     * Check the site is maintainance stage ot not.
+     * Check the site is maintainance stage or not.
      * If site is maintainance stage, response the maintainance mode.
      *
      * @return void
@@ -373,7 +375,7 @@ class Application extends \Illuminate\Container\Container
     /**
      * Inject CSRF Token
      *
-     * @param Reborn\Http\Response $response Response Object
+     * @param \Reborn\Http\Response $response Response Object
      * @return string
      **/
     public function injectCSRFToken($response)

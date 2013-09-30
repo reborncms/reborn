@@ -10,31 +10,78 @@ namespace Reborn\Cores;
  **/
 class Version
 {
+    /**
+     * Application Name
+     *
+     * @var string
+     */
     const NAME = 'Reborn CMS';
 
+    /**
+     * Full version number and extra
+     *
+     * @var string
+     */
     const FULL = '2.0.0-beta';
 
+    /**
+     * Major version number
+     *
+     * @var string
+     */
     const MAJOR = '2';
 
+    /**
+     * Minor version number
+     *
+     * @var string
+     */
     const MINOR = '0';
 
+    /**
+     * Bug fixed version number
+     *
+     * @var string
+     */
     const FIX = '0';
 
+    /**
+     * Version extra type
+     *
+     * @var string
+     */
     const EXTRA = 'beta';
 
+    /**
+     * Code name for Major version
+     *
+     * @var string
+     */
     const CODE_NAME = 'rorb';
 
-    // Release date of Reborn CMS Package
+    /**
+     * Release date of Reborn CMS Package
+     *
+     * @var string
+     */
     const RELEASE = '16/09/2013';
 
-    // URL of Reborn CMS Official Site
+    /**
+     * URL of Reborn CMS Official Site
+     *
+     * @var string
+     */
     const URL = 'http://www.reborncms.com';
 
-    // Feed of Reborn CMS Official Site
+    /**
+     * Blog Feed Url of Reborn CMS
+     *
+     * @var string
+     */
     //const REBORN_FEED = 'http://www.reborncms.com/blog/rss';
 
     /**
-     * Get the Reborn CMS Version
+     * Get the Reborn CMS Full Version
      *
      * @return string
      **/

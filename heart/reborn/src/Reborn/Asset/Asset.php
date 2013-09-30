@@ -2,7 +2,7 @@
 
 namespace Reborn\Asset;
 
-use Reborn\Cores\Registry;
+use Reborn\Cores\Facade;
 use Reborn\Filesystem\Directory as Dir;
 use Reborn\Module\ModuleManager as Module;
 use Reborn\Exception\FileNotFoundException;
@@ -37,7 +37,7 @@ class Asset
 	protected $realPath;
 
 	/**
-	 * Folder name (or) path of the Asset files
+	 * Folder name (or) path of the Asset files container
 	 *
 	 * @var string
 	 **/
@@ -51,7 +51,7 @@ class Asset
 	 **/
 	public function __construct($path)
 	{
-		$this->request = Registry::get('app')->request;
+		$this->request = Facade::getApplication()->request;
 
 		$this->realPath = $path.$this->assetPath.DS;
 
@@ -152,7 +152,7 @@ class Asset
 	 * 		// return the active theme's img path
 	 * 		// eg: active theme = default
 	 * 		// output = http://localhost/reborn/content/themes/default/assets/img/
-	 * 		$this->asset->getImg Path();
+	 * 		$this->asset->getImgPath();
 	 * </code>
 	 *
 	 * @param string|null $module Module name
@@ -328,7 +328,7 @@ class Asset
 
 
 		// File Not Found Exception Only in Development Stage
-		$app = Registry::get('app');
+		$app = Facade::getApplication();
 		if ($app['env'] == 'dev') {
 			throw new FileNotFoundException($file, $path);
 		}

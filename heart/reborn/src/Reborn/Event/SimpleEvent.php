@@ -34,10 +34,11 @@ class SimpleEvent implements \Reborn\Event\EventInterface
 
     /**
      * Add(Register) the Event.
-     * Note: Use prefix to prevent event conflict.
+     * Note: Use prefix to prevent event name conflict.
      *
      * @param string $name Event name (eg: blog_post_create)
      * @param string $callback Callback function name.
+     * @return void
      */
     public function on($name, $callback)
     {

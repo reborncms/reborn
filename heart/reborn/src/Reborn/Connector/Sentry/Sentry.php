@@ -22,10 +22,15 @@ class Sentry {
 	/**
 	 * Sentry instance.
 	 *
-	 * @var Cartalyst\Sentry\Sentry
+	 * @var \Cartalyst\Sentry\Sentry
 	 */
 	protected static $instance;
 
+	/**
+	 * Get Instance Method
+	 *
+	 * @return \Cartalyst\Sentry\Sentry
+	 */
 	public static function instance()
 	{
 		if (static::$instance === null)
@@ -39,7 +44,7 @@ class Sentry {
 	/**
 	 * Creates an instance of Sentry.
 	 *
-	 * @return Cartalyst\Sentry\Sentry
+	 * @return \Cartalyst\Sentry\Sentry
 	 */
 	public static function createSentry()
 	{

@@ -12,14 +12,15 @@ use Monolog\Handler\StreamHandler;
  *
  * This class is really adapter only between Monolog and Reborn CMS.
  * Supported logging methods are -
- *  -- debug
- *  -- info
- *  -- notice
- *  -- warning
- *  -- error
- *  -- critical
- *  -- alert
- *  -- emergency
+ * <ul>
+ * <li>debug</li>
+ * <li>info</li>
+ * <li>notice</li>
+ * <li>warning</li>
+ * <li>critical</li>
+ * <li>alert</li>
+ * <li>emergency</li>
+ * </ul>
  * You can see defination for above methods at monolog documentation.
  *
  * @package Reborn\Connector\Log
@@ -36,16 +37,16 @@ class LogManager
     public $configs = array();
 
     /**
-     * Variable for monolog object
+     * Variable for monolog logger object
      *
-     * @var object
+     * @var \Monolog\Logger
      **/
     protected $logger = null;
 
     /**
-     * undocumented class variable
+     * Supported debug lists
      *
-     * @var string
+     * @var array
      **/
     protected $support = array(
             'debug' => 'addDebug',
@@ -85,14 +86,12 @@ class LogManager
         $fullpath = $this->configs['path'].$this->configs['file_name'].$this->configs['ext'];
 
         $this->logger->pushHandler(new StreamHandler($fullpath, Logger::DEBUG));
-
-        return $this;
     }
 
     /**
      * Get the Logger Object
      *
-     * @return object
+     * @return \Monolog\Logger
      */
     public function getLogger()
     {
@@ -109,6 +108,9 @@ class LogManager
         return $this->support;
     }
 
+    /**
+     * PHP Magic __callStatic method.
+     */
     public static function __callStatic($method, $args)
     {
         $log = Registry::get('app')->log;

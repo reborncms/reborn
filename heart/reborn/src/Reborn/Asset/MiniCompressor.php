@@ -10,8 +10,12 @@ namespace Reborn\Asset;
  **/
 class MiniCompressor
 {
-	public function __construct() {}
-
+	/**
+	 * Make the minified content
+	 *
+	 * @param string $content
+	 * @return string
+	 **/
 	public function make($content)
 	{
 		$result = str_replace("\r\n", "\n", $content);

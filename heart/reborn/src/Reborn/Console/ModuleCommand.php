@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * ModuleCommand class for Reborn
+ * Module GEnerator Command class for Reborn
  *
  * @package Reborn\Console
  * @author Myanmar Links Professional Web Development Team

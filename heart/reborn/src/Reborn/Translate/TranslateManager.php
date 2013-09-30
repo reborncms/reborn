@@ -118,13 +118,9 @@ class TranslateManager
      * <code>
      *  // Load lang navigation file from naviagtion module.
      *  Trnaslate::load('navigation::navigation');
-     *  // Now you can call lang string
+     *  // Now you can call lang(language) string
      *  Translate::get('navigation::navigation.title');
-     *
-     *  // This is need very long string for lang string at somethime.
-     *  // So we use subname for lang file
-     *  Translate::load('navigation::navigation', 'nav')
-     *  Translate::get('nav.title');
+     * </code>
      *
      * @param string $resource Resource File name
      * @param string $subname SubName for Resource File. This is shortcut name

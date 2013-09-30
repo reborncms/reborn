@@ -8,8 +8,8 @@ use Illuminate\Database\Connectors\ConnectionFactory as ConnectionFactory;
 use Illuminate\Database\ConnectionResolver as Resolver;
 
 /**
- * DB Manager class for Reborn
- * DB library is use Illuminate Database.
+ * DB Manager class for Reborn to connect Illuminate Database.
+ * Special thank for Illuminate Database.
  *
  * @package Reborn\Connector\DB
  * @author Myanmar Links Professional Web Development Team

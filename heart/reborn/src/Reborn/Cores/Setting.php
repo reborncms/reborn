@@ -121,7 +121,7 @@ class Setting
     }
 
     /**
-     * Remove the data to setting table.
+     * Remove the data from setting table.
      *
      * @param string $key Slug name from the setting table
      * @param mixed $value

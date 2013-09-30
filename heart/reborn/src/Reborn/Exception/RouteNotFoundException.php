@@ -2,6 +2,12 @@
 
 namespace Reborn\Exception;
 
+/**
+ * Exception class for Route Not Found.
+ *
+ * @package Reborn\Exception
+ * @author Myanmar Links Professional Web Development Team
+ **/
 class RouteNotFoundException extends RbException
 {
 

@@ -4,7 +4,7 @@ namespace Reborn\Cores;
 
 /**
  * Facade Class.
- * This class is knowledge base on Laravel's Facade Design
+ * This class is 100% knowledge base on Laravel's Facade Design.
  *
  * @package Reborn\Cores
  * @author Myanmar Links Professional Web Development

@@ -4,7 +4,7 @@ namespace Reborn\Cache\Driver;
 
 use Reborn\Config\Config;
 use Reborn\Cache\CacheDriverInterface;
-use Reborn\Cores\Registry;
+use Reborn\Cores\Facade;
 use Reborn\Filesystem\File as FileSystem;
 use Reborn\Filesystem\Directory as Dir;
 
@@ -47,7 +47,7 @@ class File implements CacheDriverInterface
         $this->path = Config::get('cache.file.storage_path');
 
         if (is_null($this->request)) {
-            $this->request = Registry::get('app')->request;
+            $this->request = Facade::getApplication()->request;
         }
 
         if (!is_dir($this->path)) {

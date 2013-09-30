@@ -18,7 +18,7 @@ class EventManager
 	/**
 	 * Event Instance
 	 *
-	 * @var string
+	 * @var \Reborn\Event\EventInterface
 	 **/
 	protected static $instance;
 
@@ -50,6 +50,9 @@ class EventManager
 	/**
 	 * Call the method by PHP Magic method _callStatic
 	 *
+	 * @param string $method Method name
+	 * @param mixed $args Arguments for method
+	 * @return mixed
 	 */
 	public static function __callStatic($method, $args)
 	{

@@ -3,7 +3,7 @@
 namespace Reborn\Asset;
 
 use lessc;
-use Reborn\Cores\Registry;
+use Reborn\Cores\Facade;
 use Reborn\Filesystem\Directory as Dir;
 
 /**
@@ -36,7 +36,7 @@ class LessResolver
 	 */
 	public function __construct()
 	{
-		$this->url = Registry::get('app')->request->baseUrl();
+		$this->url = Facade::getApplication()->request->baseUrl();
 	}
 
 	/**

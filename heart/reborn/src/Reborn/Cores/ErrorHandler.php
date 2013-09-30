@@ -160,6 +160,9 @@ class ErrorHandler
 
     /**
      * Get Class Name From Exception
+     *
+     * @param array $t Traces array
+     * @return string|null
      */
     protected function getClass($t)
     {
@@ -167,23 +170,44 @@ class ErrorHandler
     }
 
     /**
-     * Get Class Name From Exception
+     * Get Function Name From Exception
+     *
+     * @param array $t Traces array
+     * @return string|null
      */
     protected function getFunction($t)
     {
         return isset($t['function']) ? '::'.$t['function'] : null;
     }
 
+    /**
+     * Get File Name From Exception
+     *
+     * @param array $t Traces array
+     * @return string|null
+     */
     protected function getFile($t)
     {
         return isset($t['file']) ? $t['file'] : 'Unknown File';
     }
 
+    /**
+     * Get Line Number From Exception
+     *
+     * @param array $t Traces array
+     * @return string
+     */
     protected function getLine($t)
     {
         return isset($t['line']) ? $t['line'] : '#';
     }
 
+    /**
+     * Get Code Block to show at exception view
+     *
+     * @param array $t Traces array
+     * @return string
+     */
     protected function getCodeLine($t)
     {
         if ($t instanceof \Exception) {
@@ -342,7 +366,7 @@ STYLE;
     }
 
     /**
-     * Suhtdown Handler. Need TODO
+     * Suhtdown Handler.
      *
      */
     public function shutdownHandler()

@@ -97,12 +97,12 @@ class Alias
 
     /**
      * Register the class alias.
-     * You can use your class (external of Reborn's Cores) to alies use this method.
+     * You can use your class (external of Reborn's Cores) to alias use this method.
      * <code>
      *      // If you want to use Products\Libs\Shopper to Shopper
      *      Alias::aliasRegister(array('Shopper' => 'Products\Libs\Shopper'));
      *
-     *      // Ok, Shopper class is aliased now
+     *      // Ok, Shopper class is alias now
      *      Shopper::calculate();
      * </code>
      *
