@@ -66,6 +66,7 @@ div#list-themes p.tag {
 
 .themeEditor {
 	width: 100%;
+	margin-top: 20px;
 }
 
 .themeEditor #form-left {
@@ -76,6 +77,10 @@ div#list-themes p.tag {
 .themeEditor #form-right {
 	width: 20%;
 	float: right;
+}
+
+#form-left h3 {
+	margin-bottom: 10px;
 }
 
 .themeFiles ul {

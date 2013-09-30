@@ -6,6 +6,7 @@ class EditorController extends \AdminController
 {
 	public function before() 
 	{
+		$this->menu->activeParent('appearance');
 		$this->template->style('theme.css','theme');
 		$this->template->style(array(
 	                    'plugins/codemirror/codemirror.css'
