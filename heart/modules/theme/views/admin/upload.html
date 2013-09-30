@@ -9,8 +9,8 @@
 </div> <!-- end of form block -->
 
 <div class="form-block form-action">
-	{{ Form::submit('submit', t('theme::theme.upload.name'), array('id' => 'edit', 'class' => 'button button-green')) }}
-	<a href="{{ \Uri::create("$adminUrl/theme/") }}" class="button button-red">{{ t('theme::theme.cancel') }}</a>
+	{{ Form::submit('submit', t('theme::theme.upload.name'), array('id' => 'edit', 'class' => 'btn btn-green')) }}
+	<a href="{{ \Uri::create("$adminUrl/theme/") }}" class="btn">{{ t('theme::theme.cancel') }}</a>
 </div> <!-- end of form block -->
 
 {{ Form::end() }}

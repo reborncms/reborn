@@ -19,7 +19,7 @@ class UserInstaller extends \Reborn\Module\AbstractInstaller
 
 	public function uninstall()
 	{
-		return false;
+		\Setting::delete('user_registration');
 	}
 
 	public function upgrade($v)

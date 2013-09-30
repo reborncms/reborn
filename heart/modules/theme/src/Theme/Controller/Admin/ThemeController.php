@@ -7,7 +7,9 @@ use Reborn\Util\Uploader as Upload;
 
 class ThemeController extends \AdminController
 {
-	public function before() {
+	public function before() 
+	{
+		$this->menu->activeParent('appearance');
 		$this->template->style('theme.css','theme');
 	}
 
