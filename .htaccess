@@ -20,7 +20,7 @@
   </FilesMatch>
 
   # 403 for Folder Access
-  RedirectMatch 403 ^/.*/(\.git|\.git/index|heart/vendor|composer\.json|composer\.lock|storages).*$
+  RedirectMatch 403 ^/.*/(magic|permissions\.sh|README\.md|license\.txt|\.git|\.git/index|heart/vendor|composer\.json|composer\.lock|storages).*$
 
 </IfModule>
 

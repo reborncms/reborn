@@ -48,6 +48,33 @@ class Redirect
     }
 
     /**
+     * Redirect to the url with module prefix
+     *
+     * @param string $url
+     * @param boolean $admin With admin panel prefix
+     * @param int $status Response status code
+     * @param array $headers Header properties for the Response
+     * @return void
+     **/
+    public static function module($url = '', $admin = true, $status = 302, $headers = array())
+    {
+        $request = \Facade::getApplication()->request;
+        $module = \Module::getData($request->module, 'uri');
+        $url = ltrim($url, '/');
+
+        if ($admin) {
+            $admin = \Setting::get('adminpanel_url');
+            $url = $admin.'/'.$module.'/'.$url;
+        } else {
+            $url = $module.'/'.$url;
+        }
+
+        $url = Uri::create($url);
+
+        return static::send($url, $status, $headers);
+    }
+
+    /**
      * Redirect to the route by name.
      *
      * @return void
@@ -73,7 +100,7 @@ class Redirect
      **/
     public static function notFound()
     {
-        $router = \Registry::get('app')->router;
+        $router = \Facade::getApplication()->router;
 
         return $router->notFound();
     }
