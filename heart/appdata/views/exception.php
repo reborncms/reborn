@@ -139,7 +139,7 @@
 					Throw Exception in here.
 				</div>
 				<div class="trace_body">
-					<?php echo $file; ?>
+					<?php echo str_replace(BASE, 'BASE'.DS, $file); ?>
 					<span class="line_no"><?php echo $line; ?></span>
 				</div>
 				<div class="code">
@@ -154,7 +154,7 @@
 					<?php echo $this->getFunction($t); ?>
 				</div>
 				<div class="trace_body">
-					<?php echo $this->getFile($t); ?>
+					<?php echo $this->getFile($t, true); ?>
 					<span class="line_no"><?php echo $this->getLine($t); ?></span>
 				</div>
 				<div class="code">

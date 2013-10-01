@@ -184,11 +184,18 @@ class ErrorHandler
      * Get File Name From Exception
      *
      * @param array $t Traces array
+     * @param boolean $remove_basepath Remove base path form file
      * @return string|null
      */
-    protected function getFile($t)
+    protected function getFile($t, $remove_basepath =false)
     {
-        return isset($t['file']) ? $t['file'] : 'Unknown File';
+        $file = isset($t['file']) ? $t['file'] : 'Unknown File';
+
+        if ($remove_basepath) {
+            return str_replace(BASE, 'BASE/', $file);
+        }
+
+        return $file;
     }
 
     /**

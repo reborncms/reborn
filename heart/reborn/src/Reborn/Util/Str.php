@@ -157,13 +157,15 @@ class Str
 	 * Convert given string to Title String Style.
 	 *
 	 * example ::
+	 * <code>
 	 *  // $str = 'hello_world';
 	 *  Str::title($str); // output : Hello World
 	 *
-	 * If you want to stay separator word form your string, use $remove_separator = false
+	 *  //If you want to stay separator word form your string, use $remove_separator = false
 	 *  // $str = 'hello_world';
 	 *  Str::title($str, false); // output : Hello_World
 	 *  Str::title($str, false, '-'); // output : Hello-World
+	 * </code>
 	 *
 	 * @param string $value
 	 * @param boolean $remove_separator Remove separator (_ or -) form str. Default is true.
@@ -308,12 +310,14 @@ class Str
 	 * Check atleast one of list from give array lists
 	 * contain in the haystack string
 	 * example ::
+	 * <code>
 	 * // return true
 	 * Str::containIn(array('list', 'array'), 'list must be array');
 	 * // return true. Because "list" is contain in given string
 	 * Str::containIn(array('list', 'object'), 'list must be array');
 	 * // return false
 	 * Str::containIn(array('list', 'object'), 'lists must be array');
+	 * </code>
 	 *
 	 * @param array $lists
 	 * @param string $haystack
