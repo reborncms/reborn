@@ -1,4 +1,6 @@
-
+#page_index_wrapper {
+	margin-left: 20px;
+}
 #page_slug_input {
 	border:none;
 	background: none;

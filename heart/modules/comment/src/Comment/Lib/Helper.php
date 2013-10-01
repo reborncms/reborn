@@ -170,6 +170,17 @@ class Helper
 	}
 
 	/**
+	 * Get Comment Count
+	 *
+	 * @return void
+	 **/
+	public static function commentCount($id, $content_type)
+	{
+		$comment_count = Comment::where('content_id', $id)->where('module', $content_type)->count();
+		return $comment_count;
+	}
+
+	/**
 	 * Delete comment if comment delete
 	 *
 	 * @return boolean

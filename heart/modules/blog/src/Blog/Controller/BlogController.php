@@ -267,11 +267,13 @@ class BlogController extends \PublicController
 	 *
 	 * @return void
 	 **/
-	public function archives($year = null, $month = null)
+	public function archives($year = null, $month = null, $page = null)
 	{
 		if ($year == null) {
 			return \Redirect::to(rbUrl('blog/archives/'.date("Y")));
 		}
+
+		$month_name = '';
 
 		if (stristr($month, 'page-') or $month == null) {
 
@@ -294,6 +296,8 @@ class BlogController extends \PublicController
 								->orderBy('created_at', 'desc')
 								->get();
 		} else {
+
+			$month_name = date("F", mktime(0, 0, 0, $month, 10));
 
 			$blog_count = Blog::active()
 								->where(\DB::raw('YEAR(created_at)'), $year)
@@ -330,8 +334,7 @@ class BlogController extends \PublicController
 						->breadcrumb('Blog', rbUrl('blog'))
 						->breadcrumb($year, rbUrl('blog/archives/'.$year));
 
-		if ($month != null) {
-			$month_name = date("F", mktime(0, 0, 0, $month, 10));
+		if ($month_name) {
 			$this->template->breadcrumb($month_name);
 		}
 	}
