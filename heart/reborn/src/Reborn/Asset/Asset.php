@@ -354,7 +354,7 @@ class Asset
 		}
 
 		if (!is_null($type)) {
-			$urlPath = $this->path.$type.'/';
+			$urlPath = $urlPath.$type.'/';
 		}
 
 		return $urlPath;
