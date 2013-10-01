@@ -578,6 +578,10 @@ nav ul ul li a:hover {
 .blog_single_wrapper .blog_meta .date {
 	color: #717171;
 }
+
+.blog_body {
+	line-height: 2.5em;
+}
 .blog_excerpt {
 	line-height: 1.7em;
 	margin: 10px 0;

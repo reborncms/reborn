@@ -39,7 +39,7 @@ class Helper
             $ps .= '<a href="'.adminUrl('pages/edit/'.$page['id']).'" title="'.t('global.edit').'" class="tipsy-tip"><i class="icon-edit icon-black"></i></a>';
         }
 
-        if (user_has_access('pages.delete')) {
+        if (user_has_access('pages.delete') && $page['id'] != 1) {
             $ps .= '<a href="'.adminUrl('pages/delete/'.$page['id']).'" title="'.t('global.delete').'" class="confirm_delete tipsy-tip"><i class="icon-remove icon-black"></i></a>'; 
         }
         

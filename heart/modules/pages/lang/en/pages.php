@@ -43,6 +43,7 @@ return array(
             'csrf_error'        => 'This is probably a CSRF attack.',
             'not_found_head'    => '404 Not Found!!!',
             'not_found_body'    => 'What are you looking for ?',
+            'delete_home_page'  => 'Sorry, You cannot delete default home page',
         ),
     ),
 );

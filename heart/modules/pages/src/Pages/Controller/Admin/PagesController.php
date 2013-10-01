@@ -249,6 +249,11 @@ class PagesController extends \AdminController
                 return $this->notFound();
         }
 
+        if ($id == 1) {
+            \Flash::error(t('pages::pages.messages.error.delete_home_page'));
+            return \Redirect::to(adminUrl('pages'));
+        }
+
         $page = Pages::find($id);
         $parent_id = $page->parent_id;
         $parent_uri = Pages::get_parent_uri((int) $parent_id);

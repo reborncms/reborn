@@ -42,6 +42,7 @@ return array(
             'csrf_error'        => 'This is probably a CSRF attack.',
             'not_found_head'    => '404 Not Found!!!',
             'not_found_body'    => 'What are you looking for ?',
+            'delete_home_page'  => 'နဂိုပါဝင်သောစာမျက်နှာအား ဖျက်လို့မရပါ။',
         ),
     ),
 );

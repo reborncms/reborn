@@ -169,6 +169,18 @@ class Blog extends \Eloquent
     }
 
     /**
+     * Get Comment count for the blog
+     *
+     * @return int
+     **/
+    public function getCommentCountAttribute()
+    {
+        $post_id = $this->attributes['id'];
+
+        return \Comment\Lib\Helper::commentCount($post_id, 'blog');
+    }
+
+    /**
      * Get Blog Post Tags
      *
      * @param string $type (arr|string)
