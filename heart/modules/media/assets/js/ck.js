@@ -35,7 +35,7 @@ function change()
 
 $(document).ready(function(){
 
-	$('#m-thumb-choose-folder').chosen({ "width" : '60%' });
+	$('#m-thumb-choose-folder').chosen({ "width" : '90%' });
 
 	$('#m-thumb-choose-folder').chosen().change(function(){
 		window.location.assign(SITEURL + ADMIN + '/media/rbCK/' + $(this).val());

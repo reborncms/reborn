@@ -252,7 +252,7 @@ class MediaController extends \AdminController
 
         $this->checkAjax();
 
-        $this->template->title(\Translate::get('m.title.upload'))
+        $this->template->title(t('media::media.title.upload'))
                         ->set('folderId', $folderId)
                         ->setPartial('admin'.DS.'form'.DS.'upload');
     }
@@ -491,20 +491,24 @@ class MediaController extends \AdminController
         if ($this->request->isAjax()) {
 
             $this->template->partialOnly();
-            $this->template->set('ajax', true);
+            $thumbMeta = $this->template
+                            ->partialRender('admin'.DS.'plugin'.DS.'thumbmeta');
+            $this->template->set('thumbMeta', $thumbMeta);
 
         } elseif ('wysiwyg' == $target) {
 
             $this->template->partialOnly();
-            $meta = $this->template->partialRender('admin'.DS.'plugin'.DS.'meta');
-            $this->template->set('meta', $meta);
-            $this->template->set('ajax', false);
+            $wysiwyMeta = $this->template
+                            ->partialRender('admin'.DS.'plugin'.DS.'wysiwygmeta');
+            $this->template->set('wysiwygMeta', $wysiwyMeta);
 
         } else {
             $this->template->script('setthumbnail.js', 'media', 'footer');
             $this->template->set('ajax', false);
         }
         
+        $upload = $this->template->partialRender('admin'.DS.'form'.DS.'upload');
+
         $actionBar = $this->template
                         ->set('allFolders', $this->allFolders)
                         ->partialRender('admin'.DS.'plugin'.DS.'actionbar');
@@ -515,6 +519,7 @@ class MediaController extends \AdminController
                         ->set('actionBar', $actionBar)
                         ->set('images', $images)
                         ->set('option', $option)
+                        ->set('upload', $upload)
                         ->setPartial('admin'.DS.'plugin'.DS.'thumbnail');
     }
 
@@ -539,36 +544,6 @@ class MediaController extends \AdminController
 
 
     # # # # # # # # # # # Public function for WYSIWYG # # # # # # # # # #
-
-    /**
-     * This method is for WYSIWYG Editor
-     *
-     * @author RebornCMS Development Team
-     **/
-    public function rbCK($folderId = 0)
-    {
-        $meta = $this->template->partialRender('ck/meta');
-        $actionbar = $this->template->partialRender('admin/plugin/actionbar');
-
-        $images = Files::where('folder_id', '=', $folderId)
-                            ->whereIn('mime_type', array(
-                                'image/jpeg', 'image/gif', 'image/png',
-                                'image/tiff', 'image/bmp'))
-                            ->get();
-
-        $body = $this->template
-                    ->set('ajax', false)
-                    ->set('images', $images)
-                    ->partialRender('admin'.DS.'plugin'.DS.'thumbnail');
-
-        $this->template->title(t('media::media.ext.insertTitle'))
-                        ->set('meta', $meta)
-                        ->set('actionbar', $actionbar)
-                        ->set('current', $folderId)
-                        ->set('body', $body)
-                        ->partialOnly()
-                        ->setPartial('ck/ck');
-    }
 
     /**
      * Another function for WYSIWYG editor

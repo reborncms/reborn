@@ -1,48 +1,94 @@
-{{ ifset ($meta) }}
-	{{ $meta }}
+{{ ifset ($wysiwygMeta) }}
+
+	{{ $wysiwygMeta }}
+
 {{ endif }}
+
+{{ ifset ($thumbMeta) }}
+
+	{{ $thumbMeta }}
+	
+{{ endif }}
+
+
 
 <div id="thumbnail-wrap" class="clearfix">
-	
-	{{ ifset ($actionBar) }}
-		{{ $actionBar }}
-	{{ endif }}
 
-	<div id="m-thumb-main" class="f-left p-relative">
+	<div id="tabs" class="clearfix">
+	  	<ul class="f-left" id="thumb-tab-nav">
 
-		<div id="m-thumb-ajax-wrap" class="clearfix">
+		    <li>
+		    	<a href="#media-tab" class="adjust-width">
+		    		{{ t('media::media.btn.media') }}
+		    	</a>
+		    </li>
 
-			<div id="m-thumb-body" class="f-left">
-				<div id="ajax_wrap">
+		    <li>
+		    	<a href="#upload-tab" class="adjust-width">
+		    		{{ t('media::media.btn.upload') }}
+		    	</a>
+		    </li>
 
-						{{ loop($images as $file) }}
+		    <li>
+		    	<a href="#link-tab" class="adjust-width">
+		    		{{ t('media::media.btn.link') }}
+		    	</a>
+		    </li>
 
-							{=
-								$imgSrc = rbUrl('media/image/'.$file->filename.'/80/60');
-							=}
+		    <li id="extra-li">
+		    	
+	    	</li> <!-- end of extra-li -->
 
-							<img src="{{ $imgSrc }}" alt="{{ $file->alt_text }}" class="m-thumbs f-left" title="{{ $file->name }}" data-name="{{ $file->name }}" data-filename="{{ $file->filename }}" data-width="{{ $file->width }}" data-height="{{ $file->height }}" data-alt="{{ $file->alt_text }}" data-id="{{ $file->id }}">
+		</ul> <!-- end of thumb-tab-nav -->
 
-						{{ endloop }}
+	  
 
-				</div> <!-- end of ajax_wrap -->
+		<div id="media-tab" class="clearfix">
+		     
+		  	<div id="m-thumb-main" class="f-left p-relative">
 
-			</div> <!-- end of m-thumb-body -->
+				<div id="m-thumb-ajax-wrap" class="clearfix">
 
-		</div> <!-- end of m-thumb-ajax-wrap -->
+					<div id="m-thumb-body" class="f-left">
+						<div id="ajax_wrap">
 
-	</div> <!-- end of m-thumb-media-wrap -->
+							{{ loop($images as $file) }}
 
-	{{ ifset($option) }}
-		{{ $option }}
-	{{ endif }}
+								{=
+									$imgSrc = rbUrl('media/image/'.$file->filename.'/80/60');
+								=}
+
+								<img src="{{ $imgSrc }}" alt="{{ $file->alt_text }}" class="m-thumbs f-left" title="{{ $file->name }}" data-name="{{ $file->name }}" data-filename="{{ $file->filename }}" data-width="{{ $file->width }}" data-height="{{ $file->height }}" data-alt="{{ $file->alt_text }}" data-id="{{ $file->id }}">
+
+							{{ endloop }}
+
+						</div> <!-- end of ajax_wrap -->
+
+					</div> <!-- end of m-thumb-body -->
+
+				</div> <!-- end of m-thumb-ajax-wrap -->
+
+			</div> <!-- end of m-thumb-media-wrap -->
+
+			{{ ifset($option) }}
+				{{ $option }}
+			{{ endif }}
+
+		</div> <!-- end of media-tab -->
+
+		<div id="upload-tab">
+
+			<div id="uploader-wrap">
+				{{ $upload }}
+			</div> <!-- end of uploader-wrap -->
+			
+		</div> <!-- end of upload-tab -->
+
+
+		<div id="link-tab">
+			Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+		</div> <!-- end of link-tab -->
+
+	</div> <!-- end of tabs -->
 
 </div> <!-- end of thumbnail-wrap -->
-
-{{ if ($ajax) }}
-	{{ css('plugins.css', 'all', 'media') }}
-	{{ css('media.css', 'all', 'media') }}
-	{{ js('plugins.js', 'media') }}
-	{{ js('setthumbnail.js', 'media') }}
-	{{ js('media.js', 'media') }}
-{{ endif }}

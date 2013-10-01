@@ -17,9 +17,11 @@
 
 </div> <!-- end of media-wrapper -->
 
+{{ js('dropzone.js', 'media') }}
+
 <script type="text/javascript">
 /* *** ** * Remain bug in not ajax request * ** *** */
-
+	Dropzone.autoDiscover = false;
 	$('#uploader').dropzone({
 		paramName: "files",
 		dictDefaultMessage: "{{ t('media::media.lbl.uploadAreaText') }}",

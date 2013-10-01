@@ -45,7 +45,8 @@ $(function(){
 
 	$('#m-thumb-action-media').livequery('click', function(e){
 		e.preventDefault();
-		$('#cboxLoadedContent').load($(this).attr('href'));
+
+		
 	})
 });
 
