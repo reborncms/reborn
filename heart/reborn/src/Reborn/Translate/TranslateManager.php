@@ -138,6 +138,11 @@ class TranslateManager
 
         $loader = static::getLoader();
 
+        if(!$loader instanceof LoaderInterface) {
+            static::setLoader(\Facade::getApplication()->translate_loader);
+            $loader = static::getLoader();
+        }
+
         // First load with $locale
         $data = $loader->load($resource, $locale);
 
