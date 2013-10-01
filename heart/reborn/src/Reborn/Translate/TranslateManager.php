@@ -2,6 +2,9 @@
 
 namespace Reborn\Translate;
 
+use Reborn\Translate\Loader\LoaderInterface;
+use Reborn\Translate\Loader\PHPFileLoader;
+
 /**
  * Translate Manager Class for Reborn.
  *
@@ -25,27 +28,11 @@ class TranslateManager
     public static $fallback_locale;
 
     /**
-     * Supported File Loader key name and class name (value)
+     * File Loader Instance
      *
-     * @var array
+     * @var \Reborn\Translate\Loader\LoaderInterface
      **/
-    protected static $fileLoaders = array(
-            'file'      => 'Reborn\Translate\Loader\PHPFileLoader',
-        );
-
-    /**
-     * File Loader name
-     *
-     * @var string
-     **/
-    protected static $loader = 'file';
-
-    /**
-     * Variable for File path (Module Path, Theme Path)
-     *
-     * @var array
-     **/
-    protected static $paths = array();
+    protected static $loader;
 
     /**
      * Language cache variable
@@ -55,22 +42,11 @@ class TranslateManager
     protected static $caches = array();
 
     /**
-     * Set the Language File Path.
-     * Default path are [ CORE_MODULES, MODULES, THEMES, ADMIN_THEME ]
+     * Language resource shortcut lists
      *
-     * @param array $paths Path array for language file.
-     * @return void
-     */
-    public static function setPath($path = array())
-    {
-        if (empty(static::$paths)) {
-            static::$paths =array(CORE_MODULES, MODULES, THEMES, ADMIN_THEME);
-        }
-
-        if (! empty($path)) {
-            static::$path = array_push(static::$paths, $path);
-        }
-    }
+     * @var array
+     **/
+    protected static $shortcut = array();
 
     /**
      * Initialize method for Translate Manager.
@@ -82,13 +58,14 @@ class TranslateManager
      */
     public static function initialize($locale, $fallback_locale = 'en')
     {
-        static::setPath();
         static::$locale = $locale;
         static::$fallback_locale = $fallback_locale;
+
+        static::setLoader(\Facade::getApplication()->translate_loader);
     }
 
     /**
-     * Set Local for Translate
+     * Set locale for Translate
      *
      * @param string $locale Locale code
      * @return void
@@ -99,16 +76,34 @@ class TranslateManager
     }
 
     /**
+     * Get locale
+     *
+     * @return string
+     **/
+    public static function getLocal()
+    {
+        return static::$locale;
+    }
+
+    /**
      * Set File Loader
      *
      * @param string $loader File Loader Key Name
      * @return void
      **/
-    public static function setLoader($loader)
+    public static function setLoader(LoaderInterface $loader)
     {
-        if (isset(static::$fileLoaders[$loader])) {
-            static::$loader = $loader;
-        }
+        static::$loader = $loader;
+    }
+
+    /**
+     * Get file loader instance
+     *
+     * @return \Reborn\Translate\Loader\LoaderInterface
+     **/
+    public static function getLoader()
+    {
+        return static::$loader;
     }
 
     /**
@@ -125,35 +120,57 @@ class TranslateManager
      * @param string $resource Resource File name
      * @param string $subname SubName for Resource File. This is shortcut name
      * @param string $locale This is optional
-     * @param string $type Loader type
      * @return boolean
      */
-    public static function load($resource, $subname = null, $locale = null, $type = 'file')
+    public static function load($resource, $shortcut = null, $locale = null)
     {
         $locale = is_null($locale) ? static::$locale : $locale;
 
-        if (isset(static::$fileLoaders[$type])) {
-            $loaderClass = static::$fileLoaders[$type];
-        } else {
-            throw new RbException("File Loader {$type} is not supported driver!");
-        }
+        // If resource is already loaded, return true.
+        if (isset(static::$caches[$resource][$locale])) {
 
-        if (class_exists($loaderClass)) {
-            $class = new $loaderClass(static::$paths, $locale);
-            $data = $class->load($resource);
-
-            if ($data) {
-                if (! is_null($subname) ) {
-                    static::$caches[$locale][$subname] = $data;
-                }
-                static::$caches[$locale][$resource] = $data;
-                return true;
+            if (!is_null($shortcut)) {
+                static::addShortcut($resource, $shortcut);
             }
 
+            return true;
+        }
+
+        $loader = static::getLoader();
+
+        // First load with $locale
+        $data = $loader->load($resource, $locale);
+
+        // If didn't find $locale, load with fallback locale
+        if (!$data) {
+            $data = $loader->load($resource, static::$fallback_locale);
+        }
+
+        if (!$data) {
             return false;
         }
 
-        return false;
+        // Add to caches
+        static::$caches[$resource][$locale] = $data;
+        if (!is_null($shortcut)) {
+            static::addShortcut($resource, $shortcut);
+        }
+
+        return true;
+    }
+
+    /**
+     * Add shortcut name for resource name
+     *
+     * @param string $resource Resource name
+     * @param string $shortcut Shortcut name for resource
+     * @return void
+     **/
+    public static function addShortcut($resource, $shortcut)
+    {
+        if (!isset( static::$shortcut[$shortcut] )) {
+            static::$shortcut[$shortcut] = $resource;
+        }
     }
 
     /**
@@ -166,30 +183,40 @@ class TranslateManager
      **/
     public static function get($key, $replace = null, $default = null)
     {
-        $k = explode('.', $key);
+        list($resource, $key) = static::parseKey($key);
 
         $locale = static::$locale;
 
+        // resoruce maked shortcut
+        if (isset(static::$shortcut[$resource])) {
+            $resource = static::$shortcut[$resource];
+        }
+
+        $have = true;
+
         // If data does't exits in cache, call the load()
-        if (!isset(static::$caches[$locale][$k[0]])) {
-            static::load($k[0]);
+        $lang_resources = isset(static::$caches[$resource]) ? static::$caches[$resource] : null;
+        if (! is_null($lang_resources) || !isset($lang_resources[$locale]) ) {
+            $have = static::load($resource);
         }
 
-        $loaderClass = static::$fileLoaders[static::$loader];
+        // language resource not found. Return default
+        if (!$have) return static::replacer($default, $replace);
 
-        if (isset(static::$caches[$locale][$k[0]])) {
-            $data = static::$caches[$locale][$k[0]];
-            $class = new $loaderClass();
-            $lang = $class->get($key, $data, $default);
+        $lang = array_get(static::$caches[$resource][$locale], $key, $default);
 
-            if(is_null($replace)) {
-                return $lang;
-            }
+        return static::replacer($lang, $replace);
+    }
 
-            return static::replacer($lang, $replace);
-        }
-
-        return $default;
+    /**
+     * Parse the key name with resource and lang key
+     *
+     * @param string $key
+     * @return array
+     **/
+    protected static function parseKey($key)
+    {
+        return explode('.', $key, 2);
     }
 
     /**
@@ -201,6 +228,8 @@ class TranslateManager
      **/
     protected static function replacer($str, $replace)
     {
+        if (is_null($replace)) return $str;
+
         foreach ((array) $replace as $k => $v) {
             $str = str_replace('{:'.$k.'}', $v, $str);
         }

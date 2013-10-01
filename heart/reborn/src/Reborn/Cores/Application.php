@@ -11,6 +11,7 @@ use Reborn\Config\Config;
 use Reborn\Filesystem\File;
 use Reborn\Widget\Widget;
 use Reborn\Util\Security;
+use Reborn\Translate\Loader\PHPFileLoader;
 use Reborn\Event\EventManager as Event;
 use Reborn\Cache\CacheManager as Cache;
 use Reborn\Connector\Log\LogManager as Log;
@@ -95,6 +96,10 @@ class Application extends \Illuminate\Container\Container
 
         $this['profiler'] = $this->share( function() {
             return new Profiler();
+        });
+
+        $this['translate_loader'] = $this->share( function($app) {
+            return new PHPFileLoader($app);
         });
 
         // Set the Application Object into the Registry
@@ -246,11 +251,11 @@ class Application extends \Illuminate\Container\Container
         // Start the Setting initialize
         Setting::initialize();
 
-        // Start the Module initialize
-        Module::initialize();
-
         // Start the Uri initialize
         Uri::initialize($this->request);
+
+        // Start the Module initialize
+        Module::initialize();
 
         // Start the Widget initialize
         $this['widget']->initialize();

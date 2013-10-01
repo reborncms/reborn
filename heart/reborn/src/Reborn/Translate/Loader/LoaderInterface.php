@@ -10,14 +10,15 @@ namespace Reborn\Translate\Loader;
  **/
 interface LoaderInterface
 {
-    /**
-     * File Load Method
-     */
-    public function load($resource);
 
     /**
-     * Get the Translate word
+     * File Load Method
+     *
+     * @param string $resource
+     * @param string $locale
+     * @return boolean
      */
-    public function get($key, $data, $default);
+    public function load($resource, $locale);
+
 
 } // END interface LoaderInterface

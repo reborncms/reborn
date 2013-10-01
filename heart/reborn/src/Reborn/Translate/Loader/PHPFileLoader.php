@@ -2,6 +2,8 @@
 
 namespace Reborn\Translate\Loader;
 
+use Reborn\Cores\Application;
+
 /**
  * Translate File Loader for Reborn
  *
@@ -10,40 +12,23 @@ namespace Reborn\Translate\Loader;
  **/
 class PHPFileLoader implements LoaderInterface
 {
+
     /**
-     * Variable for default locale
+     * Reborn Application Instance
      *
-     * @var string
+     * @var \Reborn\Cores\Application
      **/
-    protected $locale;
+    protected $app;
 
     /**
-     * undocumented class variable
+     * Default instance method for PHP File Loader
      *
-     * @var string
-     **/
-    protected $fallbackLocale = "en";
-
-    /**
-     * Variable for loaded language files
-     *
-     * @var array
-     **/
-    protected $loaded = array();
-
-    protected $paths = array();
-
-    /**
-     * Construct Method
-     *
-     * @param array $paths File Paths
-     * @param array $locale Locales to loaded [default, fallback]
-     * @param array $options
+     * @param \Reborn\Cores\Application $app
+     * @return void
      */
-    public function __construct($paths = null, $locale = null)
+    public function __construct(Application $app)
     {
-        $this->paths = $paths;
-        $this->locale = $locale;
+        $this->app = $app;
     }
 
     /**
@@ -52,49 +37,49 @@ class PHPFileLoader implements LoaderInterface
      * eg: label [label.php file from core lang folder]
      *
      * @param string $resource Lang file name
+     * @param string $locale locale folder name
      * @return array|false
      */
-    public function load($resource)
+    public function load($resource, $locale)
     {
         if (false !== strpos($resource, "::")) {
-            return $this->moduleFileLoader($resource);
+            return $this->moduleFileLoader($resource, $locale);
+        } elseif ('theme@' === substr($resource, 0, 6)) {
+            return $this->themeFileLoader($resource, $locale);
         } else {
-            return $this->coreFileLoader($resource);
+            return $this->coreFileLoader($resource, $locale);
         }
     }
 
     /**
-     * Get the array key from given data array.
-     * If key is doesn't exits in data array, return the default value
+     * Load language file form active theme
      *
-     * @param string $key Key string to get
-     * @param array $data Data array
-     * @param mixed $default Default value
-     * @return mixed
-     */
-    public function get($key, $data, $default)
+     * @param string $resource File resource string(eg: theme@caption)
+     * @param string $locale locale folder name
+     * @return array|fasle
+     **/
+    protected function themeFileLoader($resource, $locale)
     {
-        if (false !== strpos($key, '::')) {
-            $k =explode('::', $key);
-            $key = explode('.', $k[1], 2);
-            $key = $key[1];
+        $theme = $this->app->theme->getThemePath();
+        $file = substr($resource, 6);
+
+        $filepath = $theme.'lang'.DS.$locale.DS.$file.'.php';
+
+        if (file_exists($filepath)) {
+            return require $filepath;
         } else {
-            $key = explode('.', $key, 2);
-            $key = $key[1];
+            return false;
         }
-
-        $value = array_get($data, $key, $default);
-
-        return $value;
     }
 
     /**
      * Lang file loader from the module
      *
      * @param string $resource File resource string(eg: pages::label)
+     * @param string $locale locale folder name
      * @return array|fasle
      */
-    protected function moduleFileLoader($resource)
+    protected function moduleFileLoader($resource, $locale)
     {
         list($module, $file) = explode('::', $resource);
 
@@ -106,9 +91,7 @@ class PHPFileLoader implements LoaderInterface
 
         $path = $mod['path'].'lang'.DS;
 
-        if (file_exists($f = $path.$this->locale.DS.$file.EXT)) {
-            return require $f;
-        } elseif(file_exists($f = $path.$this->fallbackLocale.DS.$file.EXT)) {
+        if (file_exists($f = $path.$locale.DS.$file.EXT)) {
             return require $f;
         } else {
             return false;
@@ -118,15 +101,16 @@ class PHPFileLoader implements LoaderInterface
     /**
      * Lang file loader from the core lang folder
      *
-     * @param string $resource File resource string(eg: pages::label)
+     * @param string $resource File resource string(eg: label)
+     * @param string $locale locale folder name
      * @return array|fasle
      */
-    protected function coreFileLoader($resource)
+    protected function coreFileLoader($resource, $locale)
     {
-        if (is_dir($dir = APP.'lang'.DS.$this->locale.DS)) {
+        if (is_dir($dir = APP.'lang'.DS.$locale.DS)) {
             $dirPath = $dir;
-        } elseif (is_dir($dir = APP.'lang'.DS.$this->fallbackLocale.DS)) {
-            $dirPath = $dir;
+        } else {
+            return false;
         }
 
         if (file_exists($f = $dirPath.$resource.EXT)) {
