@@ -215,7 +215,7 @@ class Uri
         $url = static::$request->getPathInfo();
 
         if ($url == '/') {
-            static::$segments = array();
+            static::$segments = static::setLanguage(array());
         } else {
             $url = rtrim($url, '/');
             $uriArray = explode('/', $url);
@@ -241,7 +241,7 @@ class Uri
         $supLangs = \Config::get('app.support_langs');
 
         // Check the uriArray's first element is blank or not
-        if ($uri[0] == '') {
+        if (isset($uri[0]) and $uri[0] == '') {
             array_shift($uri);
         }
 

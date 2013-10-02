@@ -24,51 +24,63 @@
 			top: 0;
 			left: 0;
 			width: 35%;
+			height: 100%;
+			background: #333;
 		}
 		.black_box {
-			background: #333;
-			text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.6);
-			border-right: 1px solid #fff;
-			border-bottom: 1px solid #fff;
+			text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2);
 			margin: 0 20px 20px 0;
-			font-size: 22px;
+			font-size: 18px;
 			color: #fff;
+			box-sizing: border-box;
+			-moz-box-sizing:border-box;
 			font-family: Verdana, helvetica, arial, sans-serif;
 		}
 		.black_box span {
 			display: block;
 			line-height: 1.7em;
-			color: #F24F4F;
+			color: #DCE185;
+			border-bottom: 1px dashed #454545;
 		}
 		.black_box p {
 			display: block;
 			line-height: 1.5em;
-			margin: 0;
+			margin: 0 0 10px 0;
 		}
 
 		#rb_exception_header {
 			width: 65%;
-			padding: 1% 1%;
+			padding: 5px 1% 80px;
+			background: url(<?php echo GLOBAL_URL; ?>assets/img/reborncms.png) center bottom no-repeat;
 		}
 
 		#rb_exception {
 			width: 98%;
-			padding: 1% 1% 10% 1%;
+			padding: 1% 1% 10% 5%;
+			margin: 0;
+		}
+		#rb_ex_is strong {
+			font-size: 13px;
+			font-weight: normal;
+		}
+		#rb_ex_is small {
+			display: block;
+			font-size: 13px;
 		}
 		.code {
 			display: none;
 		}
 		pre {
-			border: 5px solid #9f9f9f;
+			border: 2px solid #dfdfdf;
 			margin: 0;
-			background: #535353;
+			background: #333;
 			overflow: auto;
-			line-height: 1.7em;
-			color: #9AD245;
+			line-height: 1.5em;
+			color: #CDE64B;
 		}
 		pre strong {
-			background: #c9c9c9;
-			color: #D64926;
+			background: #E1E7A7;
+			color: #1078C2;
 			width: 100%;
 			display: block;
 			font-weight: normal;
@@ -85,35 +97,30 @@
 		}
 
 		.trace_wrap {
-			background: #fff;
-			border: 1px solid #ababab;
+			background: #F8F8F8;
+			border: 1px solid #D3C6C6;
 			margin: 10px auto;
 		}
 		.trace_head {
 			padding: 10px;
-			color: #333;
-			background: #cdcdcd;
+			color: #fff;
+			background: #333;
 			cursor: pointer;
+			position: relative;
 		}
 		.trace_body {
 			padding: 15px 10px;
-			color: #2D3E50;
+			color: #286BB3;
 			position: relative;
 			border-top: 1px solid #b9b9b9;
 		}
 		.line_no {
-			position: absolute;
-			right: 0;
-			display: block;
-			padding: 12px 10px 13px 10px;
-			min-width: 35px;
-			text-align: right;
-			color: #7B0000;
-			background: #efefef;
-			border-left: 1px solid #b9b9b9;
-			bottom: 0;
-			font-size: 18px;
-			font-weight: bold;
+			bottom: 8px;
+		    color: #DCE185;
+		    font-size: 16px;
+		    position: absolute;
+		    right: 7px;
+		    text-align: right;
 		}
 	</style>
 
@@ -121,12 +128,15 @@
 <body>
 	<div class="left_side">
 		<div id="rb_exception_header" class="black_box">
-			<span>Reborn CMS</span>
-			<p>Exception Information.</p>
 		</div>
 		<div id="rb_exception" class="black_box">
-			<span id="rb_exc_caller"><?php echo $caller; ?></span>
-			<p id="rb_ex_message">[ ! ] <?php echo $message; ?></p>
+			<p><span id="rb_exc_caller">Exception Class !</span><?php echo $caller; ?></p>
+			<p id="rb_ex_message"><span>Exception Message !</span> <?php echo $message; ?></p>
+			<p id="rb_ex_is">
+				<span>Exception From !</span>
+				<strong><?php echo str_replace(BASE, '{BASE}'.DS, $file); ?></strong>
+				<small># Line No. <?php echo $line; ?></small>
+			</p>
 		</div>
 	</div>
 
@@ -136,11 +146,11 @@
 			<div class="trace_wrap">
 				<div class="trace_head">
 					<?php echo $caller; ?>
-					Throw Exception in here.
+					{ Throw Exception in here. }
+					<span class="line_no"># Line No. <?php echo $line; ?></span>
 				</div>
 				<div class="trace_body">
 					<?php echo str_replace(BASE, 'BASE'.DS, $file); ?>
-					<span class="line_no"><?php echo $line; ?></span>
 				</div>
 				<div class="code">
 					<?php echo $code; ?>
@@ -150,12 +160,11 @@
 		<?php foreach($traces as $t) : ?>
 			<div class="trace_wrap">
 				<div class="trace_head">
-					<?php echo $this->getClass($t); ?>
-					<?php echo $this->getFunction($t); ?>
+					<?php echo $this->getClass($t); ?><?php echo $this->getFunction($t); ?>
+					<span class="line_no"># Line No. <?php echo $this->getLine($t); ?></span>
 				</div>
 				<div class="trace_body">
 					<?php echo $this->getFile($t, true); ?>
-					<span class="line_no"><?php echo $this->getLine($t); ?></span>
 				</div>
 				<div class="code">
 					<?php echo $this->getCodeLine($t); ?>

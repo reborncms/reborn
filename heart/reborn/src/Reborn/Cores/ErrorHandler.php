@@ -177,7 +177,9 @@ class ErrorHandler
      */
     protected function getFunction($t)
     {
-        return isset($t['function']) ? '::'.$t['function'] : null;
+        return isset($t['function'])
+                    ? '::'.$t['function'].'( )'
+                    : null;
     }
 
     /**
@@ -192,7 +194,7 @@ class ErrorHandler
         $file = isset($t['file']) ? $t['file'] : 'Unknown File';
 
         if ($remove_basepath) {
-            return str_replace(BASE, 'BASE/', $file);
+            return str_replace(BASE, '{BASE}'.DS, $file);
         }
 
         return $file;
