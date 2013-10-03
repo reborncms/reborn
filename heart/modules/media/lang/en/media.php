@@ -87,11 +87,13 @@ return array(
 		'link'		=> 'Link',
 		'linkInfo'	=> 'External Link',
 		'insert'	=> 'Insert',
+		'ok'		=> 'OK',
 		),
 
 	'tips'	=> array(
 		'choFromMedia'	=> 'Choose from media',
 		'upload'	=> 'Upload New File',
-		'crossLink'	=> 'File link from other website'
+		'crossLink'	=> 'File link from other website',
+		'insertLink'	=> 'Insert an image link',
 		),
 	);

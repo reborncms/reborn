@@ -2,8 +2,7 @@
 
 window.parent.$('.cke_dialog_footer').hide();
 
-function insert()
-{
+function insert() {
 	var width = ($('#width').val()) ? $('#width').val() : 0,
 		height = ($('#height').val()) ? $('#height').val() : 0,
 		alt = $('#alt_text').val();
@@ -26,20 +25,39 @@ function insert()
 	window.parent.CKEDITOR.dialog.getCurrent().hide();
 }
 
-function change()
-{
-	console.log(window.parent.CKEDITOR);
+function linkImg () {
+	var image = document.getElementById('link-preview-img');
+
+	$('#link_width').val(image.naturalWidth);
+	$('#link_height').val(image.naturalHeight);
+
+	$('#link_preview').show();
 }
 
+function linkInsert () {
+	var width = ($('#link_width').val()) ? $('#link_width').val() : 0,
+		height = ($('#link_height').val()) ? $('#link_height').val() : 0,
+		alt = $('#alt_text').val();
 
+	if (isNaN(parseInt(width)) || isNaN(parseInt(height))) {
+		if (width < 0 || height < 0) {
+			alert('Value of width or height cannot be negative.');
+			return;
+		}
+		alert('Value of width or height must be number.');
+		return;
+	}
+
+	var floating = "float: " + $('#link_float').val();
+
+	var path = $('#external_link').val();
+
+	window.parent.instance.insertHtml("<img src='"+path+"' style='"+floating+"; width: "+width+"px; height: "+height+"px;' alt='"+ alt +"'>");
+
+	window.parent.CKEDITOR.dialog.getCurrent().hide();
+}
 
 $(document).ready(function(){
-
-	$('#m-thumb-choose-folder').chosen({ "width" : '90%' });
-
-	$('#m-thumb-choose-folder').chosen().change(function(){
-		window.location.assign(SITEURL + ADMIN + '/media/rbCK/' + $(this).val());
-	});
 
 	$('.m-thumbs').livequery('click', function(){
 

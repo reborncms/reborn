@@ -87,10 +87,12 @@ return array(
 		'link'		=> 'လင့်ခ်မှထည့်မည်',
 		'linkInfo'	=> 'တခြား ဝက်ဘ်ဆိုဒ်တစ်ခုခုမှ ပုံကို ထည့်ရန်',
 		'insert'	=> 'ထည့်မည်',
+		'ok'		=> 'OK',
 		),
 	'tips'	=> array(
 		'choFromMedia'	=> 'Choose From Media',
 		'upload'	=> 'Upload New File',
-		'crossLink'	=> 'File link from other website'
+		'crossLink'	=> 'File link from other website',
+		'insertLink'	=> 'Insert an image link.',
 		),
 	);

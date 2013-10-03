@@ -7,7 +7,7 @@ $(function(){
 		width: "900",
 		innerHeight: "360",
 		closeButton: false,
-		href: SITEURL + ADMIN + '/media/upload/' + $('#media-wrapper').attr('data-folder-id'),
+		href: SITEURL + ADMIN + '/media/upload/' + $('#main-media-wrapper').attr('data-folder-id'),
 		onComplete: function() {
 			$('#cboxClose').hide();
 		},
@@ -247,5 +247,28 @@ $(function(){
 		$('#search-box').fadeOut();
 
 		$('#jump-box').fadeToggle();
+	});
+
+	/* ===== Feature Image ===== */
+	$('#thumbnail-wrap #tabs').tabs();
+
+	$('#extra-li a').removeClass('ui-tabs-anchor');
+
+	$('#jumper').chosen({ "width" : '90%' }).change(function() {
+		$('#m-thumb-body').load(SITEURL + ADMIN + '/media/thumbnail/' + $(this).val() + 'wysiwyg #ajax_wrap');
+	});
+
+	$('#link_ok_btn').bind('click', function(){
+		var value = $('#external_link').val().trim();
+
+		if (!value) {
+			alert('Please insert link');
+		}
+
+		var image = "<img id='link-preview-img' onLoad='javascript:linkImg();' src='"+value+"'/>";
+
+		$('#link-preview-img').remove();
+
+		$(image).insertBefore($('#link-prev-img-wrap .btn'));
 	});
 });

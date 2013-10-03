@@ -3,8 +3,8 @@
 			SITEURL = '{{ rbUrl() }}';
 	</script>
 
-	{{ less('import.less') }}
 	{{ css('plugins/jquery-ui.css') }}
+	{{ less('import.less') }}
 	{{ css('plugins.css', 'all', 'media') }}
 	{{ css('media.css', 'all', 'media') }}
 
@@ -15,3 +15,4 @@
 	{{ js('reborn.js') }}
 	{{ js('plugins.js', 'media') }}
 	{{ js('ck.js', 'media') }}
+	{{ js('media.js', 'media') }}

@@ -273,6 +273,27 @@
 	width: 100%;
 	text-align: right;
 }
+
+#extra-li label{
+	width: 100%;
+	padding: 7px 5px;
+	float: none;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+#jumper_chzn a.chzn-single {
+	padding: 0 0 0 8px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+#jumper_chzn a span {
+	text-align: left;
+}
+#jumper_chzn ul li {
+	padding: 5px 6px;
+}
 .ui-tabs .ui-tabs-panel {
 	padding: 0;
 	height: 460px;
@@ -286,54 +307,6 @@
 #uploader-wrap form {
 	height: 435px;
 }
-/*#tabs #uploader {
-	width: 75%;
-	float: right;
-	height: 435px;
-	margin: 10px;
-	border-radius: 0;
-}*/
-
-/* Thumb Action */
-/*#thumb-action-bar {
-	width: 20%;
-	height: 460px;
-	border-right: 1px solid #f0f0f0;
-	background: #fdfdfd;
-}
-
-#tabber {
-	width: 100%;
-}
-
-#tabber ul {
-	width: 100%;
-	margin: 5px 0 10px 0;
-}
-
-#tabber ul li {
-	list-style: none;
-	border-bottom: 1px solid #f0f0f0;
-}
-
-#tabber ul li a {
-	display: block;
-	width: 100%;
-	padding: 10px;
-	text-align: right;
-	font-size: 16px;
-}
-
-#m-thumb-folder-choose {
-	width: 100%;
-	margin-top: 15px;
-}
-
-#m-thumb-folder-choose label {
-	margin: 0;
-	padding: 7px 2px;
-	color: #909090;
-}*/
 
 /* Thumb editor */
 #option-wrap {
@@ -406,6 +379,39 @@
 }
 
 
+#external_link {
+	margin: 10px;
+}
+#link_ok_btn {
+	margin: 10px;
+}
+#link_preview {
+	margin: 10px;
+}
+#link-prev-img-wrap {
+	width: 260px;
+	padding: 0 10px;
+	height: 345px;
+}
+#link-preview-img {
+	max-width: 250px;
+	max-height: 270px;
+	padding: 3px;
+	border: 1px solid #f0f0f0;
+	background: #fff;
+	margin: 10px auto;
+}
+#link-option-wrap {
+	width: 300px;
+}
+
+#link-option-wrap label {
+	width: 30%;
+	float: left;
+}
+.link-form-wrap {
+	margin: 8px 0;
+}
 /* ===== CK ===== */
 #m-ck-wrap {
 	background: #fff;
