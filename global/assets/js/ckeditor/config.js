@@ -18,4 +18,8 @@ CKEDITOR.editorConfig = function( config ) {
 	'Trebuchet MS/Trebuchet MS, Helvetica, sans-serif;' +
 	'Myanmar3/Myanmar3,TharLon,Masterpiece Uni Sans,Yunghkio,Myanmar Sangam MN;' +
 	'Verdana/Verdana, Geneva, sans-serif';
+
+	config.pbckcode = {
+		modes : [['HTML', 'html'], ['CSS', 'css'], ['PHP', 'php'], ['JS', 'javascript'], ["Markdown", "markdown"], ["SQL", "sql"], ["LESS", "less"], ["JSON", "json"], ["XML", "xml"]]
+	}
 };

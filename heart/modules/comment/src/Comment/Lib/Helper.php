@@ -176,8 +176,7 @@ class Helper
 	 **/
 	public static function commentCount($id, $content_type)
 	{
-		$comment_count = Comment::where('content_id', $id)->where('module', $content_type)->count();
-		return $comment_count;
+		return Comment::where('content_id', $id)->where('module', $content_type)->count();
 	}
 
 	/**

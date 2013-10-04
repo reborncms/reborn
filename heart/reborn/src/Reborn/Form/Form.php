@@ -511,9 +511,10 @@ $ck_jq
                 ['Format', 'Font', 'FontSize'],
                 ['ShowBlocks', 'RemoveFormat'],
                 ['rbmedia'],
-                ['Source']
+                ['Source'],
+                ['pbckcode']
             ],
-            extraPlugins: 'rbmedia,iframedialog',
+            extraPlugins: 'rbmedia,iframedialog,pbckcode',
             resize_dir: 'vertical',
             width: '97%',
             height: 400,
