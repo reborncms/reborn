@@ -48,8 +48,8 @@ class GroupController extends \AdminController
 				        )
 				    ));
 
-					\Flash::success('user:group.create.success');
-				    return \Redirect::to('admin/user/group');	
+					\Flash::success(t('user::group.create.success'));
+				    return \Redirect::toAdmin('user/group');	
 				} catch (\Cartalyst\Sentry\Groups\GroupExistsException $e) {
 					\Flash::error(sprintf(t('group::group.auth.exist'), $groupName));
 				}
@@ -87,12 +87,12 @@ class GroupController extends \AdminController
 
 				    if ($group->save()) {
 				        \Flash::success(\Translate::get('user::group.edit.success'));
-					    return \Redirect::to('admin/user/group');
+					    return \Redirect::toAdmin('user/group');
 				    } else {
 				        \Flash::error(\Translate::get('user::group.edit.success'));
 				    }
 
-				    return \Redirect::to('admin/user/group');	
+				    return \Redirect::toAdmin('user/group');	
 				} catch (\Cartalyst\Sentry\Groups\GroupExistsException $e) {
 					\Flash::error(sprintf(t('user::group.auth.exist'), $groupName));
 				}
@@ -113,12 +113,9 @@ class GroupController extends \AdminController
 		if (!user_has_access('user.group.delete')) return $this->notFound();
 		$group = Sentry::getGroupProvider()->findById($uri);
 
-	    if ($group->delete()) {
-	       Flash::success(\Translate::get('user::group.delete.success'));
-	    } else {
-	        Flash::error(\Translate::get('user::group.delete.fail'));
-	    }
-	    return \Redirect::to('admin/user/group');
+	    $group->delete();
+	    \Flash::success(\Translate::get('user::group.delete.success'));	    
+	    return \Redirect::toAdmin('user/group');
 	}
 	
 

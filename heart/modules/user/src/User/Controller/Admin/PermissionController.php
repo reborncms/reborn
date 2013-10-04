@@ -33,9 +33,9 @@ class PermissionController extends \AdminController
 	*
 	* @param int $groupid
 	*/
-	public function edit($groupid)
+	public function edit($groupid = null)
 	{
-		if (!user_has_access('user.permission.edit')) return $this->notFound();
+		if (!user_has_access('user.permission.edit') or is_null($groupid)) return $this->notFound();
 		$group = Sentry::getGroupProvider()->findById($groupid);
 
 		if ( !$group ) {
@@ -48,8 +48,10 @@ class PermissionController extends \AdminController
 		if (\Input::isPost()) {
 			
 			$modules = \Input::get('modules');
-
 			$actions = \Input::get('modules_actions');
+
+			/*dump($modules);
+			dump($actions, true);*/
 
 			if (!is_null($modules)) {
 				$module_lists = array();

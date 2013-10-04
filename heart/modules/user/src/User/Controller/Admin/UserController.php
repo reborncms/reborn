@@ -131,9 +131,9 @@ class UserController extends \AdminController
 			->setPartial('admin/create');
 	}
 
-	public function edit($uri)
+	public function edit($uri = null)
 	{
-		if (!user_has_access('user.edit')) return $this->notFound();
+		if (!user_has_access('user.edit') or $uri == null) return $this->notFound();
 
 		$user = Sentry::getUserProvider()->findById($uri);
 		$usergroup = $user->getGroups();

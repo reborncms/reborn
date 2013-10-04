@@ -28,7 +28,7 @@ class UserController extends \PublicController
 					->setPartial('index');
 	}
 
-	public function profile($id)
+	public function profile($id = null)
 	{
 		if(!Sentry::check() and is_null($id)) return \Redirect::to('user/login');
 		
@@ -178,7 +178,7 @@ class UserController extends \PublicController
 							$usermeta->save();
 							
 					        \Flash::success(t('user::user.profile.success'));
-					        return \Redirect::to('user/profile');
+					        return \Redirect::to('user/profile/'.$user->id);
 					    }
 
 					} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
@@ -233,7 +233,7 @@ class UserController extends \PublicController
 				       	 	$user->password = $newPassword;
 				       	 	if ($user->save()) {
 				       	 		\Flash::success('Password successfully changed.');
-				       	 		return \Redirect::to('user/profile');
+				       	 		return \Redirect::to('user/profile/'.$user->id);
 				       	 	} else {
 				       	 		\Flash::error('Error while changing password.');
 				       	 	}

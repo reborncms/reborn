@@ -19,14 +19,14 @@ function module_action_permission_ui($module, $permission)
 	$result .= '<div class="ckeck-group-block">';
 
 	foreach ($roles as $key => $role) {
-		$id = array('id' => str_replace('.', '-', $key));
+		$attr = array('id' => str_replace('.', '-', $key));
 		if (isset($permission[$key]) and ($permission[$key] == 1)) {
-			$attr = array('checked' => 'checked') + $id;
+			$check = true;
 		} else {
-			$attr = $id;
+			$check = false;
 		}
 		$result .= '<label class="inline-label" for="'.$attr['id'].'">';
-		$result .= \Form::checkbox("modules_actions[$key]", 1, $attr);
+		$result .= \Form::checkbox("modules_actions[$key]", 1, $check, $attr);
 		$result .= $role.'</label>';
 	}
 
