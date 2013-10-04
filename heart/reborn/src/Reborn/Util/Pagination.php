@@ -129,9 +129,7 @@ class Pagination
 	 **/
 	public static function isInvalid()
 	{
-		$per_page = static::$current * static::$items_per_page;
-
-		if ($per_page > static::$total_items) {
+		if (self::offset() >= static::$total_items) {
 			return true;
 		}
 
