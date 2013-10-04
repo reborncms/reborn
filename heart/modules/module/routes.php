@@ -2,26 +2,24 @@
 
 // Route file for module Module
 
-$adminUrl = \Config::get('app.adminpanel');
+Route::get('@admin/module', 'Module\Admin\Module::index', 'module_index');
 
-Route::add('module_index', $adminUrl.'/module', 'Module\Admin\Module::index');
+Route::get('@admin/module/install/{alnum:name}/{alnum:uri}',
+			'Module\Admin\Module::install', 'module_install');
 
-Route::add('module_install',
-			$adminUrl.'/module/install/{alnum:name}',
-			'Module\Admin\Module::install');
+Route::get('@admin/module/uninstall/{alnum:name}/{alnum:uri}',
+			'Module\Admin\Module::uninstall', 'module_uninstall');
 
-Route::add('module_uninstall',
-			$adminUrl.'/module/uninstall/{alnum:name}',
-			'Module\Admin\Module::uninstall');
+Route::get('@admin/module/upgrade/{alnum:name}/{alnum:uri}',
+			'Module\Admin\Module::upgrade', 'module_upgrade');
 
-Route::add('module_enable',
-			$adminUrl.'/module/enable/{alnum:name}',
-			'Module\Admin\Module::enable');
+Route::get('@admin/module/enable/{alnum:name}/{alnum:uri}',
+			'Module\Admin\Module::enable', 'module_enable');
 
-Route::add('module_disable',
-			$adminUrl.'/module/disable/{alnum:name}',
-			'Module\Admin\Module::disable');
+Route::get('@admin/module/disable/{alnum:name}/{alnum:uri}',
+			'Module\Admin\Module::disable', 'module_disable');
 
-Route::add('module_delete',
-			$adminUrl.'/module/delete/{alnum:name}',
-			'Module\Admin\Module::delete');
+Route::get('@admin/module/delete/{alnum:name}/{alnum:uri}',
+			'Module\Admin\Module::delete', 'module_delete');
+
+Route::add('@admin/module/upload', 'Module\Admin\Module::upload', 'module_upload');

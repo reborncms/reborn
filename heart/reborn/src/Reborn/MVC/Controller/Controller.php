@@ -233,7 +233,7 @@ class Controller
      **/
     protected function param($name, $default = null)
     {
-        if (isset($this->request->params[$name])) {
+        if (isset($this->request->params[$name]) and $this->request->params[$name] != '') {
             return $this->request->params[$name];
         }
 

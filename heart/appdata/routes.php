@@ -1,10 +1,5 @@
 <?php
 
-/*Route::add('/note/{int:id}/{alpha:slug}?', 'Note\Note::index')
-			->defaults(array('slug' => 'test-page'))
-			->host('http://localhost/rb-dev')
-			->method(array('POST', 'PUT'));*/
-
 // This is default route for Reborn
 // Don't delete this.
 $defaultModule = \Setting::get('default_module');

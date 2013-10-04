@@ -153,7 +153,6 @@ class ModuleController extends \AdminController
 
 	public function upload()
 	{
-
 		$tmp_path = STORAGES.'tmp'.DS;
 
 		$extract_path = MODULES;

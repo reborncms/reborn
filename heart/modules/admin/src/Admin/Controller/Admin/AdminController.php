@@ -7,8 +7,6 @@ use Admin\Presenter\DashboardWidget;
 
 class AdminController extends \AdminController
 {
-	public function before() {}
-
 	public function index()
 	{
 		$widgets['fullcolumn'] = new DashboardWidget(\Event::call('reborn.dashboard.widgets.fullcolumn'));
