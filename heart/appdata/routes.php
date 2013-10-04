@@ -4,7 +4,6 @@
 			->defaults(array('slug' => 'test-page'))
 			->host('http://localhost/rb-dev')
 			->method(array('POST', 'PUT'));*/
-$adminUrl = \Config::get('app.adminpanel');
 
 // This is default route for Reborn
 // Don't delete this.
@@ -19,6 +18,7 @@ Route::add('login', 'User\User::login', 'login');
 Route::add('register', 'User\User::register', 'register');
 
 // Admin Panel Login, Logout, Dashboard Route
-Route::add($adminUrl.'/login', 'Admin\Admin\Admin::login', 'admin_login');
-Route::add($adminUrl, 'Admin\Admin\Admin::index', 'admin_dashboard');
-Route::add($adminUrl.'/language', 'Admin\Admin\Admin::language', 'admin_language');
+Route::add('@admin/login', 'Admin\Admin\Admin::login', 'admin_login');
+Route::add('@admin/logout', 'Admin\Admin\Admin::logout', 'admin_logout');
+Route::add('@admin', 'Admin\Admin\Admin::index', 'admin_dashboard');
+Route::add('@admin/language', 'Admin\Admin\Admin::language', 'admin_language');

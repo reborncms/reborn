@@ -170,6 +170,7 @@ class RouteCollection
 	public function match($uri, Request $request)
 	{
 		foreach ($this->routes as $name => $route) {
+
 			if ($match = $route->match($uri, $request)) {
 				$this->current = $match;
 				return $match;

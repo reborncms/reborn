@@ -117,7 +117,15 @@ class Route
 	 **/
 	public function __construct($path, $callback, $name = null, $methods = 'ALL')
 	{
-		$this->path = ($path == '/') ? $path : trim($path, '/');
+		$path = ($path == '/') ? $path : trim($path, '/');
+
+		// Replace Admin Panel Links
+		if (false !== strpos($path, '@admin')) {
+			$admin = \Config::get('app.adminpanel');
+			$this->path = str_replace('@admin', $admin, $path);
+		} else {
+			$this->path = $path;
+		}
 
 		if ($callback instanceof Closure) {
 			$this->isClosure = true;
@@ -355,6 +363,9 @@ class Route
             case "int":
                 $pattern = "[0-9]++";
                 break;
+            case "hex":
+            	$pattern = "[0-9][A-F][a-f]++";
+            	break;
             case "str":
             	$pattern = "[0-9a-zA-Z\-_]+";
             	break;
