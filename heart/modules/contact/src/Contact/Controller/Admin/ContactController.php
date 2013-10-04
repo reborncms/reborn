@@ -23,12 +23,15 @@ class ContactController extends \AdminController
 
 		$options = array(
 			'total_items'	=> Mail::get()->count(),
-			'url'			=> ADMIN_URL.'/contact/index',
 			'items_per_page'=> 7,
-			'uri_segment'	=> 4,
 			);
 			
 		$pagination = Pagination::create($options);
+
+		if (\Pagination::isInvalid())
+		{
+			return $this->notFound();
+		}
 
 		$result = Mail::skip(Pagination::offset())
 							->take(Pagination::limit())

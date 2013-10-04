@@ -26,12 +26,15 @@ class EmailTemplateController extends \AdminController
 
 		$options = array(
 			'total_items'	=> Etemplate::get()->count(),
-			'url'			=> ADMIN_URL.'/contact/email-template/index',
 			'items_per_page'=> 7,
-			'uri_segment'	=> 5,
 			);
 			
 		$pagination = Pagination::create($options);
+
+		if (\Pagination::isInvalid())
+		{
+			return $this->notFound();
+		}
 
 		$result = Etemplate::skip(Pagination::offset())
 							->take(Pagination::limit())
@@ -96,7 +99,7 @@ class EmailTemplateController extends \AdminController
 	 * @package Contact\EmailTemplate
 	 * @author RebornCMS Development Team
 	 **/
-	public function view($id, $ax = null)
+	public function view($id)
 	{
 		$template = Etemplate::find($id);
 
@@ -104,10 +107,9 @@ class EmailTemplateController extends \AdminController
 			return $this->notFound();
 		}
 
-		if (!is_null($ax)) {
+		if ($this->request->isAjax()) {
 			$this->template->partialOnly();
 		}
-
 		$this->template->title(\Translate::get('contact::contact.e_template'))
 						->breadcrumb($template->name)
 						->set('template',$template)

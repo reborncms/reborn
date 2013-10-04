@@ -176,6 +176,7 @@ class Mailer
 			try {
 				$mailer->send($message, $failedRecipients);
 			} catch (\Swift_TransportException $e) {
+				dump($e,true);
 				$result['fail']	= 'Connection could not be established with Host';
 				return $result;
 			}
