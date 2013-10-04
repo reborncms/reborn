@@ -21,10 +21,8 @@ class BlogController extends \PublicController
 	public function index($id = null)
 	{
 		$options = array(
-		    'total_items'       => Blog::active()->get()->count(),
-		    'url'               => 'blog/index',
+		    'total_items'       => Blog::active()->count(),
 		    'items_per_page'    => \Setting::get('blog_per_page'),
-		    'uri_segment'		=> 3
 		);
 
 		$pagination = \Pagination::create($options);
@@ -137,9 +135,7 @@ class BlogController extends \PublicController
 
 		$options = array(
 		    'total_items'       => Blog::active()->whereIn('category_id', $catIds)->count(),
-		    'url'               => 'blog/category/'.$slug,
 		    'items_per_page'    => \Setting::get('blog_per_page'),
-		    'uri_segment'		=> 4
 		);
 
 		$pagination = \Pagination::create($options);
@@ -190,9 +186,7 @@ class BlogController extends \PublicController
 
 		$options = array(
 		    'total_items'       => $blog_count,
-		    'url'               => 'blog/tag/'.$name,
 		    'items_per_page'    => \Setting::get('blog_per_page'),
-		    'uri_segment'		=> 4
 		);
 
 		$pagination = \Pagination::create($options);
@@ -235,9 +229,7 @@ class BlogController extends \PublicController
 
 		$options = array(
 		    'total_items'       => Blog::active()->where('author_id', $id)->count(),
-		    'url'               => 'blog/author/'.$id,
 		    'items_per_page'    => \Setting::get('blog_per_page'),
-		    'uri_segment'		=> 4
 		);
 
 		$pagination = \Pagination::create($options);
@@ -267,23 +259,21 @@ class BlogController extends \PublicController
 	 *
 	 * @return void
 	 **/
-	public function archives($year = null, $month = null, $page = null)
+	public function archives()
 	{
-		if ($year == null) {
-			return \Redirect::to(rbUrl('blog/archives/'.date("Y")));
-		}
+		$year = $this->param('year');
+		$month = $this->param('month');
+		$page = $this->param('page');
 
 		$month_name = '';
 
-		if (stristr($month, 'page-') or $month == null) {
+		if (!$month) {
 
 			$blog_count = Blog::active()->where(\DB::raw('YEAR(created_at)'), $year)->count();
 
 			$options = array(
 			    'total_items'       => $blog_count,
-			    'url'               => 'blog/archives/'.$year,
 			    'items_per_page'    => \Setting::get('blog_per_page'),
-			    'uri_segment'		=> 4
 			);
 
 			$pagination = \Pagination::create($options);
@@ -306,9 +296,7 @@ class BlogController extends \PublicController
 
 			$options = array(
 			    'total_items'       => $blog_count,
-			    'url'               => 'blog/archives/'.$year.'/'.$month,
 			    'items_per_page'    => \Setting::get('blog_per_page'),
-			    'uri_segment'		=> 5
 			);
 
 			$pagination = \Pagination::create($options);

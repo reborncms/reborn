@@ -29,10 +29,8 @@ class BlogController extends \AdminController
 	{
 		//Pagination
 		$options = array(
-		    'total_items'       => Blog::all()->count(),
-		    'url'               => ADMIN_URL.'/blog/index',
+		    'total_items'       => Blog::count(),
 		    'items_per_page'    => \Setting::get('admin_item_per_page'),
-		    'uri_segment'		=> 4
 		);
 
 		$pagination = \Pagination::create($options);
@@ -155,8 +153,11 @@ class BlogController extends \AdminController
 	 *
 	 * @return void
 	 **/
-	public function changeStatus($id)
+	public function changeStatus($id = null)
 	{
+		if (!$id) {
+			return $this->notFound();
+		}
 		$blog = Blog::find($id);
 		if ($blog->status == 'draft') {
 			$blog->status = 'live';
@@ -418,10 +419,8 @@ class BlogController extends \AdminController
 						->get();
 		} else {
 			$options = array(
-			    'total_items'       => Blog::all()->count(),
-			    'url'               => ADMIN_URL.'/blog/index',
+			    'total_items'       => Blog::count(),
 			    'items_per_page'    => \Setting::get('admin_item_per_page'),
-			    'uri_segment'		=> 4
 			);
 
 			$pagination = \Pagination::create($options);

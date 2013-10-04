@@ -57,19 +57,15 @@ class PagesController extends \PublicController
 
     public function preview()
     {
-        $uri = \Uri::segments();
+        $uri = $this->param('slug');
 
-        $uri = array_slice($uri, 2);
-
-        if (empty($uri)) {
+        if (is_null($uri)) {
 
            return $this->notFound();
 
         }
 
-        $uri_string = implode("/", $uri);
-
-        $uri_string = urldecode($uri_string);
+        $uri_string = urldecode($uri);
 
         if (\Sentry::check()) {
 

@@ -1,24 +1,27 @@
 <?php
 
-/*Route::add('pages_view', 'pages/view/{any:filename}/', array(
-		'module' => 'pages',
-		'controller' => 'pages',
-		'action' => 'view'
-	));
+// ==== Route File for Comment Module ==== //
 
-Route::add('pages_install', 'pages/install/{:name}/{int:year}/{:sample}', array(
-		'module' => 'pages',
-		'controller' => 'pages',
-		'action' => 'install'
-	));*/
+// --- Back End --- //
 
-/*Route::add('pages/uninstall/', array(
-		'module' => 'pages',
-		'controller' => 'pages',
-		'action' => 'uninstall'
-	));
+\Route::add('@admin/comment/index/{p:page}?', 'Comment\Admin\Comment::index', 'admin_comment_index');
 
-Route::add('pages/tester/{alnum:name}', function($name){
-	return 'I am Closure Route. Hello From Myanmar '. strtoupper($name);
-	echo 'asdasd';
-});*/
+\Route::get('@admin/comment/filter/{alpha:status}/{p:page}?', 'Comment\Admin\Comment::filter', 'admin_comment_filter');
+
+\Route::get('@admin/comment/change-status/{int:id}/{alpha:status}', 'Comment\Admin\Comment::changeStatus', 'admin_comment_changeStatus');
+
+\Route::add('@admin/comment/reply/{int:id}', 'Comment\Admin\Comment::reply', 'admin_comment_reply');
+
+\Route::add('@admin/comment/edit/{int:id}', 'Comment\Admin\Comment::edit', 'admin_comment_edit');
+
+\Route::post('@admin/comment/multiaction', 'Comment\Admin\Comment::multiaction', 'admin_comment_multiaction');
+
+\Route::add('@admin/comment/delete/{int:id}?', 'Comment\Admin\Comment::delete', 'admin_comment_delete');
+
+// -- Front End -- //
+
+\Route::add('comment/show/{int:content_id}/{alpha:module}/{alpha:status}', 'Comment\Comment::show', 'comment_show');
+
+\Route::post('comment/post', 'Comment\Comment::post', 'comment_post');
+
+

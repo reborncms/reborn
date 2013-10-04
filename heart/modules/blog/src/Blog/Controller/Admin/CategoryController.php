@@ -227,7 +227,7 @@ class CategoryController extends \AdminController
 	 *
 	 * @return void
 	 **/
-	public function setVals($method, $id=null)
+	protected function setVals($method, $id=null)
 	{
 		if ($method == 'create') {
 			$blogCat = new BlogCategory;
@@ -270,7 +270,7 @@ class CategoryController extends \AdminController
 	 *
 	 * @return void
 	 **/
-	public static function order_child($children, $parent_id) 
+	protected static function order_child($children, $parent_id) 
 	{
 		$order = 0;
 		foreach ($children as $child) {

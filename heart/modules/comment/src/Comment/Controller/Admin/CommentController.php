@@ -39,9 +39,7 @@ class CommentController extends \AdminController
 		//Pagination
 		$options = array(
 		    'total_items'       => Comment::where('status', '!=', 'spam')->count(),
-		    'url'               => ADMIN_URL.'/comment/index',
 		    'items_per_page'    => \Setting::get('admin_item_per_page'),
-		    'uri_segment'		=> 4
 		);
 
 		$pagination = \Pagination::create($options);
@@ -72,9 +70,7 @@ class CommentController extends \AdminController
 	{
 		$options = array(
 		    'total_items'       => Comment::where('status', $status)->count(),
-		    'url'               => ADMIN_URL.'/comment/filter/'.$status,
 		    'items_per_page'    => \Setting::get('admin_item_per_page'),
-		    'uri_segment'		=> 5
 		);
 
 		$pagination = \Pagination::create($options);

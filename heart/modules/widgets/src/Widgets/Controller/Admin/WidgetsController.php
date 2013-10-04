@@ -109,6 +109,8 @@ class WidgetsController extends \AdminController
 
 	public function settings($name, $id)
 	{
+		$name = urldecode($name);
+		
 		return optionsForm::render($name, $id);
 	}
 

@@ -17,10 +17,8 @@ class TagController extends \AdminController
 	public function index($id = null) 
 	{
 		$options = array(
-		    'total_items'       => Tag::all()->count(),
-		    'url'               => ADMIN_URL.'/tag/index',
+		    'total_items'       => Tag::count(),
 		    'items_per_page'    => \Setting::get('admin_item_per_page'),
-		    'uri_segment'		=> 4,
 		);
 
 		$pagination = \Pagination::create($options);
