@@ -95,6 +95,7 @@ class Controller
      *  }
      * </code>
      *
+     * @return void
      */
     public function before() {}
 
@@ -177,6 +178,9 @@ class Controller
     /**
      * Call the Action Method
      *
+     * @param \Reborn\Cores\Application $app Application instance
+     * @param string $method Action method name
+     * @param array $params Parameter array for action method
      * @return \Reborn\Http\Response
      **/
     public function actionCaller(Application $app, $method, $params)
@@ -218,6 +222,22 @@ class Controller
         \Event::call('reborn.controller.process.ending', array($response));
 
         return $response;
+    }
+
+    /**
+     * Get request param by name.
+     *
+     * @param string $name Param name
+     * @param mixed $default Default value for param name
+     * @return mixed
+     **/
+    protected function param($name, $default = null)
+    {
+        if (isset($this->request->params[$name])) {
+            return $this->request->params[$name];
+        }
+
+        return $default;
     }
 
     /**

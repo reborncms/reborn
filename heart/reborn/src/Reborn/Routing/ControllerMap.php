@@ -1,6 +1,6 @@
 <?php
 
-namespace Reborn\Route;
+namespace Reborn\Routing;
 
 use Reborn\Filesystem\File;
 use Reborn\Filesystem\Directory as Dir;
@@ -9,7 +9,7 @@ use Reborn\Module\ModuleManager as Module;
 /**
  * Controller Map Class
  *
- * @package Reborn\Route
+ * @package Reborn\Routing
  * @author Myanmar Links Web Development Team
  **/
 class ControllerMap
@@ -51,6 +51,19 @@ class ControllerMap
 	protected $map = array();
 
 	/**
+	 * Create ControllerMap instance and make controller map.
+	 *
+	 * @return \Reborn\Routing\ControllerMap
+	 **/
+	public static function create()
+	{
+		$ins = new static;
+		$ins->makeControllerMap();
+
+		return $ins;
+	}
+
+	/**
 	 * Construct method for ControllerMap
 	 *
 	 * @return void
@@ -76,7 +89,7 @@ class ControllerMap
 	public function find($key, $filename)
 	{
 		if (empty($this->map)) {
-			$this->make();
+			$this->makeControllerMap();
 			$this->setMapData();
 		}
 
@@ -104,7 +117,7 @@ class ControllerMap
 	 *
 	 * @return void
 	 **/
-	public function make()
+	public function makeControllerMap()
 	{
 		if (File::is($this->cache_path.$this->cache_file)) {
 			return true;
@@ -187,7 +200,7 @@ class ControllerMap
 	{
 		$this->destroy();
 
-		$this->make();
+		$this->makeControllerMap();
 	}
 
 	/**

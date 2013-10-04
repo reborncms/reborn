@@ -1,6 +1,6 @@
 <?php
 
-namespace Reborn\Route;
+namespace Reborn\Routing;
 
 use ReflectionClass;
 use Reborn\Cores\Application;
@@ -16,17 +16,32 @@ use Reborn\Exception\TokenNotMatchException;
 /**
  * Router Class for Reborn
  *
- * @package Reborn\Route
+ * @package Reborn\Routing
  * @author Myanmar Links Professional Web Development Team
  **/
 class Router
 {
+
+    /**
+     * Applicaion Object
+     *
+     * @var \Reborn\Core\Application
+     **/
+    protected $app;
+
 	/**
 	 * Variable for request obj
 	 *
 	 * @var \Reborn\Http\Request
 	 **/
 	protected $request;
+
+    /**
+     * Variable for route collection
+     *
+     * @var \Reborn\Routing\RouteCollection
+     **/
+    protected $collection;
 
     /**
      * Controller Mapper Object
@@ -43,13 +58,6 @@ class Router
     protected $admin;
 
     /**
-     * Applicaion Object
-     *
-     * @var Reborn\Core\Application
-     **/
-    protected $app;
-
-    /**
      * Constructor Method
      *
      * @return void
@@ -58,11 +66,11 @@ class Router
     {
         $this->app = $app;
         $this->request = $app->request;
+        $this->collection = $app->route_collection;
 
         $this->admin = \Setting::get('adminpanel_url');
 
-        $this->mapper = new ControllerMap();
-        $this->mapper->make();
+        $this->mapper = ControllerMap::create();
 
         // If routes file have in the user's content folder, load this route file
         if (File::is(CONTENT.'routes.php')) {
@@ -71,6 +79,16 @@ class Router
 
         // Load the Application Main Route File
         require APP.'routes.php';
+    }
+
+    /**
+     * Get RouteCollection instance
+     *
+     * @return \Reborn\Routing\RouteCollection
+     **/
+    public function getCollection()
+    {
+        return $this->collection;
     }
 
     /**
@@ -86,77 +104,38 @@ class Router
         // Get Uri String's 1st Segment
         $uri = Uri::uriString(1, 1);
 
-        // If uri is empty, set the default
-        if ($uri == '') {
-            $uri = '/';
-            $module = Module::getData(\Setting::get('default_module'));
-        } else {
-            if ($this->admin == $uri) {
-                $module = Module::getByUri(Uri::segment(2));
-            } else {
-                $module = Module::getByUri($uri);
-            }
-        }
+        $this->addModuleRoute($uri);
 
-        $modulePath = $module['path'];
+        $request_uri = implode('/', Uri::segments());
 
-        // Add the route file from module
-        $this->addModuleRoute($modulePath);
+        $route = $this->collection->match($request_uri, $this->request);
 
-        $routes = Route::getAll();
+        if ($route) {
 
-        // Search from the Route Collection
-        foreach ($routes as $route) {
-            if ($route->match(implode('/', Uri::segments()))) {
-
+            if (! $route->skipCSRF()) {
                 // Check CSRF protection
                 $this->checkCSRF();
-
-                // Route with callback function.
-                if($route->closure instanceof \Closure) {
-                    return call_user_func_array($route->closure,
-                                                $route->params);
-                }
-
-                return $this->callbackController($route);
             }
+
+            // Route with callback function.
+            if($route->isClosure) {
+                return call_user_func_array($route->callback, $route->params);
+            }
+
+            return $this->callbackController($route);
         }
 
         // If not found in Route Controller, find the controller
-        if ($route = $this->detectController($uri)) {
-
+        if ($route = $this->detectController()) {
             // Check CSRF protection
             $this->checkCSRF();
 
             return $this->callbackController($route);
-        } else {
-            // We call the 404.
-            return $this->notFound();
         }
 
         // Not found Route and Controller,
         // throw the HttpNotFoundException
         throw new HttpNotFoundException("Request URL is not found!");
-    }
-
-    /**
-     * Method for Page Not Found Route
-     *
-     * @return void
-     **/
-    public function notFound()
-    {
-        // We call the 404 Route.
-        $route = Route::getNotFound();
-
-        // Call route not found event
-        \Event::call('reborn.app.routeNotFound', $route);
-
-        if($route->closure instanceof \Closure) {
-            return call_user_func_array($route->closure, (array)$route->params);
-        }
-
-        return $this->callbackController($route);
     }
 
     /**
@@ -166,7 +145,7 @@ class Router
      * @param string $uri
      * @return array|boolean
      */
-    protected function detectController($uri)
+    protected function detectController()
     {
         // Check URI Segment (1) is Admin Panel URI
         if (Uri::segment(1) == $this->admin) {
@@ -220,7 +199,7 @@ class Router
             return null;
         }
 
-        $route = new Map();
+        $route = new Route('', '');
         // Set Module
         $route->module = $module;
         // Set Controller
@@ -229,6 +208,7 @@ class Router
         } else {
             $route->controller = $controller;
         }
+
         // Set Action
         if (is_null(Uri::segment($action_pos))) {
             $route->action = 'index';
@@ -248,19 +228,21 @@ class Router
     /**
      * Call the given controller's action(method).
      *
-     * @param Reborn\Route\Map
+     * @param Reborn\Route\Route
      * @return \Reborn\Http\Response
      **/
     protected function callbackController($route)
     {
         if (!Module::isEnabled($route->module)) {
-            return $this->notFound();
+             throw new HttpNotFoundException("Request URL is not found!");
         }
 
         $resolver = new ControllerResolver($this->app, $route);
 
         return $resolver->resolve();
     }
+
+
 
     /**
      * Add the route file from the module
@@ -270,8 +252,25 @@ class Router
      */
     protected function addModuleRoute($path)
     {
-        if (is_readable($path.'routes.php')) {
-            require $path.'routes.php';
+        // If uri is empty, set the default
+        if ($path == '') {
+            $path = '/';
+            $module = Module::getData(\Setting::get('default_module'));
+        } else {
+            if ($this->admin == $path) {
+                $module = Module::getByUri(Uri::segment(2));
+            } else {
+                $module = Module::getByUri($path);
+            }
+        }
+
+        if (!is_null($module)) {
+            $path = $module['path'];
+
+            if (is_readable($path.'routes.php')) {
+                require $path.'routes.php';
+            }
+
         }
     }
 

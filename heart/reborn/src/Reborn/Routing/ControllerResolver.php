@@ -1,15 +1,15 @@
 <?php
 
-namespace Reborn\Route;
+namespace Reborn\Routing;
 
-use Reborn\Cores\Application;
 use ReflectionClass;
+use Reborn\Cores\Application;
 use Reborn\Exception\HttpNotFoundException;
 
 /**
  * ControllerResolver Class for Reborn
  *
- * @package Reborn\Route
+ * @package Reborn\Routing
  * @author Myanmar Links Professional Web Development Team
  **/
 class ControllerResolver
@@ -18,30 +18,32 @@ class ControllerResolver
 	/**
 	 * Application Object
 	 *
-	 * @var Reborn\Cores\Application
+	 * @var \Reborn\Cores\Application
 	 **/
 	protected $app;
 
 	/**
 	 * Request Object
 	 *
-	 * @var Reborn\Http\Request
+	 * @var \Reborn\Http\Request
 	 **/
 	protected $request;
 
 	/**
 	 * Route Map Object
 	 *
-	 * @var Reborn\Route\Map
+	 * @var \Reborn\Routing\Route
 	 **/
 	protected $route;
 
 	/**
-	 * Constructor.
+	 * Default instance method of ControllerResolver.
 	 *
+	 * @param \Reborn\Cores\Applciation $app
+	 * @param \Reborn\Routing\Route $route
 	 * @return void
 	 **/
-	public function __construct(Application $app, Map $route)
+	public function __construct(Application $app, Route $route)
 	{
 		$this->app = $app;
 		$this->request = $app->request;
@@ -79,8 +81,8 @@ class ControllerResolver
         $action = $this->route->action;
         $params = $this->route->params;
 
-        // Prevent Direct call the callByMethod
-        $this->checkActionIsCallByMethod($action);
+        // Prevent Direct call the actionCaller
+        $this->checkActionIsActionCaller($action);
 
         // Set current request(module, controller, action and paramas) to Request Object
         $this->setRequestParameters($module, $controller, $action, $params);
@@ -89,16 +91,16 @@ class ControllerResolver
 	}
 
 	/**
-	 * Prevent Direct call the callByMethod
+	 * Prevent Direct call the actionCaller
 	 * Because this method is action control for Controller
 	 *
 	 * @param string $action Action method name
 	 * @return HttpNotFoundException|void
 	 **/
-	protected function checkActionIsCallByMethod($action)
+	protected function checkActionIsActionCaller($action)
 	{
-		// Prevent Direct call the callByMethod
-        if ('callByMethod' === $action) {
+		// Prevent Direct call the actionCaller
+        if ('actionCaller' === $action) {
             throw new HttpNotFoundException("Request Method is not callable method!");
         }
 	}
@@ -138,8 +140,55 @@ class ControllerResolver
         // Solve the Controller with Illuminate\Container
         $instance = $this->app->make($controller);
 
+        $args = $this->makeRequestParameters($instance, $action, $params);
+
         // Call action caller method
-        return $instance->actionCaller($this->app, $action, $params);
+        return $instance->actionCaller($this->app, $action, $args);
+	}
+
+	/**
+	 * Check requirement arguments for action method and
+	 * make require arguments
+	 *
+	 * @param \Reborn\MVC\Controller\Controller $obj Controller instance
+	 * @param string $method Action method name
+	 * @param array $params Request parameters
+	 * @return array
+	 * @throws \BadMethodCallException|\InvalidArgumentException
+	 **/
+	protected function makeRequestParameters($obj, $method, $params)
+	{
+		//dump($obj, true);
+		$r = new \ReflectionMethod($obj, $method);
+
+		if (!$r->isPublic()) {
+			throw new \BadMethodCallException("Request action [$method] is not callable!");
+		}
+
+		$require = $r->getParameters();
+
+		if (empty($require)) return array();
+
+		$missing = $args = array();
+
+		foreach ($require as $r) {
+			$name = $r->getName();
+			if (array_key_exists($name, $params)) {
+				$args[$name] = $params[$name];
+			} elseif ($r->isDefaultValueAvailable()) {
+				$args[$name] = $r->getDefaultValue();
+			} else {
+				$missing[] = $name;
+			}
+		}
+
+		// Check Require arguments and give arguments
+		if (count($require) !== count($args)) {
+			$missing = implode(', ', $missing);
+			throw new \InvalidArgumentException("Action [$method] required { $missing }' arguments.");
+		}
+
+		return $args;
 	}
 
 } // END class ControllerResolver

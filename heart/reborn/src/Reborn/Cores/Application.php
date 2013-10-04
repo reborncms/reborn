@@ -5,7 +5,8 @@ namespace Reborn\Cores;
 use Reborn\Http\Request;
 use Reborn\Http\Response;
 use Reborn\Http\Uri;
-use Reborn\Route\Router;
+use Reborn\Routing\Router;
+use Reborn\Routing\RouteCollection;
 use Reborn\MVC\View\ViewManager;
 use Reborn\Config\Config;
 use Reborn\Filesystem\File;
@@ -20,9 +21,9 @@ use Reborn\Module\ModuleManager as Module;
 use Reborn\Exception\RbException;
 use Reborn\Exception\HttpNotFoundException;
 use Reborn\Exception\TokenNotMatchException;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\Session\Session as Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
@@ -54,6 +55,10 @@ class Application extends \Illuminate\Container\Container
         $this['error_handler'] = new ErrorHandler($this);
 
         $this['request'] = Request::createFromGlobals();
+
+        $this['route_collection'] =  $this->share(function ($this) {
+            return new RouteCollection();
+        });
 
         $this['router'] =  $this->share(function ($this) {
             return new Router($this);

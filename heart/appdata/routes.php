@@ -1,30 +1,24 @@
 <?php
 
+/*Route::add('/note/{int:id}/{alpha:slug}?', 'Note\Note::index')
+			->defaults(array('slug' => 'test-page'))
+			->host('http://localhost/rb-dev')
+			->method(array('POST', 'PUT'));*/
 $adminUrl = \Config::get('app.adminpanel');
 
 // This is default route for Reborn
 // Don't delete this.
 $defaultModule = \Setting::get('default_module');
 if ('pages' == strtolower($defaultModule)) {
-	$added = Route::add('default', '/', 'Pages\Pages::index');
+	Route::add('/', 'Pages\Pages::index', 'default');
 } else {
-	$added = Route::add('default', '/', ucfirst($defaultModule).'\\'.ucfirst($defaultModule).'::index');
+	Route::add('/', ucfirst($defaultModule).'\\'.ucfirst($defaultModule).'::index', 'default');
 }
 
-// Add Page Not Found Route
-// Don't change this route
-// Route::addNotFound(module, controller, action)
-/*Route::addNotFound(function($params){
-	echo '<h1>Hello Closure 404</h1>';
-	echo '<h3>Sorry! Request URL "'.$params.'" not found in this site.</h3>';
-});*/
-Route::addNotFound('Pages', 'Pages', 'index');
-
-Route::add('login', 'login', 'User\User::login');
-Route::add('register', 'register', 'User\User::register');
+Route::add('login', 'User\User::login', 'login');
+Route::add('register', 'User\User::register', 'register');
 
 // Admin Panel Login, Logout, Dashboard Route
-Route::add('admin_login', $adminUrl.'/login', 'Admin\Admin\Admin::login');
-Route::add('admin_logout', $adminUrl.'/logout', 'Admin\Admin\Admin::logout');
-Route::add('admin_dashboard', $adminUrl, 'Admin\Admin\Admin::index');
-Route::add('admin_language', $adminUrl.'/language', 'Admin\Admin\Admin::language');
+Route::add($adminUrl.'/login', 'Admin\Admin\Admin::login', 'admin_login');
+Route::add($adminUrl, 'Admin\Admin\Admin::index', 'admin_dashboard');
+Route::add($adminUrl.'/language', 'Admin\Admin\Admin::language', 'admin_language');
