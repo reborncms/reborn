@@ -264,6 +264,10 @@ class Router
             }
         }
 
+        if (!Module::has($path)) {
+            $module = Module::getData(\Setting::get('default_module'));
+        }
+
         if (!is_null($module)) {
             $path = $module['path'];
 
