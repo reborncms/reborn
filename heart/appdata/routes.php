@@ -17,3 +17,6 @@ Route::add('@admin/login', 'Admin\Admin\Admin::login', 'admin_login');
 Route::add('@admin/logout', 'Admin\Admin\Admin::logout', 'admin_logout');
 Route::add('@admin', 'Admin\Admin\Admin::index', 'admin_dashboard');
 Route::add('@admin/language', 'Admin\Admin\Admin::language', 'admin_language');
+
+// Add Missing Control Route
+Route::missing('Note\Note::index', 'missing');

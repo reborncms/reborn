@@ -133,6 +133,14 @@ class Router
             return $this->callbackController($route);
         }
 
+        // Get Missing Route
+        if ($route = $this->collection->getMissing($request_uri, $this->request)) {
+            // Check CSRF protection
+            $this->checkCSRF();
+
+            return $this->callbackController($route);
+        }
+
         // Not found Route and Controller,
         // throw the HttpNotFoundException
         throw new HttpNotFoundException("Request URL is not found!");

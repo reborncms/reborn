@@ -252,9 +252,8 @@ class Route
 
 		// If $path is equal with $path (or) $path is '', return this route
 		if ($this->path == $path || ($this->path == '/' and $path == '')) {
-			if (false === $this->isClosure) {
-				$this->parseCallable();
-			}
+
+			$this->compiling();
 
 			return $this;
 		}
@@ -262,19 +261,35 @@ class Route
 		// Make Regular Expression Pattern for this route's path
 		$pattern = $this->makeRegexPattern();
 
-		if (preg_match($pattern, $path, $matches)) {
+		if (preg_match($pattern, $path, $match)) {
 
-			if (false === $this->isClosure) {
-				$this->parseCallable();
-			}
-
-			// Parse Parameter values
-			$this->parseParameter($matches);
+			$this->compiling($match);
 
 			return $this;
 		}
 
 		return false;
+	}
+
+	/**
+	 * Comliling route data.
+	 * Make Module, Controller, Action, etc..
+	 *
+	 * @param array|null $matche Match values from preg_match
+	 * @return \Reborn\Routing\Route
+	 **/
+	public function compiling($match = null)
+	{
+		if (false === $this->isClosure) {
+			$this->parseCallable();
+		}
+
+		if (!is_null($match)) {
+			// Parse Parameter values
+			$this->parseParameter($match);
+		}
+
+		return $this;
 	}
 
 	/**

@@ -21,6 +21,13 @@ class RouteCollection
 	protected $routes = array();
 
 	/**
+	 * Missing Route for Not Found
+	 *
+	 * @var \Reborn\Routing\Route
+	 **/
+	protected $missing;
+
+	/**
 	 * Current match Route
 	 *
 	 * @var \Reborn\Routing\Route
@@ -127,6 +134,23 @@ class RouteCollection
         $this->get($resources.'/{int:id}', $controller.'::view', $resources.'_view');
     }
 
+    /**
+     * Add Missing control route
+     *
+	 * @param string|Closure $callback
+	 * @param string|null $name Route name
+	 * @param string $method Request method for route
+	 * @return \Reborn\Routing\Route
+     **/
+    public function missing($callback, $name = null, $method = 'ALL')
+    {
+    	$route = new Route('{*:slug}', $callback, $name, $method);
+
+		$this->missing = $route;
+
+		return $route;
+    }
+
 	/**
 	 * Add route to collection
 	 *
@@ -175,6 +199,20 @@ class RouteCollection
 				$this->current = $match;
 				return $match;
 			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get missing route
+	 *
+	 * @return boolean|\Reborn\Routing\Route
+	 **/
+	public function getMissing($uri, Request $request)
+	{
+		if (!is_null($this->missing)) {
+			return $this->missing->match($uri, $request);
 		}
 
 		return false;
