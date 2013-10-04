@@ -35,9 +35,9 @@ class Pagination
 	protected static $current = 1;
 
 	/**
-	 * @var int Uri Segment of Pagination
+	 * @var int Param name of Pagination. Default is 'page'
 	 **/
-	protected static $uri_segment;
+	protected static $param_name = 'page';
 
 	/**
 	 * @var int Number of Links to show on pagination
@@ -93,19 +93,25 @@ class Pagination
 				case 'template':
 					static::$template = array_merge(static::$template, $val);
 					break;
-				
+
 				default:
 					static::${$key} = $val;
 					break;
 			}
 		}
 
-		static::$url = \Uri::create(static::$url);
+		if (is_null(static::$url)) {
+			static::$url = preg_replace('@(\/page-(\d+))@', '', \Uri::current()).'/';
+		} else {
+			static::$url = \Uri::create(static::$url);
+		}
 
-		$segment = \Uri::segment(static::$uri_segment);
+		$params = \Facade::getApplication()->request->params;
 
-		if($segment != null){
-			static::$current = str_replace('page-', '', $segment);
+		$page = isset($params[static::$param_name]) ? $params[static::$param_name] : null;
+
+		if($page != null){
+			static::$current = (int) str_replace('page-', '', $page);
 		}
 
 		$total_pagi = ceil(static::$total_items / static::$items_per_page);
@@ -114,6 +120,22 @@ class Pagination
 			static::$num_links = $total_pagi;
 			return static::links($total_pagi);
 		}
+	}
+
+	/**
+	 * Check pagination number (page-*) is invalid.
+	 *
+	 * @return boolean
+	 **/
+	public static function isInvalid()
+	{
+		$per_page = static::$current * static::$items_per_page;
+
+		if ($per_page > static::$total_items) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -178,10 +200,10 @@ class Pagination
 
 	/**
 	 * Pagination Links
-	 * 
-	 * //== Generate page links with separator(...) logic from 
+	 *
+	 * //== Generate page links with separator(...) logic from
 	 * 		PHP Pagination Class by David Carr - dave@daveismyname.com ==/
-	 *																
+	 *
 	 * @return string
 	 **/
 	protected static function links($num_links)
@@ -191,9 +213,15 @@ class Pagination
 		$prev_link = static::$current - 1;
 		$next_link = static::$current + 1;
 		//Previous link
+		if ($prev_link > 1) {
+			$prev_url = static::$url.'page-'.$prev_link;
+		} else {
+			$prev_url = static::$url;
+		}
+
 		if (static::$current > 1) {
 			$pagi_links .= static::$template['start_page_link'];
-			$pagi_links .= '<a href="'.static::$url.'page-'.$prev_link.'" class="'.static::$template['pre_link_class'].'">'.static::$template['pre_link_text'].'</a>';
+			$pagi_links .= '<a href="'.$prev_url.'" class="'.static::$template['pre_link_class'].'">'.static::$template['pre_link_text'].'</a>';
 			$pagi_links .= static::$template['end_page_link'];
 		}
 
@@ -215,10 +243,18 @@ class Pagination
 
 					$first_part = static::$show_links - 3;
 					$last_part_start = $num_links - 2;
+
 					for($p = 1; $p <= $first_part; $p++) {
+
+						if ($p > 1) {
+							$url = static::$url.'page-'.$p;
+						} else {
+							$url = static::$url;
+						}
+
 						$active = ($p == static::$current) ? " class='".static::$template['active_class']."'" : "";
 						$pagi_links .= static::$template['start_page_link'];
-						$pagi_links .= '<a href="'.static::$url.'page-'.$p.'"'.$active.'>'.$p.'</a>';
+						$pagi_links .= '<a href="'.$url.'"'.$active.'>'.$p.'</a>';
 						$pagi_links .= static::$template['end_page_link'];
 					}
 
@@ -237,7 +273,7 @@ class Pagination
 				elseif ($num_links - $total_adj > static::$current && static::$current > $total_adj) {
 
 				 	$pagi_links .= static::$template['start_page_link'];
-					$pagi_links .= '<a href="'.static::$url.'page-'.'1">1</a>';
+					$pagi_links .= '<a href="'.static::$url.'1">1</a>';
 					$pagi_links .= static::$template['end_page_link'];
 
 					$pagi_links .= static::$template['start_page_link'];
@@ -260,19 +296,19 @@ class Pagination
 					$pagi_links .= static::sepOpen();
 					$pagi_links .= static::$template['separator'];
 					$pagi_links .= static::$template['end_page_link'];
-					
+
 					$pagi_links .= static::$template['start_page_link'];
 					$pagi_links .= '<a href="'.static::$url.'page-'.$b_last.'">'.$b_last.'</a>';
 					$pagi_links .= static::$template['end_page_link'];
 
 					$pagi_links .= static::$template['start_page_link'];
 					$pagi_links .= '<a href="'.static::$url.'page-'.$num_links.'">'.$num_links.'</a>';
-					$pagi_links .= static::$template['end_page_link'];	
+					$pagi_links .= static::$template['end_page_link'];
 
 				} else {
 
 					$pagi_links .= static::$template['start_page_link'];
-					$pagi_links .= '<a href="'.static::$url.'page-'.'1">1</a>';
+					$pagi_links .= '<a href="'.static::$url.'1">1</a>';
 					$pagi_links .= static::$template['end_page_link'];
 
 					$pagi_links .= static::$template['start_page_link'];
@@ -284,6 +320,7 @@ class Pagination
 					$pagi_links .= static::$template['end_page_link'];
 
 					for($p = $num_links - (2 + $total_adj); $p <= $num_links; $p++) {
+
 						$active = ($p == static::$current) ? " class='".static::$template['active_class']."'" : "";
 						$pagi_links .= static::$template['start_page_link'];
 						$pagi_links .= '<a href="'.static::$url.'page-'.$p.'"'.$active.'>'.$p.'</a>';
@@ -293,9 +330,16 @@ class Pagination
 			}
 			else {
 				for($p = 1; $p <= $num_links; $p++) {
+
+					if ($p > 1) {
+						$url = static::$url.'page-'.$p;
+					} else {
+						$url = static::$url;
+					}
+
 					$active = ($p == static::$current) ? " class='".static::$template['active_class']."'" : "";
 					$pagi_links .= static::$template['start_page_link'];
-					$pagi_links .= '<a href="'.static::$url.'page-'.$p.'"'.$active.'>'.$p.'</a>';
+					$pagi_links .= '<a href="'.$url.'"'.$active.'>'.$p.'</a>';
 					$pagi_links .= static::$template['end_page_link'];
 				}
 			}
