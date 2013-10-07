@@ -30,7 +30,7 @@
 		<tr>
 			{{ if($template->detemp == 0)}}
 			<td class="checkbox">{{ Form::checkbox('action_to[]', $template->id,false, array('id' => 'action'.$a)) }}</td>
-			{= $a++ =}
+			
 			{{ else }}
 			<td></td>
 			{{ endif }}
@@ -52,13 +52,13 @@
 					{{ endif }}
 				</div><!--- end of icons-bar -->
 			</td>
-
+		{= $a++ =}
 		</tr>
 		{{ endloop }}
 	</tbody>
 </table>
 <div class="button-wrapper" id="delete_select">
-		{{ Form::submit('submit_delete', t('global.delete_selected'), array('class' => 'confirm_delete button button-red', 'disabled' => 'disabled')) }}
+		{{ Form::submit('submit_delete', t('global.delete_selected'), array('class' => 'confirm_delete btn btn-red', 'disabled' => 'disabled')) }}
 		{{ Form::end() }}
 	</div>
 {{ $pagination }}
