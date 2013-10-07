@@ -1,10 +1,9 @@
 <?php
-	$adminUrl = \Config::get('app.adminpanel');
 
-	Route::add('editFile', $adminUrl.'/media/edit/file/{:int}', 
-		'Media\Admin\Media::editFile');
+	// Viewing images
+	\Route::get('media/image/{:target}/{int:width}?/{int:height}?',
+		'Media\Media::image', 'image_preview_with_name');
 
-	Route::add('editFolder', $adminUrl.'/media/edit/folder/{:int}',
-		'Media\Admin\Media::editFolder');
-
-	Route::add('seeFile', '/file/{:alnum}', 'Media\Media::image');
+	// Setting thumbnail
+	\Route::get('admin/media/thumbnail/{int:folderId}/{alpha:target}?',
+		'Media\Admin\Media::thumbnail', 'thumbnail');

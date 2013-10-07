@@ -509,11 +509,10 @@ class MediaController extends \AdminController
         
         $upload = $this->template->partialRender('admin'.DS.'form'.DS.'upload');
 
-        $option = $this->template->partialRender('admin'.DS.'plugin'.DS.'option');
+        //$option = $this->template->partialRender('admin'.DS.'plugin'.DS.'option');
 
         $this->template->title(t('media::media.ext.thumbnail'))
                         ->set('images', $images)
-                        ->set('option', $option)
                         ->set('upload', $upload)
                         ->setPartial('admin'.DS.'plugin'.DS.'thumbnail');
     }
