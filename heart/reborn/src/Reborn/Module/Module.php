@@ -8,7 +8,7 @@ use Composer\Autoload\ClassLoader as Loader;
 use Reborn\Connector\DB\DBManager as DB;
 use Reborn\Exception\ModuleException;
 use Reborn\Util\Menu;
-use Reborn\Route\ControllerMap;
+use Reborn\Routing\ControllerMap;
 
 class Module
 {

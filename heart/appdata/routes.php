@@ -19,4 +19,4 @@ Route::add('@admin', 'Admin\Admin\Admin::index', 'admin_dashboard');
 Route::add('@admin/language', 'Admin\Admin\Admin::language', 'admin_language');
 
 // Add Missing Control Route
-Route::missing('Note\Note::index', 'missing');
+Route::missing('Pages\Pages::view', 'missing');
