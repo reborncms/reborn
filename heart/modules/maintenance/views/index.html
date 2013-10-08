@@ -1,0 +1,34 @@
+<div id="maintenance_wrapper">
+	<div class="single_mt">
+		<h4>Cache Files</h4>
+		<table class="table stripe" id="cache_folders">
+			{{ loop ($dir_list as $dir) }}
+				<tr>
+					{{ if (isset($dir['child'])) }}
+						{= $icoclass = "icon-folder-open" =}
+					{{ else }}
+						{= $icoclass = "icon-folder-close" =}
+					{{ endif }}
+					<td class="main_fold" style="width:60%"><span><i class="{{ $icoclass }} icon-gray"></i>{{ $dir['name'] }}</span></td>
+					<td>{{ $dir['count'] }}</td>
+					<td style="width:40%"><a href="{{ adminUrl('maintenance/clear/'.$dir['name']) }}" class="btn btn-medium">{{ isset($dir['child']) ? 'Clear All' : 'Clear' }}</a></td>
+				</tr>
+				{{ if (isset($dir['child'])) }}
+					{{ loop ($dir['child'] as $child) }}
+						<tr>
+							<td class="child_fold"><span><i class="icon-folder-close icon-gray"></i>{{ $child['name'] }}</span></td>
+							<td>{{ $child['count'] }}</td>
+							<td><a href="{{ adminUrl('maintenance/clear/'.$dir['name'].'/'.$child['name']) }}" class="btn btn-medium">Clear</a></td>
+						</tr>
+					{{ endloop }}
+				{{ endif }}	
+			{{ endloop }}
+		</table> <!-- end of #cache_folder -->
+	</div> <!-- end of .single_mt -->
+	<!-- <div class="single_mt">
+		<h4>Contents Backup</h4>
+		
+	</div> -->
+</div> <!-- end of #maintenance_wrapper -->
+
+

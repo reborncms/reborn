@@ -1,0 +1,16 @@
+#maintenance_wrapper {
+	margin-top: 15px;
+}
+
+#cache_folders {
+	width:50%;
+	margin-top: 20px;
+}
+
+.main_fold {
+	font-weight: bold;
+}
+
+.child_fold {
+	padding-left: 30px;
+}
