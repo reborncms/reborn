@@ -23,12 +23,15 @@ Thanks for opensource packages.
 * [Symfony Console Component](https://packagist.org/packages/symfony/console)
 * [Illuminate Container Component](https://packagist.org/packages/illuminate/container)
 * [Illuminate Database Component](http://packagist.org/packages/illuminate/database)
+* [Illuminate Support Component](http://packagist.org/packages/illuminate/support)
+* [Carbon](http://packagist.org/packages/nesbot/carbon)
 * [Sentry](http://packages.org/packagist/cartalyst/sentry)
 * [Swift Mailer](http://swiftmailer.org)
 * [Monolog](http://github.com/Seldaek/monolog)
 * [tijsverkoyen/akismet](https://github.com/tijsverkoyen/Akismet)
 * [dflydev/markdown](https://github.com/dflydev/dflydev-markdown‎)
 * [leafo/lessphp](https://github.com/leafo/lessphp)
+* [patchwork/utf8](https://packagist.org/packages/patchwork/utf8)
 
 ### License
 

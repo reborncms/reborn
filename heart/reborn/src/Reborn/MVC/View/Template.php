@@ -258,6 +258,7 @@ class Template
     public function setLayout($layout)
     {
         $layout = str_replace(array('\\', '/'), DS, $layout);
+
         $this->layout = $layout;
 
         return $this;
@@ -458,8 +459,8 @@ class Template
             $mainContent = '';
         }
 
-        if($this->useLayout)
-        {
+        if($this->useLayout) {
+
             $this->setLayoutVariables();
 
             $this->view->set($this->defaultKeys['body'], $mainContent);

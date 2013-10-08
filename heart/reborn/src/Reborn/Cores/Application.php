@@ -56,6 +56,9 @@ class Application extends \Illuminate\Container\Container
 
         $this['request'] = Request::createFromGlobals();
 
+        // Enable Http Method Override for (_method)
+        Request::enableHttpMethodParameterOverride();
+
         $this['route_collection'] =  $this->share(function ($this) {
             return new RouteCollection();
         });

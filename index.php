@@ -58,6 +58,16 @@ require_once __DIR__.'/heart/reborn/src/start.php';
 
 /**
  * ---------------------------------------------------------
+ * Initial bootup for UTF-8
+ * ---------------------------------------------------------
+ *
+ * Make handling for Utf8 with Patchwork.
+ *
+ */
+\Patchwork\Utf8\Bootup::initAll();
+
+/**
+ * ---------------------------------------------------------
  * Now Create the Reborn Application Instance.
  * ---------------------------------------------------------
  *

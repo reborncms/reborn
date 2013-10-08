@@ -15,17 +15,20 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "symfony/http-foundation": "2.3.*@dev",
-        "symfony/console": "2.3.*@dev",
-        "monolog/monolog": "dev-master",
+        "php": ">=5.3.4",
+        "cartalyst/sentry": "2.0.*@dev",
+        "dflydev/markdown": "1.0.*@dev",
         "illuminate/container": "4.1.*@dev",
         "illuminate/database": "4.1.*@dev",
-        "cartalyst/sentry": "2.0.*@dev",
+        "illuminate/support": "4.1.*@dev",
+        "leafo/lessphp": "0.3.9",
+        "monolog/monolog": "dev-master",
+        "nesbot/carbon": "1.*",
+        "patchwork/utf8": "1.1.*",
         "swiftmailer/swiftmailer": "4.3.*@dev",
-        "tijsverkoyen/akismet": "dev-master",
-        "dflydev/markdown": "1.0.*@dev",
-        "leafo/lessphp": "0.3.9"
+        "symfony/http-foundation": "2.3.*@dev",
+        "symfony/console": "2.3.*@dev",
+        "tijsverkoyen/akismet": "dev-master"
     },
     "autoload": {
         "psr-0": {
