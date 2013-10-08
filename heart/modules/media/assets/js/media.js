@@ -19,6 +19,7 @@ $(function(){
 	$('#media_create_folder').colorbox({
 		width: "50%",
 		height: "400",
+		href: $(this).attr('href') + $('#main-media-wrapper').attr('data-folder-id'),
 		scroll: false,
 		onComplete: function () {
 			$.colorbox.resize();
@@ -250,7 +251,7 @@ $(function(){
 	});
 
 	/* ===== Feature Image ===== */
-	$('#thumbnail-wrap #tabs').tabs();
+	
 
 	$('#extra-li a').removeClass('ui-tabs-anchor');
 
