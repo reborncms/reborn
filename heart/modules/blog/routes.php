@@ -41,11 +41,11 @@
 \Route::get('blog/archives/{int:year}?/{int:month}?/{p:page}?', 'Blog\Blog::archives', 'blog_archves')
 			->defaults(array('year' => date("Y")));
 
-\Route::get('blog/preview/{str:slug}', 'Blog\Blog::preview', 'blog_preview');
+\Route::get('blog/preview/{*:slug}', 'Blog\Blog::preview', 'blog_preview');
 
-\Route::get('blog/category/{str:slug}/{p:page}?', 'Blog\Blog::category', 'blog_category');
+\Route::get('blog/category/{*:slug}/{p:page}?', 'Blog\Blog::category', 'blog_category');
 
-\Route::get('blog/tag/{str:name}/{p:page}?', 'Blog\Blog::tag', 'blog_tag');
+\Route::get('blog/tag/{*:name}/{p:page}?', 'Blog\Blog::tag', 'blog_tag');
 
 \Route::get('blog/author/{int:id}/{p:page}?', 'Blog\Blog::author', 'blog_author');
 
