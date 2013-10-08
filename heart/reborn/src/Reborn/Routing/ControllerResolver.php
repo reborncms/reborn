@@ -158,8 +158,17 @@ class ControllerResolver
 	 **/
 	protected function makeRequestParameters($obj, $method, $params)
 	{
-		//dump($obj, true);
-		$r = new \ReflectionMethod($obj, $method);
+		try {
+			$r = new \ReflectionMethod($obj, $method);
+		} catch (\ReflectionException $e) {
+			// Throw ReflectionException in Development Environment and
+			// Throw HttpNotFoundException in Other Environment
+			if ($this->app->runInDevelopment()) {
+				throw $e;
+			} else {
+				throw new HttpNotFoundException($e->getMessage());
+			}
+		}
 
 		if (!$r->isPublic()) {
 			throw new \BadMethodCallException("Request action [$method] is not callable!");

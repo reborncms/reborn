@@ -323,7 +323,7 @@ class Route
 	{
 		foreach ($params as $key => $value) {
 			if (!is_integer($key)) {
-				$this->params[$key] = rawurlencode($value);
+				$this->params[$key] = $value;
 			}
 		}
 

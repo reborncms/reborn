@@ -108,7 +108,7 @@ class Router
 
         $request_uri = implode('/', Uri::segments());
 
-        $route = $this->collection->match($request_uri, $this->request);
+        $route = $this->collection->match(rawurldecode($request_uri), $this->request);
 
         if ($route) {
 

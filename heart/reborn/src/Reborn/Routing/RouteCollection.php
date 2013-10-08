@@ -140,11 +140,14 @@ class RouteCollection
 	 * @param string|Closure $callback
 	 * @param string|null $name Route name
 	 * @param string $method Request method for route
+	 * @param string $pattern Route pattern. Default is {*:slug}
 	 * @return \Reborn\Routing\Route
      **/
-    public function missing($callback, $name = null, $method = 'ALL')
+    public function missing($callback, $name = null, $method = 'ALL', $pattern = null)
     {
-    	$route = new Route('{*:slug}', $callback, $name, $method);
+    	$pattern = is_null($pattern) ? '{*:slug}' : $pattern;
+
+    	$route = new Route($pattern, $callback, $name, $method);
 
 		$this->missing = $route;
 

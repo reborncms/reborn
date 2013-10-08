@@ -46,9 +46,11 @@
 \Route::get('blog/category/{str:slug}/{p:page}?', 'Blog\Blog::category', 'blog_category');
 
 \Route::get('blog/tag/{str:name}/{p:page}?', 'Blog\Blog::tag', 'blog_tag');
- 
+
 \Route::get('blog/author/{int:id}/{p:page}?', 'Blog\Blog::author', 'blog_author');
 
 \Route::get('blog/{p:page}?', 'Blog\Blog::index', 'blog_index');
 
-\Route::get('blog/{str:slug}', 'Blog\Blog::view', 'blog_single');
+// Now change {str:slug} to {*:slug} for Myanmar Font Uri.
+// Thuesday, 8 October 2013
+\Route::get('blog/{*:slug}', 'Blog\Blog::view', 'blog_single');

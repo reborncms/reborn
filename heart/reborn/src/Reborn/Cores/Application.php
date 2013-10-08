@@ -130,6 +130,36 @@ class Application extends \Illuminate\Container\Container
     }
 
     /**
+     * Check Application Environment is "dev".
+     *
+     * @return boolean
+     **/
+    public function runInDevelopment()
+    {
+        return ($this['env'] === 'dev');
+    }
+
+    /**
+     * Check Application Environment is "production".
+     *
+     * @return boolean
+     **/
+    public function runInProduction()
+    {
+        return ($this['env'] === 'production');
+    }
+
+    /**
+     * Check Application Environment is "test".
+     *
+     * @return boolean
+     **/
+    public function runInTesting()
+    {
+        return ($this['env'] === 'test');
+    }
+
+    /**
      * Check Reborn is already installed
      *
      * @return boolean

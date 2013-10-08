@@ -67,7 +67,7 @@ class BlogController extends \PublicController
 
 		$update_view_count = Blog::where('id', '=', $blog->id)->update(array('view_count' => $view_count));
 
-		$blog = \Field::get('blog', $blog, 'custom_field'); 
+		$blog = \Field::get('blog', $blog, 'custom_field');
 
 		$this->template->title($blog['title'])
 						->setPartial('single')
