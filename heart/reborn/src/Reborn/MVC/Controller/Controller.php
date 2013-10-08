@@ -137,6 +137,19 @@ class Controller
     }
 
     /**
+     * Set JS variables for the template.
+     * Shortcut of $this->template->jsValue()
+     *
+     * @param string|array $key JS variable key or key value array
+     * @param mixed|null $value Value for JS variable
+     * @return void
+     **/
+    protected function jsValue($key, $value = null)
+    {
+        $this->template->jsValue($key, $value);
+    }
+
+    /**
      * Return the Json from Controller
      *
      * @param mixed   $data    The response data

@@ -159,6 +159,13 @@ class Template
     protected $inlineScripts = array();
 
     /**
+     * JS Variables for the template
+     *
+     * @var array
+     **/
+    protected $jsVars = array();
+
+    /**
      * Metadata for the template <head></head>
      *
      * @var array
@@ -385,6 +392,26 @@ class Template
     }
 
     /**
+     * Set JS variables for the template
+     *
+     * @param string|array $key JS variable key or key value array
+     * @param mixed|null $value Value for JS variable
+     * @return \Reborn\MVC\View\Template
+     **/
+    public function jsValue($key, $value = null)
+    {
+        if (is_array($key)) {
+            foreach ($key as $name => $value) {
+                $this->jsVars[$name] = $value;
+            }
+        } else {
+            $this->jsVars[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
      * Set the metadata for the template
      * Metadata type (default is "meta", support type [og, twitter, link])
      *
@@ -559,6 +586,11 @@ class Template
         $footerScriptInline = $this->getInlineScriptString('footer');
         $metadata = $this->getMetadataString();
 
+        // Set JS variables
+        if (! empty($this->jsVars) ) {
+            $headScript = $this->compileJsVars($headScript);
+        }
+
         $data = array(
                 $this->defaultKeys['title'] => $this->layoutTitle,
                 $this->defaultKeys['headStyle'] => $headStyle,
@@ -573,6 +605,19 @@ class Template
                 $this->defaultKeys['breadcrumb'] => $this->breadcrumb
             );
         $this->view->set($data);
+    }
+
+    /**
+     * Complie JS variables with header scripts string.
+     *
+     * @param string $scripts Header Scripts Group String
+     * @return string
+     **/
+    protected function compileJsVars($scripts)
+    {
+        $vars = "<script>var RB=".json_encode($this->jsVars)."</script>";
+
+        return $vars."\n".$scripts;
     }
 
     /**
