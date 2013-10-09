@@ -129,6 +129,10 @@ class Pagination
 	 **/
 	public static function isInvalid()
 	{
+		if (self::offset() == 0 and static::$total_items == 0) {
+			return false;
+		}
+
 		if (self::offset() >= static::$total_items) {
 			return true;
 		}
