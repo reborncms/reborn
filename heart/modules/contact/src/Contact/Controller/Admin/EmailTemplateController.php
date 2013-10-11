@@ -20,12 +20,12 @@ class EmailTemplateController extends \AdminController
 	 * @package Contact\EmailTemplate
 	 * @author RebornCMS Development Team
 	 **/
-	public function index($id = null)
+	public function index()
 	{
 		$result = Etemplate::all();
 
 		$options = array(
-			'total_items'	=> Etemplate::get()->count(),
+			'total_items'	=> Etemplate::count(),
 			'items_per_page'=> 7,
 			);
 			

@@ -51,7 +51,7 @@ class ContactController extends \PublicController
 						),
 					
 					'attachmentConfig'=> array(
-						'savePath'		=> UPLOAD.'contact_attachment',
+						'path'		=> UPLOAD.'contact_attachment',
 						'createDir'	=> true,
 						'allowedExt'=> array('jpg', 'jpeg', 'png', 'gif',
 										'txt','pdf','doc','docx','xls','zip','tar',

@@ -2,7 +2,8 @@
 
 namespace Reborn\Util;
 
-use Reborn\Util\Uploader as Upload;
+/*use Reborn\Util\Uploader as Upload;*/
+use Reborn\FileUpload\Uploader as Upload;
 
 /**
  * Send Mail class for Reborn
@@ -159,16 +160,17 @@ class Mailer
 		}
 
 		if ($config['attachment']['value']) {
-			Upload::initialize($config['attachment']['fieldName'], $config['attachmentConfig']);
-			if (Upload::isSuccess()) {
-				$attachmentName = Upload::upload($config['attachment']['fieldName']);
-			} else {
-				$v = Upload::errors();
-				$result['fail'] = $v[0][0];
-				return $result;
+
+			$uploadError = Upload::uploadInit($config['attachment']['fieldName'], $config['attachmentConfig']);
+
+			if ($uploadError) {
+				return $result['fail'] = $uploadError['errors']['0'];
 			}
-			$message->attach(\Swift_Attachment::fromPath($config['attachmentConfig']['savePath'].DS.$attachmentName[0]['savedName']));
-			static::$attName = $attachmentName[0]['savedName'];
+			$attachmentName = Upload::upload($config['attachment']['fieldName']);
+			
+			
+			$message->attach(\Swift_Attachment::fromPath($config['attachmentConfig']['path'].DS.$attachmentName['savedName']));
+			static::$attName = $attachmentName['savedName'];
 		}
 		
 		foreach ($config['to'] as $key) {

@@ -18,11 +18,11 @@ class ContactController extends \AdminController
 	 * @package Contact\Controller
 	 * @author RebornCMS Development Team
 	 **/
-	public function index($id = null)
+	public function index()
 	{	
 
 		$options = array(
-			'total_items'	=> Mail::get()->count(),
+			'total_items'	=> Mail::count(),
 			'items_per_page'=> 7,
 			);
 			

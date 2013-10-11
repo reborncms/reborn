@@ -94,15 +94,15 @@ class Uploader
 				}
 			}
 		} else {
-			$fils->setConfig($config);
-			$file->uploadInit();
+			$files->setConfig($config);
+			$files->uploadInit();
 
-			$errors = $file->getErrors();
+			$errors = $files->getErrors();
 
 			if (! empty($errors)) {
-				$fileInfo = $file->getfileInfo();
+				$fileInfo = $files->getfileInfo();
 
-				$initedFiles['name'] = $fileinof['originName'];
+				$initedFiles['name'] = $fileInfo['originName'];
 				$initedFiles['errors'] = $errors;
 			}
 		}
