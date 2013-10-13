@@ -60,6 +60,10 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
         \Form::extend('thumbnail', function($name, $value, $width = null, $labels = array()){
             return \Media::thumbnailForm($name, $value, $width, $labels);
         });
+
+        \Form::extend('upload', function($folderId){
+            return \Media::uploadForm($folderId);
+        });
     }
 
 } // END class Bootstrap

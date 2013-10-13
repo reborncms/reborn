@@ -482,11 +482,7 @@ class MediaController extends \AdminController
      **/
     public function thumbnail($folderId = 0, $target = null)
     {
-         $images = Files::where('folder_id', '=', $folderId)
-                            ->whereIn('mime_type', array(
-                                'image/jpeg', 'image/gif', 'image/png',
-                                'image/tiff', 'image/bmp'))
-                            ->get();
+        $images = Files::imageOnly()->where('folder_id', '=', $folderId)->get();
 
         if ($this->request->isAjax()) {
 
@@ -515,6 +511,18 @@ class MediaController extends \AdminController
                         ->set('images', $images)
                         ->set('upload', $upload)
                         ->setPartial('admin'.DS.'plugin'.DS.'thumbnail');
+    }
+
+    public function wysiwyg($folderId = 0) {
+        $images = Files::imageOnly()->where('folder_id', '=', $folderId)->get();
+
+        $meta = $this->template->partialRender('wysiwyg'.DS.'meta');
+
+        $this->template->title(t('media::media.ext.thumbnail'))
+                        ->set('meta', $meta)
+                        ->set('images', $images)
+                        ->partialOnly()
+                        ->setPartial('wysiwyg'.DS.'wysiwyg');
     }
 
 

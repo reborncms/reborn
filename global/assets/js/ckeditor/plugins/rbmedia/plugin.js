@@ -1,37 +1,71 @@
 CKEDITOR.plugins.add('rbmedia', {
-	requires: ['iframedialog'],
-	init: function(editor)
+	icons	: 'rbmedia',
+	lang	: ['en', 'my'],
+	init	: function(editor)
 	{
-		var pluginName = 'rbmedia';
-		editor.addCommand(pluginName,
-			{
-				exec: function(){
-					update_instance();
-					CKEDITOR.currentInstance.openDialog('rbmedia');
-				}
-			}
-		);
+		editor.addCommand('rbmedia', new CKEDITOR.dialogCommand('rbmedia'));
+
 		editor.ui.addButton('rbmedia', {
-			label: 'Insert Images From Media',
-			command: pluginName,
-			icon: this.path + 'img/rbmedia.png'
+			label	: 'Insert Images From Media',
+			command : 'rbmedia'
 		});
 
+		/*var headTag = window.document.getElementsByTagName('head').item(0);
+
+		var css 	= document.createElement('link');
+		css.type 	= 'text/css';
+		css.rel 	= 'stylesheet';
+		css.media 	= 'all';
+		css.href	= this.path + 'style/wysiwyg.css';
+
+		headTag.appendChild(css);*/
+		
+		/*$.ajax({
+			type: 'GET',
+			url: SITEURL+ADMIN+'/media/wysiwyg/',
+			success: function(result) {
+				test(result);
+			}
+		});*/
+
 		CKEDITOR.dialog.add('rbmedia', function(editor){
+
 			return {
-				title : 'Insert Image from Gallery',
+				title 	: 'Insert Image from Gallery',
 				minWidth: 1100,
 				minHeight: 462,
-				contents : [ {
-				    id : 'tab1', label : '', title : '', expand : true, padding : 0,
-				    elements : [ {
-				           type : 'iframe',
-				           src : SITEURL + ADMIN + '/media/thumbnail/0/wysiwyg',
-				           width : 1100, height : 462 - (CKEDITOR.env.ie ? 10 : 0)
-				    } ]
-				} ]
-				, buttons : []
+				resizeable : CKEDITOR.DIALOG_RESIZE_NONE,
+				contents: [{
+				    elements : [{
+				        	type	: 'iframe',
+				           	src		: SITEURL+ADMIN+'/media/wysiwyg/',
+				           	width 	: 1100, 
+				           	height 	: 462 - (CKEDITOR.env.ie ? 10 : 0)
+				    }]
+				}],
+				buttons : []
 			};
 		});
 	}
 });
+
+/*function test(result) {
+	CKEDITOR.dialog.add('rbmedia', function(editor){
+
+		return {
+			title 	: 'Insert Image from Gallery',
+			minWidth: 1100,
+			minHeight: 462,
+			resizeable : CKEDITOR.DIALOG_RESIZE_NONE,
+			contents: [{
+			    elements : [{
+			           	type	: 'html',
+			           	html	: result,
+			           	width 	: 1100, 
+			           	height 	: 462 - (CKEDITOR.env.ie ? 10 : 0)
+			    }]
+			}],
+			buttons : []
+		};
+	});
+}*/

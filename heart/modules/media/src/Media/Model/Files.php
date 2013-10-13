@@ -23,6 +23,14 @@ class Files extends \Reborn\MVC\Model\Search
         return $this->belongsTo('User\Model\User');
     }
 
+    public function scopeImageOnly($query) {
+    	return $query->whereIn('mime_type', 
+    								array(
+                                		'image/jpeg', 'image/gif', 'image/png',
+                                		'image/tiff', 'image/bmp'
+                                	));
+    }
+
     public function getThumbAttribute()
     {
     	$ext = $this->attributes['extension'];

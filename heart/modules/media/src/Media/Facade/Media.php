@@ -39,6 +39,16 @@ class Media extends \Facade
 		$this->view = static::$app->view;
 	}
 
+	protected function uploadForm($folderId)
+	{
+		$template = File::getContent(__DIR__.DS.'upload.html');
+
+		$data['body'] = $this->view->render(CORE_MODULES.'media'.DS.'views'.DS.
+			'admin'.DS.'form'.DS.'upload.html');
+
+		return $this->view->renderAsStr($template, $data);
+	}
+
 	/**
 	 * Get Thumbnail Set Form UI
 	 *
