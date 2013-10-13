@@ -516,10 +516,7 @@ class MediaController extends \AdminController
     public function wysiwyg($folderId = 0) {
         $images = Files::imageOnly()->where('folder_id', '=', $folderId)->get();
 
-        $meta = $this->template->partialRender('wysiwyg'.DS.'meta');
-
         $this->template->title(t('media::media.ext.thumbnail'))
-                        ->set('meta', $meta)
                         ->set('images', $images)
                         ->partialOnly()
                         ->setPartial('wysiwyg'.DS.'wysiwyg');
