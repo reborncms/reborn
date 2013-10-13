@@ -182,6 +182,7 @@ class FieldController extends \AdminController
 						->set('group', $group)
 						->set('fields', $fields)
 						->set('method', 'group-create')
+						->set('select', module_select())
 						->setPartial('admin/group/form');
 	}
 
@@ -222,6 +223,7 @@ class FieldController extends \AdminController
 						->set('group', $group)
 						->set('fields', $fields)
 						->set('method', 'group-edit/'.$group->id)
+						->set('select', module_select(true, false))
 						->setPartial('admin/group/form');
 	}
 

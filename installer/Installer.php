@@ -115,6 +115,7 @@ class Installer
 		if(static::$request->getMethod() == 'POST') {
 			$v = static::inputCheck('step2');
 			if($v->valid()) {
+
 				static::$sess->set('db', $_POST);
 
 				static::$sess->set('step2', true);

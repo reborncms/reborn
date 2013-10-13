@@ -374,7 +374,7 @@ class Builder
 			return $this->group;
 		}
 
-		$modules = module_select(false);
+		$modules = module_select(false, false);
 
 		$type = array_key_exists($relation, $modules) ? 'module' : 'content';
 

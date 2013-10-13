@@ -8,7 +8,7 @@
 			{{ Form::text('name', $group->name) }}
 			<span class="msg error">{{ $group->errors('name') }}</span>
 			{{ Form::label('Module') }}
-			{{ Form::select('relation', module_select(), $group->relation) }}
+			{{ Form::select('relation', $select, $group->relation) }}
 		</div>
 		<div>
 			{{ Form::label('Description') }}
