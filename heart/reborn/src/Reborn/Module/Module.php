@@ -329,11 +329,17 @@ class Module
             }
 
             // Install the Module Data into DB table
+            if (isset($this->modules[$module]['description']['en'])) {
+                $desc = $this->modules[$module]['description']['en'];
+            } else {
+                $desc = '';
+            }
+
             $id = DB::table($this->_table)
                     ->insertGetId(array(
                             'uri' => $uri,
                             'name' => $module,
-                            'description' => $this->modules[$module]['description'],
+                            'description' => $desc,
                             'enabled' => ($setEnable) ? 1 : 0,
                             'version' => $this->modules[$module]['version']
                         )

@@ -7,7 +7,7 @@
 /**
  * Get Module Slelect List
  */
-function module_select($with_empty_option = true)
+function module_select($with_empty_option = true, $skip = true)
 {
 	static $result;
 
@@ -17,6 +17,10 @@ function module_select($with_empty_option = true)
 
 	$all = \Module::getAll();
 
+	if ($skip) {
+		$having = \Field\Model\FieldGroup::all()->lists('relation');
+	}
+
 	if($with_empty_option) {
 		$result = array('' => '-- Select Module --');
 	} else {
@@ -25,6 +29,9 @@ function module_select($with_empty_option = true)
 
 	foreach ($all as $n => $val) {
 		if ($val['enabled'] and $val['allowCustomField']) {
+			if (($skip) and in_array(strtolower($val['name']), $having)) {
+				continue;
+			}
 			$result[$n] = $val['name'];
 		}
 	}
