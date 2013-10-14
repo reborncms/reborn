@@ -22,6 +22,9 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
 			$table->enum('status', array('draft', 'live'))->default('draft');
 			//type
 			$table->integer('view_count')->default(0);
+			$table->integer('lang_ref')->nullable();
+			$table->string('lang', 20)->nullable();
+			$table->softDeletes();
 			$table->timestamps();
 		});
 
@@ -71,6 +74,16 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
 			'desc'		=> 'Blog excerpt word count',
 			'value'		=> '',
 			'default'	=> '50',
+			'module'	=> 'Blog'
+			);
+	    \Setting::add($data);
+
+	    $data = array(
+			'slug'		=> 'blog_content_default_lang',
+			'name'		=> 'Contents default language',
+			'desc'		=> 'Default language for blog contents',
+			'value'		=> '',
+			'default'	=> 'English',
 			'module'	=> 'Blog'
 			);
 	    \Setting::add($data);

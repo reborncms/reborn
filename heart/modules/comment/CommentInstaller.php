@@ -25,6 +25,7 @@ class CommentInstaller extends \Reborn\Module\AbstractInstaller
 	        $table->integer('parent_id')->default(0);
 	        $table->string('ip_address', 20);
 	        $table->timestamps();
+	        $table->softDeletes();
 	         
 	    });
 
