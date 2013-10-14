@@ -10,16 +10,16 @@
 		
 		<div class="form-block first-block">
 			{{ Form::label(t('contact::contact.labels.subject').'<span class="required"></span>', 'subject') }}
-			<div class="form-right-block">
+			<div class="form-right-block send-form">
 				{{ Form::input('subject', isset($mail->subject) ? $mail->subject :'', 'text', array('placeholder' => 'Subject')) }}
 				<span class="msg error">{{ $errors['subject'] }}</span>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form block -->
 
-		<div class="form-block first-block">
+		<div class="form-block first-block send-message">
 			{{ Form::label(t('contact::contact.labels.message').'<span class="required"></span>', 'message') }}
-			<div class="form-right-block">
-				{{ Form::textarea('message', isset($mail->message) ? $mail->message :'',array('placeholder' => 'Message','cols'=>'30')) }}
+			<div class="form-right-block send-form">
+				{{ Form::textarea('message', isset($mail->message) ? $mail->message :'',array('placeholder' => 'Message')) }}
 				<span class="msg error">{{ $errors['message'] }}</span>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form block -->

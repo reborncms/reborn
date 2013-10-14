@@ -60,4 +60,13 @@ Interface EventInterface
      */
 	public function call($name, $data = array());
 
+
+	/**
+	 * Subscribe for events
+	 *
+	 * @param mixed $handler Event subscribe handler
+	 * @return void
+	 **/
+	public function subscribe($handler);
+
 } // END Interface EventInterface
