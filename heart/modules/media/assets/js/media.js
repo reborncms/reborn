@@ -19,9 +19,10 @@ $(function(){
 	$('#media_create_folder').colorbox({
 		width: "50%",
 		height: "400",
-		href: $(this).attr('href') + $('#main-media-wrapper').attr('data-folder-id'),
+		/*href: $(this).attr('href') + '/' + $('#main-media-wrapper').attr('data-folder-id'),*/
 		scroll: false,
 		onComplete: function () {
+			//console.log($(this).attr('href') + $('#main-media-wrapper').attr('data-folder-id'));
 			$.colorbox.resize();
 		}
 	});

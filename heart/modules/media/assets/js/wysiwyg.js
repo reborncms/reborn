@@ -3,6 +3,7 @@
 window.parent.$('.cke_dialog_footer').hide();
 
 var floating = 'none';
+var linkFloating = 'none';
 
 function insert() {
 	var width = ($('#width').val()) ? $('#width').val() : 0,
@@ -17,8 +18,6 @@ function insert() {
 		alert('Value of width or height must be number.');
 		return;
 	}
-
-	//var floating = "float: " + $('#float').val();
 
 	var align = ('center' == floating) ? 'margin: 0 auto;' : 'float: ' + floating;
 
@@ -39,9 +38,10 @@ function linkImg () {
 }
 
 function linkInsert () {
+	
 	var width = ($('#link_width').val()) ? $('#link_width').val() : 0,
 		height = ($('#link_height').val()) ? $('#link_height').val() : 0,
-		alt = $('#alt_text').val();
+		alt = $('#link_alt').val();
 
 	if (isNaN(parseInt(width)) || isNaN(parseInt(height))) {
 		if (width < 0 || height < 0) {
@@ -52,16 +52,29 @@ function linkInsert () {
 		return;
 	}
 
-	var floating = "float: " + $('#link_float').val();
+	var align = ('center' == linkFloating) ? 'margin: 0 auto;' : 'float: ' + linkFloating;
 
 	var path = $('#external_link').val();
 
-	window.parent.instance.insertHtml("<img src='"+path+"' style='"+floating+"; width: "+width+"px; height: "+height+"px;' alt='"+ alt +"'>");
+	window.parent.CKEDITOR.currentInstance.insertHtml("<img src='"+path+"' style='"+align+"; width: "+width+"px; height: "+height+"px;' alt='"+ alt +"'>");
 
 	window.parent.CKEDITOR.dialog.getCurrent().hide();
 }
 
 $(document).ready(function(){
+
+	$('#link_ok_btn').bind('click', function(){
+		var value = $('#external_link').val().trim();
+
+		if (!value) {
+			alert('Please insert link');
+		}
+
+		var image = "<img id='link-preview-img' onLoad='javascript:linkImg();' src='"+value+"'/>";
+
+		$('#link-prev-img-wrap').html(image);
+
+	});
 
 	$('#m-thumb-dimension .icon-link').on('click', function() {
 		$(this).toggleClass('link-active');
@@ -93,6 +106,15 @@ $(document).ready(function(){
 			$(this).addClass('align-active');
 
 			floating = $(this).val();
+		}
+	});
+
+	$('.link-form-wrap .btns-group .btn').on('click', function() {
+		if (! $(this).hasClass('align-active')) {
+			$('.link-form-wrap .btns-group .btn').removeClass('align-active');
+			$(this).addClass('align-active');
+
+			linkFloating = $(this).val();
 		}
 	});
 

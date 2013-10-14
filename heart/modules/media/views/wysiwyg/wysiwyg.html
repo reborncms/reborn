@@ -96,9 +96,6 @@
 			    <div id="m-thumb-align" class="m-thumb-option">
 			    	{{ Form::label(t('media::media.lbl.align'), 'float') }}
 			    	<div class="m_input_wrap">
-				        {=
-				        	$float = array('left' => 'Left', 'right' => 'Right', 'middle' => 'Middle', 'auto' => 'None')
-				        =}
 
 				        <div class="btns-group">
 				        	<button class="btn btn-dark" value="left">Left</button>
@@ -136,17 +133,22 @@
 		</div> <!-- end of upload-tab -->
 
 
-		<div id="link-tab">
+		<div id="link-tab" class='f-right'>
 			
-			{{ Form::input('external_link', '', 'text', array('class'=>'large', 'placeholder' => 'Insert a link')) }}
+			{{ Form::input('external_link', '', 'text', array('class'=>'xx-large', 'placeholder' => 'Insert a link')) }}
 
 			<button id='link_ok_btn' class='btn btn-green btn-large'>
 				{{ t('media::media.ext.ok') }}
 			</button>
 
-			<div id="link_preview" class='clear-fix' style="display: none;">
+			<div id="link_preview" class='clearfix'  style="display: none;">
 
-				<div id="link-prev-img-wrap" class='f-left'>
+				<div id="link-prev-left" class='f-left'>
+
+					<div id="link-prev-img-wrap">
+						
+					</div> <!-- end of link-prev-img-wrapper -->
+
 					<button onclick="javascript:linkInsert();" class="btn btn-green">
 			    		{{ t('media::media.ext.insert') }}
 			    	</button>
@@ -167,8 +169,20 @@
 
 			    		<div class="link-form-wrap clearfix">
 			    			{{ Form::label(t('media::media.lbl.align')) }}
-			        		{{ Form::select('link_float', $float, 'auto', array('class' => 'medium')) }}
-			    		</div> <!-- end of link-form-wrap -->			        	
+
+			    			<div class="btns-group">
+					        	<button class="btn btn-dark" value="left">Left</button>
+					        	<button class="btn btn-dark" value="right">Right</button>
+					        	<button class="btn btn-dark" value="middle">Middle</button>
+					        	<button class="btn btn-dark align-active" value="none">None</button>
+					        </div> <!-- end of btn-group -->
+
+			    		</div> <!-- end of link-form-wrap -->	
+
+			    		<div class="link-form-wrap clearfix">
+			    			{{ Form::label(t('media::media.lbl.altText')) }}
+			    			{{ Form::input('link_alt', '', 'text', array('class' => 'medium')) }}
+			    		</div> <!-- end of link-form-wrap -->
 
 			        </div> <!-- end of m_input_wrap -->
 				</div> <!-- end of link-option-wrap -->

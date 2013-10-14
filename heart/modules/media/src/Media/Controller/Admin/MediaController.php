@@ -480,7 +480,7 @@ class MediaController extends \AdminController
      *
      * @return void
      **/
-    public function thumbnail($folderId = 0, $target = null)
+    public function thumbnail($folderId = 0)
     {
         $images = Files::imageOnly()->where('folder_id', '=', $folderId)->get();
 
@@ -490,13 +490,6 @@ class MediaController extends \AdminController
             $thumbMeta = $this->template
                             ->partialRender('admin'.DS.'plugin'.DS.'thumbmeta');
             $this->template->set('thumbMeta', $thumbMeta);
-
-        } elseif ('wysiwyg' == $target) {
-
-            $this->template->partialOnly();
-            $wysiwyMeta = $this->template
-                            ->partialRender('admin'.DS.'plugin'.DS.'wysiwygmeta');
-            $this->template->set('wysiwygMeta', $wysiwyMeta);
 
         } else {
             $this->template->script('setthumbnail.js', 'media', 'footer');
