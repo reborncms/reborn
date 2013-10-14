@@ -42,3 +42,16 @@
 {
     color:#ffffff;
 }
+.send-form input[type="text"]
+{
+    width: 400px;
+}
+.send-form textarea
+{
+    width: 400px;
+    height: 200px;
+}
+.form .send-message
+{
+    margin:12px 0;
+}
