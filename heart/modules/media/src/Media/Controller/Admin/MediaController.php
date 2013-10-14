@@ -505,8 +505,6 @@ class MediaController extends \AdminController
         
         $upload = $this->template->partialRender('admin'.DS.'form'.DS.'upload');
 
-        //$option = $this->template->partialRender('admin'.DS.'plugin'.DS.'option');
-
         $this->template->title(t('media::media.ext.thumbnail'))
                         ->set('images', $images)
                         ->set('upload', $upload)
@@ -525,7 +523,6 @@ class MediaController extends \AdminController
                         ->setPartial('wysiwyg'.DS.'wysiwyg');
     }
 
-
     public function search()
     {
         if (!\Input::isPost()) {
@@ -542,128 +539,6 @@ class MediaController extends \AdminController
         $this->template->title(t('media::media.title.title'))
                         ->set('files', $files)
                         ->setPartial('admin/index');
-    }
-
-
-    # # # # # # # # # # # Public function for WYSIWYG # # # # # # # # # #
-
-    /**
-     * Another function for WYSIWYG editor
-     *
-     * @author RebornCMS Development Team
-     **/
-    public function ckLink()
-    {
-        $header = $this->template->partialRender('admin/outside/header');
-        $footer = $this->template->partialRender('admin/outside/footer');
-        $btnsBar = $this->template->partialRender('admin/outside/btns');
-
-        $this->template->title(\Translate::get('m.title.upload'))
-                        ->partialOnly()
-                        ->set('btnsBar', $btnsBar)
-                        ->set('header', $header)
-                        ->set('footer', $footer)
-                        ->setPartial('admin/outside/cklink');
-    }
-
-    # # # # # # # # # # Private Functions for folder # # # # # # # # # #
-
-    /**
-     * Prepare input data
-     *
-     * @return array $data
-     * @author RebornCMS Development Team
-     **/
-    private function setData()
-    {
-        $data = array(
-            'name'  => \Input::get('name'),
-            'slug'  => \Input::get('slug'),
-            'description'   => \Input::get('description'),
-            'folder_id' => (\Input::get('folder_id')) ? \Input::get('folder_id') : 0,
-            'user_id'   => \Sentry::getUser()->id,
-            );
-
-        return $data;
-    }
-
-    /**
-     * Breadcrumb for media module
-     *
-     * @param int $id Current folder id
-     * @author RebornCMS Development Team
-     **/
-    private function folderPagi($id)
-    {
-        $theId = $id;
-        $i = 0;
-        $folders = array();
-
-        while ($this->hasParent($theId)) {
-            $folder = MFolders::where('id', '=', $theId)->first();
-            $folders[$i] = MFolders::where('id', '=', $folder->folder_id)->first();
-            $theId = $folders[$i]->id;
-            $i++;
-        }
-
-        return $folders;
-    }
-
-
-    # # # # # # # # # # Private functions for files # # # # # # # # # #
-
-    /**
-     * Getting image width and height
-     *
-     * @param String $file File name with directory
-     * @return array $size Width and height of expected img
-     * @author RebornCMS Development Team
-     **/
-    private function getImageSize($file = null)
-    {
-        if(file_exists($file))
-        {
-            $data = @getimagesize($file);
-            $size = array('width' => $data[0], 'height' => $data[1]);
-
-            return $size;
-        }
-    }
-
-    public function mediaManager($folderId = 0, $usrOptions = array())
-    {
-        $options = array(
-            'dimension'     => true,
-            'align'         => true,
-            'altText'       => true,
-            'onClick'       => true,
-            'btnName'       => 'Insert',
-            'preview'       => true,
-            'moduleName'    => 'media',
-            );
-
-        if (! empty($usrOptions)) { array_replace_recursive($options, $usrOptions); }
-
-        $files = MFiles::where('folder_id', '=', $folderId)
-                        ->where('width', '!=', 0)
-                        ->get();
-        $allFolders = MFolders::all();
-
-        if ($this->request->isAjax()) {
-            $this->template->partialOnly();
-            $this->template->set('ajax', true);
-        }
-
-        $this->template->title('Media &#124; Edit Folder')
-                        ->set('options', $options)
-                        ->set('files', $files)
-                        ->set('allFolders', $allFolders)
-                        ->setPartial('admin/outside/upload');
-    }
-
-    public function testing()
-    {
-        dump(Files::active(), true);
     }
 
 } // END class MediaController
