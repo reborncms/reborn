@@ -233,6 +233,9 @@ class FileUpload
 		} else {
 			$this->file->move($this->config['path'], $this->fileInfo['savedName']);
 
+			chmod($this->config['path'] . $this->fileInfo['savedName'],
+				$this->config['fileChmod']);
+
 			return true;
 		}
 	}
