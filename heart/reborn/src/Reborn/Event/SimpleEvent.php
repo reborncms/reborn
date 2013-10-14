@@ -42,7 +42,11 @@ class SimpleEvent implements \Reborn\Event\EventInterface
      */
     public function on($name, $callback)
     {
-        $this->events[$name][]['callback'] = $callback;
+        if ($callback instanceof \Closure) {
+            $this->events[$name][]['callback'] = $callback;
+        } elseif (is_string($callback) and false != strpos($callback, '::')) {
+            $this->events[$name][]['subscribe'] = $callback;
+        }
     }
 
     /**
@@ -91,7 +95,7 @@ class SimpleEvent implements \Reborn\Event\EventInterface
         $params = (array)$params;
 
         if (isset($this->events[$name])) {
-            return call_user_func_array($this->events[$name][0]['callback'], $params);
+            return $this->callTheEvents($this->events[$name][0], $params);
         }
 
         return null;
@@ -112,13 +116,49 @@ class SimpleEvent implements \Reborn\Event\EventInterface
 
         if (isset($this->events[$name])) {
             foreach ($this->events[$name] as $call) {
-                if (is_callable($call['callback'])) {
-                    $result[] = call_user_func_array($call['callback'], $params);
+                $data = $this->callTheEvents($call, $params);
+                if (is_null($data)) {
+                    $result[] = $data;
                 }
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Subscribe for events
+     *
+     * @param mixed $handler Event subscribe handler
+     * @return void
+     **/
+    public function subscribe($handler)
+    {
+        if (is_object($handler)) {
+            $handler->watch($this);
+        } elseif ($handler instanceof \Closure) {
+            $closure($this);
+        }
+    }
+
+    /**
+     * Call the event
+     *
+     * @param array $event Event data
+     * @param array $params
+     * @return mixed
+     **/
+    protected function callTheEvents($event, $params)
+    {
+        if (isset($event['callback']) and is_callable($event['callback'])) {
+            return call_user_func_array($event['callback'], $params);
+        } elseif ( isset($event['subscribe']) ) {
+            list($class, $method) = explode('::', $event['subscribe']);
+            $class = new $class;
+            return call_user_func_array(array($class, $method), $params);
+        }
+
+        return null;
     }
 
 } // END class SimpleEvent
