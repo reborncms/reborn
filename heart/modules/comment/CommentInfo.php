@@ -11,7 +11,7 @@ class CommentInfo extends \Reborn\Module\AbstractInfo
 		'my'	=> 'မှတ်ချက်'
 	);
 
-	protected $version = '1.0';
+	protected $version = '1.1';
 
 	protected $description = array(
 		'en'	=> 'Manage Comments',

@@ -480,6 +480,10 @@ nav ul ul li a:hover {
 	width: 700px;
 }
 
+.content-single {
+	width:100%;
+}
+
 /* Sidebar Style */
 #sidebar {
 	float: right;

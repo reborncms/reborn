@@ -5,6 +5,7 @@ namespace Blog\Controller;
 use Blog\Model\Blog;
 use Blog\Model\BlogCategory;
 use Reborn\Http\Response;
+use Reborn\MVC\View\Theme as Theme;
 
 class BlogController extends \PublicController
 {
@@ -28,6 +29,7 @@ class BlogController extends \PublicController
 		$pagination = \Pagination::create($options);
 
 		$blogs = Blog::active()
+						->notOtherLang()
 						->with(array('category','author'))
 						->orderBy('created_at', 'desc')
 						->skip(\Pagination::offset())
@@ -41,6 +43,7 @@ class BlogController extends \PublicController
 		$this->template->title('Blog')
 						->setPartial('index')
 						->set('blogs', $blogs)
+						->set('list_type', 'index')
 						->breadcrumb('Blog')
 						->set('pagination', $pagination);
 	}
@@ -143,6 +146,7 @@ class BlogController extends \PublicController
 		//To change back with relation
 
 		$blogs = Blog::active()
+						->notOtherLang()
 						->with(array('category', 'author'))
 						->whereIn('category_id', $catIds)
 						->skip(\Pagination::offset())
@@ -153,10 +157,16 @@ class BlogController extends \PublicController
 			$blogs = \Field::getAll('blog', $blogs, 'custom_field');
 		}
 
+		if (self::checkPartial('category')) {
+			$this->template->setPartial('category');
+		} else {
+			$this->template->setPartial('index');
+		}
+
 		$this->template->title('Blog - Category:'.$cat_info->name)
-						->setPartial('category')
 						->set('blogs', $blogs)
 						->set('pagination', $pagination)
+						->set('list_type', 'category')
 						->breadcrumb('Blog', rbUrl('blog'))
 						->breadcrumb('Category - ' . $cat_info->name);
 	}
@@ -192,6 +202,7 @@ class BlogController extends \PublicController
 		$pagination = \Pagination::create($options);
 
 		$blogs = Blog::active()
+						->notOtherLang()
 						->with(array('category', 'author'))
 						->whereIn('id', $blog_ids)
 						->skip(\Pagination::offset())
@@ -203,9 +214,15 @@ class BlogController extends \PublicController
 			$blogs = \Field::getAll('blog', $blogs, 'custom_field');
 		}
 
+		if (self::checkPartial('tag')) {
+			$this->template->setPartial('tag');
+		} else {
+			$this->template->setPartial('index');
+		}
+
 		$this->template->title('Blog')
-						->setPartial('tag')
 						->set('blogs', $blogs)
+						->set('list_type', 'tag')
 						->breadcrumb('Blog', rbUrl('blog'))
 						->breadcrumb('Tag - '. $name)
 						->set('pagination', $pagination);
@@ -235,6 +252,7 @@ class BlogController extends \PublicController
 		$pagination = \Pagination::create($options);
 
 		$blogs = Blog::active()
+						->notOtherLang()
 						->with(array('category','author'))
 						->where('author_id', $id)
 						->skip(\Pagination::offset())
@@ -246,9 +264,15 @@ class BlogController extends \PublicController
 			$blogs = \Field::getAll('blog', $blogs, 'custom_field');
 		}
 
+		if (self::checkPartial('author')) {
+			$this->template->setPartial('author');
+		} else {
+			$this->template->setPartial('index');
+		}
+
 		$this->template->title('Blog')
-						->setPartial('author')
 						->set('blogs', $blogs)
+						->set('list_type', 'author')
 						->breadcrumb('Blog', rbUrl('blog'))
 						->breadcrumb('Author - ' . $author_info->first_name . ' ' . $author_info->last_name)
 						->set('pagination', $pagination);
@@ -279,6 +303,7 @@ class BlogController extends \PublicController
 			$pagination = \Pagination::create($options);
 
 			$blogs = Blog::active()
+								->notOtherLang()
 								->with(array('category', 'author'))
 								->where(\DB::raw('YEAR(created_at)'), $year)
 								->skip(\Pagination::offset())
@@ -302,6 +327,7 @@ class BlogController extends \PublicController
 			$pagination = \Pagination::create($options);
 
 			$blogs = Blog::active()
+								->notOtherLang()
 								->with(array('category', 'author'))
 								->where(\DB::raw('YEAR(created_at)'), $year)
 								->where(\DB::raw('MONTH(created_at)'), $month)
@@ -315,8 +341,14 @@ class BlogController extends \PublicController
 			$blogs = \Field::getAll('blog', $blogs, 'custom_field');
 		}
 
+		if (self::checkPartial('archives')) {
+			$this->template->setPartial('archives');
+		} else {
+			$this->template->setPartial('index');
+		}
+
 		$this->template->title('Blog')
-						->setPartial('archives')
+						->set('list_type', 'archives')
 						->set('blogs', $blogs)
 						->set('pagination', $pagination)
 						->breadcrumb('Blog', rbUrl('blog'))
@@ -328,6 +360,19 @@ class BlogController extends \PublicController
 	}
 
 	/**
+	 * Check from frontend partial
+	 *
+	 * @return boolean
+	 * @author 
+	 **/
+	protected function checkPartial($file)
+	{
+		$current_theme = \Setting::get('public_theme');
+		$theme = new Theme($current_theme, THEMES);
+		return $theme->hasFile($file, 'blog');
+	}
+
+	/**
 	 * Blog RSS
 	 *
 	 * @return void
@@ -335,6 +380,7 @@ class BlogController extends \PublicController
 	public function rss()
 	{
 		$blogs = Blog::active()
+							->notOtherLang()
 							->with(array('category','author'))
 							->orderBy('created_at', 'desc')
 							->take(\Setting::get('blog_rss_items'))

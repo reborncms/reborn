@@ -23,6 +23,7 @@
 		<span class="date">
 			{{ $blog->post_date }}
 		</span>
+		{{ implode($blog->lang_front, '|') }}
 
 	</div> <!-- end of blog_meta -->
 	<div class="blog_body">{{ $blog->content }}</div>

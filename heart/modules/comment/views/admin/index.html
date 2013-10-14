@@ -1,3 +1,6 @@
+{{ if(Module::getData('comment', 'dbVersion') < 1.1) }}
+<div class="msg-box msg-warning">*** Please upgrade Comment Module. Click <a href="{{ adminUrl('module') }}">here</a> to upgrade.</div>
+{{ endif }}
 {{ if ($akismet_status === 'no-key') }}
 <div class="msg-box">
   	{{ t('comment::comment.message.warning.no-akismet-key') }}
@@ -20,6 +23,7 @@
 	<a href="{{ adminUrl('comment/filter/approved') }}">{{ t('comment::comment.menu.approved') }}</a>
 	<a href="{{ adminUrl('comment/filter/pending') }}">{{ t('comment::comment.menu.pending') }}</a>
 	<a href="{{ adminUrl('comment/filter/spam') }}">{{ t('comment::comment.label.spam') }}</a>
+	<a href="{{ adminUrl('comment/filter/trash') }}">Trash</a>
 </div><!-- end of internal_menu -->
 {{ if(count($comments) > 0) }}
 <div id="note_msg" style="color:red; margin-bottom:10px;">{{ t('comment::comment.message.warning.muti-action-note') }}</div>
@@ -70,26 +74,39 @@
 				</td>
 
 				<td>
-					{{ Comment\Lib\Helper::commentStatusLabel($comment->id, $comment->status) }}
+					{{ if ($comment->trashed()) }}
+						<span class="label">Trashed</span>
+					{{ else }}
+						{{ Comment\Lib\Helper::commentStatusLabel($comment->id, $comment->status) }}
+					{{ endif }}
 				</td>
 
 				<td>
 					<div class="icons-bar">
 
-						{{ if (user_has_access('comment.reply')) }}
-							<a href="{{ adminUrl('comment/reply/'.$comment->id) }}" title="{{ t('comment::comment.label.reply') }}" class="tipsy-tip comment-reply-btn"><i class="icon-reply"></i></a>
-						{{ endif }}
-
-						{{ if (user_has_access('comment.edit')) }}
-							<a href="{{ adminUrl('comment/edit/'.$comment->id) }}" title="{{ t('global.edit') }}" class="tipsy-tip comment-edit-btn"><i class="icon-edit"></i></a>
-
-							{{ if ($comment->status != 'spam') }}
-								<a href="{{ adminUrl('comment/change-status/'.$comment->id.'/spam') }}" title="{{ t('comment::comment.label.mark_as_spam') }}" class="tipsy-tip"><i class="icon-ban"></i></a>
+						{{ if ($list_type == 'trash') }}
+							{{ if (user_has_access('comment.edit')) }}
+								<a href="{{ adminUrl('comment/restore/'.$comment->id) }}" title="Restore" class="tipsy-tip"><i class="icon-undo"></i></a>
 							{{ endif }}
-						{{ endif }}
+							{{ if (user_has_access('comment.delete')) }}
+								<a href="{{ adminUrl('comment/delete/'.$comment->id) }}" title="{{ t('global.delete') }}" class="confirm_delete_comment tipsy-tip"><i class="icon-cross"></i>
+							{{ endif }}
+						{{ else }}
+							{{ if (user_has_access('comment.reply')) }}
+								<a href="{{ adminUrl('comment/reply/'.$comment->id) }}" title="{{ t('comment::comment.label.reply') }}" class="tipsy-tip comment-reply-btn"><i class="icon-reply"></i></a>
+							{{ endif }}
 
-						{{ if (user_has_access('comment.delete')) }}
-							<a href="{{ adminUrl('comment/delete/'.$comment->id) }}" title="{{ t('global.delete') }}" class="confirm_delete_comment tipsy-tip"><i class="icon-remove"></i></a>
+							{{ if (user_has_access('comment.edit')) }}
+								<a href="{{ adminUrl('comment/edit/'.$comment->id) }}" title="{{ t('global.edit') }}" class="tipsy-tip comment-edit-btn"><i class="icon-edit"></i></a>
+
+								{{ if ($comment->status != 'spam') }}
+									<a href="{{ adminUrl('comment/change-status/'.$comment->id.'/spam') }}" title="{{ t('comment::comment.label.mark_as_spam') }}" class="tipsy-tip"><i class="icon-ban"></i></a>
+								{{ endif }}
+							{{ endif }}
+
+							{{ if (user_has_access('comment.delete')) }}
+								<a href="{{ adminUrl('comment/delete/'.$comment->id) }}" title="{{ t('global.delete') }}" class="confirm_delete_comment tipsy-tip"><i class="icon-remove"></i></a>
+							{{ endif }}
 						{{ endif }}
 					</div> <!-- end of icons-bar -->
 				</td>

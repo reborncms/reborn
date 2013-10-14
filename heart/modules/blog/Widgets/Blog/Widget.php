@@ -143,8 +143,8 @@ class Widget extends \Reborn\Widget\AbstractWidget
 
 		\Module::load('Blog');
 		$posts = \Blog\Model\Blog::with('category', 'author')
-							->where('status', 'live')
-							->where('created_at', '<=', date('Y-m-d H:i:s'))
+							->active()
+							->notOtherLang()
 							->orderBy($order, $order_dir)
 							->take($limit)
 							->skip($offset)
@@ -212,7 +212,8 @@ class Widget extends \Reborn\Widget\AbstractWidget
 		};
 
 		$years = \Blog\Model\Blog::orderBy('created_at','DESC')
-									->where('status', 'live')
+									->active()
+									->notOtherLang()
 									->select(\DB::raw($select_q))
 									->groupBy(\DB::raw($gp_q))
 									->get();
@@ -257,8 +258,8 @@ class Widget extends \Reborn\Widget\AbstractWidget
 			);
 		$tc = new \Reborn\Util\TagCloud($arr);
 
-		$posts = \Blog\Model\Blog::where('status', 'live')
-							->where('created_at', '<=', date('Y-m-d H:i:s'))
+		$posts = \Blog\Model\Blog::active()
+							->notOtherLang()
 							->get(array('id'));
 		if ($posts->isEmpty()) {
 			return null;

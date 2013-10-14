@@ -10,6 +10,19 @@ class Blog extends \Eloquent
 
     public $timestamps = false;
 
+    protected $softDelete = false;
+
+    public function __construct(array $attributes = array()) {
+
+        if (\Module::getData('blog', 'dbVersion') >= 1.1) {
+
+            $this->softDelete = true;
+
+        }
+
+        parent::__construct($attributes);
+    }
+
     protected $fillable = array('view_count');
 
     protected $rules = array(
@@ -55,6 +68,15 @@ class Blog extends \Eloquent
     public function scopeActive($query)
     {
         return $query->where('status', 'live')->where('created_at', '<=', date('Y-m-d H:i:s'));
+    }
+
+    /**
+     * Scope to not included other language posts
+     *
+     **/
+    public function scopeNotOtherLang($query)
+    {
+        return $query->where('lang_ref', null);
     }
 
     /**
@@ -166,6 +188,21 @@ class Blog extends \Eloquent
     public function getContentAttribute()
     {
         return html_entity_decode($this->attributes['body'], ENT_QUOTES);
+    }
+
+    public function getLangListAttribute()
+    {
+        return \Blog\Lib\Helper::langList($this->attributes['id']);
+    }
+
+    public function getLangFrontAttribute()
+    {
+        $lang_list = \Blog\Lib\Helper::langList($this->attributes['id'], true);
+        $lang = array();
+        foreach ($lang_list as $key => $value) {
+            $lang[] = "<a href='".rbUrl('blog/'.$value['slug'])."'>".$key."</a>";
+        }
+        return $lang;
     }
 
     /**

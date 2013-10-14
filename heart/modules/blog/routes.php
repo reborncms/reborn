@@ -12,6 +12,8 @@
 
 \Route::add('@admin/blog/edit/{int:id}?', 'Blog\Admin\Blog::edit', 'admin_blog_edit');
 
+\Route::add('@admin/blog/multilang/{int:id}?', 'Blog\Admin\Blog::multilang', 'admin_blog_multiLang');
+
 \Route::add('@admin/blog/change-status/{int:id}', 'Blog\Admin\Blog::changeStatus', 'admin_blog_changeStatus');
 
 \Route::add('@admin/blog/delete/{int:id}?', 'Blog\Admin\Blog::delete', 'admin_blog_delete');
@@ -21,6 +23,10 @@
 \Route::post('@admin/blog/search', 'Blog\Admin\Blog::search', 'admin_blog_search');
 
 \Route::post('@admin/blog/autosave', 'Blog\Admin\Blog::autosave', 'admin_blog_autosave');
+
+\Route::post('@admin/blog/trash/{p:page}?', 'Blog\Admin\Blog::trash', 'admin_blog_trash');
+
+\Route::add('@admin/blog/restore/{int:id}', 'Blog\Admin\Blog::restore', 'admin_blog_restore');
 
 	//Blog Category
 

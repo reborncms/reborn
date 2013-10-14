@@ -1,15 +1,22 @@
 {{ if(count($blogs) > 0) }}
 	{# multi_delete #}
 	{{ Form::start(ADMIN_URL.'/blog/delete') }}
-	<table class="stripe">
+	<table class="stripe" style="clear:both;">
 		<thead>
 			<tr>
 				<th width="3%">{{ Form::checkbox('action_to_all', '', false, array('class' => 'check-all')) }}</th>
 				<th width="27%">{{ t('blog::blog.title') }}</th>
-				<th width="15%">{{ t('blog::blog.category') }}</th>
-				<th width="15%">{{ t('blog::blog.author') }}</th>
-				<th width="15%">{{ t('global.created_at') }}</th>
-				<th width="15%">{{ t('label.actions') }}</th>
+				<th width="10%">{{ t('blog::blog.lang') }}</th>
+				<th width="10%">{{ t('blog::blog.category') }}</th>
+				<th width="10%">{{ t('blog::blog.author') }}</th>
+				{{ if ($list_type != 'trash') }}
+				<th width="4%"></th>
+				{{ endif }}
+				<th width="13%">{{ t('global.created_at') }}</th>
+				{{ if ($list_type == 'trash') }}
+					<th>Trashed at</th>
+				{{ endif }}
+				<th width="10%">{{ t('label.actions') }}</th>
 			</tr>	
 		</thead>
 		<tbody>
@@ -19,32 +26,73 @@
 				<td class="checkbox">{{ Form::checkbox('action_to[]', $blog->id, false, array('id' => 'action'.$a)) }}</td>
 				<td>
 					<span class="bg-title">
-						<a href="{{ adminUrl('blog/edit/'.$blog->id) }}">{{ $blog->title }}</a>
-						{{ if($blog->status == 'draft') }}
-							<a href="{{ adminUrl('blog/changeStatus/'.$blog->id) }}">
-								<span class="label label-info">{{ t('global.draft_label') }}</span>
-							</a>
-						{{ endif }}
-						{{ if ($blog->created_at > date('Y-m-d H:i:s')) }}
-						<span class="label schedule_label">{{ t('blog::blog.schedule_label') }}</span>
+						{{ if ($list_type != 'trash') }}
+
+							<a href="{{ adminUrl('blog/edit/'.$blog->id) }}">{{ $blog->title }}</a>
+							{{ if($blog->status == 'draft') }}
+								<a href="{{ adminUrl('blog/changeStatus/'.$blog->id) }}">
+									<span class="label label-info">{{ t('global.draft_label') }}</span>
+								</a>
+							{{ endif }}
+
+							{{ if ($blog->created_at > date('Y-m-d H:i:s')) }}
+								<span class="label schedule_label">{{ t('blog::blog.schedule_label') }}</span>
+							{{ endif }}
+
+						{{ else }}
+							{{ $blog->title }}
 						{{ endif }}
 					</span>
 				</td>
+
+				<td>
+
+					{{ if ($list_type != 'trash' and count($blog->lang_list) > 1) }}
+						<div class="multi_lang">
+							{{ loop ($blog->lang_list as $lang) }}
+								<li>
+									<a href="{{ adminUrl('blog/edit/'.$lang['id']) }}" title="{{ $lang['title'] }}" class="tipsy-tip">{{ $lang['lang'] }}</a>
+									{{ if ($lang['status'] == 'draft') }}
+										<span class="draft_lang label label-info">{{ t('global.draft_label') }}</span>
+									{{ endif }}
+								</li>
+							{{ endloop }}
+						</div>
+					{{ else }}
+						{{ ($blog->lang) ? $blog->lang : Setting::get('blog_content_default_lang') }}
+					{{ endif }}
+				</td>
+
 				<td>
 					{{ $blog->category->name }}
 				</td>
 				<td>
 					<a href="{{ rbUrl('user/profile/'.$blog->author->id) }}">{{ $blog->author_name }}</a>
 				</td>
+				{{ if ($list_type != 'trash') }}
+					<td><a href="{{ adminUrl('comment') }}"><i class="icon-comment icon-gray"></i>{{ $blog->comment_count }}</a></td>
+				{{ endif }}
 				<td>
 					{= $date = date_create($blog->created_at) =}
 					{{ num(date_format($date, 'Y-m-d h:i a')) }}
 				</td>
+				{{ if ($list_type == 'trash') }}
+					<td>
+						{= $dl_date = date_create($blog->deleted_at) =}
+						{{ num(date_format($dl_date, 'Y-m-d h:i a')) }}
+					</td>
+				{{ endif }}
 				<td>
 					<div class="icons-bar">
-						<a href="{{ rbUrl('blog/preview/'.$blog->slug) }}" title="{{ t('global.preview') }}" class="tipsy-tip" target="_blank"><i class="icon-view"></i></a>
-						<a href="{{ adminUrl('blog/edit/'.$blog->id) }}" title="{{ t('global.edit') }}" class="tipsy-tip"><i class="icon-edit"></i></a>
-						<a href="{{ adminUrl('blog/delete/'.$blog->id) }}" title="{{ t('global.delete') }}" class="confirm_delete tipsy-tip"><i class="icon-remove"></i></a>
+						{{ if ($list_type != 'trash') }}
+							<a href="{{ rbUrl('blog/preview/'.$blog->slug) }}" title="{{ t('global.preview') }}" class="tipsy-tip" target="_blank"><i class="icon-view"></i></a>
+							<a href="{{ adminUrl('blog/edit/'.$blog->id) }}" title="{{ t('global.edit') }}" class="tipsy-tip"><i class="icon-edit"></i></a>
+							<!-- delete for which has multi-lang -->
+							<a href="{{ adminUrl('blog/delete/'.$blog->id) }}" title="{{ t('global.delete') }}" class="confirm_delete tipsy-tip"><i class="icon-remove"></i></a>
+						{{ else }}
+							<a href="{{ adminUrl('blog/restore/'.$blog->id) }}" title="Restore" class="tipsy-tip"><i class="icon-undo"></i></a>
+							<a href="{{ adminUrl('blog/delete/'.$blog->id) }}" title="Permanently delete" class="confirm_delete tipsy-tip"><i class="icon-cross"></i></a>
+						{{ endif }}
 					</div>
 				</td>
 			</tr>
@@ -53,7 +101,13 @@
 		</tbody>
 	</table>
 	<div class="button-wrapper" id="delete_select">
-		{{ Form::submit('submit_delete', t('global.delete_selected'), array('class' => 'confirm_delete btn btn-red', 'disabled' => 'disabled')) }}
+		<!-- Multi Button for Trash -->
+		{{ if ($list_type == 'trash') }}
+			{= $multi_btn_label = 'Permanently Delete Selected' =}
+		{{ else }}
+			{= $multi_btn_label = t('global.delete_selected') =}
+		{{ endif }}
+		{{ Form::submit('submit_delete', $multi_btn_label, array('class' => 'confirm_delete btn btn-red', 'disabled' => 'disabled')) }}
 		{{ Form::end() }}
 	</div>
 	{{ if(isset($pagination)) }}

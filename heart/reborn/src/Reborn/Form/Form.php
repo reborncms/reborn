@@ -314,10 +314,12 @@ class Form
      * @param string $text Label Text
      * @return string
      **/
-    public static function label ($text, $for = null)
+    public static function label ($text, $for = null, $attrs=array())
     {
+        $attr = static::getAttr($attrs);
+
         $labelFor = ($for != null) ? ' for = "'.$for.'"' : '';
-        return '<label'.$labelFor.'>'.$text.'</label>';
+        return '<label'.$labelFor.$attr.'>'.$text.'</label>';
     }
 
     /**

@@ -83,6 +83,8 @@
 	padding: 5px;
 	margin-bottom: 10px;
 	position: relative;
+	float:left;
+	width:80%;
 }
 
 #filter-bar label {
@@ -94,6 +96,11 @@
 	padding: 2px 12px;
 	margin-top: -3px;
 	margin-left: 10px;
+}
+
+#trash_link {
+	float:right;
+	margin-bottom: 10px;
 }
 .loading { position: absolute; left: 299px; top: 2px; }
 #result-count { color: #DE31AA; margin-left: 15px;}
@@ -146,4 +153,22 @@ span.error {
 
 #featured_preview img {
 	width:213px;
+}
+
+#current_lang {
+	margin-bottom: 10px;
+}
+
+.more_lang_box, .multi_lang {
+	list-style: none;
+	margin: 0px;
+}
+
+.more_lang_box li {
+	margin-bottom:10px;
+}
+
+.draft_lang {
+	font-size: 9px;
+	padding: 0px 5px;
 }

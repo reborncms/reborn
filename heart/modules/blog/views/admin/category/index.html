@@ -52,12 +52,17 @@
 			post = {};
 			post.order = $('ol.sortable').nestedSortable("toHierarchy");
 			$.post(SITEURL+ADMIN+'/blog/category/order',post, function(data){
-				//var current = ui.item;
+				var current = ui.item;
+				console.log(current);
 			});
 		}
 	});
 
-	$('ol.sortable li:has(ol)').prepend('<i class="icon-circleplus icon-gray icon-12 page_expand"></i>');
+	$('ol.sortable li').livequery(function(){
+		$(this).has('ol').prepend('<i class="icon-circleplus icon-gray icon-12 page_expand"></i>');
+	});
+
+	//$('ol.sortable li:has(ol)').prepend('<i class="icon-circleplus icon-gray icon-12 page_expand"></i>');
  
 	$('.page_expand').click(function(){
 		$(this).siblings('ol').slideToggle();

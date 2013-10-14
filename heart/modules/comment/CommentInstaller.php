@@ -88,7 +88,12 @@ class CommentInstaller extends \Reborn\Module\AbstractInstaller
 
 	public function upgrade($v)
 	{
-		return $v;
+		if ($v == '1.0') {
+			\Schema::table('comments', function($table)
+		    {
+		     	$table->softDeletes();    
+		    });
+		}
 	}
 
 }

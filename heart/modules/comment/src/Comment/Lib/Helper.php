@@ -184,9 +184,24 @@ class Helper
 	 *
 	 * @return boolean
 	 **/
-	public static function commentDelete($id, $type) 
+	public static function commentDelete($id, $type, $forceDelete = false) 
 	{
-		$comment_delete = Comment::where('content_id', $id)->where('module', $type)->delete();
+		if ($forceDelete) {
+
+			$comment_delete = Comment::withTrashed()->where('content_id', $id)->where('module', $type)->forceDelete();
+
+		} else {
+
+			$comment_delete = Comment::where('content_id', $id)->where('module', $type)->delete();
+
+		}
+		return true;
+	}
+
+	public static function commentRestore($id, $type)
+	{
+		Comment::withTrashed()->where('content_id', $id)->where('module', $type)->restore();
+
 		return true;
 	}
 

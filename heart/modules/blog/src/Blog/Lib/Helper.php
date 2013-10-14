@@ -56,6 +56,47 @@ class Helper {
 		return $gc;
 	}
 
+	public static function langList($id, $frontend = false) 
+	{
+		$langList = array();
+		$main = Blog::find($id);
+
+		if ($main->lang_ref != null) {
+
+			$main = Blog::find($main->lang_ref);
+
+		} 
+
+		$langList[$main->lang] = array(
+			'id' => $main->id, 
+			'lang' => $main->lang,
+			'title' => $main->title,
+			'slug' => $main->slug,
+			'status' => $main->status
+		);
+
+		if ($frontend) {
+			$bLang = Blog::active()->where('lang_ref', $main->id)->get(array('id','lang','title', 'slug', 'status'));
+		} else {
+			$bLang = Blog::where('lang_ref', $main->id)->get(array('id','lang','title', 'slug', 'status'));
+		}
+
+		foreach ($bLang as $lang) {
+
+			$langList[$lang->lang] = array(
+				'id' => $lang->id, 
+				'lang' => $lang->lang,
+				'title' => $lang->title,
+				'slug' => $lang->slug,
+				'status' => $lang->status
+			);
+
+		}
+
+		return $langList;
+
+	}
+
 	public static function catList($from = null, $currentCat = null)
 	{
 		if ($from != null) {

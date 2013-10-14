@@ -6,6 +6,19 @@ class Comments extends \Eloquent
 {
     protected $table = 'comments';
 
+    protected $softDelete = false;
+
+    public function __construct(array $attributes = array()) {
+
+        if (\Module::getData('comment', 'dbVersion') >= 1.1) {
+
+            $this->softDelete = true;
+
+        }
+
+        parent::__construct($attributes);
+    }
+
     /**
      * Relationship with Author
      */

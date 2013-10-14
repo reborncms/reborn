@@ -38,6 +38,7 @@ return array(
 	'slug'					=> 'Slug',
 	'excerpt'				=> 'Excerpt',
 	'category'				=> 'Category',
+	'lang'					=> 'Language',
 	'tag'					=> 'Tag',
 	'tags'					=> 'Tags',
 	'status'				=> 'Status',

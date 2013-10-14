@@ -84,7 +84,25 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
 
 	public function upgrade($v)
 	{
-		return $v;
+		if ($v == '1.0') {
+			\Schema::table('blog', function($table)
+			{
+				$table->integer('lang_ref')->nullable();
+				$table->string('lang', 20)->nullable();
+				$table->softDeletes();
+			});
+
+			$data = array(
+			'slug'		=> 'blog_content_default_lang',
+			'name'		=> 'Contents default language',
+			'desc'		=> 'Default language for blog contents',
+			'value'		=> '',
+			'default'	=> 'English',
+			'module'	=> 'Blog'
+			);
+	    	\Setting::add($data);
+		}
+
 	}
 
 }

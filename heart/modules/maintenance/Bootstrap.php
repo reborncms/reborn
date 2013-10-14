@@ -19,7 +19,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 	 */
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
-		eg: $menu->add('maintenance', 'Maintenance', $modUri, 'utilities', 40);
+		$menu->add('maintenance', 'Maintenance', $modUri, 'utilities', 40);
 	}
 
 	/**

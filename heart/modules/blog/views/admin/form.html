@@ -1,5 +1,5 @@
 {{ Form::start(adminUrl('blog/'.$method), 'blog-create', true, array('class' => 'form blog_form')) }}
-    {{ Form::hidden('id', isset($blog->id) ? $blog->id : '', array('id' => 'post_id')) }}
+    {{ Form::hidden('id', (isset($blog->id) and $method == 'edit') ? $blog->id : '', array('id' => 'post_id')) }}
     <div id="main-form-wrapper">
         <div id="form-wrapper">
             <div id="form-left">
@@ -22,12 +22,12 @@
                 
                 <div class="form-block">
                     <span class="msg error">{{ $blog->errors('body') }}</span>
-					{{ Form::ckeditor('body', isset($blog->body) ? $blog->body : '') }}
+					{{ Form::ckeditor('body', (isset($blog->body) and $method == 'edit') ? $blog->body : '') }}
                 </div> <!-- end of form-block -->
                 <div class="form-block">
                     {{ Form::label(t('blog::blog.excerpt'), 'form_excerpt') }}
                     <div class="form-right-block">
-                        {{ Form::textarea('excerpt', isset($blog->excerpt) ? $blog->excerpt : '', array('style' => 'width:90%')) }}
+                        {{ Form::textarea('excerpt', (isset($blog->excerpt) and $method == 'edit') ? $blog->excerpt : '', array('style' => 'width:90%')) }}
                     </div> <!-- end of form-right-block -->
                 </div> <!-- end of form block -->
                 {{ loop ($custom_field as $field) }}
@@ -100,7 +100,7 @@
 
                 {{ endif }}
 
-                {{ if($method == 'create' or $blog->created_at >= date('Y-m-d h:1:s') or $blog->status == 'draft') }}
+                {{ if($method != 'edit' or $blog->created_at >= date('Y-m-d h:1:s') or $blog->status == 'draft') }}
                 <div class="r-container">
 
                     <a href="javascript:void(0);" class="r-i-b">
@@ -113,14 +113,14 @@
                     <div class="r-i-b-h" id="schdule_opt">
 
                         {{ Form::radioGroup('sch_type', array('auto' => t('blog::blog.auto_schedule'), 'manual' => t('blog::blog.manual_schedule')), 'auto') }}
-                        {{ if(isset($blog->created_at)) }}
+                        {{ if(isset($blog->created_at) and $method == 'edit') }}
                             <span class="sch-data">
                                 {{ $blog->created_at }}
                             </span>
                         {{ endif }}
                         
                         <div id="manual-sch">
-                            {{ Form::input('date',isset($blog->created_at) ? $blog->created_at : '', 'text', array('class' => 'thin xx-large', 'id' => 'datepicker')) }}                        
+                            {{ Form::input('date',(isset($blog->created_at) and $method == 'edit') ? $blog->created_at : '', 'text', array('class' => 'thin xx-large', 'id' => 'datepicker')) }}                        
                         </div>
                         
                     </div>
@@ -152,11 +152,63 @@
                         </div>
                     </a>
 
-                    <div class="r-i-b-h">
+                    <div class="r-i-b-h"{{ ($blog->attachment) ? ' style="display:block;"' : '' }}>
                         {{ Form::thumbnail('attachment', $blog->attachment, array('add' => t('blog::blog.add_featured_img'), 'remove' => t('blog::blog.remove_featured_img'))) }}
                     </div>
 
                 </div> <!-- end of div.r-container -->
+
+                <!-- Version Upgrade Needed -->
+                {{ if(Module::getData('blog', 'dbVersion') >= 1.1) }}
+                <div class="r-container">
+                    <a href="javascript:void(0);" class="r-i-b">
+                        <div>
+                            <i class="icon-earth"></i>
+                            <span>Multi - language</span>
+                        </div>
+                    </a>
+
+                    <div class="r-i-b-h"{{ ($method == 'multilang') ? ' style="display:block;"' : '' }}>
+                       {{ if ($method != 'create' and count($blog->lang_list) > 1) }}
+                           <strong>Avaliable Languages</strong>
+                           <ul>
+                               {{ loop ($blog->lang_list as $lang) }}
+                                   {{ if ($lang['lang'] == $blog->lang) }}
+                                       <li><b>{{ $lang['lang'] }}</b></li>
+                                   {{ else }}
+                                       <li><a href="{{ adminUrl('blog/edit/'.$lang['id']) }}" class="tipsy-tip" title="Edit contents of this language version" target="_blank">{{ $lang['lang'] }}</a></li>
+                                   {{ endif }}
+                               {{ endloop }}
+                           </ul>
+                       {{ endif }}
+                        <div id="current_lang">
+                            {{ Form::label('Current Language', 'lang', array('style' => 'width:80%')) }}
+                            {{ Form::text('lang', isset($blog->lang) ? $blog->lang : Setting::get('blog_content_default_lang'), array('style' => 'width:auto')) }}
+                            {{ if ($method == 'multilang') }}
+                                {{ if ($blog->lang_ref) }}
+                                    {= $lang_ref = $blog->lang_ref =}
+                                {{ else }}
+                                    {= $lang_ref = $blog->id =}
+                                {{ endif }}
+                            {{ else }}
+                                 {= $lang_ref = 0 =}
+                            {{ endif }}
+                            {{ Form::hidden('lang_ref', $lang_ref) }}
+                        </div>
+
+                        {{ if ($method != 'create') }}
+                            <a href="{{ adminUrl('blog/multilang/'.$blog->id) }}" class="add_other_lang tipsy-tip" title="Add this content with another language" target="_blank">
+                                <i class="icon-circleplus icon-grey icon-12"></i>
+                                Add another language
+                            </a>
+                        {{ else  }}
+                            ** Please save the post first before adding another language.
+                        {{ endif }}
+
+                    </div>
+
+                </div> <!-- end of div.r-container -->
+                {{ endif }}
 
             </div> <!-- end of form-right -->
 
@@ -180,6 +232,9 @@
 
                 {{ Form::submit('publish', $save_button_val, array('class' => 'btn btn-green')) }}
                 {{ Form::submit('save_draft', $draft_button_val, array('class' => 'btn')) }}
+                {{ if ($method == 'edit') }}
+                    <a href="{{ adminUrl('blog/delete/'.$blog->id) }}" class="btn btn-red">Move to Trash</a>
+                {{ endif }}
                 
             </div> <!-- end of form-block -->
 

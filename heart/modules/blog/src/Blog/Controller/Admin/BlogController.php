@@ -29,22 +29,27 @@ class BlogController extends \AdminController
 	{
 		//Pagination
 		$options = array(
-		    'total_items'       => Blog::count(),
+		    'total_items'       => Blog::where('lang_ref', null)->count(),
 		    'items_per_page'    => \Setting::get('admin_item_per_page'),
 		);
 
 		$pagination = \Pagination::create($options);
 
 		$blogs = Blog::with(array('category','author'))
+							->where('lang_ref', null)
 							->orderBy('created_at', 'desc')
 							->skip(\Pagination::offset())
 							->take(\Pagination::limit())
 							->get();
 
+		$trash_count = self::trashCount();
+
 		$this->template->title(t('blog::blog.title_main'))
 						->setPartial('admin/index')
 						->set('pagination', $pagination)
-					    ->set('blogs',$blogs);
+					    ->set('blogs',$blogs)
+					    ->set('trash_count', $trash_count)
+					    ->set('list_type', 'index');
 
 		$data_table = $this->template->partialRender('admin/table');
 		$this->template->set('data_table', $data_table);
@@ -106,7 +111,6 @@ class BlogController extends \AdminController
 	 **/
 	public function edit($id = null)
 	{
-		$blog = Blog::find($id);
 		
 		if (\Input::isPost()) {
 			
@@ -138,6 +142,12 @@ class BlogController extends \AdminController
 
 				return \Redirect::to(adminUrl('blog'));
 
+			} else {
+				$blog = Blog::find($id);
+
+				if (empty($blog)) {
+					return $this->notFound();
+				}
 			}
 
 		}
@@ -146,6 +156,56 @@ class BlogController extends \AdminController
 		
 		$this->template->title('Edit Blog')
 					   	->set('method', 'edit');
+	}
+
+	// ======== Multi-Language ====== //
+
+	/**
+	 * Add another language for blog content
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function multilang($id = null)
+	{
+		if ($id != null) {
+
+			$blog = Blog::find($id);
+
+			if (empty($blog)) {
+
+				return $this->notFound();
+				
+			}
+
+		}
+
+		if (\Input::isPost()) {
+
+			$blog = self::setValues('create');
+
+			if ($blog->save()) {
+
+				self::tagSave($blog->id);
+
+				if (\Module::isEnabled('field')) {
+
+					\Field::save('blog', $blog);
+						
+				}
+
+				\Flash::success(t('blog::blog.create_success'));
+				return \Redirect::to(adminUrl('blog'));
+
+			} else {
+
+				\Flash::error(t('blog::blog.create_error'));
+
+			}
+		}
+		self::formEle($blog);
+		$this->template->title('Another Language')
+						->set('method', 'multilang');
 	}
 
 	/**
@@ -174,6 +234,30 @@ class BlogController extends \AdminController
 	}
 
 	/**
+	 * Restore from Trash
+	 *
+	 **/
+	public function restore($id = null)
+	{
+		if (!$id) {
+			return $this->notFound();
+		}
+
+		$restore = Blog::withTrashed()->where('id', $id)->restore();
+
+		if (\Module::isEnabled('comment')) {
+			$comment_delete = \Comment\Lib\Helper::commentRestore($id, 'blog');
+		}
+
+		if ($restore) {
+			\Flash::success("Successfully Restored");
+		} else {
+			\Flash::error("Error Restored");	
+		}
+		return \Redirect::to(adminUrl('blog/trash'));
+	}
+
+	/**
 	 * Delete Blog
 	 *
 	 * @return void
@@ -185,20 +269,47 @@ class BlogController extends \AdminController
 		$blogs = array();
 
 		foreach ($ids as $id) {
-			if ($blog = Blog::find($id)) {
-				if (\Module::isEnabled('field')) {
-					\Field::delete('blog', $blog);
+
+			if ($blog = Blog::withTrashed()->where('id', $id)->first()) {
+
+				if ($blog->trashed()) {
+
+					// only delete when force Delete
+					if (\Module::isEnabled('field')) {
+						
+						\Field::delete('blog', $blog);
+					}
+
+					$blog->forceDelete();
+
+					//Also soft deleted to comment and tag
+					if (\Module::isEnabled('tag')) {
+						$tag = \Tag\Model\TagsRelationship::where('object_id', $id)
+														->where('object_name', 'blog')
+														->delete();
+					}
+					if (\Module::isEnabled('comment')) {
+						$comment_delete = \Comment\Lib\Helper::commentDelete($id, 'blog', true);
+					}
+
+					$redirect_url = 'blog/trash';
+
+				} else {
+
+					$blog->delete();
+
+					if (\Module::isEnabled('comment')) {
+						$comment_delete = \Comment\Lib\Helper::commentDelete($id, 'blog');
+					}
+
+					$redirect_url = 'blog';
+					
+					//solft delete tag and comments
+
 				}
-				$blog->delete();
-				if (\Module::isEnabled('tag')) {
-					$tag = \Tag\Model\TagsRelationship::where('object_id', $id)
-													->where('object_name', 'blog')
-													->delete();
-				}
-				if (\Module::isEnabled('comment')) {
-					$comment_delete = \Comment\Lib\Helper::commentDelete($id, 'blog');
-				}
+
 				$blogs[] = "success";
+
 			}
 		}
 
@@ -212,7 +323,7 @@ class BlogController extends \AdminController
 		} else {
 			\Flash::error(t('blog::blog.delete_error'));
 		}
-		return \Redirect::to(adminUrl('blog'));
+		return \Redirect::to(adminUrl($redirect_url));
 	}
 
 	/**
@@ -303,6 +414,13 @@ class BlogController extends \AdminController
 		$blog->excerpt = $excerpt;
 		$blog->body = \Input::get('body');
 		$blog->author_id = $author;
+		if (\Module::getData('blog', 'dbVersion') >= 1.1) {
+			//Check if this lang is already exist
+			$blog->lang = \Input::get('lang');
+			if (\Input::get('lang_ref')) {
+				$blog->lang_ref = \Input::get('lang_ref');
+			}
+		}
 		$blog->comment_status = \Input::get('comment_status');
 		if ($status != null) {
 			$blog->status = $status;
@@ -435,7 +553,8 @@ class BlogController extends \AdminController
 
 		$this->template->partialOnly()
 			 ->set('blogs', $result)
-			 ->setPartial('admin/table');
+			 ->setPartial('admin/table')
+			 ->set('list_type', 'search');
 	}
 
 	/**
@@ -466,6 +585,46 @@ class BlogController extends \AdminController
 			}
 		}
 		return \Redirect::to(adminUrl('blog'));
+	}
+
+	/**
+	 * View Trash
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function trash()
+	{
+		$trash_count = self::trashCount();
+
+		$options = array(
+		    'total_items'       => $trash_count,
+		    'items_per_page'    => \Setting::get('admin_item_per_page'),
+		);
+
+		$pagination = \Pagination::create($options);
+
+		$blogs = Blog::with(array('category','author'))
+							->onlyTrashed()
+							->orderBy('deleted_at', 'desc')
+							->skip(\Pagination::offset())
+							->take(\Pagination::limit())
+							->get();
+
+		$this->template->title(t('blog::blog.title_main'))
+						->setPartial('admin/index')
+						->set('pagination', $pagination)
+					    ->set('blogs',$blogs)
+					    ->set('trash_count', $trash_count)
+					    ->set('list_type', 'trash');
+
+		$data_table = $this->template->partialRender('admin/table');
+		$this->template->set('data_table', $data_table);	
+	}
+
+	protected function trashCount()
+	{
+		return Blog::onlyTrashed()->count();
 	}
 
 	public function after($response)

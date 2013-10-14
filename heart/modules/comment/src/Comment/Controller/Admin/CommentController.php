@@ -68,18 +68,31 @@ class CommentController extends \AdminController
 	 **/
 	public function filter($status, $page = null)
 	{
+		if ($status == 'trash') {
+			$total = Comment::onlyTrashed()->count();
+		} else {
+			$total = Comment::where('status', $status)->count();
+		}
 		$options = array(
-		    'total_items'       => Comment::where('status', $status)->count(),
+		    'total_items'       => $total,
 		    'items_per_page'    => \Setting::get('admin_item_per_page'),
 		);
 
 		$pagination = \Pagination::create($options);
 
-		$comments = Comment::where('status', $status)
-					->orderBy('created_at', 'desc')
-					->skip(\Pagination::offset())
-					->take(\Pagination::limit())
-					->get();
+		if ($status == 'trash') {
+			$comments = Comment::onlyTrashed()
+						->orderBy('deleted_at', 'desc')
+						->skip(\Pagination::offset())
+						->take(\Pagination::limit())
+						->get();
+		} else {
+			$comments = Comment::where('status', $status)
+						->orderBy('created_at', 'desc')
+						->skip(\Pagination::offset())
+						->take(\Pagination::limit())
+						->get();
+		}
 
 		$akismet_status = self::checkAkismet();
 
@@ -340,6 +353,22 @@ class CommentController extends \AdminController
 		}
 		return \Redirect::to(adminUrl('comment'));
 
+	}
+
+	public static function restore($id = null) 
+	{
+		if (!$id) {
+			return $this->notFound();
+		}
+
+		$restore = Comment::withTrashed()->where('id', $id)->restore();
+
+		if ($restore) {
+			\Flash::success("Successfully Restored");
+		} else {
+			\Flash::error("Error Restored");	
+		}
+		return \Redirect::to(adminUrl('comment/filter/trash'));
 	}
 
 	protected function checkAkismet() {

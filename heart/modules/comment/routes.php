@@ -18,6 +18,8 @@
 
 \Route::add('@admin/comment/delete/{int:id}?', 'Comment\Admin\Comment::delete', 'admin_comment_delete');
 
+\Route::add('@admin/comment/restore/{int:id}', 'Comment\Admin\Comment::restore', 'admin_comment_restore');
+
 // -- Front End -- //
 
 \Route::add('comment/show/{int:content_id}/{alpha:module}/{alpha:status}', 'Comment\Comment::show', 'comment_show');

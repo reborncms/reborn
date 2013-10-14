@@ -39,6 +39,7 @@ return array(
 	'slug'					=> 'Slug',
 	'excerpt'				=> 'အတိုချုပ်',
 	'category'				=> 'အမျိုးအစား',
+	'lang'					=> 'ဘာသာစကား',
 	'tag'					=> 'Tag',
 	'tags'					=> 'Tags',
 	'status'				=> 'အခြေအနေ',

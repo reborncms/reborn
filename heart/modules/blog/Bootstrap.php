@@ -27,6 +27,9 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 			'excerpt_length' => array(
 				'type' => 'text',
 			),
+			'blog_content_default_lang' => array(
+				'type'	=> 'text',
+			),
 		);
 	}
 
