@@ -117,7 +117,12 @@ class SimpleEvent implements \Reborn\Event\EventInterface
         if (isset($this->events[$name])) {
             foreach ($this->events[$name] as $call) {
                 $data = $this->callTheEvents($call, $params);
-                if (is_null($data)) {
+
+                if (false == $data) {
+                    return false;
+                }
+                
+                if (!is_null($data)) {
                     $result[] = $data;
                 }
             }

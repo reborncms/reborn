@@ -1,7 +1,7 @@
 {{ if(count($blogs) > 0) }}
 	{# multi_delete #}
 	{{ Form::start(ADMIN_URL.'/blog/delete') }}
-	<table class="stripe" style="clear:both;">
+	<table class="stripe">
 		<thead>
 			<tr>
 				<th width="3%">{{ Form::checkbox('action_to_all', '', false, array('class' => 'check-all')) }}</th>
@@ -10,13 +10,13 @@
 				<th width="10%">{{ t('blog::blog.category') }}</th>
 				<th width="10%">{{ t('blog::blog.author') }}</th>
 				{{ if ($list_type != 'trash') }}
-				<th width="4%"></th>
+				<th width="4%" style="min-width:35px;"></th>
 				{{ endif }}
 				<th width="13%">{{ t('global.created_at') }}</th>
 				{{ if ($list_type == 'trash') }}
 					<th>Trashed at</th>
 				{{ endif }}
-				<th width="10%">{{ t('label.actions') }}</th>
+				<th width="10%" style="min-width:125px;">{{ t('label.actions') }}</th>
 			</tr>	
 		</thead>
 		<tbody>

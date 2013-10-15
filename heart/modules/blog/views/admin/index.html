@@ -12,6 +12,6 @@
 {{ if(Module::getData('blog', 'dbVersion') >= 1.1) }}
 <a href="{{ adminUrl('blog/trash') }}" id="trash_link" class="btn"><i class="icon-remove icon-white icon-16"></i>Trash ({{ $trash_count }})</a>
 {{ endif }}
-<div id="data_table_wrapper">
+<div id="data_table_wrapper" style="clear:both;">
 	{{ $data_table }}
 </div>
