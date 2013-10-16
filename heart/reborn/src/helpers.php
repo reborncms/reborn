@@ -777,3 +777,19 @@ if (! function_exists('template_parse'))
 	}
 }
 
+if (! function_exists('navigation'))
+{
+	/**
+	 * Helper function of Navigation Render
+	 *
+	 * @param string $nav Navigation group name
+	 * @param string $tag Wrapper tag. default is "ul"
+	 * @param string $active Menu active class name
+	 * @return string
+	 **/
+	function navigation($nav = 'header', $tag = 'ul', $active = 'active')
+	{
+		return \Navigation\Lib\Helper::render($nav, $tag, $active);
+	}
+}
+

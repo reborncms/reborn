@@ -25,7 +25,11 @@ class Helper
 				if ('url' == $t['link_type']) {
 					$url = $t['url'];
 				} else {
-					$url = rbUrl($t['url']);
+					if ($t['url'] == $homepage) {
+						$url = rbUrl();
+					} else {
+						$url = rbUrl($t['url']);
+					}
 				}
 
 				if ($current == rtrim($url,'/')) {
