@@ -37,13 +37,6 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		return $mod_toolbar;
 	}
 
-	public function register()
-	{
-		$file =realpath(__DIR__).DS.'events'.DS.'register.php';
-
-		\Event::on('reborn.parser.create', function($parser) use ($file) {
-			require $file;
-		});
-	}
+	public function register() {}
 
 }

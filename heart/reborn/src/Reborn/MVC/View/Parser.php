@@ -20,6 +20,7 @@ class Parser
      **/
     protected $handlers = array(
             'include'       => 'handleInclude',
+            'nav'           => 'handleNavigation',
             'partial'       => 'handlePartial',
             'partial_loop'  => 'handlePartialLoop',
             'loop'          => 'handleLoop',
@@ -237,6 +238,41 @@ class Parser
         $d = preg_replace($pattern, '<?php echo $this->includeFile("$2")$3; ?>', $template);
 
         return $d;
+    }
+
+    /**
+     * Handle the Navigation
+     *
+     * @param string $template
+     * @return string
+     **/
+    protected function handleNavigation($template)
+    {
+        $pattern = '/\{\{\s*(nav):(.*)\s*\}\}/';
+
+        $callback = function($matches) {
+            $arr = explode(' ', rtrim($matches[2], ' '));
+            $nav = array_shift($arr);
+
+            $str = '<?php echo \Navigation\Lib\Helper::render("'.$nav.'"';
+            if (empty($arr)) {
+                return $str.'); ?>';
+            } else {
+                $tag = 'ul';
+                $active = 'active';
+                foreach ($arr as $a) {
+                    list($key, $value) = explode('=', $a);
+                    if ('tag' == $key) {
+                        $tag = "$value";
+                    } elseif ('active' == $key) {
+                        $active = "$value";
+                    }
+                }
+                return $str.', "'.$tag.'", "'.$active.'"); ?>';
+            }
+        };
+
+        return preg_replace_callback($pattern, $callback, $template);
     }
 
     /**
