@@ -178,6 +178,21 @@ class RouteCollection
 	}
 
 	/**
+	 * Get Url by Route Name
+	 *
+	 * @param string $name Route name
+	 * @param array $data Replace data
+	 * @return string|null
+	 **/
+	public function getUrlByRouteName($name, $data = array())
+	{
+		$route = $this->getRoute($name);
+		if( is_null($route) ) return null;
+
+		return $route->getUrl($data);
+	}
+
+	/**
 	 * Get all route
 	 *
 	 * @return array

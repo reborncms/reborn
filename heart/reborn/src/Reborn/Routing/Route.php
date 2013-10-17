@@ -225,6 +225,42 @@ class Route
 	}
 
 	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author
+	 **/
+	public function getUrl($data = array())
+	{
+		preg_match_all(self::REGEX, $this->path, $matches, PREG_SET_ORDER);
+
+		// Not need to replace variable
+		if (empty($matches)) return $this->path;
+
+		$search = $replace = array();
+
+		foreach ($matches as $m) {
+			$search[] = $m[0];
+			$optional = ('?' == $m[5]) ? true : false;
+			$prefix = $m[1];
+			$key = $m[4];
+
+			// Replace data require if not optional
+			if (!$optional and !isset($data[$key]) ) {
+				return null;
+			}
+
+			if ($optional and !isset($data[$key])) {
+				$replace[] = '';
+			} else {
+				$replace[] = $prefix.$data[$key];
+			}
+		}
+
+		return str_replace($search, $replace, $this->path);
+	}
+
+	/**
 	 * Check request is match with this route.
 	 * If match, return this route
 	 *

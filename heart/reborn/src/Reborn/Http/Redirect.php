@@ -84,7 +84,7 @@ class Redirect
                 $status = 302,
                 $headers = array())
     {
-    	$url = Route::getByName($name, $data);
+    	$url = \Route::getUrlByRouteName($name, $data);
 
         if (is_null($url)) {
             return null;
@@ -98,12 +98,12 @@ class Redirect
      *
      * @return void
      **/
-    public static function notFound()
+    /*public static function notFound()
     {
         $router = \Facade::getApplication()->router;
 
         return $router->notFound();
-    }
+    }*/
 
     /**
      * Send the Redirect
