@@ -155,17 +155,33 @@ abstract class AbstractFormBuilder
 	}
 
 	/**
+	 * Set external hidden fields for Form Build
+	 *
+	 * @param array $data Hidden data array
+	 * @param boolean $merge Merge with original hiddens data. Default is false
+	 * @return \Reborn\Form\AbstractFormBuilder
+	 **/
+	public function setHiddens(array $data, $merge = false)
+	{
+		$this->builder->setHiddens($data, $merge);
+
+		return $this;
+	}
+
+	/**
 	 * Build the form. Final step :D
 	 *
+	 * @param array $hiddenData External Hidden Data
+	 * @param boolean $merge Merge with original hiddens data. Default is false
 	 * @return string
 	 **/
-	public function build()
+	public function build($hiddenData = array(), $merge = false)
 	{
 		if (!$this->add()) {
 			return null;
 		}
 
-		return $this->builder->build();
+		return $this->builder->build($hiddenData, $merge);
 	}
 
 	/**
@@ -251,7 +267,7 @@ abstract class AbstractFormBuilder
 		$model = $this->getModel();
 
 		foreach ($this->fields as $name => $value) {
-			if (in_array($name, $this->skipFields)) {
+			if (in_array($name, $this->getSkipFields())) {
 				continue;
 			}
 			$model->$name = Input::get($name);
@@ -265,6 +281,20 @@ abstract class AbstractFormBuilder
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get skip fields array
+	 *
+	 * @return array
+	 **/
+	protected function getSkipFields()
+	{
+		$btns = array();
+		$btns['submit'] = isset($this->submit['name']) ? $this->submit['name'] : 'submit';
+		$btns['reset'] = isset($this->reset['name']) ? $this->reset['name'] : 'reset';
+
+		return array_merge($this->skipFields, $btns);
 	}
 
 	/**

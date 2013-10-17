@@ -5,6 +5,16 @@
 
 	<?php echo $this->start; ?>
 
+		<?php if (! empty($this->hiddens) ) : ?>
+
+		<div class="hidden-area" style="display: none;">
+		<?php foreach($this->hiddens as $name => $value) : ?>
+			<?php echo \Form::hidden($name, $value); ?>
+		<?php endforeach; ?>
+		</div>
+
+		<?php endif; ?>
+
 		<?php foreach($this->fields as $name => $field) : ?>
 
 		<div class="form-block">

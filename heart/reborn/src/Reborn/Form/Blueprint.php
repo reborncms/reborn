@@ -36,6 +36,13 @@ class Blueprint
 	protected $fileds = array();
 
 	/**
+	 * External hidden data
+	 *
+	 * @var array
+	 **/
+	protected $hiddens = array();
+
+	/**
 	 * Form submit button
 	 *
 	 * @var string
@@ -122,6 +129,22 @@ class Blueprint
 	}
 
 	/**
+	 * Set external hidden fields for Form Build
+	 *
+	 * @param array $data Hidden data array
+	 * @param boolean $merge Merge with original hiddens data. Default is false
+	 * @return void
+	 **/
+	public function setHiddens(array $data, $merge = false)
+	{
+		if ($merge) {
+			$this->hiddens = array_merge($this->hiddens, $data);
+		} else {
+			$this->hiddens = $data;
+		}
+	}
+
+	/**
 	 * Set the form template.
 	 *
 	 * @param string $file Form template file name with path
@@ -148,10 +171,18 @@ class Blueprint
 	/**
 	 * Build the form.
 	 *
+	 * @param array $hiddenData External Hidden Data
+	 * @param boolean $merge Merge with original hiddens data. Default is false
 	 * @return string
 	 **/
-	public function build()
+	public function build($hiddenData = array(), $merge = false)
 	{
+		if ($merge) {
+			$this->hiddens = array_merge($this->hiddens, $hiddenData);
+		} else {
+			$this->hiddens = $hiddenData;
+		}
+
 		ob_start();
 
         include $this->template;
@@ -274,6 +305,11 @@ class Blueprint
 	protected function addHidden($name, $val)
 	{
 		$this->addInput($name, $val, 'hidden');
+	}
+
+	protected function addFile($name, $val)
+	{
+		$this->addInput($name, $val, 'file');
 	}
 
 	protected function addEmail($name, $val)
