@@ -30,11 +30,11 @@ abstract class AbstractFormBuilder
 	protected $file = false;
 
 	/**
-	 * Form legent string
+	 * Form legend string
 	 *
 	 * @var name
 	 **/
-	protected $legent;
+	protected $legend;
 
 	/**
 	 * Field list array for form
@@ -315,8 +315,8 @@ abstract class AbstractFormBuilder
 			$this->builder->addCancel($this->cancel);
 		}
 
-		if (!empty($this->legent)) {
-			$this->builder->addLegent($this->legent);
+		if (!empty($this->legend)) {
+			$this->builder->addLegend($this->legend);
 		}
 
 		return true;

@@ -91,6 +91,8 @@ class UI
     {
         list($value, $attrs) = static::getClassAndValue($v);
 
+        $attrs['autocomplete'] = 'off';
+
         return \Form::password($v['slug'], $value, $attrs);
     }
 

@@ -57,11 +57,11 @@ class Blueprint
 	protected $cancel;
 
 	/**
-	 * Form legent value
+	 * Form legend value
 	 *
 	 * @var string
 	 **/
-	protected $legent;
+	protected $legend;
 
 	/**
 	 * Form validation errors
@@ -221,14 +221,14 @@ class Blueprint
 	}
 
 	/**
-	 * Add form legent.
+	 * Add form legend.
 	 *
-	 * @param string $val Legent value
+	 * @param string $val Legend value
 	 * @return void
 	 **/
-	public function addLegent($val)
+	public function addLegend($val)
 	{
-		$this->legent = $val;
+		$this->legend = $val;
 	}
 
 	/**

@@ -123,7 +123,7 @@ class SettingController extends \AdminController
 				}
 			}
 
-			sort($lists);
+			asort($lists);
 		}
 
 		$this->template->title('Setting')

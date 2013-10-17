@@ -1,5 +1,5 @@
-<div class="legents">
-	<h3 class="legent_headers"><?php echo $this->legent; ?></h3>
+<div class="form_builder">
+	<h3 class="legend_headers"><?php echo $this->legend; ?></h3>
 
 	<div class="form_wrapper">
 
@@ -39,4 +39,4 @@
 	</form>
 
 	</div> <!-- end of form_wrapper -->
-</div> <!-- end of legents -->
+</div> <!-- end of form_builder -->
