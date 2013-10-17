@@ -86,11 +86,12 @@ class Validation
             );
 
     /**
-     * New Method list (callback) added by user
+     * New Method list (callback) added by user.
+     * Extended rules
      *
      * @var array
      **/
-    protected $addedMethods = array();
+    protected $extended = array();
 
     /**
      * Construct the Validation Class
@@ -129,6 +130,9 @@ class Validation
      **/
     public function __construct($inputs = array(), $rules)
     {
+        // Event for Validator rule Extended
+        \Event::call('rebron.validator.start', array($this));
+
         $this->inputs = $inputs;
 
         foreach ($rules as $key => &$rule) {
@@ -143,7 +147,7 @@ class Validation
      *
      * @param array $inputs Input fields
      * @param array $rules Rules for Input field
-     * @return Reborn\Cores\Validation
+     * @return \Reborn\Cores\Validation
      **/
     public static function create($inputs = array(), $rules)
     {
@@ -151,17 +155,26 @@ class Validation
     }
 
     /**
-     * Add new validation rule.
+     * Extend new validation rule.
      *
      * @param string $name Validation name
      * @param string $msg Error message for this rule
      * @param Closure $callback Callback function for rule
-     * @return void
+     * @return \Reborn\Cores\Validation
+     **/
+    public function extend($name, $message, $callback)
+    {
+        $this->extended[$name]['call'] = $callback;
+        $this->extended[$name]['msg'] = $message;
+    }
+
+    /**
+     * Alias method of extend()
+     *
      **/
     public function addRule($name, $msg, $callback)
     {
-        $this->addedMethods[$name]['call'] = $callback;
-        $this->addedMethods[$name]['msg'] = $msg;
+        return $this->extend($name, $msg, $callback);
     }
 
     /**
@@ -237,10 +250,10 @@ class Validation
                     $this->setError($rule, $input, $param);
                 }
 
-            } elseif (array_key_exists($rule, $this->addedMethods)) {
+            } elseif (array_key_exists($rule, $this->extended)) {
                 // First param is Input value and second is Rule's value
                 $args = array($this->inputs[$input], $param);
-                $method = $this->addedMethods[$rule]['call'];
+                $method = $this->extended[$rule]['call'];
 
                 if (! call_user_func_array($method, $args)) {
                     $this->setError($rule, $input, $param, true);
@@ -285,7 +298,7 @@ class Validation
             $this->errors[$key] = $this->{$messageMethod}($key, $arg);
         } else {
             if ($addedRule) {
-                $msg = $this->addedMethods[$rule]['msg'];
+                $msg = $this->extended[$rule]['msg'];
             } else {
                 \Translate::load('validation');
                 $msg = \Translate::get('validation.'.$rule);
