@@ -590,7 +590,7 @@ ck;
      *
      * @param string $name Field name
      * @param string $value Field Value
-     * @param string $format Date Picker Format
+     * @param string|arrau $format Date Picker Format (or) Options array
      * @param array $attrs Field attributes
      * @return string
      **/
@@ -606,6 +606,21 @@ ck;
         $rb = rbUrl();
         $jq = $rb.'global/assets/js/jquery-1.9.0.min.js';
 
+        $month = $year = false;
+
+        if (is_array($format)) {
+            $dateformat = isset($format['format']) ? $format['format'] : 'mm-dd-yy';
+            $month = isset($format['month']) ? $format['month'] : false;
+            $year = isset($format['year']) ? $format['year'] : false;
+        } else {
+            $dateformat = $format;
+        }
+
+        $options = 'dateFormat: "'.$dateformat.'"';
+
+        if ($month) $options .= ', changeMonth: true';
+        if ($year) $options .= ', changeYear: true';
+
         $dp_init = <<<dp
 $ui_css
 <script>
@@ -616,7 +631,7 @@ $ui
 (function($) {
     $(function()
     {
-        $( ".datepicker" ).datepicker({dateFormat: "$format"});
+        $( ".datepicker" ).datepicker({ $options });
     });
 })(jQuery);
 </script>
