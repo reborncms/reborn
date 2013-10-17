@@ -14,12 +14,12 @@ interface CacheDriverInterface
     /**
      * Set the cache
      */
-    public function set($key, $value, $time);
+    public function set($key, $value, $module = null, $time = 10080);
 
     /**
      * Get the cache
      */
-    public function get($key);
+    public function get($key, $module = null);
 
     /**
      * Get the cache data after given value is set.
@@ -29,7 +29,7 @@ interface CacheDriverInterface
     /**
      * Check the given cache key is has or not
      */
-    public function has($key);
+    public function has($key, $module = null);
 
     /**
      * Delete the cache File

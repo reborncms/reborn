@@ -60,12 +60,13 @@ class File implements CacheDriverInterface
      *
      * @param string $key
      * @param mixed $value Data for cache
+     * @param string $module Module name
      * @param integer $time Cache life time(expire)
      * @return mixed
      */
-    public function set($key, $value, $time)
+    public function set($key, $value, $module = null, $time = 10080)
     {
-        list($filename, $file) = $this->keyParse($key);
+        list($filename, $file) = $this->keyParse($key, $module);
 
         $path = str_replace($filename.$this->extension, '', $file);
 
@@ -84,11 +85,12 @@ class File implements CacheDriverInterface
      * Get the cache data from given key name
      *
      * @param string $key
+     * @param string $module Module name
      * @return mixed
      */
-    public function get($key)
+    public function get($key, $module = null)
     {
-        list($filename, $file) = $this->keyParse($key);
+        list($filename, $file) = $this->keyParse($key, $module);
 
         if (file_exists($file)) {
             $data = FileSystem::getContent($file);
@@ -124,11 +126,12 @@ class File implements CacheDriverInterface
      * Check the given cache is has or not
      *
      * @param string $key
+     * @param string $module Module name
      * @return boolean
      **/
-    public function has($key)
+    public function has($key, $module = null)
     {
-        if (is_null($this->get($key))) {
+        if (is_null($this->get($key, $module))) {
             return false;
         }
 
@@ -185,11 +188,12 @@ class File implements CacheDriverInterface
      * Parse the given key to filename and full_file_path
      *
      * @param string $key
+     * @param string $module Module name
      * @return array
      **/
-    protected function keyParse($key)
+    protected function keyParse($key, $module = null)
     {
-        $module = $this->request->module;
+        $module = (is_null($module)) ? $this->request->module : ucfirst($module);
 
         if (! is_null($module)) {
             $filename = md5($key);

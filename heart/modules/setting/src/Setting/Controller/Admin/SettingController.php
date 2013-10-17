@@ -13,11 +13,6 @@ class SettingController extends \AdminController
 
 	public function index()
 	{
-		return \Redirect::toAdmin('setting/system');
-	}
-
-	public function system()
-	{
 		$this->process();
 	}
 
@@ -106,7 +101,7 @@ class SettingController extends \AdminController
 	{
 		if ($type != 'system') {
 
-			$title = sprintf(\Translate::get('setting::setting.module_title'), $type);
+			$title = sprintf(\Translate::get('setting::setting.module_title'), ucfirst($type));
 			if (isset($this->settings['modules'][$type])) {
 				$settings = $this->settings['modules'][$type];
 			}
@@ -115,10 +110,27 @@ class SettingController extends \AdminController
 			$title = \Translate::get('setting::setting.system_title');
 		}
 
+		$main = array(adminUrl('setting') => t('setting::setting.system_title'));
+
+		$navigation = $this->settings;
+		$lists = array();
+
+		if (isset($navigation['modules'])) {
+			foreach ($navigation['modules'] as $mod => $val) {
+				if (\Module::isEnabled($mod)) {
+					$url = adminUrl('setting/module/'.strtolower($mod));
+					$lists[$url] = ucfirst($mod);
+				}
+			}
+
+			sort($lists);
+		}
+
 		$this->template->title('Setting')
 					->set('settings', $settings)
 					->set('type', $type)
 					->set('title', $title)
+					->set('lists', array_merge($main, $lists))
 					->setPartial('index');
 	}
 }

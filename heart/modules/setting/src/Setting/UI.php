@@ -1,17 +1,40 @@
 <?php
 
-namespace Setting\Lib;
-
-use Closure;
+namespace Setting;
 
 /**
- * Setting Module Helper
+ * Setting Form UI Class
  *
- * @package Setting(Module Package)
- * @author Myanmar Links Professional Web Development Team
+ * @package Setting
+ * @author MyanmarLinks Professional Web Development Team
  **/
-class Helper
+class UI
 {
+
+	/**
+	 * Extended UI Field
+	 *
+	 * @var array
+	 **/
+	protected static $extended = array();
+
+	/**
+	 * Extend new field UI.
+	 * Example :
+	 * <code>
+	 * 		Setting\UI::extend('custom', function($value, $attrs) {
+	 * 			return Form::datepicker(....);
+	 * 		});
+	 * </code>
+	 *
+	 * @param name $name Type name
+	 * @param Closure|String $callback Callback function
+	 * @return void
+	 **/
+	public static function extend($name, $callback)
+	{
+		static::$extended[$name] = $callback;
+	}
 
 	/**
      * Generate the Form Field
@@ -26,10 +49,10 @@ class Helper
         if (in_array($type, $supports)) {
             $method = $v['type'].'Field';
             return static::$method($v);
-        } elseif ('callback:' == substr($type, 0, 9)) {
-            list(,$name) = explode(':', $type);
+        } elseif (static::$extended[$type]) {
             list($value, $attrs) = static::getClassAndValue($v);
-            \Event::call($name, array($value, $attrs));
+            $callback = static::$extended[$type];
+            return call_user_func_array($callback, array($v['slug'], $value, $attrs));
         }
 
         return null;
@@ -129,4 +152,4 @@ class Helper
         return array($value, $attrs);
     }
 
-} // END class
+} // END class UI

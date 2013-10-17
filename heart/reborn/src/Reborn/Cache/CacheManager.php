@@ -105,22 +105,24 @@ class CacheManager
      * Get the cache data with given key
      *
      * @param string $key Key name for the cache data
+     * @param string $module Module name
      * @return mixed
      */
-    public static function get($key)
+    public static function get($key, $module = null)
     {
-        return static::getIns()->get($key);
+        return static::getIns()->get($key, $module);
     }
 
     /**
      * Check the given cache key is has or not
      *
      * @param string $key
+     * @param string $module Module name
      * @return boolean
      **/
-    public static function has($key)
+    public static function has($key, $module = null)
     {
-        return static::getIns()->has($key);
+        return static::getIns()->has($key, $module);
     }
 
     /**
@@ -145,12 +147,13 @@ class CacheManager
      *
      * @param string $key Key name for the cache
      * @param mixed $value Cache data value
+     * @param string $module Module name
      * @param integer $time Expire time for cache
      * @return $this
      */
-    public static function set($key, $value, $time = 10080)
+    public static function set($key, $value, $module = null, $time = 10080)
     {
-        return static::getIns()->set($key, $value, $time);
+        return static::getIns()->set($key, $value, $module, $time);
     }
 
     /**

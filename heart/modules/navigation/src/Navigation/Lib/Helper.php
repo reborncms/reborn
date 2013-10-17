@@ -10,10 +10,19 @@ class Helper
 	public static function render($nav = 'header', $tag = 'ul', $active = 'active')
 	{
 		$nav = Navigation::where('slug', '=', $nav)->first();
-		$obj = Links::where('navigation_id', '=', $nav->id)
+
+		// Make Cache Key
+		$cache_key = 'navigation_'.$nav.'_trees';
+
+		if (\Cache::has($cache_key, 'Navigation')) {
+			$tree = \Cache::get($cache_key, 'Navigation');
+		} else {
+			$obj = Links::where('navigation_id', '=', $nav->id)
 						->orderBy('link_order', 'asc')
 						->get()->toArray();
-		$tree = static::getNavTree($obj);
+			$tree = static::getNavTree($obj);
+			\Cache::set($cache_key, $tree, 'Navigation');
+		}
 
 		$current = rtrim(\Registry::get('app')->request->requestUrl(), '/');
 

@@ -130,10 +130,14 @@ class Theme
         if ($frontend_only) {
             if(File::is(THEMES.$theme.DS.'info.php')) {
                 return require THEMES.$theme.DS.'info.php';
+            } elseif (File::is(THEMES.$theme.DS.'theme.info')) {
+                return $this->parseThemeInfo(THEMES.$theme.DS.'theme.info');
             }
         } else {
             if(File::is($this->path.$theme.DS.'info.php')) {
                 return require $this->path.$theme.DS.'info.php';
+            } elseif (File::is($this->path.$theme.DS.'theme.info')) {
+                return $this->parseThemeInfo($this->path.$theme.DS.'theme.info');
             }
         }
 
@@ -185,6 +189,73 @@ class Theme
         $all = Dir::get($dir.DS.'*', GLOB_ONLYDIR);
 
         return $all;
+    }
+
+    /**
+     * Parse Theme Info File (theme.info) to array data
+     *
+     * @param string $file theme.info file path
+     * @return array
+     **/
+    protected function parseThemeInfo($file)
+    {
+        $data = File::getContent($file);
+
+        $lines = explode("\n", $data);
+        $info = array();
+        foreach ($lines as $line) {
+            if ($line == '') {
+                continue;
+            } else {
+                if (false !== strpos($line, '=')) {
+                    list($key, $value) = explode('=', $line, 2);
+                    $key = trim($key, ' ');
+                    $value = trim($value, ' ');
+
+                    // Check array or not
+                    if ('[' == substr($value, 0, 1)) {
+                        $info[$key] = $this->parseToArray($value);
+                    } else {
+                        $info[$key] = $value;
+                    }
+                }
+            }
+        }
+
+        return $info;
+    }
+
+    /**
+     * Paser strin data to array data
+     * example
+     * <code>
+     *      [key1 : value, key2 : value2, key3 : value3]
+     *      // to
+     *      array('key1' => 'value', 'key2' => 'value2', 'key3' => 'value3')
+     * </code>
+     *
+     * @param string $string
+     * @return array
+     **/
+    protected function parseToArray($string)
+    {
+        preg_match('#\[(.*)\]#', $string, $matches);
+
+        $lists = explode(',', $matches[1]);
+
+        $values = array();
+
+        foreach ($lists as $list) {
+            $list = trim($list, ' ');
+            if (false !== strpos($list, ' : ')) {
+                list($key, $v) = explode(' : ', $list);
+                $values[$key] = $v;
+            } else {
+                $values[] = $list;
+            }
+        }
+
+        return $values;
     }
 
 } // END class Theme
