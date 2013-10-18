@@ -2,6 +2,9 @@
 
 namespace Reborn\Util;
 
+use MongoDate;
+use Carbon\Carbon;
+
 /**
  * Table Generate Helper class
  *
@@ -310,6 +313,16 @@ class Table
 	}
 
 	/**
+	 * Check table data is empty or not.
+	 *
+	 * @return boolean
+	 **/
+	public function isEmpty()
+	{
+		return empty($this->object);
+	}
+
+	/**
 	 * Build the Table Output.
 	 *
 	 * @return string
@@ -554,7 +567,14 @@ class Table
 	{
 		$date = $obj->{$key};
 
-		return rbDate($date, $format);
+		if ($obj instanceof \Eloquent) {
+			$date = date_create($blog->created_at);
+			return date_format($date, $format);
+		} elseif ($date instanceof MongoDate) {
+			return date($format, $date->sec);
+		}
+
+		return Carbon::createFromFormat($format, $date)->toDateTimeString();
 	}
 
 	/**
