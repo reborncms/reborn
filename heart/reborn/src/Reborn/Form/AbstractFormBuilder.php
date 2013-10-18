@@ -69,14 +69,14 @@ abstract class AbstractFormBuilder
 	 *
 	 * @var Reborn\Form\Blueprint
 	 **/
-	private $builder;
+	protected $builder;
 
 	/**
 	 * Form validtion object
 	 *
 	 * @var Reborn\Form\Validation
 	 **/
-	private $validator;
+	protected $validator;
 
 	/**
 	 * Eloquent Model Object for form field value
