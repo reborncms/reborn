@@ -3,7 +3,7 @@
 namespace Reborn\Util;
 
 /*use Reborn\Util\Uploader as Upload;*/
-use Reborn\FileUpload\Uploader as Upload;
+use Reborn\Fileupload\Uploader as Upload;
 
 /**
  * Send Mail class for Reborn
