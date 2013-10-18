@@ -178,6 +178,39 @@ class Validation
     }
 
     /**
+     * Get Input Value
+     *
+     * @param string|null $key Key name or null for all
+     * @return mixed
+     **/
+    public function getInput($key = null)
+    {
+        if (is_null($key)) {
+            return $this->inputs;
+        } else {
+            if ($this->hasInput($key)) {
+                return $this->inputs[$key];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Has Input Values
+     *
+     * @param string $key Key name
+     * @return boolean
+     **/
+    public function hasInput($key)
+    {
+        if (isset($this->inputs[$key])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Check the validation is valid or not.
      *
      * @return boolean
@@ -252,7 +285,7 @@ class Validation
 
             } elseif (array_key_exists($rule, $this->extended)) {
                 // First param is Input value and second is Rule's value
-                $args = array($this->inputs[$input], $param);
+                $args = array($this->inputs[$input], $param, $this);
                 $method = $this->extended[$rule]['call'];
 
                 if (! call_user_func_array($method, $args)) {
