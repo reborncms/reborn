@@ -4,6 +4,7 @@ namespace Reborn\Form;
 
 use Reborn\Config\Config;
 use Reborn\Connector\DB\DBManager as DB;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Validation class for Reborn
@@ -33,6 +34,13 @@ class Validation
      * @var array
      **/
     protected $errors = array();
+
+    /**
+     * Failure inputs in validation
+     *
+     * @var array
+     **/
+    protected $fail_rules = array();
 
     /**
      * Accepted validation method list by Default
@@ -82,7 +90,10 @@ class Validation
                 'pattern',
                 'unique',
                 'type',
-                'boolean'
+                'boolean',
+                'image',
+                'fileType',
+                'fileSize'
             );
 
     /**
@@ -261,6 +272,16 @@ class Validation
     }
 
     /**
+     * Get failed inputs
+     *
+     * @return array
+     **/
+    public function failures()
+    {
+        return $this->fail_rules;
+    }
+
+    /**
      * Compute the Input and his rule is valid or not.
      *
      * @param string $input Input field name
@@ -365,6 +386,29 @@ class Validation
         return str_replace(array('{key}', '{value}'), array(ucfirst($key), $value), $msg);
     }
 
+    protected function messageForImage($key, $types)
+    {
+        $msg = \Translate::get('validation.image');
+
+        return str_replace(array('{key}', '{types}'), array(ucfirst($key), $types), $msg);
+    }
+
+    protected function messageForFileType($key, $types)
+    {
+        \Translate::load('validation');
+        $msg = \Translate::get('validation.fileType');
+
+        return str_replace(array('{key}', '{types}'), array(ucfirst($key), $types), $msg);
+    }
+
+    protected function messageForFileSize($key, $size)
+    {
+        \Translate::load('validation');
+        $msg = \Translate::get('validation.fileSize');
+
+        return str_replace(array('{key}', '{size}'), array(ucfirst($key), $size), $msg);
+    }
+
 
     /* =============== Validation Method Lists =================== */
 
@@ -394,6 +438,8 @@ class Validation
             return false;
         } elseif(is_null($value)) {
             return false;
+        } elseif ($value instanceof File) {
+            return (string) $value->getPath() != '';
         }
 
         return true;
@@ -517,6 +563,62 @@ class Validation
         $bool = array('1', '0', 'true', 'false', 'on', 'off');
 
         return in_array(strtolower($value), $bool);
+    }
+
+    /**
+     * Check Image validation
+     *
+     * @param File|null $value
+     * @param string|null $types
+     * @return boolean
+     **/
+    protected function validImage($value, $types = null)
+    {
+        if (is_null($types)) {
+            $types = array('jpg', 'png', 'gif', 'bmp');
+        } else {
+            $types = explode(',', $types);
+        }
+
+        return $this->validFileType($value, $types);
+    }
+
+    /**
+     * Check File MIME Types
+     *
+     * @param File|null $value
+     * @param string|array $types
+     * @return boolean
+     **/
+    protected function validFileType($value, $types)
+    {
+        if (! $value instanceof File or $value->getPath() == '') {
+            return true;
+        }
+
+        if (is_string($types)) {
+            $types = explode(',', $types);
+        }
+
+        return in_array($value->guessExtension(), $types);
+    }
+
+    /**
+     * Check File MaxSize
+     *
+     * @param File|null $value
+     * @param string|null $types
+     * @return boolean
+     **/
+    protected function validFileSize($value, $size)
+    {
+        if (! $value instanceof File or $value->getPath() == '') {
+            return true;
+        }
+
+        $size =formatSizeToBytes($size);
+
+        return ($value->getClientSize() < $size);
     }
 
 } // END class Validation

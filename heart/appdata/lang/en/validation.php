@@ -22,7 +22,10 @@ return array(
 	'pattern'		=> "The {key} format is invalid",
 	'unique'		=> "This {key} field must be unique. {value} is already exists in database.",
 	'slug_duplicate'=> '*** Slug with this name already exist.Please choose another slug.',
-	'type'			=> "This {key} field's type must be {type}.",
-	'boolean'		=> "This {key} field must be boolean."
+	'type'			=> "This {key} field's type must be {type}",
+	'boolean'		=> "This {key} field must be boolean",
+	'image'			=> "This {key} must be an image type {types}.",
+	'fileType'		=> "This {key} must be a file type {types}.",
+	'fileSize'		=> "Maximun uploaded file size is {size}"
 
 );

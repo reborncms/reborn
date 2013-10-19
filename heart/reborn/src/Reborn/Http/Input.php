@@ -207,6 +207,11 @@ class Input
             $r[$k] = static::sanitize($v);
         }
 
+        // Get Files
+        foreach (static::getIns()->files->all() as $k => $v) {
+            $r[$k] = $v;
+        }
+
         // Remove CSRF Token
         unset($r[\Config::get('app.security.csrf_key')]);
 

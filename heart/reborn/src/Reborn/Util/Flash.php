@@ -34,6 +34,21 @@ class Flash
 	}
 
 	/**
+	 * Set Input values to flash for reuse in Redirect
+	 *
+	 * @return void
+	 **/
+	public static function inputs()
+	{
+		$csrf = \Config::get('app.security.csrf_key');
+
+		$all = Input::get('*');
+		unset($all[$csrf]);
+
+		static::getFlash()->set('_inputs_', $all);
+	}
+
+	/**
 	 * Set the Info Flash Message type
 	 *
 	 * @param string $message
@@ -97,6 +112,16 @@ class Flash
 	public static function get($key)
 	{
 		return static::getFlash()->get($key);
+	}
+
+	/**
+	 * Get Inputs Flash data/
+	 *
+	 * @return array|null
+	 **/
+	public static function getInputs()
+	{
+		return static::getFlash()->get('_inputs_');
 	}
 
 	/**

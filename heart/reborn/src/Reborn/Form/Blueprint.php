@@ -309,6 +309,11 @@ class Blueprint
 
 	protected function addFile($name, $val)
 	{
+		if (isset($val['multiple']) and $val['multiple']) {
+			$val['attr']['multiple'] = true;
+			$name = $name.'[]';
+		}
+		$val['value'] = null;
 		$this->addInput($name, $val, 'file');
 	}
 

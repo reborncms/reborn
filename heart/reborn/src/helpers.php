@@ -793,3 +793,87 @@ if (! function_exists('navigation'))
 	}
 }
 
+if (!function_exists('formatSizeUnits'))
+{
+	/**
+	 * Displays the file size given the number of bytes
+	 * # Snippet from PHP Share: http://www.phpshare.org
+	 *
+	 * @param integer $bytes Bytes value
+	 * @return void
+	 **/
+    function formatSizeUnits($bytes)
+    {
+        if ($bytes >= 1073741824)
+        {
+            $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+        }
+        elseif ($bytes >= 1048576)
+        {
+            $bytes = number_format($bytes / 1048576, 2) . ' MB';
+        }
+        elseif ($bytes >= 1024)
+        {
+            $bytes = number_format($bytes / 1024, 2) . ' KB';
+        }
+        elseif ($bytes > 1)
+        {
+            $bytes = $bytes . ' bytes';
+        }
+        elseif ($bytes == 1)
+        {
+            $bytes = $bytes . ' byte';
+        }
+        else
+        {
+            $bytes = '0 bytes';
+        }
+
+        return $bytes;
+    }
+}
+
+if (!function_exists('reverseFormatSize'))
+{
+	/**
+	 * Convert file size fromat string to bytes integer
+	 *
+	 * @param string $size File size string (eg:2KB)
+	 * @return integer
+	 **/
+    function formatSizeToBytes($size)
+    {
+        $unit = strtolower(substr($size, -2));
+        $value = substr($size, 0, -2);
+
+        switch ($unit) {
+        	case 'gb':
+        		return $value * 1073741824;
+        		break;
+
+        	case 'mb':
+        		return $value * 1048576;
+        		break;
+
+        	case 'kb':
+        		return $value * 1024;
+        		break;
+
+        	default:
+        		$bytes = substr($size, -5);
+        		$bs_value = substr($size, 0, -5);
+        		$byte = substr($size, -4);
+        		$b_value = substr($size, 0, -4);
+
+        		if ($bytes == 'bytes') {
+        			return $bs_value;
+        		} elseif ($byte == 'byte') {
+        			return $b_value;
+        		} else {
+        			0;
+        		}
+        		break;
+        }
+    }
+}
+

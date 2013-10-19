@@ -23,5 +23,8 @@ return array(
 	'unique'		=> "ဒီ {key} သည် တစ်ခုတည်းဖြစ်ရမည်။ {value} သည် database ထဲတွင် ရှိပြီးသားဖြစ်သည်။",
 	'slug_duplicate'=> '*** ဒီနာမည်နှင့် slug ရှိပြီးသားဖြစ်နေပါသည်။ တခြားနာမည်တစ်ခုပြန်ရွေးစေလိုပါတယ်။',
 	'type'			=> "အဆိုပါ {key} သည် {type} အမျိုးအစား ဖြစ်ရမည်။",
-	'boolean'		=> "အဆိုပါ {key} သည် boolean အမျိုးအစား ဖြစ်ရမည်။"
+	'boolean'		=> "အဆိုပါ {key} သည် boolean အမျိုးအစား ဖြစ်ရမည်။",
+	'image'			=> "This {key} must be an image type {types}.",
+	'fileType'		=> "This {key} must be a file type {types}.",
+	'fileSize'		=> "Maximun uploaded file size is {size}"
 );

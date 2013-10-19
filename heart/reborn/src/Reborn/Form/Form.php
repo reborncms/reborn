@@ -4,6 +4,7 @@ namespace Reborn\Form;
 
 use Reborn\Http\Uri;
 use Reborn\Config\Config;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Form class for Reborn CMS
@@ -130,7 +131,11 @@ class Form
     {
         $attr = static::getAttr($attrs);
 
-        $id = (!isset($attrs['id'])) ? ' id = "'.$name.'"' : '';
+        if (isset($attrs['id'])) {
+            $id = '';
+        } else {
+            $id = ' id="'.\Str::sanitize($name, 'A-Za-z-0-9-_\s').'"';
+        }
 
         $val = ($value != null) ? ' value = "'.$value.'"' : '';
 
