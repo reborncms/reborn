@@ -575,7 +575,7 @@ class Validation
     protected function validImage($value, $types = null)
     {
         if (is_null($types)) {
-            $types = array('jpg', 'png', 'gif', 'bmp');
+            $types = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
         } else {
             $types = explode(',', $types);
         }

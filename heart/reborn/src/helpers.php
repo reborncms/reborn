@@ -833,7 +833,7 @@ if (!function_exists('formatSizeUnits'))
     }
 }
 
-if (!function_exists('reverseFormatSize'))
+if (!function_exists('formatSizeToBytes'))
 {
 	/**
 	 * Convert file size fromat string to bytes integer
