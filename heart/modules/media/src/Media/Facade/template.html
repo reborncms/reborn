@@ -1,7 +1,7 @@
 <div class="thumbnail-wrapper">
 {{ if(is_null($value) || ('' == $value)) }}
     <div class="thumbnail_preview"></div>
-    {{ Form::hidden($name, $value) }}
+    {{ Form::hidden($name) }}
     <a href="{{ adminUrl('media/thumbnail') }}" class="thumbnail_add_btn">
         <i class="icon-circleplus icon-12 icon-gray"></i>
         {{ $labels['add'] }}
@@ -14,7 +14,7 @@
     <div class="thumbnail_preview">
         <img class='thumbnail_image' src='{{ rbUrl('media/image/'.$value.'/'.$width) }}'>
     </div>
-    {{ Form::hidden($name) }}
+    {{ Form::hidden($name, $value) }}
     <a href="{{ adminUrl('media/thumbnail') }}" class="thumbnail_add_btn" style="display:none">
         <i class="icon-circleplus icon-12 icon-gray"></i>
         {{ $labels['add'] }}
