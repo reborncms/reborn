@@ -23,6 +23,13 @@ abstract class AbstractFormBuilder
 	const INPUT_KEY = '_inputs';
 
 	/**
+	 * Form name or Form process mode
+	 *
+	 * @var string
+	 **/
+	protected $mode = 'create';
+
+	/**
 	 * Use multipart/form-data
 	 *
 	 * @var boolean
@@ -126,6 +133,19 @@ abstract class AbstractFormBuilder
 	{
 		$class = get_called_class();
 		return new $class($action, $name, $attrs);
+	}
+
+	/**
+	 * Set Form Process Mode
+	 *
+	 * @param string $mode
+	 * @return \Reborn\Form\AbstractFormBuilder
+	 **/
+	public function mode($mode)
+	{
+		$this->mode = $mode;
+
+		return $this;
 	}
 
 	/**
@@ -380,7 +400,7 @@ abstract class AbstractFormBuilder
 			$this->builder->render($val['type'], $name, $val);
 		}
 
-		if (method_exists($this, 'editActions')) {
+		if ($this->mode != 'create' and method_exists($this, 'editActions')) {
 			list($submit, $reset, $cancel) = $this->editActions();
 		} else {
 			$submit = $this->submit;
