@@ -129,6 +129,20 @@ abstract class AbstractFormBuilder
 	}
 
 	/**
+	 * Prepend the ui before $name field
+	 *
+	 * @param string $name
+	 * @param array|string $contnet
+	 * @return \Reborn\Form\AbstractFormBuilder
+	 **/
+	public function prepend($name, $content)
+	{
+		$this->builder->setPrepend($name, $content);
+
+		return $this;
+	}
+
+	/**
 	 * Append the ui before $name field
 	 *
 	 * @param string $name
