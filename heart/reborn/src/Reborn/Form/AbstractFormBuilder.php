@@ -129,6 +129,19 @@ abstract class AbstractFormBuilder
 	}
 
 	/**
+	 * Set legend string
+	 *
+	 * @param string $legend Legend string
+	 * @return \Reborn\Form\AbstractFormBuilder
+	 **/
+	public function setLegend($legend)
+	{
+		$this->legend = $legend;
+
+		return $this;
+	}
+
+	/**
 	 * Prepend the ui before $name field
 	 *
 	 * @param string $name
@@ -367,15 +380,21 @@ abstract class AbstractFormBuilder
 			$this->builder->render($val['type'], $name, $val);
 		}
 
-		// Add the submit button
-		$this->builder->addSubmit($this->submit);
+		if (method_exists($this, 'editActions')) {
+			list($submit, $reset, $cancel) = $this->editActions();
+		} else {
+			$submit = $this->submit;
+			$reset = $this->reset;
+			$cancel = $this->cancel;
+		}
+		$this->builder->addSubmit($submit);
 
 		if (!empty($this->reset)) {
-			$this->builder->addReset($this->reset);
+			$this->builder->addReset($reset);
 		}
 
 		if (!empty($this->cancel)) {
-			$this->builder->addCancel($this->cancel);
+			$this->builder->addCancel($cancel);
 		}
 
 		if (!empty($this->legend)) {
