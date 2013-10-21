@@ -43,11 +43,11 @@ class Blueprint
 	protected $hiddens = array();
 
 	/**
-	 * Form submit button
+	 * Form submit buttons
 	 *
-	 * @var string
+	 * @var array
 	 **/
-	protected $submit;
+	protected $submit = array();
 
 	/**
 	 * Form reset button
@@ -297,20 +297,22 @@ class Blueprint
 	/**
 	 * Add submit button for form.
 	 *
-	 * @param array $val Submit button value array
+	 * @param array $submits Submit button value array
 	 * @return void
 	 **/
-	public function addSubmit($value)
+	public function addSubmit($submits)
 	{
-		$name = isset($value['name']) ? $value['name'] : 'submit';
-		$attrs = isset($value['attr']) ? $value['attr'] : array();
+		foreach ($submits as $name => $value) {
+			$name = isset($value['name']) ? $value['name'] : $name;
+			$attrs = isset($value['attr']) ? $value['attr'] : array();
 
-		// Set Btn Class From Reborn Admin Theme
-		if (!isset($attrs['class'])) {
-			$attrs['class'] = 'btn btn-green';
+			// Set Btn Class From Reborn Admin Theme
+			if (!isset($attrs['class'])) {
+				$attrs['class'] = 'btn btn-green';
+			}
+
+			$this->submit[] = Form::submit($name, $value['value'], $attrs);
 		}
-
-		$this->submit = Form::submit($name, $value['value'], $attrs);
 	}
 
 	/**
@@ -555,15 +557,5 @@ class Blueprint
 		$this->labels[$name] = '';
 		$type = isset($val['btn_type']) ? $val['btn_type'] : 'buttton';
 		$this->fields[$name]['html'] = Form::button($name, $val['label'], $type, $val['attr']);
-	}
-
-	/**
-	 * undocumented function
-	 *
-	 * @return string
-	 **/
-	protected function renderField($content)
-	{
-
 	}
 }

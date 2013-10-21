@@ -46,7 +46,9 @@
 
 		<div class="form-block form-action button-wrapper">
 
-			<?php echo $this->submit; ?>
+			<?php foreach($this->submit as $submit) : ?>
+			<?php echo $submit; ?>
+			<?php endforeach; ?>
 
 			<?php echo $this->reset; ?>
 

@@ -48,7 +48,7 @@ abstract class AbstractFormBuilder
 	 *
 	 * @var array
 	 **/
-	protected $submit = array('value' => 'Submit');
+	protected $submit = array('submit' => array('value' => 'Submit'));
 
 	/**
 	 * Reset button data array
@@ -295,6 +295,7 @@ abstract class AbstractFormBuilder
 		$model = $this->getModel();
 
 		foreach ($this->fields as $name => $value) {
+
 			if (in_array($name, $this->getSkipFields())) {
 				continue;
 			}
@@ -319,7 +320,11 @@ abstract class AbstractFormBuilder
 	protected function getSkipFields()
 	{
 		$btns = array();
-		$btns['submit'] = isset($this->submit['name']) ? $this->submit['name'] : 'submit';
+		foreach ($this->submit as $n => $v) {
+			$name = isset($v['name']) ? $v['name'] : $n;
+			$btns[$name] = $name;
+		}
+
 		$btns['reset'] = isset($this->reset['name']) ? $this->reset['name'] : 'reset';
 
 		return array_merge($this->skipFields, $btns);
