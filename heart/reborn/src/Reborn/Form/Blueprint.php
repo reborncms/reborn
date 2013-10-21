@@ -92,6 +92,20 @@ class Blueprint
 	protected $exElements = array();
 
 	/**
+	 * Prepend Fields or HTML
+	 *
+	 * @var array
+	 **/
+	protected $prepends = array();
+
+	/**
+	 * Append Fields or HTML
+	 *
+	 * @var array
+	 **/
+	protected $appends = array();
+
+	/**
 	 * Instance method for Blueprint
 	 *
 	 * @param string $action Form action url
@@ -166,6 +180,82 @@ class Blueprint
 	public function setErrors($errs = array())
 	{
 		$this->errors = $errs;
+	}
+
+	/**
+	 * Set Prepend Field or UI
+	 *
+	 * @param string $name
+	 * @param array|string $content
+	 * @return void
+	 **/
+	public function setPrepend($name, $content)
+	{
+		$this->prepends[$name] = $content;
+	}
+
+	/**
+	 * Set Append Field or UI
+	 *
+	 * @param string $name
+	 * @param array|string $content
+	 * @return void
+	 **/
+	public function setAppend($name, $content)
+	{
+		$this->appends[$name] = $content;
+	}
+
+	/**
+	 * Check Prepend field or ui
+	 *
+	 * @param string $name
+	 * @return boolean
+	 **/
+	public function hasPrepend($name)
+	{
+		return isset($this->prepends[$name]);
+	}
+
+	/**
+	 * Check Append field or ui
+	 *
+	 * @param string $name
+	 * @return boolean
+	 **/
+	public function hasAppend($name)
+	{
+		return isset($this->appends[$name]);
+	}
+
+	/**
+	 * Make Prepend field or ui
+	 *
+	 * @param string $name
+	 * @return boolean
+	 **/
+	public function makePrepend($name)
+	{
+		if (! $this->hasPrepend($name)) {
+			return null;
+		}
+
+		return $this->prepends[$name];
+	}
+
+	/**
+	 * Make Append field or ui
+	 *
+	 * @param string $name
+	 * @return boolean
+	 **/
+	public function makeAppend($name)
+	{
+		if (! $this->hasAppend($name)) {
+			return null;
+		}
+
+		return $this->appends[$name];
 	}
 
 	/**
@@ -465,5 +555,15 @@ class Blueprint
 		$this->labels[$name] = '';
 		$type = isset($val['btn_type']) ? $val['btn_type'] : 'buttton';
 		$this->fields[$name]['html'] = Form::button($name, $val['label'], $type, $val['attr']);
+	}
+
+	/**
+	 * undocumented function
+	 *
+	 * @return string
+	 **/
+	protected function renderField($content)
+	{
+
 	}
 }

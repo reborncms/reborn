@@ -17,6 +17,10 @@
 
 		<?php foreach($this->fields as $name => $field) : ?>
 
+		<?php if($this->hasPrepend($name)) : ?>
+		<?php echo $this->makePrepend($name); ?>
+		<?php endif; ?>
+
 		<div class="form-block">
 
 			<?php echo $this->labels[$name]; ?>
@@ -32,6 +36,10 @@
 				<p class="info"><?php echo $this->fields[$name]['info']; ?></p>
 			</div>
 		</div> <!-- end of input_group -->
+
+		<?php if($this->hasAppend($name)) : ?>
+		<?php echo $this->makeAppend($name); ?>
+		<?php endif; ?>
 
 		<?php endforeach; ?>
 

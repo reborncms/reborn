@@ -129,6 +129,20 @@ abstract class AbstractFormBuilder
 	}
 
 	/**
+	 * Append the ui before $name field
+	 *
+	 * @param string $name
+	 * @param array|string $contnet
+	 * @return \Reborn\Form\AbstractFormBuilder
+	 **/
+	public function append($name, $content)
+	{
+		$this->builder->setAppend($name, $content);
+
+		return $this;
+	}
+
+	/**
 	 * Check the form is valid or not
 	 *
 	 * @return boolean
