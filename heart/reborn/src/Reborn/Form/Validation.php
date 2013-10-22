@@ -299,8 +299,8 @@ class Validation
     {
         list($rule, $param) = $this->ruleParser($rule);
 
-        // Check given input key is isset or not
-        if (!isset($this->inputs[$input])) {
+        // Check given input key is isset or not and have rule require
+        if (!isset($this->inputs[$input]) and in_array('require', $this->rules[$input])) {
             $this->setError('kye_not_found', $input, $param);
         } else {
             if (in_array($rule, $this->methods)) {
