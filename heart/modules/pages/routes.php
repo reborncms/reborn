@@ -8,9 +8,9 @@
 
 \Route::add('@admin/pages/create', 'Pages\Admin\Pages::create', 'admin_pages_create');
 
-\Route::add('@admin/pages/edit/{int:id}', 'Pages\Admin\Pages::edit', 'admin_pages_edit');
+\Route::add('@admin/pages/edit/{int:id}?', 'Pages\Admin\Pages::edit', 'admin_pages_edit');
 
-\Route::add('@admin/pages/duplicate/{int:id}', 'Pages\Admin\Pages::duplicate', 'admin_pages_duplicate');
+\Route::add('@admin/pages/duplicate/{int:id}?', 'Pages\Admin\Pages::duplicate', 'admin_pages_duplicate');
 
 \Route::post('@admin/pages/autosave', 'Pages\Admin\Pages::autosave', 'admin_pages_autosave');
 
