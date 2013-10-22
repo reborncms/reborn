@@ -1,4 +1,4 @@
-Reborn CMS Version2.0 (beta)
+Reborn CMS Version2.0 (beta 2)
 =============================
 
 		 _____      _                         _____ __  __  _____
@@ -44,6 +44,7 @@ Reborn is MIT License. You can see details of license at license.txt
 * Web Server - Apache running on *nix platform
 * apache mod_rewrite - To remove the index.php from the URL and beautiful URI
 * PHP cURL Extension
+* PHP GD2 Extension
 
 
 ### Development Team & Contributors

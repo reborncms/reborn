@@ -22,7 +22,7 @@ class Version
      *
      * @var string
      */
-    const FULL = '2.0.0-beta';
+    const FULL = '2.0.0-beta2';
 
     /**
      * Major version number
@@ -50,7 +50,7 @@ class Version
      *
      * @var string
      */
-    const EXTRA = 'beta';
+    const EXTRA = 'beta2';
 
     /**
      * Code name for Major version
