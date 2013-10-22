@@ -24,7 +24,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 			$childs[] = array('title' => t('user::permission.menu'), 'uri' => 'permission');
 		}
 			
-		$menu->group($modUri, t('navigation.user_management'), 'icon-users', 27, $childs);
+		$menu->group($modUri, t('navigation.user_management'), 'icon-users', 50, $childs);
 	}
 
 	public function settings()
