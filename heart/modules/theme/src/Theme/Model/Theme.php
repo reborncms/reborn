@@ -23,7 +23,7 @@ class Theme
         }
 
         foreach ( $themes as $key => $value ) {
-            $themeinfo[$value] = self::load_info($value);
+            $themeinfo[$value] = self::loadInfo($value);
         }
 
         return $themeinfo;
@@ -35,39 +35,23 @@ class Theme
      * @param   string  $theme  Name of the theme (null for active)
      * @return  array   Theme info array
      */
-    protected static function load_info($theme = null)
+    protected static function loadInfo($theme = null)
     {
+        $class = \Facade::getApplication()->theme;
+
         if ($theme === null) $theme = $this->active;
 
-        if (is_array($theme)) {
-            $path = $theme['path'];
-            $name = $theme['name'];
+        $screenshot = THEMES.$theme.DS.'screenshot.png';
+
+        $info = $class->info($theme, true);
+
+        if (is_file($screenshot)) {
+            $info['screenshot'] = str_replace(array(BASE, DS), array('', '/'), $screenshot);            
         } else {
-            $path = THEMES.$theme;
-            $name = $theme;
-            $theme = array(
-                'name' => $name,
-                'path' => $path
-            );
+            $info['screenshot'] = 'heart/modules/theme/assets/img/screenshot.png';
         }
 
-        if (!$path) {
-            throw new \RbException(sprintf('Could not find theme "%s".', $theme));
-        }
-
-        if(\File::is($path.DS.'info.php')) {
-            $file = $path.DS.'info.php';
-            $info = require $file;
-            $screenshot = is_file($path.DS.'screenshot.png') ? $path.DS.'screenshot.png' : null;
-            if (isset($screenshot)) {
-                $info['screenshot'] = str_replace(array(BASE, DS), array('', '/'), $screenshot);
-            } else {
-                $info['screenshot'] = null;
-            }
-            return $info;
-        }
-
-        return null;
+        return $info;
     }
 
 }
