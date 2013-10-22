@@ -378,6 +378,13 @@ class Application extends \Illuminate\Container\Container
             $user = \Sentry::getUser();
             // Allow to access admin only
             if ($user->hasAccess('admin')) return false;
+        } else {
+            $allow = array(adminUrl(), adminUrl('login'), adminUrl('logout'));
+            $current = rbUrl(implode('/', \Uri::segments()));
+
+            if (in_array($current, $allow)) {
+                return false;
+            }
         }
 
         if ('disable' != $maintain) {
