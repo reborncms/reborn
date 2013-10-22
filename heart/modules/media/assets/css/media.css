@@ -91,7 +91,7 @@
 #m-status-bar {
 	width: 100%;
 	height: 125px;
-	padding: 10px;
+	padding: 10px 15px;
 	border-top: 1px solid #f0f0f0;
 	background: #fdfdfd;
 }
@@ -241,6 +241,12 @@
 }
 .options li a:hover {
 	background: #4f4f4f;
+}
+
+/* ===== Form ===== */
+#media-form-wrapper {
+	padding: 10px;
+	border: 1px solid #f0f0f0;
 }
 
 /* ===== Thumbnail Image ===== */

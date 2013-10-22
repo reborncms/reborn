@@ -77,13 +77,18 @@ class MediaController extends \AdminController
      **/
     public function createFolder($folderId = 0)
     {
-
         if (\Input::isPost()) {
 
             $validate = $this->validation();
 
             if ($validate->valid()) {
                 if ($this->saveData()) {
+                    if ($this->request->isAjax()) {
+                        return $this->returnJson(array('status' => 'success'));
+                    }
+
+                    \Flash::success(t('media::success.create'));
+
                     return \Redirect::toAdmin('media');
                 } else {
                     \Flash::error(\Translate::get('m.error.create'));
@@ -271,7 +276,9 @@ class MediaController extends \AdminController
             if ($validate->valid()) {
 
                 if ($this->saveData(true, $id)) {
+
                     \Flash::success(\Translate::get('m.success.fileUpdate'));
+
                     return \Redirect::toAdmin('media');
                 } else {
                     \Flash::error(\Translate::get('m.error.fileUpdate'));
