@@ -19,14 +19,32 @@ $(function(){
 	$('#media_create_folder').colorbox({
 		width: "50%",
 		height: "400",
-		/*href: $(this).attr('href') + '/' + $('#main-media-wrapper').attr('data-folder-id'),*/
+		href: SITEURL + ADMIN + '/media/create-folder/' + $('#main-media-wrapper').attr('data-folder-id'),
 		scroll: false,
+		closeButton: false,
 		onComplete: function () {
-			//console.log($(this).attr('href') + $('#main-media-wrapper').attr('data-folder-id'));
 			$.colorbox.resize();
 		}
 	});
 
+	$('#folder_submit').livequery('click', function(e){
+		e.preventDefault();
+
+		var name = $('#name').val();
+		var folder = $('#folder_id').val();
+
+		$.ajax({
+			type: 'POST',
+			url: $('.form').attr('action'),
+			data: $('.form').serialize(),
+			success: function(result) {
+				if ('success' == result.status) {
+					$.colorbox.close();
+					window.location.reload();
+				}
+			}
+		});
+	});
 /* ===== Files and Folders actions ===== */
 
 	$('.ff-wrapper').bind('mouseleave', function() {

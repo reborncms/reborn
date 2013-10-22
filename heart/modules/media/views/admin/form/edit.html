@@ -1,4 +1,4 @@
-<div id="media-wrapper" data-folder-id="{{ (isset($folder_id)) ? $folder_id : 0 }}">
+<div id="media-form-wrapper">
 
 	{{ Form::start('admin/media/edit-file/' . $fileData->id, 'fileEdit', false, array('class' => 'form')) }}
 
@@ -57,4 +57,4 @@
 
 	{{ Form::end() }}
 
-</div> <!-- end of media-wrapper -->
+</div> <!-- end of media-form-wrapper -->

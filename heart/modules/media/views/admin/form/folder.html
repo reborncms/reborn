@@ -1,4 +1,4 @@
-<div id="media-wrapper">
+<div id="media-form-wrapper">
 	
 	{= $url = (isset($folderData)) ? 'edit-folder/'.$folderData->id : 'create-folder' =}
 	{= $formName = (isset($folderData)) ? 'edit-folder' : 'create-folder' =}
@@ -40,7 +40,7 @@
 			<div class="form-right-block">
 				<select name="folder_id" class="medium required" id="folder_id">
 					<option value="0">{{ t('media::media.lbl.none') }}</option>
-					{{ folderTree($allFolders, 0, 0, $folderId) }}
+					{{ folderTree($allFolders, 0, 0, $parentId) }}
 	            </select>
 	            <span class="msg error" style="display: none;">
 					{{ t('media::media.warning.require') }}
@@ -50,10 +50,10 @@
 		</div> <!-- end of form-block -->
 
 		<div class="form-block form-action">
-			{{ Form::input('submit', $btnValue, 'submit', array('class' => 'btn btn-green', 'id' =>'ajax_submit')) }}
+			{{ Form::input('submit', $btnValue, 'submit', array('class' => 'btn btn-green', 'id' =>'folder_submit')) }}
 			<span class="loading" style="display: none;"></span>
 		</div> <!-- end of form-aciton -->
 
 	{{ Form::end() }}
 
-</div> <!-- end of media-wrapper -->
+</div> <!-- end of media-form-wrapper -->
