@@ -139,6 +139,28 @@ class Input
     }
 
     /**
+     * Get HTTP_REFERER value from $_SERVER
+     *
+     * @param null|string $default Default value
+     * @return string|null
+     **/
+    public static function referer($default = null)
+    {
+        return static::getIns()->server->get('HTTP_REFERER', $default);
+    }
+
+    /**
+     * Get REDIRECT_URL value from $_SERVER
+     *
+     * @param null|string $default Default value
+     * @return string|null
+     **/
+    public static function redirect($default = null)
+    {
+        return static::getIns()->server->get('REDIRECT_URL', $default);
+    }
+
+    /**
      * Get client IP
      *
      * @return string
