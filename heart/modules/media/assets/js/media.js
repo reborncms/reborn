@@ -143,6 +143,20 @@ $(function(){
 			$('.thumb-body').parent().removeClass('active-wrap');
 			$('#media_main_action').hide();
 			selected = { 'file':[], 'folder':[] };
+
+			$('#m-statuses p').text($('#m-statuses').attr('data-origin'));
+
+			$('#m-status-desc table tr').hide();
+
+			$('#status_folder_name td:last-child').text($('#status_folder_name').attr('data-origin'));
+			$('#status_folder_name').show();
+
+			$('#status_desc td:last-child').text($('#status_desc').attr('data-origin'));
+			$('#status_desc').show();
+
+			$('#status_folder_auth td:last-child').text($('#status_file_auth').attr('data-origin'));
+			$('#status_folder_auth').show();
+
 		}
 
 	});

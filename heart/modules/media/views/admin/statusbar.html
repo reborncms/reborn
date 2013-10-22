@@ -11,7 +11,7 @@
 		$folderCount = count($folders);
 	=}
 
-	<div id="m-statuses" class="f-left">
+	<div id="m-statuses" class="f-left" data-origin="This folder contain {{ $folderCount }} folders and {{ $fileCount }} files">
 		<p>This folder contain {{ $folderCount }} folders and {{ $fileCount }} files</p>
 	</div> <!-- end of m-statuses -->
 
@@ -23,12 +23,12 @@
 				<td class='semi-colom'>:</td>
 				<td></td>
 			</tr>
-			<tr id="status_folder_name">
+			<tr id="status_folder_name" data-origin="{{ $current->name }}">
 				<td>{{ t('media::media.lbl.folderName') }}</td>
 				<td class='semi-colom'>:</td>
 				<td>{{ $current->name }}</td>
 			</tr>
-			<tr id="status_desc">
+			<tr id="status_desc" data-origin="{{ $current->desc }}">
 				<td>{{ t('media::media.lbl.desc') }}</td>
 				<td class='semi-colom'>:</td>
 				<td>{{ $current->desc }}</td>
@@ -43,7 +43,7 @@
 				<td class='semi-colom'>:</td>
 				<td></td>
 			</tr>
-			<tr id="status_folder_auth">
+			<tr id="status_folder_auth" data-origin="{{ $current->user->first_name.' '.$current->user->last_name }}">
 				<td>{{ t('media::media.lbl.folderAuthor') }}</td>
 				<td class='semi-colom'>:</td>
 				<td>{{ $current->user->first_name.' '.$current->user->last_name }}</td>
