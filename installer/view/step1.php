@@ -105,6 +105,22 @@
 				<td colspan=2><?php echo $msg; ?></td>
 			</tr>
 			<?php
+				if($exts['gd']['status'] and $exts['gd']['vs']) {
+					$msg = 'GD is ok.';
+					$class= "ok";
+				} elseif ($exts['gd']['status'] and !$exts['gd']['vs']) {
+					$msg = 'GD Version reqired 2.*';
+					$class= "fail";
+				} else {
+					$msg = 'Need GD Extension';
+					$class= "fail";
+				}
+			?>
+			<tr class="<?php echo $class; ?>">
+				<td>GD</td>
+				<td colspan=2><?php echo $msg; ?></td>
+			</tr>
+			<?php
 				if($exts['curl']['status']) {
 					$msg = 'cURL is ok.';
 					$class= "ok";

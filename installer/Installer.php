@@ -325,6 +325,15 @@ class Installer
 		// Check cUrl
 		$data['curl']['status'] = (function_exists('curl_init')) ? true : false;
 
+		// Check GD
+		if (function_exists('gd_info')) {
+			$gd = gd_info();
+			$data['gd']['status'] = true;
+			$data['gd']['vs'] = version_compare($gd['GD Version'], '2.0', '>=');
+		} else {
+			$data['gd']['status'] = false;
+		}
+
 		if ($data['php']['status'] and $data['mysql']['status']
 			and $data['mod_rewrite']['status'] and $data['curl']['status']) {
 			$data['pass'] = true;
