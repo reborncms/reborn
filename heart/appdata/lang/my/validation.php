@@ -26,5 +26,7 @@ return array(
 	'boolean'		=> "အဆိုပါ {key} သည် boolean အမျိုးအစား ဖြစ်ရမည်။",
 	'image'			=> "This {key} must be an image type {types}.",
 	'fileType'		=> "This {key} must be a file type {types}.",
-	'fileSize'		=> "Maximun uploaded file size is {size}"
+	'fileSize'		=> "Maximun uploaded file size is {size}",
+	'before'		=> "This \"{key}\" field must be date before {date}.",
+	'after'			=> "This \"{key}\" field must be date after {date}."
 );

@@ -66,6 +66,11 @@ class Validation
      * 19) - unique [Input value is unique in mysql database. eg: unique:tablename.keyname]
      * 20) - type [Input value's type must be $type. eg: type:string [string,array,float]
      * 21) - boolean [Input value type must be boolean. [0, 1, on, off, true, false]
+     * 22) - image [Input value must be allow Image type. (eg: image:jpg,png)]
+     * 23) - fileType [Input value must be allow File Type. (eg: fileType:pdf,zip)]
+     * 24) - fileSize [Input value's maximum file size limit (eg: fileSize:2MB)]
+     * 25) - before [Input date must be before date (eg: before:10/22/2013)]
+     * 26) - after [Input date must be after date (eg: after:10/22/2013)]
      *
      * @var array
      **/
@@ -93,7 +98,9 @@ class Validation
                 'boolean',
                 'image',
                 'fileType',
-                'fileSize'
+                'fileSize',
+                'before',
+                'after'
             );
 
     /**
@@ -409,6 +416,24 @@ class Validation
         return str_replace(array('{key}', '{size}'), array(ucfirst($key), $size), $msg);
     }
 
+    protected function messageForBefore($key, $before)
+    {
+        list(, $date) = $this->prepareDateFormat(null , $before);
+
+        $msg = \Translate::get('validation.before');
+
+        return str_replace(array('{key}', '{date}'), array(ucfirst($key), $date), $msg);
+    }
+
+    protected function messageForAfter($key, $after)
+    {
+        list(, $date) = $this->prepareDateFormat(null , $after);
+
+        $msg = \Translate::get('validation.after');
+
+        return str_replace(array('{key}', '{date}'), array(ucfirst($key), $date), $msg);
+    }
+
 
     /* =============== Validation Method Lists =================== */
 
@@ -619,6 +644,62 @@ class Validation
         $size =formatSizeToBytes($size);
 
         return ($value->getClientSize() < $size);
+    }
+
+    /**
+     * Check value date must be before Rule date
+     *
+     * @param string $value
+     * @param string $before
+     * @return boolean
+     **/
+    protected function validBefore($value, $before)
+    {
+        list($value, $before) = $this->prepareDateFormat($value, $before);
+
+        return (strtotime($value) < strtotime($before));
+    }
+
+    /**
+     * Check value date must be after Rule date
+     *
+     * @param string $value
+     * @param string $after
+     * @return boolean
+     **/
+    protected function validAfter($value, $after)
+    {
+        list($value, $after) = $this->prepareDateFormat($value, $after);
+
+        return (strtotime($value) > strtotime($after));
+    }
+
+    /**
+     * Prepare Date format for Before, After Rules
+     *
+     * @param string|null $value
+     * @param string $rules
+     * @return array
+     **/
+    protected function prepareDateFormat($value, $rules)
+    {
+        $list = explode('@', $rules);
+        $date = $list[0];
+        $format = isset($list[1]) ? $list[1] : 'm-d-Y';
+        if (isset($this->inputs[$date])) {
+            $date = $this->inputs[$date];
+        }
+
+        $rule_date = \DateTime::createFromFormat($format, $date);
+
+        if (is_null($value)) {
+            $value_date = null;
+        } else {
+            $value_date = \DateTime::createFromFormat($format, $value);
+            $value_date = $value_date->format('m/d/Y');
+        }
+
+        return array($value_date, $rule_date->format('m/d/Y'));
     }
 
 } // END class Validation
