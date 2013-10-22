@@ -289,6 +289,20 @@ if(! function_exists('rbUrl'))
 	}
 }
 
+if(! function_exists('asset_url'))
+{
+	/**
+	 * Helper function for the asset file path.
+	 *
+	 * @param string $path Uri path to create.
+	 * @return string
+	 **/
+	function asset_url($path = '')
+	{
+		return rtrim(\Uri::create($path), '/');
+	}
+}
+
 if(! function_exists('adminUrl'))
 {
 	/**
