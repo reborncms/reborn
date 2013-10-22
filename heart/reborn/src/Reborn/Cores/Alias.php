@@ -66,6 +66,7 @@ class Alias
             'Sentry' => 'Reborn\Connector\Sentry\Sentry',
             'Setting' => 'Reborn\Cores\Setting',
             'Str' => 'Reborn\Util\Str',
+            'Table' => 'Reborn\Util\Table',
             'Translate' => 'Reborn\Translate\TranslateManager',
             'Uri' => 'Reborn\Http\Uri',
             'Validation' => 'Reborn\Form\Validation',

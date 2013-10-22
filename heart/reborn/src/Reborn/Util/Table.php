@@ -319,6 +319,10 @@ class Table
 	 **/
 	public function isEmpty()
 	{
+		if (is_object($this->object) and method_exists($this->object, 'isEmpty')) {
+			return $this->object->isEmpty();
+		}
+
 		return empty($this->object);
 	}
 
@@ -329,7 +333,7 @@ class Table
 	 **/
 	public function build()
 	{
-		if(is_null($this->object)) {
+		if($this->isEmpty()) {
 			return null;
 		}
 
