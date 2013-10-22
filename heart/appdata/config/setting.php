@@ -116,7 +116,7 @@ return array(
 	 */
 	'frontend_enabled' => array(
 			'type' => 'select',
-			'option' => array('1' => 'Enable', '0' => 'Disable')
+			'option' => array('enable' => 'Enable', 'disable' => 'Disable')
 		),
 
 	/**

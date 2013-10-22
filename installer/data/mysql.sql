@@ -28,7 +28,7 @@ INSERT INTO `settings` (`slug`, `name`, `desc`, `value`, `default`, `module`) VA
 ('default_language', 'Default Language', 'Default Language for Reborn CMS', '', 'en', 'system'),
 ('timezone', 'Select your Timezone', 'Set timezone for your server', '', 'UTC', 'system'),
 ('admin_item_per_page', 'Items to show in one page (Admin Panel)', 'Item limit to show in admin Data Tables', '', '10', 'system'),
-('frontend_enabled', 'Frontend Status', 'If your site in maintenance condition, you can closed your site.', '', '1', 'system'),
+('frontend_enabled', 'Frontend Status', 'If your site in maintenance condition, you can closed your site.', '', 'enable', 'system'),
 ('spam_filter', 'Spam Filter Key', 'Use this key for spam filter from bot', '', 'D0ntFillINthI$FielD', 'system');
 --- db ---
 CREATE TABLE `groups` (

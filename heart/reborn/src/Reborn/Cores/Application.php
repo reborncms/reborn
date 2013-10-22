@@ -372,15 +372,22 @@ class Application extends \Illuminate\Container\Container
      **/
     protected function siteIsMaintain()
     {
-        $maintain = Setting::get('site_is_maintain');
+        $maintain = Setting::get('frontend_enabled');
 
-        if (! $maintain) {
+        if (\Sentry::check()) {
+            $user = \Sentry::getUser();
+            // Allow to access admin only
+            if ($user->hasAccess('admin')) return false;
+        }
+
+        if ('disable' != $maintain) {
             return false;
         } else {
             $theme = Setting::get('public_theme');
-            $file = THEMES.$theme.DS.'views'.DS.'layout'.DS.'maintain'.EXT;
+            $file = THEMES.$theme.DS.'views'.DS.'maintain.html';
             if (file_exists($file)) {
                 $content = File::getContent($file);
+                $content = $this['view']->renderAsStr($content);
             } else {
                $content = File::getContent(APP.'views'.DS.'maintain.php');
             }

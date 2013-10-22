@@ -33,12 +33,12 @@ class SettingController extends \AdminController
 	public function save($type)
 	{
 		if (!\Input::isPost()) {
-			return \Redirect::toAdmin('setting/system');
+			return \Redirect::toAdmin('setting');
 		}
 
 		if (\Input::get('type') == 'system') {
 			$fields = $this->settings['system'];
-			$url = 'setting/system';
+			$url = 'setting';
 		} else {
 			$fields = $this->settings['modules'][\Input::get('type')];
 			$url = 'setting/module/'.$type;

@@ -2,7 +2,7 @@
 
 // Route file for module Setting
 
-Route::get('@admin/setting/system', 'Setting\Admin\Setting::system', 'setting_system');
+Route::get('@admin/setting', 'Setting\Admin\Setting::index', 'setting_system');
 
 Route::get('@admin/setting/module/{str:name}', 'Setting\Admin\Setting::module', 'setting_module');
 
