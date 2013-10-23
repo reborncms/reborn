@@ -70,11 +70,17 @@ class Blog
 		$offset = isset($options['offset']) ? (int)$options['offset'] : null;
 		$order = isset($options['order']) ? $options['order'] : 'created_at';
 		$dir = isset($options['order_dir']) ? $options['order_dir'] : 'desc';
+		$author = isset($options['author']) ? $options['author'] : false;
 
 		$posts = Model::active();
 		if (!is_null($cats)) {
 			$cat_ids = CategoryModel::whereIn('slug', $cats)->lists('id');
 			$posts->whereIn('category_id', $cat_ids);
+		}
+
+		if ($author) {
+			$aq = explode(',', $author);
+			$posts->whereIn('author_id', $aq);
 		}
 
 		$posts = $posts->orderBy($order, $dir)->take($limit)->skip($offset)->get();
