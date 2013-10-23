@@ -133,8 +133,6 @@
 
 				$.colorbox.resize();
 
-				Reborn.slugGenerator('#form_title', '#form_slug');
-
 				$('form#blog-cat-edit').on('submit', function(e) {
 
 					var form_data = $(this).serialize();
@@ -150,10 +148,11 @@
 							$(msg_box).addClass('msg-success');
 							$.colorbox.resize();
 							if ($('#category_select').length > 0) {
-
 								$.post(SITEURL + ADMIN + '/blog/category/getCategory/' + data.saveID,function(data){
 									$('#category_select').html(data);
 								});
+								console.log(data);
+								$('#category_select').val(data.saveID);
 							} else {
 								window.location.reload();
 							}

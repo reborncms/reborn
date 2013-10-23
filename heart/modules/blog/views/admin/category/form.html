@@ -17,7 +17,7 @@
 				<span class="error">{{ $val_errors['name'] }}</span>
 			{{ endif }}
 
-			{{ Form::input('name', isset($cat->name) ? $cat->name : '', 'text', array('class' => 'xx-large thin', 'id' => 'form_title')) }}
+			{{ Form::input('name', isset($cat->name) ? $cat->name : '', 'text', array('class' => 'xx-large thin', 'id' => 'cat_'.$method.'_title')) }}
 
 		</div> <!-- end of div.c-a-b -->
 
@@ -28,7 +28,7 @@
 			{{ if(isset($val_errors['slug'])) }}
 				<span class="error">{{ $val_errors['slug'] }}</span>
 			{{ endif }}	
-			{{ Form::input('slug', isset($cat->slug) ? $cat->slug : '', 'text', array('class' => 'xx-large thin', 'id' => 'form_slug')) }}
+			{{ Form::input('slug', isset($cat->slug) ? $cat->slug : '', 'text', array('class' => 'xx-large thin', 'id' => 'cat_'.$method.'_slug')) }}
 		
 		</div> <!-- end of div.c-a-b -->
 
@@ -64,9 +64,15 @@
 			{= $buttonVal = t('blog::blog.edit_cat') =}
 		{{ endif }}
 		
-		{{ Form::submit('add-new-cat-btn', $buttonVal, array('class' => 'button button-green','id' => 'add-new-cat-btn')) }}
+		{{ Form::submit('add-new-cat-btn', $buttonVal, array('class' => 'btn btn-green','id' => 'add-new-cat-btn')) }}
 
 		</div> <!-- end of div.c-a-b -->
 
 	{{ Form::end() }}
 </div> <!-- end of #cat-edit-box -->
+
+<script type="text/javascript">
+	jQuery(function(){
+		Reborn.slugGenerator('#cat_{{ $method }}_title', '#cat_{{ $method }}_slug');
+	});
+</script>

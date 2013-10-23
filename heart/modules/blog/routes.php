@@ -40,6 +40,8 @@
 
 \Route::post('@admin/blog/category/order', 'Blog\Admin\Category::order', 'admin_blog_category_order');
 
+\Route::add('@admin/blog/category/getCategory/{int:selected}?', 'Blog\Admin\Category::getCategory', 'admin_blog_get_category');
+
 // --- Front end --- //
 
 \Route::add('blog/rss', 'Blog\Blog::rss', 'rss_feed');
