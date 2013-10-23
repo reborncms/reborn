@@ -22,14 +22,14 @@
 		)->method(array('GET', 'POST'));
 
 	// Folder Delete
-	\Route::delete(
+	\Route::add(
 			'@admin/media/delete-folder/{int:id}',
 			'Media\Admin\Media::deleteFolder', 
 			'folder_delete'
 		);
 
 	// File Delete
-	\Route::delete(
+	\Route::add(
 			'@admin/media/delete-file/{int:id}/{int:redirect}?',
 			'Media\Admin\Media::deleteFile',
 			'file_delete'

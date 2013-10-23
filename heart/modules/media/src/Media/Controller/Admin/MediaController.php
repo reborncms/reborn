@@ -501,25 +501,6 @@ class MediaController extends \AdminController
                         ->set('images', $images)
                         ->setPartial('admin/plugin/thumbnail');
 
-
-       /* if ($this->request->isAjax()) {
-
-            $this->template->partialOnly();
-            $thumbMeta = $this->template
-                            ->partialRender('admin'.DS.'plugin'.DS.'thumbmeta');
-            $this->template->set('thumbMeta', $thumbMeta);
-
-        } else {
-            $this->template->script('setthumbnail.js', 'media', 'footer');
-            $this->template->set('ajax', false);
-        }*/
-        
-        /*$upload = $this->template->partialRender('admin'.DS.'form'.DS.'upload');
-
-        $this->template->title(t('media::media.ext.thumbnail'))
-                        ->set('images', $images)
-                        ->set('upload', $upload)
-                        ->setPartial('admin'.DS.'plugin'.DS.'thumbnail');*/
     }
 
     /**

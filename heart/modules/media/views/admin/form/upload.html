@@ -20,7 +20,7 @@
 {{ js('dropzone.js', 'media') }}
 
 <script type="text/javascript">
-/* *** ** * Remain bug in not ajax request * ** *** */
+
 	Dropzone.autoDiscover = false;
 	$('#uploader').dropzone({
 		paramName: "files",
@@ -32,7 +32,19 @@
 			$('#upload-submit').hide();
 		},
 		success: function (file) {
-			$(file.previewTemplate).find('.dz-progress').fadeOut();
+			var template = file.previewTemplate;
+
+			if ('success' == file.status) {
+				$(template).find('.dz-progress').fadeOut();
+
+				$(template).find('.dz-success-mark').css('opacity', '1');
+
+			} else {
+
+				$(template).find('.dz-error-mark').css('opacity', '1');
+
+			}
+			
 		}
 	});
 		
