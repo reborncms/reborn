@@ -6,7 +6,6 @@ use Reborn\Connector\Sentry\Sentry;
 use Reborn\Util\Mailer as Mailer;
 use User\Model\UserMeta as UserMeta;
 use User\Model\User;
-use Blog\Model\Blog;
 
 class UserController extends \PublicController
 {
@@ -32,7 +31,7 @@ class UserController extends \PublicController
 	{
 		if(!Sentry::check() and is_null($id)) return \Redirect::to('user/login');
 		
-		$user = User::where('id', $id)->first();
+		$user = User::find($id);
 
 		if(is_null($user)) return \Redirect::to('/');
 
@@ -42,12 +41,11 @@ class UserController extends \PublicController
 			$usermeta = $u;
 		}
 
-		$blogs = Blog::active()
-						->with(array('category','author'))
-						->where('author_id', $id)
-						->take(10)
-						->orderBy('created_at', 'desc')
-						->get();
+		$blogs = array();
+
+		if(\Module::isEnabled('blog')) {
+			$blogs = \Blog::posts(array('limit' => 10, 'author' => $id));
+		}		
 
 		$this->template->title(t('user::user.title.profile'))
 					->breadcrumb(t('user::user.title.profile'))

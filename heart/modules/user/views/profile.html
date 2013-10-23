@@ -43,7 +43,7 @@
 	</div>
 
 	<div class="latest-author-posts">
-		<h3>Latest Posts from {{ $user->fullname }}</h3>
+		<h3>Latest published posts from {{ $user->fullname }}</h3>
 
 		{{ if(count($blogs) > 0) }}
 			{{ loop($blogs as $blog) }}
