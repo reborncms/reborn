@@ -40,12 +40,14 @@
 
 		    <li id="extra-li">
 		    	
-	    		{{ Form::label(t('media::media.lbl.chofol')) }}
+		    	<div id="folder-changer">
+		    		{{ Form::label(t('media::media.lbl.chofol')) }}
 
-	    		<select name="folder_id" class="medium required" id="jumper">
-					<option value="0">{{ t('media::media.lbl.none') }}</option>
-					{{ folderTree($allFolders, 0, 0, 0) }}
-		        </select>
+		    		<select name="folder_id" class="medium required" id="jumper">
+						<option value="0">{{ t('media::media.lbl.none') }}</option>
+						{{ folderTree($allFolders, 0, 0, 0) }}
+			        </select>
+		    	</div> <!-- end of folder-changer -->	    		
 
 	    	</li> <!-- end of extra-li -->
 

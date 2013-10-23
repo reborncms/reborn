@@ -104,9 +104,7 @@ class Folders extends \Eloquent
             $a[] = $test;
 
             $a[] = $this->findParent($test);
-        }/* else {
-            $a[] = $obj->id;
-        }*/
+        }
 
         return $a;
     }

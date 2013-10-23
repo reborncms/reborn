@@ -491,7 +491,18 @@ class MediaController extends \AdminController
     {
         $images = Files::imageOnly()->where('folder_id', '=', $folderId)->get();
 
-        if ($this->request->isAjax()) {
+        $this->checkAjax();
+
+        $this->template->title(t('meida::media.ext.thumbnail'))
+                        ->style('plugins.css', 'media')
+                        ->style('thumbnail.css', 'media')
+                        ->script('plugins.js', 'media')
+                        ->script('thumbnail.js', 'media')
+                        ->set('images', $images)
+                        ->setPartial('admin/plugin/thumbnail');
+
+
+       /* if ($this->request->isAjax()) {
 
             $this->template->partialOnly();
             $thumbMeta = $this->template
@@ -501,17 +512,25 @@ class MediaController extends \AdminController
         } else {
             $this->template->script('setthumbnail.js', 'media', 'footer');
             $this->template->set('ajax', false);
-        }
+        }*/
         
-        $upload = $this->template->partialRender('admin'.DS.'form'.DS.'upload');
+        /*$upload = $this->template->partialRender('admin'.DS.'form'.DS.'upload');
 
         $this->template->title(t('media::media.ext.thumbnail'))
                         ->set('images', $images)
                         ->set('upload', $upload)
-                        ->setPartial('admin'.DS.'plugin'.DS.'thumbnail');
+                        ->setPartial('admin'.DS.'plugin'.DS.'thumbnail');*/
     }
 
+    /**
+     * Called by  wysiwyg editor
+     *
+     * @param int $folderId Parent Folder Id
+     *
+     * @return void
+     **/
     public function wysiwyg($folderId = 0) {
+
         $images = Files::imageOnly()->where('folder_id', '=', $folderId)->get();
 
         $this->template->title(t('media::media.ext.thumbnail'))

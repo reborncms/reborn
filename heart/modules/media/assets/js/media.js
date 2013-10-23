@@ -132,7 +132,16 @@ $(function(){
 			$('#status_file_auth td:last-child').text(data.attr('data-user'));
 			$('#status_file_auth').show();
 		} else {
+			$('#m-status-desc table tr').hide();
 
+			$('#status_folder_name td:last-child').text(data.attr('data-name'));
+			$('#status_folder_name').show();
+
+			$('#status_desc td:last-child').text(data.attr('data-desc'));
+			$('#status_desc').show();
+
+			$('#status_folder_auth td:last-child').text(data.attr('data-user'));
+			$('#status_folder_auth').show();
 		}
 	}
 

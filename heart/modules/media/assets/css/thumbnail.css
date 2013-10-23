@@ -15,7 +15,7 @@
 	width: 20%;
 	border-radius: 0;
 	border-bottom: none;
-	height: 460px;
+	height: 480px;
 	border-right: 1px solid #f0f0f0;
 	padding: 0;
 	background: #fafafa;
@@ -56,7 +56,7 @@
 
 #m-thumb-main {
 	width: 69%;
-	height: 460px;
+	height: 480px;
 	border-right: 1px solid #f0f0f0;
 }
 #m-thumb-body {
@@ -97,7 +97,8 @@
 }
 
 #width, #height {
-	width: 40%;
+	width: 35%;
+	padding: 5px;
 }
 #m-thumb-dimension .icon-link {
 	cursor: pointer;
@@ -112,7 +113,9 @@
 	color: #202020;
 	padding: 0 2px;
 }
-
+#alt_text {
+	padding: 5px;
+}
 
 #m-thumb-button {
 	margin-top: 10px;
@@ -129,40 +132,6 @@
 	box-sizing: border-box;
 }
 
-/* ===== Link ===== */
-#external_link {
-	margin: 10px;
-}
-#link_ok_btn {
-	margin-left: 10px;
-}
-#link_preview {
-	margin-top: 20px;
-}
-#link-prev-left {
-	width: 30%;
-	padding: 0 10px;
-	height: 355px;
-	border-right: 1px solid #f0f0f0;
-	overflow: hidden;
-}
-#link-prev-img-wrap {
-	width: 100%;
-	max-height: 280px;
-	margin: 10px 0;
-	overflow: hidden;
-}
-#link-prev-img-wrap img {
-	max-width: 100%;
-}
-#link-option-wrap {
-	width: 65%;
-	margin: 10px;
-}
-.link-form-wrap {
-	margin-bottom: 10px;
-}
-
 /* ===== Extra ===== */
 #folder-changer {
 	padding: 8px;
@@ -171,7 +140,10 @@
 #folder-changer label {
 	width: 100%;
 	padding: 5px 0;
+	font-weight: normal;
+	color: #606060;
 }
 #folder-changer select {
 	width: 100%;
+	display: block;
 }

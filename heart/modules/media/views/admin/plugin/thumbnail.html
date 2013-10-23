@@ -1,16 +1,8 @@
-{{ ifset ($wysiwygMeta) }}
+{{ css('plugins.css', 'all', 'media') }}
+{{ css('thumbnail.css', 'all', 'media') }}
 
-	{{ $wysiwygMeta }}
-
-{{ endif }}
-
-{{ ifset ($thumbMeta) }}
-
-	{{ $thumbMeta }}
-	
-{{ endif }}
-
-
+{{ js('plugins.js', 'media') }}
+{{ js('thumbnail.js', 'media') }}
 
 <div id="thumbnail-wrap" class="clearfix">
 
@@ -29,30 +21,24 @@
 		    	</a>
 		    </li>
 
-		    <li>
-		    	<a href="#link-tab" class="adjust-width">
-		    		{{ t('media::media.btn.link') }}
-		    	</a>
-		    </li>
-
 		    <li id="extra-li">
 		    	
-	    		{{ Form::label(t('media::media.lbl.chofol')) }}
+		    	<div id="folder-changer">
+		    		{{ Form::label(t('media::media.lbl.chofol')) }}
 
-	    		<select name="folder_id" class="medium required" id="jumper">
-					<option value="0">{{ t('media::media.lbl.none') }}</option>
-					{{ folderTree($allFolders, 0, 0, 0) }}
-		        </select>
+		    		<select name="folder_id" class="medium required" id="jumper">
+						<option value="0">{{ t('media::media.lbl.none') }}</option>
+						{{ folderTree($allFolders, 0, 0, 0) }}
+			        </select>
+		    	</div> <!-- end of folder-changer -->	    		
 
 	    	</li> <!-- end of extra-li -->
 
 		</ul> <!-- end of thumb-tab-nav -->
 
-		<div id="media-tab" class="clearfix">
+		<div id="media-tab" class="clearfix f-left">
 		     
-		  	<div id="m-thumb-main" class="f-left p-relative">
-
-				<div id="m-thumb-ajax-wrap" class="clearfix">
+		  	<div id="m-thumb-main" class="f-left">
 
 					<div id="m-thumb-body" class="f-left">
 						<div id="ajax_wrap">
@@ -63,15 +49,13 @@
 									$imgSrc = rbUrl('media/image/'.$file->filename.'/80/60');
 								=}
 
-								<img src="{{ $imgSrc }}" alt="{{ $file->alt_text }}" class="m-thumbs f-left" title="{{ $file->name }}" data-name="{{ $file->name }}" data-filename="{{ $file->filename }}" data-width="{{ $file->width }}" data-height="{{ $file->height }}" data-alt="{{ $file->alt_text }}" data-id="{{ $file->id }}">
+								<img class='thumb-img f-left' src="{{ $imgSrc }}" alt="{{ $file->alt_text }}" class="m-thumbs f-left" title="{{ $file->name }}" data-name="{{ $file->name }}" data-filename="{{ $file->filename }}" data-width="{{ $file->width }}" data-height="{{ $file->height }}" data-alt="{{ $file->alt_text }}" data-id="{{ $file->id }}">
 
 							{{ endloop }}
 
 						</div> <!-- end of ajax_wrap -->
 
 					</div> <!-- end of m-thumb-body -->
-
-				</div> <!-- end of m-thumb-ajax-wrap -->
 
 			</div> <!-- end of m-thumb-media-wrap -->
 
@@ -83,29 +67,16 @@
 			    	</div> <!-- end of m_img_preview -->
 			    </div> <!-- end of m-thumb-preview -->
 
-			    <div id="m-thumb-button">
-			    	<button onclick="javascript:insert();" class="btn btn-green btn-large">
-			    		{{ t('media::media.ext.insert') }}
-			    	</button>
-			    </div> <!-- end of m-thumb-button -->
-
 			    <div id="m-thumb-dimension" class="m-thumb-option">
 			    	{{ Form::label(t('media::media.lbl.dimension')) }}
 			    	<div class="m_input_wrap clearfix">
 			        	{{ Form::input('width', '', 'text', array('placeholder' => 'width', 'class' => 'f-left adjust-width')) }}
+
+			        	<i title="scale" class='icon-link f-left link-active'></i>
+
 			        	{{ Form::input('height', '', 'text', array('placeholder' => 'height', 'class' => 'f-left adjust-width')) }}
 			        </div> <!-- end of m_input_wrap -->
 			    </div> <!-- end of m-thumb-dimension -->
-
-			    <div id="m-thumb-align" class="m-thumb-option">
-			    	{{ Form::label(t('media::media.lbl.align'), 'float') }}
-			    	<div class="m_input_wrap">
-				        {=
-				        	$float = array('left' => 'Left', 'right' => 'Right', 'middle' => 'Middle', 'auto' => 'None')
-				        =}
-				        {{ Form::select('float', $float, 'auto', array('id' => 'float')) }}
-				    </div> <!-- end of m_input_wrap -->
-			    </div> <!-- end of m-thumb-align -->
 
 			    <div id="m-thumb-alt" class="m-thumb-option">
 			    	{{ Form::label(t('media::media.lbl.altText'), 'alt_text') }}
@@ -114,58 +85,23 @@
 			    	</div> <!-- end of m_input_wrap -->
 				</div> <!-- end of m-thumb-alt -->
 
+				<div id="m-thumb-button">
+			    	<button onclick="javascript:insert();" class="btn btn-green">
+			    		{{ t('media::media.ext.insert') }}
+			    	</button>
+			    </div> <!-- end of m-thumb-button -->
+
 			</div> <!-- end of option-wrap -->
 
 		</div> <!-- end of media-tab -->
 
-		<div id="upload-tab">
+		<div id="upload-tab" class="f-right">
 
 			<div id="uploader-wrap">
-				{{ $upload }}
+				{{ \Form::upload(0); }}
 			</div> <!-- end of uploader-wrap -->
 			
 		</div> <!-- end of upload-tab -->
-
-
-		<div id="link-tab">
-			
-			{{ Form::input('external_link', '', 'text', array('class'=>'large', 'placeholder' => 'Insert a link')) }}
-
-			<button id='link_ok_btn' class='btn btn-green btn-large'>
-				{{ t('media::media.ext.ok') }}
-			</button>
-
-			<div id="link_preview" class='clear-fix' style="display: none;">
-
-				<div id="link-prev-img-wrap" class='f-left'>
-					<button onclick="javascript:linkInsert();" class="btn btn-green">
-			    		{{ t('media::media.ext.insert') }}
-			    	</button>
-				</div> <!-- end of link-prev-img-wrap -->
-
-				<div id="link-option-wrap" class='f-left'>
-			    	<div class="m_input_wrap">
-
-			    		<div class="link-form-wrap clearfix">
-			    			{{ Form::label(t('media::media.lbl.width')) }}
-			        		{{ Form::input('link_width', '', 'text', array('class' => 'medium f-left')) }}
-			    		</div> <!-- end of link-form-wrap -->
-			    		
-			    		<div class="link-form-wrap clearfix">
-			    			{{ Form::label(t('media::media.lbl.height')) }}
-			        		{{ Form::input('link_height', '', 'text', array('class' => 'medium f-left')) }}
-			    		</div> <!-- end of link-form-wrap -->
-
-			    		<div class="link-form-wrap clearfix">
-			    			{{ Form::label(t('media::media.lbl.align')) }}
-			        		{{ Form::select('link_float', $float, 'auto', array('class' => 'medium')) }}
-			    		</div> <!-- end of link-form-wrap -->			        	
-
-			        </div> <!-- end of m_input_wrap -->
-				</div> <!-- end of link-option-wrap -->
-			</div> <!-- end of link_preview -->
-
-		</div> <!-- end of link-tab -->
 
 	</div> <!-- end of tabs -->
 

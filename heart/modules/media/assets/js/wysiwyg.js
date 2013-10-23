@@ -130,4 +130,10 @@ $(document).ready(function(){
 		$('#m-thumb-body').load(SITEURL + ADMIN + "/media/wysiwyg #ajax_wrap");
 	});
 
+	$('#jumper').on('change', function(e){
+
+		$('#m-thumb-body').load(SITEURL + ADMIN + "/media/wysiwyg/" + $(this).val() + ' #ajax_wrap');
+
+	});
+
 });

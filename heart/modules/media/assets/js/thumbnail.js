@@ -4,7 +4,7 @@ $(function(){
 
 	$('#m-thumb-main').perfectScrollbar();
 
-	$('.m-thumbs').livequery('click', function(){
+	$('.thumb-img').livequery('click', function(){
 
 		if (! $(this).hasClass('m-thumb-active')) {
 			$('.m-thumbs').removeClass('m-thumb-active');
@@ -15,22 +15,22 @@ $(function(){
 		$('#height').val($(this).attr('data-height'));
 		$('#alt_text').val($(this).attr('data-alt'));
 
-		var image = "<p style='text-align: center;'><img src='"+SITEURL+"media/image/"+$(this).attr('data-filename')+"/300'></p>";
+		var image = "<img src='"+SITEURL+"media/image/"+$(this).attr('data-filename')+"/300/180'>";
 
 		var imageName = "<p>"+$(this).attr('data-name')+"</p>";
 
 		var imageUrl = "<input type='hidden' value='"+$(this).attr('data-filename')+"' id='image_url'>";
 
 		$('#m-thumb-preview-wrap').html(image+imageName+imageUrl);
-
-		$('#m-thumb-preview-wrap').show();
 	});
 
-	$('#m-thumb-choose-folder').chosen().change(function(){
-		$('div#m-thumb-body').load(SITEURL + ADMIN + '/media/thumbnail/' + $(this).val() + ' #ajax_wrap');
+	$('#jumper').on('change', function(e){
+
+		$('#m-thumb-body').load(SITEURL + ADMIN + "/media/thumbnail/" + $(this).val() + ' #ajax_wrap');
+
 	});
 
-	$('#m-thumb-action-upload').bind('click', function(e){
+	$('#nav_media_tab').on('click', function(e){
 		e.preventDefault();
 
 		if (! $(this).hasClass('action-active')) {
@@ -39,15 +39,8 @@ $(function(){
 			$(this).addClass('action-active');
 		}
 
-		$('#m-thumb-media-wrap').load($(this).attr('href'));
-		$(window).unload();
+		$('#m-thumb-body').load(SITEURL + ADMIN + "/media/thumbnail #ajax_wrap");
 	});
-
-	$('#m-thumb-action-media').livequery('click', function(e){
-		e.preventDefault();
-
-		
-	})
 });
 
 function insert()
