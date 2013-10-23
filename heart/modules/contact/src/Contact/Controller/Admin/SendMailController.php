@@ -61,7 +61,7 @@ class SendMailController extends \AdminController
 					
 					$temp = Helper::getTemplate($data,'reply_template');
 					
-					$attach = \Input::file('attachment');
+					
 					
 					$config = array(
 						'to'		=> $to,
@@ -71,7 +71,7 @@ class SendMailController extends \AdminController
 						'body'		=> $temp,
 						'attachment'=> array(
 							'fieldName'=> 'attachment',
-							'value'		=> $attach,
+							'value'		=> $data['attachment'],
 							),
 						'attachmentConfig'=> array(
 							'path'		=> UPLOAD.'contact_attachment',

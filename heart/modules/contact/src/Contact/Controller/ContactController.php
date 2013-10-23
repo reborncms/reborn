@@ -35,8 +35,6 @@ class ContactController extends \PublicController
 
 				$data['ip'] = \Input::ip();
 
-				$attach = \Input::file('attachment');
-
 				$temp = Helper::getTemplate($data,'contact_template');
 				
 				$config = array(
@@ -47,7 +45,7 @@ class ContactController extends \PublicController
 					'body'		=> $temp,
 					'attachment'=> array(
 						'fieldName'=> 'attachment',
-						'value'		=> $attach,
+						'value'		=> $data['attachment'],
 						),
 					
 					'attachmentConfig'=> array(
