@@ -5,6 +5,21 @@
 	<h2>Directory Path and File Writable Access</h2>
 	<table class="access">
 		<?php $checks = array(); ?>
+
+		<tr>
+			<th>Asset Cache Path</th>
+		</tr>
+
+		<?php foreach($result['asset'] as $k => $list) : ?>
+		<?php
+			$class = $list ? 'ok' : 'fail';
+			$checks[] = $list;
+		?>
+		<tr class="<?php echo $class; ?>">
+			<td><?php echo $k; ?></td>
+		</tr>
+		<?php endforeach ?>
+
 		<tr>
 			<th>Storages Path</th>
 		</tr>

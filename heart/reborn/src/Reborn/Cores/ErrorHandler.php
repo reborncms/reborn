@@ -100,7 +100,7 @@ class ErrorHandler
         if ($response instanceof Response) {
             $response->send();
         } else {
-            $this->defaultHandling($e, $status);
+            $this->defaultHandling($e, $status)->send();
         }
 
         exit(1);
@@ -149,8 +149,8 @@ class ErrorHandler
         \Log::debug($message);
 
         if ($this->app['env'] == 'production') {
-            $view = new \Reborn\MVC\View\View(\Config::get('template.cache_path'));
-            $content = $view->render(APP.'views'.DS.'production-error.php');
+            $template = $this->app['template'];
+            $content = $template->renderProductionError();
         } else {
             $content = require APP.'views'.DS.'exception.php';
         }

@@ -80,6 +80,20 @@ class Template
     protected $layout404 = '404';
 
     /**
+     * Variable for maintain mode page
+     *
+     * @var string
+     **/
+    protected $maintain = 'maintain';
+
+    /**
+     * Variable for production-error page
+     *
+     * @var string
+     **/
+    protected $error = 'production-error';
+
+    /**
      * Extension for the theme file
      *
      * @var string
@@ -501,7 +515,6 @@ class Template
     /**
      * Render the 404 Template
      *
-     * @param string $file
      * @return string
      */
     public function render404()
@@ -510,6 +523,38 @@ class Template
             $file = $this->path.$this->layout404.$this->ext;
         } else {
             $file = APP.'views'.DS.'404.php';
+        }
+
+        return $this->view->render($file);
+    }
+
+    /**
+     * Render the Maintain Mode Template
+     *
+     * @return string
+     */
+    public function renderMaintain()
+    {
+        if (file_exists($this->path.$this->maintain.$this->ext)) {
+            $file = $this->path.$this->maintain.$this->ext;
+        } else {
+            $file = APP.'views'.DS.$this->maintain.'.php';
+        }
+
+        return $this->view->render($file);
+    }
+
+    /**
+     * Render the Production Error Template
+     *
+     * @return string
+     */
+    public function renderProductionError()
+    {
+        if (file_exists($this->path.$this->error.$this->ext)) {
+            $file = $this->path.$this->error.$this->ext;
+        } else {
+            $file = APP.'views'.DS.$this->error.'.php';
         }
 
         return $this->view->render($file);

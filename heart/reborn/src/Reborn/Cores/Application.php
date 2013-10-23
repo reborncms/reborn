@@ -390,14 +390,16 @@ class Application extends \Illuminate\Container\Container
         if ('disable' != $maintain) {
             return false;
         } else {
-            $theme = Setting::get('public_theme');
+            /*$theme = Setting::get('public_theme');
             $file = THEMES.$theme.DS.'views'.DS.'maintain.html';
             if (file_exists($file)) {
                 $content = File::getContent($file);
                 $content = $this['view']->renderAsStr($content);
             } else {
                $content = File::getContent(APP.'views'.DS.'maintain.php');
-            }
+            }*/
+
+            $content = $this['template']->renderMaintain();
 
             $response = new Response($content, 503);
             $this->end($response);

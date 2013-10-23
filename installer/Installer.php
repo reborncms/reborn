@@ -82,6 +82,11 @@ class Installer
 	public static function step1()
 	{
 		$result = array();
+
+		// Check Asset Cache Folder Path
+		$assets = glob(BASE.'assets'.DS, GLOB_ONLYDIR);
+		$result['asset'] = static::pathCheck($assets);
+
 		// Check Storages Path
 		$storages = glob(STORAGES.'*', GLOB_ONLYDIR);
 		$result['storages'] = static::pathCheck(array_merge(array(STORAGES), $storages));
