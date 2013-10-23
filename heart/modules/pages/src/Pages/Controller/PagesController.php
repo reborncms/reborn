@@ -41,6 +41,9 @@ class PagesController extends \PublicController
                                ->set('js', $js)
                                ->metadata('keywords', $query->meta_keyword)
                                ->metadata('description', $query->meta_description)
+                               ->metadata('og:title', $title, 'og')
+                               ->metadata('og:description', $query->meta_description, 'og')
+                               ->metadata('og:url', rbUrl($query->uri), 'og')
                                ->setPartial('index');
 
             $segments = explode("/", $uri);

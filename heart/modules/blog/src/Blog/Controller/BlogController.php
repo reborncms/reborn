@@ -75,9 +75,18 @@ class BlogController extends \PublicController
 		$this->template->title($blog['title'])
 						->setPartial('single')
 						->set('blog', $blog)
+						->metadata('keywords', $blog->tags_val)
+						->metadata('description', $blog['excerpt'])
+						->metadata('og:title', $blog['title'], 'og')
+						->metadata('og:type', 'blog.article', 'og')
+						->metadata('og:url', rbUrl('blog'.$blog['slug']), 'og')
+						->metadata('og:description', $blog['excerpt'], 'og')
 						->breadcrumb('Blog', rbUrl('blog'))
 						->breadcrumb($blog->category_name, $blog->category_url)
 						->breadcrumb($blog->title);
+		if($blog['attachment']) {
+			$this->template->metadata('og:image', rbUrl('media/image/'.$blog['attachment']), 'og');
+		}
 	}
 
 	public function preview($slug = null)
@@ -149,6 +158,7 @@ class BlogController extends \PublicController
 						->notOtherLang()
 						->with(array('category', 'author'))
 						->whereIn('category_id', $catIds)
+						->orderBy('created_at', 'desc')
 						->skip(\Pagination::offset())
 						->take(\Pagination::limit())
 						->get();
