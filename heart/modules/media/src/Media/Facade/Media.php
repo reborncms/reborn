@@ -39,14 +39,30 @@ class Media extends \Facade
 		$this->view = static::$app->view;
 	}
 
-	protected function uploadForm($folderId)
+	/**
+	 * Upload form
+	 *
+	 * 
+	 *
+	 * @return string
+	 **/
+	protected function uploadForm($name, $formName, $folderId, $fileType)
 	{
+		if (is_null($fileType)) {
+			$fileType = '.jpg,.jpeg,.png,.gif,.bmp,.txt,.rtf,.doc,.docx,.xls,.xlsx,.pdf,.zip,.tar,.rar,.mp3,.wav,.wma';
+		}
+
 		$template = File::getContent(__DIR__.DS.'upload.html');
 
-		$data['body'] = $this->view->render(CORE_MODULES.'media'.DS.'views'.DS.
-			'admin'.DS.'form'.DS.'upload.html');
+		if (is_null($formName)) {
+			$formName = 'media_upload_form';
+		}
 
-		return $this->view->renderAsStr($template, $data);
+		return $this->view->renderAsStr(
+				$template, 
+				compact('name', 'formName', 'buttonName', 'folderId',
+					'fileType')
+			);
 	}
 
 	/**

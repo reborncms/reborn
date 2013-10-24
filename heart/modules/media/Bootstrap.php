@@ -57,13 +57,43 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
         \Alias::aliasRegister(array('Media' => 'Media\Facade\Media'));
 
         // Extend Form for featured thumbnail
-        \Form::extend('thumbnail', function($name, $value, $width = null, $labels = array()){
+        \Form::extend(
+                'thumbnail', 
+                function($name, $value, $width = null, $labels = array()) {
+
             return \Media::thumbnailForm($name, $value, $width, $labels);
+
         });
 
-        \Form::extend('upload', function($folderId){
-            return \Media::uploadForm($folderId);
-        });
+        // Upload via media module
+        \Form::extend(
+                'upload', 
+                function(
+                        $name = 'file', 
+                        $formName = null,
+                        $folderId = null,
+                        $fileType = null
+                    ) {
+
+                    return \Media::uploadForm($name, $formName, $folderId, $fileType);
+
+                }
+            );
+
+        // Upload via media module
+        \Form::extend(
+                'imageUpload', 
+                function(
+                        $name = 'file',
+                        $formName = null,
+                        $folderId = null
+                    ) {
+
+                    return \Media::uploadForm($name, $formName, $folderId, 
+                        '.jpg,.jpeg,.png,.gif,.bmp');
+
+                }
+            );
     }
 
 } // END class Bootstrap

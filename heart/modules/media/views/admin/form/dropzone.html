@@ -1,0 +1,39 @@
+{{ Form::start(adminUrl('media/upload/'.$folderId), $formName, true, array('class' => 'form  dropzone', 'id' => 'uploader')) }}
+
+	{{ Form::file('files[]', array('multiple' => '', 'id' => 'file-field')) }}
+	{{ Form::submit('submit', Translate::get('files.btn.upload'), array('id' => 'upload-submit')) }}
+
+{{ Form::end() }}
+
+{{ js('dropzone.js', 'media') }}
+
+<script type="text/javascript">
+
+	Dropzone.autoDiscover = false;
+	$('#uploader').dropzone({
+		paramName: "files",
+		dictDefaultMessage: "{{ t('media::media.lbl.uploadAreaText') }}",
+		acceptedFiles: window.DzfileType,
+		maxFilesize: 2,
+		init: function() {
+			$('#file-field').hide();
+			$('#upload-submit').hide();
+		},
+		success: function (file) {
+			var template = file.previewTemplate;
+
+			if ('success' == file.status) {
+				$(template).find('.dz-progress').fadeOut();
+
+				$(template).find('.dz-success-mark').css('opacity', '1');
+
+			} else {
+
+				$(template).find('.dz-error-mark').css('opacity', '1');
+
+			}
+			
+		}
+	});
+		
+</script>

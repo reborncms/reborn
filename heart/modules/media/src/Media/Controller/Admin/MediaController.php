@@ -257,7 +257,11 @@ class MediaController extends \AdminController
 
         $this->checkAjax();
 
+        $fileType = '.jpg,.jpeg,.png,.gif,.bmp,.txt,.rtf,.doc,.docx,.xls,.xlsx,.pdf,.zip,.tar,.rar,.mp3,.wav,.wma';
+
         $this->template->title(t('media::media.title.upload'))
+                        ->set('formName', 'upload')
+                        ->set('fileType', $fileType)
                         ->set('folderId', $folderId)
                         ->setPartial('admin'.DS.'form'.DS.'upload');
     }

@@ -98,7 +98,9 @@
 		<div id="upload-tab" class="f-right">
 
 			<div id="uploader-wrap">
-				{{ \Form::upload(0); }}
+
+				{{ \Form::imageUpload('file', 'thumbnail_upload'); }}
+				
 			</div> <!-- end of uploader-wrap -->
 			
 		</div> <!-- end of upload-tab -->

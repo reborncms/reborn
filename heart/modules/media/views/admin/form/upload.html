@@ -1,51 +1,12 @@
-{=
-	$current = (isset($folderId)) ? $folderId : 0;
-=}
+<div id="media-wrapper" data-folder-id="{{ $folderId }}">
 
-<div id="media-wrapper" data-folder-id="{{ $current }}">
+	<script type="text/javascript">
 
-	{{ Form::start(adminUrl('media/upload/'.$current), 'upload', true, array('class' => 'form  dropzone', 'id' => 'uploader')) }}
+		var DzfileType = '{{ $fileType }}';
 
-		{{ Form::file('files[]', array('multiple' => '', 'id' => 'file-field')) }}
-		{{ Form::submit('submit', Translate::get('files.btn.upload'), array('id' => 'upload-submit')) }}
+	</script>
 
-	{{ Form::end() }}
-
-	<div id="uploaded-files">
-		
-	</div> <!-- end of uploaded-files -->
+	{{ partial:admin.form.dropzone }}
 
 </div> <!-- end of media-wrapper -->
 
-{{ js('dropzone.js', 'media') }}
-
-<script type="text/javascript">
-
-	Dropzone.autoDiscover = false;
-	$('#uploader').dropzone({
-		paramName: "files",
-		dictDefaultMessage: "{{ t('media::media.lbl.uploadAreaText') }}",
-		acceptedFiles: '.jpg,.jpeg,.png,.gif,.bmp,.txt,.rtf,.doc,.docx,.xls,.xlsx,.pdf,.zip,.tar,.rar,.mp3,.wav,.wma',
-		maxFilesize: 2,
-		init: function() {
-			$('#file-field').hide();
-			$('#upload-submit').hide();
-		},
-		success: function (file) {
-			var template = file.previewTemplate;
-
-			if ('success' == file.status) {
-				$(template).find('.dz-progress').fadeOut();
-
-				$(template).find('.dz-success-mark').css('opacity', '1');
-
-			} else {
-
-				$(template).find('.dz-error-mark').css('opacity', '1');
-
-			}
-			
-		}
-	});
-		
-</script>

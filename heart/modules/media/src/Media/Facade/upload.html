@@ -1,1 +1,13 @@
-{{ $body }}
+<div class="media-upload">
+	
+	{{ css('plugins.css', 'all', 'media') }}
+
+	<script type="text/javascript">
+
+		var DzfileType = '{{ $fileType }}';
+
+	</script>
+
+	{{ partial:media::admin.form.dropzone }}	
+
+</div> <!-- end of media-upload -->
