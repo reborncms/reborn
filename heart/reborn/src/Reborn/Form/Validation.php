@@ -356,7 +356,7 @@ class Validation
         $messageMethod = 'messageFor'.ucfirst($rule);
 
         if ( method_exists($this, $messageMethod) ) {
-            $this->errors[$key] = $this->{$messageMethod}($key, $arg);
+            $this->errors[$key] = $this->{$messageMethod}(\Str::title($key), $arg);
         } else {
             if ($addedRule) {
                 $msg = $this->extended[$rule]['msg'];
@@ -364,7 +364,7 @@ class Validation
                 \Translate::load('validation');
                 $msg = \Translate::get('validation.'.$rule);
             }
-            $parseMsg = str_replace('{key}', $key, $msg);
+            $parseMsg = str_replace('{key}', \Str::title($key), $msg);
             $parseMsg = str_replace('{'.$rule.'}', $arg, $parseMsg);
             $this->errors[$key] = $parseMsg;
         }
@@ -655,7 +655,11 @@ class Validation
      **/
     protected function validBefore($value, $before)
     {
-        list($value, $before) = $this->prepareDateFormat($value, $before);
+        try {
+            list($value, $before) = $this->prepareDateFormat($value, $before);
+        } catch (\InvalidArgumentException $e) {
+            return false;
+        }
 
         return (strtotime($value) < strtotime($before));
     }
@@ -669,7 +673,11 @@ class Validation
      **/
     protected function validAfter($value, $after)
     {
-        list($value, $after) = $this->prepareDateFormat($value, $after);
+        try {
+            list($value, $after) = $this->prepareDateFormat($value, $after);
+        } catch (\InvalidArgumentException $e) {
+            return false;
+        }
 
         return (strtotime($value) > strtotime($after));
     }
@@ -688,6 +696,9 @@ class Validation
         $format = isset($list[1]) ? $list[1] : 'm-d-Y';
         if (isset($this->inputs[$date])) {
             $date = $this->inputs[$date];
+            if ('' === $date) {
+                throw new \InvalidArgumentException("Date field is Blank!");
+            }
         }
 
         $rule_date = \DateTime::createFromFormat($format, $date);
