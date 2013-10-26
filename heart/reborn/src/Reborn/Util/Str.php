@@ -58,6 +58,23 @@ class Str
 	}
 
 	/**
+	 * Convert the given string to Studly Case string.
+	 * <code>
+	 * 		$str = 'hello_world';
+	 * 		echo Str::studly($str); // HelloWorld
+	 * </code>
+	 *
+	 * @param string $string
+	 * @return string
+	 **/
+	public static function studly($string)
+	{
+		$string = ucwords(str_replace(array('_', '-', '.'), ' ', $string));
+
+		return str_replace(' ', '', $string);
+	}
+
+	/**
 	 * Convert the given string to slug(URL) type string
 	 *
 	 * @param string $str
@@ -287,6 +304,54 @@ class Str
 		$sub = substr($haystack, - $needle_len);
 
 		return ($needle_len <= strlen($haystack) && $sub === $needle);
+	}
+
+	/**
+	 * This string is ending with end word.
+	 *
+	 * @param string $string
+	 * @param string $end Ending word
+	 * @return string
+	 **/
+	public static function endIs($string, $end)
+	{
+		return rtrim($string, $end).$end;
+	}
+
+	/**
+	 * Check given string is blank or not
+	 * <code>
+	 * 		Str::isBlank(''); // true
+	 * 		Str::isBlank(null); // true
+	 * 		Str::isBlank(' '); // true
+	 * 		Str::isBlank("\n"); // true
+	 * 		Str::isBlank('1'); // false
+	 * </code>
+	 *
+	 * @param string|null $str
+	 * @return boolean
+	 **/
+	public static function isBlank($str = null)
+	{
+		if (is_null($str)) $str = '';
+
+		return preg_match('/^\s*$/', $str);
+	}
+
+	/**
+	 * Explode string by new line (\n)
+	 * <code>
+	 * 		$str = "Hello\nWorld";
+	 * 		dump(Str::lines($str));
+	 * 		// Output : array('Hello', 'World');
+	 * </code>
+	 *
+	 * @param string $str
+	 * @return array
+	 **/
+	public static function lines($str)
+	{
+		return explode("\n", $str);
 	}
 
 	/**
