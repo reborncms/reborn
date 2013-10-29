@@ -2,11 +2,12 @@
 
 namespace Reborn\Cache\Driver;
 
+use Closure;
 use Reborn\Config\Config;
-use Reborn\Cache\CacheDriverInterface;
-use Reborn\Cores\Facade;
 use Reborn\Filesystem\File as FileSystem;
 use Reborn\Filesystem\Directory as Dir;
+use Reborn\Cache\CacheDriverInterface;
+use Reborn\Cache\CacheFolderStoreInterface;
 
 /**
  * File Cache Driver for Reborn
@@ -14,16 +15,8 @@ use Reborn\Filesystem\Directory as Dir;
  * @package Reborn\Cache
  * @author Myanmar Links Professional Web Development Team
  **/
-class File implements CacheDriverInterface
+class File implements CacheDriverInterface, CacheFolderStoreInterface
 {
-
-    /**
-     * Request Object
-     *
-     * @var Reborn\Http\Request
-     **/
-    protected $request = null;
-
     /**
      * Cache storage file path
      *
@@ -36,7 +29,7 @@ class File implements CacheDriverInterface
      *
      * @var string
      **/
-    protected $extension = '.cache';
+    protected $extension = 'cache';
 
     /**
      * Default constructor method
@@ -45,10 +38,6 @@ class File implements CacheDriverInterface
     public function __construct()
     {
         $this->path = Config::get('cache.file.storage_path');
-
-        if (is_null($this->request)) {
-            $this->request = Facade::getApplication()->request;
-        }
 
         if (!is_dir($this->path)) {
             $this->createFolder($this->path);
@@ -60,78 +49,83 @@ class File implements CacheDriverInterface
      *
      * @param string $key
      * @param mixed $value Data for cache
-     * @param string $module Module name
      * @param integer $time Cache life time(expire)
      * @return mixed
      */
-    public function set($key, $value, $module = null, $time = 10080)
+    public function set($key, $value, $time = 10080)
     {
-        list($filename, $file) = $this->keyParse($key, $module);
+        list($filename, $filepath) = $this->keyParse($key);
 
-        $path = str_replace($filename.$this->extension, '', $file);
+        $path = str_replace($filename.'.'.$this->getExtension(), '', $filepath);
 
         if (!is_dir($path)) {
             $this->createFolder($path);
         }
 
-        if (file_exists($file)) {
-            FileSystem::delete($file);
+        if (file_exists($filepath)) {
+            FileSystem::delete($filepath);
         }
 
-        $this->write($path, $filename.$this->extension, $value, $time);
+        $this->write($path, $filename, $value, $time);
     }
 
     /**
      * Get the cache data from given key name
      *
      * @param string $key
-     * @param string $module Module name
+     * @param mixed $default
      * @return mixed
      */
-    public function get($key, $module = null)
+    public function get($key, $default = null)
     {
-        list($filename, $file) = $this->keyParse($key, $module);
+        list($filename, $filepath) = $this->keyParse($key);
 
-        if (file_exists($file)) {
-            $data = FileSystem::getContent($file);
+        if (file_exists($filepath)) {
+            $data = FileSystem::getContent($filepath);
 
             if ($this->checkExpire($data)) {
                 return $this->unserializer(substr($data, 10));
             } else {
                 $this->delete($key);
-
-                return null;
             }
-        } else {
-            return null;
         }
+
+        return value($default);
     }
 
     /**
-     * Get the cache data after given value is set.
+     * Get the cache data from cache or set the callback data.
      *
-     * @param string $key Key name for the cache
-     * @param mixed $value Cache data value
-     * @param integer $time Expire time for cache
+     * @param string $key
+     * @param Closure $callback Callback method for solve cache value if require
+     * @param integer $time Cache ttl minutes
      * @return mixed
-     **/
-    public function getAfterSet($key, $value, $time = 10080)
+     */
+    public function solve($key, Closure $callback, $time = 10080)
     {
-        $this->set($key, $value, $time);
+        $data = $this->get($key);
 
-        return $this->get($key);
+        if (! is_null($data) ) {
+            return $data;
+        }
+
+        // We need to make Solve the Callback and Set the Cache
+        $data = $callback();
+
+        $this->set($key, $data, $time);
+
+        return $data;
     }
 
     /**
      * Check the given cache is has or not
      *
      * @param string $key
-     * @param string $module Module name
      * @return boolean
      **/
-    public function has($key, $module = null)
+    public function has($key)
     {
-        if (is_null($this->get($key, $module))) {
+        if ( is_null($this->get($key)) ) {
             return false;
         }
 
@@ -142,13 +136,13 @@ class File implements CacheDriverInterface
      * Delete the cache file
      *
      * @param string $key Cache file key name
-     * @return void
+     * @return boolean
      **/
     public function delete($key)
     {
-        list($filename, $file) = $this->keyParse($key);
+        list(, $filepath) = $this->keyParse($key);
 
-        return FileSystem::delete($file);
+        return FileSystem::delete($filepath);
     }
 
     /**
@@ -156,7 +150,7 @@ class File implements CacheDriverInterface
      * Notice :: Folder name is case sensative.
      *
      * @param string $folder Cache folder name
-     * @return void
+     * @return boolean
      **/
     public function deleteFolder($folder)
     {
@@ -185,44 +179,70 @@ class File implements CacheDriverInterface
     }
 
     /**
+     * Set Cache File Extension. No need (dot) sign
+     * <code>
+     *      Cache::setExtension('jpg');
+     * </code>
+     *
+     * @param string $ext
+     * @return \Reborn\Cache\Driver\File
+     **/
+    public function setExtension($ext)
+    {
+        $this->extension = $ext;
+
+        return $this;
+    }
+
+    /**
+     * Get Cache File Extension
+     *
+     * @return string
+     **/
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+    /**
      * Parse the given key to filename and full_file_path
      *
      * @param string $key
-     * @param string $module Module name
      * @return array
      **/
-    protected function keyParse($key, $module = null)
+    protected function keyParse($key)
     {
-        $module = (is_null($module)) ? $this->request->module : ucfirst($module);
-
-        if (! is_null($module)) {
-            $filename = md5($key);
-            $file = $this->path.$module.DS.$filename.$this->extension;
-        } else {
-            $filename = md5($key);
-            $file =  $this->path.$filename.$this->extension;
+        if (false !== strpos($key, '::')) {
+            list($folder, $key) = explode('::', $key);
         }
 
-        return array($filename, $file);
+        $key = md5($key);
+
+        if (isset($folder)) {
+            $file = $this->path.$folder.DS.$key.'.'.$this->getExtension();
+        } else {
+            $file = $this->path.$key.'.'.$this->getExtension();
+        }
+
+        return array($key, $file);
     }
 
     /**
      * Write the cache file in given path
      *
      * @param string $path Cache file saving path
-     * @param string $filename Cache file name with file extension
+     * @param string $filename Cache file name
      * @param mixed $value Cache data value
      * @param integer $time Cache expire time with minute
      * @return void
      */
     protected function write($path, $filename, $value, $time)
     {
-        $data = $this->serializer($value);
+        $value = $this->serializer($value);
 
         $expire = time() + ($time * 60); // Change minute to second
 
-        $data = $expire.$data;
-        FileSystem::put($path.$filename, $data);
+        FileSystem::put($path.$filename.'.'.$this->getExtension(), $expire.$value);
 
         @chmod($path.$filename, 0777);
     }

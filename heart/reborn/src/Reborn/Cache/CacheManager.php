@@ -15,9 +15,9 @@ class CacheManager
 {
 
     /**
-     * Cache Driver Object
+     * Cache Driver Object Instance
      *
-     * @var Reborn\Cache\CacheDriverInterface
+     * @var \Reborn\Cache\CacheDriverInterface
      */
     protected $cacheInstance;
 
@@ -28,7 +28,7 @@ class CacheManager
      **/
     protected $driverList = array(
             'file'  => 'Reborn\Cache\Driver\File',
-            'db'  => 'Reborn\Cache\Driver\Database',
+            //'db'  => 'Reborn\Cache\Driver\Database',
         );
 
     /**
@@ -46,7 +46,7 @@ class CacheManager
     /**
      * Get the cache driver Instance
      *
-     * @return \Reborn\Cache\DriverObject
+     * @return \Reborn\Cache\CacheDriverInterface
      **/
     public function getDriver()
     {
@@ -54,23 +54,23 @@ class CacheManager
     }
 
     /**
-     * Add New Driver for the Cache
+     * Extend New Driver for the Cache
      * example :
      * <code>
      *      $dri = array('memcache' => 'RB\MCache\Memcache');
-     *      Cache::addNewDriver($dri);
+     *      Cache::extend($dri);
      * </code>
      *
      * @param array $lists Driver list array
      * @return void
      **/
-    public function addNewDriver($lists)
+    public function extend($lists)
     {
         if (!is_array($lists)) {
             throw new \InvalidArgumentException("Argument must be array!");
         }
 
-        $this->$driverList = array_merge($this->$driverList, $lists);
+        $this->driverList = array_merge($this->driverList, $lists);
     }
 
     /**
@@ -147,13 +147,12 @@ class CacheManager
      *
      * @param string $key Key name for the cache
      * @param mixed $value Cache data value
-     * @param string $module Module name
      * @param integer $time Expire time for cache
      * @return $this
      */
-    public static function set($key, $value, $module = null, $time = 10080)
+    public static function set($key, $value, $time = 10080)
     {
-        return static::getIns()->set($key, $value, $module, $time);
+        return static::getIns()->set($key, $value, $time);
     }
 
     /**
@@ -184,11 +183,23 @@ class CacheManager
     /**
      * Get the cache driver instance for the static method call.
      *
-     * @return Reborn\Cache\DriverObject
+     * @return Reborn\Cache\CacheDriverInterface
      **/
     protected static function getIns()
     {
         return Facade::getApplication()->cache->getDriver();
+    }
+
+    /**
+     * Dynamically method call for static
+     *
+     * @param string $method
+     * @param array $param
+     * @return mixed
+     **/
+    public static function __callStatic($method, $param)
+    {
+        return call_user_func_array(array(static::getIns(), $method), (array)$param);
     }
 
 } // END class CacheManager
