@@ -2,29 +2,31 @@
 
 namespace Navigation\Lib;
 
+use Reborn\Cores\Facade;
 use Navigation\Model\Navigation;
 use Navigation\Model\NavigationLinks as Links;
 
 class Helper
 {
-	public static function render($nav = 'header', $tag = 'ul', $active = 'active')
+	public static function render($group = 'header', $tag = 'ul', $active = 'active')
 	{
-		$nav = Navigation::where('slug', '=', $nav)->first();
+		$nav = Navigation::where('slug', '=', $group)->first();
 
 		// Make Cache Key
-		$cache_key = 'navigation_'.$nav.'_trees';
+		$cache_key = 'Navigation::navigation_'.$group.'_trees';
 
-		if (\Cache::has($cache_key, 'Navigation')) {
-			$tree = \Cache::get($cache_key, 'Navigation');
-		} else {
-			$obj = Links::where('navigation_id', '=', $nav->id)
-						->orderBy('link_order', 'asc')
-						->get()->toArray();
-			$tree = static::getNavTree($obj);
-			\Cache::set($cache_key, $tree, 'Navigation');
-		}
+		$id = $nav->id;
+		$tree = \Cache::solve($cache_key, function() use($id)
+					{
+						$obj = Links::where('navigation_id', '=', $id)
+								->orderBy('link_order', 'asc')
+								->get()
+								->toArray();
 
-		$current = rtrim(\Registry::get('app')->request->requestUrl(), '/');
+						return \Navigation\Lib\Helper::getNavTree($obj);
+					});
+
+		$current = rtrim(Facade::getApplication()->request->requestUrl(), '/');
 
 		$homepage = \Setting::get('home_page');
 

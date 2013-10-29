@@ -19,14 +19,15 @@ class NavigationController extends \AdminController
 		$default = array();
 		foreach ($allGroups as $g) {
 
-			if (\Cache::has('navigation_group'.$g->id)) {
-				$obj = \Cache::get('navigation_group'.$g->id);
-			} else {
-				$obj = Links::where('navigation_id', '=', $g->id)
-						->orderBy('link_order', 'asc')
-						->get()->toArray();
-				\Cache::set('navigation_group'.$g->id, $obj);
-			}
+			$id = $g->id;
+
+			$obj = \Cache::solve('Navigation::navigation_group'.$id,
+						function() use($id)
+						{
+							return Links::where('navigation_id', '=', $id)
+									->orderBy('link_order', 'asc')
+									->get()->toArray();
+						});
 
 			$this->links[$g->slug] = Helper::getNavTree($obj);
 			$this->groups[$g->slug] = $g;
