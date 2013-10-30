@@ -116,37 +116,21 @@ class MediaController extends \PublicController
             }, $status, $headers)->send();
     }
 
-    public function download ($id)
+    public function download($id)
     {
-        $file = MFiles::where('id', '=', $id)->first();
+        $file = Files::find($id);
 
-        $path = UPLOAD . date('Y', strtotime($file->created_at)).DS.date(
-            'm', strtotime($file->created_at)) . DS  . $file->filename;
+        if (! is_null($file) ) {
+             $path = UPLOAD .
+                    date('Y', strtotime($file->created_at)) . DS .
+                    date('m', strtotime($file->created_at)) . DS .
+                    $file->filename;
 
-        if (\File::is($path)) {
-            $response = new \Symfony\Component\HttpFoundation\Response();
-
-            $response->setPrivate();
-
-            $disposition = $response->headers->makeDisposition('attachment',
-                $file->name.'.'.$file->extension, 'rb-'.time().'.'.$file->extension);
-
-            $response->headers->add(array(
-                'Content-Description'       => 'File Transfer',
-                'Content-Disposition'       => $disposition,
-                'Content-Type'              => $file->mime_type,
-                'Content-Transfer-Encoding' => 'binary',
-                'Expires'                   => 0,
-                'Pragma'                    => 'public',
-                ));
-
-            $response->send();
-
-            ob_clean();
-            flush();
-            readfile($path);
-            exit;
+            if (\File::is($path)) {
+                return \Response::binary($path, $file->name.'.'.$file->extension);
+            }
         }
 
+        return \Response::clueless();
     }
 } // END class MediaController

@@ -12,6 +12,15 @@ if ('pages' == strtolower($defaultModule)) {
 Route::add('login', 'User\User::login', 'login');
 Route::add('register', 'User\User::register', 'register');
 
+// Viewing images
+Route::get('image/{:target}/{int:width}?/{int:height}?',
+			'Media\Media::image',
+			'image_preview'
+		);
+
+// File Download Route
+Route::get('download/{int:id}', 'Media\Media::download', 'file_download');
+
 // Admin Panel Login, Logout, Dashboard Route
 Route::add('@admin/login', 'Admin\Admin\Admin::login', 'admin_login');
 Route::add('@admin/logout', 'Admin\Admin\Admin::logout', 'admin_logout');
