@@ -17,7 +17,6 @@ class Directory
      * This method is equal with php's glob() function.
      *
      * @param string $path Path for the dir
-     * @param string $pattern Pattern for glob(). Default is "*".
      * @param int $flag Detail at php's glob().
      * @return void
      **/
@@ -102,9 +101,10 @@ class Directory
      * But this method is support recursive delete from the given folder.
      *
      * @param string $dirpath
+     * @param boolean $remove_this Remove this given folder
      * @return boolean
      **/
-    public static function delete($dirpath)
+    public static function delete($dirpath, $remove_this = true, $skips = array())
     {
         $path = rtrim(str_replace(array('\\','/'), DS, $dirpath), DS).DS;
 
@@ -112,6 +112,11 @@ class Directory
             $iterator = new \DirectoryIterator($path);
 
             foreach ($iterator as $dir) {
+
+                $name = $dir->getFilename();
+
+                if (in_array($name, $skips)) continue;
+
                 if (!$dir->isDot() and !$dir->isDir()) {
                     File::delete($dir->getRealPath());
                 } elseif(!$dir->isDot() and $dir->isDir()) {
@@ -119,7 +124,10 @@ class Directory
                 }
             }
 
-            return rmdir($path);
+            if ($remove_this) {
+                return rmdir($path);
+            }
+            return true;
         } else {
             return false;
         }

@@ -515,9 +515,10 @@ class Template
     /**
      * Render the 404 Template
      *
+     * @param string|null $message Message for 404 View
      * @return string
      */
-    public function render404()
+    public function render404($message = null)
     {
         if (file_exists($this->path.$this->layout404.$this->ext)) {
             $file = $this->path.$this->layout404.$this->ext;
@@ -525,21 +526,26 @@ class Template
             $file = APP.'views'.DS.'404.php';
         }
 
+        $this->view->set('clueless', $message);
+
         return $this->view->render($file);
     }
 
     /**
      * Render the Maintain Mode Template
      *
+     * @param string|null $message Message for maintain View
      * @return string
      */
-    public function renderMaintain()
+    public function renderMaintain($message = null)
     {
         if (file_exists($this->path.$this->maintain.$this->ext)) {
             $file = $this->path.$this->maintain.$this->ext;
         } else {
             $file = APP.'views'.DS.$this->maintain.'.php';
         }
+
+        $this->view->set('maintain', $message);
 
         return $this->view->render($file);
     }

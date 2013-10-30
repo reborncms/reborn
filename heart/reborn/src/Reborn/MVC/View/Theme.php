@@ -192,70 +192,16 @@ class Theme
     }
 
     /**
-     * Parse Theme Info File (theme.info) to array data
+     * Parse Theme Inof file
      *
-     * @param string $file theme.info file path
+     * @param string $file file with full path
      * @return array
      **/
     protected function parseThemeInfo($file)
     {
-        $data = File::getContent($file);
+        $info_parser = \Facade::getApplication()->info_parser;
 
-        $lines = explode("\n", $data);
-        $info = array();
-        foreach ($lines as $line) {
-            if ($line == '') {
-                continue;
-            } else {
-                if (false !== strpos($line, '=')) {
-                    list($key, $value) = explode('=', $line, 2);
-                    $key = trim($key, ' ');
-                    $value = trim($value, ' ');
-
-                    // Check array or not
-                    if ('[' == substr($value, 0, 1)) {
-                        $info[$key] = $this->parseToArray($value);
-                    } else {
-                        $info[$key] = $value;
-                    }
-                }
-            }
-        }
-
-        return $info;
-    }
-
-    /**
-     * Paser strin data to array data
-     * example
-     * <code>
-     *      [key1 : value, key2 : value2, key3 : value3]
-     *      // to
-     *      array('key1' => 'value', 'key2' => 'value2', 'key3' => 'value3')
-     * </code>
-     *
-     * @param string $string
-     * @return array
-     **/
-    protected function parseToArray($string)
-    {
-        preg_match('#\[(.*)\]#', $string, $matches);
-
-        $lists = explode(',', $matches[1]);
-
-        $values = array();
-
-        foreach ($lists as $list) {
-            $list = trim($list, ' ');
-            if (false !== strpos($list, ' : ')) {
-                list($key, $v) = explode(' : ', $list);
-                $values[$key] = $v;
-            } else {
-                $values[] = $list;
-            }
-        }
-
-        return $values;
+        return $info_perser->parse($file);
     }
 
 } // END class Theme

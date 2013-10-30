@@ -4,12 +4,13 @@ namespace Reborn\MVC\Controller;
 
 use Reborn\Http\Redirect;
 use Reborn\Connector\Sentry\Sentry;
+use Reborn\MVC\Controller\Exception\NotAuthException;
 
 class PrivateController extends PublicController
 {
-	public function __construct()
+	protected function init()
 	{
-		parent::__construct();
+		parent::init();
 
 		$this->checkAuthentication();
 	}

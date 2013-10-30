@@ -8,6 +8,7 @@ use Reborn\Http\Uri;
 use Reborn\Routing\Router;
 use Reborn\Routing\RouteCollection;
 use Reborn\MVC\View\ViewManager;
+use Reborn\Parser\InfoParser;
 use Reborn\Config\Config;
 use Reborn\Filesystem\File;
 use Reborn\Widget\Widget;
@@ -77,6 +78,10 @@ class Application extends \Illuminate\Container\Container
 
         $this['view'] = $this->share( function($app) {
             return $app['view_manager']->getView();
+        });
+
+        $this['info_parser'] = $this->share( function($app) {
+            return new InfoParser();
         });
 
         $this['theme'] = $this->share( function($app) {
@@ -390,19 +395,8 @@ class Application extends \Illuminate\Container\Container
         if ('disable' != $maintain) {
             return false;
         } else {
-            /*$theme = Setting::get('public_theme');
-            $file = THEMES.$theme.DS.'views'.DS.'maintain.html';
-            if (file_exists($file)) {
-                $content = File::getContent($file);
-                $content = $this['view']->renderAsStr($content);
-            } else {
-               $content = File::getContent(APP.'views'.DS.'maintain.php');
-            }*/
 
-            $content = $this['template']->renderMaintain();
-
-            $response = new Response($content, 503);
-            $this->end($response);
+            $this->end(Response::maintain());
 
             exit(1);
         }

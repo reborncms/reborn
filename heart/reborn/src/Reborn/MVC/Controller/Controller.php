@@ -311,15 +311,14 @@ class Controller
     }
 
     /**
-     * Returh 404 Result
+     * Return 404 Result
      *
-     * @return void
+     * @param string $message Message for 404 template
+     * @return \Reborn\Http\Response
      **/
-    protected function notFound()
+    protected function notFound($message = null)
     {
-        $this->setHTTPstatus(404);
-
-        return $this->template->render404();
+        return Response::clueless($message);
     }
 
     /**
