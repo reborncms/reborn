@@ -72,6 +72,8 @@ class Router
 
         $this->mapper = ControllerMap::create();
 
+        require APP.'middlewares.php';
+
         // If routes file have in the user's content folder, load this route file
         if (File::is(CONTENT.'routes.php')) {
             require CONTENT.'routes.php';
@@ -242,7 +244,7 @@ class Router
     protected function callbackController($route)
     {
         if (!Module::isEnabled($route->module)) {
-             throw new HttpNotFoundException("Request URL is not found!");
+            throw new HttpNotFoundException("Request URL is not found!");
         }
 
         $resolver = new ControllerResolver($this->app, $route);

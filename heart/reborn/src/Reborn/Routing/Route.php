@@ -107,6 +107,13 @@ class Route
 	protected $skip_csrf = false;
 
 	/**
+	 * Variable for the before middlewares
+	 *
+	 * @var array
+	 **/
+	protected $before_middlewares = array();
+
+	/**
 	 * Default instance method
 	 *
 	 * @param string $path Uri path
@@ -136,6 +143,16 @@ class Route
 		$this->method($methods);
 
 		$this->name = $this->generateName($name);
+	}
+
+	/**
+	 * Get route's path
+	 *
+	 * @return string
+	 **/
+	public function getPath()
+	{
+		return $this->path;
 	}
 
 	/**
@@ -225,10 +242,44 @@ class Route
 	}
 
 	/**
-	 * undocumented function
+	 * Set before middlewares for this route
 	 *
-	 * @return void
-	 * @author
+	 * @param Closure $callback Middleware callback function
+	 * @return \Reborn\Routing\Route
+	 **/
+	public function before($names)
+	{
+		$names = (array) $names;
+
+		foreach ($names as $name) {
+			$this->before_middlewares[] = $name;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Get before middlewares for this route
+	 *
+	 * @param \Reborn\Http\Request $request
+	 * @return mixed
+	 **/
+	public function runBeforeMiddlewares(Request $request)
+	{
+		foreach ($this->before_middlewares as $mw) {
+			$response = Middleware::run($mw, $request, $this);
+
+			if (!is_null($response)) {
+				return $response;
+			}
+		}
+	}
+
+	/**
+	 * Get compile url string from the route
+	 *
+	 * @param array $data Data for route's placeholder
+	 * @return string
 	 **/
 	public function getUrl($data = array())
 	{

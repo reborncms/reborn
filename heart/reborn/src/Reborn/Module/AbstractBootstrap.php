@@ -2,13 +2,19 @@
 
 namespace Reborn\Module;
 
+/**
+ * Module Bootstrap Abstract Class for Reborn Module
+ *
+ * @package Reborn\Module
+ * @author Myanmar Links Professional Web Development Team
+ **/
 abstract class AbstractBootstrap
 {
 
 	/**
-	 * Variable for Application (DIC) instance
+	 * Variable for Application (IOC) instance
 	 *
-	 * @var Reborn\Cores\Application
+	 * @var \Reborn\Cores\Application
 	 **/
 	protected $app;
 
@@ -20,12 +26,12 @@ abstract class AbstractBootstrap
 	}
 
 	/**
-	 * Abstract function when call the module is load.
+	 * Abstract function when call the module is boot.
 	 */
 	abstract public function boot();
 
 	/**
-	 * Abstract function when call the Admin Panel load.
+	 * Abstract function for Menu when call the Admin Panel load.
 	 */
 	abstract public function adminMenu(\Reborn\Util\Menu $menu, $modUri);
 
@@ -40,7 +46,7 @@ abstract class AbstractBootstrap
 	abstract public function moduleToolbar();
 
 	/**
-	 * Abstract function for the module register
+	 * Abstract function for the module register.
 	 */
 	abstract public function register();
 

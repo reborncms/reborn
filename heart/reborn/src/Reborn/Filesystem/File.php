@@ -118,7 +118,9 @@ class File
     {
         if (! file_exists($path)) return false;
 
-        return unlink($path);
+        @chmod($path, 0777);
+
+        return @unlink($path);
     }
 
 } // END class File

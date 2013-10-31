@@ -125,7 +125,8 @@ class Directory
             }
 
             if ($remove_this) {
-                return rmdir($path);
+                @chmod($path, 0777);
+                return @rmdir($path);
             }
             return true;
         } else {

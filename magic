@@ -12,10 +12,15 @@ require_once __DIR__.'/heart/reborn/src/start.php';
 
 require_once __DIR__.'/heart/vendor/autoload.php';
 
+$commands = require __DIR__.'/content/commands/register.php';
+
 use Reborn\Console\ModuleCommand;
+use Reborn\Console\CacheClearCommand;
 use Reborn\Cores\Version;
 use Symfony\Component\Console\Application;
 
 $application = new Application(Version::getAppName(), Version::getVersion());
 $application->add(new ModuleCommand);
+$application->add(new CacheClearCommand);
+$application->addCommands($commands);
 $application->run();

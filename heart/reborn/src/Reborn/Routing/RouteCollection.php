@@ -21,6 +21,13 @@ class RouteCollection
 	protected $routes = array();
 
 	/**
+	 * Route Group Path string
+	 *
+	 * @var string|null
+	 **/
+	protected $group;
+
+	/**
 	 * Missing Route for Not Found
 	 *
 	 * @var \Reborn\Routing\Route
@@ -45,6 +52,15 @@ class RouteCollection
 	 **/
 	public function add($path, $callback, $name = null, $method = 'ALL')
 	{
+		// Check Route Group
+		if (!is_null($this->group)) {
+			if ($path == '') {
+				$path = rtrim(implode('/', $this->group), '/');
+			} else {
+				$path = \Str::endIs(implode('/', $this->group), '/').ltrim($path, '/');
+			}
+		}
+
 		$route = new Route($path, $callback, $name, $method);
 
 		$this->addRoute($route, $route->name);
@@ -135,6 +151,104 @@ class RouteCollection
     }
 
     /**
+     * Make route with default CURD.
+     * <code>
+     * 		Route::crud('blog', 'Blog\Blog', 'blog');
+     *
+     * 		// Same with these routes
+     * 		Route::get('blog', 'Blog\Blog::index', 'blog_index');
+     * 		Route::add('blog/create', 'Blog\Blog::create', 'blog_create')
+     * 				->method('GET', 'POST');
+     * 		Route::add('blog/edit/{int:id}', 'Blog\Blog::edit', 'blog_edit')
+     * 				->method('GET', 'POST');
+     * 		Route::get('blog/delete/{int:id}', 'Blog\Blog::delete', 'blog_delete');
+     *
+     * 		// CURD with middlewares
+     * 		Route::crud('blog', 'Blog\Blog', 'blog', [
+     * 			'index' => 'index_middlewares',
+     *  		'create' => 'create_middlewares',
+     *  		'edit' => 'edit_middlewares',
+     *  		'delete' => 'delete_middlewares',
+     * 		]);
+     * </code>
+     *
+     * @param string $path Main route path
+     * @param string $controller Controller name
+     * @param string $name_prefix Route name prefix string
+     * @param array $middlewares Middlewares array for CRUD.
+     * @param string $id_type {id} placehoder's type. Default is "int"
+     * @return void
+     **/
+    public function crud($path, $controller, $name_prefix, $middlewares = array(), $id_type = 'int')
+    {
+    	if (false !== strpos($path, '@admin')) {
+			$path = str_replace('@admin', \Config::get('app.adminpanel'), $path);
+		}
+
+		$path = rtrim($path, '/');
+
+		// Add for index (R) with get method
+    	$r = $this->add($path, $controller.'::index', $name_prefix.'_index', 'GET');
+    	if ( isset($middlewares['index']) ) {
+    		$r->before($middlewares['index']);
+    	}
+
+    	// Add for create (C) with get and post methods
+    	$r = $this->add($path.'/create', $controller.'::create', $name_prefix.'_create', array('GET', 'POST'));
+    	if ( isset($middlewares['create']) ) {
+    		$r->before($middlewares['create']);
+    	}
+
+    	// Add for edit (U) with get and post methods
+    	$r = $this->add($path.'/edit/{'.$id_type.':id}', $controller.'::edit', $name_prefix.'_edit', array('GET', 'POST'));
+    	if ( isset($middlewares['edit']) ) {
+    		$r->before($middlewares['edit']);
+    	}
+
+    	// Add for delete (D) with get method
+    	$r = $this->add($path.'/delete/{'.$id_type.':id}', $controller.'::delete', $name_prefix.'_delete', 'GET');
+    	if ( isset($middlewares['delete']) ) {
+    		$r->before($middlewares['delete']);
+    	}
+    }
+
+    /**
+     * Make Route Group for same prefix route.
+     * Example ::
+     * <code>
+     * 		Route::group('blog', function(){
+     * 			// For 'blog'
+     * 			Route::get('', 'Blog\Blog::index', 'blog_index');
+     * 			// For 'blog/create'
+     *  		Route::add('create', 'Blog\Blog::create', 'blog_create');
+     * 			// For 'blog/edit/{int:id}'
+     *   		Route::add('edit/{int:id}', 'Blog\Blog::edit', 'blog_edit');
+     * 			// For 'blog/delete/{int:id}'
+     *   		Route::get('delete/{int:id}', 'Blog\Blog::delete', 'blog_delete');
+     * 		});
+     * </code>
+     *
+     * @param string $prefix
+     * @param Closure $callback
+     * @return \Reborn\Routing\RouteCollection
+     **/
+    public function group($prefix, \Closure $callback)
+    {
+    	if (false !== strpos($prefix, '@admin')) {
+			$prefix = str_replace('@admin', \Config::get('app.adminpanel'), $prefix);
+		}
+
+    	$this->group[] = $prefix;
+
+    	$callback();
+
+    	// Clear the group path
+		$this->group = null;
+
+    	return $this;
+    }
+
+    /**
      * Add Missing control route
      *
 	 * @param string|Closure $callback
@@ -193,7 +307,7 @@ class RouteCollection
 	}
 
 	/**
-	 * Get all route
+	 * Get all route lists
 	 *
 	 * @return array
 	 **/
@@ -225,6 +339,8 @@ class RouteCollection
 	/**
 	 * Get missing route
 	 *
+	 * @param string $uri
+	 * @param \Reborn\Http\Request $request
 	 * @return boolean|\Reborn\Routing\Route
 	 **/
 	public function getMissing($uri, Request $request)

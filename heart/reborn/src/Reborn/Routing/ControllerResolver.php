@@ -4,6 +4,7 @@ namespace Reborn\Routing;
 
 use ReflectionClass;
 use Reborn\Cores\Application;
+use Reborn\Http\Response;
 use Reborn\Exception\HttpNotFoundException;
 
 /**
@@ -62,6 +63,15 @@ class ControllerResolver
         \Module::load($module);
 
         if (class_exists($controller)) {
+
+        	// First we call the before middlewares for this route
+        	$response = $this->route->runBeforeMiddlewares($this->request);
+
+        	// If Middleware return Response Instance, return this Response
+        	if ($response instanceof Response) {
+        		return $response;
+        	}
+
         	return $this->callController($module, $controller, $action, $params);
         } else {
         	// Class doesn't exit, so we throw HTTPNotFound
@@ -84,7 +94,8 @@ class ControllerResolver
         // Prevent Direct call the actionCaller
         $this->checkActionIsActionCaller($action);
 
-        // Set current request(module, controller, action and paramas) to Request Object
+        // Set current request(module, controller, action and paramas)
+        // to Request Object
         $this->setRequestParameters($module, $controller, $action, $params);
 
         return array($module, $controller, $action, $params);

@@ -21,4 +21,16 @@ class RouteFacade extends \Facade
 		return static::$app['route_collection'];
 	}
 
+	/**
+	 * Register Route Middleware Callback
+	 *
+	 * @param string $name Middleware name
+	 * @param Closure|string $callback Callback for middleware
+	 * @return void
+	 **/
+	public static function middleware($name, $callback)
+	{
+		Middleware::register($name, $callback);
+	}
+
 } // END class RouteFacade extends \Facade
