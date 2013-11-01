@@ -233,44 +233,44 @@ $(function() { $.livequery.play(); });
 // released under the MIT license
 
 (function($) {
-    
+
     function maybeCall(thing, ctx) {
         return (typeof thing == 'function') ? (thing.call(ctx)) : thing;
     };
-    
+
     function isElementInDOM(ele) {
       while (ele = ele.parentNode) {
         if (ele == document) return true;
       }
       return false;
     };
-    
+
     function Tipsy(element, options) {
         this.$element = $(element);
         this.options = options;
         this.enabled = true;
         this.fixTitle();
     };
-    
+
     Tipsy.prototype = {
         show: function() {
             var title = this.getTitle();
             if (title && this.enabled) {
                 var $tip = this.tip();
-                
+
                 $tip.find('.tipsy-inner')[this.options.html ? 'html' : 'text'](title);
                 $tip[0].className = 'tipsy'; // reset classname in case of dynamic gravity
                 $tip.remove().css({top: 0, left: 0, visibility: 'hidden', display: 'block'}).prependTo(document.body);
-                
+
                 var pos = $.extend({}, this.$element.offset(), {
                     width: this.$element[0].offsetWidth,
                     height: this.$element[0].offsetHeight
                 });
-                
+
                 var actualWidth = $tip[0].offsetWidth,
                     actualHeight = $tip[0].offsetHeight,
                     gravity = maybeCall(this.options.gravity, this.$element[0]);
-                
+
                 var tp;
                 switch (gravity.charAt(0)) {
                     case 'n':
@@ -286,7 +286,7 @@ $(function() { $.livequery.play(); });
                         tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width + this.options.offset};
                         break;
                 }
-                
+
                 if (gravity.length == 2) {
                     if (gravity.charAt(1) == 'w') {
                         tp.left = pos.left + pos.width / 2 - 15;
@@ -294,13 +294,13 @@ $(function() { $.livequery.play(); });
                         tp.left = pos.left + pos.width / 2 - actualWidth + 15;
                     }
                 }
-                
+
                 $tip.css(tp).addClass('tipsy-' + gravity);
                 $tip.find('.tipsy-arrow')[0].className = 'tipsy-arrow tipsy-arrow-' + gravity.charAt(0);
                 if (this.options.className) {
                     $tip.addClass(maybeCall(this.options.className, this.$element[0]));
                 }
-                
+
                 if (this.options.fade) {
                     $tip.stop().css({opacity: 0, display: 'block', visibility: 'visible'}).animate({opacity: this.options.opacity});
                 } else {
@@ -308,7 +308,7 @@ $(function() { $.livequery.play(); });
                 }
             }
         },
-        
+
         hide: function() {
             if (this.options.fade) {
                 this.tip().stop().fadeOut(function() { $(this).remove(); });
@@ -316,14 +316,14 @@ $(function() { $.livequery.play(); });
                 this.tip().remove();
             }
         },
-        
+
         fixTitle: function() {
             var $e = this.$element;
             if ($e.attr('title') || typeof($e.attr('original-title')) != 'string') {
                 $e.attr('original-title', $e.attr('title') || '').removeAttr('title');
             }
         },
-        
+
         getTitle: function() {
             var title, $e = this.$element, o = this.options;
             this.fixTitle();
@@ -336,7 +336,7 @@ $(function() { $.livequery.play(); });
             title = ('' + title).replace(/(^\s*|\s*$)/, "");
             return title || o.fallback;
         },
-        
+
         tip: function() {
             if (!this.$tip) {
                 this.$tip = $('<div class="tipsy"></div>').html('<div class="tipsy-arrow"></div><div class="tipsy-inner"></div>');
@@ -344,7 +344,7 @@ $(function() { $.livequery.play(); });
             }
             return this.$tip;
         },
-        
+
         validate: function() {
             if (!this.$element[0].parentNode) {
                 this.hide();
@@ -352,14 +352,14 @@ $(function() { $.livequery.play(); });
                 this.options = null;
             }
         },
-        
+
         enable: function() { this.enabled = true; },
         disable: function() { this.enabled = false; },
         toggleEnabled: function() { this.enabled = !this.enabled; }
     };
-    
+
     $.fn.tipsy = function(options) {
-        
+
         if (options === true) {
             return this.data('tipsy');
         } else if (typeof options == 'string') {
@@ -367,9 +367,9 @@ $(function() { $.livequery.play(); });
             if (tipsy) tipsy[options]();
             return this;
         }
-        
+
         options = $.extend({}, $.fn.tipsy.defaults, options);
-        
+
         function get(ele) {
             var tipsy = $.data(ele, 'tipsy');
             if (!tipsy) {
@@ -378,7 +378,7 @@ $(function() { $.livequery.play(); });
             }
             return tipsy;
         }
-        
+
         function enter() {
             var tipsy = get(this);
             tipsy.hoverState = 'in';
@@ -389,7 +389,7 @@ $(function() { $.livequery.play(); });
                 setTimeout(function() { if (tipsy.hoverState == 'in') tipsy.show(); }, options.delayIn);
             }
         };
-        
+
         function leave() {
             var tipsy = get(this);
             tipsy.hoverState = 'out';
@@ -399,20 +399,20 @@ $(function() { $.livequery.play(); });
                 setTimeout(function() { if (tipsy.hoverState == 'out') tipsy.hide(); }, options.delayOut);
             }
         };
-        
+
         if (!options.live) this.each(function() { get(this); });
-        
+
         if (options.trigger != 'manual') {
             var binder   = options.live ? 'live' : 'bind',
                 eventIn  = options.trigger == 'hover' ? 'mouseenter' : 'focus',
                 eventOut = options.trigger == 'hover' ? 'mouseleave' : 'blur';
             this[binder](eventIn, enter)[binder](eventOut, leave);
         }
-        
+
         return this;
-        
+
     };
-    
+
     $.fn.tipsy.defaults = {
         className: null,
         delayIn: 0,
@@ -427,7 +427,7 @@ $(function() { $.livequery.play(); });
         title: 'title',
         trigger: 'hover'
     };
-    
+
     $.fn.tipsy.revalidate = function() {
       $('.tipsy').each(function() {
         var pointee = $.data(this, 'tipsy-pointee');
@@ -436,7 +436,7 @@ $(function() { $.livequery.play(); });
         }
       });
     };
-    
+
     // Overwrite this method to provide options on a per-element basis.
     // For example, you could store the gravity in a 'tipsy-gravity' attribute:
     // return $.extend({}, options, {gravity: $(ele).attr('tipsy-gravity') || 'n' });
@@ -444,15 +444,15 @@ $(function() { $.livequery.play(); });
     $.fn.tipsy.elementOptions = function(ele, options) {
         return $.metadata ? $.extend({}, options, $(ele).metadata()) : options;
     };
-    
+
     $.fn.tipsy.autoNS = function() {
         return $(this).offset().top > ($(document).scrollTop() + $(window).height() / 2) ? 's' : 'n';
     };
-    
+
     $.fn.tipsy.autoWE = function() {
         return $(this).offset().left > ($(document).scrollLeft() + $(window).width() / 2) ? 'e' : 'w';
     };
-    
+
     /**
      * yields a closure of the supplied parameters, producing a function that takes
      * no arguments and is suitable for use as an autogravity function like so:
@@ -463,7 +463,7 @@ $(function() { $.livequery.play(); });
      * @param prefer (string, e.g. 'n', 'sw', 'w') - the direction to prefer
      *        if there are no viewable region edges effecting the tooltip's
      *        gravity. It will try to vary from this minimally, for example,
-     *        if 'sw' is preferred and an element is near the right viewable 
+     *        if 'sw' is preferred and an element is near the right viewable
      *        region edge, but not the top edge, it will set the gravity for
      *        that element's tooltip to be 'se', preserving the southern
      *        component.
@@ -483,5 +483,30 @@ $(function() { $.livequery.play(); });
 			return dir.ns + (dir.ew ? dir.ew : '');
 		}
 	};
-    
+
 })(jQuery);
+
+/*
+* EASYDROPDOWN - A Drop-down Builder for Styleable Inputs and Menus
+* Version: 2.1.2
+* License: Creative Commons Attribution 3.0 Unported - CC BY 3.0
+* http://creativecommons.org/licenses/by/3.0/
+* This software may be used freely on commercial and non-commercial projects with attribution to the author/copyright holder.
+* Author: Patrick Kunka
+* Copyright 2013 Patrick Kunka, All Rights Reserved
+*/
+
+(function(d){function e(){this.isField=!0;this.keyboardMode=this.hasLabel=this.cutOff=this.disabled=this.inFocus=this.down=!1;this.nativeTouch=!0;this.wrapperClass="dropdown";this.onChange=null}e.prototype={constructor:e,instances:[],init:function(a,c){var b=this;d.extend(b,c);b.$select=d(a);b.id=a.id;b.options=[];b.$options=b.$select.find("option");b.isTouch="ontouchend"in document;b.$select.removeClass(b.wrapperClass+" dropdown");b.$select.is(":disabled")&&(b.disabled=!0);b.$options.length&&(b.$options.each(function(a){var c=
+d(this);c.is(":selected")&&(b.selected={index:a,title:c.text()},b.focusIndex=a);c.hasClass("label")&&0==a?(b.hasLabel=!0,b.label=c.text(),c.attr("value","")):b.options.push({domNode:c[0],title:c.text(),value:c.val(),selected:c.is(":selected")})}),b.selected||(b.selected={index:0,title:b.$options.eq(0).text()},b.focusIndex=0),b.render())},render:function(){var a=this;a.$container=a.$select.wrap('<div class="'+a.wrapperClass+(a.isTouch&&a.nativeTouch?" touch":"")+(a.disabled?" disabled":"")+'"><span class="old"/></div>').parent().parent();
+a.$active=d('<span class="selected">'+a.selected.title+"</span>").appendTo(a.$container);a.$carat=d('<span class="carat"/>').appendTo(a.$container);a.$scrollWrapper=d("<div><ul/></div>").appendTo(a.$container);a.$dropDown=a.$scrollWrapper.find("ul");a.$form=a.$container.closest("form");d.each(a.options,function(){a.$dropDown.append("<li"+(this.selected?' class="active"':"")+">"+this.title+"</li>")});a.$items=a.$dropDown.find("li");a.maxHeight=0;a.cutOff&&a.$items.length>a.cutOff&&a.$container.addClass("scrollable");
+for(i=0;i<a.$items.length;i++){var c=a.$items.eq(i);a.maxHeight+=c.outerHeight();if(a.cutOff==i+1)break}a.isTouch&&a.nativeTouch?a.bindTouchHandlers():a.bindHandlers()},bindTouchHandlers:function(){var a=this;a.$container.on("click.easyDropDown",function(){a.$select.focus()});a.$select.on({change:function(){var c=d(this).find("option:selected"),b=c.text(),c=c.val();a.$active.text(b);"function"===typeof a.onChange&&a.onChange.call(a.$select[0],{title:b,value:c})},focus:function(){a.$container.addClass("focus")},
+blur:function(){a.$container.removeClass("focus")}})},bindHandlers:function(){var a=this;a.query="";a.$container.on({"click.easyDropDown":function(){a.down||a.disabled?a.close():a.open()},"mousemove.easyDropDown":function(){a.keyboardMode&&(a.keyboardMode=!1)}});d("body").on("click.easyDropDown."+a.id,function(c){c=d(c.target);var b=a.wrapperClass.split(" ").join(".");!c.closest("."+b).length&&a.down&&a.close()});a.$items.on({"click.easyDropDown":function(){var c=d(this).index();a.select(c);a.$select.focus()},
+"mouseover.easyDropDown":function(){if(!a.keyboardMode){var c=d(this);c.addClass("focus").siblings().removeClass("focus");a.focusIndex=c.index()}},"mouseout.easyDropDown":function(){a.keyboardMode||d(this).removeClass("focus")}});a.$select.on({"focus.easyDropDown":function(){a.$container.addClass("focus");a.inFocus=!0},"blur.easyDropDown":function(){a.$container.removeClass("focus");a.inFocus=!1},"keydown.easyDropDown":function(c){if(a.inFocus){a.keyboardMode=!0;var b=c.keyCode;if(38==b||40==b||32==
+b)c.preventDefault(),38==b?(a.focusIndex--,a.focusIndex=0>a.focusIndex?a.$items.length-1:a.focusIndex):40==b&&(a.focusIndex++,a.focusIndex=a.focusIndex>a.$items.length-1?0:a.focusIndex),a.down||a.open(),a.$items.removeClass("focus").eq(a.focusIndex).addClass("focus"),a.cutOff&&a.scrollToView(),a.query="";if(a.down)if(9==b||27==b)a.close();else{if(13==b)return c.preventDefault(),a.select(a.focusIndex),a.close(),!1;if(8==b)return c.preventDefault(),a.query=a.query.slice(0,-1),a.search(),clearTimeout(a.resetQuery),
+!1;38!=b&&40!=b&&(c=String.fromCharCode(b),a.query+=c,a.search(),clearTimeout(a.resetQuery))}}},"keyup.easyDropDown":function(){a.resetQuery=setTimeout(function(){a.query=""},1200)}});a.$dropDown.on("scroll.easyDropDown",function(c){a.$dropDown[0].scrollTop==a.$dropDown[0].scrollHeight-a.maxHeight?a.$container.addClass("bottom"):a.$container.removeClass("bottom")});if(a.$form.length)a.$form.on("reset.easyDropDown",function(){a.$active.text(a.hasLabel?a.label:a.options[0].title)})},unbindHandlers:function(){this.$container.add(this.$select).add(this.$items).add(this.$form).add(this.$dropDown).off(".easyDropDown");
+d("body").off("."+this.id)},open:function(){var a=window.scrollY||document.documentElement.scrollTop,c=window.scrollX||document.documentElement.scrollLeft,b=this.notInViewport(a);this.closeAll();this.$select.focus();window.scrollTo(c,a+b);this.$container.addClass("open");this.$scrollWrapper.css("height",this.maxHeight+"px");this.down=!0},close:function(){this.$container.removeClass("open");this.$scrollWrapper.css("height","0px");this.focusIndex=this.selected.index;this.query="";this.down=!1},closeAll:function(){var a=
+Object.getPrototypeOf(this).instances,c;for(c in a)a[c].close()},select:function(a){"string"===typeof a&&(a=this.$select.find("option[value="+a+"]").index()-1);var c=this.options[a],b=this.hasLabel?a+1:a;this.$items.removeClass("active").eq(a).addClass("active");this.$active.text(c.title);this.$select.find("option").removeAttr("selected").eq(b).prop("selected",!0).parent().trigger("change");this.selected={index:a,title:c.title};this.focusIndex=i;"function"===typeof this.onChange&&this.onChange.call(this.$select[0],
+{title:c.title,value:c.value})},search:function(){var a=this,c=function(b){a.focusIndex=b;a.$items.removeClass("focus").eq(a.focusIndex).addClass("focus");a.scrollToView()};for(i=0;i<a.options.length;i++){var b=a.options[i].title.toUpperCase();if(0==b.indexOf(a.query)){c(i);return}}for(i=0;i<a.options.length;i++)if(b=a.options[i].title.toUpperCase(),-1<b.indexOf(a.query)){c(i);break}},scrollToView:function(){if(this.focusIndex>=this.cutOff){var a=this.$items.eq(this.focusIndex).outerHeight()*(this.focusIndex+
+1)-this.maxHeight;this.$dropDown.scrollTop(a)}},notInViewport:function(a){var c=a+(window.innerHeight||document.documentElement.clientHeight),b=this.$dropDown.offset().top+this.maxHeight;return b>=a&&b<=c?0:b-c+5},destroy:function(){this.unbindHandlers();this.$select.unwrap().siblings().remove();this.$select.unwrap();delete Object.getPrototypeOf(this).instances[this.$select[0].id]},disable:function(){this.disabled=!0;this.$container.addClass("disabled");this.$select.attr("disabled",!0);this.down||
+this.close()},enable:function(){this.disabled=!1;this.$container.removeClass("disabled");this.$select.attr("disabled",!1)}};var f=function(a,c){a.id=a.id?a.id:"EasyDropDown"+("00000"+(16777216*Math.random()<<0).toString(16)).substr(-6).toUpperCase();var b=new e;b.instances[a.id]||(b.instances[a.id]=b,b.init(a,c))};d.fn.easyDropDown=function(){var a=arguments,c=[],b;b=this.each(function(){if(a&&"string"===typeof a[0]){var b=e.prototype.instances[this.id][a[0]](a[1],a[2]);b&&c.push(b)}else f(this,a[0])});
+return c.length?1<c.length?c:c[0]:b};d(function(){"function"!==typeof Object.getPrototypeOf&&(Object.getPrototypeOf="object"===typeof"test".__proto__?function(a){return a.__proto__}:function(a){return a.constructor.prototype});d("select.dropdown").each(function(){var a=d(this).attr("data-settings");settings=a?d.parseJSON(a):{};f(this,settings)})})})(jQuery);

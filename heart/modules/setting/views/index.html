@@ -1,57 +1,7 @@
-<style type="text/css">
-	#setting-chooser {
-		position: relative;
-	}
-	#setting-title {
-		padding: 10px 0;
-		margin-bottom: 10px;
-		width: 50%;
-	}
-
-	#setting-chooser form {
-		position: absolute;
-		right: 0;
-		top: 8px;
-	}
-
-	#setting-chooser form label {
-		width: 100px;
-	}
-
-	#setting {
-		border: 1px solid #EFEFEF;
-	}
-	.form .even {
-		background: #F4F4F4;
-	}
-	.form .form-block {
-		padding: 10px;
-		margin-bottom: 0;
-	}
-	.form-block label {
-		width: 25%;
-	}
-	.form .form-right-block {
-		margin-left: 25%;
-	}
-	.form .form-right-block label {
-		margin-right: 15px;
-	}
-	.form-right-block p {
-		color: #878787;
-		font-size: 0.8em;
-	}
-	.form input[type="radio"], .form input[type="checkbox"] {
-		float: none;
-		margin: 0 5px 0 0;
-	}
-	#keygen { color: #882020; cursor: pointer; margin-left: 20px;}
-</style>
-<div id="setting-chooser">
+<div id="setting-chooser-container">
 	<h3 id="setting-title">{{ $title }}</h3>
 
 	{{ Form::start(adminUrl('setting'), 'setting_chooser') }}
-		{{ Form::label('Choose For :: ', 'setting_choose') }}
 		{{ Form::select('setting_choose', $lists, \Uri::current().'/') }}
 	{{ Form::end() }}
 </div>
@@ -87,6 +37,8 @@
 {{ Form::end() }}
 
 <script type="text/javascript">
+
+	$('#setting_choose').fancySelect();
 
 	var org_value = $('#setting_choose').val();
 

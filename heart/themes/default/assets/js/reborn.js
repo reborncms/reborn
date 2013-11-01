@@ -85,7 +85,7 @@ jQuery(function($) {
 			var preslug = '';
 
 			for (var i = 0, n = inputVal.length; i < n; i++) {
-			    if (inputVal.charCodeAt( i ) > 255) { 
+			    if (inputVal.charCodeAt( i ) > 255) {
 			    	preslug += inputVal[i];
 			    } else {
 			    	preslug += inputVal[i].toLowerCase().replace(/[^a-zA-Z 0-9-]/g,'');
@@ -202,9 +202,14 @@ jQuery(function($) {
 		});
 
 		/* Language Chooser */
-		$('#lang').change(function (){
-			$('#language-form').submit();
+		$('#lang').easyDropDown({
+			onChange: function(selected){
+				$('#language-form').submit();
+			}
 		});
+		/*$('#lang').change(function (){
+			$('#language-form').submit();
+		});*/
 	});
 
 }); // end of jQuery

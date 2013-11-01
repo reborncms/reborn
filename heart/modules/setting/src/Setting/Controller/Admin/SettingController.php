@@ -9,6 +9,9 @@ class SettingController extends \AdminController
 	{
 		$this->menu->activeParent('settings');
 		$this->settings = \Setting::getFromModules();
+
+		$this->template->style('settings.css', 'Setting');
+		$this->template->script('fancySelect.js', 'Setting');
 	}
 
 	public function index()
