@@ -2,13 +2,15 @@
 
 namespace Reborn\Routing;
 
+use Reborn\Cores\Facade;
+
 /**
  * Route Facade Class for Static Call to add route
  *
  * @package Reborn\Routing
  * @author MyanmarLinks Professional Web Development Team
  **/
-class RouteFacade extends \Facade
+class RouteFacade extends Facade
 {
 
 	/**

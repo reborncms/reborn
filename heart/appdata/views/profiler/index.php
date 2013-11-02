@@ -261,7 +261,7 @@
 </div> <!-- end of div#reborn-profiler -->
 
 <script type="text/javascript">
-	window.jQuery || document.write('<?php echo global_asset("js", "jquery.min.js"); ?>');
+	window.jQuery || document.write('<script src="<?php echo rbUrl("global/assets/js"); ?>jquery.min.js"><\/script>')
 </script>
 
 <?php

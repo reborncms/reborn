@@ -7,3 +7,4 @@ heart/vendor/*
 content/modules/*
 assets/*
 heart/appdata/config/db.php
+storages/compile.php

@@ -96,6 +96,12 @@ if(! defined('EXT'))
 // Require Autoload File
 require_once SYSTEM.'vendor/autoload.php';
 
+// Call compile file at web request.
+if ((php_sapi_name() !== 'cli') and
+	file_exists($less = STORAGES.'compile.php')) {
+	require $less;
+}
+
 // Set Time and Memory for Application Start
 define('REBORN_START_TIME', microtime(true));
 define('REBORN_START_MEMORY', memory_get_usage());
