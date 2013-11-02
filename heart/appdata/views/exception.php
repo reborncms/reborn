@@ -134,7 +134,7 @@
 			<p id="rb_ex_message"><span>Exception Message !</span> <?php echo $message; ?></p>
 			<p id="rb_ex_is">
 				<span>Exception From !</span>
-				<strong><?php echo str_replace(BASE, '{BASE}'.DS, $file); ?></strong>
+				<strong><?php echo str_replace(BASE, '{{ CMS }} &raquo; ', $file); ?></strong>
 				<small># Line No. <?php echo $line; ?></small>
 			</p>
 		</div>
@@ -150,7 +150,7 @@
 					<span class="line_no"># Line No. <?php echo $line; ?></span>
 				</div>
 				<div class="trace_body">
-					<?php echo str_replace(BASE, 'BASE'.DS, $file); ?>
+					<?php echo str_replace(BASE, '{{ CMS }} &raquo; ', $file); ?>
 				</div>
 				<div class="code">
 					<?php echo $code; ?>

@@ -194,7 +194,7 @@ class ErrorHandler
         $file = isset($t['file']) ? $t['file'] : 'Unknown File';
 
         if ($remove_basepath) {
-            return str_replace(BASE, '{BASE}'.DS, $file);
+            return str_replace(BASE, '{{ CMS }} &raquo; ', $file);
         }
 
         return $file;
@@ -244,7 +244,7 @@ class ErrorHandler
         if (!(error_reporting() & $errno)) {
             return;
         }
-
+        $errfile = str_replace(BASE, '{{ CMS }} &raquo; ', $errfile);
         $style = <<<STYLE
         <style>
             .rb_exception_trace {

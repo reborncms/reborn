@@ -58,6 +58,18 @@ require_once __DIR__.'/heart/reborn/src/start.php';
 
 /**
  * ---------------------------------------------------------
+ * Load Reborn's start file from content
+ * ---------------------------------------------------------
+ *
+ * This is customize file for user.
+ * Reborn undefied nothing in this file.
+ * So user can be make customize without git cconflict.
+ *
+ */
+require_once __DIR__.'/content/start.php';
+
+/**
+ * ---------------------------------------------------------
  * Initial bootup for UTF-8
  * ---------------------------------------------------------
  *
@@ -89,7 +101,11 @@ $app = new Reborn\Cores\Application();
  * ******* You must be set mode is "production" for real running stage. *******
  *
  */
-$app->setAppEnvironment('dev');
+if (!isset($_env)) {
+	$_env = 'dev';
+}
+$app->setAppEnvironment($_env);
+unset($_env);
 
 /**
  * ---------------------------------------------------------
