@@ -434,6 +434,19 @@ class Blueprint
 		$this->addInput($name, $val, 'radio');
 	}
 
+	protected function addRadioGroup($name, $val)
+	{
+		//$this->addInput($name, $val, 'radio');
+		$this->fields[$name]['type'] = 'radioGroup';
+		$this->fields[$name]['info'] = $val['info'];
+		$this->labels[$name] = Form::label($val['label'], $name);
+		if(is_string($val['radio_label'])) {
+			$val['radio_label'] = (array) $val['radio_label'];
+		}
+		$this->fields[$name]['html'] = Form::radioGroup($name,
+										$val['radio_label'], $val['value']);
+	}
+
 	protected function addCheckbox($name, $val)
 	{
 		$this->addInput($name, $val, 'checkbox');
