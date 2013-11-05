@@ -14,8 +14,15 @@ use Illuminate\Database\Eloquent\Model as BaseModel;
  * @package Reborn\MVC\Model
  * @author Myanmar Links Professional Web Development Team
  **/
-class Model extends BaseModel
+abstract class Model extends BaseModel
 {
+
+    /**
+     * Slug column name for findBySug method
+     *
+     * @var string
+     **/
+    protected $slug = 'slug';
 
     /**
      * Variable for validation rules
@@ -30,6 +37,31 @@ class Model extends BaseModel
      * @var array
      **/
     protected $validation_errors;
+
+    /**
+     * Find a model by its slug key.
+     *
+     * @param  string  $slug
+     * @param  array  $columns
+     * @return \Illuminate\Database\Eloquent\Model|Collection|static
+     */
+    public static function findBySlug($slug, $columns = array('*'))
+    {
+        $instance = new static;
+
+        return $instance->newQuery()->where($instance->getSlugKey(), '=', $slug)
+                                    ->first($columns);
+    }
+
+    /**
+     * Get slug key name
+     *
+     * @return string
+     **/
+    public function getSlugKey()
+    {
+        return $this->slug;
+    }
 
     /**
      * Change the rule by name.
