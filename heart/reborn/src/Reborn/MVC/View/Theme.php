@@ -2,6 +2,7 @@
 
 namespace Reborn\MVC\View;
 
+use Reborn\Cores\Facade;
 use Reborn\Filesystem\File;
 use Reborn\Filesystem\Directory as Dir;
 use Reborn\Exception\FileNotFoundException;
@@ -199,9 +200,9 @@ class Theme
      **/
     protected function parseThemeInfo($file)
     {
-        $info_parser = \Facade::getApplication()->info_parser;
+        $info_parser = Facade::getApplication()->info_parser;
 
-        return $info_perser->parse($file);
+        return $info_parser->parse($file);
     }
 
 } // END class Theme

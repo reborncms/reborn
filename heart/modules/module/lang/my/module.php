@@ -67,6 +67,7 @@ return array(
 	// Button Label
 	'btn_label_upgrade'		=> 'အဆင့်မြင့်တင်ရန်',
 	'btn_label_delete'		=> 'ဖျက်ပစ်ရန်',
+	'btn_label_delete_disable'	=> 'Not Allow to Delete',
 	'btn_label_install'		=> 'အသစ်သွင်းရန်',
 	'btn_label_uninstall'	=> '​ပြန်ဖြုတ်ရန်',
 	'btn_label_disable'		=> 'အသုံးပြုမှု ရပ်ဆိုင်းရန်',

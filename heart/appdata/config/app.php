@@ -71,10 +71,24 @@ return array(
 	 */
 	'module' => array(
 			'cores' => array(
-					'admin', 'blog', 'comment', 'contact', 'media', 'module',
-					'navigation', 'pages', 'setting', 'tag', 'user', 'field'
+					'Admin',
+					'Blog',
+					'Comment',
+					'Contact',
+					'Field',
+					'Maintenance',
+					'Media',
+					'Module',
+					'Navigation',
+					'Pages',
+					'Setting',
+					'Tag',
+					'Theme',
+					'User',
+					'Field',
+					'Widgets'
 				),
-			'system' => array('admin', 'pages', 'navigation', 'user', 'module', 'setting', 'field'),
+			'system' => array('admin', 'pages', 'navigation', 'user', 'module', 'setting', 'field', 'theme', 'media', 'maintenance'),
 		),
 
 	/**

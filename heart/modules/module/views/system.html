@@ -1,53 +1,29 @@
-<div class="modules-wrap clearfix">
+<div id="module-wrap" class="clearfix">
 
-	<div class="switchs clearfix">
-	{{ if(! empty($system) ) }}
-		{{ loop( $system as $k => $m ) }}
-		{= $slug = $module['name'].'/'.$module['uri'] =}
+	{{ loop($system as $k => $m) }}
+	<div class="module-block {{ $m['module_class'] }} clearfix">
+		<div class="module-title">
+			{{ $m['name'] }} <span>[ Version {{ $m['version'] }} ]</span>
+		</div>
+		<div class="module-actions clearfix">
+			<div class="mod-actions-box left-box">
+				<i class="icon-refresh icon-gray icon-disable"></i>
+				<span class="disable-status">Not Allo To Disable</span>
+			</div> <!-- END of .mod-actions-box.left-box -->
 
-		{{ if($module['enabled']) }}
-		{= $class = "mod-on" =}
-		{= $status = 'enable' =}
-		{{ else }}
-		{= $class = "mod-off" =}
-		{= $status = 'disable' =}
-		{{ endif }}
-
-		<div class="sw-mod">
-			<h4 class="{{ $class }}">{{ $m['name'] }} <span>V [ {{ $m['version'] }} ]</span></h4>
-			<div class="mod-body clearfix">
-				<div class="mod-desc">
-					{{ ifset($m['description'][$lang]) }}
-					{{ $m['description'][$lang] }}
-					{{ else }}
-					{{ $m['description']['en'] }}
-					{{ endif }}
-				</div> <!-- end of div.mod-desc -->
-				<div class="mod-body-left">
-					<div class="mod-author">
-						{{ sprintf(t('module::module.mod_author'), $m['author']) }}
-					</div> <!-- end of div.mod-author -->
-					<div class="mod-url">
-						{{ sprintf(t('module::module.mod_website'), $m['authorUrl'], $m['authorUrl']) }}
-					</div> <!-- end of div.mod-url -->
-				</div> <!-- end of div.mod-body-left -->
-				<div class="mod-body-right">
-					<p>{{ t('module::module.'.$status) }}</p>
-				</div> <!-- end of div.mod-body-right -->
-			</div> <!-- end of div.mod-body -->
-
-			<div class="mod-actions clearfix">
+			<div class="mod-actions-box right-box">
 				{{ if($m['upgradeRequire']) }}
-				<a href="{{ adminUrl("module/upgrade/$slug") }}"
-				class="btn btn-blue tipsy-tip" title="{{ t('module::module.btn_label_upgrade') }}">
+				<a href="{{ adminUrl('module/upgrade/'.$m['name'].'/'.$m['uri']) }}"
+				class="tipsy-tip"
+				title="{{ t('module::module.btn_label_upgrade') }}">
 					<i class="icon-cloudup icon-white"></i>
 				</a>
 				{{ endif }}
-			</div> <!-- end of div.mod-actions -->
 
-		</div> <!-- end of div.sw-mod -->
-		{{ endloop }}
-	{{ endif }}
-	</div> <!-- end of div.switchs -->
+			</div> <!-- END of .mod-actions-box.right-box -->
 
-</div> <!-- end of div.modules-wrap -->
+		</div> <!-- END of .module-actions -->
+	</div> <!-- END of .module-block -->
+	{{ endloop }}
+
+</div> <!-- END of #module-warp -->

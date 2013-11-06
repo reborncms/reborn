@@ -27,7 +27,6 @@ class ModuleController extends \AdminController
 		$this->template->title(t('module::module.title'))
 					->set('system', $this->modules['system'])
 					->set('plugged', $this->modules['plugged'])
-					->set('unplug', $this->modules['unplug'])
 					->set('news', $this->modules['news']);
 
 		$drag = $this->template->partialRender('module::plugged');
@@ -38,7 +37,7 @@ class ModuleController extends \AdminController
 		$this->template->set('news_view', $news);
 		$this->template->set('system_view', $system);
 
-		$this->template->setPartial('index');
+		$this->template->setPartial('lists');
 	}
 
 	public function install($name, $uri)
@@ -138,7 +137,7 @@ class ModuleController extends \AdminController
 			}
 
 			if (\Dir::is($mod['path'])) {
-				if (@\Dir::delete($mod['path'])) {
+				if (\Dir::delete($mod['path'])) {
 					$msg = sprintf(t('module::module.delete_success'), $name);
 					\Flash::success($msg);
 				} else {
@@ -244,7 +243,8 @@ class ModuleController extends \AdminController
 	protected function moduleSpliter()
 	{
 		$m = array();
-		$m['system'] = $m['plugged'] = $m['unplug'] = $m['news'] = array();
+		$m['plugged'] = $m['news'] = $m['system'] = array();
+
 		$sys = \Config::get('app.module.system');
 		$mods = \Module::getAll();
 
@@ -252,11 +252,14 @@ class ModuleController extends \AdminController
 
 			if ($mod['installed']) {
 				if (in_array($k, $sys)) {
+					$mod['module_class'] = 'is-core-block';
 					$m['system'][$k] = $mod;
 				} else {
+					$mod['module_class'] = 'is-plugged-block';
 					$m['plugged'][$k] = $mod;
 				}
 			} else {
+				$mod['module_class'] = 'is-new-block';
 				$m['news'][$k] = $mod;
 			}
 		}

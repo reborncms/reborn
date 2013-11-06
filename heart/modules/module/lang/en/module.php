@@ -67,6 +67,7 @@ return array(
 	// Button Label
 	'btn_label_upgrade'		=> 'Need To Upgrade',
 	'btn_label_delete'		=> 'Click to Delete',
+	'btn_label_delete_disable'	=> 'Not Allow to Delete',
 	'btn_label_install'		=> 'Click to Install',
 	'btn_label_uninstall'	=> 'Click to UnInstall',
 	'btn_label_disable'		=> 'Click to Disable',

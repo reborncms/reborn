@@ -1,0 +1,38 @@
+<div>
+
+	<div class="tabs">
+		<ul class="tab-menu">
+			<li>
+				<a href="#addon-modules">
+					{{ t('module::module.plugged_mods') }}
+				</a>
+			</li>
+			<li>
+				<a href="#news-modules">
+					{{ t('module::module.unplug_mods') }}
+				</a>
+			</li>
+			<li>
+				<a href="#system-modules">
+					{{ t('module::module.system_mods') }}
+				</a>
+			</li>
+		</ul>
+
+		<div class="tabs-data">
+			<div id="addon-modules">
+				{{ $drag_view }}
+			</div> <!-- end of #oth-modules -->
+			<div id="news-modules">
+				{{ $news_view }}
+			</div> <!-- end of #oth-modules -->
+			<div id="system-modules">
+				<p class="label label-warning system-notice">
+					{{ t('module::module.system_mods_label') }}
+				</p>
+				{{ $system_view }}
+			</div> <!-- end of #oth-modules -->
+		</div>
+
+	</div>
+</div>

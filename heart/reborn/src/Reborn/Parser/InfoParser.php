@@ -63,10 +63,10 @@ class InfoParser
 	}
 
 	/**
-	 * undocumented function
+	 * Make Parse Info File to Array data and make cache
 	 *
-	 * @return void
-	 * @author
+     * @param string $file
+	 * @return array
 	 **/
 	protected function makeParsing($file)
 	{
@@ -187,18 +187,16 @@ class InfoParser
     }
 
     /**
-     * undocumented function
+     * Get data form cache file.
      *
-     * @return void
-     * @author
+     * @param string $file
+     * @return array
      **/
     protected function getFromCache($file)
     {
     	$time = filemtime($file);
 
     	if(! Cache::has($file) ) return false;
-
-    	dump(Cache::get($file), true);
 
     	$cachefile = $this->cache_path.md5($file).'.cache';
 
@@ -212,10 +210,10 @@ class InfoParser
     }
 
     /**
-     * undocumented function
+     * Set the cache data file
      *
+     * @param string $file
      * @return void
-     * @author
      **/
     protected function makeCacheFile($info)
     {
@@ -223,10 +221,10 @@ class InfoParser
     }
 
     /**
-     * undocumented function
+     * Delete the cache data file
      *
+     * @param string $file
      * @return void
-     * @author
      **/
     public function deleteCache($file)
     {

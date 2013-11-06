@@ -1,63 +1,37 @@
-<div class="modules-wrap clearfix">
+<div id="module-wrap" class="clearfix">
 
-	<div class="switchs clearfix">
-	{{ if(! empty($news) ) }}
-		{{ loop( $news as $k => $m ) }}
-		{= $slug = $m['name'].'/'.$m['uri'] =}
+	{{ loop($news as $k => $m) }}
+	<div class="module-block {{ $m['module_class'] }} clearfix">
+		<div class="module-title">
+			{{ $m['name'] }} <span>[ Version {{ $m['version'] }} ]</span>
+		</div>
+		<div class="module-actions clearfix">
+			<div class="mod-actions-box left-box">
+					<i class="icon-refresh icon-gray icon-disable"></i>
+					<span class="disable-status">Disable</span>
+				</a>
+			</div> <!-- END of .mod-actions-box.left-box -->
 
-		{{ if($m['enabled']) }}
-		{= $class = "mod-on" =}
-		{= $status = 'Enable' =}
-		{{ else }}
-		{= $class = "mod-off" =}
-		{= $status = 'Disable' =}
-		{{ endif }}
-
-		<div class="sw-mod">
-			<h4 class="{{ $class }}">{{ $m['name'] }} <span>V [ {{ $m['version'] }} ]</span></h4>
-			<div class="mod-body clearfix">
-				<div class="mod-desc">
-					{{ ifset($m['description'][$lang]) }}
-					{{ $m['description'][$lang] }}
-					{{ else }}
-					{{ $m['description']['en'] }}
-					{{ endif }}
-				</div> <!-- end of div.mod-desc -->
-				<div class="mod-body-left">
-					<div class="mod-author">
-						{{ sprintf(t('module::module.mod_author'), $m['author']) }}
-					</div> <!-- end of div.mod-author -->
-					<div class="mod-url">
-						{{ sprintf(t('module::module.mod_website'), $m['authorUrl'], $m['authorUrl']) }}
-					</div> <!-- end of div.mod-url -->
-				</div> <!-- end of div.mod-body-left -->
-				<div class="mod-body-right">
-					<p>{{ t('module::module.'.lcfirst($status)) }}</p>
-				</div> <!-- end of div.mod-body-right -->
-			</div> <!-- end of div.mod-body -->
-
-			<div class="mod-actions clearfix">
-
-				<a href="{{ adminUrl("module/install/$slug") }}" class="btn btn-green tipsy-tip" title="{{ t('module::module.btn_label_install') }}">
+			<div class="mod-actions-box right-box">
+				<a href="{{ adminUrl('module/install/'.$m['name'].'/'.$m['uri']) }}"
+				class="tipsy-tip"
+				title="{{ t('module::module.btn_label_install') }}">
 					<i class="icon-check icon-white"></i>
 				</a>
 
 				{{ ifnot($m['isCore']) }}
-				<a href="{{ adminUrl("module/delete/$slug") }}"
-				class="btn btn-red tipsy-tip" title="{{ t('module::module.btn_label_delete') }}">
+				<a href="{{ adminUrl('module/delete/'.$m['name'].'/'.$m['uri']) }}"
+				class="tipsy-tip"
+				title="{{ t('module::module.btn_label_delete') }}">
 					<i class="icon-remove icon-white"></i>
 				</a>
+				{{ else }}
+					<i class="icon-remove icon-gray icon-disable tipsy-tip" title="{{ t('module::module.btn_label_delete_disable') }}"></i>
 				{{ endif }}
+			</div> <!-- END of .mod-actions-box.right-box -->
 
-			</div> <!-- end of div.mod-actions -->
+		</div> <!-- END of .module-actions -->
+	</div> <!-- END of .module-block -->
+	{{ endloop }}
 
-		</div> <!-- end of div.sw-mod -->
-		{{ endloop }}
-	{{ else }}
-		<div id="no-index-data">
-		{{ t('module::module.no_news') }}
-		</div>
-	{{ endif }}
-	</div> <!-- end of div.switchs -->
-
-</div> <!-- end of div.modules-wrap -->
+</div> <!-- END of #module-warp -->
