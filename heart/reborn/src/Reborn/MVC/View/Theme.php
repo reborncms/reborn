@@ -63,7 +63,7 @@ class Theme
      **/
     public function getThemePath()
     {
-        if(! \Dir::is($this->path.$this->theme))
+        if(! Dir::is($this->path.$this->theme))
         {
             throw new \Exception("{$this->theme} folder doesn't exists in {$this->path}");
         }

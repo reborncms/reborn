@@ -87,4 +87,66 @@ class Blog
 
 		return $posts;
 	}
+
+	/**
+	 * Get Blog Category Lists
+	 * Example ::
+	 * <code>
+	 * 		// With "ul" list
+	 * 		<ul>
+	 * 			{{ Blog::categories() }}
+	 * 		<ul>
+	 * 		// With "ol" list
+	 * 		<ol>
+	 * 			{{ Blog::categories('ol') }}
+	 * 		<ol>
+	 * </code>
+	 *
+	 * @param string $child_tag Child category list wrapping tag (Default is "ul")
+	 * @return string
+	 **/
+	public static function categories($child_tag = 'ul')
+	{
+		$url = rbUrl('blog/category');
+
+		$result = '';
+
+		foreach (CategoryModel::cat_stucture() as $cat) {
+			$result .= '<li>';
+			$result .= '<a href="'. $url.$cat['slug'] .'" >';
+			$result .= $cat['name'];
+			$result .= '</a>';
+			if (isset($cat['children'])) {
+				$result .= static::categoriesChild($child_tag, $cat['children'], $url);
+			}
+			$result .= '</li>';
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Get category child lists
+	 *
+	 * @param string $tag
+	 * @param array $cat
+	 * @param strring $url
+	 * @return string
+	 **/
+	protected static function categoriesChild($tag, $cat, $url)
+	{
+		$result = '<'.$tag.'>';
+		foreach ($cat as $c) {
+			$result .= '<li>';
+			$result .= '<a href="'. $url.$c['slug'] .'" >';
+			$result .= $c['name'];
+			$result .= '</a>';
+			if (isset($c['children'])) {
+				$result .= static::categoriesChild($child_tag, $c['children'], $url);
+			}
+			$result .= '</li>';
+		}
+
+		return $result.'</'.$tag.'>';
+	}
 }
