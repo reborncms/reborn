@@ -18,7 +18,7 @@ return array(
 	'message' 				=> array(
 		'success' 			=> array(
 			'change_status' => 'Successfully changed comment status',
-			'multi_acion'	=> 'Comment successfully {:method}',
+			'multi_action'	=> 'Comment successfully {:method}',
 			'multi_actions'	=> 'Comments successfully {:method}',
 			'delete'		=> 'Comment successfully delete',
 			'multi_delete'	=> 'Comments successfully delete',

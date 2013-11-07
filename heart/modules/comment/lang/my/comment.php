@@ -18,7 +18,7 @@ return array(
 	'message' 				=> array(
 		'success' 			=> array(
 			'change_status' => 'မှတ်ချက် အခြေအနေကို အောင်မြင်စွာ ပြောင်းလဲပြီးသည်။',
-			'multi_acion'	=> 'Comment successfully {:method}',
+			'multi_action'	=> 'Comment successfully {:method}',
 			'multi_actions'	=> 'Comments successfully {:method}',
 			'delete'		=> 'မှတ်ချက်အား အောင်မြင်စွာ ဖျက်ပြီးသည်။',
 			'multi_delete'	=> 'မှတ်ချက်များအား အောင်မြင်စွာ ဖျက်ပြီးသည်။',

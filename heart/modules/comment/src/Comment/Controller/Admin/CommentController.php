@@ -12,10 +12,10 @@ class CommentController extends \AdminController
 
 	protected static $child_comment;
 
-	public function before() 
+	public function before()
 	{
 		$this->menu->activeParent('content');
-		
+
 		\Translate::load('comment::comment');
 
 		$ajax = $this->request->isAjax();
@@ -26,7 +26,7 @@ class CommentController extends \AdminController
 
 		$this->template->style('comment.css', 'comment')
 					   	->script('comment.js', 'comment');
-		
+
 	}
 
 	/**
@@ -195,7 +195,7 @@ class CommentController extends \AdminController
 	/**
 	 * Reply Comments from Admin Panel
 	 *
-	 * @return void 
+	 * @return void
 	 **/
 	public function reply($id = 0)
 	{
@@ -274,7 +274,7 @@ class CommentController extends \AdminController
 			if (!user_has_access('comment.delete')) {
              	return $this->notFound();
         	}
-        	
+
 			self::delete();
 		} else {
 
@@ -304,7 +304,7 @@ class CommentController extends \AdminController
 
 			if (!empty($comments)) {
 				if (count($comments) == 1) {
-					\Flash::success(t('comment::comment.message.success.multi_actions', array('method' => $method)));
+					\Flash::success(t('comment::comment.message.success.multi_action', array('method' => $method)));
 				} else {
 					\Flash::success(t('comment::comment.message.success.multi_actions', array('method' => $method)));
 				}
@@ -314,7 +314,7 @@ class CommentController extends \AdminController
 			return \Redirect::to(adminUrl('comment'));
 
 		}
-		
+
 	}
 
 	public function delete($id = null)
@@ -355,7 +355,7 @@ class CommentController extends \AdminController
 
 	}
 
-	public static function restore($id = null) 
+	public static function restore($id = null)
 	{
 		if (!$id) {
 			return $this->notFound();
@@ -366,7 +366,7 @@ class CommentController extends \AdminController
 		if ($restore) {
 			\Flash::success("Successfully Restored");
 		} else {
-			\Flash::error("Error Restored");	
+			\Flash::error("Error Restored");
 		}
 		return \Redirect::to(adminUrl('comment/filter/trash'));
 	}
@@ -381,12 +381,12 @@ class CommentController extends \AdminController
 			$url = rbUrl();
 			try {
 				$akismet = new Akismet($apiKey, $url);
-				return $akismet->verifyKey();	
+				return $akismet->verifyKey();
 			} catch (\Exception $e) {
 				return "no-connection";
 			}
-			
+
 		}
 	}
-	
+
 }
