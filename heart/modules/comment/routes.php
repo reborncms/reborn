@@ -8,7 +8,7 @@
 
 \Route::get('@admin/comment/filter/{alpha:status}/{p:page}?', 'Comment\Admin\Comment::filter', 'admin_comment_filter');
 
-\Route::get('@admin/comment/change-status/{int:id}/{alpha:status}', 'Comment\Admin\Comment::changeStatus', 'admin_comment_changeStatus');
+\Route::get('@admin/comment/change-status/{int:id}', 'Comment\Admin\Comment::changeStatus', 'admin_comment_changeStatus');
 
 \Route::add('@admin/comment/reply/{int:id}', 'Comment\Admin\Comment::reply', 'admin_comment_reply');
 

@@ -304,7 +304,7 @@ class CommentController extends \AdminController
 
 			if (!empty($comments)) {
 				if (count($comments) == 1) {
-					\Flash::success(t('comment::comment.message.success.multi_action', array('method' => $method)));
+					\Flash::success(t('comment::comment.message.success.multi_actions', array('method' => $method)));
 				} else {
 					\Flash::success(t('comment::comment.message.success.multi_actions', array('method' => $method)));
 				}
