@@ -28,6 +28,10 @@
 
 \Route::add('@admin/blog/restore/{int:id}', 'Blog\Admin\Blog::restore', 'admin_blog_restore');
 
+\Route::add('@admin/blog/post-links/{int:id}?/{p:page}?', 'Blog\Admin\Blog::postLinks', 'post_links_for_editor');
+
+\Route::post('@admin/blog/search-links/{p:page}?', 'Blog\Admin\Blog::searchLinks', 'search_links_for_editor');
+
 	//Blog Category
 
 \Route::add('@admin/blog/category', 'Blog\Admin\Category::index', 'admin_blog_category_index');

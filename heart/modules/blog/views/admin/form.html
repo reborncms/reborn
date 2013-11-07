@@ -19,10 +19,11 @@
                         {{ Form::input('slug', isset($blog->slug) ? $blog->slug : '','text',array('class' => 'xx-large', 'id' => 'form_slug', 'required' => 'required')) }}
                     </div> <!-- end of form-right-block -->
                 </div> <!-- end of form block -->
-                
+
                 <div class="form-block">
                     <span class="msg error">{{ $blog->errors('body') }}</span>
 					{{ Form::ckeditor('body', (isset($blog->body) and $method == 'edit') ? $blog->body : '') }}
+
                 </div> <!-- end of form-block -->
                 <div class="form-block">
                     {{ Form::label(t('blog::blog.excerpt'), 'form_excerpt') }}
@@ -91,7 +92,7 @@
                             <span>{{ t('blog::blog.author') }}</span>
                         </div>
                     </a>
-                    
+
                     <div class="r-i-b-h">
                         {{ Form::select('author_id', $authors, isset($blog->author_id) ? $blog->author_id : '0', array('class' => 'thin xx-large')) }}
                     </div>
@@ -118,11 +119,11 @@
                                 {{ $blog->created_at }}
                             </span>
                         {{ endif }}
-                        
+
                         <div id="manual-sch">
-                            {{ Form::input('date',(isset($blog->created_at) and $method == 'edit') ? $blog->created_at : '', 'text', array('class' => 'thin xx-large', 'id' => 'datepicker')) }}                        
+                            {{ Form::input('date',(isset($blog->created_at) and $method == 'edit') ? $blog->created_at : '', 'text', array('class' => 'thin xx-large', 'id' => 'datepicker')) }}
                         </div>
-                        
+
                     </div>
                 </div> <!-- end of div.r-container -->
                 {{ else }}
@@ -218,15 +219,15 @@
                     {{ Form::hidden('status', $blog->status) }}
                 {{ endif }}
 
-                {{ if ($method == 'create' or $blog->status == 'draft') }} 
-                    {= 
+                {{ if ($method == 'create' or $blog->status == 'draft') }}
+                    {=
                         $save_button_val = t('global.publish');
                         $draft_button_val = t('global.save_draft');
                     =}
                 {{ else }}
-                    {= 
+                    {=
                         $save_button_val = t('global.save');
-                        $draft_button_val = t('global.unpublish'); 
+                        $draft_button_val = t('global.unpublish');
                     =}
                 {{ endif }}
 
@@ -235,7 +236,7 @@
                 {{ if ($method == 'edit') }}
                     <a href="{{ adminUrl('blog/delete/'.$blog->id) }}" class="btn btn-red">Move to Trash</a>
                 {{ endif }}
-                
+
             </div> <!-- end of form-block -->
 
         </div> <!-- end of div#form-wrapper -->

@@ -1,0 +1,65 @@
+{{ less('import.less') }}
+{{ css('blog.css', 'all', 'blog') }}
+<style type="text/css">
+	body {
+		background: #fff !important;
+	}
+</style>
+
+<script type="text/javascript">
+	var ADMIN = '{{ ADMIN }}',
+		SITEURL = '{{ rbUrl() }}';
+</script>
+{{ js('jquery.min.js') }}
+
+<div id="editor-wrap">
+{{ if($links->isEmpty()) }}
+ 	<div id="no-index-data">
+ 		Blog post is Empty!
+ 	</div>
+{{ else }}
+
+<div id="filter-bar" class="editor-view">
+{{ Form::start(adminUrl('blog/search-lists'), 'filter-form',false, array('class' => 'form')) }}
+	{{ Form::hidden('edit_mode', isset($id) ? $id : '') }}
+	{{ Form::label(t('blog::blog.filter_search').' :','term') }}
+	{{ Form::input('term', isset($term) ? $term : '','text', array('id' => 'filter-box','class' => 'small thin')) }}
+	{{ Form::submit('search', 'Search', array('class' => 'btn btn-blue')) }}
+{{ Form::end() }}
+</div>
+
+	<table class="editor-view-table">
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th width="10%">&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{ loop($links as $link) }}
+			<tr>
+				<td>{{ $link->title }}</td>
+				<td>
+					<a href="#" class="insert" data-url="{{ $link->url }}" data-title="{{ $link->title }}">Insert</a>
+				</td>
+			</tr>
+			{{ endloop }}
+		</tbody>
+	</table>
+
+	{{ $pagination }}
+
+{{ endif }}
+
+</div>
+
+<script type="text/javascript">
+	$('.insert').on('click', function(e){
+		e.preventDefault();
+
+		var url = $(this).data('url'),
+			label = $(this).data('title');
+
+		window.parent.CKEDITOR.currentInstance.insertHtml("<a href='" + url + "'  title='" + label + "' class='post-referer-link'>" + label + "</a>");
+	});
+</script>

@@ -67,7 +67,7 @@ class BlogController extends \AdminController
 		}
 
 		$blog = new Blog();
-		
+
 		if (\Input::isPost()) {
 
 			if (\Input::get('id') != '') {
@@ -83,7 +83,7 @@ class BlogController extends \AdminController
 				if (\Module::isEnabled('field')) {
 
 					\Field::save('blog', $blog);
-						
+
 				}
 
 				\Event::call('reborn.blog.create');
@@ -111,9 +111,9 @@ class BlogController extends \AdminController
 	 **/
 	public function edit($id = null)
 	{
-		
+
 		if (\Input::isPost()) {
-			
+
 				$blog = self::setValues('edit', \Input::get('id'));
 
 				if ($blog->save()) {
@@ -123,7 +123,7 @@ class BlogController extends \AdminController
 					if (\Module::isEnabled('field')) {
 
 						\Field::update('blog', $blog);
-							
+
 					}
 
 					\Flash::success(t('blog::blog.edit_success'));
@@ -135,7 +135,7 @@ class BlogController extends \AdminController
 					\Flash::error(t('blog::blog.edit_error'));
 
 				}
-			
+
 		} else {
 
 			if ($id == null) {
@@ -153,7 +153,7 @@ class BlogController extends \AdminController
 		}
 
 		self::formEle($blog);
-		
+
 		$this->template->title('Edit Blog')
 					   	->set('method', 'edit');
 	}
@@ -164,7 +164,7 @@ class BlogController extends \AdminController
 	 * Add another language for blog content
 	 *
 	 * @return void
-	 * @author 
+	 * @author
 	 **/
 	public function multilang($id = null)
 	{
@@ -175,7 +175,7 @@ class BlogController extends \AdminController
 			if (empty($blog)) {
 
 				return $this->notFound();
-				
+
 			}
 
 		}
@@ -191,7 +191,7 @@ class BlogController extends \AdminController
 				if (\Module::isEnabled('field')) {
 
 					\Field::save('blog', $blog);
-						
+
 				}
 
 				\Flash::success(t('blog::blog.create_success'));
@@ -252,7 +252,7 @@ class BlogController extends \AdminController
 		if ($restore) {
 			\Flash::success("Successfully Restored");
 		} else {
-			\Flash::error("Error Restored");	
+			\Flash::error("Error Restored");
 		}
 		return \Redirect::to(adminUrl('blog/trash'));
 	}
@@ -276,7 +276,7 @@ class BlogController extends \AdminController
 
 					// only delete when force Delete
 					if (\Module::isEnabled('field')) {
-						
+
 						\Field::delete('blog', $blog);
 					}
 
@@ -303,7 +303,7 @@ class BlogController extends \AdminController
 					}
 
 					$redirect_url = 'blog';
-					
+
 					//solft delete tag and comments
 
 				}
@@ -327,6 +327,83 @@ class BlogController extends \AdminController
 	}
 
 	/**
+	 * Get Post links for Editor Plugin
+	 *
+	 * @param int|null $id Post ID for Skipping
+	 * @return void
+	 **/
+	public function postLinks($id = null)
+	{
+		if ( is_null($id) ) {
+			$total = Blog::active()->where('lang_ref', null)->count();
+			$links = Blog::active();
+		} else {
+			$total = Blog::active()->where('id', '!=', $id)
+							->where('lang_ref', null)->count();
+			$links = Blog::active()->where('id', '!=', $id);
+			$this->template->id = $id;
+		}
+		$options = array(
+		    'total_items'       => $total,
+		    'items_per_page'    => \Setting::get('admin_item_per_page'),
+		);
+
+		$pagination = \Pagination::create($options);
+
+		$links = $links->where('lang_ref', null)
+						->orderBy('created_at', 'desc')
+						->skip(\Pagination::offset())
+						->take(\Pagination::limit())
+						->get(array('title', 'slug', 'lang'));
+
+		$this->template->partialOnly();
+		$this->template->setPartial('admin/editor/index', compact('links', 'pagination'));
+	}
+
+	/**
+	 * Ajax Filter Search lists for Editor
+	 *
+	 * @return void
+	 **/
+	public function searchLists()
+	{
+		$term = \Input::get('term');
+		$id = \Input::get('edit_mode');
+
+		if ( is_null($id) ) {
+			$total = Blog::active()->where('lang_ref', null)
+							->where('title', 'like', '%'.$term.'%')->count();
+			$links = Blog::active();
+		} else {
+			$total = Blog::active()->where('id', '!=', $id)
+							->where('lang_ref', null)
+							->where('title', 'like', '%'.$term.'%')
+							->count();
+			$links = Blog::active()->where('id', '!=', $id);
+			$this->template->id = $id;
+		}
+
+		$options = array(
+		    'total_items'       => $total,
+		    'items_per_page'    => \Setting::get('admin_item_per_page'),
+		);
+
+		$pagination = \Pagination::create($options);
+
+		$links = $links->where('lang_ref', null)
+						->orderBy('created_at', 'desc')
+						->skip(\Pagination::offset())
+						->take(\Pagination::limit())
+						->where('title', 'like', '%'.$term.'%')
+						->get(array('title', 'slug', 'lang'));
+
+		$this->template->partialOnly();
+		$this->template->term = $term;
+		$this->template->setPartial('admin/editor/index', compact('links', 'pagination'));
+	}
+
+
+	/**
 	 * Set JS and Style to Template
 	 *
 	 * @return void
@@ -346,6 +423,7 @@ class BlogController extends \AdminController
 						->set('authors', $authors)
 						->set('blog', $blog)
 						->set('custom_field', $fields)
+						->jsValue('post_id', $blog->id)
 						->style(array(
 							'plugins/jquery.tagsinput_custom.css',
 							'form.css'))
@@ -438,7 +516,7 @@ class BlogController extends \AdminController
 		if ($method == 'edit') {
 			$blog->updated_at = new \DateTime();
 		}
-		
+
 		// Remove Base Url from Attachment
 		$blog->attachment = remove_base_url(\Input::get('attachment'));
 		//type
@@ -591,7 +669,7 @@ class BlogController extends \AdminController
 	 * View Trash
 	 *
 	 * @return void
-	 * @author 
+	 * @author
 	 **/
 	public function trash()
 	{
@@ -619,16 +697,11 @@ class BlogController extends \AdminController
 					    ->set('list_type', 'trash');
 
 		$data_table = $this->template->partialRender('admin/table');
-		$this->template->set('data_table', $data_table);	
+		$this->template->set('data_table', $data_table);
 	}
 
 	protected function trashCount()
 	{
 		return Blog::onlyTrashed()->count();
-	}
-
-	public function after($response)
-	{
-		return parent::after($response);
 	}
 }

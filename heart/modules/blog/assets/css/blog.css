@@ -107,8 +107,8 @@
 
 /** Author Section **/
 div#left-side { width: 60%; float: left;}
-div#right-side { 
-	width: 30%; 
+div#right-side {
+	width: 30%;
 	float: right;
 	padding: 20px;
 	background-color: #FFFFFF;
@@ -171,4 +171,13 @@ span.error {
 .draft_lang {
 	font-size: 9px;
 	padding: 0px 5px;
+}
+
+/* Style for Editor View */
+#editor-wrap {
+	font-family: "Open Sans", Myanmar3, Tahoma, Helvetica, Sans-Serif;
+}
+
+#filter-bar.editor-view {
+	float: none;
 }
