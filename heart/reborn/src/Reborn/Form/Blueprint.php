@@ -3,7 +3,6 @@
 namespace Reborn\Form;
 
 use Reborn\Filesystem\File;
-use Reborn\Form\UIForm as Form;
 
 /**
  * FormBuilder Blueprint class for Reborn.
@@ -476,7 +475,7 @@ class Blueprint
 		$this->fields[$name]['type'] = 'ckeditor';
 		$this->fields[$name]['info'] = $val['info'];
 		$this->labels[$name] = Form::label($val['label'], $name);
-		$this->fields[$name]['html'] = Form::ckeditor($name, $val['value'], 'normal', $val['attr']);
+		$this->fields[$name]['html'] = UIForm::ckeditor($name, $val['value'], 'normal', $val['attr']);
 	}
 
 	/** CkEditor Mini Field **/
@@ -485,7 +484,7 @@ class Blueprint
 		$this->fields[$name]['type'] = 'ckeditor';
 		$this->fields[$name]['info'] = $val['info'];
 		$this->labels[$name] = Form::label($val['label'], $name);
-		$this->fields[$name]['html'] = Form::ckeditor($name, $val['value'], 'mini', $val['attr']);
+		$this->fields[$name]['html'] = UIForm::ckeditor($name, $val['value'], 'mini', $val['attr']);
 	}
 
 	/** CkEditor Simple Field **/
@@ -494,7 +493,7 @@ class Blueprint
 		$this->fields[$name]['type'] = 'ckeditor';
 		$this->fields[$name]['info'] = $val['info'];
 		$this->labels[$name] = Form::label($val['label'], $name);
-		$this->fields[$name]['html'] = Form::ckeditor($name, $val['value'], 'simple', $val['attr']);
+		$this->fields[$name]['html'] = UIForm::ckeditor($name, $val['value'], 'simple', $val['attr']);
 	}
 
 	/** DatePicker Field **/
@@ -504,7 +503,7 @@ class Blueprint
 		$this->fields[$name]['type'] = 'datepicker';
 		$this->fields[$name]['info'] = $val['info'];
 		$this->labels[$name] = Form::label($val['label'], $name);
-		$this->fields[$name]['html'] = Form::datepicker($name, $val['value'], $format, $val['attr']);
+		$this->fields[$name]['html'] = UIForm::datepicker($name, $val['value'], $format, $val['attr']);
 	}
 
 	/** Tag Field **/
@@ -514,7 +513,7 @@ class Blueprint
 		$this->fields[$name]['info'] = $val['info'];
 		$this->labels[$name] = Form::label($val['label'], $name);
 		$url = isset($val['url']) ? $val['url'] : null;
-		$this->fields[$name]['html'] = Form::tags($name, $val['value'], $val['attr'], $url);
+		$this->fields[$name]['html'] = UIForm::tags($name, $val['value'], $val['attr'], $url);
 	}
 
 	/** Country List Field **/
