@@ -51,7 +51,7 @@ class Alias
             'Request' => 'Reborn\Http\Request',
             'Redirect' => 'Reborn\Http\Redirect',
             'Response' => 'Reborn\Http\Response',
-            'Form' => 'Reborn\Form\Form',
+            'Form' => 'Reborn\Form\UIForm',
             'FormBuilder' => 'Reborn\Form\AbstractFormBuilder',
             'Input' => 'Reborn\Http\Input',
             'Log' => 'Reborn\Connector\Log\LogManager',
