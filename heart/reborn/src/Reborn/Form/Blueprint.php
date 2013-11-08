@@ -512,7 +512,8 @@ class Blueprint
 		$this->fields[$name]['type'] = 'datepicker';
 		$this->fields[$name]['info'] = $val['info'];
 		$this->labels[$name] = Form::label($val['label'], $name);
-		$this->fields[$name]['html'] = Form::tags($name, $val['value'], $val['attr']);
+		$url = isset($val['url']) ? $val['url'] : null;
+		$this->fields[$name]['html'] = Form::tags($name, $val['value'], $val['attr'], $url);
 	}
 
 	/** Country List Field **/
