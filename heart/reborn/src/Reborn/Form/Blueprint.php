@@ -3,6 +3,7 @@
 namespace Reborn\Form;
 
 use Reborn\Filesystem\File;
+use Reborn\Form\UIForm as Form;
 
 /**
  * FormBuilder Blueprint class for Reborn.
