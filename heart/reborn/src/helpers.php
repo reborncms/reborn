@@ -891,3 +891,22 @@ if (!function_exists('formatSizeToBytes'))
     }
 }
 
+
+if (!function_exists('image_data'))
+{
+	/**
+	 * Get image data url string.
+	 *
+	 * @param string $image Image with full path
+	 * @return string|null
+	 **/
+	function image_data($image)
+	{
+		if (! is_file($image) ) return null;
+
+		// Read image data and convert base64 encoding data string
+		$data = base64_encode(file_get_contents($image));
+
+		return 'data: '.mime_content_type($image).';base64,'.$data;
+	}
+}

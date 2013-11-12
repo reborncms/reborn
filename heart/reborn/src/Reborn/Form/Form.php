@@ -460,6 +460,22 @@ class Form
     }
 
     /**
+     * Draft and Live Status Dropdown List
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param array $attrs
+     * @return string
+     **/
+    public static function status($name, $value = null, $attrs = array())
+    {
+        return static::select($name,
+                            array('draft' => 'Draft', 'live' => 'Live'),
+                            $value, $attrs
+                            );
+    }
+
+    /**
      * Country List Select
      *
      * @return string

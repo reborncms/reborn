@@ -30,6 +30,13 @@ class UIForm extends Form
     protected static $datepicker = false;
 
     /**
+     * Variable for tag js declare
+     *
+     * @var boolean
+     **/
+    protected static $tag = false;
+
+    /**
      * Get textarea with CkEditor
      *
      * @param string $name TextArea Name
@@ -259,11 +266,14 @@ $css
     window.jQuery || document.write('<script src="$jq"><\/script>')
 </script>
 $js
+TAG;
+
+$tag_script = <<<SCRIPT
 <script type="text/javascript">
 (function($) {
     $(function()
     {
-        $('.tags').tagsInput({
+        $('#$name').tagsInput({
             width:'auto',
             autocomplete_url: '$url'
         });
@@ -271,11 +281,17 @@ $js
 })(jQuery);
 </script>
 
-TAG;
+SCRIPT;
 
         $attrs = array_merge($attrs, array('class' => 'tags'));
 
-        return $tag_init.static::text($name, $value, $attrs);
+        if (static::$tag) {
+            return static::text($name, $value, $attrs).$tag_script;
+        }
+
+        static::$tag = true;
+
+        return $tag_init.static::text($name, $value, $attrs).$tag_script;
     }
 
 } // END class UIForm extends Form
