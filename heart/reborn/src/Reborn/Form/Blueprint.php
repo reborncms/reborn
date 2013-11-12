@@ -509,7 +509,7 @@ class Blueprint
 	/** Tag Field **/
 	protected function addTags($name, $val)
 	{
-		$this->fields[$name]['type'] = 'datepicker';
+		$this->fields[$name]['type'] = 'tags';
 		$this->fields[$name]['info'] = $val['info'];
 		$this->labels[$name] = Form::label($val['label'], $name);
 		$url = isset($val['url']) ? $val['url'] : null;

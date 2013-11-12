@@ -386,7 +386,6 @@ abstract class AbstractFormBuilder
 			$val['label'] = isset($val['label']) ? $val['label'] : '';
 			$val['info'] = isset($val['info']) ? $val['info'] : '';
 			$val['attr'] = isset($val['attr']) ? $val['attr'] : array();
-			$val['value'] = null;
 
 			// For Radio Group
 			if ('radioGroup' === $val['type']) {
@@ -400,6 +399,8 @@ abstract class AbstractFormBuilder
 				$val['value'] = (is_array($model)) ? $model[$name] : $model->{$name};
 			} elseif (isset($val['value'])) {
 				$val['value'] = $val['value'];
+			} else {
+				$val['value'] = null;
 			}
 
 			$this->builder->render($val['type'], $name, $val);
