@@ -112,14 +112,15 @@ class Blueprint
 	 * @param string $name Form name
 	 * @param boolean $file Use multipart/form-data
 	 * @param array $attrs Form attributes
+	 * @param boolean $honeypot Honeypot field use or not
 	 * @return void
 	 **/
-	public function __construct($action, $name, $file, $attrs)
+	public function __construct($action, $name, $file, $attrs, $honeypot)
 	{
 		$default = \Config::get('form.default');
 		$this->template = \Config::get('form.templates.'.$default);
 
-		$this->start($action, $name, $file, $attrs);
+		$this->start($action, $name, $file, $attrs, $honeypot);
 
 		// Get the register element field type form config/form.php
 		$elements = \Config::get('form.elements');
@@ -154,7 +155,9 @@ class Blueprint
 		if ($merge) {
 			$this->hiddens = array_merge($this->hiddens, $data);
 		} else {
-			$this->hiddens = $data;
+			if (!empty($data)) {
+				$this->hiddens = $data;
+			}
 		}
 	}
 
@@ -267,11 +270,7 @@ class Blueprint
 	 **/
 	public function build($hiddenData = array(), $merge = false)
 	{
-		if ($merge) {
-			$this->hiddens = array_merge($this->hiddens, $hiddenData);
-		} else {
-			$this->hiddens = $hiddenData;
-		}
+		$this->setHiddens($hiddenData, $merge);
 
 		ob_start();
 
@@ -287,11 +286,16 @@ class Blueprint
 	 * @param string $name Form name
 	 * @param string $file Use multipart/form-data or not
 	 * @param array $attrs Form attribute array
+	 * @param boolean $honeypot
 	 * @return void
 	 **/
-	public function start($action, $name, $file, $attrs)
+	public function start($action, $name, $file, $attrs, $honeypot)
 	{
 		$this->start = Form::start($action, $name, $file, $attrs);
+
+		if ($honeypot) {
+			$this->start .= Form::honeypot();
+		}
 	}
 
 	/**

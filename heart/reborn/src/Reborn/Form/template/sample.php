@@ -3,6 +3,8 @@
 
 	<div class="form_wrapper">
 
+		<span class="error honeypot-error"><?php echo $this->errors['honey_pot']; ?></span>
+
 	<?php echo $this->start; ?>
 
 		<?php if (! empty($this->hiddens) ) : ?>

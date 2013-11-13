@@ -37,6 +37,13 @@ abstract class AbstractFormBuilder
 	protected $file = false;
 
 	/**
+	 * Use Honey pot field or not
+	 *
+	 * @var boolean
+	 **/
+	protected $honeypot = false;
+
+	/**
 	 * Form legend string
 	 *
 	 * @var name
@@ -118,7 +125,7 @@ abstract class AbstractFormBuilder
 			$action = Uri::current();
 		}
 
-		$this->builder = new Blueprint($action, $name, $this->file, $attrs);
+		$this->builder = new Blueprint($action, $name, $this->file, $attrs, $this->honeypot);
 	}
 
 	/**
@@ -442,6 +449,10 @@ abstract class AbstractFormBuilder
 			if (isset($val['rule'])) {
 				$this->rules[$name] = $val['rule'];
 			}
+		}
+
+		if ($this->honeypot) {
+			$this->rules['honey_pot'] = 'honeypot';
 		}
 
 		$this->validator = new Validation(\Input::get('*'), $this->rules);

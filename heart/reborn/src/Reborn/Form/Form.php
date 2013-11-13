@@ -106,6 +106,19 @@ class Form
     }
 
     /**
+     * Honey Pot Filed for Spam Filter
+     *
+     * @param string|null $name Field name. Default name is "honey_pot"
+     * @return string
+     **/
+    public static function honeypot($name = null)
+    {
+        $name = is_null($name) ? 'honey_pot' : $name;
+        $attr = array('style' => 'display:none;');
+        return static::input($name, '', 'text', $attr);
+    }
+
+    /**
      * Input Field
      *
      * @return string

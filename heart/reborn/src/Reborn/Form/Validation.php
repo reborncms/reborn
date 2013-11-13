@@ -71,6 +71,7 @@ class Validation
      * 24) - fileSize [Input value's maximum file size limit (eg: fileSize:2MB)]
      * 25) - before [Input date must be before date (eg: before:10/22/2013)]
      * 26) - after [Input date must be after date (eg: after:10/22/2013)]
+     * 27) - honeypot [Spam filter honey pot filed's validation]
      *
      * @var array
      **/
@@ -100,7 +101,8 @@ class Validation
                 'fileType',
                 'fileSize',
                 'before',
-                'after'
+                'after',
+                'honeypot'
             );
 
     /**
@@ -588,6 +590,17 @@ class Validation
         $bool = array('1', '0', 'true', 'false', 'on', 'off');
 
         return in_array(strtolower($value), $bool);
+    }
+
+    /**
+     * Valid method for Honeypot
+     *
+     * @param string $value
+     * @return boolean
+     **/
+    protected function validHoneypot($value)
+    {
+        return ($value === '');
     }
 
     /**

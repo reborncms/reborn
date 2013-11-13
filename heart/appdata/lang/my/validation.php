@@ -28,5 +28,6 @@ return array(
 	'fileType'		=> "This {key} must be a file type {types}.",
 	'fileSize'		=> "Maximun uploaded file size is {size}",
 	'before'		=> "This \"{key}\" field must be date before {date}.",
-	'after'			=> "This \"{key}\" field must be date after {date}."
+	'after'			=> "This \"{key}\" field must be date after {date}.",
+	"honeypot"		=> "You fill the honeypot field. This is wrong!"
 );
