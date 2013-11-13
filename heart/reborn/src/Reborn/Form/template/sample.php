@@ -3,7 +3,9 @@
 
 	<div class="form_wrapper">
 
+		<?php if(isset($this->errors['honey_pot'])) : ?>
 		<span class="error honeypot-error"><?php echo $this->errors['honey_pot']; ?></span>
+		<?php endif; ?>
 
 	<?php echo $this->start; ?>
 
