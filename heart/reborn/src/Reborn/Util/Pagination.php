@@ -275,11 +275,11 @@ class Pagination
 				elseif ($num_links - $total_adj > static::$current && static::$current > $total_adj) {
 
 				 	$pagi_links .= static::$template['start_page_link'];
-					$pagi_links .= '<a href="'.static::$url.'1">1</a>';
+					$pagi_links .= '<a href="'.static::$url.'page-1">1</a>';
 					$pagi_links .= static::$template['end_page_link'];
 
 					$pagi_links .= static::$template['start_page_link'];
-					$pagi_links .= '<a href="'.static::$url.'page-'.'2">2</a>';
+					$pagi_links .= '<a href="'.static::$url.'page-2">2</a>';
 					$pagi_links .= static::$template['end_page_link'];
 
 					if (static::$current - $adj != 3) {
@@ -310,11 +310,11 @@ class Pagination
 				} else {
 
 					$pagi_links .= static::$template['start_page_link'];
-					$pagi_links .= '<a href="'.static::$url.'1">1</a>';
+					$pagi_links .= '<a href="'.static::$url.'page-1">1</a>';
 					$pagi_links .= static::$template['end_page_link'];
 
 					$pagi_links .= static::$template['start_page_link'];
-					$pagi_links .= '<a href="'.static::$url.'page-'.'2">2</a>';
+					$pagi_links .= '<a href="'.static::$url.'page-2">2</a>';
 					$pagi_links .= static::$template['end_page_link'];
 
 					$pagi_links .= static::sepOpen();
