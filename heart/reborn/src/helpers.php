@@ -289,6 +289,25 @@ if(! function_exists('rbUrl'))
 	}
 }
 
+if(! function_exists('image_url'))
+{
+	/**
+	 * Helper function for the Media Mdoule's image url.
+	 *
+	 * @param string $name File name
+	 * @param int $width Image width
+	 * @param int $height Image height
+	 * @return string
+	 **/
+	function image_url($name, $width = null, $height = null)
+	{
+		$width = is_null($width) ? '0' : $width;
+		$height = is_null($height) ? '0' : $height;
+
+		return \Uri::create().'image/'.$name.'/'.$width.'/'.$height;
+	}
+}
+
 if(! function_exists('asset_url'))
 {
 	/**

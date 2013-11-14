@@ -58,7 +58,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
         // Extend Form for featured thumbnail
         \Form::extend(
-                'thumbnail', 
+                'thumbnail',
                 function($name, $value, $width = null, $labels = array()) {
 
             return \Media::thumbnailForm($name, $value, $width, $labels);
@@ -67,9 +67,9 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
         // Upload via media module
         \Form::extend(
-                'upload', 
+                'upload',
                 function(
-                        $name = 'file', 
+                        $name = 'file',
                         $formName = null,
                         $folderId = null,
                         $fileType = null
@@ -82,14 +82,14 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
         // Upload via media module
         \Form::extend(
-                'imageUpload', 
+                'imageUpload',
                 function(
                         $name = 'file',
                         $formName = null,
                         $folderId = null
                     ) {
 
-                    return \Media::uploadForm($name, $formName, $folderId, 
+                    return \Media::uploadForm($name, $formName, $folderId,
                         '.jpg,.jpeg,.png,.gif,.bmp');
 
                 }
