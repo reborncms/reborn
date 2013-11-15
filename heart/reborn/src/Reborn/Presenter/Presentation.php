@@ -2,6 +2,9 @@
 
 namespace Reborn\Presenter;
 
+use Reborn\Util\Str;
+use Reborn\Exception\RbException;
+
 /**
  * Data Presentation Layer for Reborn CMS
  *
@@ -12,52 +15,60 @@ class Presentation
 {
 
 	/**
-	 * Data Model Object or Array
+	 * Data Model Object or Array Resource
 	 *
 	 * @var object|array
 	 **/
-	protected $modelObj;
+	protected $resource;
 
 	/**
-	 * Model Key's name.
+	 * Disable(skip) method lists from Data Model
 	 *
-	 * @var string
+	 * @var array
 	 **/
-	protected $model_key = 'model';
+	protected $skip_methods = array('save', 'delete', 'update');
 
 	/**
 	 * Default constructor method
 	 *
 	 * @param Object $model Data Model Object
 	 * @return void
-	 * @author
 	 **/
 	public function __construct($model)
 	{
-		$this->setModel($model);
+		$this->model($model);
+
+		// Call extend skip method if exists
+		if (method_exists($this, 'extendSkipMethods')) {
+			$this->extendSkipMethods();
+		}
 	}
 
 	/**
 	 * Setter method for data model
 	 *
 	 * @param Object $model Data Model Object
-	 * @return void
+	 * @return \Reborn\Presenter\Presentation
 	 **/
-	public function setModel($model)
+	public function model($model)
 	{
-		$this->{$this->model_key} = $this->modelObj = $model;
+		$this->resource = $model;
+
+		return $this;
 	}
 
 	/**
 	 * Static method to make the new Presentation Object
 	 *
-	 * @return $this
+	 * @param array|object $model
+	 * @param boolean $is_collection
+	 * @return \Reborn\Presenter\Presentation
 	 **/
-	public static function make($model, $with_collection = false)
+	public static function make($model, $is_collection = false)
 	{
 		$class = get_called_class();
 
-		if ($with_collection) {
+		if ($is_collection) {
 			return new Collection($model, $class);
 		}
 
@@ -73,7 +84,7 @@ class Presentation
 	 **/
 	public function isEmpty()
 	{
-		return empty($this->modelObj);
+		return empty($this->resource);
 	}
 
 	/**
@@ -83,7 +94,7 @@ class Presentation
 	 **/
 	public function toArray()
 	{
-		return $this->modelObj->toArray();
+		return $this->resource->toArray();
 	}
 
 	/**
@@ -109,32 +120,50 @@ class Presentation
 
 	/**
 	 * PHP's magic method to get the object variable
+	 * example :
+	 * <code>
+	 * 		class UserPresenter extends Presenter
+	 * 		{
+	 * 			public function attributeFullName()
+	 * 			{
+	 * 				return $this->resource->first_name.' '.$this->resource->last_name;
+	 * 			}
+	 * 		}
+	 *
+	 * 		$p = UserPresenter::make(User::find(1));
+	 *
+	 * 		echo $p->full_name;
+	 * </code>
 	 *
 	 * @param string $name Property name
 	 * @return mixed
 	 **/
 	public function __get($name)
 	{
-		if (method_exists($this, $name)) {
-			return $this->{$name}();
+		$method = 'attribute'.Str::studly($name);
+		if (method_exists($this, $method)) {
+			return $this->{$method}();
 		}
 
-		return is_array($this->modelObj) ? $$this->modelObj[$name] : $this->modelObj->{$name};
+		return is_array($this->resource) ? $this->resource[$name] : $this->resource->{$name};
 	}
 
 	/**
 	 * magic method __call
 	 *
-	 * @return void
-	 * @author
+	 * @return mixed
 	 **/
 	public function __call($name, $args = array())
 	{
-		if (method_exists($this->modelObj, $name)) {
-			return call_user_func_array(array($this->modelObj, $name), $args);
+		if (in_array($name, $this->skip_methods)) {
+			throw new RbException("Method name \"{$name}\" is disabled!");
 		}
 
-		throw new \RbException('Presenter Error: '.get_called_class().'::'.$name.' method does not exist');
+		if (method_exists($this->resource, $name)) {
+			return call_user_func_array(array($this->resource, $name), $args);
+		}
+
+		throw new RbException('Presenter Error: '.get_called_class().'::'.$name.' method does not exist');
 	}
 
 } // END class Presentation

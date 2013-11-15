@@ -5,9 +5,9 @@ namespace Admin\Presenter;
 class DashboardWidget extends \Presenter
 {
 
-	public function render()
+	public function attributeRender()
 	{
-		if (count($this->model) > 0) {
+		if (count($this->resource) > 0) {
 			return $this->renderWidgets();
 		} else {
 			return null;
@@ -19,7 +19,7 @@ class DashboardWidget extends \Presenter
 		$view = \Registry::get('app')->view;
 		$html = DASHBOARD_PATH.DS.'views'.DS.'widgets.html';
 
-		return $view->set('widgets', $this->model)->render($html);
+		return $view->set('widgets', $this->resource)->render($html);
 	}
 
 }

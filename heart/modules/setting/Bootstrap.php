@@ -15,7 +15,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
-		$menu->add('settings', 'System', $modUri, null, null, 90);
+		$menu->add('settings', t('label.setting'), $modUri, null, null, 90);
 	}
 
 	public function settings()
