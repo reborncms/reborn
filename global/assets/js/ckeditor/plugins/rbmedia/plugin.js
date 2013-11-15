@@ -1,6 +1,5 @@
 CKEDITOR.plugins.add('rbmedia', {
 	icons	: 'rbmedia',
-	lang	: ['en', 'my'],
 	init	: function(editor)
 	{
 		editor.addCommand('rbmedia', new CKEDITOR.dialogCommand('rbmedia'));
