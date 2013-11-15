@@ -85,23 +85,16 @@ jQuery(function($) {
 			var preslug = '';
 
 			for (var i = 0, n = inputVal.length; i < n; i++) {
-			    if (inputVal.charCodeAt( i ) > 255) {
-			    	preslug += inputVal[i];
+				var charCode = inputVal.charCodeAt( i );
+
+			    if (charCode > 255) {
+			    	preslug += inputVal[i].toLowerCase().replace(/[@«»“”!?,.]+/g, '');
 			    } else {
-			    	preslug += inputVal[i].toLowerCase().replace(/[^a-zA-Z 0-9-]/g,'');
+			    	preslug += inputVal[i].toLowerCase().replace(/[@«»“”!?,.]+/g, '').replace(/[^a-zA-Z 0-9-]/g,'');
 			    }
 			}
 
-			slug = preslug.split(" ").join("-");
-
-			console.log(slug);
-
-			/*if (/[^\u0000-\u00ff]/.test(inputVal)) {
-				slug = inputVal.replace(/[ ]/g, '-');
-			} else {
-				alphaNum = inputVal.toLowerCase().replace(/[^a-zA-Z 0-9-]/g,'');
-				slug = alphaNum.split(" ").join("-");
-			};*/
+			slug = preslug.replace(/\s+/g, ' ').split(" ").join("-");
 
 			$(outputField).val(slug);
 		});

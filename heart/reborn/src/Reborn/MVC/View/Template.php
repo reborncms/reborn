@@ -601,6 +601,13 @@ class Template
             throw new FileNotFoundException($filename, 'Relative');
         }
 
+        // Assign js values for partialOnly view rendering
+        if (! empty($this->jsVars)) {
+            if (! $this->useLayout) {
+                $this->view->set('js_var', $this->compileJsVars(''));
+            }
+        }
+
         return $this->view->render($file);
     }
 
@@ -639,6 +646,7 @@ class Template
 
         // Set JS variables
         if (! empty($this->jsVars) ) {
+
             $headScript = $this->compileJsVars($headScript);
         }
 
