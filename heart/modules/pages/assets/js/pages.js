@@ -19,7 +19,7 @@ jQuery(function(){
 	$(".design").colorbox({
 		inline:true,
 		width:"60%",
-		height:"80%",
+		height:600,
 		onComplete:function(){
 			
 		},

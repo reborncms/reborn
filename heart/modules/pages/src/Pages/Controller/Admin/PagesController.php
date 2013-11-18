@@ -90,9 +90,11 @@ class PagesController extends \AdminController
             $page = self::setValues('edit', \Input::get('id'));
 
             if ($page->save()) {
+
                 \Flash::success(t('pages::pages.messages.success.edit'));
 
                 return \Redirect::to(adminUrl('pages'));
+                
             }
         }
 
