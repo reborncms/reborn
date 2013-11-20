@@ -28,7 +28,8 @@
         "swiftmailer/swiftmailer": "4.3.*@dev",
         "symfony/http-foundation": "2.3.*@dev",
         "symfony/console": "2.3.*@dev",
-        "tijsverkoyen/akismet": "dev-master"
+        "tijsverkoyen/akismet": "dev-master",
+        "verbalexpressions/php-verbal-expressions": "dev-master"
     },
     "autoload": {
         "psr-0": {

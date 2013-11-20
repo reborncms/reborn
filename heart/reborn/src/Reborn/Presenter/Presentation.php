@@ -26,7 +26,7 @@ class Presentation
 	 *
 	 * @var array
 	 **/
-	protected $skip_methods = array('save', 'delete', 'update');
+	protected $skip_methods = array('save', 'delete', 'update', 'insert', 'destory');
 
 	/**
 	 * Default constructor method

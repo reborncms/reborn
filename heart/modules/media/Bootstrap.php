@@ -56,6 +56,9 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
         // Make Class Alias
         \Alias::aliasRegister(array('Media' => 'Media\Facade\Media'));
 
+        // Make Media API Class Alias
+        \Alias::aliasRegister(array('MediaAPI' => 'Media\Api'));
+
         // Extend Form for featured thumbnail
         \Form::extend(
                 'thumbnail',

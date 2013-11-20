@@ -910,7 +910,6 @@ if (!function_exists('formatSizeToBytes'))
     }
 }
 
-
 if (!function_exists('image_data'))
 {
 	/**
@@ -927,5 +926,71 @@ if (!function_exists('image_data'))
 		$data = base64_encode(file_get_contents($image));
 
 		return 'data: '.mime_content_type($image).';base64,'.$data;
+	}
+}
+
+if (!function_exists('tree_lists'))
+{
+	/**
+	 * Convert tree lists array base on parent field
+	 *
+	 * @param array $lists
+	 * @param string $parent Parent field name. Default is "parent_id"
+	 * @return array
+	 **/
+	function tree_lists($lists, $parent = 'parent_id')
+	{
+		$map = array(
+			0 => array('child' => array())
+		);
+
+		foreach ($lists as &$list) {
+			$list['child'] = array();
+			$map[$list['id']] = &$list;
+		}
+
+		foreach ($lists as &$list) {
+			$map[$list[$parent]]['child'][] = &$list;
+		}
+
+		return $map[0]['child'];
+	}
+}
+
+if (!function_exists('ga')) {
+	/**
+	 * Google Analytics JS Code.
+	 * See detail of google analytics at
+	 * https://developers.google.com/analytics/devguides/collection/analyticsjs/
+	 *
+	 * @param string $gid Google analytics ID
+	 * @return string
+	 **/
+	function ga($gid)
+	{
+		return <<<GA
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','$gid');ga('send','pageview');
+        </script>
+GA;
+	}
+}
+
+if (!function_exists('jquery'))
+{
+	/**
+	 * Get jQuery Google CDN Link.
+	 *
+	 * @param string $version jQuery version number. Defaut is "1.10.2"
+	 * @return string
+	 **/
+	function jquery($version = '1.10.2')
+	{
+		return  '<script src="//ajax.googleapis.com/ajax/libs/jquery/'.$version.'/jquery.min.js"></script>';
 	}
 }

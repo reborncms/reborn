@@ -265,19 +265,14 @@ class Validation
     }
 
     /**
-     * Get the Validation Errors. If doesn't have any validation error, return null
+     * Get the Validation Errors.
+     * If doesn't have any validation error, return null
      *
-     * @return ValidationError
+     * @return \Reborn\Form\ValidationError
      **/
     public function getErrors()
     {
-        $container = new ValidationError();
-
-        if (count($this->errors) !== 0) {
-            $container->setErrors($this->errors);
-        }
-
-        return $container;
+        return new ValidationError($this->errors);
     }
 
     /**
