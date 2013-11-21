@@ -1,6 +1,6 @@
 <?php
 
-namespace Reborn\Util;
+namespace Reborn\Table;
 
 use MongoDate;
 use Carbon\Carbon;
@@ -8,11 +8,11 @@ use Carbon\Carbon;
 /**
  * Table Generate Helper class
  *
- * @package Reborn\Util
+ * @package Reborn\Table
  * @author Myanmar Links Web Development Team
  **/
 
-class Table
+class Builder
 {
 	/**
 	 * tabel header (th) variable

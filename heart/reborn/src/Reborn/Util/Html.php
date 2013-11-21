@@ -30,7 +30,7 @@ class Html
 	{
 		if ('@admin' == substr($url, 0, 6)) {
 			$url = adminUrl(ltrim(substr($url, 6), '/'));
-		} elseif (false == strpos($url, 'http')) {
+		} elseif (false != strpos($url, 'http')) {
 			$url = rbUrl($url);
 		}
 

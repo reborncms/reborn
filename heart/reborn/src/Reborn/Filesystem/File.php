@@ -65,7 +65,7 @@ class File
      */
     public static function write($path, $filename, $content = null)
     {
-        $path = trim(str_replace(array('\\','/'), DS, $path));
+        $path = rtrim(str_replace(array('\\','/'), DS, $path), DS);
 
         $file = $path.DS.$filename;
 

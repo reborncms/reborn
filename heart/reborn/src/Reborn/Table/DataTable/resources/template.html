@@ -1,0 +1,81 @@
+{{ ifnot($_datatable->isEmpty()) }}
+
+{{ if($_datatable->useCustomCss()) }}
+<link rel="stylesheet" type="text/css" href="{{ $_datatable->getCustomCss() }}">
+{{ else }}
+{{ global_asset('css', 'datatable/dataTables.css') }}
+{{ endif }}
+
+{{ if($_datatable->needDatatableJs()) }}
+{{ global_asset('js', 'datatable/jquery.dataTables.min.js') }}
+{{ endif }}
+
+<table class="stripe" id="example">
+	<thead>
+		<tr>
+			{{ loop($_datatable->getColumns() as $key => $label) }}
+			<th width="{{ $_datatable->getColumnWidth($key) }}">{{ $label }}</th>
+			{{ endloop }}
+			{{ if($_datatable->hasActions()) }}
+			<th width="{{ $_datatable->getColumnWidth('action_width', '20%') }}">{{ t('label.actions') }}</th>
+			{{ endif }}
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="3" class="dataTables_empty">Loading data from server</td>
+		</tr>
+	</tbody>
+	{{ if($_datatable->getOption('use_tfoot', true)) }}
+	<tfoot>
+		<tr>
+			{{ loop($_datatable->getColumns() as $label) }}
+			<th>{{ $label }}</th>
+			{{ endloop }}
+			{{ if($_datatable->hasActions()) }}
+			<th>{{ t('label.actions') }}</th>
+			{{ endif }}
+		</tr>
+	</tfoot>
+	{{ endif }}
+</table>
+
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		$('#example').dataTable( {
+			"bJQueryUI": true,
+			"iDisplayLength": {{ $_datatable->getOption('display_limit', 10) }},
+			"bProcessing": true,
+			"bServerSide": true,
+			"sAjaxSource": "{{ $_datatable->getOption('url', '') }}",
+			"sPaginationType": "{{ $_datatable->getOption('pagi_type', 'full_numbers') }}",
+			"sDom": '<"dataTable-Upper clearfix"fl>Trt<"dataTable-Bottom clearfix"pi>',
+        	"aoColumnDefs": [
+            	{ "bSortable": false, "aTargets": {{ $_datatable->getNotSortable() }} }
+       		 ],
+       		"oLanguage": {
+			    "oPaginate": {
+			    	"sNext": "{{ $_datatable->getOption('next_pagi', t('datatable.next_pagi')) }}",
+			    	"sPrevious": "{{ $_datatable->getOption('previous_pagi', t('datatable.previous_pagi')) }}",
+			    	"sFirst": "{{ $_datatable->getOption('first_pagi', t('datatable.first_pagi')) }}",
+			    	"sLast": "{{ $_datatable->getOption('last_pagi', t('datatable.last_pagi')) }}"
+			    },
+			    "sInfoFiltered": "{{ $_datatable->getOption('filter_record', t('datatable.filter_record')) }}",
+			    "sLengthMenu": "{{ $_datatable->getOption('display_menu_record', t('datatable.display_menu_record')) }}",
+			    "sSearch": "{{ $_datatable->getOption('search', t('datatable.search')) }}",
+			    "sInfo" : "{{ $_datatable->getOption('show_info', t('datatable.show_info')) }}"
+
+    		}
+    		{{ if($init_sort = $_datatable->getOption('init_sort', false)) }}
+        	,"aaSorting": [
+        		[ {{ $init_sort['key'] }}, "{{ $init_sort['direction'] }}" ]
+        	]
+        	{{ endif }}
+        });
+	} );
+</script>
+{{ else }}
+<div class="no-index-data">
+	Sorry
+</div>
+{{ endif }}

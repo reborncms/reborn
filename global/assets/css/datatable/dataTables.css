@@ -1,0 +1,134 @@
+.dataTables_wrapper {
+	margin: 10px 0;
+}
+
+.dataTables_wrapper label {
+	width: 100%;
+	color: #444444;
+}
+
+.dataTables_filter {
+    float: left;
+    text-align: left;
+    width: 40%;
+}
+.dataTables_length {
+    float: right;
+    text-align: right;
+    width: 40%;
+}
+.dataTables_filter input {
+    background: url("images/search.png") no-repeat scroll 5px 9px rgba(0, 0, 0, 0);
+    border: 1px solid #D8D8D8;
+    color: #444444;
+    font-size: 12px;
+    padding: 5px 2px 5px 25px;
+    margin-left: 5px;
+    transition: all 0.25s ease-in-out 0s;
+}
+.dataTables_length label {
+	text-align: right;
+}
+.dataTables_length select {
+	background: #FFFFFF;
+    border: 1px solid #D8D8D8;
+    color: #444444;
+    font-size: 12px;
+    padding: 0 0 0 20px;
+    transition: all 0.25s ease-in-out 0s;
+    width: 80px;
+    margin-left: 5px;
+}
+
+.dataTable {
+	margin-top: 20px;
+}
+
+/*
+ * Processing indicator
+ */
+.dataTables_processing {
+	background-color: #FFFFEA;
+    border: 1px solid #CCCCCC;
+    color: #888888;
+    font-size: 14px;
+    height: 30px;
+    left: 50%;
+    margin-left: -125px;
+    margin-top: -15px;
+    padding: 14px 0 2px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 250px;
+    z-index: 999;
+}
+
+/*
+ * Pagination
+ */
+.dataTables_paginate {
+	display: block;
+}
+.dataTables_paginate:after {
+	clear: both;
+    content: ".";
+    display: block;
+    font-size: 0;
+    height: 0;
+    visibility: hidden;
+}
+.ui-buttonset .ui-button {
+    border: 1px solid #DDDDDD;
+    background: #fff;
+    color: #2D3E50;
+    display: block;
+    padding: 8px 12px;
+    margin-right: 8px;
+    float: left;
+    font-size: 11px;
+    opacity: 1;
+    font-weight: normal;
+}
+.ui-buttonset .ui-button:hover {
+	background: none repeat scroll 0 0 #DDDDDD;
+    border: 1px solid #7E8C8D;
+}
+.ui-buttonset .ui-state-disabled {
+	opacity: 0.35;
+}
+.ui-buttonset .ui-state-disabled:hover {
+	background: #fff;
+	border: 1px solid #DDDDDD;
+}
+/*
+ * Sorting
+ */
+.ui-state-default {
+	font-weight: normal;
+}
+.DataTables_sort_wrapper {
+	position: relative;
+	padding-right: 20px;
+}
+.DataTables_sort_wrapper span {
+    margin-top: -8px;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+}
+
+table.dataTable thead th:active,
+table.dataTable thead td:active {
+	outline: none;
+}
+
+.dataTables_info {
+    padding: 8px 4px;
+    color: #2D3E50;
+}
+
+/* Table row hover background */
+table.dataTable tr:hover td {
+    background: #E9F4E7;
+}
