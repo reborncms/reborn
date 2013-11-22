@@ -29,6 +29,13 @@ class Validation
     protected $rules = array();
 
     /**
+     * Error message list for register by user
+     *
+     * @var array
+     **/
+    protected $messages = array();
+
+    /**
      * Validation errors array
      *
      * @var array
@@ -175,12 +182,26 @@ class Validation
     }
 
     /**
+     * Set Custom Message for Validation Rules
+     *
+     * @param string $for Input key name
+     * @param string $message
+     * @return \Reborn\Form\Validation
+     **/
+    public function message($for, $message)
+    {
+        $this->messages[$for] = $message;
+
+        return $this;
+    }
+
+    /**
      * Extend new validation rule.
      *
      * @param string $name Validation name
      * @param string $msg Error message for this rule
      * @param Closure $callback Callback function for rule
-     * @return \Reborn\Cores\Validation
+     * @return \Reborn\Form\Validation
      **/
     public function extend($name, $message, $callback)
     {
@@ -238,12 +259,13 @@ class Validation
     public function valid()
     {
         foreach ($this->rules as $input => $rules) {
-            if (is_array($rules)) {
-                foreach ($rules as $rule) {
-                    $this->compute($input, $rule);
+            $rules = (array) $rules;
+
+            foreach ($rules as $rule) {
+                // Exits in require fail
+                if (! $this->compute($input, $rule) ) {
+                    break;
                 }
-            } else {
-                $this->compute($input, $rules);
             }
         }
 
@@ -290,7 +312,7 @@ class Validation
      *
      * @param string $input Input field name
      * @param string $rule Validation rule for given input field
-     * @return void
+     * @return boolean
      **/
     protected function compute($input, $rule)
     {
@@ -299,6 +321,8 @@ class Validation
         // Check given input key is isset or not and have rule require
         if (!isset($this->inputs[$input]) and in_array('require', $this->rules[$input])) {
             $this->setError('kye_not_found', $input, $param);
+
+            return false;
         } else {
             if (in_array($rule, $this->methods)) {
                 // First param is Input value and second is Rule's value
@@ -318,6 +342,8 @@ class Validation
                 }
             }
         }
+
+        return true;
     }
 
     /**
@@ -357,10 +383,23 @@ class Validation
         } else {
             if ($addedRule) {
                 $msg = $this->extended[$rule]['msg'];
+                // Message is callback
+                if($msg instanceof Closure) {
+                    $msg = $msg($key, $arg, $rule);
+                }
             } else {
-                \Translate::load('validation');
-                $msg = \Translate::get('validation.'.$rule);
+                $msg = null;
+                if (isset($this->messages[$key])) {
+
+                    $msg = $this->messages[$key];
+                }
+
+                if (is_null($msg)) {
+                    \Translate::load('validation');
+                    $msg = \Translate::get('validation.'.$rule);
+                }
             }
+
             $parseMsg = str_replace('{key}', \Str::title($key), $msg);
             $parseMsg = str_replace('{'.$rule.'}', $arg, $parseMsg);
             $this->errors[$key] = $parseMsg;
@@ -424,7 +463,15 @@ class Validation
 
     protected function messageForAfter($key, $after)
     {
-        list(, $date) = $this->prepareDateFormat(null , $after);
+        $list = explode('@', $after);
+
+        try {
+            list(, $date) = $this->prepareDateFormat(null , $after);
+        } catch (\InvalidArgumentException $e) {
+            if (isset($this->inputs[$list[0]])) {
+                $date = '"'.\Str::title($list[0]).'"';
+            }
+        }
 
         $msg = \Translate::get('validation.after');
 
