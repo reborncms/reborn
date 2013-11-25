@@ -91,7 +91,7 @@ class Html
 			$attrs['alt'] = $alt;
 		}
 
-		return static::tag('img', '', $attrs);
+		return static::tag('img', null, $attrs);
 	}
 
 	/**
@@ -162,7 +162,7 @@ class Html
 	 **/
 	public static function base($href)
 	{
-		return static::tag('base', '', array('href' => $href) );
+		return static::tag('base', null, array('href' => $href) );
 	}
 
 	/**
@@ -174,7 +174,7 @@ class Html
 	 **/
 	public static function meta($name, $content)
 	{
-		return static::tag('meta', '', array('name' => $name, 'content' => $content));
+		return static::tag('meta', null, array('name' => $name, 'content' => $content));
 	}
 
 	/**
@@ -199,7 +199,7 @@ class Html
 	 **/
 	public static function br($repeat = 1, $options = array())
 	{
-		return str_repeat(static::tag('br', '', $options), $repeat);
+		return str_repeat(static::tag('br', null, $options), $repeat);
 	}
 
 	/**
@@ -217,15 +217,17 @@ class Html
 	 * HTML Tag generate.
 	 *
 	 * @param string $tag_name
-	 * @param string $content
+	 * @param string|null $content
 	 * @param array $options
 	 * @return string
 	 **/
-	public static function tag($tag_name, $content = '', $options = array())
+	public static function tag($tag_name, $content = null, $options = array())
 	{
-		$tag = '<'.$tag_name.' '.self::buildAttrs($options);
+		$tag = '<'.$tag_name.' '.self::buildAttributes($options);
 
-		if (in_array(strtolower($tag_name), static::$singleTags)) {
+		if (in_array(strtolower($tag_name), static::$singleTags)
+			|| is_null($content)
+			) {
 			return $tag .= '/>';
 		} else {
 			return $tag .= '>'.$content.'</'.$tag_name.'>';
@@ -238,16 +240,16 @@ class Html
 	 * @param array $options
 	 * @return string
 	 **/
-	protected static function buildAttrs($options = array())
+	public static function buildAttributes(array $options = array())
 	{
 		$attrs = '';
 
-		if (empty($options)) {
-			return $attrs;
-		}
-
 		foreach ($options as $key => $value) {
-			$attrs .= $key.'="'.$value.'" ';
+			if (is_string($key)) {
+				$attrs .= $key.'="'.$value . '" ';
+			} else {
+				$attrs .= $value . ' ';
+			}
 		}
 
 		return $attrs;

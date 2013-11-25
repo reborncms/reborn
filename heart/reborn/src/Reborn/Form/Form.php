@@ -3,8 +3,8 @@
 namespace Reborn\Form;
 
 use Reborn\Http\Uri;
+use Reborn\Util\Html;
 use Reborn\Config\Config;
-use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Form class for Reborn CMS
@@ -58,10 +58,12 @@ class Form
             unset($attrs['enctype']);
         }
         $method = (isset($attrs['method'])) ? '' : ' method="post"';
-        $attr = static::getAttr($attrs);
+        $attr = Html::buildAttributes($attrs);
+
         if (!strstr($action,'://')) {
             $action = Uri::create($action);
         }
+
         $id = (!isset($attrs['id'])) ? ' id = "'.$name.'"' : '';
         $enctype = ($file == true) ? " enctype='multipart/form-data'" : "";
 
@@ -88,7 +90,7 @@ class Form
      **/
     public static function fieldsetStart($legend = null, $name = null, $attrs = array())
     {
-        $attr = static::getAttr($attrs);
+        $attr = Html::buildAttributes($attrs);
         $fs = '<fieldset name="'.$name.'"'.$attr.'>';
         $fs .= '<legend>'.$legend.'</legend>';
 
@@ -128,7 +130,7 @@ class Form
      **/
     public static function input($name, $value = null, $type = 'text', $attrs = array())
     {
-        $attr = static::getAttr($attrs);
+        $attr = Html::buildAttributes($attrs);
 
         if (isset($attrs['id'])) {
             $id = '';
@@ -304,7 +306,7 @@ class Form
      **/
     public static function button($name, $text, $type = 'button', $attrs=array())
     {
-        $attr = static::getAttr($attrs);
+        $attr = Html::buildAttributes($attrs);
 
         $id = (!isset($attrs['id'])) ? ' id = "'.$name.'"' : '';
 
@@ -320,7 +322,7 @@ class Form
      **/
     public static function label($text, $for = null, $attrs=array())
     {
-        $attr = static::getAttr($attrs);
+        $attr = Html::buildAttributes($attrs);
 
         $labelFor = ($for != null) ? ' for = "'.$for.'"' : '';
         return '<label'.$labelFor.$attr.'>'.$text.'</label>';
@@ -400,7 +402,7 @@ class Form
      * @param array $checkVals Default Checked Values
      * @return string
      **/
-    public static function ckboxGroup($name, $val_lab = array(), $checkVals = array())
+    public static function checkGroup($name, $val_lab = array(), $checkVals = array())
     {
         $ckbox = '';
         $n = 1;
@@ -424,6 +426,15 @@ class Form
     }
 
     /**
+     * Oldies alies for checkGroup
+     *
+     **/
+    public static function ckboxGroup($name, $val_lab = array(), $checkVals = array())
+    {
+        return static::checkGroup($name, $val_lab, $checkVals);
+    }
+
+    /**
      * TextArea
      *
      * @param string $name TextArea Name
@@ -433,7 +444,7 @@ class Form
      **/
     public static function textarea($name, $value = null, $attrs = array())
     {
-        $attr = self::getAttr($attrs);
+        $attr = Html::buildAttributes($attrs);
 
         $id = (!isset($attrs['id'])) ? ' id = "'.$name.'"' : '';
 
@@ -452,18 +463,18 @@ class Form
      **/
     public static function select($name, $options, $defaultSel = null, $attrs = array())
     {
-        $attr = static::getAttr($attrs);
+        $attr = Html::buildAttributes($attrs);
         $id = (!isset($attrs['id'])) ? ' id = "'.$name.'"' : '';
         $selbox = '<select name="'.$name.'"'.$id.$attr.'>';
         foreach ($options as $val => $label) {
             if (is_array($label)) {
                 $selbox .= '<optgroup label="'.$val.'">';
                 foreach ($label as $key => $val) {
-                    $selbox .= static::outOpt($defaultSel,$key,$val);
+                    $selbox .= static::makeOptions($defaultSel,$key,$val);
                 }
                 $selbox .= '</optgroup>';
             } else {
-                $selbox .= static::outOpt($defaultSel,$val,$label);
+                $selbox .= static::makeOptions($defaultSel,$val,$label);
             }
 
         }
@@ -493,7 +504,7 @@ class Form
      *
      * @return string
      **/
-    public static function CountryList()
+    public static function countryList()
     {
         $config = Config::load('country');
 
@@ -502,11 +513,11 @@ class Form
 
 
     /**
-     * output options
+     * Make output options
      *
      * @return string
      **/
-    protected static function outOpt($defaultSel,$key,$val)
+    protected static function makeOptions($defaultSel, $key, $val)
     {
         if (is_array($defaultSel)) {
             $selected = (in_array($key, $defaultSel)) ? " selected=selected" : "";
@@ -515,22 +526,6 @@ class Form
         }
 
         return '<option value="'.$key.'"'.$selected.'>'.$val.'</option>';
-    }
-
-    /**
-     * Get attributes
-     *
-     * @return string
-     **/
-    protected static function getAttr($attrs)
-    {
-        $attr_str = '';
-        foreach ($attrs as $key => $val) {
-            $attr_str .= ' ';
-            $attr_str .= $key.'="'.$val.'"';
-        }
-
-        return $attr_str;
     }
 
     /**

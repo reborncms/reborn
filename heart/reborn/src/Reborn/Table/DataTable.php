@@ -108,7 +108,7 @@ class DataTable
 	protected $transformers = array();
 
 	/**
-	 * undocumented class variable
+	 * Sorting disable column lists
 	 *
 	 * @var array
 	 **/
@@ -235,11 +235,12 @@ class DataTable
 	}
 
 	/**
-	 * undocumented function
+	 * Set columns are unsortable.
 	 *
-	 * @return void
+	 * @param array $columns
+	 * @return \Reborn\Table\DataTable
 	 **/
-	public function notSortable(array $columns)
+	public function unsortable(array $columns)
 	{
 		$this->sort_disable = $columns;
 
@@ -247,11 +248,11 @@ class DataTable
 	}
 
 	/**
-	 * undocumented function
+	 * Get unsortable column lists json.
 	 *
-	 * @return void
+	 * @return string
 	 **/
-	public function getNotSortable()
+	public function getUnsortable()
 	{
 		$results = array();
 
@@ -304,6 +305,22 @@ class DataTable
 		}
 
 		return $default;
+	}
+
+	/**
+	 * Get column count with action column
+	 *
+	 * @return int
+	 **/
+	public function columnCount()
+	{
+		$total = count($this->column_lists);
+
+		if (! empty($this->actions) ) {
+			$total = $total + 1;
+		}
+
+		return $total;
 	}
 
 	/**
@@ -380,16 +397,6 @@ class DataTable
 	public function hasActions()
 	{
 		return (!empty($this->actions));
-	}
-
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 **/
-	public function getSortingDisable()
-	{
-
 	}
 
 	/**

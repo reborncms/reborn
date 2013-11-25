@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model as BaseModel;
 
 /**
  * Model Class for Reborn
- * This class is extended class of Illuminate\Eloquent
+ * This class is extended class of Illuminate\Eloquent\Model
  *
  * @package Reborn\MVC\Model
  * @author Myanmar Links Professional Web Development Team
@@ -98,6 +98,14 @@ abstract class Model extends BaseModel
         $inputs = empty($inputs) ? Input::get('*') : $inputs;
 
         $v = new Validation($inputs, $this->getRules());
+
+        if (method_exists($this, 'beforeValidation')) {
+            $newv = $this->beforeValidation($v);
+
+            if (!is_null($newv) and $newv instanceof Validation) {
+                $v = $newv;
+            }
+        }
 
         if($v->fail()) {
             $this->validation_errors = $v->getErrors();

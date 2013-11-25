@@ -2,6 +2,7 @@
 
 namespace Reborn\Form;
 
+use Closure;
 use Reborn\Config\Config;
 use Reborn\Connector\DB\DBManager as DB;
 use Symfony\Component\HttpFoundation\File\File;
@@ -121,6 +122,18 @@ class Validation
     protected $extended = array();
 
     /**
+     * Static Method for Validation Instance
+     *
+     * @param array $inputs Input fields
+     * @param array $rules Rules for Input fields
+     * @return \Reborn\Form\Validation
+     **/
+    public static function create($inputs = array(), $rules)
+    {
+        return new static($inputs, $rules);
+    }
+
+    /**
      * Construct the Validation Class
      * Example :
      * <code>
@@ -152,7 +165,7 @@ class Validation
      * </code>
      *
      * @param array $inputs Input fields
-     * @param array $rules Rules for Input field
+     * @param array $rules Rules for Input fields
      * @return void
      **/
     public function __construct($inputs = array(), $rules)
@@ -170,15 +183,39 @@ class Validation
     }
 
     /**
-     * Static Method for Validation Instance
+     * Add validation rule.
      *
-     * @param array $inputs Input fields
-     * @param array $rules Rules for Input field
-     * @return \Reborn\Cores\Validation
+     * @param string $name
+     * @param array $rules
+     * @return \Reborn\Form\Validation
      **/
-    public static function create($inputs = array(), $rules)
+    public function rule($name, array $rules)
     {
-        return new static($inputs, $rules);
+        $this->rules[$name] = $rules;
+
+        return $this;
+    }
+
+    /**
+     * Add new rules or change base on condition.
+     *
+     * @param string $name
+     * @param array $rules
+     * @param \Closure $condition
+     * @param boolean $merge
+     * @return \Reborn\Form\Validation
+     **/
+    public function when($name, array $rules, Closure $condition, $merge = true)
+    {
+        if (call_user_func($condition)) {
+            if ($merge and isset($this->rules[$name])) {
+                $this->rules[$name] = array_merge($this->rules[$name], $rules);
+            } else {
+                $this->rules[$name] = $rules;
+            }
+        }
+
+        return $this;
     }
 
     /**
