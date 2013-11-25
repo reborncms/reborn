@@ -9,6 +9,7 @@
 		<ul id="user-settings">
 			<li><a href="{{ \Uri::create('user/edit/') }}" class="btn user-edit" >Edit Profile</a></li>
 			<li><a href="{{ \Uri::create('user/change-password/')}}" class="btn user-profile">Change Password</a></li>
+			<li><a href="{{ \Uri::create('user/logout/') }}" class="btn user-logout">Logout</a></li>
 		</ul>
 		{{ endif }}
 	</div>
@@ -27,14 +28,18 @@
 				<td>Website :</td>
 				<td><a href="{{ $userMeta->website }}">{{ $userMeta->website }}</a></td>
 			</tr>
+			{{ if($userMeta->facebook) }}
 			<tr>
 				<td>Facebook :</td>
 				<td><a href="http://www.facebook.com/{{ $userMeta->facebook }}">/{{ $userMeta->facebook }}</a></td>
 			</tr>
+			{{ endif }}
+			{{ if($userMeta->twitter) }}
 			<tr>
 				<td>Twitter :</td>
-				<td><a href="http://www.facebook.com/{{ $userMeta->twitter }}">@{{ $userMeta->twitter }}</a></td>
+				<td><a href="http://twitter.com/{{ $userMeta->twitter }}">@{{ $userMeta->twitter }}</a></td>
 			</tr>
+			{{ endif }}
 			<tr>
 				<td>About :</td>
 				<td>{{ $userMeta->biography }}</td>

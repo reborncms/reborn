@@ -15,18 +15,16 @@ class UserController extends \PublicController
 	}
 
 	public function index()
-	{
+	{			
 		if(!Sentry::check()) return \Redirect::to('user/login');
+		return \Redirect::to('user/profile/'.Sentry::getUser()->id);
+	} 
 
-		$user = Sentry::getUser();
-		$user->fullname = $user->first_name.' '.$user->last_name;
-
-		$this->template->title(t('user::user.title.profile'))
-					->breadcrumb(t('user::user.title.profile'))
-					->set('user', $user)
-					->setPartial('index');
-	}
-
+	/**
+	 * View profile page for every users
+	 * 
+	 * @param $id int
+	 **/
 	public function profile($id = null)
 	{
 		if(!Sentry::check() and is_null($id)) return \Redirect::to('user/login');
@@ -127,8 +125,8 @@ class UserController extends \PublicController
 	}
 
 	/**
-	 * Users Logout
-	 * @access public
+	 * Logout the user
+	 *	 
 	 * @return void
 	 */
 	public function logout()
@@ -143,6 +141,10 @@ class UserController extends \PublicController
 		return \Redirect::to($redirect);
 	}
 
+	/**
+	 * Allowed users to edit their profile
+	 *
+	 **/	
 	public function edit()
 	{
 		if(!Sentry::check()) return \Redirect::to('login');
