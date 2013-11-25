@@ -2,6 +2,8 @@
 
 namespace Admin\Presenter;
 
+use Reborn\Cores\Facade;
+
 class DashboardWidget extends \Presenter
 {
 
@@ -16,7 +18,7 @@ class DashboardWidget extends \Presenter
 
 	protected function renderWidgets()
 	{
-		$view = \Registry::get('app')->view;
+		$view = Facade::getApplication()->view;
 		$html = DASHBOARD_PATH.DS.'views'.DS.'widgets.html';
 
 		return $view->set('widgets', $this->resource)->render($html);

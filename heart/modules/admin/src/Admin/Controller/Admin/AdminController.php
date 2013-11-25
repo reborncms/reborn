@@ -2,43 +2,59 @@
 
 namespace Admin\Controller\Admin;
 
+use Event, Setting, Input, Flash, Redirect, Validation;
 use Reborn\Connector\Sentry\Sentry;
 use Admin\Presenter\DashboardWidget;
 
 class AdminController extends \AdminController
 {
+	/**
+	 * Admin Dashboard index action
+	 *
+	 * @return void
+	 **/
 	public function index()
 	{
-		$widgets['fullcolumn'] = new DashboardWidget(\Event::call('reborn.dashboard.widgets.fullcolumn'));
-		$widgets['leftcolumn'] = new DashboardWidget(\Event::call('reborn.dashboard.widgets.leftcolumn'));
-		$widgets['rightcolumn'] = new DashboardWidget(\Event::call('reborn.dashboard.widgets.rightcolumn'));
+		$widgets['fullcolumn'] = new DashboardWidget(Event::call('reborn.dashboard.widgets.fullcolumn'));
+		$widgets['leftcolumn'] = new DashboardWidget(Event::call('reborn.dashboard.widgets.leftcolumn'));
+		$widgets['rightcolumn'] = new DashboardWidget(Event::call('reborn.dashboard.widgets.rightcolumn'));
 
-		$this->template->title(\Setting::get('site_title').' - '.t('label.dashboard'))
+		$this->template->title(Setting::get('site_title').' - '.t('label.dashboard'))
 						->set('widgets', $widgets)
 						->setPartial('dashboard');
 	}
 
+	/**
+	 * Language switching action
+	 *
+	 * @return \Redirect
+	 */
 	public function language()
 	{
-		if (! \Input::isPost()) {
+		if (! Input::isPost() ) {
 			return $this->notFound();
 		}
 
-		$lang = \Input::get('lang', 'en');
+		$lang = Input::get('lang', 'en');
 		$this->app->session->set('reborn_dashboard_language', $lang);
 
-        return \Redirect::to(\Input::server('HTTP_REFERER'));
+        return Redirect::to(Input::server('HTTP_REFERER'));
 	}
 
+	/**
+	 * Adminpanel login process action
+	 *
+	 * @return mixed
+	 **/
 	public function login()
 	{
-		if(Sentry::check()) return \Redirect::toAdmin();
+		if(Sentry::check()) return Redirect::toAdmin();
 
-		if (\Input::isPost())
+		if (Input::isPost())
 		{
 			$login = array(
-			        'email'    => rtrim(\Input::get('email'), ' '),
-			        'password' => \Input::get('password')
+			        'email'    => rtrim(Input::get('email'), ' '),
+			        'password' => Input::get('password')
 			    );
 
 			$rule = array(
@@ -46,32 +62,32 @@ class AdminController extends \AdminController
 			    'password' => 'required',
 			);
 
-			$v = new \Validation($login, $rule);
+			$v = new Validation($login, $rule);
 
 			if ($v->valid()) {
 				$login = array(
-			        'email'    => rtrim(\Input::get('email'), ' '),
-			        'password' => \Input::get('password')
+			        'email'    => rtrim(Input::get('email'), ' '),
+			        'password' => Input::get('password')
 			    );
 
 				try {
 					if ($user = Sentry::authenticate($login)) {
 				    	$username = $user->first_name.' '.$user->last_name;
-				        \Flash::success(sprintf(t('global.welcome_ap'), $username));
-				        return \Redirect::toAdmin();
+				        Flash::success(sprintf(t('global.welcome_ap'), $username));
+				        return Redirect::toAdmin();
 				    } else {
-				    	\Flash::error(t('global.login_fail'));
-						return \Redirect::toAdmin('login');
+				    	Flash::error(t('global.login_fail'));
+						return Redirect::toAdmin('login');
 				    }
 				} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
-					\Flash::error(t('global.login_fail'));
-					return \Redirect::toAdmin('login');
+					Flash::error(t('global.login_fail'));
+					return Redirect::toAdmin('login');
 				}
 
 			} else {
 				$err = $v->getErrors();
-				\Flash::error($err->toArray());
-				return \Redirect::toAdmin('login');
+				Flash::error($err->toArray());
+				return Redirect::toAdmin('login');
 			}
 		}
 
@@ -81,10 +97,15 @@ class AdminController extends \AdminController
 						->setPartial('login');
 	}
 
+	/**
+	 * Logout action for adminpanel
+	 *
+	 * @return \Redirect
+	 */
 	public function logout()
 	{
-		if(!Sentry::check()) return \Redirect::toAdmin('login');
+		if(!Sentry::check()) return Redirect::toAdmin('login');
 		Sentry::logout();
-		return \Redirect::toAdmin('login');
+		return Redirect::toAdmin('login');
 	}
 }

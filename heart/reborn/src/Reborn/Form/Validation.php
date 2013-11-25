@@ -171,7 +171,7 @@ class Validation
     public function __construct($inputs = array(), $rules)
     {
         // Event for Validator rule Extended
-        \Event::call('rebron.validator.start', array($this));
+        \Event::call('reborn.validator.start', array($this));
 
         $this->inputs = $inputs;
 
