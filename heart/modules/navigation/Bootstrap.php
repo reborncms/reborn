@@ -37,6 +37,10 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 		return $mod_toolbar;
 	}
 
-	public function register() {}
+	public function register()
+	{
+		// Make Class Alias
+        \Alias::aliasRegister(array('Navigation' => 'Navigation\Builder\Manager'));
+	}
 
 }

@@ -251,24 +251,15 @@ class Parser
         $pattern = '/\{\{\s*(nav):(.*)\s*\}\}/';
 
         $callback = function($matches) {
-            $arr = explode(' ', rtrim($matches[2], ' '));
+
+            $arr = explode('.', rtrim($matches[2], ' '));
             $nav = array_shift($arr);
 
-            $str = '<?php echo \Navigation\Lib\Helper::render("'.$nav.'"';
+            $str = '<?php echo Navigation::choose("'.$nav.'"';
             if (empty($arr)) {
                 return $str.'); ?>';
             } else {
-                $tag = 'ul';
-                $active = 'active';
-                foreach ($arr as $a) {
-                    list($key, $value) = explode('=', $a);
-                    if ('tag' == $key) {
-                        $tag = "$value";
-                    } elseif ('active' == $key) {
-                        $active = "$value";
-                    }
-                }
-                return $str.', "'.$tag.'", "'.$active.'"); ?>';
+                return $str.', "'.$arr[0].'"); ?>';
             }
         };
 

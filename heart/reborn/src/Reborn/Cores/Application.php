@@ -285,11 +285,11 @@ class Application extends \Illuminate\Container\Container
             $this['profiler']->start();
         }
 
-        // Start the Database initialize
-        DB::initialize();
-
         // Start the Event initialize
         Event::initialize();
+
+        // Start the Database initialize
+        DB::initialize();
 
         // Start the Setting initialize
         Setting::initialize();

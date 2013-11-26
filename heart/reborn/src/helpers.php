@@ -816,13 +816,12 @@ if (! function_exists('navigation'))
 	 * Helper function of Navigation Render
 	 *
 	 * @param string $nav Navigation group name
-	 * @param string $tag Wrapper tag. default is "ul"
-	 * @param string $active Menu active class name
+	 * @param string $type Navigation Style Type
 	 * @return string
 	 **/
-	function navigation($nav = 'header', $tag = 'ul', $active = 'active')
+	function navigation($nav = 'header', $type = 'reborn')
 	{
-		return \Navigation\Lib\Helper::render($nav, $tag, $active);
+		return \Navigation\Builder\Manager::choose($nav, $type);
 	}
 }
 
