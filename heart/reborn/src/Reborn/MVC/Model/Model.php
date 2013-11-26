@@ -22,7 +22,7 @@ abstract class Model extends BaseModel
      *
      * @var string
      **/
-    protected $slug = 'slug';
+    protected $slug_key = 'slug';
 
     /**
      * Variable for validation rules
@@ -60,7 +60,7 @@ abstract class Model extends BaseModel
      **/
     public function getSlugKey()
     {
-        return $this->slug;
+        return $this->slug_key;
     }
 
     /**
