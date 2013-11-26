@@ -35,7 +35,7 @@ return array(
 	'lcountry' => 'Country',
 	'lwebsite' => 'Website',
 	'lfacebook' => 'Facebook',
-	'ltwitter' => 'twitter',
+	'ltwitter' => 'Twitter',
 	'adminpanelaccess' => 'Can access to Dashboard?',
 	'gravatar' => 'Change your avatar at Gravatar',
 
