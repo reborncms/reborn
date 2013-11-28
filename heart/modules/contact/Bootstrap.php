@@ -99,6 +99,10 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 			'reply_template' => array(
 				'type' => 'select',
 				'options' => $data = Lib\Helper::getSlug()
+				),
+			'attach_field' => array(
+				'type' => 'select',
+				'options' => array('yes'=>'YES','no'=>'NO')
 				)
 			);
 		}

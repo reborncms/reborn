@@ -24,6 +24,7 @@ class ContactController extends \PublicController
 	{
 		$mail = new \stdClass;
 		$errors = new \Reborn\Form\ValidationError();
+		$hasAttach = \Setting::get('attach_field');
 		if (\Input::isPost()) {
 			$referer = \Input::server('HTTP_REFERER');
 
@@ -92,6 +93,7 @@ class ContactController extends \PublicController
 					->breadcrumb(\Translate::get('contact::contact.p_title'))
 					->set('mail',$mail)
 					->set('errors',$errors)
+					->set('hasAttach',$hasAttach)
 					->setPartial('index');
 	}
 

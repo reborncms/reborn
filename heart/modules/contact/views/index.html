@@ -33,7 +33,7 @@
 				<span class="field-error">{{ $errors['message'] }}</span>
 			</div>
 		</div>
-
+		{{ if($hasAttach == 'yes')}}
 		<div class="contact-form-block">
 			{{ Form::label('Attachment', 'attachment') }}
 			<div class="form-field-block">
@@ -41,6 +41,7 @@
 				<span class="field-error">{{ $errors['attachment'] }}</span>
 			</div> 
 		</div> 
+		{{ endif }}
 
 		<div class="contact-form-block contact-button">
 			{{ Form::submit('submit', 'Send', array('id' => 'create', 'class' => 'contact-btn btn')) }}

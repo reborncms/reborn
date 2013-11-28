@@ -157,7 +157,17 @@ class ContactInstaller extends \Reborn\Module\AbstractInstaller
 
 	public function upgrade($v)
 	{
-		return $v;
+		if ($v == '1.0') {
+			 $data = array(
+				'slug'		=> 'attach_field',
+				'name'		=> 'Want Attachment Field ?',
+				'desc'		=> 'Add or Remove Attachment Field in Contact Form',
+				'value'		=> '',
+				'default'	=> 'yes',
+				'module'	=> 'Contact'
+				);
+		    \Setting::add($data);
+	    }
 	}
 
 }

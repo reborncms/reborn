@@ -6,7 +6,7 @@ class ContactInfo extends \Reborn\Module\AbstractInfo
 {
 	protected $name = 'Contact';
 
-	protected $version = '1.0';
+	protected $version = '1.1';
 
 	protected $description = array('en' => 'Contact Module is used for contact mail, reply mail, inbox and email template.', 'my' => 'အီးမေးလ်နှင့်ပတ်သတ်သော ကိစ္စများကို လုပ်ဆောင်ရန်နေရာ');
 
