@@ -28,6 +28,31 @@ class ValidationError extends Collection
 		return $this;
 	}
 
+	/**
+	 * Get an item at a given offset.
+	 *
+	 * @param  mixed  $key
+	 * @return mixed
+	 */
+	public function offsetGet($key)
+	{
+		return $this->__get($key);
+	}
+
+	/**
+	 * Magic getter method
+	 *
+	 * @return string|null
+	 **/
+	public function __get($key)
+	{
+		if (isset($this->items[$key])) {
+			return $this->items[$key];
+		}
+
+		return null;
+	}
+
     /**
      * Magic toString method, Override parent::__toString()
      *

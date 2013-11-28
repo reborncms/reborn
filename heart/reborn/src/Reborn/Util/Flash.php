@@ -143,6 +143,75 @@ class Flash
 	 **/
 	public static function flashBox($class = null)
 	{
+		list($type, $messages) = static::getTypeAndMessages();
+
+		if ($type === 'none') return null;
+
+		return static::build($type, $messages, $class);
+	}
+
+	/**
+	 * Get Flash message box with Bootstrap CSS Style
+	 *
+	 * @param boolean $close_botton
+	 * @return string
+	 **/
+	public static function bootstrap($close_botton = true)
+	{
+		list($type, $messages) = static::getTypeAndMessages();
+
+		if ($type === 'none') return null;
+
+		$type = ($type === 'error') ? 'danger' : $type;
+
+		$output = '<div class="alert alert-'.$type.'" >';
+
+		if ($close_botton) {
+			$output .= '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+		}
+
+		$output .= $messages;
+
+		$output .= '</div>';
+
+		return $output;
+	}
+
+	/**
+	 * Get Flash message box with Foundation CSS Style
+	 *
+	 * @param string $class Custom class for alert box.
+	 * @param boolean $close_botton
+	 * @return string
+	 **/
+	public static function foundation($class = '', $close_botton = true)
+	{
+		list($type, $messages) = static::getTypeAndMessages();
+
+		if ($type === 'none') return null;
+
+		$type = ($type === 'error') ? 'alert '.$class : $type.' '.$class;
+
+		$output = '<div data-alert class="alert-box '.$type.'" >';
+
+		$output .= $messages;
+
+		if ($close_botton) {
+			$output .= '<a href="#" class="close">&times;</a>';
+		}
+
+		$output .= '</div>';
+
+		return $output;
+	}
+
+	/**
+	 * Get Flash Message Type and Message String
+	 *
+	 * @return array
+	 **/
+	protected static function getTypeAndMessages()
+	{
 		if ($msg = static::get('error')) {
 			$type = 'error';
 		} elseif ($msg = static::get('success')) {
@@ -152,10 +221,20 @@ class Flash
 		} elseif ($msg = static::get('warning')) {
 			$type = 'warning';
 		} else {
-			return '';
+			$type = 'none';
 		}
 
-		return static::build($type, $msg, $class);
+		$messages = '';
+
+		if (is_string($msg)) {
+			$messages .= $msg;
+		} else {
+			foreach ($msg as $m) {
+				$messages .= $m;
+			}
+		}
+
+		return array($type, $messages);
 	}
 
 	/**
@@ -171,13 +250,7 @@ class Flash
 		$class = is_null($class) ? "alert" : $class;
 		$output = '<div class="'.$class.' '.$class.'-'.$type.'" >';
 
-		if (is_string($msg)) {
-			$output .= $msg;
-		} else {
-			foreach ($msg as $m) {
-				$output .= $m;
-			}
-		}
+		$output .= $msg;
 
 		$output .= '</div>';
 

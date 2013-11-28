@@ -27,11 +27,23 @@ class Manager extends Facade
 	 **/
 	public static function choose($group = 'header', $type = 'reborn')
 	{
-		if (in_array($type, array('bootstrap', 'foundation', 'pure'))) {
-			return static::{$type}($group);
-		}
+		switch ($type) {
+			case 'bootstrap':
+				return static::bootstrap($group);
+				break;
 
-		return static::reborn($group);
+			case 'foundation':
+				return static::foundation($group);
+				break;
+
+			case 'pure':
+				return static::pure($group);
+				break;
+
+			default:
+				static::reborn($group);
+				break;
+		}
 	}
 
 	/**
