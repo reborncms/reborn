@@ -40,6 +40,8 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
     public function register() {
 
+        \Alias::aliasRegister(array('Pages' => 'Pages\Facade\Pages'));
+
         \Event::on('user_deleted', function($user){
             return \Pages\Lib\Helper::changeAuthor($user->id);
         });
