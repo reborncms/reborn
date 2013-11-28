@@ -1,8 +1,8 @@
 <?php
 
-namespace {module};
+namespace {classname};
 
-class {module}Info extends \Reborn\Module\AbstractInfo
+class {classname}Info extends \Reborn\Module\AbstractInfo
 {
 	/**
 	 * Module name variable
@@ -107,5 +107,12 @@ class {module}Info extends \Reborn\Module\AbstractInfo
 	 * @var boolean
 	 **/
 	protected $allow_customfield = false;
+
+	/**
+	 * Table is shared for multisite.
+	 *
+	 * @var boolean
+	 **/
+	protected $shared_table = false;
 
 }

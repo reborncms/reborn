@@ -2,6 +2,8 @@
 
 namespace Reborn\MVC\Model;
 
+use Reborn\Cores\Facade;
+use Reborn\Config\Config;
 use Reborn\Http\Input;
 use Reborn\Form\Validation;
 use Reborn\Form\ValidationError;
@@ -37,6 +39,13 @@ abstract class Model extends BaseModel
      * @var array
      **/
     protected $validation_errors;
+
+    /**
+     * Allow to multisite with table prefix
+     *
+     * @var boolean
+     **/
+    protected $multisite = false;
 
     /**
      * Find a model by its slug key.
@@ -150,6 +159,35 @@ abstract class Model extends BaseModel
         }
 
         return parent::save($options);
+    }
+
+    /**
+     * Get the table associated with the model.
+     * Override for multiple prefix
+     *
+     * @return string
+     */
+    public function getTable()
+    {
+        if (isset($this->table)) {
+            $table = $this->table;
+        } else {
+            $table = str_replace('\\', '', snake_case(str_plural(class_basename($this))));
+        }
+
+        $domain = Facade::getApplication()->request->getHost();
+
+        if ($this->multisite) {
+            $prefixs = Config::get('db.multisite');
+
+            if (isset($prefixs[$domain])) {
+                $table = rtrim($prefixs[$domain], '_').'_'.$table;
+            } elseif ($prefixs['default']) {
+                $table = rtrim($prefixs['default'], '_').'_'.$table;
+            }
+        }
+
+        return $table;
     }
 
 } // END class Model

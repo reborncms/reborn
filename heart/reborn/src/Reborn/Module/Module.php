@@ -307,12 +307,13 @@ class Module
      * Install the given module to DB table
      *
      * @param string $module Name of module(folder name)
-     * @param uri $uri Module URI
+     * @param string $uri Module URI
+     * @param string $prefix Table prefix
      * @param boolean $setEnable Set the module is enable after install.
      * @param boolean $refresh Refresh the Controller Map.
      * @return boolean
      */
-    public function install($module, $uri, $setEnable = false, $refresh = true)
+    public function install($module, $uri, $prefix = null, $setEnable = false, $refresh = true)
     {
         if (false === $this->modules[$module]['installed']) {
 
@@ -321,7 +322,7 @@ class Module
 
                 if ($class) {
                     if ($class instanceof AbstractInstaller) {
-                        $class->install();
+                        $class->install($prefix);
                     }
                 }
             } catch (\Exception $e) {
@@ -364,9 +365,10 @@ class Module
      *
      * @param string $module Name of module(folder name)
      * @param string $uri URI of Module
+     * @param string $prefix Table prefix
      * @return boolean
      */
-    public function uninstall($module, $uri)
+    public function uninstall($module, $uri, $prefix = null)
     {
         $class = $this->getInstaller($module);
 
@@ -375,7 +377,7 @@ class Module
             if ($class instanceof AbstractInstaller) {
 
                 try {
-                    $class->uninstall();
+                    $class->uninstall($prefix);
                 } catch (\Exception $e) {
                     return false;
                 }
@@ -399,16 +401,17 @@ class Module
      *
      * @param string $module Name of Module
      * @param string $uri URI of Module
+     * @param string $prefix Table prefix
      * @return boolean
      **/
-    public function upgrade($module, $uri)
+    public function upgrade($module, $uri, $prefix = null)
     {
         $class = $this->getInstaller($module);
 
         if ($class) {
             if ($class instanceof AbstractInstaller) {
                 try {
-                    $class->upgrade($this->modules[$module]['dbVersion']);
+                    $class->upgrade($this->modules[$module]['dbVersion'], $prefix);
                 } catch (\Exception $e) {
                     return false;
                 }
@@ -566,7 +569,7 @@ class Module
      * @param mixed $value Value for Module's data key
      * @return array
      **/
-    protected function getModulesByFilter($key, $value)
+    public function getModulesByFilter($key, $value)
     {
         $all = $this->modules;
 

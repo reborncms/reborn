@@ -113,6 +113,13 @@ abstract class AbstractInfo
 	protected $allow_customfield = false;
 
 	/**
+	 * Table is shared for multisite.
+	 *
+	 * @var boolean
+	 **/
+	protected $shared_table = false;
+
+	/**
 	 * Get the All Module Info
 	 *
 	 * @return array
@@ -156,7 +163,8 @@ abstract class AbstractInfo
 				'backendSupport' => $this->backendSupport,
 				'useAsDefaultModule' => $this->useAsDefaultModule,
 				'allowUriChange' => $this->allowToChangeUriPrefix,
-				'allowCustomField' => $this->allow_customfield
+				'allowCustomField' => $this->allow_customfield,
+				'sharedTable' => $this->shared_table
 			);
 	}
 

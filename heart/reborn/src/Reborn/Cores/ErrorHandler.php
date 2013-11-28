@@ -237,29 +237,45 @@ class ErrorHandler
     }
 
     /**
+     * Get Error Line from source file.
+     *
+     * @param string $file
+     * @param integer $line
+     * @return string
+     **/
+    protected function getErrorLine($file, $line)
+    {
+        $content = \File::getContent($file);
+        $lines = explode("\n", $content);
+
+        $code = str_replace(array('<?php', '?>'), array('{{ ', ' }}'), $lines[$line - 1]);
+
+        return '<pre>'.ltrim($code).'</pre>';
+    }
+
+    /**
      * Error hanlder method
      */
     public function errorHandler($errno, $errstr, $errfile, $errline)
     {
-        if (!(error_reporting() & $errno)) {
-            return;
-        }
+        $code = $this->getErrorLine($errfile, $errline);
+
         $errfile = str_replace(BASE, '{{ CMS }} &raquo; ', $errfile);
         $style = <<<STYLE
         <style>
             .rb_exception_trace {
-                padding: 1% 1% 1% 0;
+                padding: 1% 1% 1% 1% !important;
             }
 
             .trace_wrap {
-                background: #fff;
-                border: 1px solid #ababab;
-                margin: 10px auto;
+                background: #fff !important;
+                border: 1px solid #E74C3C;
+                margin: 10px auto !important;
             }
             .trace_head {
-                padding: 10px;
-                color: #333;
-                background: #cdcdcd;
+                padding: 10px !important;
+                color: #E74C3C;
+                background: #fff;
                 cursor: pointer;
                 position: relative;
             }
@@ -272,7 +288,7 @@ class ErrorHandler
                 display: block;
                 top: 0;
                 left: 0;
-                background: #787878;
+                background: #E74C3C;
                 color: #fff;
                 font-weight: bold;
             }
@@ -289,21 +305,26 @@ class ErrorHandler
                 padding: 15px 10px;
                 color: #2D3E50;
                 position: relative;
-                border-top: 1px solid #b9b9b9;
+                border-top: 1px solid #E74C3C;
+            }
+            pre {
+                padding: 15px !important;
+                background: #343434;
+                color: #fff;
+                margin: 15px 0 0 0 !important;
             }
             .line_no {
                 position: absolute;
                 right: 0;
                 display: block;
-                padding: 12px 10px 13px 10px;
+                padding: 9px 10px 9px;
                 min-width: 35px;
                 text-align: right;
                 color: #7B0000;
-                background: #efefef;
-                border-left: 1px solid #b9b9b9;
-                bottom: 0;
+                background: #f9f9f9;
+                border-left: 1px solid #E74C3C;
+                top: -37px;
                 font-size: 18px;
-                font-weight: bold;
             }
         </style>
 STYLE;
@@ -320,7 +341,8 @@ STYLE;
                 echo '</div>';
                 echo '<div class="trace_body">';
                 echo $errfile;
-                echo '<span class="line_no">';
+                echo $code;
+                echo '<span class="line_no">Line : ';
                 echo $errline;
                 echo '</span>';
                 echo '</div>';
@@ -334,7 +356,8 @@ STYLE;
                 echo '</div>';
                 echo '<div class="trace_body">';
                 echo $errfile;
-                echo '<span class="line_no">';
+                echo $code;
+                echo '<span class="line_no">Line : ';
                 echo $errline;
                 echo '</span>';
                 echo '</div>';
@@ -347,7 +370,8 @@ STYLE;
                 echo '</div>';
                 echo '<div class="trace_body">';
                 echo $errfile;
-                echo '<span class="line_no">';
+                echo $code;
+                echo '<span class="line_no">Line : ';
                 echo $errline;
                 echo '</span>';
                 echo '</div>';
@@ -360,7 +384,8 @@ STYLE;
                 echo '</div>';
                 echo '<div class="trace_body">';
                 echo $errfile;
-                echo '<span class="line_no">';
+                echo $code;
+                echo '<span class="line_no">Line : ';
                 echo $errline;
                 echo '</span>';
                 echo '</div>';

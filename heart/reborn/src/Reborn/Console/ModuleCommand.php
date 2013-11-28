@@ -2,6 +2,7 @@
 
 namespace Reborn\Console;
 
+use Reborn\Util\Str;
 use Reborn\Filesystem\File;
 use Reborn\Filesystem\Directory as Dir;
 use Symfony\Component\Console\Command\Command as SfCommand;
@@ -56,15 +57,17 @@ class ModuleCommand extends SfCommand
      */
     protected function create($data)
     {
-    	$path = MODULES.strtolower($data['name']);
+    	$path = MODULES.strtolower(str_replace(' ', '_', $data['name']));
         // make module folder path
     	Dir::make($path);
-        $moduleName = ucfirst($data['name']);
+
+        $data['classname'] = Str::studly($data['module']);
+
         // make module src path
         Dir::make($path.DS.'src');
         // make module src/Namespace path
-        Dir::make($path.DS.'src'.DS.$moduleName);
-        $src = $path.DS.'src'.DS.$moduleName;
+        Dir::make($path.DS.'src'.DS.$data['classname']);
+        $src = $path.DS.'src'.DS.$data['classname'];
 
     	$dirs = array(
     			$path.DS.'lang',
@@ -90,9 +93,9 @@ class ModuleCommand extends SfCommand
 
         $data['src_path'] = $src;
 
-    	$this->setInfo($data);
-    	$this->setInstaller($data);
-    	$this->setBootstrap($data);
+    	$this->setInfo($data, $path);
+    	$this->setInstaller($data, $path);
+    	$this->setBootstrap($data, $path);
     	$this->setController($data);
         $this->setModel($data);
 
@@ -102,7 +105,7 @@ class ModuleCommand extends SfCommand
 // Route file for module {$data['module']}
 EOT;
 
-    	File::write(MODULES.strtolower($data['name']), 'routes.php', $route);
+    	File::write($path, 'routes.php', $route);
     }
 
     /**
@@ -111,7 +114,7 @@ EOT;
      * @param array $data
      * @return void
      */
-    protected function setInfo($data)
+    protected function setInfo($data, $path)
     {
     	$file = __DIR__.DS.'Resources'.DS.'Info.php';
 
@@ -145,7 +148,7 @@ EOT;
     		$fileData = str_replace('{'.$k.'}', $data[$k], $fileData);
     	}
 
-    	File::write(MODULES.strtolower($data['name']), $data['module'].'Info.php', $fileData);
+    	File::write($path, $data['classname'].'Info.php', $fileData);
     }
 
     /**
@@ -154,15 +157,15 @@ EOT;
      * @param array $data
      * @return void
      */
-    protected function setInstaller($data)
+    protected function setInstaller($data, $path)
     {
     	$file = __DIR__.DS.'Resources'.DS.'Installer.php';
 
     	$fileData = File::getContent($file);
 
-    	$fileData = str_replace('{module}', $data['module'], $fileData);
+    	$fileData = str_replace('{module}', $data['classname'], $fileData);
 
-    	File::write(MODULES.strtolower($data['name']), $data['module'].'Installer.php', $fileData);
+    	File::write($path, $data['classname'].'Installer.php', $fileData);
     }
 
     /**
@@ -171,15 +174,15 @@ EOT;
      * @param array $data
      * @return void
      */
-    protected function setBootstrap($data)
+    protected function setBootstrap($data, $path)
     {
     	$file = __DIR__.DS.'Resources'.DS.'Bootstrap.php';
 
     	$fileData = File::getContent($file);
 
-    	$fileData = str_replace('{module}', $data['module'], $fileData);
+    	$fileData = str_replace('{module}', $data['classname'], $fileData);
 
-    	File::write(MODULES.strtolower($data['name']), 'Bootstrap.php', $fileData);
+    	File::write($path, 'Bootstrap.php', $fileData);
     }
 
     /**
@@ -195,9 +198,9 @@ EOT;
 
             $fileData = File::getContent($file);
 
-            $fileData = str_replace('{module}', $data['module'], $fileData);
+            $fileData = str_replace('{module}', $data['classname'], $fileData);
 
-            $controller = $data['module'].'Controller.php';
+            $controller = $data['classname'].'Controller.php';
 
             $path = $data['src_path'].DS.'Controller'.DS;
 
@@ -209,9 +212,9 @@ EOT;
 
             $adminData = File::getContent($admin);
 
-            $adminData = str_replace('{module}', $data['module'], $adminData);
+            $adminData = str_replace('{module}', $data['classname'], $adminData);
 
-            $adminCon = $data['module'].'Controller.php';
+            $adminCon = $data['classname'].'Controller.php';
 
             $path = $data['src_path'].DS.'Controller'.DS.'Admin'.DS;
 
@@ -231,11 +234,11 @@ EOT;
 
         $fileData = File::getContent($file);
 
-        $fileData = str_replace('{module}', $data['module'], $fileData);
+        $fileData = str_replace('{module}', $data['classname'], $fileData);
 
         $fileData = str_replace('{table}', $data['table'], $fileData);
 
-        $model = $data['module'].'.php';
+        $model = $data['classname'].'.php';
 
         File::write($data['src_path'].DS.'Model'.DS, $model, $fileData);
     }
@@ -267,7 +270,11 @@ EOT;
 
 		$frontend = $dialog->ask($output, "<question>Module is frontend support? (Yes, No) : </question>", null);
 
-        $allowDefaultModule = $dialog->ask($output, "<question>Module is allow to set default module? (Yes, No) : </question>", null);
+        if (in_array($frontend, array('no', 'No'))) {
+            $allowDefaultModule = 'no';
+        } else {
+            $allowDefaultModule = $dialog->ask($output, "<question>Module is allow to set default module? (Yes, No) : </question>", null);
+        }
 
         $prefix = $dialog->ask($output, "<question>Please enter the URI Prefix of the module : </question>", null);
 

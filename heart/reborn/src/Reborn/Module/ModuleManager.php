@@ -5,6 +5,7 @@ namespace Reborn\Module;
 use Reborn\Connector\DB\DBManager as DB;
 use Reborn\Exception\ModuleException;
 use Reborn\Util\Menu;
+use Reborn\Util\Str;
 
 /**
  * Module Manager Class for Reborn
@@ -78,7 +79,7 @@ class ModuleManager
      * @param string $module slug of module(folder name)
      * @return boolean
      */
-    public static function install($module, $uri, $setEnable = false, $refresh = true)
+    public static function install($module, $uri, $prefix = null, $setEnable = false, $refresh = true)
     {
         $module = strtolower($module);
 
@@ -87,7 +88,7 @@ class ModuleManager
             return false;
         }
 
-        return static::$mod->install($module, $uri, $setEnable, $refresh);
+        return static::$mod->install($module, $uri, $prefix, $setEnable, $refresh);
     }
 
     /**
@@ -96,7 +97,7 @@ class ModuleManager
      * @param string $module slug of module(folder name)
      * @return boolean
      */
-    public static function uninstall($module, $uri)
+    public static function uninstall($module, $uri, $prefix = null)
     {
         $module = strtolower($module);
         // Check the given module is truely
@@ -114,7 +115,7 @@ class ModuleManager
             return true;
         }
 
-        return static::$mod->uninstall($module, $uri);
+        return static::$mod->uninstall($module, $uri, $prefix);
     }
 
     /**
@@ -123,7 +124,7 @@ class ModuleManager
      * @param string $module Name of Module
      * @return boolean
      **/
-    public static function upgrade($module, $uri)
+    public static function upgrade($module, $uri, $prefix = null)
     {
         $module = strtolower($module);
 
@@ -136,7 +137,7 @@ class ModuleManager
             return false;
         }
 
-        return static::$mod->upgrade($module, $uri);
+        return static::$mod->upgrade($module, $uri, $prefix);
     }
 
     /**
@@ -354,7 +355,7 @@ class ModuleManager
      **/
     protected static function fileCheck($path, $name)
     {
-        $name = ucfirst($name);
+        $name = Str::studly($name);
 
         // Check the {ModuleName}Info.php file at module main root
         if (!file_exists($path.$name.static::$infoFile)) {
@@ -384,7 +385,7 @@ class ModuleManager
      **/
     public static function getModuleInfo($path, $name)
     {
-        $name = ucfirst($name);
+        $name = Str::studly($name);
         // Require the {ModuleName}Info.php
         require $path.$name.static::$infoFile;
 

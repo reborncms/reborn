@@ -2,6 +2,7 @@
 
 namespace Reborn\Connector\DB;
 
+use Reborn\Event\EventManager as Event;
 use Reborn\Config\Config;
 use Illuminate\Container\Container;
 use Illuminate\Database\Connectors\ConnectionFactory as ConnectionFactory;
@@ -27,6 +28,8 @@ class DBManager
      **/
     public static function initialize($name = null)
     {
+        Event::call('reborn.db.initialize');
+
         if (is_null($name)) {
             $name = static::getDefaultConnectionName();
         }
@@ -44,10 +47,6 @@ class DBManager
      */
     public function __construct($name = null)
     {
-        if (is_null($name)) {
-            $name = static::getDefaultConnectionName();
-        }
-
         $config = $this->getConfig($name);
 
         if (! isset(static::$connections[$name])) {
@@ -80,7 +79,7 @@ class DBManager
      *
      * @return string
      **/
-    protected static function getDefaultConnectionName()
+    public static function getDefaultConnectionName()
     {
         return Config::get("db.active");
     }
@@ -111,6 +110,7 @@ class DBManager
     public function __call($method, $param = array())
     {
         $default = static::getDefaultConnectionName();
+
         if (! is_null(static::$connections[$default])) {
             return call_user_func_array(array(static::$connections[$default], $method), $param);
         }
@@ -119,6 +119,7 @@ class DBManager
     public static function __callStatic($method, $param = array())
     {
         $default = static::getDefaultConnectionName();
+
         if (! is_null(static::$connections[$default])) {
             return call_user_func_array(array(static::$connections[$default], $method), $param);
         }
