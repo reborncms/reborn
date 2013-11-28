@@ -1,8 +1,6 @@
 <?php
+
 namespace User\Model;
+use Cartalyst\Sentry\Groups\Eloquent\Group as Base;
 
-class Group extends \Eloquent
-{
-    protected $table = 'groups';
-
-}
+class Group extends Base {}

@@ -1,14 +1,14 @@
 <?php
 
 namespace User\Model;
-use Reborn\Connector\Sentry\Sentry;
+use Cartalyst\Sentry\Users\Eloquent\User as Base;
 
-class User extends \Eloquent
+class User extends Base
 {
-    protected $table = 'users';
-
-     /**
-     * Get full name of user
+    /**
+     * Get fullname of user by combining First Name and Last Name
+     *
+     * @return string
      */
     public function getFullnameAttribute()
     {

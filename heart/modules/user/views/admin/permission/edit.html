@@ -13,24 +13,24 @@
 		</tr>
 	</thead>
 	<tbody>
-		{{ loop($permission_modules as $module) }}
-		<tr id="{{ $module->uri }}">
+		{{ loop($permission_modules as $module) }}		
+		<tr id="{{ $module['uri'] }}">
 			{= $check = false; =}
 
 			{{ loop($groupPermissions as $permission => $v ) }}
-				{{ if($module->uri == $permission) }}
+				{{ if($module['uri'] == $permission) }}
 					{= $check = true; break; =}
 				{{ endif }}
 			{{ endloop }}
 
 		{{ if($check) }}
-			<td class="module-role">{{ Form::checkbox("modules[$module->uri]", 1, true, array('data-module' => $module->uri)) }}</td>
+			<td class="module-role">{{ Form::checkbox("modules[".$module['uri']."]", 1, true, array('data-module' => $module['uri'])) }}</td>
 		{{ else }}
-			<td class="module-role">{{ Form::checkbox("modules[$module->uri]", 1, false, array('data-module' => $module->uri)) }}</td>
+			<td class="module-role">{{ Form::checkbox("modules[".$module['uri']."]", 1, false, array('data-module' => $module['uri'])) }}</td>
 		{{ endif }}
-			<td>{{ $module->name }}</td>
+			<td>{{ $module['name'] }}</td>
 			<td class="action_roles">				
-				{{ module_action_permission_ui($module->name, $groupPermissions) }}
+				{{ module_action_permission_ui($module['name'], $groupPermissions) }}
 			</td>
 		</tr>
 		{{ endloop }}

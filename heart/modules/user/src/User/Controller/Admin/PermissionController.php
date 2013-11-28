@@ -43,25 +43,23 @@ class PermissionController extends \AdminController
 		}
 
 		// Get permission from the installed modules
-		$permission_modules = \User\Model\PermissionModel::getall();
+		$permission_modules = \Module::getModulesByFilter('installed', true);
+		unset($permission_modules['admin']);
 
 		if (\Input::isPost()) {
 			
 			$modules = \Input::get('modules');
 			$actions = \Input::get('modules_actions');
 
-			/*dump($modules);
-			dump($actions, true);*/
-
 			if (!is_null($modules)) {
 				$module_lists = array();
 				foreach ($modules as $k => $v) {
 					$modules[$k] = 1;
 					foreach ($permission_modules as $m) {
-						if(empty($modules[$m->uri])) {
-							$modules[$m->uri] = 0;
+						if(empty($modules[$m['uri']])) {
+							$modules[$m['uri']] = 0;
 						}
-						$module_lists[$m->uri] = $m->uri;
+						$module_lists[$m['uri']] = $m['uri'];
 					}
 				}
 
