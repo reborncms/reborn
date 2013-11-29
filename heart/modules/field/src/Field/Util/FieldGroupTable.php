@@ -2,7 +2,7 @@
 
 namespace Field\Util;
 
-use Reborn\Util\Table;
+use Reborn\Table\Builder as Table;
 
 /**
  * Field Group Table Generator
