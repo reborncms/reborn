@@ -39,9 +39,6 @@
         "classmap": [
             "content/vendor",
             "content/commands"
-        ],
-        "files": [
-            "heart/reborn/src/helpers.php"
         ]
     },
     "config": {

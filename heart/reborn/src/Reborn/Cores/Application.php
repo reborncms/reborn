@@ -55,7 +55,7 @@ class Application extends \Illuminate\Container\Container
     {
         $this['error_handler'] = new ErrorHandler($this);
 
-        $this['request'] = Request::createFromGlobals();
+        $this['request'] = $this->solveRequest();
 
         // Enable Http Method Override for (_method)
         Request::enableHttpMethodParameterOverride();
@@ -120,6 +120,20 @@ class Application extends \Illuminate\Container\Container
     }
 
     /**
+     * Solve Request Instance for Application
+     *
+     * @return \Reborn\Http\Request
+     **/
+    public function solveRequest()
+    {
+        if ($this->runInCli()) {
+            return Request::create('http://localhost/', 'GET', array(), array(), array(), $_SERVER);
+        }
+
+        return Request::createFromGlobals();
+    }
+
+    /**
      * Set the Reborn CMS Environment.
      * Reborn accept 3 type of environment
      * <code>
@@ -165,6 +179,16 @@ class Application extends \Illuminate\Container\Container
     public function runInTesting()
     {
         return ($this['env'] === 'test');
+    }
+
+    /**
+     * Check Application run in Cli
+     *
+     * @return boolean
+     **/
+    public function runInCli()
+    {
+        return (php_sapi_name() === 'cli');
     }
 
     /**

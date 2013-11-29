@@ -275,7 +275,7 @@ if(! function_exists('remove_base_url'))
 	}
 }
 
-if(! function_exists('rbUrl'))
+if(! function_exists('url'))
 {
 	/**
 	 * Helper function for the Uri::create().
@@ -283,9 +283,20 @@ if(! function_exists('rbUrl'))
 	 * @param string $path Uri path to create.
 	 * @return string
 	 **/
-	function rbUrl($path = '')
+	function url($path = '')
 	{
 		return \Uri::create($path);
+	}
+}
+
+if(! function_exists('rbUrl'))
+{
+	/**
+	 * Alias of url()
+	 */
+	function rbUrl($path = '')
+	{
+		return url($path);
 	}
 }
 

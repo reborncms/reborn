@@ -67,6 +67,8 @@ if(! defined('GLOBAL_URL')) {
 		$script = str_replace('index.php', '', $_SERVER['SCRIPT_NAME']);
 		$fullUrl = $protocol.$host.$script.'global/';
 		define('GLOBAL_URL', $fullUrl);
+	} else {
+		define('GLOBAL_URL', 'http://localhost');
 	}
 }
 
@@ -92,6 +94,9 @@ if(! defined('EXT'))
 {
 	define('EXT', '.php');
 }
+
+// Require helper file
+require __DIR__.DS.'helpers.php';
 
 // Require Autoload File
 require_once SYSTEM.'vendor/autoload.php';
