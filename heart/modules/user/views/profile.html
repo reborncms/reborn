@@ -4,14 +4,14 @@
 
 	<div class="user-avatar">
 		{{ gravatar($user->email, 200, $user['name']) }}
-		{{ if($user->id == $currentUser->id) }}
-		<span><a href="https://gravatar.com/" target="_blank">{{ t('user::user.gravatar') }}</a></span>
-		<ul id="user-settings">
-			<li><a href="{{ \Uri::create('user/edit/') }}" class="btn user-edit" >Edit Profile</a></li>
-			<li><a href="{{ \Uri::create('user/change-password/')}}" class="btn user-profile">Change Password</a></li>
-			<li><a href="{{ \Uri::create('user/logout/') }}" class="btn user-logout">Logout</a></li>
-		</ul>
-		{{ endif }}
+		{{ if($currentUser and $user->id == $currentUser->id) }}
+			<span><a href="https://gravatar.com/" target="_blank">{{ t('user::user.gravatar') }}</a></span>
+			<ul id="user-settings">
+				<li><a href="{{ \Uri::create('user/edit/') }}" class="btn user-edit" >Edit Profile</a></li>
+				<li><a href="{{ \Uri::create('user/change-password/')}}" class="btn user-profile">Change Password</a></li>
+				<li><a href="{{ \Uri::create('user/logout/') }}" class="btn user-logout">Logout</a></li>
+			</ul>
+		{{ endif }}		
 	</div>
 
 	<div class="user-info">
