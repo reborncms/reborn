@@ -10,7 +10,7 @@ class EmailTemplateController extends \AdminController
 
 	public function before()
 	{
-		$this->menu->activeParent(\Module::getData('contact', 'uri'));
+		$this->menu->activeParent(\Module::get('contact', 'uri'));
 		$this->template->style('contact.css', 'contact');
 	}
 

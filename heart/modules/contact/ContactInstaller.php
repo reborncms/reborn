@@ -7,6 +7,8 @@ class ContactInstaller extends \Reborn\Module\AbstractInstaller
 
 	public function install()
 	{
+		$prefix = null;
+
 		\Schema::table('contact', function($table)
 	    {
 	        $table->create();
@@ -152,11 +154,13 @@ class ContactInstaller extends \Reborn\Module\AbstractInstaller
 
 	public function uninstall()
 	{
+		$prefix = null;
 		\Schema::drop('contact');
 	}
 
 	public function upgrade($v)
 	{
+		$prefix = null;
 		if ($v == '1.0') {
 			 $data = array(
 				'slug'		=> 'attach_field',
