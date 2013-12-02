@@ -147,7 +147,7 @@ class ViewManager
 			require $events;
 		}
 
-		return new Theme($theme, $themePath);
+		return new Theme($this->app, $theme, $themePath);
 	}
 
 	/**

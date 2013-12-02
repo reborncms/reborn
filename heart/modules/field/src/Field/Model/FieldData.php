@@ -8,6 +8,8 @@ class FieldData extends \Eloquent
 
     public $timestamps = false;
 
+    protected $multisite = true;
+
     // Validation Rules
     protected $rules = array(
             'field_id' => 'required',

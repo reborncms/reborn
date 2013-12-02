@@ -32,6 +32,8 @@ class NavigationInfo extends \Reborn\Module\AbstractInfo
 
 	protected $allowToChangeUriPrefix = false;
 
+	protected $sharedData = false;
+
 	protected $roles = array(
 						'nav.create' => 'Navigation Link Create',
 						'nav.edit' => 'Navigation Link Edit',

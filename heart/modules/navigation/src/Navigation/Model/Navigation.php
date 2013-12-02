@@ -8,6 +8,8 @@ class Navigation extends \Eloquent
 
     public $timestamps = false;
 
+    protected $multisite = true;
+
     public function links()
 	{
 		return $this->hasMany('Navigation\Model\NavigationLinks');

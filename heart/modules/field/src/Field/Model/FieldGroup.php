@@ -8,6 +8,8 @@ class FieldGroup extends \Eloquent
 
     public $timestamps = false;
 
+    protected $multisite = true;
+
     // Validation Rules
     protected $rules = array(
             'name' => 'required|maxLength:150',

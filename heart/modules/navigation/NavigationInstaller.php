@@ -5,9 +5,9 @@ namespace Navigation;
 class NavigationInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-	public function install()
+	public function install($prefix = null)
 	{
-		\Schema::table('navigation', function($table)
+		\Schema::table($prefix.'navigation', function($table)
 	    {
 	        $table->create();
 	        $table->increments('id');
@@ -15,10 +15,10 @@ class NavigationInstaller extends \Reborn\Module\AbstractInstaller
 	        $table->string('slug');
 	    });
 
-	    \DB::table('navigation')->insert(array('id' => 1, 'title' => 'Header', 'slug' => 'header'));
-	    \DB::table('navigation')->insert(array('id' => 2, 'title' => 'Footer', 'slug' => 'footer'));
+	    \DB::table($prefix.'navigation')->insert(array('id' => 1, 'title' => 'Header', 'slug' => 'header'));
+	    \DB::table($prefix.'navigation')->insert(array('id' => 2, 'title' => 'Footer', 'slug' => 'footer'));
 
-	    \Schema::table('navigation_links', function($table)
+	    \Schema::table($prefix.'navigation_links', function($table)
 	    {
 	        $table->create();
 	        $table->increments('id');
@@ -33,7 +33,7 @@ class NavigationInstaller extends \Reborn\Module\AbstractInstaller
 	        $table->string('permission')->default('');
 	    });
 
-	    \DB::table('navigation_links')->insert(array(
+	    \DB::table($prefix.'navigation_links')->insert(array(
 		    					'navigation_id' => 1,
 		    					'link_type' => 'Pages',
 		    					'title' => 'Home',
@@ -46,13 +46,13 @@ class NavigationInstaller extends \Reborn\Module\AbstractInstaller
 	    					));
 	}
 
-	public function uninstall()
+	public function uninstall($prefix = null)
 	{
-		\Schema::drop('navigation');
-		\Schema::drop('navigation_links');
+		\Schema::drop($prefix.'navigation');
+		\Schema::drop($prefix.'navigation_links');
 	}
 
-	public function upgrade($dbVersion)
+	public function upgrade($dbVersion, $prefix = null)
 	{
 		return true;
 	}

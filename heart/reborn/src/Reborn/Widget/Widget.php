@@ -282,7 +282,7 @@ class Widget
 		foreach ($this->modules as $name => $module) {
 			if ($module->isEnabled()) {
 
-				$dirs = Dir::get($module->path.'Widgets'.DS.'*', GLOB_ONLYDIR);
+				$dirs = Dir::get($module->path.DS.'Widgets'.DS.'*', GLOB_ONLYDIR);
 
 				$this->prepare($dirs);
 			}

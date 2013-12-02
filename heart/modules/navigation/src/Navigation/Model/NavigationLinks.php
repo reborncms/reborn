@@ -8,6 +8,8 @@ class NavigationLinks extends \Eloquent
 
     public $timestamps = false;
 
+    protected $multisite = true;
+
 	public function updateLink($current, $groupChange = false)
 	{
 		if ($groupChange) {

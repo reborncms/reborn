@@ -5,9 +5,9 @@ namespace Field;
 class FieldInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-	public function install()
+	public function install($prefix = null)
 	{
-		\Schema::table('fields', function($table)
+		\Schema::table($prefix.'fields', function($table)
 		{
 			$table->create();
 			$table->increments('id');
@@ -19,7 +19,7 @@ class FieldInstaller extends \Reborn\Module\AbstractInstaller
 			$table->text('default');
 		});
 
-		\Schema::table('field_data', function($table)
+		\Schema::table($prefix.'field_data', function($table)
 		{
 			$table->create();
 			$table->increments('id');
@@ -30,7 +30,7 @@ class FieldInstaller extends \Reborn\Module\AbstractInstaller
 			$table->text('field_value');
 		});
 
-		\Schema::table('field_groups', function($table)
+		\Schema::table($prefix.'field_groups', function($table)
 		{
 			$table->create();
 			$table->increments('id');
@@ -42,13 +42,13 @@ class FieldInstaller extends \Reborn\Module\AbstractInstaller
 		});
 	}
 
-	public function uninstall()
+	public function uninstall($prefix = null)
 	{
-		\Schema::drop('fields');
-		\Schema::drop('field_data');
-		\Schema::drop('field_groups');
+		\Schema::drop($prefix.'fields');
+		\Schema::drop($prefix.'field_data');
+		\Schema::drop($prefix.'field_groups');
 	}
 
-	public function upgrade($dbVersion) {}
+	public function upgrade($dbVersion, $prefix = null) {}
 
 }

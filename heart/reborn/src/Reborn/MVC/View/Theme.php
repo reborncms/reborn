@@ -2,7 +2,8 @@
 
 namespace Reborn\MVC\View;
 
-use Reborn\Cores\Facade;
+use Reborn\Util\Str;
+use Reborn\Cores\Application;
 use Reborn\Filesystem\File;
 use Reborn\Filesystem\Directory as Dir;
 use Reborn\Exception\FileNotFoundException;
@@ -30,19 +31,49 @@ class Theme
     protected $path;
 
     /**
+     * Application (IOC) Container instance
+     *
+     * @var \Reborn\Cores\Application
+     **/
+    protected $app;
+
+    /**
      * Default constructor method
      *
+     * @param \Reborn\Cores\Application $app
      * @param string $name Theme name
      * @param string $path Theme path
      * @return Object($this)
      **/
-    public function __construct($name, $path)
+    public function __construct(Application $app, $name, $path)
     {
+        $this->app = $app;
+
         $this->theme = $name;
 
         $this->path = $path;
 
         return $this;
+    }
+
+    /**
+     * Get all theme from private path and shared path.
+     *
+     * @return array
+     **/
+    public function all()
+    {
+        $paths = $this->getThemeFolderPaths();
+
+        $all = array();
+
+        $type = 'private';
+        foreach ($paths as $path) {
+            $all[$type] = Dir::get($path.'*', GLOB_ONLYDIR);
+            $type = 'shared';
+        }
+
+        return $all;
     }
 
     /**
@@ -129,10 +160,8 @@ class Theme
         $theme = is_null($name) ? $this->theme : $name;
 
         if ($frontend_only) {
-            if(File::is(THEMES.$theme.DS.'info.php')) {
-                return require THEMES.$theme.DS.'info.php';
-            } elseif (File::is(THEMES.$theme.DS.'theme.info')) {
-                return $this->parseThemeInfo(THEMES.$theme.DS.'theme.info');
+            if ($file = $this->findThemeFile($theme, 'theme.info')) {
+                return $this->parseThemeInfo($file);
             }
         } else {
             if(File::is($this->path.$theme.DS.'info.php')) {
@@ -158,8 +187,8 @@ class Theme
         $theme = is_null($name) ? $this->theme : $name;
 
         if ($frontend_only) {
-            if(File::is(THEMES.$theme.DS.'config.php')) {
-                return require THEMES.$theme.DS.'config.php';
+            if ($file = $this->findThemeFile($theme, 'config.php')) {
+                return $file;
             }
         } else {
             if(File::is($this->path.$theme.DS.'config.php')) {
@@ -181,13 +210,14 @@ class Theme
     public function findWidgets($name = null)
     {
         $theme = is_null($name) ? $this->theme : $name;
-        $dir = $this->path.$theme.DS.'widgets';
 
-        if(!Dir::is($dir)) {
+        $path = $this->findTheme($theme);
+
+        if(!Dir::is($path.DS.'widgets')) {
             return array();
         }
 
-        $all = Dir::get($dir.DS.'*', GLOB_ONLYDIR);
+        $all = Dir::get($path.DS.'widgets'.DS.'*', GLOB_ONLYDIR);
 
         return $all;
     }
@@ -200,9 +230,63 @@ class Theme
      **/
     protected function parseThemeInfo($file)
     {
-        $info_parser = Facade::getApplication()->info_parser;
+        $info_parser = $this->app->info_parser;
 
         return $info_parser->parse($file);
+    }
+
+    /**
+     * Find theme from theme paths
+     *
+     * @param string $theme
+     * @return string|null
+     **/
+    protected function findTheme($theme)
+    {
+        $paths = $this->getThemeFolderPaths($theme);
+
+        foreach ($paths as $path) {
+            if (Dir::is($path)) {
+                return $path;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get theme file from theme's root folder
+     *
+     * @param string $theme
+     * @param string $filename
+     * @return string|null
+     **/
+    protected function findThemeFile($theme, $filename)
+    {
+        $paths = $this->getThemeFolderPaths($theme);
+
+        foreach ($paths as $path) {
+            if (File::is($path) and File::is($path.$filename)) {
+                return $path.$filename;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get theme folder paths.
+     * If you pass theme name, return path with theme name.
+     *
+     * @param string|null $theme
+     * @return array
+     **/
+    protected function getThemeFolderPaths($theme = null)
+    {
+        $private = Str::endIs(THEMES.$theme.DS, DS);
+        $shared = Str::endIs(SHARED.'themes'.DS.$theme.DS, DS);
+
+        return array($private, $shared);
     }
 
 } // END class Theme
