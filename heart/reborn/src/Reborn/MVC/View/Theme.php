@@ -59,9 +59,10 @@ class Theme
     /**
      * Get all theme from private path and shared path.
      *
+     * @param boolean $name_only
      * @return array
      **/
-    public function all()
+    public function all($name_only = false)
     {
         $paths = $this->getThemeFolderPaths();
 
@@ -71,6 +72,17 @@ class Theme
         foreach ($paths as $path) {
             $all[$type] = Dir::get($path.'*', GLOB_ONLYDIR);
             $type = 'shared';
+        }
+
+        if ($name_only) {
+            $names = array();
+            foreach ($all as $type => $paths) {
+                foreach ($paths as $path) {
+                    $names[] = basename($path);
+                }
+            }
+
+            return $names;
         }
 
         return $all;
