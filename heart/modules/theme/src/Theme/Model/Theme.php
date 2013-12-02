@@ -11,19 +11,13 @@ class Theme
     */
     public static function all()
     {
-        $themes = array();
-        $results = scandir(THEMES);
+        $handler = \Facade::getApplication()->theme;
+        $results = $handler->all(true);            
 
-        foreach ($results as $result) {
-            if ($result === '.' or $result === '..') continue;
-
-            if (is_dir(THEMES . '/' . $result)) {
-                $themes[] = $result;
-            }
-        }
-
-        foreach ( $themes as $key => $value ) {
-            $themeinfo[$value] = self::loadInfo($value);
+        $themeinfo = array();
+        
+        foreach ($results as $theme) {
+            $themeinfo[] = self::loadInfo($theme, $handler);            
         }
 
         return $themeinfo;
@@ -35,15 +29,12 @@ class Theme
      * @param   string  $theme  Name of the theme (null for active)
      * @return  array   Theme info array
      */
-    protected static function loadInfo($theme = null)
-    {
-        $class = \Facade::getApplication()->theme;
+    protected static function loadInfo($theme, $handler)
+    {   
+        
+        $screenshot = $handler->findTheme($theme).'screenshot.png';
 
-        if ($theme === null) $theme = $this->active;
-
-        $screenshot = THEMES.$theme.DS.'screenshot.png';
-
-        $info = $class->info($theme, true);
+        $info = $handler->info($theme, true);
 
         if (is_file($screenshot)) {
             $info['screenshot'] = str_replace(array(BASE, DS), array('', '/'), $screenshot);            

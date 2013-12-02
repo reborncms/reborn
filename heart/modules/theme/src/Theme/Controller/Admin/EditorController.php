@@ -21,7 +21,9 @@ class EditorController extends \AdminController
 	public function index()
 	{	
 		if (!user_has_access('theme.editor')) return $this->notFound();
-		$themePath = THEMES.\Setting::get('public_theme');
+
+		$handler = \Facade::getApplication()->theme;
+		$themePath = $handler->findTheme(\Setting::get('public_theme'));
 
 		$files = self::listFiles($themePath);		
 
@@ -49,7 +51,8 @@ class EditorController extends \AdminController
 		if (!user_has_access('theme.editor')) return $this->notFound();
 		if ($ext == null or $file == null) return \Redirect::to(adminUrl('theme/editor'));
 
-		$themePath = THEMES.\Setting::get('public_theme');
+		$handler = \Facade::getApplication()->theme;
+		$themePath = $handler->findTheme(\Setting::get('public_theme'));		
 		$files = self::listFiles($themePath);		
 		$currentFile = $file.'.'.$ext;
 

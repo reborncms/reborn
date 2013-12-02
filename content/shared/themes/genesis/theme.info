@@ -4,4 +4,4 @@ author = Reborn Development Team
 website = http://www.reborncms.com
 version = 1.0
 min-require = 2.0
-widget_area = [sidebar : Sidebar Area,header : Header Area, footer : Footer Area]
+widget_areas = [sidebar : Sidebar Area,header : Header Area, footer : Footer Area]

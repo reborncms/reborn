@@ -5,7 +5,7 @@ namespace User;
 class UserInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-	public function install() {
+	public function install($prefix = null) {
 		$data = array(
 	    	'slug'		=> 'user_registration',
 	    	'name'		=> 'Allow user registration',
@@ -17,12 +17,12 @@ class UserInstaller extends \Reborn\Module\AbstractInstaller
 	    \Setting::add($data);
 	}
 
-	public function uninstall()
+	public function uninstall($prefix = null)
 	{
 		\Setting::delete('user_registration');
 	}
 
-	public function upgrade($v)
+	public function upgrade($v, $prefix = null)
 	{
 		return $v;
 	}

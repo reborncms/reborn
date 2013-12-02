@@ -8,7 +8,7 @@ class PermissionController extends \AdminController
 {
 	public function before()
 	{
-		$this->menu->activeParent(\Module::getData('user', 'uri'));
+		$this->menu->activeParent('user');
 		$this->template->header = \Translate::get('user::permission.title');
 		if(!Sentry::check()) return \Redirect::to('login');
 	}
@@ -43,7 +43,7 @@ class PermissionController extends \AdminController
 		}
 
 		// Get permission from the installed modules
-		$permission_modules = \Module::getModulesByFilter('installed', true);
+		$permission_modules = \Module::getAll();
 		unset($permission_modules['admin']);
 
 		if (\Input::isPost()) {

@@ -9,7 +9,7 @@
 
 function module_action_permission_ui($module, $permission)
 {
-	$roles = \Module::getData($module, 'roles');
+	$roles = \Module::get($module, 'roles');
 
 	$result = '';
 

@@ -34,6 +34,8 @@ class ThemeInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = true;
 
+	protected $sharedData = false;
+
 	protected $roles = array(
 		'theme.upload' => 'Upload',
 		'theme.activate' => 'Activate',
@@ -47,5 +49,5 @@ class ThemeInfo extends \Reborn\Module\AbstractInfo
 	*
 	* @var boolean
 	**/
-	protected $allow_customfield = false;
+	protected $allowCustomfield = false;
 }

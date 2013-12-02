@@ -5,17 +5,11 @@ namespace Theme;
 class ThemeInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-	public function install()
-	{
-		// Let's do something later
-	}
+	public function install($prefix = null) {}
 
-	public function uninstall()
-	{
-		// Okay, saved for later
-	}
+	public function uninstall($prefix = null) {}
 
-	public function upgrade($v)
+	public function upgrade($v, $prefix = null)
 	{
 		return $v;
 	}

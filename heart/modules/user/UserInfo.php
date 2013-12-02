@@ -34,6 +34,8 @@ class UserInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = true;
 
+	protected $sharedData = true;
+
 	protected $roles = array(
 		'user.create' => 'Create',
 		'user.edit' => 'Edit',
@@ -52,6 +54,6 @@ class UserInfo extends \Reborn\Module\AbstractInfo
 	*
 	* @var boolean
 	**/
-	protected $allow_customfield = false;
+	protected $allowCustomfield = false;
 
 }

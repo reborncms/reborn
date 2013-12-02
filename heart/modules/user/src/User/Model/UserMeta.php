@@ -10,4 +10,6 @@ class UserMeta extends \Eloquent
 
 	public $timestamps = false;
 
+	protected $multisite = true;
+
 }
