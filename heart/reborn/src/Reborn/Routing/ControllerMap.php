@@ -212,7 +212,7 @@ class ControllerMap
 	protected function setModulePath($modules)
 	{
 		foreach ($modules as $name => $mod) {
-			$this->mod_paths[$mod['ns']] = $mod['path'];
+			$this->mod_paths[$mod->ns] = $mod->path;
 		}
 	}
 

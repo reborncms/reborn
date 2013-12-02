@@ -59,7 +59,7 @@ class Redirect
     public static function module($url = '', $admin = true, $status = 302, $headers = array())
     {
         $request = \Facade::getApplication()->request;
-        $module = \Module::getData($request->module, 'uri');
+        $module = \Module::get($request->module, 'uri');
         $url = ltrim($url, '/');
 
         if ($admin) {

@@ -5,9 +5,9 @@ namespace Blog;
 class BlogInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-	public function install()
+	public function install($prefix = null)
 	{
-		\Schema::table('blog', function($table)
+		\Schema::table($prefix.'blog', function($table)
 		{
 			$table->create();
 			$table->increments('id');
@@ -28,7 +28,7 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
 			$table->timestamps();
 		});
 
-		\Schema::table('blog_categories', function($table)
+		\Schema::table($prefix.'blog_categories', function($table)
 		{
 			$table->create();
 			$table->increments('id');
@@ -39,7 +39,7 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
 			$table->integer('order')->default(0);
 		});
 
-		\DB::table('blog_categories')->insert(array(
+		\DB::table($prefix.'blog_categories')->insert(array(
 			'name' 			=> 'Default',
     		'slug' 			=> 'default',
     		'description' 	=> 'default category',
@@ -89,16 +89,16 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
 	    \Setting::add($data);
 	}
 
-	public function uninstall()
+	public function uninstall($prefix = null)
 	{
-		\Schema::drop('blog');
-		\Schema::drop('blog_categories');
+		\Schema::drop($prefix.'blog');
+		\Schema::drop($prefix.'blog_categories');
 	}
 
-	public function upgrade($v)
+	public function upgrade($v, $prefix = null)
 	{
 		if ($v == '1.0') {
-			\Schema::table('blog', function($table)
+			\Schema::table($prefix.'blog', function($table)
 			{
 				$table->integer('lang_ref')->nullable();
 				$table->string('lang', 20)->nullable();

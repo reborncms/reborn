@@ -106,13 +106,13 @@ class {classname}Info extends \Reborn\Module\AbstractInfo
 	 *
 	 * @var boolean
 	 **/
-	protected $allow_customfield = false;
+	protected $allowCustomfield = false;
 
 	/**
 	 * Table is shared for multisite.
 	 *
 	 * @var boolean
 	 **/
-	protected $shared_table = false;
+	protected $sharedData = false;
 
 }

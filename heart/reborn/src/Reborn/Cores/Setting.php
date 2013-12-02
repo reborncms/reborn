@@ -2,6 +2,9 @@
 
 namespace Reborn\Cores;
 
+use Reborn\Config\Config;
+use Reborn\Cores\Application;
+use Reborn\Connector\DB\Schema;
 use Reborn\Connector\DB\DBManager as DB;
 
 /**
@@ -52,28 +55,34 @@ class Setting
      * Initialize method for setting class
      *
      */
-    public static function initialize()
+    public static function initialize(Application $app)
     {
         if (static::$started) {
             return true;
-        } else {
-            static::findAllFromDB();
         }
+
+        if($app->site_manager->isMulti()) {
+            $prefix = $app->site_manager->tablePrefix();
+            static::$_table = $prefix.static::$_table;
+        }
+
+        static::findAllFromDB();
     }
 
     /**
      * Get the setting item with key name (slug Column in db table).
      *
      * @param string $key Key(slug) name for setting item
-     * @return mixed If item not found, return null.
+     * @param mixed $default
+     * @return mixed If item not found, return default value.
      */
-    public static function get($key)
+    public static function get($key, $default = null)
     {
         if (isset(static::$items[$key])) {
             return static::$items[$key];
-        } else {
-            return null;
         }
+
+        return value($default);
     }
 
     /**
@@ -117,6 +126,7 @@ class Setting
         if (DB::table(static::$_table)->insert($data)) {
             return true;
         }
+
         return false;
     }
 
@@ -198,6 +208,157 @@ class Setting
         }
 
         return $settings;
+    }
+
+    /**
+     * Set table name and prepare for MultiSite
+     *
+     * @param string $prefix
+     * @return void
+     **/
+    public static function setTableForMultisite($prefix)
+    {
+        static::$_table = $prefix.'settings';
+
+        if (! Schema::hasTable(static::$_table)) {
+            static::createNewSettingTable();
+        }
+    }
+
+    /**
+     * Create new setting table and fill default data
+     *
+     * @param string|null $table
+     * @return void
+     **/
+    protected static function createNewSettingTable($table = null)
+    {
+        $table_name = is_null($table) ? static::$_table : $table;
+
+        Schema::table($table_name, function($table)
+        {
+            $table->create();
+            $table->string('slug', 255);
+            $table->string('name', 255);
+            $table->text('desc');
+            $table->text('value');
+            $table->text('default');
+            $table->string('module', 50);
+        });
+
+        $data = static::getDefaultSettings();
+
+        foreach ($data as $setting) {
+            static::add($setting);
+        }
+    }
+
+    /**
+     * Get Default setting values.
+     *
+     * @return array
+     **/
+    protected static function getDefaultSettings()
+    {
+        $data = array();
+        $data[] = array(
+            'slug'      => 'default_module',
+            'name'      => 'Default Module',
+            'desc'      => 'Default Module for Reborn CMS',
+            'value'     => '',
+            'default'   => 'Pages',
+            'module'    => 'system'
+        );
+        $data[] = array(
+            'slug'      => 'home_page',
+            'name'      => 'Home Page',
+            'desc'      => 'Home Page for your site',
+            'value'     => '',
+            'default'   => 'home',
+            'module'    => 'system'
+        );
+        $data[] = array(
+            'slug'      => 'site_title',
+            'name'      => 'Site Title',
+            'desc'      => 'Site name for your site',
+            'value'     => '',
+            'default'   => 'Reborn CMS',
+            'module'    => 'system'
+        );
+        $data[] = array(
+            'slug'      => 'site_slogan',
+            'name'      => 'Site Slogan',
+            'desc'      => 'Slogan for your site',
+            'value'     => '',
+            'default'   => 'Your slogan here',
+            'module'    => 'system'
+        );
+        $data[] = array(
+            'slug'      => 'admin_theme',
+            'name'      => 'Admin Panel Theme',
+            'desc'      => 'Theme for the site backend (Admin Panel)',
+            'value'     => '',
+            'default'   => 'default',
+            'module'    => 'system'
+        );
+        $data[] = array(
+            'slug'      => 'public_theme',
+            'name'      => 'Public Theme',
+            'desc'      => 'Theme for the site frontend (Public)',
+            'value'     => 'default',
+            'default'   => 'default',
+            'module'    => 'system'
+        );
+        $data[] = array(
+            'slug'      => 'adminpanel_url',
+            'name'      => 'Admin Panel URI',
+            'desc'      => 'URI for the admin panel.',
+            'value'     => '',
+            'default'   => 'admin',
+            'module'    => 'system'
+        );
+        $data[] = array(
+            'slug'      => 'default_language',
+            'name'      => 'Default Language',
+            'desc'      => 'Default Language for Reborn CMS',
+            'value'     => '',
+            'default'   => 'en',
+            'module'    => 'system'
+        );
+        $data[] = array(
+            'slug'      => 'timezone',
+            'name'      => 'Select your Timezone',
+            'desc'      => 'Set timezone for your server',
+            'value'     => '',
+            'default'   => 'UTC',
+            'module'    => 'system'
+        );
+        $data[] = array(
+            'slug'      => 'admin_item_per_page',
+            'name'      => 'Items to show in one page (Admin Panel)',
+            'desc'      => 'Item limit to show in admin Data Tables',
+            'value'     => '',
+            'default'   => '10',
+            'module'    => 'system'
+        );
+        $data[] = array(
+            'slug'      => 'frontend_enabled',
+            'name'      => 'Frontend Status',
+            'desc'      => 'If your site in maintenance condition, you can closed your site.',
+            'value'     => '',
+            'default'   => 'enable',
+            'module'    => 'system'
+        );
+        $data[] = array(
+            'slug'      => 'spam_filter',
+            'name'      => 'Spam Filter Key',
+            'desc'      => 'Use this key for spam filter from bot',
+            'value'     => '',
+            'default'   => 'D0ntFillINthI$FielD',
+            'module'    => 'system'
+        );
+
+        return $data;
     }
 
     /**

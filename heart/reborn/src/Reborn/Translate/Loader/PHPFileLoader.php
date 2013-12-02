@@ -83,13 +83,11 @@ class PHPFileLoader implements LoaderInterface
     {
         list($module, $file) = explode('::', $resource);
 
-        $module = ucfirst($module);
-
-        $mod = \Module::getData($module);
+        $mod = \Module::get($module);
 
         if (is_null($mod)) return false;
 
-        $path = $mod['path'].'lang'.DS;
+        $path = $mod->path.DS.'lang'.DS;
 
         if (file_exists($f = $path.$locale.DS.$file.EXT)) {
             return require $f;

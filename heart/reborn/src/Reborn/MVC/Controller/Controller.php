@@ -137,6 +137,16 @@ class Controller
     }
 
     /**
+     * Get value from Application
+     *
+     * @return mixed
+     **/
+    protected function get($name)
+    {
+        return $this->app->{$name};
+    }
+
+    /**
      * Set JS variables for the template.
      * Shortcut of $this->template->jsValue()
      *

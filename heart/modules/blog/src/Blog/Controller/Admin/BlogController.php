@@ -492,7 +492,7 @@ class BlogController extends \AdminController
 		$blog->excerpt = $excerpt;
 		$blog->body = \Input::get('body');
 		$blog->author_id = $author;
-		if (\Module::getData('blog', 'dbVersion') >= 1.1) {
+		if (\Module::get('blog', 'db_version') >= 1.1) {
 			//Check if this lang is already exist
 			$blog->lang = \Input::get('lang');
 			if (\Input::get('lang_ref')) {

@@ -153,7 +153,7 @@ class AdminController extends Controller
         // Set the active module
         $toolbar = \Module::moduleToolbar($this->module);
         $this->template->set('modToolbar', $toolbar);
-        $module = \Module::getData($this->module);
+        $module = \Module::get($this->module);
 
         $this->template->set('module', $module);
 

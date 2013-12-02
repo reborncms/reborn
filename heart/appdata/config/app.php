@@ -86,7 +86,8 @@ return array(
 					'Theme',
 					'User',
 					'Field',
-					'Widgets'
+					'Widgets',
+					'SiteManager'
 				),
 			'system' => array('admin', 'pages', 'navigation', 'user', 'module', 'setting', 'field', 'theme', 'media', 'maintenance'),
 		),
@@ -100,10 +101,16 @@ return array(
 	/**
 	 * Session Life Time.
 	 * Session life time with minute.
-	 * Default is 60 minute.
+	 * Default is 120 minute.
 	 *
 	 */
-	'session_lifetime' => 60,
+	'session_lifetime' => 120,
+
+	/**
+	 * Session path for file handler
+	 * Default is null
+	 */
+	'session_path' => null,
 
 	/**
 	 * Key name for Cartalyst Sentry Authentication Packages.

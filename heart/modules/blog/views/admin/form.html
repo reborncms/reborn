@@ -160,7 +160,7 @@
                 </div> <!-- end of div.r-container -->
 
                 <!-- Version Upgrade Needed -->
-                {{ if(Module::getData('blog', 'dbVersion') >= 1.1) }}
+                {{ if(Module::get('blog', 'db_version') >= 1.1) }}
                 <div class="r-container">
                     <a href="javascript:void(0);" class="r-i-b">
                         <div>

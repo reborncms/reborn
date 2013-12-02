@@ -12,9 +12,11 @@ class Blog extends \Eloquent
 
     protected $softDelete = false;
 
-    public function __construct(array $attributes = array()) {
+    protected $multisite = true;
 
-        if (\Module::getData('blog', 'dbVersion') >= 1.1) {
+    public function __construct(array $attributes = array())
+    {
+        if (\Module::get('blog', 'db_version') >= 1.1) {
 
             $this->softDelete = true;
 

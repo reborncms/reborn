@@ -3,6 +3,8 @@
 namespace Reborn\Widget;
 
 use Reborn\Util\Str;
+use Reborn\Cores\Facade;
+use Reborn\Cores\Application;
 use Reborn\Filesystem\File;
 use Reborn\Filesystem\Directory as Dir;
 
@@ -14,6 +16,13 @@ use Reborn\Filesystem\Directory as Dir;
  **/
 class Widget
 {
+	/**
+	 * Application (IOC) Container instance
+	 *
+	 * @var \Reborn\Cores\Application
+	 **/
+	protected $app;
+
 	/**
 	 * All Avaliable Widgets
 	 *
@@ -40,8 +49,10 @@ class Widget
 	 *
 	 * @return void
 	 **/
-	public function __construct()
+	public function __construct(Application $app)
 	{
+		$this->app = $app;
+
 		$this->modules = \Module::getAll();
 	}
 
@@ -74,7 +85,7 @@ class Widget
 	 **/
 	public static function call($name, $attrs = array())
 	{
-		$ins = \Registry::get('app')->widget;
+		$ins = Facade::getApplication()->widget;
 
 		return $ins->run($name, $attrs);
 	}
@@ -88,9 +99,9 @@ class Widget
 	 */
 	public static function view($name, $data = array(), $filename)
 	{
-		$ins = \Registry::get('app')->widget;
+		$ins = Facade::getApplication()->widget;
 
-		$theme = \Registry::get('app')->theme;
+		$theme = Facade::getApplication()->theme;
 
 		$theme_path = $theme->getThemePath().'views'.DS.'widgets'.DS.$name.DS;
 
@@ -116,7 +127,7 @@ class Widget
 	 */
 	protected static function getView()
 	{
-		return \Registry::get('app')->view;
+		return Facade::getApplication()->view;
 	}
 
 	/**
@@ -127,7 +138,7 @@ class Widget
 	 */
 	public static function propertiesFrom($name)
 	{
-		$ins = \Registry::get('app')->widget;
+		$ins = Facade::getApplication()->widget;
 
 		return $ins->getProperty($name);
 	}
@@ -193,7 +204,7 @@ class Widget
 	 */
 	public static function options($name)
 	{
-		$ins = \Registry::get('app')->widget;
+		$ins = Facade::getApplication()->widget;
 
 		return $ins->getOptions($name);
 	}
@@ -268,10 +279,10 @@ class Widget
 	public function find()
 	{
 		// Find and Prepare widgets form Modules
-		foreach ($this->modules as $name => $attrs) {
-			if ($attrs['enabled']) {
+		foreach ($this->modules as $name => $module) {
+			if ($module->isEnabled()) {
 
-				$dirs = Dir::get($attrs['path'].'Widgets'.DS.'*', GLOB_ONLYDIR);
+				$dirs = Dir::get($module->path.'Widgets'.DS.'*', GLOB_ONLYDIR);
 
 				$this->prepare($dirs);
 			}
@@ -291,6 +302,10 @@ class Widget
 	 */
 	protected function externalWidgets()
 	{
+		$shared = Dir::get(SHARED.'widgets'.DS.'*', GLOB_ONLYDIR);
+
+		$this->prepare($shared);
+
 		$dirs = Dir::get(WIDGETS.'*', GLOB_ONLYDIR);
 
 		$this->prepare($dirs);
@@ -303,7 +318,7 @@ class Widget
 	 */
 	protected function themeWidgets()
 	{
-		$theme = \Registry::get('app')->theme;
+		$theme = $this->app->theme;
 
 		$all = $theme->findWidgets();
 

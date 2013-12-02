@@ -46,6 +46,18 @@ define('BASE', __DIR__ . DS);
 
 /**
  * ---------------------------------------------------------
+ * Load Reborn's sites manager file
+ * ---------------------------------------------------------
+ *
+ * Reborn define other constants for application,
+ * start timer and memory record for profiling and
+ * make class alias to easy access for developer.
+ *
+ */
+$sites = require __DIR__.'/content/sites.php';
+
+/**
+ * ---------------------------------------------------------
  * Load Reborn's start helper file
  * ---------------------------------------------------------
  *
@@ -136,6 +148,17 @@ if($app['env'] != 'production') {
  *
  */
 $app->setTimezone();
+
+/**
+ * ---------------------------------------------------------
+ * Set Site Data variable to application
+ * ---------------------------------------------------------
+ *
+ * Rebirn set sites variable for application.
+ * sites variable is data array of multisite configuration.
+ *
+ */
+$app['sites'] = $sites;
 
 /**
  * ---------------------------------------------------------

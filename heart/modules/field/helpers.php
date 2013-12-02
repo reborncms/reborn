@@ -28,7 +28,7 @@ function module_select($with_empty_option = true, $skip = true)
 	}
 
 	foreach ($all as $n => $val) {
-		if ($val['enabled'] and $val['allowCustomField']) {
+		if ($val['enabled'] and $val['allow_custom_field']) {
 			if (($skip) and in_array(strtolower($val['name']), $having)) {
 				continue;
 			}

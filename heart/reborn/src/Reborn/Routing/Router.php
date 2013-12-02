@@ -171,7 +171,7 @@ class Router
         }
 
         // If module is doesn't exists, return false
-        if (! $mod = Module::getByUri($moduleUri)) {
+        if (! $mod = Module::get($moduleUri)) {
             return false;
         }
 
@@ -243,7 +243,9 @@ class Router
      **/
     protected function callbackController($route)
     {
-        if (!Module::isEnabled($route->module)) {
+        $module = Module::get($route->module);
+
+        if (!is_null($module) and !$module->isEnabled()) {
             throw new HttpNotFoundException("Request URL is not found!");
         }
 
@@ -265,24 +267,24 @@ class Router
         // If uri is empty, set the default
         if ($path == '') {
             $path = '/';
-            $module = Module::getData(\Setting::get('default_module'));
+            $module = Module::get(\Setting::get('default_module'));
         } else {
             if ($this->admin == $path) {
-                $module = Module::getByUri(Uri::segment(2));
+                $module = Module::get(Uri::segment(2));
             } else {
-                $module = Module::getByUri($path);
+                $module = Module::get($path);
             }
         }
 
         if (!Module::has($path)) {
-            $module = Module::getData(\Setting::get('default_module'));
+            $module = Module::get(\Setting::get('default_module'));
         }
 
         if (!is_null($module)) {
-            $path = $module['path'];
+            $path = $module->path;
 
-            if (is_readable($path.'routes.php')) {
-                require $path.'routes.php';
+            if (is_readable($path.DS.'routes.php')) {
+                require $path.DS.'routes.php';
             }
 
         }

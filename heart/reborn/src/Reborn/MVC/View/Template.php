@@ -832,9 +832,9 @@ class Template
      **/
     protected function getModulePath($module)
     {
-        $mod = Module::getData($module);
+        $mod = Module::get($module);
 
-        return $mod['path'].'views'.DS;
+        return $mod->path.DS.'views'.DS;
     }
 
     /**

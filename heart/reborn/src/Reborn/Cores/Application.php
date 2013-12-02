@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\Session\Session as Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 
 /**
  * Main Application Class for Reborn.
@@ -60,20 +61,24 @@ class Application extends \Illuminate\Container\Container
         // Enable Http Method Override for (_method)
         Request::enableHttpMethodParameterOverride();
 
-        $this['route_collection'] =  $this->share(function ($this) {
+        $this['site_manager'] = $this->share(function ($app){
+            return new SiteManager($app);
+        });
+
+        $this['route_collection'] =  $this->share(function ($app) {
             return new RouteCollection();
         });
 
-        $this['router'] =  $this->share(function ($this) {
-            return new Router($this);
+        $this['router'] =  $this->share(function ($app) {
+            return new Router($app);
         });
 
         $this['log'] = $this->share(function () {
             return new Log();
         });
 
-        $this['view_manager'] = $this->share( function() {
-            return new ViewManager();
+        $this['view_manager'] = $this->share( function($app) {
+            return new ViewManager($app);
         });
 
         $this['view'] = $this->share( function($app) {
@@ -93,18 +98,20 @@ class Application extends \Illuminate\Container\Container
         });
 
         $this['session'] = $this->share( function() {
-            $lifetime = Config::get('app.session_lifetime', 30) * 60;
+            $lifetime = Config::get('app.session_lifetime', 60) * 60;
             $options = array('gc_maxlifetime' => $lifetime);
 
-            return new Session(new NativeSessionStorage($options));
+            $h = new NativeFileSessionHandler(Config::get('app.session_path', null));
+
+            return new Session(new NativeSessionStorage($options, $h));
         });
 
         $this['cache'] = $this->share( function() {
             return new Cache();
         });
 
-        $this['widget'] = $this->share( function() {
-            return new Widget();
+        $this['widget'] = $this->share( function($app) {
+            return new Widget($app);
         });
 
         $this['profiler'] = $this->share( function() {
@@ -316,13 +323,13 @@ class Application extends \Illuminate\Container\Container
         DB::initialize();
 
         // Start the Setting initialize
-        Setting::initialize();
+        Setting::initialize($this);
 
         // Start the Uri initialize
         Uri::initialize($this->request);
 
         // Start the Module initialize
-        Module::initialize();
+        Module::initialize($this);
 
         // Start the Widget initialize
         $this['widget']->initialize();

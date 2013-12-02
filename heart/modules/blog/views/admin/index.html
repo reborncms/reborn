@@ -1,4 +1,4 @@
-{{ if(Module::getData('blog', 'dbVersion') < 1.1) }}
+{{ if(Module::get('blog', 'db_version') < 1.1) }}
 <div class="msg-box msg-warning">*** Please upgrade Blog Module. Click <a href="{{ adminUrl('module') }}">here</a> to upgrade.</div>
 {{ endif }}
 {{ if ($list_type != 'trash') }}
@@ -9,7 +9,7 @@
 		{{ Form::end() }}
 	</div>
 {{ endif }}
-{{ if(Module::getData('blog', 'dbVersion') >= 1.1) }}
+{{ if(Module::get('blog', 'db_version') >= 1.1) }}
 <a href="{{ adminUrl('blog/trash') }}" id="trash_link" class="btn"><i class="icon-remove icon-white icon-16"></i>Trash ({{ $trash_count }})</a>
 {{ endif }}
 <div id="data_table_wrapper" style="clear:both;">

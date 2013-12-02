@@ -2,6 +2,7 @@
 
 namespace Module\Controller\Admin;
 
+use Module, Config, Flash, Redirect;
 use Reborn\Util\Uploader as Upload;
 
 /**
@@ -17,17 +18,20 @@ class ModuleController extends \AdminController
 	{
 		$this->menu->activeParent('utilities');
 
-		$this->modules = $this->moduleSpliter();
-
 		$this->template->style('modules.css', 'module');
 	}
 
+	/**
+	 * Default index action
+	 */
 	public function index()
 	{
+		$modules = $this->modulePrepare();
+
 		$this->template->title(t('module::module.title'))
-					->set('system', $this->modules['system'])
-					->set('plugged', $this->modules['plugged'])
-					->set('news', $this->modules['news']);
+					->set('system', $modules['system'])
+					->set('plugged', $modules['plugged'])
+					->set('news', $modules['news']);
 
 		$drag = $this->template->partialRender('module::plugged');
 		$news = $this->template->partialRender('module::news');
@@ -40,116 +44,150 @@ class ModuleController extends \AdminController
 		$this->template->setPartial('lists');
 	}
 
-	public function install($name, $uri)
+	/**
+	 * Install action for Module Manager
+	 *
+	 * @param string $name
+	 */
+	public function install($name)
 	{
-		if (! $this->checkAction($name, $uri) ) {
+		if (! $this->checkAction($name) ) {
 			return $this->notFound();
 		}
 
-		if (\Module::install($name, $uri, 1)) {
+		if (Module::install($name)) {
 			$msg = sprintf(t('module::module.install_success'), $name);
-			\Flash::success($msg);
+			Flash::success($msg);
 		} else {
 			$msg = sprintf(t('module::module.install_error'), $name);
-			\Flash::error($msg);
+			Flash::error($msg);
 		}
 
-		return \Redirect::toAdmin('module');
+		return Redirect::toAdmin('module');
 	}
 
-	public function uninstall($name, $uri)
+	/**
+	 * Uninstall action for Module Manager
+	 *
+	 * @param string $name
+	 */
+	public function uninstall($name)
 	{
-		if (! $this->checkAction($name, $uri) ) {
+		if (! $this->checkAction($name) ) {
 			return $this->notFound();
 		}
 
-		if (\Module::uninstall($name, $uri)) {
+		if (Module::uninstall($name)) {
 			$msg = sprintf(t('module::module.uninstall_success'), $name);
-			\Flash::success($msg);
+			Flash::success($msg);
 		} else {
 			$msg = sprintf(t('module::module.uninstall_error'), $name);
-			\Flash::error($msg);
+			Flash::error($msg);
 		}
 
-		return \Redirect::toAdmin('module');
+		return Redirect::toAdmin('module');
 	}
 
-	public function upgrade($name, $uri)
+	/**
+	 * Module Upgrade action for Module Manager
+	 *
+	 * @param string $name
+	 */
+	public function upgrade($name)
 	{
-		if (! $this->checkAction($name, $uri) ) {
+		if (! $this->checkAction($name) ) {
 			return $this->notFound();
 		}
 
-		if (\Module::upgrade($name, $uri)) {
+		if (Module::upgrade($name)) {
 			$msg = sprintf(t('module::module.upgrade_success'), $name);
-			\Flash::success($msg);
+			Flash::success($msg);
 		} else {
 			$msg = sprintf(t('module::module.upgrade_error'), $name);
-			\Flash::error($msg);
+			Flash::error($msg);
 		}
 
-		return \Redirect::toAdmin('module');
+		return Redirect::toAdmin('module');
 	}
 
-	public function enable($name, $uri)
+	/**
+	 * Module Enable action for Module Manager
+	 *
+	 * @param string $name
+	 */
+	public function enable($name)
 	{
-		if (! $this->checkAction($name, $uri) ) {
+		if (! $this->checkAction($name) ) {
 			return $this->notFound();
 		}
 
-		if (\Module::enable($name, $uri)) {
+		if (Module::enable($name)) {
 			$msg = sprintf(t('module::module.enable_success'), $name);
-			\Flash::success($msg);
+			Flash::success($msg);
 		} else {
 			$msg = sprintf(t('module::module.enable_error'), $name);
-			\Flash::error($msg);
+			Flash::error($msg);
 		}
-		return \Redirect::toAdmin('module');
+		return Redirect::toAdmin('module');
 	}
 
-	public function disable($name, $uri)
+	/**
+	 * Module Disable action for Module Manager
+	 *
+	 * @param string $name
+	 */
+	public function disable($name)
 	{
-		if (! $this->checkAction($name, $uri) ) {
+		if (! $this->checkAction($name) ) {
 			return $this->notFound();
 		}
 
-		if (\Module::disable($name, $uri)) {
+		if (Module::disable($name)) {
 			$msg = sprintf(t('module::module.disable_success'), $name);
-			\Flash::success($msg);
+			Flash::success($msg);
 		} else {
 			$msg = sprintf(t('module::module.disable_error'), $name);
-			\Flash::error($msg);
+			Flash::error($msg);
 		}
-		return \Redirect::toAdmin('module');
+		return Redirect::toAdmin('module');
 	}
 
-	public function delete($name, $uri)
+	/**
+	 * Module Delete action for Module Manager
+	 *
+	 * @param string $name
+	 */
+	public function delete($name)
 	{
-		if (! $this->checkAction($name, $uri) ) {
+		if (! $this->checkAction($name) ) {
 			return $this->notFound();
 		}
 
-		if (\Module::has($name)) {
-			$mod = \Module::getData($name);
+		if (Module::has($name)) {
+			$mod = Module::get($name);
 
-			if ($mod['installed']) {
-				\Module::uninstall($name, $uri);
+			if ($mod->isInstalled()) {
+				Module::uninstall($name);
 			}
 
-			if (\Dir::is($mod['path'])) {
-				if (\Dir::delete($mod['path'])) {
+			if (\Dir::is($mod->path)) {
+				if (\Dir::delete($mod->path)) {
 					$msg = sprintf(t('module::module.delete_success'), $name);
-					\Flash::success($msg);
+					Flash::success($msg);
 				} else {
 					$msg = sprintf(t('module::module.manually_remove'), $name);
-					\Flash::error($msg);
+					Flash::error($msg);
 				}
 			}
 		}
 
-		return \Redirect::toAdmin('module');
+		return Redirect::toAdmin('module');
 	}
 
+	/**
+	 * Module Upload action for Module Manager
+	 *
+	 */
 	public function upload()
 	{
 		$tmp_path = STORAGES.'tmp'.DS;
@@ -185,9 +223,9 @@ class ModuleController extends \AdminController
 					}
 					$data[0]['errors'] = $error;
 
-					\Flash::error($error);
+					Flash::error($error);
 
-					return \Redirect::toAdmin('module/upload');
+					return Redirect::toAdmin('module/upload');
 				}
 
 				try {
@@ -200,9 +238,9 @@ class ModuleController extends \AdminController
 
 					// open archive
 					if ($zip->open($zip_file) !== TRUE) {
-						\Flash::error(sprintf(t('module::module.unzip_error'),$filename));
+						Flash::error(sprintf(t('module::module.unzip_error'),$filename));
 						\File::delete($zip_file);
-						return \Redirect::toAdmin('module/upload');
+						return Redirect::toAdmin('module/upload');
 					}
 
 					// extract contents to destination directory
@@ -212,16 +250,16 @@ class ModuleController extends \AdminController
 					$zip->close();
 
 					\File::delete($zip_file);
-					\Flash::success(sprintf(t('module::module.upload_success'),$filename));
+					Flash::success(sprintf(t('module::module.upload_success'),$filename));
 
-					return \Redirect::toAdmin('module/upload');
+					return Redirect::toAdmin('module/upload');
 				} catch (\Exception $e) {
-					\Flash::error($e);
+					Flash::error($e);
 
-					return \Redirect::toAdmin('module/upload');
+					return Redirect::toAdmin('module/upload');
 				}
 			} else {
-				\Flash::error(implode("\n\r", $v->getErrors()));
+				Flash::error(implode("\n\r", $v->getErrors()));
 			}
 		}
 
@@ -229,9 +267,15 @@ class ModuleController extends \AdminController
 						->setPartial('upload');
 	}
 
-	protected function checkAction($name, $uri)
+	/**
+	 * Check Module is system module or not.
+	 *
+	 * @param string $name
+	 * @return boolean
+	 */
+	protected function checkAction($name)
 	{
-		$systems = \Config::get('app.module.system');
+		$systems = Config::get('app.module.system');
 
 		if (in_array(strtolower($name), $systems)) {
 			return false;
@@ -240,27 +284,37 @@ class ModuleController extends \AdminController
 		return true;
 	}
 
-	protected function moduleSpliter()
+	/**
+	 * Prepare module lists with type.
+	 *
+	 * @return array
+	 */
+	protected function modulePrepare()
 	{
 		$m = array();
 		$m['plugged'] = $m['news'] = $m['system'] = array();
 
-		$sys = \Config::get('app.module.system');
-		$mods = \Module::getAll();
+		$sys = Config::get('app.module.system');
 
-		foreach ($mods as $k => $mod) {
+		$m['news'] = Module::findNews();
 
-			if ($mod['installed']) {
-				if (in_array($k, $sys)) {
-					$mod['module_class'] = 'is-core-block';
-					$m['system'][$k] = $mod;
-				} else {
-					$mod['module_class'] = 'is-plugged-block';
-					$m['plugged'][$k] = $mod;
-				}
+		$all = Module::getAll();
+
+		$manager = $this->get('site_manager');
+
+		// Remove site_manager if cms is single site
+		if(!$manager->isMulti()) {
+			unset($all['site_manager']);
+		}
+
+		foreach ($all as $k => $mod) {
+
+			if (in_array($k, $sys)) {
+				$mod->module_class = 'is-core-block';
+				$m['system'][$k] = $mod;
 			} else {
-				$mod['module_class'] = 'is-new-block';
-				$m['news'][$k] = $mod;
+				$mod->module_class = 'is-plugged-block';
+				$m['plugged'][$k] = $mod;
 			}
 		}
 

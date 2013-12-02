@@ -18,7 +18,7 @@ return array(
 				$mods = \Module::getAll();
 				$results = array();
 				foreach ($mods as $mod => $v) {
-					if (($v['enabled'] === true) and ($v['frontendSupport'] == true)) {
+					if (($v['enabled'] === true) and ($v['frontend_support'] == true)) {
 						$results[$mod] = $v['name'];
 					}
 				}

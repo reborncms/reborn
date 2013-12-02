@@ -1,7 +1,7 @@
 <div id="module-wrap" class="clearfix">
 
 	{{ loop($news as $k => $m) }}
-	<div class="module-block {{ $m['module_class'] }} clearfix">
+	<div class="module-block is-new-block clearfix">
 		<div class="module-title">
 			{{ $m['name'] }} <span>[ Version {{ $m['version'] }} ]</span>
 		</div>
@@ -13,14 +13,14 @@
 			</div> <!-- END of .mod-actions-box.left-box -->
 
 			<div class="mod-actions-box right-box">
-				<a href="{{ adminUrl('module/install/'.$m['name'].'/'.$m['uri']) }}"
+				<a href="{{ adminUrl('module/install/'.$k) }}"
 				class="tipsy-tip"
 				title="{{ t('module::module.btn_label_install') }}">
 					<i class="icon-check icon-white"></i>
 				</a>
 
 				{{ ifnot($m['isCore']) }}
-				<a href="{{ adminUrl('module/delete/'.$m['name'].'/'.$m['uri']) }}"
+				<a href="{{ adminUrl('module/delete/'.$k) }}"
 				class="tipsy-tip"
 				title="{{ t('module::module.btn_label_delete') }}">
 					<i class="icon-remove icon-white"></i>

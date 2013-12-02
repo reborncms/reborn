@@ -326,7 +326,6 @@ class Asset
 			return $urlPath.'?'.$mTime;
 		}
 
-
 		// File Not Found Exception Only in Development Stage
 		$app = Facade::getApplication();
 		if ($app['env'] == 'dev') {
@@ -368,15 +367,16 @@ class Asset
 	 **/
 	protected function getModuelAssetPath($module)
 	{
-		$mod = Module::getData($module);
+		$mod = Module::get($module);
 
-		$path = isset($mod['path']) ? $mod['path'] : '';
+		$path = is_null($mod) ? '' : $mod->path;
+
 		$urlpath = str_replace(BASE, '', $path);
 		$urlpath = str_replace(DS, '/', $urlpath);
 
 		return array(
-					$path.$this->assetPath.DS,
-					$this->request->baseUrl().$urlpath.$this->assetPath.'/'
+					$path.DS.$this->assetPath.DS,
+					$this->request->baseUrl().$urlpath.'/'.$this->assetPath.'/'
 				);
 	}
 

@@ -8,6 +8,8 @@ class BlogCategory extends \Eloquent
 
     public $timestamps = false;
 
+    protected $multisite = true;
+
     protected static $cat = array();
 
     public static function cat_stucture()
@@ -42,7 +44,7 @@ class BlogCategory extends \Eloquent
 
         if(!$cat){
             return false;
-        } 
+        }
 
         $child_cats = \DB::table('blog_categories')->select('id')->where('parent_id', $cat)->get();
 

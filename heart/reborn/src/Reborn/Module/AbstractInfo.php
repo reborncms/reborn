@@ -110,14 +110,31 @@ abstract class AbstractInfo
 	 *
 	 * @var boolean
 	 **/
-	protected $allow_customfield = false;
+	protected $allowCustomfield = false;
 
 	/**
-	 * Table is shared for multisite.
+	 * Database Table is shared for multisite.
 	 *
 	 * @var boolean
 	 **/
-	protected $shared_table = false;
+	protected $sharedData = true;
+
+	/**
+	 * Namespace of the Module.
+	 *
+	 * @var string
+	 **/
+	protected $namespace;
+
+	public function getNamespace()
+	{
+		if (is_null($this->namespace)) {
+			$ref = new \ReflectionObject($this);
+			$this->namespace = $ref->getNamespaceName();
+		}
+
+		return $this->namespace;
+	}
 
 	/**
 	 * Get the All Module Info
@@ -127,17 +144,14 @@ abstract class AbstractInfo
 	public function getAll()
 	{
 		$isCore = false;
+
 		$cores = \Config::get('app.module.cores');
-		$ref = new \ReflectionObject($this);
-		$ns = $ref->getNamespaceName();
-		$path = dirname($ref->getFileName());
+
+		$ns = $this->getNamespace();
 
 		if (in_array($ns, $cores)) {
 			$isCore = true;
 		}
-
-		// This is Temp
-		$uri = (is_null($this->uriPrefix)) ? Str::snake($ns, '-') : $this->uriPrefix;
 
 		// Description of Module
 		if (!is_array($this->description)) {
@@ -148,23 +162,22 @@ abstract class AbstractInfo
 
 		return array(
 				'ns' => $ns, // Namespace for $this module
-				'uri' => $uri, //$this->uriPrefix,
-				'path' => $path.DS, // Module path
+				'uri' => $this->uriPrefix,
 				'name' => $this->name, // Name of $this module
-				'displayName' => $this->displayName, // DisplayName of $this module
+				'display_name' => $this->displayName, // DisplayName of $this module
 				'roles' => $this->roles, // Module Action roles
 				'isCore' => $isCore, // Module is Core Module or not
 				'version' => $this->version, // Version no. string of $this module
 				'description' => $desc, // Description of $this module
 				'author' => $this->author, // Author of $this module
-				'authorUrl' => $this->authorUrl, // Author URL of $this module
-				'authorEmail' => $this->authorEmail, // Author Email of $this module
-				'frontendSupport' => $this->frontendSupport,
-				'backendSupport' => $this->backendSupport,
-				'useAsDefaultModule' => $this->useAsDefaultModule,
-				'allowUriChange' => $this->allowToChangeUriPrefix,
-				'allowCustomField' => $this->allow_customfield,
-				'sharedTable' => $this->shared_table
+				'author_url' => $this->authorUrl, // Author URL of $this module
+				'author_email' => $this->authorEmail, // Author Email of $this module
+				'frontend_support' => $this->frontendSupport,
+				'backend_support' => $this->backendSupport,
+				'default_module_mode' => $this->useAsDefaultModule,
+				'allow_uri_change' => $this->allowToChangeUriPrefix,
+				'allow_custom_field' => $this->allowCustomfield,
+				'shared_data' => $this->sharedData
 			);
 	}
 

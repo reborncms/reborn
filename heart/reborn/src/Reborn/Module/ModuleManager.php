@@ -2,417 +2,169 @@
 
 namespace Reborn\Module;
 
-use Reborn\Connector\DB\DBManager as DB;
-use Reborn\Exception\ModuleException;
-use Reborn\Util\Menu;
-use Reborn\Util\Str;
+use Reborn\Cores\Application;
 
 /**
  * Module Manager Class for Reborn
  *
- * @package Cores
- * @author Myanmar Links Professional Web Development Team
+ * @package Reborn\Module
+ * @author MyanmarLinks Professional Web Development Team
  **/
 class ModuleManager
 {
-    // Module Object
-    protected static $mod;
+	/**
+	 * ModuleManager instances lisst
+	 *
+	 * @var array|null
+	 **/
+	protected static $instances;
 
-    /**
-     * Module table name
+	/**
+	 * Module Handler instance
+	 *
+	 * @var \Reborn\Module\Handler\BaseHandler
+	 **/
+	protected $handler;
+
+	/**
+	 * Application IOC Container instance
+	 *
+	 * @var \Reborn\Cores\Application
+	 **/
+	protected $app;
+
+	/**
+	 * Initialize method for Module Manager.
+	 *
+	 * @param \Reborn\Cores\Application $app
+	 * @param string $name
+	 * @return void
+	 **/
+	public static function initialize(Application $app, $name = 'default')
+	{
+		if (! isset(static::$instances[$name]) ) {
+			static::$instances[$name] = new static($app);
+		}
+	}
+
+	/**
+	 * Get Module Manager instance by name.
+	 *
+	 * @param string $name
+	 * @return \Reborn\Module\ModuleManager
+	 **/
+	public static function getInstance($name = 'default')
+	{
+		if ( isset(static::$instances[$name]) ) {
+			return static::$instances[$name];
+		}
+
+		return null;
+	}
+
+	/**
+     * Create new module table.
      *
-     * @var string
-     **/
-    protected static $_table = 'modules';
-
-    /**
-     * Module Information file name
-     *
-     * @var string
-     **/
-    protected static $infoFile = 'Info.php';
-
-    /**
-     * Module Installer file name
-     *
-     * @var string
-     **/
-    protected static $installer = 'Installer.php';
-
-    /**
-     * Module Bootstrap file name
-     *
-     * @var string
-     **/
-    protected static $bootstrap = 'Bootstrap.php';
-
-    /**
-     * Variables for module exception message
-     *
-     * @var string
-     */
-    protected static $noInfoFile = '%s not found in given module { %s }.';
-    protected static $modFileRule = '%s of { %s } is not match with Reborn Module rule';
-
-    /**
-     * Initialize method for module class
-     */
-    public static function initialize()
-    {
-        // Find all module from Module Folders
-        $modulesFromFolder = static::findAll();
-
-        // Find all module list from DB
-        $modulesFromDB = static::findFromDB();
-
-        // Setup the all modules
-        $allMods = static::moduleSetup($modulesFromFolder, $modulesFromDB);
-
-        static::$mod = new Module($allMods);
-
-        static::$mod->registerInstalledModules();
-    }
-
-    /**
-     * Install the given module to DB table
-     *
-     * @param string $module slug of module(folder name)
-     * @return boolean
-     */
-    public static function install($module, $uri, $prefix = null, $setEnable = false, $refresh = true)
-    {
-        $module = strtolower($module);
-
-        // Check the given module is truely
-        if (! static::checkModule($module)) {
-            return false;
-        }
-
-        return static::$mod->install($module, $uri, $prefix, $setEnable, $refresh);
-    }
-
-    /**
-     * UnInstall the given module to DB table
-     *
-     * @param string $module slug of module(folder name)
-     * @return boolean
-     */
-    public static function uninstall($module, $uri, $prefix = null)
-    {
-        $module = strtolower($module);
-        // Check the given module is truely
-        if (! static::checkModule($module)) {
-            return false;
-        }
-
-        // If module is core, Don't allow to uninstall
-        if (static::$mod->isCore($module)) {
-            return false;
-        }
-
-        // If module is not install, return true
-        if (false === static::$mod->getData($module, 'installed')) {
-            return true;
-        }
-
-        return static::$mod->uninstall($module, $uri, $prefix);
-    }
-
-    /**
-     * Upgrade the given module.
-     *
-     * @param string $module Name of Module
-     * @return boolean
-     **/
-    public static function upgrade($module, $uri, $prefix = null)
-    {
-        $module = strtolower($module);
-
-        if (! static::checkModule($module)) {
-            return false;
-        }
-
-        // If module doesn't need to upgrade, return false
-        if (false === static::$mod->getData($module, 'upgradeRequire')) {
-            return false;
-        }
-
-        return static::$mod->upgrade($module, $uri, $prefix);
-    }
-
-    /**
-     * Boot the Module
-     *
+     * @param string|null $prefix
      * @return void
      **/
-    public static function boot($module)
+    public static function createNewModuleTable($prefix)
     {
-        $module = strtolower($module);
-
-        static::$mod->boot($module);
+    	if (! \Schema::hasTable($prefix.'modules') ) {
+    		\Schema::table($prefix.'modules', function($table)
+	        {
+	            $table->create();
+	            $table->increments('id');
+	            $table->string('uri', 100);
+	            $table->string('name', 255);
+	            $table->text('description');
+	            $table->tinyInteger('enabled');
+	            $table->string('version', 10);
+	        });
+    	}
     }
 
-    /**
-     * Get the Admin Menu for Module
-     *
-     * @param Reborn\Util\Menu
-     * @param string $module
-     * @return mixed
-     **/
-    public static function adminMenu(Menu $menu, $module)
-    {
-        $module = strtolower($module);
+	/**
+	 * Default instance method.
+	 *
+	 * @param \Reborn\Cores\Application $app
+	 * @return void
+	 **/
+	public function __construct(Application $app)
+	{
+		if ($app->site_manager->isMulti()) {
+			$this->createMultisiteHandler($app);
+		} else {
+			$this->createBaseHandler($app);
+		}
 
-        $modUri = static::$mod->getData($module, 'uri');
+		$this->handler->registerInstalledModules();
+	}
 
-        return static::$mod->adminMenu($menu, $modUri);
-    }
+	/**
+	 * Get Module Handler Instance
+	 *
+	 * @return \Reborn\Module\Handler\BaseHandler
+	 **/
+	public function getHandler()
+	{
+		return $this->handler;
+	}
 
-    /**
-     * undocumented function
-     *
-     * @param string $module Module name
-     * @return void
-     **/
-    public static function settings($module)
-    {
-        $module = strtolower($module);
+	/**
+	 * Create Base Handler instance.
+	 * Base Handler is use for single site.
+	 *
+	 * @param \Reborn\Cores\Application $app
+	 * @return void
+	 **/
+	protected function createBaseHandler(Application $app)
+	{
+		$this->handler = new \Reborn\Module\Handler\BaseHandler($app);
+	}
 
-        return static::$mod->settings($module);
-    }
+	/**
+	 * Create Multisite Handler instance.
+	 *
+	 * @param \Reborn\Cores\Application $app
+	 * @return void
+	 **/
+	protected function createMultisiteHandler(Application $app)
+	{
+		$this->handler = new \Reborn\Module\Handler\MultisiteHandler($app);
+	}
 
-    /**
-     * Get the toolbar (Use at adminpanel) for given module.
-     *
-     * @return array
-     **/
-    public static function moduleToolbar($module)
-    {
-        $module = strtolower($module);
+	/**
+	 * Dynamicaly method access with PHP's magic method.
+	 *
+	 * @param string $method
+	 * @param array $args
+	 * @return mixed
+	 **/
+	public static function __callStatic($method, $args)
+	{
+		$instance = static::getInstance()->getHandler();
 
-        return static::$mod->adminToolbar($module);
-    }
+		switch (count($args))
+		{
+			case 0:
+				return $instance->$method();
 
-    /**
-     * Check the given module is truely or not.
-     * First - check the module is really exits
-     * Second - check the module's module.php file
-     * Third - check the module.php format is correct?
-     *
-     * @param string $module
-     * @return boolean
-     **/
-    protected static function checkModule($module)
-    {
-        $module = strtolower($module);
+			case 1:
+				return $instance->$method($args[0]);
 
-        if (!static::find($module)) {
-            return false;
-        }
+			case 2:
+				return $instance->$method($args[0], $args[1]);
 
-        return true;
-    }
+			case 3:
+				return $instance->$method($args[0], $args[1], $args[2]);
 
-    /**
-     * Setup the given modules. Module list from Forlder and DB.
-     * Reborn make module is enable or disable at this stage
-     *
-     *
-     * @param array $modulesFromFolder Module list array from module folder
-     * @param array $modulesFromDB Modulelist array from module DB table
-     * @return array
-     **/
-    protected static function moduleSetup($modulesFromFolder, $modulesFromDB)
-    {
-        foreach ($modulesFromFolder as $key => $mod) {
-            // Check folder have on db? If true, this module is installed.
-            if (isset($modulesFromDB[$key])) {
+			case 4:
+				return $instance->$method($args[0], $args[1], $args[2], $args[3]);
 
-                $modulesFromFolder[$key]['installed'] = true;
-
-                if ($modulesFromDB[$key]['enabled']) {
-                    $modulesFromFolder[$key]['enabled'] = true;
-                } else {
-                    $modulesFromFolder[$key]['enabled'] = false;
-                }
-
-                if ($modulesFromDB[$key]['version'] == $modulesFromFolder[$key]['version'])
-                {
-                    $modulesFromFolder[$key]['upgradeRequire'] = false;
-                } else {
-                    $modulesFromFolder[$key]['upgradeRequire'] = true;
-                }
-
-                // Setup Module URI
-                if ($modulesFromFolder[$key]['allowUriChange']) {
-                    if ($modulesFromFolder[$key]['uri'] != $modulesFromDB[$key]['uri']) {
-                        $modulesFromFolder[$key]['uri'] = $modulesFromDB[$key]['uri'];
-                    }
-                }
-
-                $modulesFromFolder[$key]['dbVersion'] = $modulesFromDB[$key]['version'];
-            } else {
-                $modulesFromFolder[$key]['installed'] = false;
-                $modulesFromFolder[$key]['enabled'] = false;
-                $modulesFromFolder[$key]['upgradeRequire'] = false;
-            }
-        }
-
-        return $modulesFromFolder;
-    }
-
-    /**
-     * Find the module by given name
-     *
-     * @param string $module Name of module
-     * @return boolean
-     **/
-    protected static function find($module)
-    {
-        if (static::$mod->has($module)) {
-            return true;
-        }
-
-        $paths = array(CORE_MODULES, MODULES);
-
-        foreach ($paths as $path) {
-            if (is_dir($path.$module)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Find All modules from DB table
-     *
-     * @return array
-     **/
-    protected static function findFromDB()
-    {
-        $modFromDB = array();
-
-        $mods = DB::table(static::$_table)->get();
-
-        foreach ($mods as $mod) {
-            $name = strtolower($mod->name);
-            $modFromDB[$name]['uri'] = $mod->uri;
-            //$modFromDB[$name]['description'] = $mod->description;
-            $modFromDB[$name]['enabled'] = ($mod->enabled == '0') ? false : true;
-            $modFromDB[$name]['version'] = $mod->version;
-        }
-
-        return $modFromDB;
-    }
-
-    /**
-     * Find All modules from Module Folders
-     * Core Modules and Addon Modules
-     *
-     * @return array
-     **/
-    protected static function findAll()
-    {
-        $modPaths = array(CORE_MODULES, MODULES);
-
-        $allFolder = array();
-
-        foreach ($modPaths as $path) {
-            $iterator = new \DirectoryIterator($path);
-
-            foreach ($iterator as $dir) {
-
-                if (!$dir->isDot() and $dir->isDir()) {
-                    $mod_name = $dir->getFileName();
-                    $mod_path = $dir->getPath().DS.$mod_name.DS;
-
-                    // Check the require files for module
-                    if (static::fileCheck($mod_path, $mod_name)) {
-
-                        // Check module name is already exits
-                        if (isset($allFolder[$mod_name])) {
-                            throw new ModuleException("Module slug {$mod_name} is already exits.");
-                        }
-
-                        $modData = static::getModuleInfo($mod_path, $mod_name);
-
-                        $allFolder[$mod_name] = $modData;
-                    }
-                }
-            }
-        }
-
-        return $allFolder;
-    }
-
-    /**
-     * Check the require files for module is exists or not.
-     *
-     * @param string $path Module path
-     * @param string $name Module name
-     * @return boolean
-     **/
-    protected static function fileCheck($path, $name)
-    {
-        $name = Str::studly($name);
-
-        // Check the {ModuleName}Info.php file at module main root
-        if (!file_exists($path.$name.static::$infoFile)) {
-            $msg = sprintf(static::$noInfoFile, static::$infoFile, $name);
-            throw new ModuleException($msg);
-        }
-
-        // Check the {ModuleName}Installer.php file at module main root
-        if (!file_exists($path.$name.static::$installer)) {
-            $msg = sprintf(static::$noInfoFile, static::$installer, $name);
-            throw new ModuleException($msg);
-        }
-
-        // Check the Bootstrap.php file at module main root
-        if (!file_exists($path.static::$bootstrap)) {
-            $msg = sprintf(static::$noInfoFile, static::$bootstrap, $name);
-            throw new ModuleException($msg);
-        }
-
-        return true;
-    }
-
-    /**
-     * Get Module Info
-     *
-     * @return void
-     **/
-    public static function getModuleInfo($path, $name)
-    {
-        $name = Str::studly($name);
-        // Require the {ModuleName}Info.php
-        require $path.$name.static::$infoFile;
-
-        $classname = $name.'\\'.$name.'Info';
-
-        $class = new $classname;
-
-        if (! $class instanceof AbstractInfo) {
-            throw new ModuleException(
-                        sprintf('% Class must be instanceof AbstractInfo', $classname)
-                    );
-
-        }
-
-        return $class->getAll();
-    }
-
-    /**
-     * Magic method __callStatic
-     */
-    public static function __callStatic($method, $args)
-    {
-        if (is_callable(array(static::$mod, $method))) {
-            return call_user_func_array(array(static::$mod, $method), (array)$args);
-        }
-
-        throw new \BadMethodCallException("{$method} is not callable");
-    }
+			default:
+				return call_user_func_array(array($instance, $method), $args);
+		}
+	}
 
 } // END class ModuleManager

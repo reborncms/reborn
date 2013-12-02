@@ -175,16 +175,12 @@ abstract class Model extends BaseModel
             $table = str_replace('\\', '', snake_case(str_plural(class_basename($this))));
         }
 
-        $domain = Facade::getApplication()->request->getHost();
+        $manager = Facade::getApplication()->site_manager;
 
-        if ($this->multisite) {
-            $prefixs = Config::get('db.multisite');
+        if ($manager->isMulti() and $this->multisite) {
+            $prefix = $manager->tablePrefix();
 
-            if (isset($prefixs[$domain])) {
-                $table = rtrim($prefixs[$domain], '_').'_'.$table;
-            } elseif ($prefixs['default']) {
-                $table = rtrim($prefixs['default'], '_').'_'.$table;
-            }
+            return $prefix.$table;
         }
 
         return $table;

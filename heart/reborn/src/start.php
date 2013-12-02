@@ -1,15 +1,44 @@
 <?php
 
+// Definae Multisite
+if(! defined('MULTI_SITE')) {
+	define('MULTI_SITE', (bool) $sites['multi_site']);
+}
+
 // Define Profiler
 if(! defined('PROFILER'))
 {
 	define('PROFILER', false);
 }
 
+// Define BASE Content Path
+if(! defined('BASE_CONTENT'))
+{
+	define('BASE_CONTENT', realpath(BASE.'content/').DS);
+}
+
 // Define Content Path
 if(! defined('CONTENT'))
 {
-	define('CONTENT', realpath(BASE.'content/').DS);
+	$folder = 'main';
+
+	if (MULTI_SITE) {
+		$host = $_SERVER['SERVER_NAME'];
+		$path = trim(str_replace('index.php', '', $_SERVER['PHP_SELF']), '/');
+		$path = rtrim($host.'/'.$path, '/');
+
+		if(isset($sites[$path])) {
+			$folder = $sites[$path];
+		}
+	}
+
+	define('CONTENT', realpath(BASE_CONTENT.$folder).DS);
+}
+
+// Define Shared Path
+if(! defined('SHARED'))
+{
+	define('SHARED', realpath(BASE_CONTENT.'shared').DS);
 }
 
 // Define Upload Path
@@ -102,7 +131,7 @@ require __DIR__.DS.'helpers.php';
 require_once SYSTEM.'vendor/autoload.php';
 
 // Call compile file at web request.
-if ((php_sapi_name() !== 'cli') and
+if ((php_sapi_name() === 'cli') and
 	file_exists($less = STORAGES.'compile.php')) {
 	require $less;
 }

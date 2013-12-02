@@ -3,17 +3,17 @@
 	{{ loop($system as $k => $m) }}
 	<div class="module-block {{ $m['module_class'] }} clearfix">
 		<div class="module-title">
-			{{ $m['name'] }} <span>[ Version {{ $m['version'] }} ]</span>
+			{{ $m['name'] }} <span>[ Version {{ $m->version }} ]</span>
 		</div>
 		<div class="module-actions clearfix">
 			<div class="mod-actions-box left-box">
 				<i class="icon-refresh icon-gray icon-disable"></i>
-				<span class="disable-status">Not Allo To Disable</span>
+				<span class="disable-status">Not Allow To Disable</span>
 			</div> <!-- END of .mod-actions-box.left-box -->
 
 			<div class="mod-actions-box right-box">
-				{{ if($m['upgradeRequire']) }}
-				<a href="{{ adminUrl('module/upgrade/'.$m['name'].'/'.$m['uri']) }}"
+				{{ if($m->needToUpdate()) }}
+				<a href="{{ adminUrl('module/upgrade/'.$k) }}"
 				class="tipsy-tip"
 				title="{{ t('module::module.btn_label_upgrade') }}">
 					<i class="icon-cloudup icon-white"></i>
