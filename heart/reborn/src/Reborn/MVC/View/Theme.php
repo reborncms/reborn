@@ -77,6 +77,25 @@ class Theme
     }
 
     /**
+     * Find theme from theme paths
+     *
+     * @param string $theme
+     * @return string|null
+     **/
+    public function findTheme($theme)
+    {
+        $paths = $this->getThemeFolderPaths($theme);
+
+        foreach ($paths as $path) {
+            if (Dir::is($path)) {
+                return $path;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Set the theme path
      *
      * @param string $path Theme path
@@ -233,25 +252,6 @@ class Theme
         $info_parser = $this->app->info_parser;
 
         return $info_parser->parse($file);
-    }
-
-    /**
-     * Find theme from theme paths
-     *
-     * @param string $theme
-     * @return string|null
-     **/
-    protected function findTheme($theme)
-    {
-        $paths = $this->getThemeFolderPaths($theme);
-
-        foreach ($paths as $path) {
-            if (Dir::is($path)) {
-                return $path;
-            }
-        }
-
-        return null;
     }
 
     /**
