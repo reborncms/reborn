@@ -43,4 +43,6 @@ class MediaInfo extends \Reborn\Module\AbstractInfo
         'my'    => 'ဖိုင်များ၊ မီဒီယာ ဖိုင်လ်များကို ကိုင်တွယ်စီမံနိုင်မည့် မော်ဂျူး',
         );
 
+    protected $shareData = false;
+
 } // END class MediaInfo

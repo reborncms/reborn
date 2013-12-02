@@ -11,10 +11,10 @@ namespace Media;
 class MediaInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-    public function install()
+    public function install($prefix = null)
     {
         // Creating files table
-        \Schema::table('media_files', function($table)
+        \Schema::table($prefix.'media_files', function($table)
         {
             $table->create();
             $table->increments('id');
@@ -33,7 +33,7 @@ class MediaInstaller extends \Reborn\Module\AbstractInstaller
             $table->timestamps();
         });
 
-        \Schema::table('media_folders', function($table)
+        \Schema::table($prefix.'media_folders', function($table)
         {
             // Creating folder table
             $table->create();
@@ -48,13 +48,13 @@ class MediaInstaller extends \Reborn\Module\AbstractInstaller
         });
     }
 
-    public function uninstall()
+    public function uninstall($prefix = null)
     {
-        \Schema::drop('media_files');
-        \Schema::drop('media_folders');
+        \Schema::drop($prefix.'media_files');
+        \Schema::drop($prefix.'media_folders');
     }
 
-    public function upgrade($v)
+    public function upgrade($v, $prefix = null)
     {
         return $v;
     }
