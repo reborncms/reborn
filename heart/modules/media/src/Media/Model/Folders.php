@@ -18,6 +18,8 @@ class Folders extends \Eloquent
 	 **/
     protected $table = 'media_folders';
 
+    protected $multisite = true;
+
     /**
      * Parent folder's data
      *
