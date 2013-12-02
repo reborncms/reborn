@@ -5,9 +5,8 @@ namespace Contact;
 class ContactInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-	public function install()
+	public function install($prefix = null)
 	{
-		$prefix = null;
 
 		\Schema::table('contact', function($table)
 	    {
@@ -152,15 +151,13 @@ class ContactInstaller extends \Reborn\Module\AbstractInstaller
 	    \Setting::add($data);
 	}
 
-	public function uninstall()
+	public function uninstall($prefix = null)
 	{
-		$prefix = null;
 		\Schema::drop('contact');
 	}
 
-	public function upgrade($v)
+	public function upgrade($v, $prefix = null)
 	{
-		$prefix = null;
 		if ($v == '1.0') {
 			 $data = array(
 				'slug'		=> 'attach_field',
