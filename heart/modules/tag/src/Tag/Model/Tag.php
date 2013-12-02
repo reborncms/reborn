@@ -8,6 +8,8 @@ class Tag extends \Eloquent
 
     protected $fillable = array('name');
 
+    protected $multisite = true;
+
     public $timestamps = false;
 
 }

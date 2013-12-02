@@ -8,6 +8,8 @@ class Comments extends \Eloquent
 
     protected $softDelete = false;
 
+    protected $multisite = true;
+
     public function __construct(array $attributes = array()) {
 
         if (\Module::get('comment', 'db_version') >= 1.1) {

@@ -6,4 +6,6 @@ class Widgets extends \Eloquent
 {
     protected $table = 'widgets';
 
+    protected $multisite = true;
+
 }

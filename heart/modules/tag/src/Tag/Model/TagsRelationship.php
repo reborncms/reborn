@@ -6,6 +6,8 @@ class TagsRelationship extends \Eloquent
 {
     protected $table = 'tags_relationship';
 
+    protected $multisite = true;
+
     protected $fillable = array('tag_id', 'object_id', 'object_name');
 
     public $timestamps = false;

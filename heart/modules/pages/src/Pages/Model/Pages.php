@@ -6,6 +6,8 @@ class Pages extends \Eloquent
 {
     protected $table = 'pages';
 
+    protected $multisite = true;
+
     protected $rules = array(
         'title' => 'required|maxLength:225',
         'slug' => 'required|maxLength:225'
