@@ -377,9 +377,7 @@ class BlogController extends \PublicController
 	 **/
 	protected function checkPartial($file)
 	{
-		$current_theme = \Setting::get('public_theme');
-		$theme = new Theme($current_theme, THEMES);
-		return $theme->hasFile($file, 'blog');
+		return $this->theme->hasFile($file, 'blog');
 	}
 
 	/**
