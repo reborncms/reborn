@@ -10,7 +10,7 @@ class Comments extends \Eloquent
 
     public function __construct(array $attributes = array()) {
 
-        if (\Module::getData('comment', 'dbVersion') >= 1.1) {
+        if (\Module::get('comment', 'db_version') >= 1.1) {
 
             $this->softDelete = true;
 
