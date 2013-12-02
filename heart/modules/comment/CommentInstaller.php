@@ -5,10 +5,10 @@ namespace Comment;
 class CommentInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-	public function install()
+	public function install($prefix = null)
 	{
 
-		\Schema::table('comments', function($table)
+		\Schema::table($prefix.'comments', function($table)
 	    {
 	        $table->create();
 	        $table->increments('id');
@@ -82,15 +82,25 @@ class CommentInstaller extends \Reborn\Module\AbstractInstaller
 		
 	}
 
-	public function uninstall()
+	public function uninstall($prefix = null)
 	{
-		\Schema::drop('comments');
+		\Schema::drop($prefix.'comments');
+
+		\Setting::remove('comment_gravatar_size');
+
+		\Setting::remove('akismet_api_key');
+
+		\Setting::remove('use_default_style');
+
+		\Setting::remove('comment_enable');
+
+		\Setting::remove('comment_need_approve');
 	}
 
-	public function upgrade($v)
+	public function upgrade($v, $prefix = null)
 	{
 		if ($v == '1.0') {
-			\Schema::table('comments', function($table)
+			\Schema::table($prefix.'comments', function($table)
 		    {
 		     	$table->softDeletes();    
 		    });

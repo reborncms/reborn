@@ -5,9 +5,9 @@ namespace Widgets;
 class WidgetsInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-	public function install() 
+	public function install($prefix = null) 
 	{
-		\Schema::table('widgets', function($table)
+		\Schema::table($prefix.'widgets', function($table)
 		{
 			$table->create();
 			$table->increments('id');
@@ -19,11 +19,11 @@ class WidgetsInstaller extends \Reborn\Module\AbstractInstaller
 		});
 	}
 
-	public function uninstall() 
+	public function uninstall($prefix = null) 
 	{
-		\Schema::drop('widgets');
+		\Schema::drop($prefix.'widgets');
 	}
 
-	public function upgrade($dbVersion) {}
+	public function upgrade($dbVersion, $prefix = null) {}
 
 }

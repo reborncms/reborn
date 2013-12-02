@@ -93,6 +93,17 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
 	{
 		\Schema::drop($prefix.'blog');
 		\Schema::drop($prefix.'blog_categories');
+
+		\Setting::remove('blog_per_page');
+
+		\Setting::remove('blog_rss_items');
+
+		\Setting::remove('excerpt_length');
+
+		\Setting::remove('blog_content_default_lang');
+		
+		\Setting::remove('blog_content_default_lang');
+
 	}
 
 	public function upgrade($v, $prefix = null)
@@ -106,12 +117,12 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
 			});
 
 			$data = array(
-			'slug'		=> 'blog_content_default_lang',
-			'name'		=> 'Contents default language',
-			'desc'		=> 'Default language for blog contents',
-			'value'		=> '',
-			'default'	=> 'English',
-			'module'	=> 'Blog'
+				'slug'		=> 'blog_content_default_lang',
+				'name'		=> 'Contents default language',
+				'desc'		=> 'Default language for blog contents',
+				'value'		=> '',
+				'default'	=> 'English',
+				'module'	=> 'Blog'
 			);
 	    	\Setting::add($data);
 		}

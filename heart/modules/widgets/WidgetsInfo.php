@@ -30,13 +30,15 @@ class WidgetsInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = false;
 
+	protected $sharedData = false;
+
 	/**
 	* Variable for Allow Custom Field.
 	* If you allow custom field in your module, set true
 	*
 	* @var boolean
 	**/
-	protected $allow_customfield = false;
+	protected $allowCustomfield = false;
 
 	protected $uriPrefix = 'widgets';
 

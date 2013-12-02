@@ -5,9 +5,9 @@ namespace Pages;
 class PagesInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-    public function install()
+    public function install($prefix = null)
     {
-    	\Schema::table('pages', function($table)
+    	\Schema::table($prefix.'pages', function($table)
     	{
     		$table->create();
     		$table->increments('id');
@@ -29,7 +29,7 @@ class PagesInstaller extends \Reborn\Module\AbstractInstaller
     		$table->timestamps();
     	});
 
-        \DB::table('pages')->insert(array(
+        \DB::table($prefix.'pages')->insert(array(
             'title'             => 'Home',
             'slug'              => 'home',
             'uri'               => 'home',
@@ -56,12 +56,14 @@ class PagesInstaller extends \Reborn\Module\AbstractInstaller
         \Setting::add($data);
     }
 
-    public function uninstall()
+    public function uninstall($prefix = null)
     {
-    	\Schema::drop('pages');
+    	\Schema::drop($prefix.'pages');
+
+        \Setting::remove('home_page');
     }
 
-    public function upgrade($v)
+    public function upgrade($v, $prefix = null)
     {
     	return $v;
     }

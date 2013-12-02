@@ -5,16 +5,16 @@ namespace Tag;
 class TagInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-	public function install() 
+	public function install($prefix = null) 
 	{
-		\Schema::table('tags', function($table)
+		\Schema::table($prefix.'tags', function($table)
 		{
 			$table->create();
 			$table->increments('id');
 			$table->string('name',50);
 		});
 
-		\Schema::table('tags_relationship', function($table)
+		\Schema::table($prefix.'tags_relationship', function($table)
 		{
 			$table->create();
 			$table->increments('id');
@@ -24,13 +24,13 @@ class TagInstaller extends \Reborn\Module\AbstractInstaller
 		});
 	}
 
-	public function uninstall() 
+	public function uninstall($prefix = null) 
 	{
-		\Schema::drop('tags');
-		\Schema::drop('tags_relationship');
+		\Schema::drop($prefix.'tags');
+		\Schema::drop($prefix.'tags_relationship');
 	}
 
-	public function upgrade($v) 
+	public function upgrade($v, $prefix = null) 
 	{
 		return $v;
 	}
