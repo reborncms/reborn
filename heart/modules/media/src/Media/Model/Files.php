@@ -13,6 +13,8 @@ class Files extends \Reborn\MVC\Model\Search
 
     protected $table = 'media_files';
 
+    protected $multisite = true;
+
     public function folder()
     {
         return $this->belongsTo('Media\Model\Folders');
