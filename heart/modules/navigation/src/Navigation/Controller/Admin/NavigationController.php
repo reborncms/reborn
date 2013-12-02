@@ -107,7 +107,7 @@ class NavigationController extends \AdminController
 				$link->link_order = Links::getLinkOrder(\Input::get('group'));
 				$link->class = \Input::get('class');
 				$link->target = \Input::get('target');
-				//$this->permission = \Input::get('permission');
+				$this->permission = \Input::get('permission', '');
 
 				if ($link->save()) {
 					\Cache::deleteFolder('Navigation');
@@ -180,6 +180,7 @@ class NavigationController extends \AdminController
 				$link->link_order = $link_order;
 				$link->class = \Input::get('class');
 				$link->target = \Input::get('target');
+				$this->permission = \Input::get('permission', '');
 
 				unset($link->uri);
 				unset($link->module);

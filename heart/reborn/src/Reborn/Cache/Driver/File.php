@@ -244,7 +244,7 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
 
         FileSystem::put($path.$filename.'.'.$this->getExtension(), $expire.$value);
 
-        @chmod($path.$filename, 0777);
+        @chmod($path.$filename.'.'.$this->getExtension(), 0777);
     }
 
     /**

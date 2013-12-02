@@ -102,7 +102,7 @@ class Helper
 
 	public static function pageSelect()
 	{
-		if( \Module::isDisabled('Pages')) {
+		if(! \Module::isEnabled('Pages')) {
 			return array();
 		}
 
@@ -115,7 +115,7 @@ class Helper
 		$modules = \Module::getAll();
 		$select = array();
 		foreach($modules as $name => $m) {
-			if(\Module::isEnabled($name) and ($m['frontendSupport'])) {
+			if(\Module::isEnabled($name) and ($m['frontend_support'])) {
 				$select[strtolower($name)] = $name;
 			}
 		}
