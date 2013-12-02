@@ -130,7 +130,7 @@ class Widget extends \Reborn\Widget\AbstractWidget
 	 **/
 	public function posts()
 	{
-		if(\Module::isDisabled('Blog')) {
+		if(!\Module::isEnabled('Blog')) {
 			return null;
 		}
 
@@ -167,7 +167,7 @@ class Widget extends \Reborn\Widget\AbstractWidget
 	 **/
 	public function category()
 	{
-		if(\Module::isDisabled('Blog')) {
+		if(!\Module::isEnabled('Blog')) {
 			return null;
 		}
 
@@ -189,7 +189,7 @@ class Widget extends \Reborn\Widget\AbstractWidget
 	 **/
 	public function archive()
 	{
-		if(\Module::isDisabled('Blog')) {
+		if(!\Module::isEnabled('Blog')) {
 			return null;
 		}
 
@@ -237,7 +237,7 @@ class Widget extends \Reborn\Widget\AbstractWidget
 	 **/
 	public function tagCloud()
 	{
-		if(\Module::isDisabled('Tag') || \Module::isDisabled('Blog')) {
+		if(!\Module::isEnabled('Tag') || !\Module::isEnabled('Blog')) {
 			return null;
 		}
 
