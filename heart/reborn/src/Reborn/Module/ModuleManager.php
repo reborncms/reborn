@@ -77,7 +77,6 @@ class ModuleManager
 	            $table->increments('id');
 	            $table->string('uri', 100);
 	            $table->string('name', 255);
-	            $table->text('description');
 	            $table->tinyInteger('enabled');
 	            $table->string('version', 10);
 	        });

@@ -6,7 +6,7 @@ class ModuleInfo extends \Reborn\Module\AbstractInfo
 {
 	protected $name = 'Module';
 
-	protected $version = '1.0';
+	protected $version = '1.1';
 
 	protected $displayName = array(
 								'en' => 'Modules Manager',

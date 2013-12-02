@@ -268,6 +268,27 @@ class ModuleController extends \AdminController
 	}
 
 	/**
+	 * Update module 1.0 to 1.1.
+	 * Remove description column
+	 *
+	 * @return void
+	 **/
+	public function update()
+	{
+		try {
+			\Schema::table('modules', function($table)
+			{
+			    $table->dropColumn('description');
+			});
+		} catch (\Illuminate\Database\QueryException $e) {
+		}
+		\DB::table('modules')->where('name', 'module')->update(array('version' => '1.1'));
+
+
+		return Redirect::module();
+	}
+
+	/**
 	 * Check Module is system module or not.
 	 *
 	 * @param string $name

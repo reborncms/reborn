@@ -98,7 +98,7 @@
 					{{ if(isset($modToolbar) and (!empty($modToolbar))) }}
 					<div id="toolbar">
 						{{ loop($modToolbar as $btn) }}
-						<a class="shortcut btn btn-dark tipsy-tip"
+						<a class="shortcut btn btn-dark tipsy-tip {{ isset($btn['class']) ? $btn['class'] : '' }}"
 							title="{{ $btn['info'] }}"
 							href="{{ adminUrl($btn['url']) }}"
 							id="{{ isset($btn['id']) ? $btn['id'] : '' }}">

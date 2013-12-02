@@ -37,6 +37,15 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
             ),
         );
 
+        if (\Module::get('module', 'db_version') === '1.0') {
+        	$mod_toolbar['fix'] = array(
+        		'url'	=> 'module/update',
+                'name'	=> 'Update',
+                'info'	=> 'Please Update Module Manager',
+                'class'	=> 'update-btn'
+        	);
+        }
+
         return $mod_toolbar;
 	}
 
