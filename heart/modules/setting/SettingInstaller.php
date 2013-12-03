@@ -5,19 +5,10 @@ namespace Setting;
 class SettingInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-	public function install()
-	{
-		return true;
-	}
+	public function install($prefix = null) {}
 
-	public function uninstall()
-	{
-		return false;
-	}
+	public function uninstall($prefix = null) {}
 
-	public function upgrade($dbVersion)
-	{
-		return true;
-	}
+	public function upgrade($dbVersion, $prefix = null) {}
 
 }

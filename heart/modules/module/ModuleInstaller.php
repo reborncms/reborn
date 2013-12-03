@@ -5,10 +5,10 @@ namespace Module;
 class ModuleInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-	public function install() {}
+	public function install($prefix = null) {}
 
-	public function uninstall() {}
+	public function uninstall($prefix = null) {}
 
-	public function upgrade($dbVersion) {}
+	public function upgrade($dbVersion, $prefix = null) {}
 
 }
