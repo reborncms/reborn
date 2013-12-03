@@ -34,7 +34,7 @@ class ThemeInfo extends \Reborn\Module\AbstractInfo
 
 	protected $useAsDefaultModule = true;
 
-	protected $sharedData = false;
+	protected $sharedData = true;
 
 	protected $roles = array(
 		'theme.upload' => 'Upload',
