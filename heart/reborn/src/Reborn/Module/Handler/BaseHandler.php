@@ -303,7 +303,10 @@ class BaseHandler
             $processor = $this->getInstaller($result[$name]);
             $processor->install();
         } catch (\Exception $e) {
-            return false;
+            if ($this->app->runInProduction()) {
+                return false;
+            }
+            return $e;
         }
 
         return DB::table($this->getTable())
@@ -336,7 +339,10 @@ class BaseHandler
                 $processor = $this->getInstaller($module);
                 $processor->uninstall();
             } catch (\Exception $e) {
-                return false;
+                if ($this->app->runInProduction()) {
+                    return false;
+                }
+                return $e;
             }
 
             return DB::table($this->getTable())
@@ -365,7 +371,10 @@ class BaseHandler
                 $processor = $this->getInstaller($module);
                 $processor->upgrade($module->db_version);
             } catch (\Exception $e) {
-                return false;
+                if ($this->app->runInProduction()) {
+                    return false;
+                }
+                return $e;
             }
 
             return DB::table($this->getTable())

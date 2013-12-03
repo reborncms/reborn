@@ -7,16 +7,29 @@ define('DS', DIRECTORY_SEPARATOR);
 // Define Base Dir Path
 define('BASE', __DIR__ . DS);
 
+/**
+ * ---------------------------------------------------------
+ * Load Reborn's sites manager file
+ * ---------------------------------------------------------
+ *
+ * Reborn define other constants for application,
+ * start timer and memory record for profiling and
+ * make class alias to easy access for developer.
+ *
+ */
+$sites = require __DIR__.'/content/sites.php';
+
 // load Reborn CMS start file
 require_once __DIR__.'/heart/reborn/src/start.php';
 
-require_once __DIR__.'/heart/vendor/autoload.php';
+//require_once __DIR__.'/heart/vendor/autoload.php';
 
 $commands = require __DIR__.'/content/commands/register.php';
 
 use Reborn\Console\CompileCommand;
 use Reborn\Console\ModuleCommand;
 use Reborn\Console\CacheClearCommand;
+use Reborn\Console\MultisiteCommand;
 use Reborn\Cores\Version;
 use Symfony\Component\Console\Application;
 
@@ -24,5 +37,6 @@ $application = new Application(Version::getAppName(), Version::getVersion());
 $application->add(new ModuleCommand);
 $application->add(new CacheClearCommand);
 $application->add(new CompileCommand);
+$application->add(new MultisiteCommand);
 $application->addCommands($commands);
 $application->run();

@@ -30,13 +30,22 @@ class LessResolver
 	protected $url;
 
 	/**
+	 * Server host path
+	 *
+	 * @var string
+	 **/
+	protected $host;
+
+	/**
 	 * Create LessResolver Instance
 	 *
 	 * @return void
 	 */
 	public function __construct()
 	{
-		$this->url = Facade::getApplication()->request->baseUrl();
+		$request = Facade::getApplication()->request;
+		$this->url = $request->baseUrl();
+		$this->host = $request->getScheme().'://'.$request->getHost();
 	}
 
 	/**
@@ -118,7 +127,9 @@ class LessResolver
 					$newpath = $this->filepath;
 				}
 
-				$url = str_replace(BASE, $this->url, $newpath);
+				$prefix = str_replace($this->host, '', $this->url);
+				$base = ($prefix === '') ? '/' : $prefix;
+				$url = str_replace(BASE, $base, $newpath);
 				$clearurl = str_replace(array('../','\'', '"'), '', $uri);
 				$clearurl = '"'.$url.'/'.$clearurl.'"';
 				$replace[$k] = str_replace('\\', '/', $clearurl);

@@ -7,7 +7,7 @@ class Form extends \FormBuilder
 	protected $model = '\SiteManager\Model\SiteManager';
 
 	/**
-	 * For for Bill input
+	 * Set from element fields
 	 *
 	 * @access public
 	 * @return void
@@ -23,9 +23,10 @@ class Form extends \FormBuilder
 				),
 
 			'domain'	=> array(
-				'type'	=> 'text',
+				'type'	=> 'select',
 				'label'	=> 'Domain',
-				'rule'	=> 'required'
+				'rule'	=> 'required',
+				'option' => $this->getRegisterDomains()
 				),
 
 			'description'	=> array(
@@ -37,5 +38,23 @@ class Form extends \FormBuilder
 		$this->submit = array('submit' => array(
 			'value' => t('global.save'),
 			));
+	}
+
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 **/
+	protected function getRegisterDomains()
+	{
+		$sites = require BASE_CONTENT.'sites.php';
+
+		$lists = array();
+
+		foreach ($sites['content_path'] as $site => $path) {
+			$lists[$site] = $site;
+		}
+
+		return $lists;
 	}
 }
