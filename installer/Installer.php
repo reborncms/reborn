@@ -245,10 +245,10 @@ class Installer
         // Start the Module initialize
         Module::initialize(static::$app);
 
-        $modules = Module::getAll();
+        $modules = Module::findAll();
 
         foreach ($modules as $name => $mod) {
-        	static::loadModule($mod);
+        	//static::loadModule($mod);
         	Module::install($name);
         }
 	}
@@ -338,7 +338,10 @@ class Installer
 		if (function_exists('gd_info')) {
 			$gd = gd_info();
 			$data['gd']['status'] = true;
-			$data['gd']['vs'] = version_compare($gd['GD Version'], '2.0', '>=');
+
+			$gd_version = preg_replace('/[^0-9\.]/', '', $gd['GD Version']);
+
+			$data['gd']['vs'] = version_compare($gd_version, '2.0', '>=');
 		} else {
 			$data['gd']['status'] = false;
 		}
