@@ -152,6 +152,29 @@ class Theme
     }
 
     /**
+     * Get the layouts list array from given theme.
+     * Layout list will return only layout file name, not include path
+     *
+     * @return array
+     **/
+    public function layoutsFrom($name)
+    {
+        $path = $this->findTheme($name);
+
+        $layouts = array();
+
+        if (is_null($path)) return $layouts;
+
+        $all = glob($path.'views'.DS.'layout'.DS.'*.html');
+
+        foreach ($all as $s) {
+            $layouts[] = str_replace($this->path.$this->theme.DS.'views'.DS.'layout'.DS, '', $s);
+        }
+
+        return $layouts;
+    }
+
+    /**
      * Check the given layout name is exists in the active theme's layout folder.
      *
      * @param string $name Layout name, no need file extension
