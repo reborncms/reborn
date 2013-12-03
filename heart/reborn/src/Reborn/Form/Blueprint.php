@@ -456,6 +456,17 @@ class Blueprint
 		$this->addInput($name, $val, 'checkbox');
 	}
 
+	protected function addCheckboxGroup($name, $val)
+	{
+		$this->fields[$name]['type'] = 'checkboxGroup';
+		$this->fields[$name]['info'] = $val['info'];
+		$this->labels[$name] = Form::label($val['label'], $name);
+		if (is_string($val['checkbox_label'])) {
+			$val['checkbox_label'] = (array) $val['checkbox_label'];
+		}
+		$this->fields[$name]['html'] = Form::checkGroup($name, $val['checkbox_label'], $val['value']);
+	}
+
 	protected function addInput($name, $val, $type)
 	{
 		$this->fields[$name]['type'] = $type;

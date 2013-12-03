@@ -117,6 +117,11 @@ return array(
 	 * Default key name is "reborn_cms"
 	 *
 	 */
-	'sentry_keyname' => 'reborn_cms'
+	'sentry_keyname' => 'reborn_cms',
+
+	'exportable_modules' => array(
+		'blog',
+		'pages'
+	),
 
 );
