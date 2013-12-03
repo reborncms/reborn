@@ -6,7 +6,7 @@ return array(
 	 * Skip Setting
 	 * Don't show at setting panel
 	 */
-	'skip' => array('admin_theme', 'public_theme'),
+	'skip' => array('admin_theme', 'public_theme', 'home_page'),
 
 	/**
 	 * Default Module Setting
@@ -26,16 +26,6 @@ return array(
 				return $results;
 			},
 		),
-	/**
-	 * Home Page
-	 */
-	'home_page' => array(
-        'type' => 'select',
-        'option' => function() {
-			$page_opt = \Pages\Lib\Helper::pageList();
-			return $page_opt;
-        },
-    ),
 
     /**
 	 * Item per page to show in admin panel
