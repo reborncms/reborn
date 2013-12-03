@@ -1,4 +1,4 @@
-{{ if(Module::getData('comment', 'dbVersion') < 1.1) }}
+{{ if(Module::get('comment', 'db_version') < 1.1) }}
 <div class="msg-box msg-warning">*** Please upgrade Comment Module. Click <a href="{{ adminUrl('module') }}">here</a> to upgrade.</div>
 {{ endif }}
 {{ if ($akismet_status === 'no-key') }}
