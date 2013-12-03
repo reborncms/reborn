@@ -15,15 +15,18 @@ class Pages extends \Eloquent
 
     public static function page_structure($no_draft = false)
     {
+        $ins = new static();
+
         if ($no_draft == true) {
-            $all = \DB::table('pages')->where('status', 'live')->orderBy('page_order')->get();
+            $all = $ins->where('status', 'live')->orderBy('page_order')->get();
         } else {
-            $all = \DB::table('pages')->orderBy('page_order')->get(); // add order_by
+            $all = $ins->orderBy('page_order')->get(); // add order_by
         }
 
         $page_structure = $pages = array();
+        
         foreach ($all as $row) {
-            $pages[$row->id] = (array) $row;
+            $pages[$row->id] = $row->toArray();
         }
 
         unset($all);
@@ -47,7 +50,9 @@ class Pages extends \Eloquent
      **/
     public static function get_parent_uri($id)
     {
-        $query = \DB::table('pages')->where('id', '=', $id)->pluck('uri');
+        $ins = new static();
+
+        $query = $ins->where('id', '=', $id)->pluck('uri');
 
         return $query;
     }
@@ -66,4 +71,6 @@ class Pages extends \Eloquent
     {
         return (isset($this->attributes['content'])) ? $this->attributes['content'] : '';
     }
+
+
 }
