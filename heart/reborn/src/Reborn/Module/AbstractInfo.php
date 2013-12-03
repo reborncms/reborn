@@ -120,6 +120,16 @@ abstract class AbstractInfo
 	protected $sharedData = true;
 
 	/**
+	 * Database table is not shared table.
+	 * But sometime user want to use shared table by force.
+	 * If you want to doesn't allow shared user by force,
+	 * Set "true" for this value.
+	 *
+	 * @var boolean
+	 **/
+	protected $allowSharedByUser = false;
+
+	/**
 	 * Namespace of the Module.
 	 *
 	 * @var string
@@ -177,7 +187,8 @@ abstract class AbstractInfo
 				'default_module_mode' => $this->useAsDefaultModule,
 				'allow_uri_change' => $this->allowToChangeUriPrefix,
 				'allow_custom_field' => $this->allowCustomfield,
-				'shared_data' => $this->sharedData
+				'shared_data' => $this->sharedData,
+				'allow_shared_by_user' => $this->allowSharedByUser
 			);
 	}
 

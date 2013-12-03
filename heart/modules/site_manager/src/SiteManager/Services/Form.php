@@ -6,6 +6,8 @@ class Form extends \FormBuilder
 {
 	protected $model = '\SiteManager\Model\SiteManager';
 
+	protected $skipFields = array('shared_by_force');
+
 	/**
 	 * Set from element fields
 	 *
@@ -32,7 +34,13 @@ class Form extends \FormBuilder
 			'description'	=> array(
 				'type'	=> 'textarea',
 				'label'	=> 'Description'
-				)
+				),
+
+			'shared_by_force' => array(
+				'type' => 'checkboxGroup',
+				'label' => 'Shared By Force',
+				'checkbox_label' => $this->getModules()
+				),
 			);
 
 		$this->submit = array('submit' => array(
@@ -41,9 +49,9 @@ class Form extends \FormBuilder
 	}
 
 	/**
-	 * undocumented function
+	 * Get registered domain lists
 	 *
-	 * @return void
+	 * @return array
 	 **/
 	protected function getRegisterDomains()
 	{
@@ -51,10 +59,42 @@ class Form extends \FormBuilder
 
 		$lists = array();
 
+		$model = \SiteManager\Model\SiteManager::all(array('domain'))->lists('domain');
+
 		foreach ($sites['content_path'] as $site => $path) {
-			$lists[$site] = $site;
+			if (!in_array($site, $model)) {
+				$lists[$site] = $site;
+			}
+		}
+
+		if (empty($lists)) {
+			$lists = array('' => 'Need to Register Site Domain');
 		}
 
 		return $lists;
+	}
+
+	/**
+	 * Get module lists for Shared Datatable by Force
+	 *
+	 * @return array
+	 **/
+	protected function getModules()
+	{
+		$modules = \Module::findFrom(array(CORE_MODULES, SHARED.'modules'.DS));
+
+		$modules = array_filter($modules, function($m) {
+            return (false == $m['shared_data']);
+        });
+
+        $results = array();
+
+        foreach ($modules as $name => $data) {
+        	if ($data['allow_shared_by_user']) {
+        		$results[$name] = $data['name'];
+        	}
+        }
+
+        return $results;
 	}
 }

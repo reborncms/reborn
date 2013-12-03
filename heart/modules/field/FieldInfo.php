@@ -32,4 +32,6 @@ class FieldInfo extends \Reborn\Module\AbstractInfo
 
 	protected $allowToChangeUriPrefix = false;
 
+	protected $sharedData = false;
+
 }

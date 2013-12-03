@@ -230,7 +230,7 @@ class Application extends \Illuminate\Container\Container
 
         require BASE.'installer'.DS.'Installer.php';
 
-        \Installer::init();
+        \Installer::init($this);
 
         \Installer::start();
 

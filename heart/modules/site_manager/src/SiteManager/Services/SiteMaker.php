@@ -2,7 +2,6 @@
 
 namespace SiteManager\Services;
 
-use Reborn\Config\Config;
 use Reborn\Cores\Setting;
 use Reborn\Cores\Application;
 
@@ -30,19 +29,28 @@ class SiteMaker
 	protected $sites;
 
 	/**
+	 * Shared by force module lists
+	 *
+	 * @var array
+	 **/
+	protected $by_force = array();
+
+	/**
 	 * Default instance method
 	 *
 	 * @param \Reborn\Cores\Application $app
 	 * @param string $domain
 	 * @return void
 	 **/
-	public function __construct(Application $app, $domain)
+	public function __construct(Application $app, $domain, $modules = array())
 	{
 		$this->domain = $domain;
 
 		$this->app = $app;
 
-		$this->sites = require BASE_CONTENT.'sites.php';
+		$this->sites = $this->app['sites'];
+
+		$this->by_force = $modules;
 	}
 
 	/**
@@ -88,7 +96,7 @@ class SiteMaker
 	 **/
 	protected function getDbPrefix()
 	{
-		$db = Config::get('db.multisite');
+		$db = $this->sites['prefix'];
 
 		if (isset($db[$this->domain])) {
 			return $db[$this->domain];
@@ -104,8 +112,8 @@ class SiteMaker
 	 **/
 	protected function getContentPath()
 	{
-		if (isset($this->sites[$this->domain])) {
-			return $this->sites[$this->domain];
+		if (isset($this->sites['content_path'][$this->domain])) {
+			return $this->sites['content_path'][$this->domain];
 		}
 
 		throw new \RbException("Can't found content path at sites.php!");
@@ -144,7 +152,7 @@ class SiteMaker
 	{
 		$handler = new \Reborn\Module\Handler\MultisiteHandler($this->app, $prefix);
 		$handler->setModulePath($path);
-		return $handler->buildForNewSite();
+		return $handler->buildForNewSite($this->by_force);
 	}
 
 	/**
@@ -158,6 +166,6 @@ class SiteMaker
 	{
 		$handler = new \Reborn\Module\Handler\MultisiteHandler($this->app, $prefix);
 		$handler->setModulePath($path);
-		return $handler->removeSiteModule();
+		return $handler->removeSiteModules($this->by_force);
 	}
 }

@@ -164,7 +164,7 @@ EOT;
 		$data = array(
 				'domain' => $domain,
 				'path' => str_replace(' ', '_', $path),
-                'prefix' => rtrim($prefix, '_').'_'
+                'prefix' => rtrim($prefix, '_')
 			);
 
 		return $data;

@@ -34,8 +34,12 @@ class Installer
 
 	protected static $step = array();
 
-	public static function init()
+	protected static $app;
+
+	public static function init($app)
 	{
+		static::$app = $app;
+
 		static::$view_path = __DIR__.DS.'view'.DS;
 
 		static::$sess = new Session();
@@ -236,16 +240,16 @@ class Installer
         DB::initialize();
 
         // Start the Setting initialize
-        Setting::initialize();
+        Setting::initialize(static::$app);
 
         // Start the Module initialize
-        Module::initialize();
+        Module::initialize(static::$app);
 
         $modules = Module::getAll();
 
         foreach ($modules as $name => $mod) {
         	static::loadModule($mod);
-        	Module::install($name, $mod['uri'], true, false);
+        	Module::install($name);
         }
 	}
 

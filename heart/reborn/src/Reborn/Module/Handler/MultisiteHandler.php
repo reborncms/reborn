@@ -44,13 +44,14 @@ class MultisiteHandler extends BaseHandler
 	/**
 	 * Build for new site.
 	 *
+	 * @param array $force_share
 	 * @return boolean
 	 **/
-	public function buildForNewSite()
+	public function buildForNewSite($force_share)
 	{
 		list($public, $private) = $this->findModuleForNewSite();
 
-		$this->installForNewSite($public);
+		$this->installForNewSite($public, false, $force_share);
 
 		return $this->installForNewSite($private, true);
 	}
@@ -58,15 +59,16 @@ class MultisiteHandler extends BaseHandler
 	/**
 	 * Remove modules of site.
 	 *
+	 * @param array $force_share
 	 * @return boolean
 	 **/
-	public function removeSiteModules()
+	public function removeSiteModules($force_share)
 	{
 		list($public, $private) = $this->findModuleForNewSite();
 
-		$this->removeForNewSite($public);
+		$this->removeFromSite($public, false, $force_share);
 
-		return $this->removeForNewSite($private, true);
+		return $this->removeFromSite($private, true);
 	}
 
 	/**
@@ -149,19 +151,21 @@ class MultisiteHandler extends BaseHandler
 	 * Install modules for new site.
 	 *
 	 * @param array $all
-	 * @param boolean $force
+	 * @param boolean $force Force for install
+	 * @param array $force_share Shared by User
 	 * @return boolean
 	 **/
-	protected function installForNewSite(array $all, $force = false)
+	protected function installForNewSite($all, $force = false, $force_share = array())
 	{
 		foreach ($all as $name => $module) {
 
 			if ($name !== 'setting' and $name !== 'module') {
 				// Force install for private module and
 				// install only not sharable data for public
+				// and doesn't shared by user force
 				if ($force) {
 					$this->moduleProcessing($module);
-				} elseif (!$module->shared_data) {
+				} elseif (!$module->shared_data and !in_array($name, $force_share)) {
 					$this->moduleProcessing($module);
 				}
 			}
@@ -184,19 +188,21 @@ class MultisiteHandler extends BaseHandler
 	 * UnInstall modules from site.
 	 *
 	 * @param array $all
-	 * @param boolean $force
+	 * @param boolean $force Force for remove
+	 * @param array $force_share Shared by User
 	 * @return boolean
 	 **/
-	protected function removeFromSite(array $all, $force = false)
+	protected function removeFromSite(array $all, $force = false, $force_share = array())
 	{
 		foreach ($all as $name => $module) {
 
 			if ($name !== 'setting' and $name !== 'module') {
 				// Force uninstall for private module and
 				// uninstall only not sharable data for public
+				// and doesn't shared by user force
 				if ($force) {
 					$this->moduleProcessing($module, 'uninstall');
-				} elseif (!$module->shared_data) {
+				} elseif (!$module->shared_data and !in_array($name, $force_share)) {
 					$this->moduleProcessing($module, 'uninstall');
 				}
 			}

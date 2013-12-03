@@ -60,7 +60,8 @@ class SiteManagerController extends \AdminController
 		$form = \SiteManager\Services\Form::create(adminUrl('site/create'));
 
 		if ($form->valid()) {
-			$maker = new SiteMaker($this->app, Input::get('domain'));
+
+			$maker = new SiteMaker($this->app, Input::get('domain'), Input::get('shared_by_force', array()));
 
 			if ($maker->make()) {
 				if ($form->save()) {
