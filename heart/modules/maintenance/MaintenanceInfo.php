@@ -107,7 +107,6 @@ class MaintenanceInfo extends \Reborn\Module\AbstractInfo
 	 * @var boolean
 	 **/
 	protected $allowCustomfield = false;
-
-	protected $sharedData = false;
+	
 
 }
