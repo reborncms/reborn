@@ -1,5 +1,11 @@
 <?php
 
+	\Route::get(
+			'@admin/media',
+			'Media\Admin\Media::index',
+			'media'
+		);
+
 	// Viewing images
 	\Route::get(
 			'media/image/{:target}/{int:width}?/{int:height}?',

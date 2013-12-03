@@ -1,7 +1,7 @@
 <?php
 
 namespace Media;
-//
+
 /**
  * Info class for media module
  *
@@ -43,6 +43,6 @@ class MediaInfo extends \Reborn\Module\AbstractInfo
         'my'    => 'ဖိုင်များ၊ မီဒီယာ ဖိုင်လ်များကို ကိုင်တွယ်စီမံနိုင်မည့် မော်ဂျူး',
         );
 
-    protected $shareData = false;
+    protected $sharedData = false;
 
 } // END class MediaInfo

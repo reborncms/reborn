@@ -1,7 +1,7 @@
 <?php
 
 namespace Media;
-//
+
 /**
  * Installer for Media Module
  *
