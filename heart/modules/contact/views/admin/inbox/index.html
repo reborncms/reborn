@@ -27,7 +27,7 @@
 					<a href="{{ adminUrl("contact/detail/".$mail->id) }}" title="{{ t('contact::contact.labels.detail') }}" class="tipsy-tip">
 						<i class="icon-view"></i>
 					</a>
-					<a href="{{ adminUrl("contact/send-mail/index/".$mail->id) }}" title="{{ t('contact::contact.labels.reply') }}" class="tipsy-tip">
+					<a href="{{ adminUrl("contact/send-mail/".$mail->id) }}" title="{{ t('contact::contact.labels.reply') }}" class="tipsy-tip">
 						<i class="icon-redo "></i>
 					</a>
 					<a href="{{ adminUrl("contact/delete/".$mail->id) }}" title="{{ t('global.delete') }}" class="tipsy-tip confirm_delete">
