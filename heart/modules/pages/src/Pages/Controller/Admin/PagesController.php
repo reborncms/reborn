@@ -347,8 +347,9 @@ class PagesController extends \AdminController
     protected function layoutList()
     {
         $current_theme = \Setting::get('public_theme');
-        $theme = new Theme($current_theme, THEMES);
-        $layouts = $theme->getLayouts();
+        $theme = new Theme($this->app, $current_theme, THEMES);
+        $layouts = $theme->layoutsFrom($current_theme);
+        $list = array();
         foreach ($layouts as $key => $val) {
             $value = str_replace('.html', '', $val);
             $name = ucfirst($value);
