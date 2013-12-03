@@ -8,3 +8,4 @@ assets/*
 heart/appdata/config/db.php
 storages/compile.php
 content/sites.php
+content/start.php

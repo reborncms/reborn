@@ -2,6 +2,8 @@
 
 namespace Reborn\Config;
 
+use Reborn\Module\ModuleManager as Module;
+
 /**
  * Config Class for Reborn
  *
@@ -144,10 +146,12 @@ class Config
                 $configs = array_merge($configs, require $path);
             }
         } else {
-            if (file_exists($path = CORE_MODULES.$module.DS.'config'.DS.$file.EXT)) {
-                $configs = array_merge($configs, require $path);
-            } elseif(file_exists($path = MODULES.$module.DS.'config'.DS.$file.EXT)) {
-                $configs = array_merge($configs, require $path);
+            $module_path = Module::get($module, 'path').DS;
+
+            $file_path = $module_path.'config'.DS.$file.EXT;
+
+            if (file_exists($file_path)) {
+                $configs = array_merge($configs, require $file_path);
             }
         }
 
