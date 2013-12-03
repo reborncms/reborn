@@ -464,6 +464,10 @@ class Blueprint
 		if (is_string($val['checkbox_label'])) {
 			$val['checkbox_label'] = (array) $val['checkbox_label'];
 		}
+		if (is_null($val['value'])) {
+			$val['value'] = array();
+		}
+		
 		$this->fields[$name]['html'] = Form::checkGroup($name, $val['checkbox_label'], $val['value']);
 	}
 
