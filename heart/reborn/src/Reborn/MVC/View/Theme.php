@@ -168,7 +168,7 @@ class Theme
         $all = glob($path.'views'.DS.'layout'.DS.'*.html');
 
         foreach ($all as $s) {
-            $layouts[] = str_replace($this->path.$this->theme.DS.'views'.DS.'layout'.DS, '', $s);
+            $layouts[] = str_replace($path.'views'.DS.'layout'.DS, '', $s);
         }
 
         return $layouts;
