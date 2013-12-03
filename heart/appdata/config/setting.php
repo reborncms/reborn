@@ -32,7 +32,6 @@ return array(
 	'home_page' => array(
         'type' => 'select',
         'option' => function() {
-        	\Module::load('Pages');
 			$page_opt = \Pages\Lib\Helper::pageList();
 			return $page_opt;
         },

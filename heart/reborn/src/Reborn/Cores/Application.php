@@ -259,7 +259,7 @@ class Application extends \Illuminate\Container\Container
             Event::call('reborn.app.starting');
 
             // Set Timezone for Application
-            $this->setTimezone(\Setting::get('timezone'));
+            $this->setTimezone(\Setting::get('timezone', 'UTC'));
 
             // Check the Site is Maintainance Stage or not
             // If site is maintainance stage, give the maintain page and exit

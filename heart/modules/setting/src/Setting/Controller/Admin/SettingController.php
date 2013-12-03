@@ -22,7 +22,7 @@ class SettingController extends \AdminController
 	public function module($name = null)
 	{
 		// If Module is Disabled, return the 404 result
-		if (is_null($name) || \Module::isDisabled($name)) {
+		if (is_null($name) || !\Module::isEnabled($name)) {
 			return $this->notFound();
 		}
 
