@@ -8,7 +8,7 @@ class ContactInstaller extends \Reborn\Module\AbstractInstaller
 	public function install($prefix = null)
 	{
 
-		\Schema::table('contact', function($table)
+		\Schema::table($prefix.'contact', function($table)
 	    {
 	        $table->create();
 	        $table->increments('id');
@@ -21,7 +21,7 @@ class ContactInstaller extends \Reborn\Module\AbstractInstaller
 	        $table->integer('read_mail');
 	        $table->timestamps();
 	    });
-	    \Schema::table('email_template', function($table)
+	    \Schema::table($prefix.'email_template', function($table)
 	    {
 	        $table->create();
 	        $table->increments('id');
@@ -153,7 +153,8 @@ class ContactInstaller extends \Reborn\Module\AbstractInstaller
 
 	public function uninstall($prefix = null)
 	{
-		\Schema::drop('contact');
+		\Schema::drop($prefix.'contact');
+		\Schema::drop($prefix.'email_template');
 	}
 
 	public function upgrade($v, $prefix = null)

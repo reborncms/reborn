@@ -28,7 +28,7 @@ class ContactInfo extends \Reborn\Module\AbstractInfo
 
 	protected $allowCustomfield = true;
 
-	protected $sharedData = true;
+	protected $sharedData = false;
 
 	protected $roles = array(
 		'contact.view' => 'View',
