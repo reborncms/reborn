@@ -2,6 +2,10 @@
 
 namespace Reborn\Util;
 
+use Reborn\Http\Input;
+use Reborn\Cores\Facade;
+use Reborn\Config\Config;
+
 /**
  * Flash Message class
  *
@@ -25,10 +29,10 @@ class Flash
 	 **/
 	public static function getFlash()
 	{
-		//if (is_null(static::$flashBag)) {
-			$session = \Registry::get('app')->session;
-			return $session->getFlashBag();
-		//}
+		if (is_null(static::$flashBag)) {
+			$session = Facade::getApplication()->session;
+			static::$flashBag = $session->getFlashBag();
+		}
 
 		return static::$flashBag;
 	}
@@ -40,7 +44,7 @@ class Flash
 	 **/
 	public static function inputs()
 	{
-		$csrf = \Config::get('app.security.csrf_key');
+		$csrf = Config::get('app.security.csrf_key');
 
 		$all = Input::get('*');
 		unset($all[$csrf]);

@@ -4,6 +4,7 @@ namespace Reborn\Form;
 
 use Reborn\Http\Uri;
 use Reborn\Util\Html;
+use Reborn\Util\Flash;
 use Reborn\Config\Config;
 
 /**
@@ -22,6 +23,21 @@ class Form
     protected static $extends;
 
     /**
+     * Data for form filed.
+     * This "data" may be Array, Object or Model.
+     *
+     * @var mixed
+     **/
+    protected static $data;
+
+    /**
+     * Data from Flash::inputs().
+     *
+     * @var arrya|null
+     **/
+    protected static $flashdata;
+
+    /**
      * Extend the Form Element.
      *
      * @param string $name Element name
@@ -38,13 +54,13 @@ class Form
     }
 
     /**
-     * Open Form element
+     * Form open tag element
      *
+     * @param string $action Form action
+     * @param string $name Form name
+     * @param boolean $file Enable for enctype='multipart/form-data'
+     * @param string $attrs Form tag attributes
      * @return string
-     * @param string $action Form Action
-     * @param string $name Form Name
-     * @param boolean $file if true enctype='multipart/form-data will be added'
-     * @param string $attrs Form Attributes
      **/
     public static function start($action = '', $name = null, $file = false, $attrs=array())
     {
@@ -60,7 +76,9 @@ class Form
         $method = (isset($attrs['method'])) ? '' : ' method="post"';
         $attr = Html::buildAttributes($attrs);
 
-        if (!strstr($action,'://')) {
+        if ('' === $action) {
+            $action = Uri::current();
+        } elseif (!strstr($action,'://')) {
             $action = Uri::create($action);
         }
 
@@ -68,6 +86,22 @@ class Form
         $enctype = ($file == true) ? " enctype='multipart/form-data'" : "";
 
         return '<form name="'.$name.'"'.$method.' action="'.$action.'"'.$id.$attr.$enctype.'>';
+    }
+
+    /**
+     * From open tag element for "$data".
+     *
+     * @param string $action Form action
+     * @param string $name Form name
+     * @param boolean $file Enable for enctype='multipart/form-data'
+     * @param string $attrs Form tag attributes
+     * @return string
+     **/
+    public static function startFor($data, $action = '', $name = null, $file = false, $attrs=array())
+    {
+        static::$data = $data;
+
+        return static::start($action, $name, $file, $attrs);
     }
 
     /**
@@ -138,9 +172,14 @@ class Form
             $id = ' id="'.\Str::sanitize($name, 'A-Za-z-0-9-_\s').'"';
         }
 
-        $val = ($value != null) ? ' value = "'.$value.'"' : '';
+        $value = static::getValue($name, $value);
 
-        return '<input type="'.$type.'" name="'.$name.'"'.$id.$val.$attr.' />';
+        $val = ' ';
+        if (!is_null($value)) {
+            $val = ' value="'.$value.'" ';
+        }
+
+        return '<input type="'.$type.'" name="'.$name.'"'.$id.$val.$attr.'/>';
 
     }
 
@@ -361,6 +400,8 @@ class Form
             $label = $name . '_' . $val;
             $attr = array('id' => $label);
 
+            $checkedVal = static::getValue($name, $checkedVal);
+
             if (($val == $checkedVal) and (!is_null($checkedVal)) ) {
                 $checked = true;
             } else {
@@ -391,6 +432,7 @@ class Form
             $checked = array('checked' => 'checked');
             $attrs = array_merge($attrs, $checked);
         }
+
         return static::input($name, $value, 'checkbox', $attrs);
     }
 
@@ -448,6 +490,8 @@ class Form
 
         $id = (!isset($attrs['id'])) ? ' id = "'.$name.'"' : '';
 
+        $value = static::getValue($value);
+
         return '<textarea name="'.$name.'"'.$id.$attr.'>'.$value.'</textarea>';
     }
 
@@ -466,6 +510,8 @@ class Form
         $attr = Html::buildAttributes($attrs);
         $id = (!isset($attrs['id'])) ? ' id = "'.$name.'"' : '';
         $selbox = '<select name="'.$name.'"'.$id.$attr.'>';
+        $defaultSel = static::getValue($name, $defaultSel);
+
         foreach ($options as $val => $label) {
             if (is_array($label)) {
                 $selbox .= '<optgroup label="'.$val.'">';
@@ -495,8 +541,9 @@ class Form
     {
         return static::select($name,
                             array('draft' => 'Draft', 'live' => 'Live'),
-                            $value, $attrs
-                            );
+                            static::getValue($name, $value),
+                            $attrs
+                        );
     }
 
     /**
@@ -540,6 +587,93 @@ class Form
         }
 
         return call_user_func_array(static::$extends['ext_'.$method], $args);
+    }
+
+    /**
+     * Get value for form element tag
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return mixed
+     **/
+    protected static function getValue($name, $value = null)
+    {
+        if (is_null(static::$data)) return $value;
+
+        $result = null;
+
+        $result = static::getFromFlash($name);
+
+        if ( is_null($result) and !is_null(static::$data) ) {
+            $result = static::getFromData($name);
+        }
+
+        if(is_null($result)) return $value;
+
+        return $result;
+    }
+
+    /**
+     * Get element value from Flash::inputs()
+     *
+     * @param string $name
+     * @return mixed
+     **/
+    protected static function getFromFlash($name)
+    {
+        if (is_null(static::$flashdata)) {
+            static::$flashdata = Flash::getInputs();
+        }
+
+        if (isset(static::$flashdata[$name])) {
+            return static::$flashdata[$name];
+        }
+
+        return null;
+    }
+
+    /**
+     * Get element value from static::$data
+     *
+     * @param string $name
+     * @return mixed
+     **/
+    protected static function getFromData($name)
+    {
+        if ( is_array(static::$data) ) {
+            return array_get(static::$data, $name);
+        }
+
+        if ( is_object(static::$data) ) {
+            if (strpos($name, '.')) {
+                return static::getRelationData($name);
+            }
+
+            return static::$data->{$name};
+        }
+
+        return null;
+    }
+
+    /**
+     * Get realtion object data.
+     * This method is base on Laravel's object_get()
+     *
+     * @param string $name
+     * @return mixed
+     **/
+    protected static function getRelationData($name)
+    {
+        $object = static::$data;
+
+        foreach (explode('.', $name) as $segment)
+        {
+            $object = $object->{$segment};
+
+            if (! is_object($object) ) {
+                return $object;
+            }
+        }
     }
 
 } // END class Form

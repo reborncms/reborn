@@ -4,6 +4,7 @@ namespace Reborn\Table;
 
 use MongoDate;
 use Carbon\Carbon;
+use Reborn\Form\Form;
 
 /**
  * Table Generate Helper class
@@ -19,14 +20,14 @@ class Builder
 	 *
 	 * @var array
 	 **/
-	protected $header = array();
+	protected $headers = array();
 
 	/**
 	 * Use table footer
 	 *
 	 * @var boolean
 	 **/
-	protected $useTFoot = false;
+	protected $use_tfoot = false;
 
 	/**
 	 * table columns (td) variable
@@ -40,7 +41,7 @@ class Builder
 	 *
 	 * @var boolean
 	 **/
-	protected $checkAll = false;
+	protected $check_all = false;
 
 	/**
 	 * Add row actions buttons data variable
@@ -64,11 +65,11 @@ class Builder
 	protected $table_id;
 
 	/**
-	 * table data object variable
+	 * table data provider
 	 *
-	 * @var Object (May be Eloquent Collection)
+	 * @var mixed (May be Array, Object or EloquentCollection)
 	 **/
-	protected $object;
+	protected $provider;
 
 	/**
 	 * Action buttons type name
@@ -83,14 +84,14 @@ class Builder
 	 *
 	 * @var string
 	 **/
-	protected $buttonType = 'text';
+	protected $button_type = 'text';
 
 
 	/**
 	 * Static method for Table Instance
 	 *
 	 * @param array $options
-	 * @return Reborn\Util\Table
+	 * @return \Reborn\Util\Table
 	 **/
 	public static function create($options = array())
 	{
@@ -109,49 +110,49 @@ class Builder
 	 *  - btn_type [String] Action Button Type Name
 	 *
 	 * @param array $options
-	 * @return Reborn\Util\Table
+	 * @return void
 	 **/
 	public function __construct($options = array())
 	{
 		if (isset($options['check_all'])) {
-			$this->checkAll = (boolean) $options['check_all'];
+			$this->check_all = (boolean) $options['check_all'];
 		}
 
 		if (isset($options['actions'])) {
-			$this->setActions($options['actions']);
+			$this->actions($options['actions']);
 		}
 
 		if (isset($options['class'])) {
-			$this->setTableClass($options['class']);
+			$this->tableClass($options['class']);
 		}
 
 		if (isset($options['id'])) {
-			$this->setTableId($options['id']);
+			$this->tableId($options['id']);
 		}
 
-		if (isset($options['object'])) {
-			$this->setObject($options['object']);
+		if (isset($options['provider'])) {
+			$this->provider($options['provider']);
 		}
 
 		if (isset($options['use_tfoot'])) {
-			$this->useTFoot = (boolean) $options['use_tfoot'];
+			$this->use_tfoot = (boolean) $options['use_tfoot'];
 		}
 
 		if (isset($options['btn_type'])) {
-			$this->setBtnType($options['btn_type']);
+			$this->actionType($options['btn_type']);
 		}
 	}
 
 	/**
-	 * Set the Data Object.
+	 * Set the Data Provider for table.
 	 *
-	 * @param Object $obj Model object
-	 * @return Reborn\Util\Table
+	 * @param mixed $provider Data provider (May be Model or array)
+	 * @return \Reborn\Util\Table
 	 **/
-	public function setObject($obj)
+	public function provider($provider)
 	{
-		if (is_object($obj) || is_array($obj)) {
-			$this->object = $obj;
+		if (is_object($provider) || is_array($provider)) {
+			$this->provider = $provider;
 		}
 
 		return $this;
@@ -161,9 +162,9 @@ class Builder
 	 * Set the Table tag's class value
 	 *
 	 * @param string $classes Tabel class [css] string
-	 * @return Reborn\Util\Table
+	 * @return \Reborn\Util\Table
 	 **/
-	public function setTableClass($classes)
+	public function tableClass($classes)
 	{
 		$this->table_class = $classes;
 
@@ -174,9 +175,9 @@ class Builder
 	 * Set the Table tag's id value
 	 *
 	 * @param string $id Tabel id string
-	 * @return Reborn\Util\Table
+	 * @return \Reborn\Util\Table
 	 **/
-	public function setTableId($id)
+	public function tableId($id)
 	{
 		$this->table_id = $id;
 
@@ -187,12 +188,12 @@ class Builder
 	 * Set the Action Button Type
 	 *
 	 * @param string $type Action Button Type
-	 * @return Reborn\Util\Table
+	 * @return \Reborn\Util\Table
 	 **/
-	public function setBtnType($type)
+	public function actionType($type)
 	{
 		if (in_array($type, array('text', 'icon-text', 'text-icon', 'icon', 'icons-bar'))) {
-			$this->buttonType = $type;
+			$this->button_type = $type;
 		}
 
 		return $this;
@@ -217,13 +218,44 @@ class Builder
 	 * $tabel->setActions($actions);
 	 * </code>
 	 *
-	 * @return Reborn\Util\Table
+	 * @return \Reborn\Util\Table
 	 **/
-	public function setActions($actions = array())
+	public function actions($actions = array())
 	{
-		foreach ($actions as $name => $act) {
-			$this->prepareActionsLink($name, $act);
+		foreach ($actions as $name => $action) {
+			$this->prepareActionsLink($name, $action);
 		}
+
+		return $this;
+	}
+
+	/**
+	 * Set the table's single action button (or) text.
+	 *
+	 * @param string $name
+	 * @param string $title
+	 * @param string|null $url
+	 * @param string|null $icon
+	 * @param string|null $class
+	 * @return \Reborn\Util\Table
+	 **/
+	public function action($name, $title, $url = null, $icon = null, $class = null)
+	{
+		$action = array('title' => $title);
+
+		if (! is_null($url) ) {
+			$action['url'] = $url;
+		}
+
+		if (! is_null($icon) ) {
+			$action['icon'] = $icon;
+		}
+
+		if (! is_null($class) ) {
+			$action['btn-class'] = $class;
+		}
+
+		$this->prepareActionsLink($name, $action);
 
 		return $this;
 	}
@@ -233,7 +265,7 @@ class Builder
 	 *
 	 * @param string $name
 	 * @param array $options
-	 * @return Reborn\Util\Table
+	 * @return void
 	 **/
 	protected function prepareActionsLink($name, $options)
 	{
@@ -243,19 +275,21 @@ class Builder
 		$act['icon'] = isset($options['icon']) ? $options['icon'] : '';
 
 		if (isset($options['url'])) {
-			if (preg_match('/\[:(.*)\]/', $options['url'], $match)) {
-				$act['url'] = str_replace($match[0], '[r]', $options['url']);
-				$act['key'] = $match[1];
-			} else {
-				$act['url'] = $options['url'];
-				$act['key'] = '';
+			$url = $options['url'];
+
+			$act['url'] = $url;
+			$act['key'] = array();
+
+			if (preg_match_all('/\[:(\w+)\]/', $url, $matches, PREG_SET_ORDER)) {
+				foreach ($matches as $match) {
+					$act['key'][] = $match[1];
+				}
 			}
 		}
 
 		$act['target'] = isset($options['new_window']) ? (boolean)$options['new_window'] : false;
 
 		$this->actions[$name] = $act;
-		return $this;
 	}
 
 	/**
@@ -279,11 +313,11 @@ class Builder
 	 * </code>
 	 *
 	 * @param array $headers
-	 * @return Reborn\Util\Table
+	 * @return \Reborn\Util\Table
 	 **/
 	public function headers( array $headers)
 	{
-		$this->header = $headers;
+		$this->headers = $headers;
 
 		return $this;
 	}
@@ -292,7 +326,7 @@ class Builder
 	 * Add table columns data array
 	 *
 	 * @param array $cols
-	 * @return Reborn\Util\Table
+	 * @return \Reborn\Util\Table
 	 **/
 	public function columns($cols = array())
 	{
@@ -319,11 +353,11 @@ class Builder
 	 **/
 	public function isEmpty()
 	{
-		if (is_object($this->object) and method_exists($this->object, 'isEmpty')) {
-			return $this->object->isEmpty();
+		if (is_object($this->provider) and method_exists($this->provider, 'isEmpty')) {
+			return $this->provider->isEmpty();
 		}
 
-		return empty($this->object);
+		return empty($this->provider);
 	}
 
 	/**
@@ -339,10 +373,10 @@ class Builder
 
 		$result = $this->renderTableOpen();
 
-		if (! empty($this->header) ) {
+		if (! empty($this->headers) ) {
 			$result .= $this->renderTableHeader();
 
-			if ($this->useTFoot) {
+			if ($this->use_tfoot) {
 				$result .= $this->renderTableFooter();
 			}
 		}
@@ -386,7 +420,7 @@ class Builder
 	{
 		$head_row = "\t<thead>\n\t\t<tr class=\"table-head\">";
 
-		if ($this->checkAll) {
+		if ($this->check_all) {
 			$head_row .= "\n\t\t\t<th width=\"5%\">";
 			$head_row .= "\n\t\t\t\t";
 			$head_row .= '<input id="action_to_all" class="check-all" type="checkbox" name="action_to_all">';
@@ -409,7 +443,7 @@ class Builder
 	{
 		$foot_row = "\t<tfoot>\n\t\t<tr class=\"table-footer\">";
 
-		if ($this->checkAll) {
+		if ($this->check_all) {
 			$foot_row .= "\n\t\t\t<th width=\"5%\">";
 			$foot_row .= "\n\t\t\t\t";
 			$foot_row .= '<input id="action_to_all_foot" class="check-all" type="checkbox" name="action_to_all">';
@@ -430,12 +464,12 @@ class Builder
 	 **/
 	protected function renderTableTh()
 	{
-		$total_head = count($this->header);
+		$total_head = count($this->headers);
 		$total_cols = count($this->cols);
 
 		$ths = '';
 
-		foreach ($this->header as $key => $value) {
+		foreach ($this->headers as $key => $value) {
 			if (is_array($value)) {
 				$width = isset($value['width']) ? $value['width'] : 'auto';
 				$name = isset($value['name']) ? $value['name'] : '';
@@ -470,8 +504,8 @@ class Builder
 	{
 		$body = "\n\t<tbody class=\"table-body\">";
 
-		foreach ($this->object as $key => $obj) {
-			$body .= $this->renderTableRow($obj, $key);
+		foreach ($this->provider as $key => $data) {
+			$body .= $this->renderTableRow($data, $key);
 		}
 
 		$body .= "\n\t</tbody>\n";
@@ -482,27 +516,28 @@ class Builder
 	/**
 	 * Render the table row (<tr>....</tr>)
 	 *
-	 * @param Object $obj Data object
+	 * @param mixed $data
 	 * @param int $key Array key from Object Collection.
 	 * 					Use for HTML Tag class attribute name only.
 	 * @return string
 	 **/
-	protected function renderTableRow($obj, $key)
+	protected function renderTableRow($data, $key)
 	{
 		$no = $key + 1; // Because key is start from 0.
 		$row = "\n\t\t<tr class=\"row-$no\">";
 
-		if ($this->checkAll) {
+		if ($this->check_all) {
+			$id = is_array($data) ? $data['id'] : $data->id;
 			$row .= "\n\t\t\t".'<td class="checkbox">';
 			$row .= "\n\t\t\t\t";
-			$row .= \Form::checkbox('action_to[]', $obj->id, false, array('id' => 'action'.$no));
+			$row .= Form::checkbox('action_to[]', $id, false, array('id' => 'action'.$no));
 			$row .= "\n\t\t\t</td>";
 		}
 
-		$row .= $this->renderTableColumn($obj);
+		$row .= $this->renderTableColumn($data);
 
 		if (! empty($this->actions) ) {
-			$row .= $this->renderActionsColumn($obj);
+			$row .= $this->renderActionsColumn($data);
 		}
 
 		$row .= "\n\t\t</tr>";
@@ -513,10 +548,10 @@ class Builder
 	/**
 	 * Render the data Column for table (<td>...</td>)
 	 *
-	 * @param Object $obj Data object
+	 * @param mixed $data
 	 * @return string
 	 **/
-	protected function renderTableColumn($obj)
+	protected function renderTableColumn($data)
 	{
 		$cols = '';
 
@@ -524,9 +559,9 @@ class Builder
 			$cols .= "\n\t\t\t<td>";
 
 			if (isset($col['type']) and ('date' == $col['type'])) {
-				$cols .= $this->getObjectAttributeDateTime($obj, $col['key'], $col['format']);
+				$cols .= $this->getObjectAttributeDateTime($data, $col['key'], $col['format']);
 			} else {
-				$cols .= $this->getObjectAttribute($obj, $col['key']);
+				$cols .= $this->getObjectAttribute($data, $col['key']);
 			}
 
 			$cols .= '</td>';
@@ -538,25 +573,25 @@ class Builder
 	/**
 	 * Get the Object's attribute value
 	 *
-	 * @param Object $obj ModelObject
+	 * @param mixed $data
 	 * @param string $key Object's key name
 	 * @return string
 	 **/
-	protected function getObjectAttribute($obj, $key)
+	protected function getObjectAttribute($data, $key)
 	{
 		if (false === strpos($key, '.')) {
-			if(is_object($obj)) {
-				return $obj->{$key};
-			} elseif(is_array($obj)) {
-				return $obj[$key];
+			if(is_object($data)) {
+				return $data->{$key};
+			} elseif(is_array($data)) {
+				return $data[$key];
 			} else {
-				return $obj;
+				return $data;
 			}
 		}
 
 		$keys = explode('.', $key, 2);
 
-		return $this->getObjectAttribute($obj->{$keys[0]}, $keys[1]);
+		return $this->getObjectAttribute($data->{$keys[0]}, $keys[1]);
 	}
 
 	/**
@@ -567,12 +602,11 @@ class Builder
 	 * @param string $format Datetime format string
 	 * @return string
 	 **/
-	protected function getObjectAttributeDateTime($obj, $key, $format)
+	protected function getObjectAttributeDateTime($data, $key, $format)
 	{
-		$date = $obj->{$key};
+		$date = is_array($data) ? $data[$key] : $data->{$key};
 
-		if ($obj instanceof \Eloquent) {
-			$date = date_create($blog->created_at);
+		if ($data instanceof \Eloquent) {
 			return date_format($date, $format);
 		} elseif ($date instanceof MongoDate) {
 			return date($format, $date->sec);
@@ -584,27 +618,33 @@ class Builder
 	/**
 	 * Render the Action Buttons Column for table
 	 *
-	 * @param Object $obj Data object
+	 * @param mixed $data
 	 * @return string
 	 **/
-	protected function renderActionsColumn($obj)
+	protected function renderActionsColumn($data)
 	{
 		$row = "\n\t\t\t<td class=\"td-actions\">";
 
-		if('icons-bar' == $this->buttonType) {
+		if('icons-bar' == $this->button_type) {
 			$row .= '<div class="icons-bar">';
 		}
 
 		foreach ($this->actions as $action) {
 
-			if (!is_null($obj->{$action['key']})) {
-				$action['url'] = str_replace('[r]', $obj->{$action['key']}, $action['url']);
+			if (isset($action['url'])) {
+				foreach ($action['key'] as $attr) {
+					$action['url'] = str_replace(
+										'[:'.$attr.']',
+										$data->{$attr},
+										$action['url']
+									);
+				}
 			}
 
 			$row .= $this->getButton($action);
 		}
 
-		if('icons-bar' == $this->buttonType) {
+		if('icons-bar' == $this->button_type) {
 			$row .= '</div>';
 		}
 
@@ -645,7 +685,7 @@ class Builder
 	 **/
 	protected function getButtonData($attrs)
 	{
-		switch ($this->buttonType) {
+		switch ($this->button_type) {
 			case 'text':
 				return $attrs['title'];
 				break;

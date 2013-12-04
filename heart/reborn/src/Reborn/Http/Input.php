@@ -37,6 +37,16 @@ class Input
     }
 
     /**
+     * Capture Input data to Flash.
+     *
+     * @return void
+     **/
+    public static function capture()
+    {
+        \Reborn\Util\Flash::inputs();
+    }
+
+    /**
      * Get request method is POST or GET
      *
      * @return string
@@ -84,7 +94,7 @@ class Input
      * @param mixed $default Default value if request key is not set
      * @return mixed
      */
-    public static function get($key, $default = null)
+    public static function get($key = '*', $default = null)
     {
         if ($key == '*') {
             return static::getAllInput();
