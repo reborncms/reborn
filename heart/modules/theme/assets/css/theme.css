@@ -47,6 +47,8 @@ div#list-themes li {
 	height: auto;
 	margin-right: 22px;
 	padding-bottom: 20px;
+	height: 450px;
+	display: inline-block;
 }
 
 div#list-themes h2, div#list-themes h3, div#list-themes p, div#list-themes a {
