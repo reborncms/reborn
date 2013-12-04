@@ -119,9 +119,5 @@ return array(
 	 */
 	'sentry_keyname' => 'reborn_cms',
 
-	'exportable_modules' => array(
-		'blog',
-		'pages'
-	),
 
 );
