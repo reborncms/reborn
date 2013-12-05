@@ -17,7 +17,7 @@ class Theme
         $themeinfo = array();
         
         foreach ($results as $theme) {
-            $themeinfo[] = self::loadInfo($theme, $handler);            
+            $themeinfo[$theme] = self::loadInfo($theme, $handler);            
         }
 
         return $themeinfo;
