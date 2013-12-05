@@ -137,9 +137,9 @@ class Setting
      * @param mixed $value
      * @return void
      */
-    public static function remove($key)
+    public static function remove($key, $prefix = null)
     {
-        DB::table(static::$_table)
+        DB::table($prefix.static::$_table)
                 ->where('slug', '=', $key)
                 ->delete();
     }

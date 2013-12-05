@@ -633,9 +633,16 @@ class Builder
 
 			if (isset($action['url'])) {
 				foreach ($action['key'] as $attr) {
+
+					if (is_array($data)) {
+						$replace = isset($data[$attr]) ? $data[$attr] : null;
+					} else {
+						$replace = $data->{$attr};
+					}
+
 					$action['url'] = str_replace(
 										'[:'.$attr.']',
-										$data->{$attr},
+										$replace,
 										$action['url']
 									);
 				}

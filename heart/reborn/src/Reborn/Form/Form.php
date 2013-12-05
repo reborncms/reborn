@@ -490,7 +490,7 @@ class Form
 
         $id = (!isset($attrs['id'])) ? ' id = "'.$name.'"' : '';
 
-        $value = static::getValue($value);
+        $value = static::getValue($name, $value);
 
         return '<textarea name="'.$name.'"'.$id.$attr.'>'.$value.'</textarea>';
     }
