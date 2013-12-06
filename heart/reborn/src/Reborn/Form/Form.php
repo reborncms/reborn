@@ -598,8 +598,6 @@ class Form
      **/
     protected static function getValue($name, $value = null)
     {
-        if (is_null(static::$data)) return $value;
-
         $result = null;
 
         $result = static::getFromFlash($name);

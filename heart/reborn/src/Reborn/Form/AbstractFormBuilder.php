@@ -4,7 +4,6 @@ namespace Reborn\Form;
 
 use Reborn\Http\Uri;
 use Reborn\Http\Input;
-use Reborn\Util\Flash;
 
 /**
  * FormBuilder class for Reborn.
@@ -14,14 +13,6 @@ use Reborn\Util\Flash;
  **/
 abstract class AbstractFormBuilder
 {
-
-	/**
-	 * Input key name constant for Flash
-	 *
-	 * @var string
-	 **/
-	const INPUT_KEY = '_inputs';
-
 	/**
 	 * Form name or Form process mode
 	 *
@@ -169,6 +160,115 @@ abstract class AbstractFormBuilder
 	}
 
 	/**
+	 * Set form element field.
+	 *
+	 * @param string $name Form element field name
+	 * @param string $type Field type (eg: text)
+	 * @param string|null $rules Field rule string
+	 * @param array $options Other field element attributes
+	 * @return \Reborn\Form\AbstractFormBuilder
+	 **/
+	public function field($name, $type, $rules = null, $options = array())
+	{
+		$data = array(
+			'type' => $type,
+			'rule' => $rules
+		);
+
+		// Field order after exists field name
+		if (isset($options['after'])) {
+			$after = $options['after'];
+			unset($options['after']);
+		}
+
+		// Field order before exists field name
+		if (isset($options['before'])) {
+			$before = $options['before'];
+			unset($options['before']);
+		}
+
+		$data = array_merge($data, $options);
+
+		if ( isset($after) ) {
+			return $this->fieldAfter($after, $name, $data);
+		} elseif ( isset($before) ) {
+			return $this->fieldBefore($before, $name, $data);
+		}
+
+		$this->fields[$name] = $data;
+
+		return $this;
+	}
+
+	/**
+	 * Set form element field after "$after" field.
+	 *
+	 * @param string $after
+	 * @param string $name
+	 * @param array $field_data
+	 * @return \Reborn\Form\AbstractFormBuilder
+	 **/
+	public function fieldAfter($after, $name, array $field_data)
+	{
+		if (! isset($this->fields[$after]) ) {
+			$this->fields[] = $field_data;
+		} else {
+			$this->fieldReOrdering('after', $after, $name, $field_data);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Set form element field before "$before" field.
+	 *
+	 * @param string $before
+	 * @param string $name
+	 * @param array $field_data
+	 * @return \Reborn\Form\AbstractFormBuilder
+	 **/
+	public function fieldBefore($before, $name, array $field_data)
+	{
+		if (! isset($this->fields[$before]) ) {
+			$this->fields[] = $field_data;
+		} else {
+			$this->fieldReOrdering('before', $before, $name, $field_data);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Reorder field order with given "type".
+	 *
+	 * @param string $type Reorder type (before || after)
+	 * @param string $check Exists field name to check
+	 * @param string $name New insert field's name
+	 * @param array $field_data New insert field's data array
+	 * @return void
+	 **/
+	protected function fieldReOrdering($type, $check, $name, $field_data)
+	{
+		$reorder = array();
+
+		foreach ($this->fields as $field => $data) {
+			if ($check === $field) {
+				if ('before' === $type) {
+					$reorder[$name] = $field_data;
+					$reorder[$field] = $data;
+				} else {
+					$reorder[$field] = $data;
+					$reorder[$name] = $field_data;
+				}
+			} else {
+				$reorder[$field] = $data;
+			}
+		}
+
+		$this->fields = $reorder;
+	}
+
+	/**
 	 * Prepend the ui before $name field
 	 *
 	 * @param string $name
@@ -204,7 +304,7 @@ abstract class AbstractFormBuilder
 	public function valid()
 	{
 		// Check for method is POST
-		if (!\Input::isPost()) {
+		if (! Input::isPost()) {
 			return false;
 		}
 
@@ -215,7 +315,7 @@ abstract class AbstractFormBuilder
 		}
 
 		// Save Old data in Flash
-		$this->setInputsInFlash();
+		Input::capture();
 
 		$this->builder->setErrors($this->validator->getErrors());
 
@@ -245,7 +345,7 @@ abstract class AbstractFormBuilder
 	 **/
 	public function build($hiddenData = array(), $merge = false)
 	{
-		if (!$this->add()) {
+		if (!$this->assignToBuilder()) {
 			return null;
 		}
 
@@ -371,55 +471,58 @@ abstract class AbstractFormBuilder
 	}
 
 	/**
-	 * Add the Form fields to Builder
+	 * Assign the Form fields to Builder
 	 *
 	 * @return boolean
 	 */
-	protected function add()
+	protected function assignToBuilder()
 	{
 		if (empty($this->fields)) {
 			return false;
 		}
 
-		$old = null;
-
-		if (Flash::has('_inputs')) {
-			$old = Flash::get('_inputs');
-		}
-
 		// Add the Fileds
-		foreach ($this->fields as $name => $val) {
+		foreach ($this->fields as $name => $attrs) {
 
-			$val['label'] = isset($val['label']) ? $val['label'] : '';
-			$val['info'] = isset($val['info']) ? $val['info'] : '';
-			$val['attr'] = isset($val['attr']) ? $val['attr'] : array();
+			$attrs['label'] = isset($attrs['label']) ? $attrs['label'] : '';
+			$attrs['info'] = isset($attrs['info']) ? $attrs['info'] : '';
+			$attrs['attr'] = isset($attrs['attr']) ? $attrs['attr'] : array();
 
 			// For Radio Group
-			if ('radioGroup' === $val['type']) {
-				$val['radio_label'] = isset($val['radio_label']) ? $val['radio_label'] : array();
+			if ('radioGroup' === $attrs['type']) {
+				$attrs['radio_label'] = array();
+
+				if ( isset($attrs['radio_label']) ) {
+					$attrs['radio_label'] = $attrs['radio_label'];
+				}
 			}
 
-			if (isset($old[$name])) {
-				$val['value'] = $old[$name];
-			} elseif ($this->model and !is_string($this->model)) {
-				$model = $this->model;
-				$val['value'] = (is_array($model)) ? $model[$name] : $model->{$name};
-			} elseif (isset($val['value'])) {
-				$val['value'] = $val['value'];
-			} else {
-				$val['value'] = null;
-			}
+			$attrs['value'] = isset($attrs['value']) ? $attrs['value'] : null;
 
-			$this->builder->render($val['type'], $name, $val);
+			$this->builder->render($attrs['type'], $name, $attrs);
 		}
 
-		if ($this->mode != 'create' and method_exists($this, 'editActions')) {
-			list($submit, $reset, $cancel) = $this->editActions();
+		$this->assignFormButtons();
+
+		return true;
+	}
+
+	/**
+	 * Assign Form action buttons to Builder
+	 *
+	 * @return void
+	 **/
+	protected function assignFormButtons()
+	{
+		$actionMode = $this->mode.'Actions';
+		if (method_exists($this, $actionMode)) {
+			list($submit, $reset, $cancel) = $this->{$actionMode}();
 		} else {
 			$submit = $this->submit;
 			$reset = $this->reset;
 			$cancel = $this->cancel;
 		}
+
 		$this->builder->addSubmit($submit);
 
 		if (!empty($this->reset)) {
@@ -433,8 +536,6 @@ abstract class AbstractFormBuilder
 		if (!empty($this->legend)) {
 			$this->builder->addLegend($this->legend);
 		}
-
-		return true;
 	}
 
 	/**
@@ -455,22 +556,7 @@ abstract class AbstractFormBuilder
 			$this->rules['honey_pot'] = 'honeypot';
 		}
 
-		$this->validator = new Validation(\Input::get('*'), $this->rules);
-	}
-
-	/**
-	 * Set Input Values to Flash for next request
-	 *
-	 * @return void
-	 **/
-	protected function setInputsInFlash()
-	{
-		$csrf = \Config::get('app.security.csrf_key');
-
-		$all = Input::get('*');
-		unset($all[$csrf]);
-
-		Flash::set(self::INPUT_KEY, $all);
+		$this->validator = new Validation(Input::get('*'), $this->rules);
 	}
 
 } // END class FormBuilder
