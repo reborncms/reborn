@@ -11,7 +11,7 @@ CKEDITOR.plugins.add('postlink', {
 
 		CKEDITOR.dialog.add('postlink', function(editor){
 
-			if (RB.post_id == undefined) {
+			if ((typeof RB == 'undefined') || RB.post_id == undefined) {
 				var src_link = SITEURL+ADMIN+'/blog/post-links/';
 			} else {
 				var src_link = SITEURL+ADMIN+'/blog/post-links/'+RB.post_id;
