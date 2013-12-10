@@ -224,6 +224,11 @@ class Builder implements BuilderInterface
 
 		$adjacent = (int) floor($show_pages / $this->adjacent);
 
+		// Return null on no pagi page
+		if ($total < 2) {
+			return '';
+		}
+
 		if ($total <= $show_pages) {
 
 			$pagis = $this->getPaginationLinks(1, $total);
@@ -394,8 +399,8 @@ class Builder implements BuilderInterface
 	{
 		$total_pagi = ceil($this->total_items / $this->items_per_page);
 
-		if ($total_pagi > 1) {
-			$this->total_pages = $total_pagi;
+		if ($total_pagi >= 1) {
+			$this->total_pages = (int) $total_pagi;
 		}
 	}
 
