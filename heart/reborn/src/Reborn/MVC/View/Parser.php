@@ -33,7 +33,7 @@ class Parser
             'elseif'        => 'handleElseIf',
             'else'          => 'handleElse',
             'breadcrumb'    => 'handleBreadcrumb',
-            'make'          => 'handlerMaker'
+            'make'          => 'handleMaker'
         );
 
     /**
@@ -449,7 +449,7 @@ class Parser
      * @param string $template
      * @return string
      **/
-    protected function handlerMaker($template)
+    protected function handleMaker($template)
     {
         $pattern = '/\{\{\s*make:(\w+)\s(.*)\s*\}\}/';
 
@@ -549,7 +549,7 @@ class Parser
     protected function handleEcho($template)
     {
         // Echo variable pattern for normal condition
-        $normalPattern = '/\{\{\s*(.+?)\s*\}\}/';
+        $normalPattern = '/\{\{\s*([\s\S]*?)\s*\}\}/m';
 
         return preg_replace($normalPattern, '<?php echo $1; ?>', $template);
     }

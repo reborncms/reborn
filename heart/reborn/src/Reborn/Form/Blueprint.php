@@ -359,6 +359,17 @@ class Blueprint
 	}
 
 	/**
+	 * Set data provider model to Form
+	 *
+	 * @param mixed $provider
+	 * @return void
+	 **/
+	public function setProvider($provider)
+	{
+		Form::provider($provider);
+	}
+
+	/**
 	 * Render the Form Element.
 	 *
 	 * @param string $method Method name
@@ -467,7 +478,7 @@ class Blueprint
 		if (is_null($val['value'])) {
 			$val['value'] = array();
 		}
-		
+
 		$this->fields[$name]['html'] = Form::checkGroup($name, $val['checkbox_label'], $val['value']);
 	}
 

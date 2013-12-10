@@ -383,12 +383,12 @@ abstract class AbstractFormBuilder
 	}
 
 	/**
-	 * Set the model object for form
+	 * Set the data provider model object for form
 	 *
 	 * @param array|object $model Data Model
 	 * @return \Reborn\Form\AbstractFormBuilder
 	 **/
-	public function setModel($model)
+	public function provider($model)
 	{
 		if (!is_array($model) and !is_object($model)) {
 			throw new \InvalidArgumentException("Model must be array or object");
@@ -400,11 +400,21 @@ abstract class AbstractFormBuilder
 	}
 
 	/**
+	 * Set the model object for form.
+	 * Alias of $this->provider()
+	 *
+	 **/
+	public function setModel($model)
+	{
+		return $this->provider($model);
+	}
+
+	/**
 	 * Get the model object
 	 *
-	 * @return Model Object
+	 * @return mixed
 	 **/
-	public function getModel()
+	public function getProvider()
 	{
 		if (!$this->model) return null;
 
@@ -414,6 +424,15 @@ abstract class AbstractFormBuilder
 		}
 
 		return $this->model;
+	}
+
+	/**
+	 * Alias of $this->getProvider()
+	 *
+	 **/
+	public function getModel()
+	{
+		return $this->getProvider();
 	}
 
 	/**
@@ -479,6 +498,10 @@ abstract class AbstractFormBuilder
 	{
 		if (empty($this->fields)) {
 			return false;
+		}
+
+		if ($this->model) {
+			$this->builder->setProvider($this->model);
 		}
 
 		// Add the Fileds

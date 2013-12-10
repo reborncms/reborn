@@ -105,6 +105,17 @@ class Form
     }
 
     /**
+     * Set Data Provider (Model) for Form
+     *
+     * @param mixed $provider
+     * @return void
+     **/
+    public static function provider($provider)
+    {
+        static::$data = $provider;
+    }
+
+    /**
      * Close element
      *
      * @return string
