@@ -22,7 +22,7 @@
 		    </li>
 
 		    <li id="extra-li">
-		    	
+
 		    	<div id="folder-changer">
 		    		{{ Form::label(t('media::media.lbl.chofol')) }}
 
@@ -30,14 +30,14 @@
 						<option value="0">{{ t('media::media.lbl.none') }}</option>
 						{{ folderTree($allFolders, 0, 0, 0) }}
 			        </select>
-		    	</div> <!-- end of folder-changer -->	    		
+		    	</div> <!-- end of folder-changer -->
 
 	    	</li> <!-- end of extra-li -->
 
 		</ul> <!-- end of thumb-tab-nav -->
 
 		<div id="media-tab" class="clearfix f-left">
-		     
+
 		  	<div id="m-thumb-main" class="f-left">
 
 					<div id="m-thumb-body" class="f-left">
@@ -60,10 +60,10 @@
 			</div> <!-- end of m-thumb-media-wrap -->
 
 			<div id="option-wrap" class="f-right adjust-width">
-	
+
 				<div id="m-thumb-preview" class="m-thumb-option">
 			    	<div id="m-thumb-preview-wrap" class="adjust-width">
-			    		
+
 			    	</div> <!-- end of m_img_preview -->
 			    </div> <!-- end of m-thumb-preview -->
 
@@ -72,7 +72,7 @@
 			    	<div class="m_input_wrap clearfix">
 			        	{{ Form::input('width', '', 'text', array('placeholder' => 'width', 'class' => 'f-left adjust-width')) }}
 
-			        	<i title="scale" class='icon-link f-left link-active'></i>
+			        	<i title="scale" class='icon-link f-left link-active' id="adjust-wh"></i>
 
 			        	{{ Form::input('height', '', 'text', array('placeholder' => 'height', 'class' => 'f-left adjust-width')) }}
 			        </div> <!-- end of m_input_wrap -->
@@ -100,9 +100,9 @@
 			<div id="uploader-wrap">
 
 				{{ \Form::imageUpload('file', 'thumbnail_upload'); }}
-				
+
 			</div> <!-- end of uploader-wrap -->
-			
+
 		</div> <!-- end of upload-tab -->
 
 	</div> <!-- end of tabs -->

@@ -1,5 +1,7 @@
 $(function(){
 
+	var org_width, org_height;
+
 	$('#m-thumb-choose-folder').chosen({'width': '97%'});
 
 	$('#m-thumb-main').perfectScrollbar();
@@ -14,6 +16,9 @@ $(function(){
 		$('#width').val($(this).attr('data-width'));
 		$('#height').val($(this).attr('data-height'));
 		$('#alt_text').val($(this).attr('data-alt'));
+
+		org_width = $(this).attr('data-width');
+		org_height = $(this).attr('data-height')
 
 		var image = "<img src='"+SITEURL+"media/image/"+$(this).attr('data-filename')+"/300/180'>";
 
@@ -40,6 +45,27 @@ $(function(){
 		}
 
 		$('#m-thumb-body').load(SITEURL + ADMIN + "/media/thumbnail #ajax_wrap");
+	});
+
+	// Image Size Adjust
+	var img_size_auto_adjust = false;
+
+	$('#adjust-wh').on('click', function(){
+		img_size_auto_adjust = !img_size_auto_adjust;
+		$(this).toggleClass('auto-adjust');
+
+		if (img_size_auto_adjust == false) {
+			if (org_height > 1) {
+				$('#height').val(org_height);
+			}
+		}
+	});
+
+	$('#width').on('keyup', function(){
+		if (img_size_auto_adjust == true) {
+			var new_height = org_height / org_width * $(this).val();
+			$('#height').val(Math.ceil(new_height));
+		}
 	});
 });
 

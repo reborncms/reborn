@@ -109,9 +109,13 @@
 }
 #m-thumb-dimension .link-active {
 	border: 1px solid #e0e0e0;
-	box-shadow: 0 0 3px #dfdfdf inset;
 	color: #202020;
 	padding: 0 2px;
+}
+#m-thumb-dimension .auto-adjust {
+	background: #efefef;
+	border: 1px solid #3D78B0;
+	color: #3D78B0;
 }
 #alt_text {
 	padding: 5px;
