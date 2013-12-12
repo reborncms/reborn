@@ -67,7 +67,6 @@ return array_map('realpath', array(
 	SYSTEM.'reborn/src/Reborn/Util/Hash.php',
 	SYSTEM.'reborn/src/Reborn/Util/Html.php',
 	SYSTEM.'reborn/src/Reborn/Util/Menu.php',
-	SYSTEM.'reborn/src/Reborn/Util/Pagination.php',
 	SYSTEM.'reborn/src/Reborn/Util/Security.php',
 	SYSTEM.'reborn/src/Reborn/Util/Str.php',
 	SYSTEM.'reborn/src/Reborn/Util/TagCloud.php',
@@ -104,5 +103,8 @@ return array_map('realpath', array(
 	SYSTEM.'reborn/src/Reborn/Asset/Asset.php',
 	SYSTEM.'reborn/src/Reborn/Asset/LessResolver.php',
 	SYSTEM.'reborn/src/Reborn/Asset/MiniCompressor.php',
+	SYSTEM.'reborn/src/Reborn/Pagination/BuilderInterface.php',
+	SYSTEM.'reborn/src/Reborn/Pagination/Builder.php',
+	SYSTEM.'reborn/src/Reborn/Pagination/PaginationFacade.php',
 	)
 );
