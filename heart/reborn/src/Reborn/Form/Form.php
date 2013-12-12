@@ -187,6 +187,10 @@ class Form
 
         $val = ' ';
         if (!is_null($value)) {
+            // Convert string with comma separated value , if value is array
+            // This problem is cause at Form::tags() with autocomplete
+            $value = (is_array($value)) ? implode(',', $value) : $value;
+
             $val = ' value="'.$value.'" ';
         }
 

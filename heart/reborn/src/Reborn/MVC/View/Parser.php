@@ -33,7 +33,8 @@ class Parser
             'elseif'        => 'handleElseIf',
             'else'          => 'handleElse',
             'breadcrumb'    => 'handleBreadcrumb',
-            'make'          => 'handleMaker'
+            'make'          => 'handleMaker',
+            'block'         => 'handleBlock'
         );
 
     /**
@@ -482,6 +483,31 @@ class Parser
         };
 
         return preg_replace_callback($pattern, $callback, $template);
+    }
+
+    /**
+     * Handle View Block
+     *
+     * @param string $template
+     * @return string
+     **/
+    protected function handleBlock($template)
+    {
+        $start = '/\{\{\s(block):(.*)\s\}\}/';
+        $end = '/\{\{\s(endblock)\s\}\}/';
+        $show = '/\{\{\s(showblock):(.*)\s\}\}/';
+        $prepend = '/\{\{\s(prepend):(.*)\s\}\}([\s\S]*?)\{\{\s(endprepend)\s\}\}/m';
+        $append = '/\{\{\s(append):(.*)\s\}\}([\s\S]*?)\{\{\s(endappend)\s\}\}/m';
+
+        $d =  preg_replace($start, '<?php $this->_block->define(\'$2\'); ?>', $template);
+        $d = preg_replace($end, '<?php $this->_block->capture(); ?>', $d);
+
+        $d = preg_replace($prepend, '<?php $this->_block->prepend(\'$2\', \'$3\'); ?>', $d);
+        $d = preg_replace($append, '<?php $this->_block->append(\'$2\', \'$3\'); ?>', $d);
+
+        $d = preg_replace($show, '<?php echo $this->_block->show(\'$2\'); ?>', $d);
+
+        return $d;
     }
 
     /**

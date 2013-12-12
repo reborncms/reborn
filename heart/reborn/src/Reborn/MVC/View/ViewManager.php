@@ -69,7 +69,7 @@ class ViewManager
 
 		$this->checkHelpersFileFromTheme();
 
-		$this->view = new View(Config::get('template.cache_path'));
+		$this->view = new View(Config::get('template.cache_path'), new Block());
 
 		$this->ext = Config::get('template.template_extension');
 

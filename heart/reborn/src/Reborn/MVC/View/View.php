@@ -46,14 +46,25 @@ class View implements ArrayAccess
     protected $cache;
 
     /**
+     * Instance of View Block
+     *
+     * @var \Reborn\MVC\View\Block
+     **/
+    protected $_block;
+
+    /**
      * Constructor Method
      *
+     * @param string|null $cachePath
+     * @param null|\Reborn\MVC\View\Block $block
      * @return void
      **/
-    public function __construct($cachePath = null)
+    public function __construct($cachePath = null, Block $block = null)
     {
         $configCache = Config::get('template.cache_path');
         $this->cache = is_null($cachePath) ? $configCache : $cachePath;
+
+        $this->_block = is_null($block) ? new Block : $block;
     }
 
     /**
