@@ -285,6 +285,8 @@ SCRIPT;
 
         $attrs = array_merge($attrs, array('class' => 'tags'));
 
+        $value = is_array($value) ? implode(',', $value) : $value;
+
         if (static::$tag) {
             return static::text($name, $value, $attrs).$tag_script;
         }

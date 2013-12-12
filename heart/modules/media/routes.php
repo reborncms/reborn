@@ -15,10 +15,10 @@
 
 	// Setting thumbnail
 	\Route::get(
-			'@admin/media/thumbnail/{int:folderId}',
+			'@admin/media/thumbnail/{int:folderId}?',
 			'Media\Admin\Media::thumbnail', 
 			'thumbnail'
-		);
+		)->defaults(array('folderId' => 0));
 
 	// File upload
 	\Route::add(

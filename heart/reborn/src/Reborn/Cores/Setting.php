@@ -119,11 +119,12 @@ class Setting
      * Add the new setting data to setting table.
      *
      * @param array $data Setting data array
+     * @param mixed $value
      * @return boolean
      */
-    public static function add($data)
+    public static function add($data, $prefix = null)
     {
-        if (DB::table(static::$_table)->insert($data)) {
+        if (DB::table($prefix.static::$_table)->insert($data)) {
             return true;
         }
 
