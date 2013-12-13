@@ -19,8 +19,9 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
     public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
     {
+
         $menu->add('media', t('media::media.title.title'), $modUri,
-        null,25);
+        'media');
     }
 
     public function settings()

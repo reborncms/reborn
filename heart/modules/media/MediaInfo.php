@@ -15,8 +15,6 @@ class MediaInfo extends \Reborn\Module\AbstractInfo
 
     protected $version = '1.0';
 
-    //protected $description = 'Media module for RebornCMS';
-
     protected $author = 'Yan Naing';
 
     protected $authorUrl = 'http://www.myanmarlinks.net';
@@ -44,5 +42,10 @@ class MediaInfo extends \Reborn\Module\AbstractInfo
         );
 
     protected $sharedData = false;
+
+    /**
+     * {@inheritdoc}
+     **/
+    protected $allowSharedByUser = false;
 
 } // END class MediaInfo
