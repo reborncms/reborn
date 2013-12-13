@@ -27,8 +27,8 @@ if(! defined('CONTENT'))
 		$path = trim(str_replace('index.php', '', $_SERVER['PHP_SELF']), '/');
 		$path = rtrim($host.'/'.$path, '/');
 
-		if(isset($sites[$path])) {
-			$folder = $sites[$path];
+		if(isset($sites['content_path'][$path])) {
+			$folder = $sites['content_path'][$path];
 		}
 	}
 

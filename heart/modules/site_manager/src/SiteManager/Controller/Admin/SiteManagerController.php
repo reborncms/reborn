@@ -36,11 +36,12 @@ class SiteManagerController extends \AdminController
 			'actions' => $tb_actions,
 			'class' => 'stripe',
 			'id' => 'site_manager_table',
-			'object' => SiteManager::all(),
 			'btn_type' => 'icons-bar'
 		);
 
 		$table = Table::create($tb_opts);
+
+		$table->provider(SiteManager::all());
 
 		$table->headers(array('Name', 'Domain', 'Actions'));
 
