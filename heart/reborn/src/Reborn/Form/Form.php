@@ -3,6 +3,7 @@
 namespace Reborn\Form;
 
 use Reborn\Http\Uri;
+use Reborn\Util\Str;
 use Reborn\Util\Html;
 use Reborn\Util\Flash;
 use Reborn\Config\Config;
@@ -180,7 +181,7 @@ class Form
         if (isset($attrs['id'])) {
             $id = '';
         } else {
-            $id = ' id="'.\Str::sanitize($name, 'A-Za-z-0-9-_\s').'"';
+            $id = ' id="'.Str::sanitize($name, 'A-Za-z-0-9-_\s').'"';
         }
 
         $value = static::getValue($name, $value);
@@ -378,7 +379,7 @@ class Form
     {
         $attr = Html::buildAttributes($attrs);
 
-        $labelFor = ($for != null) ? ' for = "'.$for.'"' : '';
+        $labelFor = ($for != null) ? ' for = "'.Str::sanitize($for, 'A-Za-z0-9-_').'"' : '';
         return '<label'.$labelFor.$attr.'>'.$text.'</label>';
     }
 
@@ -523,8 +524,17 @@ class Form
     public static function select($name, $options, $defaultSel = null, $attrs = array())
     {
         $attr = Html::buildAttributes($attrs);
-        $id = (!isset($attrs['id'])) ? ' id = "'.$name.'"' : '';
-        $selbox = '<select name="'.$name.'"'.$id.$attr.'>';
+        $id = (!isset($attrs['id'])) ? ' id = "'.Str::sanitize($name, 'A-Za-z0-9-_').'"' : '';
+
+        $tag_name = $name;
+        // Add [] for multi select
+        if (isset($attrs['multiple'])) {
+            if (! preg_match('/(\[.*\])/', $name)) {
+                $tag_name = $name.'[]';
+            }
+        }
+
+        $selbox = '<select name="'.$tag_name.'"'.$id.$attr.'>';
         $defaultSel = static::getValue($name, $defaultSel);
 
         foreach ($options as $val => $label) {
