@@ -312,10 +312,14 @@ if(! function_exists('image_url'))
 	 **/
 	function image_url($name, $width = null, $height = null)
 	{
-		$width = is_null($width) ? '0' : $width;
-		$height = is_null($height) ? '0' : $height;
+		if (preg_match('/(.*)\.(\w+)\/(\d+)/', $name)) {
+			return \Uri::create().'image/'.$name;
+		}
 
-		return \Uri::create().'image/'.$name.'/'.$width.'/'.$height;
+		$width = is_null($width) ? null : '/'.$width;
+		$height = is_null($height) ? null : '/'.$height;
+
+		return \Uri::create().'image/'.$name.$width.$height;
 	}
 }
 
