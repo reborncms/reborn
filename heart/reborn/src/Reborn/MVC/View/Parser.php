@@ -12,6 +12,12 @@ use Reborn\MVC\View\AbstractHandler;
  **/
 class Parser
 {
+    protected $no_parse_tag = array('{{', '}}', '{#', '#}', '{##', '##}', '{=', '=}', '{@', '@}');
+
+    /**
+     * UTF-8 hex value for tag
+     */
+    protected $replace_tag = array('7b7b', '7d7d', '7b23', '237d', '7b2323', '23237d', '7b3d', '3d7d', '7b40', '407d',);
 
     /**
      * Default Parser Handler Lists
@@ -191,13 +197,11 @@ class Parser
      **/
     protected function handleUnParse($template)
     {
-        if (preg_match_all('/<noparse>(.*)<\/noparse>/', $template, $match)) {
-            $i = 1;
+        if (preg_match_all('/<noparse>([\s\S]*?)<\/noparse>/m', $template, $match)) {
+
             foreach ($match[0] as $k => $m) {
-                $key = $this->getNoParseMarker($i);
-                $this->noparse[$key] = $match[1][$k];
-                $template = str_replace($m, $key, $template);
-                $i++;
+                $replace  = str_replace($this->no_parse_tag, $this->replace_tag, $match[1][$k]);
+                $template = str_replace($m, $replace, $template);
             }
         }
 
@@ -212,18 +216,7 @@ class Parser
      **/
     protected function handleReParse($template)
     {
-        return str_replace(array_keys($this->noparse), array_values($this->noparse), $template);
-    }
-
-    /**
-     * Get no parse key string
-     *
-     * @param string $prefix
-     * @return string
-     **/
-    protected function getNoParseMarker($prefix)
-    {
-        return $prefix.'_noparse_'.\Reborn\Util\Str::random(6);
+        return str_replace($this->replace_tag, $this->no_parse_tag, $template);
     }
 
     /**

@@ -274,8 +274,8 @@ class ErrorHandler
             }
             .trace_head {
                 padding: 10px !important;
-                color: #E74C3C;
-                background: #fff;
+                color: #E74C3C !important;
+                background: #fff !important;
                 cursor: pointer;
                 position: relative;
             }
@@ -288,29 +288,29 @@ class ErrorHandler
                 display: block;
                 top: 0;
                 left: 0;
-                background: #E74C3C;
-                color: #fff;
+                background: #E74C3C !important;
+                color: #fff !important;
                 font-weight: bold;
             }
             .user_err {
-                background: #EA0972;
+                background: #EA0972 !important;
             }
             .warning_err {
-                background: #EA5809;
+                background: #EA5809 !important;
             }
             .notice_err {
-                background: #EAD86C;
+                background: #EAD86C !important;
             }
             .trace_body {
                 padding: 15px 10px;
-                color: #2D3E50;
+                color: #2D3E50 !important;
                 position: relative;
                 border-top: 1px solid #E74C3C;
             }
             pre {
                 padding: 15px !important;
-                background: #343434;
-                color: #fff;
+                background: #343434 !important;
+                color: #fff !important;
                 margin: 15px 0 0 0 !important;
             }
             .line_no {
