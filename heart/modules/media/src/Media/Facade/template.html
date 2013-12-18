@@ -25,33 +25,47 @@
     </a>
 {{ endif }}
 </div>
-
+{{ ifnot($used) }}
 <script type="text/javascript">
-    var THUMB_TARGET = '{{ $name }}',
-        THUMB_WIDTH = {{ $width }};
 
-    // Thumbnail Image Add Function
-    $('.thumbnail_add_btn').colorbox({
-        scrollable: false,
-        innerWidth: "1100",
-        opacity: 0.5,
-        onComplete : function() {
-            $.colorbox.resize();
-        }
+    var THUMB_WIDTH = {{ $width }};
+
+    
+    $(document).ready(function(){
+
+        // Thumbnail Image Add Function
+        $('.thumbnail_add_btn').colorbox({
+            scrollable: false,
+            innerWidth: "1100",
+            opacity: 0.5,
+            onComplete : function() {
+
+                window.m_active_preview = $(this).parent().find('.thumbnail_preview');
+                window.m_active = $(this).parent().find("input[type='hidden']");
+
+                window.m_active_remove = $(this).parent().find('.thumbnail_remove_btn');
+                window.m_active_add = $(this);
+
+                $.colorbox.resize();
+            }
+        });
+
+        // Thumbnail Image Remove Function
+        $('.thumbnail_remove_btn').on('click', function(e){
+            e.preventDefault();
+
+            var parent = $(this).parent(),
+                thumb = $(parent).find('.thumbnail_image'),
+                input = $(parent).find("input[type='hidden']"),
+                add_btn = $(parent).find('.thumbnail_add_btn');
+            $(thumb).remove();
+            $(input).val('');
+            $(add_btn).show();
+            $(this).hide();
+        });
+
     });
 
-    // Thumbnail Image Remove Function
-    $('.thumbnail_remove_btn').on('click', function(e){
-        e.preventDefault();
 
-        var parent = $(this).parent(),
-            thumb = $(parent).find('.thumbnail_image'),
-            input = $(parent).find('#' + THUMB_TARGET),
-            add_btn = $(parent).find('.thumbnail_add_btn');
-            console.log(input);
-        $(thumb).remove();
-        $(input).val('');
-        $(add_btn).show();
-        $(this).hide();
-    })
 </script>
+{{ endif }}

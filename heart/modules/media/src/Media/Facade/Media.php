@@ -18,6 +18,15 @@ class Media extends \Facade
 	 */
 	const THUMB_WIDTH = 200;
 
+	/**
+	 * undocumented class variable
+	 *
+	 * @var boolean
+	 **/
+	protected $used = false;
+
+	protected static $instance;
+
 
 	/**
 	 * undocumented class variable
@@ -112,6 +121,9 @@ class Media extends \Facade
 		$data['value'] = $value;
 		$data['name'] = $name;
 		$data['width'] = $width;
+		$data['used'] = $this->used;
+		
+		$this->used = true;
 
 		return $this->view->renderAsStr($template, $data);
 	}
@@ -123,7 +135,11 @@ class Media extends \Facade
 	 **/
 	protected static function getInstance()
 	{
-		return new static;
+		if (is_null(static::$instance)) {
+			static::$instance = new static;
+		}
+
+		return static::$instance;
 	}
 
 } // END class Media extends \Facade

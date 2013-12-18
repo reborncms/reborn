@@ -73,10 +73,10 @@ function insert()
 {
 	var target = window.parent.document;
 
-	var targetImg = $('.thumbnail_preview', target),
-		targetInput = target.getElementById(THUMB_TARGET),
-		targetRmBtn = $('.thumbnail_remove_btn', target);
-		targetAddBtn = $('.thumbnail_add_btn', target);
+	var targetImg = window.m_active_preview,
+		targetInput = window.m_active,
+		targetRmBtn = window.m_active_remove,
+		targetAddBtn = window.m_active_add;
 
 	var width = ($('#width').val()) ? $('#width').val() : 0,
 		height = ($('#height').val()) ? $('#height').val() : 0,
@@ -85,7 +85,7 @@ function insert()
 	var img = "<img class='thumbnail_image' src='"+SITEURL+'media/image/'+$('#image_url').val() +"/"+ THUMB_WIDTH + "' alt='"+alt+"'>";
 	var value = $('#image_url').val()+"/"+width+"/"+height+"/";
 
-	$('.thumbnail_image', target).remove();
+	$(targetImg).find('.thumbnail_image').remove();
 	$(targetAddBtn).hide();
 	$(targetRmBtn).show();
 
