@@ -64,7 +64,11 @@
 				</td>
 
 				<td>
-					{{ $blog->category->name }}
+					{{ if (!isset($blog->category->name)) }}
+						Untitled
+					{{ else }}
+						{{ $blog->category->name }}
+					{{ endif }}
 				</td>
 				<td>
 					<a href="{{ rbUrl('user/profile/'.$blog->author->id) }}">{{ $blog->author_name }}</a>

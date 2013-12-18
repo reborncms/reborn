@@ -160,4 +160,10 @@ class Helper {
 
 		return $widget;
 	}
+
+	public static function isTrashed($id)
+	{
+		return Blog::withTrashed()->find($id)->trashed();
+	}
+
 }

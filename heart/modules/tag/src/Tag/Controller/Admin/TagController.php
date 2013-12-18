@@ -161,7 +161,15 @@ class TagController extends \AdminController
 		
 		$final_slug = str_replace(" ", "-", $slug);
 
-		$check_duplicate = (int)Tag::where('name', '=', $final_slug)->count();
+		if ($method == 'edit') {
+
+			$check_duplicate = (int)Tag::where('name', $final_slug)->where('id', '!=', $id)->count();
+
+		} else {
+
+			$check_duplicate = (int)Tag::where('name', '=', $final_slug)->count();
+
+		}
 
 		if ($check_duplicate > 0) {
 

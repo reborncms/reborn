@@ -38,7 +38,7 @@ class FieldGroupTable
 		static::$actions['delete']['url'] = adminUrl('field/group-delete/[:id]');
 		static::$opts['actions'] = static::$actions;
 		$table = new Table(static::$opts);
-		$table->setObject($obj);
+		$table->provider($obj);
 		$table->headers(array('Name', 'Relation', 'Description', array('name' => 'Actions', 'width' => '14%')));
 		$table->columns(array('name', 'relation', 'description'));
 

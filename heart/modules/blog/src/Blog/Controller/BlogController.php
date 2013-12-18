@@ -22,7 +22,7 @@ class BlogController extends \PublicController
 	public function index($id = null)
 	{
 		$options = array(
-		    'total_items'       => Blog::active()->count(),
+		    'total_items'       => Blog::active()->notOtherLang()->count(),
 		    'items_per_page'    => \Setting::get('blog_per_page'),
 		);
 

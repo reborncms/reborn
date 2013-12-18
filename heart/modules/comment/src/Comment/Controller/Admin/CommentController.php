@@ -361,6 +361,15 @@ class CommentController extends \AdminController
 			return $this->notFound();
 		}
 
+		$cmt = Comment::withTrashed()->find($id);
+
+		if ($cmt->module == 'blog' and \Module::isEnabled($cmt->module)) {
+			if(\Blog\Lib\Helper::isTrashed($cmt->content_id)) {
+				\Flash::error("Sorry, you can't restore the comment of trashed content.");
+				return \Redirect::to(adminUrl('comment/filter/trash'));
+			}
+		}
+
 		$restore = Comment::withTrashed()->where('id', $id)->restore();
 
 		if ($restore) {

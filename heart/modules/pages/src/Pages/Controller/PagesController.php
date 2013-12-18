@@ -32,10 +32,19 @@ class PagesController extends \PublicController
 
         } else {
             $css = ($query->css != '') ? '<style>'.$query->css.'</style>' : '';
+
             $js = ($query->js != '') ? '<script>'.$query->js.'</script>' : '';
+
             $title = ($query->meta_title != "") ? $query->meta_title : $query->title;
+
+            //Set Layout for Page
+            if ($this->theme->hasLayout($query->page_layout)) {
+                $this->template->setLayout($query->page_layout);
+            }
+            else {
+                $this->template->setLayout('default');
+            }
             $this->template->title($title)
-                            ->setLayout($query->page_layout)
                                ->set('page', $query)
                                ->set('css', $css)
                                ->set('js', $js)

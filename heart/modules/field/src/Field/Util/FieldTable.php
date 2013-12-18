@@ -38,7 +38,7 @@ class FieldTable
 		static::$actions['delete']['url'] = adminUrl('field/delete/[:id]');
 		static::$opts['actions'] = static::$actions;
 		$table = new Table(static::$opts);
-		$table->setObject($obj);
+		$table->provider($obj);
 		$table->headers(array('Name', 'Slug', 'Type', array('name' => 'Actions', 'width' => '14%')));
 		$table->columns(array('field_name', 'field_slug', 'field_type'));
 
