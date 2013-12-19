@@ -29,6 +29,8 @@ return array(
 	'fileSize'		=> "Maximun uploaded file size is {size}",
 	'before'		=> "This \"{key}\" field must be date before {date}.",
 	'after'			=> "This \"{key}\" field must be date after {date}.",
-	"honeypot"		=> "You fill the honeypot field. This is wrong!"
+	'honeypot'		=> "You fill the honeypot field. This is wrong!",
+	'lat'			=> "Latitude value must be +90 to -90",
+	'long'			=> "Longitude value must be +180 to -180"
 
 );

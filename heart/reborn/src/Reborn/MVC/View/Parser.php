@@ -39,8 +39,7 @@ class Parser
             'elseif'        => 'handleElseIf',
             'else'          => 'handleElse',
             'breadcrumb'    => 'handleBreadcrumb',
-            'make'          => 'handleMaker',
-            'block'         => 'handleBlock'
+            'make'          => 'handleMaker'
         );
 
     /**
@@ -138,6 +137,9 @@ class Parser
 
         // Fourth step is handle for Code Block varialble
         $template = $this->handleCodeBlock($template);
+
+        // Handle for view block
+        $template = $this->handleBlock($template);
 
         // Handle for echo
         $template = $this->handleEcho($template);

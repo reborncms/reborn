@@ -80,6 +80,8 @@ class Validation
      * 25) - before [Input date must be before date (eg: before:10/22/2013)]
      * 26) - after [Input date must be after date (eg: after:10/22/2013)]
      * 27) - honeypot [Spam filter honey pot filed's validation]
+     * 28) - lat [Valid rule for latitude -90 to +90]
+     * 29) - long [Valid rule for longitude -180 to +180]
      *
      * @var array
      **/
@@ -110,7 +112,9 @@ class Validation
                 'fileSize',
                 'before',
                 'after',
-                'honeypot'
+                'honeypot',
+                'lat',
+                'long'
             );
 
     /**
@@ -680,6 +684,28 @@ class Validation
     protected function validHoneypot($value)
     {
         return ($value === '');
+    }
+
+    /**
+     * Valid method for Latitude
+     *
+     * @param string $value
+     * @return boolean
+     **/
+    protected function validLat($value)
+    {
+        return (((float) $value <= (float) 90.0) and ((float) $value >= (float) -90.0));
+    }
+
+    /**
+     * Valid method for Longitude
+     *
+     * @param string $value
+     * @return boolean
+     **/
+    protected function validLong($value)
+    {
+        return (((float) $value <= (float) 180.0) and ((float) $value >= (float) -180.0));
     }
 
     /**
