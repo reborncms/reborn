@@ -4,6 +4,8 @@ namespace Pages\Controller;
 
 use Pages\Model\Pages;
 
+use Pages\PagesPresenter;
+
 class PagesController extends \PublicController
 {
     public function before() {}
@@ -45,7 +47,7 @@ class PagesController extends \PublicController
                 $this->template->setLayout('default');
             }
             $this->template->title($title)
-                               ->set('page', $query)
+                               ->set('page', PagesPresenter::make($query))
                                ->set('css', $css)
                                ->set('js', $js)
                                ->metadata('keywords', $query->meta_keyword)
@@ -93,7 +95,7 @@ class PagesController extends \PublicController
                 $title = ($query->meta_title != "") ? $query->meta_title : $query->title;
                 $this->template->title($title)
                                 ->setLayout($query->page_layout)
-                                   ->set('page', $query)
+                                   ->set('page', PagesPresenter::make($query))
                                    ->set('css', $css)
                                    ->set('js', $js)
                                    ->metadata('keywords', $query->meta_keyword)
