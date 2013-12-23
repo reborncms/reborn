@@ -5,8 +5,9 @@ namespace Reborn\Cores;
 use Closure;
 use Exception;
 use ReflectionFunction;
-use Reborn\Exception\HttpNotFoundException;
 use Reborn\Http\Response;
+use Reborn\Exception\HttpNotFoundException;
+use Reborn\Connector\Log\LogManager;
 
 /**
  * Error Handler class
@@ -86,6 +87,8 @@ class ErrorHandler
             $status = 500;
         }
 
+        LogManager::debug($e->getMessage());
+
         $response = null;
 
         // Resolve Binding From Register Handlers
@@ -134,10 +137,18 @@ class ErrorHandler
      * Default Exception Handling
      *
      * @param \Exception $e
+     * @param integer $status
      * @return \Reborn\Http\Response
      **/
     protected function defaultHandling($e, $status)
     {
+        $request = $this->app->request;
+        if ($request->isAjax() ||
+            in_array('application/json', $request->getAcceptableContentTypes())
+        ) {
+            return $this->jsonResponseHandler($e, $status);
+        }
+
         $message = $e->getMessage();
         $file = $e->getFile();
         $line = $e->getLine();
@@ -145,8 +156,6 @@ class ErrorHandler
         $code = $this->getCodeLine($e);
 
         $traces = $e->getTrace();
-
-        \Log::debug($message);
 
         if ($this->app['env'] == 'production') {
             $template = $this->app['template'];
@@ -156,6 +165,41 @@ class ErrorHandler
         }
 
         return new Response($content, $status);
+    }
+
+    /**
+     * Exception handler for ajax request. Return json string
+     *
+     * @param \Exception $e
+     * @param integer $status
+     * @return \Reborn\Http\Response
+     **/
+    protected function jsonResponseHandler($e, $status)
+    {
+        $data = $trace_data = array();
+        $data['exception'] = array(
+            'stauts_code'   => $status,
+            'type'          => get_class($e),
+            'message'       => $e->getMessage(),
+            'file'          => str_replace(BASE, '{{ CMS }} /', $e->getFile()),
+            'line'          => $e->getLine()
+        );
+
+        $traces = $e->getTrace();
+        foreach ($traces as $k => $t) {
+            $trace_data[] = array(
+                'file'      => str_replace(BASE, '{{ CMS }} /', $e->getFile()),
+                'line'      => $this->getLine($t),
+                'class'     => $this->getClass($t),
+                'function'  => isset($t['function']) ? $t['function'] : '',
+                'args'      => isset($t['args']) ? $t['args'] : null
+            );
+
+        }
+
+        $data['exception']['trace'] = $trace_data;
+
+        return Response::json($data, $status);
     }
 
     /**

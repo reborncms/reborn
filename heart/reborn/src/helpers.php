@@ -104,7 +104,7 @@ if(! function_exists('flash'))
 	 */
 	function flash()
 	{
-		return \Flash::flashBox();
+		return Reborn\Util\Flash::flashBox();
 	}
 }
 
@@ -134,7 +134,7 @@ if(! function_exists('slug'))
 	 **/
 	function slug($str, $separator = '-')
 	{
-		return \Reborn\Util\Str::slug($str, $separator);
+		return Reborn\Util\Str::slug($str, $separator);
 	}
 }
 
@@ -154,7 +154,7 @@ if(! function_exists('sanitize'))
 	 **/
 	function sanitize($str, $pattern)
 	{
-		return \Reborn\Util\Str::sanitize($str, $pattern);
+		return Reborn\Util\Str::sanitize($str, $pattern);
 	}
 }
 
@@ -168,7 +168,7 @@ if(! function_exists('random_str'))
 	 **/
 	function random_str($length = 10)
 	{
-		return \Reborn\Util\Str::random($length);
+		return Reborn\Util\Str::random($length);
 	}
 }
 
@@ -285,7 +285,7 @@ if(! function_exists('url'))
 	 **/
 	function url($path = '')
 	{
-		return \Uri::create($path);
+		return Reborn\Http\Uri::create($path);
 	}
 }
 
@@ -297,6 +297,33 @@ if(! function_exists('rbUrl'))
 	function rbUrl($path = '')
 	{
 		return url($path);
+	}
+}
+
+if(! function_exists('admin_url'))
+{
+	/**
+	 * Helper function for the Uri::create() with ADMIN Panel Link.
+	 *
+	 * @param string $path Uri path to create.
+	 * @return string
+	 **/
+	function admin_url($path = '')
+	{
+		$admin = \Setting::get('adminpanel_url');
+		$path = ltrim($path, '/');
+		return Reborn\Http\Uri::create($admin.'/'.$path);
+	}
+}
+
+if(! function_exists('adminUrl'))
+{
+	/**
+	 * Alias of admin_url()
+	 */
+	function adminUrl($path = '')
+	{
+		return admin_url($path);
 	}
 }
 
@@ -313,13 +340,13 @@ if(! function_exists('image_url'))
 	function image_url($name, $width = null, $height = null)
 	{
 		if (preg_match('/(.*)\.(\w+)\/(\d+)/', $name)) {
-			return \Uri::create().'image/'.$name;
+			return Reborn\Http\Uri::create().'image/'.$name;
 		}
 
 		$width = is_null($width) ? null : '/'.$width;
 		$height = is_null($height) ? null : '/'.$height;
 
-		return \Uri::create().'image/'.$name.$width.$height;
+		return Reborn\Http\Uri::create().'image/'.$name.$width.$height;
 	}
 }
 
@@ -333,23 +360,7 @@ if(! function_exists('asset_url'))
 	 **/
 	function asset_url($path = '')
 	{
-		return rtrim(\Uri::create($path), '/');
-	}
-}
-
-if(! function_exists('adminUrl'))
-{
-	/**
-	 * Helper function for the Uri::create() with ADMIN Panel Link.
-	 *
-	 * @param string $path Uri path to create.
-	 * @return string
-	 **/
-	function adminUrl($path = '')
-	{
-		$admin = \Setting::get('adminpanel_url');
-		$path = ltrim($path, '/');
-		return \Uri::create($admin.'/'.$path);
+		return rtrim(Reborn\Http\Uri::create($path), '/');
 	}
 }
 
@@ -365,7 +376,7 @@ if(! function_exists('css'))
 	 **/
 	function css($file, $media = "all", $module = null)
 	{
-		$theme = Registry::get('app')->theme;
+		$theme = Reborn\Cores\Facade::getApplication()->theme;
 		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		return $asset->css($file, $media, $module);
 	}
@@ -383,7 +394,7 @@ if(! function_exists('less'))
 	 **/
 	function less($file, $media = "all", $module = null)
 	{
-		$theme = Registry::get('app')->theme;
+		$theme = Reborn\Cores\Facade::getApplication()->theme;
 		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		return $asset->less($file, $media, $module);
 	}
@@ -400,7 +411,7 @@ if(! function_exists('js'))
 	 **/
 	function js($file, $module = null)
 	{
-		$theme = Registry::get('app')->theme;
+		$theme = Reborn\Cores\Facade::getApplication()->theme;
 		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		return $asset->js($file, $module);
 	}
@@ -419,7 +430,7 @@ if(! function_exists('img'))
 	 **/
 	function img($file, $alt = null, $attr = array(), $module = null)
 	{
-		$theme = Registry::get('app')->theme;
+		$theme = Reborn\Cores\Facade::getApplication()->theme;
 		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		return $asset->img($file, $alt, $attr, $module);
 	}
@@ -436,7 +447,7 @@ if(! function_exists('assetPath'))
 	 **/
 	function assetPath($type = null, $module = null)
 	{
-		$theme = Registry::get('app')->theme;
+		$theme = Reborn\Cores\Facade::getApplication()->theme;
 		$asset = new Reborn\Asset\Asset($theme->getThemePath());
 		switch($type) {
 			case 'css' :
@@ -569,7 +580,7 @@ if (! function_exists('country'))
 	 **/
 	function country($key)
 	{
-		$lists = \Config::get('country');
+		$lists = Reborn\Config\Config::get('country');
 
 		if (array_key_exists($key, $lists)) {
 			return $lists[$key];
@@ -621,12 +632,12 @@ if (! function_exists('checkOnline'))
 	 **/
 	function checkOnline($url = 'www.google.com', $port = 80)
 	{
+		$is_conn = false;
+
 	    $connected = @fsockopen($url, $port);
 	    if ($connected){
 	        $is_conn = true;
 	        fclose($connected);
-	    }else{
-	        $is_conn = false;
 	    }
 
 	    return $is_conn;
@@ -683,7 +694,7 @@ if (! function_exists('is_home'))
 	function is_home()
 	{
 		$home_page = \Setting::get('home_page');
-		$uri = \Uri::segments();
+		$uri = Reborn\Http\Uri::segments();
 
 		if ( empty($uri) ) {
 			return true;
@@ -758,7 +769,7 @@ if(! function_exists('theme_config'))
 	 **/
 	function theme_config($key, $default = null)
 	{
-		$theme = Registry::get('app')->theme;
+		$theme = Reborn\Cores\Facade::getApplication()->theme;
 
 		try {
 			$theme_config = $theme->config();
@@ -820,8 +831,7 @@ if (! function_exists('template_parse'))
 	 **/
 	function template_parse($template, $data = array())
 	{
-		global $app;
-		return $app['view']->renderAsStr($template, $data);
+		return Reborn\Cores\Facade::getApplication()->view->renderAsStr($template, $data);
 	}
 }
 

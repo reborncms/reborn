@@ -11,8 +11,8 @@
 	<style type="text/css">
 		body {
 			font: 14px consolas, Monnaco, helvetica, arial, sans-serif;
-			color: #2B2B2B;
-			background-color: #EFEFEF;
+			color: #2B2B2B !important;
+			background-color: #EFEFEF !important;
 			padding:0;
 			margin: 0;
 			max-height: 100%;
@@ -31,7 +31,7 @@
 			text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2);
 			margin: 0 20px 20px 0;
 			font-size: 18px;
-			color: #fff;
+			color: #fff !important;
 			box-sizing: border-box;
 			-moz-box-sizing:border-box;
 			font-family: Verdana, helvetica, arial, sans-serif;
@@ -39,8 +39,8 @@
 		.black_box span {
 			display: block;
 			line-height: 1.7em;
-			color: #DCE185;
-			border-bottom: 1px dashed #454545;
+			color: #DCE185 !important;
+			border-bottom: 1px dashed #454545 !important;
 		}
 		.black_box p {
 			display: block;
@@ -71,16 +71,16 @@
 			display: none;
 		}
 		pre {
-			border: 2px solid #dfdfdf;
+			border: 2px solid #dfdfdf !important;
 			margin: 0;
-			background: #333;
+			background: #333 !important;
 			overflow: auto;
 			line-height: 1.5em;
-			color: #CDE64B;
+			color: #CDE64B !important;
 		}
 		pre strong {
-			background: #E1E7A7;
-			color: #1078C2;
+			background: #E1E7A7 !important;
+			color: #1078C2 !important;
 			width: 100%;
 			display: block;
 			font-weight: normal;
@@ -97,26 +97,26 @@
 		}
 
 		.trace_wrap {
-			background: #F8F8F8;
-			border: 1px solid #D3C6C6;
+			background: #F8F8F8 !important;
+			border: 1px solid #D3C6C6 !important;
 			margin: 10px auto;
 		}
 		.trace_head {
 			padding: 10px;
-			color: #fff;
-			background: #333;
+			color: #fff !important;
+			background: #333 !important;
 			cursor: pointer;
 			position: relative;
 		}
 		.trace_body {
 			padding: 15px 10px;
-			color: #286BB3;
+			color: #286BB3 !important;
 			position: relative;
-			border-top: 1px solid #b9b9b9;
+			border-top: 1px solid #b9b9b9 !important;
 		}
 		.line_no {
 			bottom: 8px;
-		    color: #DCE185;
+		    color: #DCE185 !important;
 		    font-size: 16px;
 		    position: absolute;
 		    right: 7px;

@@ -42,6 +42,14 @@
             "content/commands"
         ]
     },
+    "scripts": {
+        "post-install-cmd": [
+            "php magic compile"
+        ],
+        "post-update-cmd": [
+            "php magic compile"
+        ]
+    },
     "config": {
             "vendor-dir": "heart/vendor"
     },

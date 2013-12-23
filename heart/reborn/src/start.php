@@ -131,7 +131,7 @@ require __DIR__.DS.'helpers.php';
 require_once SYSTEM.'vendor/autoload.php';
 
 // Call compile file at web request.
-if ((php_sapi_name() === 'cli') and
+if ((php_sapi_name() !== 'cli') and
 	file_exists($less = STORAGES.'compile.php')) {
 	require $less;
 }
