@@ -5,9 +5,9 @@ namespace Reborn\Cores;
 use Closure;
 use Exception;
 use ReflectionFunction;
-use Reborn\Http\Response;
 use Reborn\Exception\HttpNotFoundException;
 use Reborn\Connector\Log\LogManager;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Error Handler class
