@@ -175,6 +175,10 @@
 			}
 		});
 
+		/* Language Select Box */
+		
+		$('#change_lang').chosen({width: "95%"});
+
 		// Select option selected by value
 		function selectItemByValue(elmnt, value){
 

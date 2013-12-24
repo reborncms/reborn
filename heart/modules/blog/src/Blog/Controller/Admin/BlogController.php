@@ -536,7 +536,7 @@ class BlogController extends \AdminController
 	protected function tagSave($id)
 	{
 		\Module::load('Tag');
-		$tag = \Tag\Controller\Admin\TagController::import($id, 'blog', \Input::get('blog_tag'));
+		$tag = \Tag\Lib\Helper::import($id, 'blog', \Input::get('blog_tag'));
 
 		if ($tag) {
 			return true;
