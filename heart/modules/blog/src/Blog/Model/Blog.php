@@ -202,6 +202,7 @@ class Blog extends \Eloquent
         $lang_list = \Blog\Lib\Helper::langList($this->attributes['id'], true);
         $lang = array();
         foreach ($lang_list as $key => $value) {
+            $key = \Config::get('langcodes.'.$key);
             $lang[] = "<a href='".rbUrl('blog/'.$value['slug'])."'>".$key."</a>";
         }
         return $lang;

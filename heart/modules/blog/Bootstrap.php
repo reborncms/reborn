@@ -28,7 +28,8 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 				'type' => 'text',
 			),
 			'blog_content_default_lang' => array(
-				'type'	=> 'text',
+				'type'	=> 'select',
+				'options' => \Config::get('langcodes')
 			),
 		);
 	}

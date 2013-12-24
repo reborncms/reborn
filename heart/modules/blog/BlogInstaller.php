@@ -83,7 +83,7 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
 			'name'		=> 'Contents default language',
 			'desc'		=> 'Default language for blog contents',
 			'value'		=> '',
-			'default'	=> 'English',
+			'default'	=> 'en',
 			'module'	=> 'Blog'
 			);
 	    \Setting::add($data);

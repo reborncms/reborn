@@ -175,16 +175,16 @@
                            <ul>
                                {{ loop ($blog->lang_list as $lang) }}
                                    {{ if ($lang['lang'] == $blog->lang) }}
-                                       <li><b>{{ $lang['lang'] }}</b></li>
+                                       <li><b>{{ Config::get('langcodes.'.$lang['lang']) }}</b></li>
                                    {{ else }}
-                                       <li><a href="{{ adminUrl('blog/edit/'.$lang['id']) }}" class="tipsy-tip" title="Edit contents of this language version" target="_blank">{{ $lang['lang'] }}</a></li>
+                                       <li><a href="{{ adminUrl('blog/edit/'.$lang['id']) }}" class="tipsy-tip" title="Edit contents of this language version" target="_blank">{{ Config::get('langcodes.'.$lang['lang']) }}</a></li>
                                    {{ endif }}
                                {{ endloop }}
                            </ul>
                        {{ endif }}
                         <div id="current_lang">
                             {{ Form::label('Current Language', 'lang', array('style' => 'width:80%')) }}
-                            {{ Form::text('lang', isset($blog->lang) ? $blog->lang : Setting::get('blog_content_default_lang'), array('style' => 'width:auto')) }}
+                            {{ Form::select('lang', $lang_list, isset($blog->lang) ? $blog->lang : Setting::get('blog_content_default_lang'), array('style' => 'width:100%', 'id' => 'change_lang')) }}
                             {{ if ($method == 'multilang') }}
                                 {{ if ($blog->lang_ref) }}
                                     {= $lang_ref = $blog->lang_ref =}
@@ -242,3 +242,8 @@
         </div> <!-- end of div#form-wrapper -->
     </div> <!-- end of div#main-form-wrapper -->
 {{ Form::end() }}
+<script>
+    jQuery(function(){
+        $('#change_lang').chosen({width: "95%"}); 
+    });
+</script>

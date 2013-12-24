@@ -51,7 +51,7 @@
 						<div class="multi_lang">
 							{{ loop ($blog->lang_list as $lang) }}
 								<li>
-									<a href="{{ adminUrl('blog/edit/'.$lang['id']) }}" title="{{ $lang['title'] }}" class="tipsy-tip">{{ $lang['lang'] }}</a>
+									<a href="{{ adminUrl('blog/edit/'.$lang['id']) }}" title="{{ $lang['title'] }}" class="tipsy-tip">{{ Config::get('langcodes.'.$lang['lang']) }}</a>
 									{{ if ($lang['status'] == 'draft') }}
 										<span class="draft_lang label label-info">{{ t('global.draft_label') }}</span>
 									{{ endif }}
@@ -59,7 +59,8 @@
 							{{ endloop }}
 						</div>
 					{{ else }}
-						{{ ($blog->lang) ? $blog->lang : Setting::get('blog_content_default_lang') }}
+						{= $blog_lang = ($blog->lang) ? $blog->lang : Setting::get('blog_content_default_lang') =}
+						{{ Config::get('langcodes.'.$blog_lang) }}
 					{{ endif }}
 				</td>
 

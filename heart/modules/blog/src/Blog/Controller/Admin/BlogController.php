@@ -423,10 +423,13 @@ class BlogController extends \AdminController
 						->set('authors', $authors)
 						->set('blog', $blog)
 						->set('custom_field', $fields)
+						->set('lang_list', \Config::get('langcodes'))
 						->jsValue('post_id', $blog->id)
 						->style(array(
 							'plugins/jquery.tagsinput_custom.css',
 							'form.css'))
+						->script('chosen.jquery.min.js', 'blog')
+						->style('chosen.min.css', 'blog')
 					   	->script(array(
 						 	'plugins/jquery-ui-timepicker-addon.js',
 						 	'plugins/jquery.tagsinput.min.js',

@@ -159,6 +159,10 @@ span.error {
 	margin-bottom: 10px;
 }
 
+#current_lang label {
+	margin-bottom: 10px;
+}
+
 .more_lang_box, .multi_lang {
 	list-style: none;
 	margin: 0px;
