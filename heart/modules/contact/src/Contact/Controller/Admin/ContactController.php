@@ -23,7 +23,7 @@ class ContactController extends \AdminController
 
 		$options = array(
 			'total_items'	=> Mail::count(),
-			'items_per_page'=> 7,
+			'items_per_page'=> \Setting::get('admin_item_per_page'),
 			);
 			
 		$pagination = Pagination::create($options);
