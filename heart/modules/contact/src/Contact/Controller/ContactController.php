@@ -6,12 +6,13 @@ use Contact\Model\Mail as Mail;
 use Contact\Model\EmailTemplate as Etemplate;
 use Reborn\Util\Mailer as Mailer;
 use Contact\Lib\Helper;
+use Event,Flash,Input,Redirect,Translate;
 
 class ContactController extends \PublicController
 {
 	public function before()
 	{
-		$this->template->header = \Translate::get('contact::contact.title');
+		$this->template->header = Translate::get('contact::contact.title');
 	}
 
 	/**
@@ -25,16 +26,16 @@ class ContactController extends \PublicController
 		$mail = new \stdClass;
 		$errors = new \Reborn\Form\ValidationError();
 		$hasAttach = \Setting::get('attach_field');
-		if (\Input::isPost()) {
-			$referer = \Input::server('HTTP_REFERER');
+		if (Input::isPost()) {
+			$referer = Input::server('HTTP_REFERER');
 
 			$v = $this->validate();
-			$widget = \Input::get('widget');
+			$widget = Input::get('widget');
 			if ($v->valid()) {
 
-				$data = \Input::get('*');
+				$data = Input::get('*');
 
-				$data['ip'] = \Input::ip();
+				$data['ip'] = Input::ip();
 
 				$temp = Helper::getTemplate($data,'contact_template');
 				
@@ -66,35 +67,35 @@ class ContactController extends \PublicController
 					$data['attachment'] = UPLOAD.'contact_attachment'.DS.$attName;
 				}
 				if (isset($contact['success'])) {
-					\Flash::success($contact['success']);
+					Flash::success($contact['success']);
 					$this->getData($data);
-					\Event::call('receive_mail_success',array($data));
-					return \Redirect::to($referer);
+					Event::call('receive_mail_success',array($data));
+					return Redirect::to($referer);
 				}
 				if (isset($contact['fail'])) {
-					\Flash::error($contact['fail']);
-					return \Redirect::to($referer);
+					Flash::error($contact['fail']);
+					return Redirect::to($referer);
 				}
 				
 			} else {
 				$errors = $v->getErrors();
-				$mail = (object)\Input::get('*');
+				$mail = (object)Input::get('*');
 				if ($widget == true) {
 					
-						\Flash::error($errors->toArray());
+						Flash::error($errors->toArray());
 					
-					return \Redirect::to($referer);
+					return Redirect::to($referer);
 				}
 				
 			}
 
 		}
-		$this->template->title(\Translate::get('contact::contact.title'))
-					->breadcrumb(\Translate::get('contact::contact.p_title'))
+		$this->template->title(Translate::get('contact::contact.title'))
+					->breadcrumb(Translate::get('contact::contact.p_title'))
 					->set('mail',$mail)
 					->set('errors',$errors)
 					->set('hasAttach',$hasAttach)
-					->setPartial('index');
+					->view('index');
 	}
 
 	/**
@@ -133,7 +134,7 @@ class ContactController extends \PublicController
 			        'message'=> 'required'
 			    );
 
-		$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+		$v = new \Reborn\Form\Validation(Input::get('*'), $rule);
 
 		return $v;
 	}

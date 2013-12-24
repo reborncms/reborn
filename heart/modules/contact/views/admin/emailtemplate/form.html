@@ -3,7 +3,7 @@
 	{= $slug = (isset($template->slug)) ? $template->slug : '' =}
 {{ endif }}
 
-{{ Form::start(adminUrl('contact/email-template/'.$method),'',true,array('class'=>'form')) }}
+{{ Form::start(admin_url('contact/email-template/'.$method),'',true,array('class'=>'form')) }}
 
 		<div class="form-block first-block">
 			{{ Form::label(t('label.name').'<span class="required"></span>', 'name') }}
@@ -49,7 +49,7 @@
 		{{ endif }}
 		<div class="form-block form-action button-wrapper">
 			{{ Form::submit('submit', t('global.save'), array('id' => 'create', 'class' => 'btn btn-green')) }}
-			<a href="{{ adminUrl("contact/email-template") }}" title="{{ t('global.cancel') }}" class="tipsy-tip">{{ t('global.cancel') }}</a>
+			<a href="{{ admin_url("contact/email-template") }}" title="{{ t('global.cancel') }}" class="tipsy-tip">{{ t('global.cancel') }}</a>
 		</div>
 
 	{{ Form::end() }}

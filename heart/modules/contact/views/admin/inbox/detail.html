@@ -53,15 +53,15 @@
 </dl>
 <hr>
 <div class="contact-right">
-	<a href="{{ adminUrl("contact") }}" title="{{ t('contact::contact.labels.back') }}" class="btn btn-blue tipsy-tip">
+	<a href="{{ admin_url("contact") }}" title="{{ t('contact::contact.labels.back') }}" class="btn btn-blue tipsy-tip">
 		<i class="icon-undo icon-white"></i>
 		{{ t('contact::contact.labels.back') }}
 	</a>
-	<a href="{{ adminUrl("contact/send-mail/index/".$mail->id) }}" title="{{ t('contact::contact.labels.reply') }}" class="btn tipsy-tip">
+	<a href="{{ admin_url("contact/send-mail/index/".$mail->id) }}" title="{{ t('contact::contact.labels.reply') }}" class="btn tipsy-tip">
 		<i class="icon-redo icon-white"></i>
 		{{ t('contact::contact.labels.reply') }}
 	</a>
-	<a href="{{ adminUrl("contact/delete/".$mail->id) }}" title="{{ t('global.delete') }}" class="btn btn-red tipsy-tip confirm_delete">
+	<a href="{{ admin_url("contact/delete/".$mail->id) }}" title="{{ t('global.delete') }}" class="btn btn-red tipsy-tip confirm_delete">
 		<i class="icon-remove icon-white"></i>
 	</a>
 </div><!--- end of f-right -->

@@ -3,7 +3,7 @@
 namespace Contact\Controller\Admin;
 
 use Contact\Model\EmailTemplate as Etemplate;
-use Reborn\Util\Pagination as Pagination;
+use Event,Flash,Input,Pagination,Redirect,Translate;
 
 class EmailTemplateController extends \AdminController
 {
@@ -31,7 +31,7 @@ class EmailTemplateController extends \AdminController
 			
 		$pagination = Pagination::create($options);
 
-		if (\Pagination::isInvalid())
+		if (Pagination::isInvalid())
 		{
 			return $this->notFound();
 		}
@@ -41,11 +41,11 @@ class EmailTemplateController extends \AdminController
 							->orderBy('id','asc')
 							->get();
 		
-		$this->template->title(\Translate::get('contact::contact.e_template'))
-					->breadcrumb(\Translate::get('contact::contact.p_title'))
+		$this->template->title(Translate::get('contact::contact.e_template'))
+					->breadcrumb(Translate::get('contact::contact.p_title'))
 					->set('templates', $result)
 					->set('pagination',$pagination)
-					->setPartial('admin\emailtemplate\index');
+					->view('admin\emailtemplate\index');
 	}
 
 	/**
@@ -59,37 +59,37 @@ class EmailTemplateController extends \AdminController
 		if (!user_has_access('contact.template.add')) return $this->notFound();
 		$template =new \stdClass;
 		$errors = new \Reborn\Form\ValidationError();
-		if (\Input::isPost()) {
+		if (Input::isPost()) {
 			 
 			$v = $this->validate();
 			if ($v->valid()) {
 
-				$check = $this->uni_slug(\Input::get('slug'),\Input::get('name'));
+				$check = $this->uni_slug(Input::get('slug'),Input::get('name'));
 				
 				if ($check == true) {
 					$this->fillData('create');
-					\Flash::success(\Translate::get('contact::contact.success_template'));
+					Flash::success(Translate::get('contact::contact.success_template'));
 
-					return \Redirect::toAdmin('contact/email-template');
+					return Redirect::toAdmin('contact/email-template');
 
 				} else
 				{
-					\Flash::error(\Translate::get('contact::contact.error_template'));
-					$template = (object)\Input::get('*');
+					Flash::error(Translate::get('contact::contact.error_template'));
+					$template = (object)Input::get('*');
 				}
 				
 			} else {
 				$errors = $v->getErrors();
-				$template = (object)\Input::get('*');
+				$template = (object)Input::get('*');
 			}
 			
 		}
 
-		$this->template->title(\Translate::get('contact::contact.add_email_temp'))
+		$this->template->title(Translate::get('contact::contact.add_email_temp'))
 						->set('errors',$errors)
 						->set('method', 'create')
 						->set('template',$template)
-						->setPartial('admin/emailtemplate/form');
+						->view('admin/emailtemplate/form');
 	}
 
 
@@ -110,10 +110,10 @@ class EmailTemplateController extends \AdminController
 		if ($this->request->isAjax()) {
 			$this->template->partialOnly();
 		}
-		$this->template->title(\Translate::get('contact::contact.e_template'))
+		$this->template->title(Translate::get('contact::contact.e_template'))
 						->breadcrumb($template->name)
 						->set('template',$template)
-						->setPartial('admin\emailtemplate\view');
+						->view('admin\emailtemplate\view');
 	}
 
 
@@ -128,35 +128,35 @@ class EmailTemplateController extends \AdminController
 		if (!user_has_access('contact.template.edit')) return $this->notFound();
 		$template = Etemplate::find($id);
 		$errors = new \Reborn\Form\ValidationError();
-		if (\Input::isPost()) {
+		if (Input::isPost()) {
 			 
 			$v = $this->validate();
 			if ($v->valid()) {
-				$check = $this->uni_slug(\Input::get('slug'),\Input::get('name'),\Input::get('id'));
+				$check = $this->uni_slug(Input::get('slug'),Input::get('name'),Input::get('id'));
 				
 				if ($check == true) {
-					$this->fillData('edit',\Input::get('id'));
-					\Flash::success(\Translate::get('contact::contact.success_template'));
-					return \Redirect::toAdmin('contact/email-template');
+					$this->fillData('edit',Input::get('id'));
+					Flash::success(Translate::get('contact::contact.success_template'));
+					return Redirect::toAdmin('contact/email-template');
 
 				} else
 				{
-					\Flash::error(\Translate::get('contact::contact.error_template'));
-					$template = (object)\Input::get('*');
+					Flash::error(Translate::get('contact::contact.error_template'));
+					$template = (object)Input::get('*');
 				}
 				
 			} else {
 				$errors = $v->getErrors();
-				$template = (object)\Input::get('*');
+				$template = (object)Input::get('*');
 			}
 			
 		}
 
-		$this->template->title(\Translate::get('contact::contact.edit_email_temp'))
+		$this->template->title(Translate::get('contact::contact.edit_email_temp'))
 						->set('errors',$errors)
 						->set('method', 'edit')
 						->set('template',$template)
-						->setPartial('admin/emailtemplate/form');
+						->view('admin/emailtemplate/form');
 	}
 
 	/**
@@ -167,11 +167,11 @@ class EmailTemplateController extends \AdminController
     public function duplicate($id)
     {
         $template = Etemplate::find($id);
-        $this->template->title(\Translate::get('contact::contact.duplicate_template'))
+        $this->template->title(Translate::get('contact::contact.duplicate_template'))
                     ->set('template', $template)
                     ->set('errors', new \Reborn\Form\ValidationError())
                     ->set('method', 'create')
-                    ->setPartial('admin\emailtemplate\form');
+                    ->view('admin\emailtemplate\form');
     }
 
 	/**
@@ -183,7 +183,7 @@ class EmailTemplateController extends \AdminController
 	public function delete($id = 0)
 	{
 		if (!user_has_access('contact.template.delete')) return $this->notFound();
-		$ids = ($id) ? array($id) : \Input::get('action_to');
+		$ids = ($id) ? array($id) : Input::get('action_to');
 
 		$templates = array();
 
@@ -196,15 +196,15 @@ class EmailTemplateController extends \AdminController
 		
 		if (!empty($templates)) {
 			if (count($templates) == 1) {
-				\Flash::success(\Translate::get('contact::contact.template_delete'));
+				Flash::success(Translate::get('contact::contact.template_delete'));
 			} else {
-				\Flash::success(\Translate::get('contact::contact.templates_delete'));
+				Flash::success(Translate::get('contact::contact.templates_delete'));
 			}
 		} else {
-			\Flash::error(\Translate::get('contact::contact.template_error'));
+			Flash::error(Translate::get('contact::contact.template_error'));
 		}
-		\Event::call('template_delete',array(true));
-		return \Redirect::toAdmin('contact/email-template');
+		Event::call('template_delete',array(true));
+		return Redirect::toAdmin('contact/email-template');
 		
 	}
 
@@ -221,13 +221,13 @@ class EmailTemplateController extends \AdminController
 		} else {
 			$get = Etemplate::find($id);
 		}
-		$get->name = \Input::get('name');
-		$get->slug = \Input::get('slug');
-		$get->description = \Input::get('description');
-		$get->body = \Input::get('body');
+		$get->name = Input::get('name');
+		$get->slug = Input::get('slug');
+		$get->description = Input::get('description');
+		$get->body = Input::get('body');
 		$get->save();
 
-		\Event::call('template_'.$method.'_success',array($get));
+		Event::call('template_'.$method.'_success',array($get));
 	}
 
 	/**
@@ -267,7 +267,7 @@ class EmailTemplateController extends \AdminController
 			        'body'	=> 'required'
 			    );
 
-		$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+		$v = new \Reborn\Form\Validation(Input::get('*'), $rule);
 
 		return $v;
 	}

@@ -38,17 +38,17 @@
 			<td>{{ $template->description }}</td>
 			<td>
 				<div class="icons-bar">
-					<a href="{{ adminUrl("contact/email-template/view/".$template->id) }}" title="{{ t('contact::contact.labels.view') }}" class="tipsy-tip email-template">
+					<a href="{{ admin_url("contact/email-template/view/".$template->id) }}" title="{{ t('contact::contact.labels.view') }}" class="tipsy-tip email-template">
 						<i class="icon-view"></i>
 					</a>
-					<a href="{{ adminUrl("contact/email-template/edit/".$template->id ) }}" title="{{ t('global.edit') }}" class="tipsy-tip">
+					<a href="{{ admin_url("contact/email-template/edit/".$template->id ) }}" title="{{ t('global.edit') }}" class="tipsy-tip">
 						<i class="icon-edit"></i>
 					</a>
-					<a href="{{ adminUrl("contact/email-template/duplicate/".$template->id) }}" title="{{ t('contact::contact.labels.duplicate') }}" class="tipsy-tip">
+					<a href="{{ admin_url("contact/email-template/duplicate/".$template->id) }}" title="{{ t('contact::contact.labels.duplicate') }}" class="tipsy-tip">
 						<i class="icon-copy"></i>
 					</a>
 					{{ if($template->detemp == 0)}}
-					<a href="{{ adminUrl("contact/email-template/delete/".$template->id) }}" title="{{ t('global.delete') }}" class="ico-button button-red tipsy-tip confirm_delete"><i class="icon-remove"></i></a>
+					<a href="{{ admin_url("contact/email-template/delete/".$template->id) }}" title="{{ t('global.delete') }}" class="ico-button button-red tipsy-tip confirm_delete"><i class="icon-remove"></i></a>
 					{{ endif }}
 				</div><!--- end of icons-bar -->
 			</td>

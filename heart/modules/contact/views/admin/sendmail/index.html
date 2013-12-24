@@ -1,4 +1,4 @@
-{{ Form::start(adminUrl('contact/send-mail'),'',true,array('class'=>'form')) }}
+{{ Form::start(admin_url('contact/send-mail'),'',true,array('class'=>'form')) }}
 		
 		<div class="form-block first-block" style="margin-top:8px;">
 			{{ Form::label(t('label.email').'<span class="required"></span>', 'email') }}
@@ -34,7 +34,7 @@
 
 		<div class="form-block form-action button-wrapper">
 			{{ Form::submit('submit', t('contact::contact.labels.send'), array('id' => 'create', 'class' => 'btn btn-green')) }}
-			<a href="{{ adminUrl("contact") }}" title="{{ t('global.cancel') }}">{{ t('global.cancel') }}</a>
+			<a href="{{ admin_url("contact") }}" title="{{ t('global.cancel') }}">{{ t('global.cancel') }}</a>
 		</div>
 
 	{{ Form::end() }}

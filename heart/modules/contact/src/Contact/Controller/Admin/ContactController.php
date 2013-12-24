@@ -3,7 +3,7 @@
 namespace Contact\Controller\Admin;
 
 use Contact\Model\Mail as Mail;
-use Reborn\Util\Pagination as Pagination;
+use Event,Flash,Input,Pagination,Redirect,Translate;
 
 class ContactController extends \AdminController
 {
@@ -28,7 +28,7 @@ class ContactController extends \AdminController
 			
 		$pagination = Pagination::create($options);
 
-		if (\Pagination::isInvalid())
+		if (Pagination::isInvalid())
 		{
 			return $this->notFound();
 		}
@@ -38,11 +38,11 @@ class ContactController extends \AdminController
 							->orderBy('id','desc')
 							->get();
 
-		$this->template->title(\Translate::get('contact::contact.inbox'))
-					->breadcrumb(\Translate::get('contact::contact.all_con'))
+		$this->template->title(Translate::get('contact::contact.inbox'))
+					->breadcrumb(Translate::get('contact::contact.all_con'))
 					->set('mails', $result)
 					->set('pagination',$pagination)
-					->setPartial('admin\inbox\index');
+					->view('admin\inbox\index');
 	}
 
 	/**
@@ -61,12 +61,12 @@ class ContactController extends \AdminController
 		$mail->read_mail = 1;
 		$mail->save();
 
-		\Event::call('email_receive_detail',array($mail));
+		Event::call('email_receive_detail',array($mail));
 
-		$this->template->title(\Translate::get('contact::contact.title'))
+		$this->template->title(Translate::get('contact::contact.title'))
 					->breadcrumb($mail->subject)
 					->set('mail',$mail)
-					->setPartial('admin\inbox\detail');
+					->view('admin\inbox\detail');
 	}
 
 	/**
@@ -78,7 +78,7 @@ class ContactController extends \AdminController
 	public function delete($id = 0)
 	{
 		if (!user_has_access('contact.delete')) return $this->notFound();
-		$ids = ($id) ? array($id) : \Input::get('action_to');
+		$ids = ($id) ? array($id) : Input::get('action_to');
 
 		$mails = array();
 
@@ -91,15 +91,15 @@ class ContactController extends \AdminController
 		
 		if (!empty($mails)) {
 			if (count($mails) == 1) {
-				\Flash::success(\Translate::get('contact::contact.mail_delete'));
+				Flash::success(Translate::get('contact::contact.mail_delete'));
 			} else {
-				\Flash::success(\Translate::get('contact::contact.mails_delete'));
+				Flash::success(Translate::get('contact::contact.mails_delete'));
 			}
 		} else {
-			\Flash::error(\Translate::get('contact::contact.template_error'));
+			Flash::error(Translate::get('contact::contact.template_error'));
 		}
-		\Event::call('email_receive_delete', array(true));
-		return \Redirect::toAdmin('contact');
+		Event::call('email_receive_delete', array(true));
+		return Redirect::toAdmin('contact');
 	}
 
 	

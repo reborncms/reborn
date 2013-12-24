@@ -5,6 +5,7 @@ namespace Contact\Controller\Admin;
 use Reborn\Util\Mailer as Mailer;
 use Contact\Model\Mail as Mail;
 use Contact\Lib\Helper;
+use Event,Flash,Input,Redirect,Translate;
 
 class SendMailController extends \AdminController
 {
@@ -12,7 +13,7 @@ class SendMailController extends \AdminController
 	public function before()
 	{
 		$this->menu->activeParent(\Module::get('contact', 'uri'));
-		$this->template->header = \Translate::get('contact::contact.title');
+		$this->template->header = Translate::get('contact::contact.title');
 		$this->template->style('contact.css', 'contact');
 		$this->template->script('contact.js','contact');
 	}
@@ -32,13 +33,13 @@ class SendMailController extends \AdminController
 			$mail->email = $reply->email;
 		}
 		$errors = new \Reborn\Form\ValidationError();
-		if (\Input::isPost()) {
+		if (Input::isPost()) {
 
 			$v = $this->validate();
 
 			if ($v->valid()) {
 
-				$data = \Input::get('*');
+				$data = Input::get('*');
 
 				$to = explode(",",$data['email']);
 
@@ -51,8 +52,8 @@ class SendMailController extends \AdminController
 				
 				if (isset($to_error)) {
 
-					\Flash::error(\Translate::get('contact::contact.w_email'));
-					$mail = (object)\Input::get('*');
+					Flash::error(Translate::get('contact::contact.w_email'));
+					$mail = (object)Input::get('*');
 
 				} else{
 
@@ -89,31 +90,31 @@ class SendMailController extends \AdminController
 						$data['attachment'] = UPLOAD.'contact_attachment'.DS.$attName;
 					}
 					if (isset($sendmail['success'])) {
-						\Flash::success($sendmail['success']);
-						\Event::call('reply_email_success' ,array($data,$to));
-						return \Redirect::toAdmin('contact/send-mail');
+						Flash::success($sendmail['success']);
+						Event::call('reply_email_success' ,array($data,$to));
+						return Redirect::toAdmin('contact/send-mail');
 					}
 					if (isset($sendmail['fail'])) {
-						\Flash::error($sendmail['fail']);
-						return \Redirect::toAdmin('contact/send-mail');
+						Flash::error($sendmail['fail']);
+						return Redirect::toAdmin('contact/send-mail');
 					}
 					
 				}
 			} else {
 				$errors = $v->getErrors();
-				$mail = (object)\Input::get('*');
+				$mail = (object)Input::get('*');
 			}
 
 		}
-		$this->template->title(\Translate::get('contact::contact.s_mail'))
-					->breadcrumb(\Translate::get('contact::contact.p_title'))
+		$this->template->title(Translate::get('contact::contact.s_mail'))
+					->breadcrumb(Translate::get('contact::contact.p_title'))
 					->style('plugins/jquery.tagsinput_custom.css')
 					->script(array(
 					 	'plugins/jquery-ui-timepicker-addon.js',
 					 	'plugins/jquery.tagsinput.min.js'))
 					->set('mail',$mail)
 					->set('errors',$errors)
-					->setPartial('admin/sendmail/index');
+					->view('admin/sendmail/index');
 	}
 
 	/**
@@ -130,7 +131,7 @@ class SendMailController extends \AdminController
 			        'message'=> 'required'
 			    );
 
-		$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+		$v = new \Reborn\Form\Validation(Input::get('*'), $rule);
 
 		return $v;
 	}

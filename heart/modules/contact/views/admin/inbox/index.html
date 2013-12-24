@@ -24,13 +24,13 @@
 			</td>
 			<td>
 				<div class="icons-bar">
-					<a href="{{ adminUrl("contact/detail/".$mail->id) }}" title="{{ t('contact::contact.labels.detail') }}" class="tipsy-tip">
+					<a href="{{ admin_url("contact/detail/".$mail->id) }}" title="{{ t('contact::contact.labels.detail') }}" class="tipsy-tip">
 						<i class="icon-view"></i>
 					</a>
-					<a href="{{ adminUrl("contact/send-mail/".$mail->id) }}" title="{{ t('contact::contact.labels.reply') }}" class="tipsy-tip">
+					<a href="{{ admin_url("contact/send-mail/".$mail->id) }}" title="{{ t('contact::contact.labels.reply') }}" class="tipsy-tip">
 						<i class="icon-redo "></i>
 					</a>
-					<a href="{{ adminUrl("contact/delete/".$mail->id) }}" title="{{ t('global.delete') }}" class="tipsy-tip confirm_delete">
+					<a href="{{ admin_url("contact/delete/".$mail->id) }}" title="{{ t('global.delete') }}" class="tipsy-tip confirm_delete">
 						<i class="icon-remove"></i>
 					</a>
 				</div><!--- end of icons-bar -->
