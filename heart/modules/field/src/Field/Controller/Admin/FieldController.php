@@ -39,7 +39,7 @@ class FieldController extends \AdminController
 
 		$this->template->title('Field')
 						->set('empty', $empty)
-						->setPartial('admin/field/index');
+						->view('admin/field/index');
 	}
 
 	public function create()
@@ -62,7 +62,7 @@ class FieldController extends \AdminController
 						->set('field', $field)
 						->set('method', 'create')
 						->set('supported_type', supported_field_types())
-						->setPartial('admin/field/form');
+						->view('admin/field/form');
 	}
 
 	public function edit($id)
@@ -90,7 +90,7 @@ class FieldController extends \AdminController
 						->set('method', 'edit/'.$field->id)
 						->set('supported_type', supported_field_types())
 						->set('field_body', $field_body)
-						->setPartial('admin/field/form');
+						->view('admin/field/form');
 	}
 
 	/**
@@ -152,7 +152,7 @@ class FieldController extends \AdminController
 
 		$this->template->title('Field Group')
 						->set('empty', $empty)
-						->setPartial('admin/group/index');
+						->view('admin/group/index');
 	}
 
 	/**
@@ -183,7 +183,7 @@ class FieldController extends \AdminController
 						->set('fields', $fields)
 						->set('method', 'group-create')
 						->set('select', module_select())
-						->setPartial('admin/group/form');
+						->view('admin/group/form');
 	}
 
 	/**
@@ -224,7 +224,7 @@ class FieldController extends \AdminController
 						->set('fields', $fields)
 						->set('method', 'group-edit/'.$group->id)
 						->set('select', module_select(true, false))
-						->setPartial('admin/group/form');
+						->view('admin/group/form');
 	}
 
 	/**

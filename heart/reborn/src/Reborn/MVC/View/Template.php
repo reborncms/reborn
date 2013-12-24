@@ -286,13 +286,13 @@ class Template
     }
 
     /**
-     * Set the partial for the template
+     * Set the partial view for the template
      *
      * @param string $partial
      * @param array $data
      * @return \Reborn\MVC\View\Template
      **/
-    public function setPartial($partial, $data = array())
+    public function view($partial, $data = array())
     {
         $partial = str_replace(array('\\', '/'), DS, $partial);
         $this->partial = $partial;
@@ -302,6 +302,14 @@ class Template
         }
 
         return $this;
+    }
+
+    /**
+     * Alias of view method
+     **/
+    public function setPartial($partial, $data = array())
+    {
+        return $this->view($partial, $data);
     }
 
     /**

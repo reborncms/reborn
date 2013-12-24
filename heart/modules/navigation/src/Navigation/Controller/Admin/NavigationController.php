@@ -55,7 +55,7 @@ class NavigationController extends \AdminController
 				->set('moduleSelect', $this->moduleSelect)
 				->set('pageSelect', $this->pageSelects)
 				->set('defaultGroup', $this->defaultGroup)
-				->setPartial('admin/index');
+				->view('admin/index');
 	}
 
 	/**
@@ -136,7 +136,7 @@ class NavigationController extends \AdminController
 			return $this->template->set('make', 'editing')
 								->set('type', 'link')
 								->partialOnly()
-								->setPartial('admin/noaccess')->render();
+								->view('admin/noaccess')->render();
 		}
 		$link = Links::find($id);
 
@@ -219,7 +219,7 @@ class NavigationController extends \AdminController
 						->set('defaultGroup', $this->defaultGroup)
 						->set('type', $type)
 						->partialOnly()
-						->setPartial('admin/edit');
+						->view('admin/edit');
 	}
 
 	public function delete($id)
@@ -251,7 +251,7 @@ class NavigationController extends \AdminController
 
 		$this->template->title(t('navigation::navigation.group.title'))
 						->set('groups', $groups)
-						->setPartial('admin/group');
+						->view('admin/group');
 	}
 
 	public function groupCreate()

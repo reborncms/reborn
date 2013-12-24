@@ -21,7 +21,7 @@ class AdminController extends \AdminController
 
 		$this->template->title(Setting::get('site_title').' - '.t('label.dashboard'))
 						->set('widgets', $widgets)
-						->setPartial('dashboard');
+						->view('dashboard');
 	}
 
 	/**
@@ -94,7 +94,7 @@ class AdminController extends \AdminController
 		$this->setLayout('login');
 
 		$this->template->title(t('label.login'))
-						->setPartial('login');
+						->view('login');
 	}
 
 	/**

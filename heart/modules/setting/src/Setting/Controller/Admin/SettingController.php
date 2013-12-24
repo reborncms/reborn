@@ -134,6 +134,6 @@ class SettingController extends \AdminController
 					->set('type', $type)
 					->set('title', $title)
 					->set('lists', array_merge($main, $lists))
-					->setPartial('index');
+					->view('index');
 	}
 }

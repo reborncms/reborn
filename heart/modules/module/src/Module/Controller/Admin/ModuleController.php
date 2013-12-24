@@ -41,7 +41,7 @@ class ModuleController extends \AdminController
 		$this->template->set('news_view', $news);
 		$this->template->set('system_view', $system);
 
-		$this->template->setPartial('lists');
+		$this->template->view('lists');
 	}
 
 	/**
@@ -264,7 +264,7 @@ class ModuleController extends \AdminController
 		}
 
 		$this->template->title(t('module::module.upload_title'))
-						->setPartial('upload');
+						->view('upload');
 	}
 
 	/**
