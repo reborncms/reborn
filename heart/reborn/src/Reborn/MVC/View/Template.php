@@ -2,8 +2,8 @@
 
 namespace Reborn\MVC\View;
 
-use Reborn\Cores\Registry;
-use Reborn\Asset\Asset;
+use Reborn\Cores\Facade;
+use Reborn\Asset\AssetFinder;
 use Reborn\Module\ModuleManager as Module;
 use Reborn\Exception\FileNotFoundException;
 
@@ -38,25 +38,18 @@ class Template
         );
 
     /**
-     * Variable for the View Object
+     * View instance
      *
      * @var \Reborn\MVC\View\View
      **/
     protected $view;
 
     /**
-     * Variable for the View Object
+     * Theme instance
      *
      * @var \Reborn\MVC\View\Theme
      **/
     protected $theme;
-
-    /**
-     * Variable for the Asset Object
-     *
-     * @var \Reborn\Asset\Asset
-     **/
-    protected $asset;
 
     /**
      * Partial for current theme's view render
@@ -149,7 +142,7 @@ class Template
      *
      * @var array
      **/
-    protected $styles = array();
+    protected $style = array();
 
     /**
      * Inline Stylesheet collection for the template
@@ -163,7 +156,7 @@ class Template
      *
      * @var array
      **/
-    protected $scripts = array();
+    protected $script = array();
 
     /**
      * Inline Script collection for the template
@@ -206,8 +199,6 @@ class Template
         $this->theme = $theme;
 
         $this->ext = $ext;
-
-        $this->asset = new Asset($this->theme->getThemePath());
 
         $this->path = $this->theme->getThemePath().'views'.DS;
 
@@ -356,7 +347,7 @@ class Template
 
         foreach($files as $file)
         {
-            $this->styles[$place][] = $this->asset->css($file, 'all', $module);
+            $this->style[$place][] = array('file' => $file, 'module' => $module);
         }
 
         return $this;
@@ -393,7 +384,7 @@ class Template
 
         foreach($files as $file)
         {
-            $this->scripts[$place][] = $this->asset->js($file, $module);
+            $this->script[$place][] = array('file' => $file, 'module' => $module);
         }
 
         return $this;
@@ -642,13 +633,13 @@ class Template
      **/
     protected function setLayoutVariables()
     {
-        $headStyle = $this->getStyleString('header');
+        $headStyle = $this->getAssetTag('header', 'style');
+        $footerStyle = $this->getAssetTag('footer', 'style');
+        $headScript = $this->getAssetTag('header', 'script');
+        $footerScript = $this->getAssetTag('footer', 'script');
         $headStyleInline = $this->getInlineStyleString('header');
-        $footerStyle = $this->getStyleString('footer');
         $footerStyleInline = $this->getInlineStyleString('footer');
-        $headScript = $this->getScriptString('header');
         $headScriptInline = $this->getInlineScriptString('header');
-        $footerScript = $this->getScriptString('footer');
         $footerScriptInline = $this->getInlineScriptString('footer');
         $metadata = $this->getMetadataString();
 
@@ -688,31 +679,52 @@ class Template
     }
 
     /**
-     * Get the Script string from the script array from template.
+     * Get asset element tag
      *
      * @param string $place
-     * @return string
+     * @param string $type
+     * @return string|null
      **/
-    protected function getScriptString($place)
+    protected function getAssetTag($place, $type)
     {
-        $scripts = isset($this->scripts[$place]) ? $this->scripts[$place] : array();
+        $files = isset($this->{$type}[$place]) ? $this->{$type}[$place] : array();
 
         // Call Event
-        $result = \Event::call('reborn.template.script.render.'.$place, array($scripts));
+        $res = \Event::call('reborn.template.'.$type.'.render.'.$place, array($files));
 
-        if(! empty($result[0])) {
-            $scripts = $result[0];
+        if(! empty($res[0])) {
+            $files = $res[0];
         }
 
-        if (count($scripts) == 0) {
+        if (count($files) == 0) {
             return null;
         }
 
-        if (count($scripts) == 1) {
-            return "\n\t\t".$scripts[0]."\n";
+        $url = '';
+
+        foreach ($files as $file) {
+            if (is_null($file['module'])) {
+                $url .= $file['file'].',';
+            } else {
+                $url .= $file['module'].'__'.$file['file'].',';
+            }
         }
 
-        return "\n\t\t".implode("\n\t\t", $scripts)."\n";
+        switch ($type) {
+            case 'style':
+                $url = url('assets/styles/'.rtrim($url, ','));
+                return '<link rel="stylesheet" type="text/css" href="'.$url.'">'."\n";
+                break;
+
+            case 'script':
+                $url = url('assets/scripts/'.rtrim($url, ','));
+                return '<script type="text/javascript" src="'.$url.'"></script>'."\n";
+                break;
+
+            default:
+                return null;
+                break;
+        }
     }
 
     /**
@@ -738,34 +750,6 @@ class Template
         }
 
         return null;
-    }
-
-    /**
-     * Get the Stylesheet string from the style array from template.
-     *
-     * @param string $place
-     * @return string
-     **/
-    protected function getStyleString($place)
-    {
-        $styles = isset($this->styles[$place]) ? $this->styles[$place] : array();
-
-        // Call Event
-        $result = \Event::call('reborn.template.style.render.'.$place, array($styles));
-
-        if(! empty($result[0])) {
-            $styles = $result[0];
-        }
-
-        if (count($styles) == 0) {
-            return null;
-        }
-
-        if (count($styles) == 1) {
-            return "\n\t\t".$styles[0]."\n";
-        }
-
-        return "\n\t\t".implode("\n\t\t",  $styles)."\n";
     }
 
     /**
@@ -827,7 +811,7 @@ class Template
      **/
     protected function getModule()
     {
-        $request = Registry::get('app')->request;
+        $request = Facade::getApplication()->request;
 
         return $request->module;
     }

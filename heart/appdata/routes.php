@@ -1,5 +1,7 @@
 <?php
 
+require 'asset_routes.php';
+
 // This is default route for Reborn
 // Don't delete this.
 $defaultModule = \Setting::get('default_module');

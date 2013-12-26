@@ -376,9 +376,10 @@ if(! function_exists('css'))
 	 **/
 	function css($file, $media = "all", $module = null)
 	{
-		$theme = Reborn\Cores\Facade::getApplication()->theme;
-		$asset = new Reborn\Asset\Asset($theme->getThemePath());
-		return $asset->css($file, $media, $module);
+		$files = assetfile_preapre($file, $module);
+		$href = (defined('ADMIN')) ? url('assets/a/styles/') : url('assets/styles/');
+
+		return Reborn\Util\Html::style($href.$files, $media)."\n";
 	}
 }
 
@@ -394,9 +395,10 @@ if(! function_exists('less'))
 	 **/
 	function less($file, $media = "all", $module = null)
 	{
-		$theme = Reborn\Cores\Facade::getApplication()->theme;
-		$asset = new Reborn\Asset\Asset($theme->getThemePath());
-		return $asset->less($file, $media, $module);
+		$files = assetfile_preapre($file, $module);
+		$href = (defined('ADMIN')) ? url('assets/a/less/') : url('assets/less/');
+
+		return Reborn\Util\Html::style($href.$files, $media)."\n";
 	}
 }
 
@@ -411,9 +413,13 @@ if(! function_exists('js'))
 	 **/
 	function js($file, $module = null)
 	{
-		$theme = Reborn\Cores\Facade::getApplication()->theme;
-		$asset = new Reborn\Asset\Asset($theme->getThemePath());
-		return $asset->js($file, $module);
+		$files = assetfile_preapre($file, $module);
+		$src = (defined('ADMIN')) ? url('assets/a/scripts/') : url('assets/scripts/');
+		$attrs = array(
+					'src'	=> $src.$files
+				);
+
+		return Reborn\Util\Html::tag('script', '', $attrs)."\n";
 	}
 }
 
@@ -430,10 +436,46 @@ if(! function_exists('img'))
 	 **/
 	function img($file, $alt = null, $attr = array(), $module = null)
 	{
-		$theme = Reborn\Cores\Facade::getApplication()->theme;
-		$asset = new Reborn\Asset\Asset($theme->getThemePath());
-		return $asset->img($file, $alt, $attr, $module);
+		$src = (defined('ADMIN')) ? url('assets/a/images/') : url('assets/images/');
+		$src = $src.assetfile_preapre($file, $module);
+		return Reborn\Util\Html::img($src, $alt, $attr)."\n";
 	}
+}
+
+/**
+ * Prepare asset file url path for Munee
+ *
+ * @param string $file
+ * @param string|null $module
+ * @return string
+ **/
+function assetfile_preapre($file, $module = null)
+{
+	$files = array();
+
+	if (is_array($file)) {
+		foreach ($file as $f) {
+			if (isset($f['module'])) {
+				$name = $f['file'];
+				$mod = $f['module'];
+				$files[] = $mod.'__'.$name;
+			} else {
+				if (is_null($module)) {
+					$files[] = $f;
+				} else {
+					$files[] = $module.'__'.$f;
+				}
+			}
+		}
+	} else {
+		if (is_null($module)) {
+			$files[] = $file;
+		} else {
+			$files[] = $module.'__'.$file;
+		}
+	}
+
+	return join(',', $files);
 }
 
 if(! function_exists('assetPath'))
@@ -447,21 +489,20 @@ if(! function_exists('assetPath'))
 	 **/
 	function assetPath($type = null, $module = null)
 	{
-		$theme = Reborn\Cores\Facade::getApplication()->theme;
-		$asset = new Reborn\Asset\Asset($theme->getThemePath());
+		$finder = new Reborn\Asset\AssetFinder();
 		switch($type) {
 			case 'css' :
-				return $asset->getCssPath($module);
+				return $finder->path('css', $module);
 				break;
 			case 'js' :
-				return $asset->getJsPath($module);
+				return $finder->path('js', $module);
 				break;
 			case 'img' :
 			case 'image' :
-				return $asset->getImgPath($module);
+				return $finder->path('img', $module);
 				break;
 			default :
-				return $asset->getAssetPath($module);
+				return $finder->path(null, $module);
 				break;
 		}
 	}
@@ -477,18 +518,21 @@ if (! function_exists('global_asset'))
 	 * @return string
 	 */
 	function global_asset($type, $filename) {
-		$asset = new Reborn\Asset\Asset(BASE.'global'.DS);
+		$files = assetfile_preapre($filename);
+		$url = url('assets/global/');
 
 		switch($type) {
 			case 'css' :
-				return $asset->css($filename);
+				return Reborn\Util\Html::style($url.'styles/'.$files)."\n";
 				break;
 			case 'js' :
-				return $asset->js($filename);
+				$attrs = array('src'	=> $url.'scripts/'.$files);
+				return Reborn\Util\Html::tag('script', '', $attrs)."\n";
 				break;
 			case 'img' :
 			case 'image' :
-				return $asset->img($filename);
+				$path = $url.'images/'.str_replace(array('\\', '/'), '/', $files);
+				return Reborn\Util\Html::img($path)."\n";
 				break;
 			default :
 				return null;

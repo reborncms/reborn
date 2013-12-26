@@ -118,6 +118,19 @@ class ViewManager
 		return $this->parser;
 	}
 
+	/**
+	 * Get Admin Theme instance
+	 *
+	 * @return Reborn\MVC\View\Theme
+	 **/
+	public function adminTheme()
+	{
+		$theme = Setting::get('admin_theme');
+		$themePath = ADMIN_THEME;
+
+		return new Theme($this->app, $theme, $themePath);
+	}
+
 
 	/**
 	 * Create the Theme Object

@@ -19,6 +19,25 @@ class Html
 	protected static $singleTags = array('input', 'hr', 'br', 'img', 'base', 'link', 'meta');
 
 	/**
+	 * Html style link tag
+	 *
+	 * @param string $url
+	 * @param string $media
+	 * @return string
+	 **/
+	public static function style($url, $media = 'all')
+	{
+		$attrs = array(
+					'href'	=> $url,
+					'media'	=> $media,
+					'rel'	=> 'stylesheet',
+					'type'	=> 'text/css'
+				);
+
+		return static::tag('link', null, $attrs);
+	}
+
+	/**
 	 * HTML Anchor Tag. (<a>Title</a>)
 	 *
 	 * @param string $url

@@ -124,6 +124,10 @@ if(! defined('EXT'))
 	define('EXT', '.php');
 }
 
+// Define for Munee
+define('WEBROOT', rtrim(BASE, DS));
+define('MUNEE_CACHE', BASE.'assets');
+
 // Require helper file
 require __DIR__.DS.'helpers.php';
 
