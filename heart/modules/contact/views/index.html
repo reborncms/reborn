@@ -42,7 +42,9 @@
 			</div> 
 		</div> 
 		{{ endif }}
-
+		{{ loop ($custom_field as $field) }}
+            {{ $field }}
+        {{ endloop }}
 		<div class="contact-form-block contact-button">
 			{{ Form::submit('submit', 'Send', array('id' => 'create', 'class' => 'contact-btn btn')) }}
 		</div>

@@ -36,7 +36,7 @@ class ContactController extends \PublicController
 				$data = Input::get('*');
 
 				$data['ip'] = Input::ip();
-
+				
 				$temp = Helper::getTemplate($data,'contact_template');
 				
 				$config = array(
@@ -90,11 +90,17 @@ class ContactController extends \PublicController
 			}
 
 		}
+		$model = new Mail;
+		$fields = array();
+		if (\Module::isEnabled('field')) {
+			$fields = \Field::getForm('contact', $model);
+		}
 		$this->template->title(Translate::get('contact::contact.title'))
 					->breadcrumb(Translate::get('contact::contact.p_title'))
 					->set('mail',$mail)
 					->set('errors',$errors)
 					->set('hasAttach',$hasAttach)
+					->set('custom_field', $fields)
 					->view('index');
 	}
 
@@ -115,7 +121,13 @@ class ContactController extends \PublicController
 		if (isset($result['attachment'])) {
 			$get->attachment = $result['attachment'];
 		}
-		$get->save();
+		if ($get->save()) {
+			if (\Module::isEnabled('field')) {
+
+				\Field::save('contact', $get);
+
+			}
+		}
 	}
 
 	

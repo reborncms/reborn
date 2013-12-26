@@ -44,6 +44,13 @@
 	<dd> - {{ $mail->attachment }} </dd>
 	<br>
 	{{ endif }}
+	{{ if($field) }}
+	{{ loop($field as $key => $value )}}
+		<dt>{{ $key }} </dt>
+		<dd> - {{ $value }}</dd>
+		<br>
+	{{ endloop }}
+	{{ endif }}
 	<dt>
 		{{ t('contact::contact.labels.message') }}
 	</dt>

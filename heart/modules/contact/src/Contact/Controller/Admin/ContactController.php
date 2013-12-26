@@ -62,10 +62,17 @@ class ContactController extends \AdminController
 		$mail->save();
 
 		Event::call('email_receive_detail',array($mail));
+		$temp = array();
+		if (\Module::isEnabled('field')) {
+
+				$temp = \Field::get('contact', $mail);
+
+			}
 
 		$this->template->title(Translate::get('contact::contact.title'))
 					->breadcrumb($mail->subject)
 					->set('mail',$mail)
+					->set('field',$temp->extended_fields)
 					->view('admin\inbox\detail');
 	}
 
