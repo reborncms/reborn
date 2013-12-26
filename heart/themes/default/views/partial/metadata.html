@@ -11,23 +11,19 @@
 
 	<link rel="shortcut icon" type="image/x-icon" href="{{ assetPath('img') }}/favicon.ico">
 
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
 	{{ $metadata }}
 
 	<title>{{ \Setting::get('site_title') .' - '. $layoutTitle }}</title>
 
-	{{ css('plugins/plugins.css') }}
-	{{ css('plugins/colorbox/colorbox.css') }}
-	{{ css('plugins/jqueryui/stupid/jquery-ui-1.10.3.custom.css') }}
-
-	<!--<link rel="stylesheet/less" href="{{ assetPath() }}less/import.less"> -->
+	{{ css(array('plugins/plugins.css', 'plugins/colorbox/colorbox.css', 'plugins/jqueryui/stupid/jquery-ui-1.10.3.custom.css')) }}
 
 	{{ less('import.less') }}
 
-	{{ if(setting('default_language')) }}
+	{{ if('my' == \Facade::getApplication()->session->get('reborn_dashboard_language')) }}
 	{{ css('myanmar-language.css') }}
 	{{ endif }}
-
-	<!-- {{ js('vendor/less-1.3.3.min.js') }} -->
 
 	{{ $headerStyle }}
 
@@ -38,12 +34,8 @@
 
 	{{ js('vendor/jquery-1.9.0.min.js') }}
 
-	{# js('jquery.min.js') #}
+	{{ js(array('plugins/jquery-plugins.js', 'jquery.colorbox.js', 'plugins/jqueryui/jquery-ui-1.10.3.custom.min.js')) }}
 
-
-	{{ js('plugins/jquery-plugins.js') }}
-	{{ js('jquery.colorbox.js') }}
-	{{ js('plugins/jqueryui/jquery-ui-1.10.3.custom.min.js') }}
 	{{ js('reborn.js') }}
 
 	{{ $headerScript }}
