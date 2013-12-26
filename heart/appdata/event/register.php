@@ -9,7 +9,17 @@
 return array(
 		array(
 				'name' => 'reborn.app.starting',
-				'callback' => ''
+				'callback' => function(){
+					// Unregister Munee's Type
+					\Munee\Asset\Registry::unRegister(array('css', 'less', 'scss'));
+					/**
+					 * Register the CSS Asset Class with the extensions .css and .less
+					 */
+					\Munee\Asset\Registry::register(array('css', 'less', 'scss'),
+					function (\Munee\Request $Request) {
+					    return new \Reborn\Asset\Extensions\Type\Css($Request);
+					});
+				}
 			),
 		array(
 				'name' => 'reborn.app.startroute',
