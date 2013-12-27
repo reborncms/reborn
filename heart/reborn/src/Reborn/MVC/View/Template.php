@@ -710,14 +710,16 @@ class Template
             }
         }
 
+        $base = defined('ADMIN') ? url('assets/a/') : url('assets');
+
         switch ($type) {
             case 'style':
-                $url = url('assets/styles/'.rtrim($url, ','));
+                $url = $base.'styles/'.rtrim($url, ',');
                 return '<link rel="stylesheet" type="text/css" href="'.$url.'">'."\n";
                 break;
 
             case 'script':
-                $url = url('assets/scripts/'.rtrim($url, ','));
+                $url = $base.'scripts/'.rtrim($url, ',');
                 return '<script type="text/javascript" src="'.$url.'"></script>'."\n";
                 break;
 
