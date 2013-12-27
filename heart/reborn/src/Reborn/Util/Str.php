@@ -157,7 +157,6 @@ class Str
 	 **/
 	public static function limit($string, $limit = 100, $ending = '...')
 	{
-		$shown_string = implode(" ", $words);
 		$string = strip_tags($string);
 		if (strlen($string) > $limit) {
 
