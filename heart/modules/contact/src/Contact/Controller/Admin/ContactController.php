@@ -91,7 +91,13 @@ class ContactController extends \AdminController
 
 		foreach ($ids as $id) {
 			if ($mail = Mail::find($id)) {
-				$mail->delete();
+				if ($mail->delete()) {
+					if (\Module::isEnabled('field')) {
+
+						\Field::delete('contact', $mail);
+
+					}
+				}
 				$mails[] = "success";
 			}
 		}
