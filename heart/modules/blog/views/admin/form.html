@@ -183,8 +183,13 @@
                            </ul>
                        {{ endif }}
                         <div id="current_lang">
+                            {{ if ($method == 'multilang') }}
+                                {= $lang_val = 'none' =}
+                            {{ else }}
+                                {= $lang_val = isset($blog->lang) ? $blog->lang : Setting::get('blog_content_default_lang') =}
+                            {{ endif }}
                             {{ Form::label('Current Language', 'lang', array('style' => 'width:80%')) }}
-                            {{ Form::select('lang', $lang_list, isset($blog->lang) ? $blog->lang : Setting::get('blog_content_default_lang'), array('style' => 'width:100%', 'id' => 'change_lang')) }}
+                            {{ Form::select('lang', $lang_list, $lang_val, array('style' => 'width:100%', 'id' => 'change_lang')) }}
                             {{ if ($method == 'multilang') }}
                                 {{ if ($blog->lang_ref) }}
                                     {= $lang_ref = $blog->lang_ref =}

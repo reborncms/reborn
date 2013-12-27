@@ -161,9 +161,84 @@ class Helper {
 		return $widget;
 	}
 
+	/**
+	 * Save Blog Tags
+	 *
+	 * @return boolean
+	 **/
+	public static function tagSave($id, $tags)
+	{
+		$tag = \Tag\Lib\Helper::import($id, 'blog', $tags);
+
+		if ($tag) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Check Slug Duplication
+	 *
+	 * @return boolean
+	 **/
+	public static function slugDuplicateCheck($slug, $id) {
+		$check = Blog::where('slug', $slug)
+					->where('id', '!=', $id)
+					->get();
+		if (count($check)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Check Language Duplicate
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public static function langDuplicate($lang, $lang_ref)
+	{
+		
+		$check = Blog::where('lang', $lang)
+						->where('lang_ref', $lang_ref)
+						->count();
+
+		$org_post = Blog::where('lang', $lang)
+						->where('id', $lang_ref)
+						->count();
+
+		if ($check or $org_post) {
+
+			return true;
+
+		} else {
+
+			return false;
+
+		}
+	}
+
+	/**
+	 * Check the post is trashed or not
+	 *
+	 * @return bool 
+	 **/
 	public static function isTrashed($id)
 	{
 		return Blog::withTrashed()->find($id)->trashed();
+	}
+
+	/**
+	 * Get count of Trashed Posts
+	 *
+	 * @return int
+	 **/
+	public static function trashCount()
+	{
+		return Blog::onlyTrashed()->count();
 	}
 
 }
