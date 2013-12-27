@@ -186,4 +186,34 @@ abstract class Model extends BaseModel
         return $table;
     }
 
+    /**
+     * Auto incremnt for unique slug value.
+     *
+     * @param string $key Input key name or slug value
+     * @param boolean $from_key $key is Input key name. Default is true
+     * @param string $separator Separator value for increment value. Default is '-'
+     * @return string
+     **/
+    protected function autoSlug($key, $input_key = true, $separator = '-')
+    {
+        $value = ($input_key) ? $this->attributes[$from] : $key;
+        $value = \Str::slug($value);
+        $key = $this->getSlugKey();
+        $find = $this->whereRaw($key.' REGEXP ?', array('^'.$value.'(\-[0-9]*)?$'))
+                        ->get(array($key));
+
+        if ($find->isEmpty()) {
+            return $value;
+        }
+
+        $max = 1;
+        foreach ($find->lists($key) as $slug) {
+            if (preg_match('/^'.$value.'(\-([0-9]*))$/', $slug, $m)) {
+                $max = $m[2] + 1;
+            }
+        }
+
+        return $value.$separator.$max;
+    }
+
 } // END class Model
