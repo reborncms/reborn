@@ -196,9 +196,14 @@ abstract class Model extends BaseModel
      **/
     protected function autoSlug($key, $input_key = true, $separator = '-')
     {
-        $value = ($input_key) ? $this->attributes[$from] : $key;
+        $value = ($input_key) ? $this->attributes[$key] : $key;
         $value = \Str::slug($value);
         $key = $this->getSlugKey();
+
+        if (isset($this->attributes[$key]) and $this->attributes[$key] == $value) {
+            return $value;
+        }
+
         $find = $this->whereRaw($key.' REGEXP ?', array('^'.$value.'(\-[0-9]*)?$'))
                         ->get(array($key));
 
