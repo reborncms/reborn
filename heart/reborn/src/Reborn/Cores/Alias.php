@@ -26,6 +26,9 @@ class Alias
      * @var array
      **/
     protected static $coreClasses = array(
+            'Auth' => 'Reborn\Auth\AuthFacade',
+            'User' => 'Reborn\Auth\UserFacade',
+            'UserGroup' => 'Reborn\Auth\GroupFacade',
             'Facade' => 'Reborn\Cores\Facade',
             'Cache' => 'Reborn\Cache\CacheManager',
             'Config' => 'Reborn\Config\Config',
@@ -63,7 +66,6 @@ class Alias
             'Router' => 'Reborn\Routing\Router',
             'Schema' => 'Reborn\Connector\DB\Schema',
             'Security' => 'Reborn\Util\Security',
-            'Sentry' => 'Reborn\Connector\Sentry\Sentry',
             'Setting' => 'Reborn\Cores\Setting',
             'Str' => 'Reborn\Util\Str',
             'Table' => 'Reborn\Table\Builder',

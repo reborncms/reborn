@@ -1,13 +1,13 @@
 <?php
 
-namespace Reborn\Connector\Sentry;
+namespace Reborn\Auth\Sentry;
 
 use Cartalyst\Sentry\Sessions\SessionInterface;
 
 /**
  * Symfony Session For Sentry
  *
- * @package Reborn\Connector\Sentry
+ * @package Reborn\Auth\Sentry
  * @author Myanmar Links Professional Web Development Team
  **/
 class SymfonySession implements SessionInterface
@@ -29,14 +29,15 @@ class SymfonySession implements SessionInterface
 	/**
 	 * Default instance method.
 	 *
+	 * @param \Reborn\Cores\Application $app
 	 * @param string|null $key Session Key Name for Sentry
+	 * @return  void;
 	 */
-	public function __construct($key = null)
+	public function __construct(\Reborn\Cores\Application $app, $key = null)
 	{
-		$this->store = \Registry::get('app')->session;
+		$this->store = $app->session;
 
-		if (!is_null($key))
-		{
+		if (!is_null($key)) {
 			$this->key = $key;
 		}
 	}

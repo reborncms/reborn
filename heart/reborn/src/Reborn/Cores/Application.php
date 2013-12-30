@@ -255,6 +255,8 @@ class Application extends \Illuminate\Container\Container
             // call the appInitialize method
             $this->appInitialize();
 
+            $this->authProviderRegister();
+
             // Call the Event Name App Start
             Event::call('reborn.app.starting');
 
@@ -363,6 +365,39 @@ class Application extends \Illuminate\Container\Container
     }
 
     /**
+     * Register the AuthProvider for Reborn CMS.
+     *
+     * @param \Closure|null $callback Custom AuthProvider regsiter function.
+     * @return \Reborn\Auth\AuthProviderInstance
+     **/
+    public function authProviderRegister(\Closure $callback = null)
+    {
+        $this['auth_provider'] = $this->share( function($app) use ($callback) {
+            $provider = null;
+
+            if (! is_null($callback) ) {
+                $provider = $callback($app);
+            }
+
+            if(! $provider instanceof \Reborn\Auth\AuthProvider ) {
+                $provider = new \Reborn\Auth\AuthSentryProvider($app);
+            }
+
+            return $provider;
+        });
+
+        // Register for User Provider
+        $this['user_provider'] = $this->share( function($app) {
+            return $app['auth_provider']->getUserProvider();
+        });
+
+        // Register for UserGroup Provider
+        $this['usergroup_provider'] = $this->share( function($app) {
+            return $app['auth_provider']->getGroupProvider();
+        });
+    }
+
+    /**
      * Set Locale for application.
      * Default locale is en
      *
@@ -410,10 +445,9 @@ class Application extends \Illuminate\Container\Container
     {
         $maintain = Setting::get('frontend_enabled');
 
-        if (\Sentry::check()) {
-            $user = \Sentry::getUser();
+        if ($this['auth_provider']->check()) {
             // Allow to access admin only
-            if ($user->hasAccess('admin')) return false;
+            if ($this['auth_provider']->hasAccess('admin')) return false;
         } else {
             $allow = array(adminUrl(), adminUrl('login'), adminUrl('logout'));
             $current = rbUrl(implode('/', \Uri::segments()));

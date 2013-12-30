@@ -2,10 +2,10 @@
 
 namespace Reborn\MVC\Controller;
 
+use Auth, Flash, Module, Translate;
 use Reborn\Cores\Setting;
 use Reborn\Config\Config;
 use Reborn\Http\Redirect;
-use Reborn\Connector\Sentry\Sentry;
 use Reborn\MVC\Controller\Exception\NotAuthException;
 use Reborn\MVC\Controller\Exception\NotAdminAccessException;
 
@@ -42,9 +42,9 @@ class AdminController extends Controller
         $lang = $this->app->session->get('reborn_dashboard_language', 'en');
         $this->app->setLocale($lang);
 
-        \Translate::load('label');
-        \Translate::load('global');
-        \Translate::load('navigation');
+        Translate::load('label');
+        Translate::load('global');
+        Translate::load('navigation');
 
         // Set the Reborn Version and URL
         $this->template->rebornVersion = \Reborn\Cores\Version::FULL;
@@ -56,8 +56,8 @@ class AdminController extends Controller
 
         $this->varSetter();
 
-        if (\Sentry::check()) {
-            $user = \Sentry::getUser();
+        if (Auth::check()) {
+            $user = Auth::getUser();
 
             // Check for Module Access
             if (!$user->hasAccess(strtolower($this->request->module))) {
@@ -102,7 +102,7 @@ class AdminController extends Controller
         $allow = array(ADMIN_URL.'/login', ADMIN_URL.'/logout');
         $current = rtrim(implode('/', \Uri::segments()), '/');
 
-        if (!Sentry::check()) {
+        if (!Auth::check()) {
 
             if (in_array($current, $allow)) {
                 return true;
@@ -111,12 +111,12 @@ class AdminController extends Controller
             // Don't make Redirect. Because Security Problem
             throw new NotAuthException();
         } else {
-            $user = Sentry::getUser();
+            $user = Auth::getUser();
 
             // We are check user hasAccess for Admin Panel
             if ( ! $user->hasAccess('admin')) {
-                Sentry::logout();
-                \Flash::error(t('global.not_ap_access'));
+                Auth::logout();
+                Flash::error(t('global.not_ap_access'));
                 throw new NotAdminAccessException();
             }
 
@@ -144,16 +144,16 @@ class AdminController extends Controller
         $this->template->lang = $lang;
 
         // Set the current User
-        $user = Sentry::getUser();
+        $user = Auth::getUser();
         $this->template->login_user = $user;
 
         // Set the Site Title
-        $this->template->siteTitle = \Setting::get('site_title');
+        $this->template->siteTitle = Setting::get('site_title');
 
         // Set the active module
-        $toolbar = \Module::moduleToolbar($this->module);
+        $toolbar = Module::moduleToolbar($this->module);
         $this->template->set('modToolbar', $toolbar);
-        $module = \Module::get($this->module);
+        $module = Module::get($this->module);
 
         $this->template->set('module', $module);
 
