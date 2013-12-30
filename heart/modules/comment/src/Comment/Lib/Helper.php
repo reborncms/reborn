@@ -12,7 +12,7 @@ class Helper
 		$user_class = ($comment['user_id'] != null) ? " user_comment" : "";
 		$s_comment .= '<li id="comment-'. $comment['id'] .'" class="single_comment'. $user_class .'">';
 		if ($comment['user_id'] != null) {
-			$user = \Sentry::getUserProvider()->findById($comment['user_id']);
+			$user = \Auth::getUserProvider()->findById($comment['user_id']);
 			$author_name = $user->first_name . ' ' . $user->last_name; 
 			$author_email = $user->email;
 			$author_link = rbUrl('user/profile/'.$user->id);

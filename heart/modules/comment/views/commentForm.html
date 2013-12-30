@@ -2,7 +2,7 @@
 <div id="comment_form_wrapper">
 	<div id="reply_info"></div>
 	{{ Form::start('comment/post', 'comment_form') }}
-		{{ if (!\Sentry::check()) }}
+		{{ if (!\Auth::check()) }}
 			<div class="field_wrapper">
 				<div class="form_label">
 					{{ Form::label(t('label.fullname'), 'name') }}
@@ -28,7 +28,7 @@
 				</div>
 			</div> <!-- end of field_wrapper -->
 		{{ else }}
-			{= $user = \Sentry::getUser() =}
+			{= $user = \Auth::getUser() =}
 			<div id="login_info">
 				{= $cmt_author = "<a href='". rbUrl('user/profile/'.$user->id) ."' target='_blank'>" . $user->first_name . " " . $user->last_name . "</a>" =}
 				{{ t('comment::comment.label.post_comment_as', array('name' => $cmt_author)) }}

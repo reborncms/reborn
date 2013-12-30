@@ -82,7 +82,7 @@
 
                 </div> <!-- end of div.r-container -->
 
-                {{ if(Sentry::getUser()->hasAccess('admin')) }}
+                {{ if(Auth::getUser()->hasAccess('admin')) }}
 
                 <div class="r-container">
 

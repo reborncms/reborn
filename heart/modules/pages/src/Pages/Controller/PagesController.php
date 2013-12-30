@@ -81,11 +81,11 @@ class PagesController extends \PublicController
 
         $uri_string = urldecode($uri);
 
-        if (\Sentry::check()) {
+        if (\Auth::check()) {
 
             $query = Pages::where('uri' , '=', $uri_string)->first();
             
-            if (($query == null) or !\Sentry::getUser()->hasAccess('admin')) {
+            if (($query == null) or !\Auth::getUser()->hasAccess('admin')) {
 
                 return $this->notFound();
 

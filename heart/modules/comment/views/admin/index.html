@@ -62,7 +62,7 @@
 				<td>
 					{{ if ($comment->edit_user != null) }}
 						{= 
-							$user = Sentry::getUserProvider()->findById($comment->edit_user);
+							$user = Auth::getUserProvider()->findById($comment->edit_user);
 				 			$name = $user->first_name .' '. $user->last_name;
 						 =}
 						<div class="edit_user_info">

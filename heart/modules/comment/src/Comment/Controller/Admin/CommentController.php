@@ -207,7 +207,7 @@ class CommentController extends \AdminController
 			$or_comment = Comment::find(\Input::get('id'));
 
 			$comment = new Comment;
-			$comment->user_id = \Sentry::getUser()->id;
+			$comment->user_id = \Auth::getUserId();
 			$comment->value = \Input::get('message');
 			$comment->module = $or_comment->module;
 			$comment->content_id = $or_comment->content_id;
@@ -243,7 +243,7 @@ class CommentController extends \AdminController
 		if (\Input::isPost()) {
 			$comment = Comment::find(\Input::get('id'));
 			$comment->value = \Input::get('message');
-			$comment->edit_user = \Sentry::getUser()->id;
+			$comment->edit_user = \Auth::getUserId();
 			$save = $comment->save();
 			if ($save) {
 				return "true";

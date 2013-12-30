@@ -93,8 +93,8 @@ class CommentController extends \PublicController
 				$val = self::validate();
 				if ($val->valid()) {
 					$comment = new Comment;
-					if (\Sentry::check()) {
-						$user = \Sentry::getUser();
+					if (\Auth::check()) {
+						$user = \Auth::getUser();
 						$comment->user_id = $user->id;
 					} else {
 						$comment->name = \Input::get('name');
@@ -102,7 +102,7 @@ class CommentController extends \PublicController
 						$comment->url = \Input::get('url');
 					}
 
-					if (!\Sentry::check() and \Setting::get('comment_need_approve')) {
+					if (!\Auth::check() and \Setting::get('comment_need_approve')) {
 						$comment->status = 'pending';
 						$msg = t('comment::comment.message.wait_approve');
 					} else {
@@ -149,8 +149,8 @@ class CommentController extends \PublicController
 			$apiKey = \Setting::get('akismet_api_key');
 			$akismet = new Akismet($apiKey, $url);
 
-			if (\Sentry::check()) {
-				$user = \Sentry::getUser();
+			if (\Auth::check()) {
+				$user = \Auth::getUser();
 				$name = $user->first_name . ' ' . $user->last_name;
 				$email = $user->email;
 				$url = rbUrl('user/profile/'.$user->id);
@@ -172,7 +172,7 @@ class CommentController extends \PublicController
 
 	protected function validate()
 	{
-		if (\Sentry::check()) {
+		if (\Auth::check()) {
 			$rule = array(
 				'message' => 'required',
 			);	

@@ -169,7 +169,7 @@ class PagesController extends \AdminController
             } while ($check);
         }
 
-        $current_user = \Sentry::getUser();
+        $current_user = \Auth::getUser();
         $button_save = \Input::get('page_save');
         $status = ($button_save == t('global.save') || $button_save == t('global.publish')) ? 'live' : 'draft';
         $page->title = (\Input::get('title') == '') ? 'Untitled' : \Input::get('title');

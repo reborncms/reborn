@@ -6,16 +6,17 @@ use Blog\Model\Blog;
 
 use Blog\Lib\Helper;
 
-use Setting,
-	Pagination,
+use Auth,
 	Config,
-	Str,
+	Event,
+	Field,
+	Flash,
 	Input,
 	Module,
-	Field,
+	Pagination,
 	Redirect,
-	Flash,
-	Event;
+	Setting,
+	Str;
 
 class BlogController extends \AdminController
 {
@@ -520,7 +521,7 @@ class BlogController extends \AdminController
 
 		$authors[0] = '-- '. t('blog::blog.auto_detect') .' -- ';
 
-		$users = \Sentry::getUserProvider()->findAllWithAccess('admin');
+		$users = Auth::getUserProvider()->findAllWithAccess('admin');
 
 		foreach ($users as $user) {
 
@@ -568,7 +569,7 @@ class BlogController extends \AdminController
 
 		if (Input::get('author_id') == 0) {
 
-			$author = Sentry::getUser()->id;
+			$author = Auth::getUser()->id;
 
 		} else {
 
