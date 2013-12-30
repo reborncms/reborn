@@ -566,6 +566,17 @@ class Blueprint
 		$this->fields[$name]['html'] = Form::select($name, $options, $val['value'], $val['attr']);
 	}
 
+	/** Select Box with Select2 JS **/
+	protected function addSelect2($name, $val)
+	{
+		$options = isset($val['option']) ? $val['option'] : array();
+
+		$this->fields[$name]['type'] = 'select2';
+		$this->fields[$name]['info'] = $val['info'];
+		$this->labels[$name] = Form::label($val['label'], $name);
+		$this->fields[$name]['html'] = UIForm::select2($name, $options, $val['value'], $val['js_opts'], $val['multi']);
+	}
+
 	/** Number Field **/
 	protected function addNumber($name, $val)
 	{
