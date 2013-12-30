@@ -41,7 +41,7 @@ Route::middleware('check_access', function($request, $route, $param){
 		$rule = $ctrl.'.'.$route->action;
 	}
 
-	if (!user_has_access($rule)) {
+	if (!\Auth::hasAccess($rule)) {
 		return \Response::clueless();
 	}
 });
