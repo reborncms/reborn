@@ -69,6 +69,7 @@ class Alias
             'Table' => 'Reborn\Table\Builder',
             'DataTable' => 'Reborn\Table\DataTable',
             'DataTableBuilder' => 'Reborn\Table\DataTable\UI',
+            'ToolKit' => 'Reborn\Util\ToolKit',
             'Translate' => 'Reborn\Translate\TranslateManager',
             'Uri' => 'Reborn\Http\Uri',
             'Validation' => 'Reborn\Form\Validation',

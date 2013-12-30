@@ -37,6 +37,13 @@ class UIForm extends Form
     protected static $tag = false;
 
     /**
+     * Variable for select2 js declare
+     *
+     * @var boolean
+     **/
+    protected static $select2 = false;
+
+    /**
      * Get textarea with CkEditor
      *
      * @param string $name TextArea Name
@@ -49,7 +56,6 @@ class UIForm extends Form
     {
         static::$ckeditor;
 
-        $app = Facade::getApplication();
         $ck = global_asset('js', 'ckeditor/ckeditor.js');
         $ck_jq = global_asset('js', 'ckeditor/adapters/jquery.js');
         $rb = rbUrl();
@@ -134,6 +140,7 @@ ck;
         }
 
         $attrs = array_merge($attrs, $id);
+        $value = static::getValue($name, $value);
 
         if (static::$ckeditor) {
             return static::textarea($name, $value, $attrs);
@@ -223,7 +230,7 @@ $ui
 </script>
 
 dp;
-
+        $value = static::getValue($name, $value);
         $attrs = array_merge($attrs, array('class' => 'datepicker'));
 
         if (static::$datepicker) {
@@ -247,13 +254,10 @@ dp;
      **/
     public static function tags($name, $value = null, $attrs = array(), $url = null)
     {
-        if (is_array($value)) {
-            $value = implode(',', $value);
-        }
         $js = global_asset('js', 'jquery.tagsinput.min.js');
         $css = global_asset('css', 'jquery.tagsinput_custom.css');
 
-        $rb = rbUrl();
+        $rb = url();
         $jq = $rb.'global/assets/js/jquery-1.9.0.min.js';
 
         if (is_null($url)) {
@@ -285,6 +289,7 @@ SCRIPT;
 
         $attrs = array_merge($attrs, array('class' => 'tags'));
 
+        $value = static::getValue($name, $value);
         $value = is_array($value) ? implode(',', $value) : $value;
 
         if (static::$tag) {
@@ -294,6 +299,73 @@ SCRIPT;
         static::$tag = true;
 
         return $tag_init.static::text($name, $value, $attrs).$tag_script;
+    }
+
+    /**
+     * Select2 js dropdown field
+     *
+     * @param string $name Name of the select element
+     * @param array $options Options tag data list for dropdown
+     * @param mixed $value Value for select2 element
+     * @param array $js_opts Options for select2 js script
+     * @param boolean $multi Use multiple select.
+     * @return string
+     **/
+    public static function select2($name, $options, $value = null, $js_opts = array(), $multi = false)
+    {
+        $js = global_asset('js', 'select2-3.4.5/select2.min.js');
+        $css = global_asset('css', 'select2-3.4.5/select2.css');
+
+        $rb = url();
+        $jq = $rb.'global/assets/js/jquery-1.9.0.min.js';
+
+        $e_attr = ($multi) ? array('multiple' => 'multiple') : array();
+
+        $select2_opts = \Reborn\Util\ToolKit::jsEncode($js_opts);
+
+        $select2_init = <<<SELECT
+$css
+<script>
+    window.jQuery || document.write('<script src="$jq"><\/script>')
+</script>
+$js
+SELECT;
+
+$select_script = <<<SCRIPT
+<script type="text/javascript">
+(function($) {
+    $(function()
+    {
+        $('#$name').select2($select2_opts);
+    });
+})(jQuery);
+</script>
+
+SCRIPT;
+        $value = static::getValue($name, $value);
+        $element = static::select($name, $options, $value, $e_attr);
+
+        if (static::$select2) {
+            return $element.$select_script;
+        }
+
+        static::$select2 = true;
+
+        return $select2_init.$element.$select_script;
+    }
+
+    /**
+     * Select2 js dropdown field with multi select
+     *
+     * @param string $name Name of the select element
+     * @param array $options Options tag data list for dropdown
+     * @param mixed $value Value for select2 element
+     * @param array $js_opts Options for select2 js script
+     * @return string
+     **/
+    public static function select2Multi($name, $options, $value = null, $js_opts = array())
+    {
+        return static::select2($name, $options, $value, $js_opts, true);
     }
 
 } // END class UIForm extends Form
