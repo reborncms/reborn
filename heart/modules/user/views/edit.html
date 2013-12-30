@@ -49,21 +49,21 @@
 	<div class="form-block">
         <label for="">{{ Form::label('Username', 'username') }}</label>
 		<div class="form-right-block">
-			{{ Form::input('username', $usermeta->username, 'text', array('id' => 'user-username')) }}
+			{{ Form::input('username', $user->metadata->username, 'text', array('id' => 'user-username')) }}
 	    </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
     <div class="form-block">
         <label for="">{{ Form::label('Biography', 'biography') }}</label>
       
-        {{ Form::textarea('biography', $usermeta->biography, array('id' => 'user-biography')) }}
+        {{ Form::textarea('biography', $user->metadata->biography, array('id' => 'user-biography')) }}
     </div> <!-- end of form block -->
 
     <div class="form-block">
         <label for="">{{ Form::label('Country', 'country') }}</label>
       
         <div class="form-right-block">
-          {{ Form::input('country', $usermeta->country, 'text', array('id' => 'user-country')) }}  
+          {{ Form::input('country', $user->metadata->country, 'text', array('id' => 'user-country')) }}  
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
@@ -71,7 +71,7 @@
         <label for="">{{ Form::label('Website', 'website') }}</label>
       
         <div class="form-right-block">
-          {{ Form::input('website', $usermeta->website, 'text', array('id' => 'user-website')) }}
+          {{ Form::input('website', $user->metadata->website, 'text', array('id' => 'user-website')) }}
           <p>Personal blog or webpage of this user</p> 
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
@@ -80,7 +80,7 @@
         <label for="">{{ Form::label('Facebook', 'facebook') }}</label>
       
         <div class="form-right-block">
-          {{ Form::input('facebook', $usermeta->facebook, 'text', array('id' => 'user-facebook')) }}
+          {{ Form::input('facebook', $user->metadata->facebook, 'text', array('id' => 'user-facebook')) }}
           <p>Enter this user's facebook username</p>     
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
@@ -89,7 +89,7 @@
         <label for="">{{ Form::label('Twitter', 'twitter') }}</label>
       
         <div class="form-right-block">
-          {{ Form::input('twitter', $usermeta->twitter, 'text', array('id' => 'user-twitter')) }}
+          {{ Form::input('twitter', $user->metadata->twitter, 'text', array('id' => 'user-twitter')) }}
           <p>Enter this user's twitter username</p>     
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->

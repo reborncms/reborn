@@ -2,9 +2,9 @@
 
 namespace Reborn\Auth\Sentry\Eloquent;
 
-use Eloquent;
+use Cartalyst\Sentry\Groups\Eloquent\Group as Base;
 
-class Group extends Eloquent
+class Group extends Base
 {
 	protected $table = 'groups';
 

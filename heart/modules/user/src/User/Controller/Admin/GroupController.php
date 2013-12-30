@@ -1,8 +1,6 @@
 <?php
 
 namespace User\Controller\Admin;
-use Reborn\Connector\Sentry\Sentry;
-use User\Model\Group as Group;
 
 class GroupController extends \AdminController
 {
@@ -10,14 +8,13 @@ class GroupController extends \AdminController
 	{
 		$this->menu->activeParent('user');
 		$this->template->style('user.css', 'user');
-		$this->template->header = \Translate::get('user::group.title');
-		if(!Sentry::check()) return \Redirect::to('login');
+		$this->template->header = \Translate::get('user::group.title');		
 	}
 
 	public function index()
 	{
 		if (!user_has_access('user.group')) return $this->notFound();
-		$group = Group::all();
+		$group = \UserGroup::all();
 
 		$this->template->title(\Translate::get('user::group.title'))
 					->breadcrumb(\Translate::get('user::group.title'))
@@ -41,7 +38,7 @@ class GroupController extends \AdminController
 				$is_admin = (int)\Input::get('is_admin', 0);
 
 				try {
-					$group = Sentry::getGroupProvider()->create(array(
+					$group = \UserGroup::create(array(
 				        'name'        => $groupName,
 				        'permissions' => array(
 				            'admin' => $is_admin,
@@ -64,7 +61,7 @@ class GroupController extends \AdminController
 	public function edit($uri)
 	{
 		if (!user_has_access('user.group.edit')) return $this->notFound();
-		$group = Sentry::getGroupProvider()->findById($uri);
+		$group = \UserGroup::findBy('id', $uri);
 		$groupPermission = $group->getPermissions();
 
 
@@ -111,9 +108,8 @@ class GroupController extends \AdminController
 	public function delete($uri)
 	{
 		if (!user_has_access('user.group.delete')) return $this->notFound();
-		$group = Sentry::getGroupProvider()->findById($uri);
+		\UserGroup::delete($uri);
 
-	    $group->delete();
 	    \Flash::success(\Translate::get('user::group.delete.success'));	    
 	    return \Redirect::toAdmin('user/group');
 	}

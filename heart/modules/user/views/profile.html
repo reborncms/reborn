@@ -3,7 +3,7 @@
 	<h2 id="displayname">{{ $user->fullname }}</h2>
 
 	<div class="user-avatar">
-		{{ gravatar($user->email, 200, $user['name']) }}
+		{{ $user->profileImage(200) }}
 		{{ if($currentUser and $user->id == $currentUser->id) }}
 			<span><a href="https://gravatar.com/" target="_blank">{{ t('user::user.gravatar') }}</a></span>
 			<ul id="user-settings">
@@ -22,27 +22,27 @@
 			</tr>
 			<tr>
 				<td>Country :</td>
-				<td>{{ $userMeta->country }}</td>
+				<td>{{ $user->metadata->country }}</td>
 			</tr>
 			<tr>
 				<td>Website :</td>
-				<td><a href="{{ $userMeta->website }}">{{ $userMeta->website }}</a></td>
+				<td><a href="{{ $user->metadata->website }}">{{ $user->metadata->website }}</a></td>
 			</tr>
-			{{ if($userMeta->facebook) }}
+			{{ if($user->metadata->facebook) }}
 			<tr>
 				<td>Facebook :</td>
-				<td><a href="http://www.facebook.com/{{ $userMeta->facebook }}">/{{ $userMeta->facebook }}</a></td>
+				<td><a href="http://www.facebook.com/{{ $user->metadata->facebook }}">/{{ $user->metadata->facebook }}</a></td>
 			</tr>
 			{{ endif }}
-			{{ if($userMeta->twitter) }}
+			{{ if($user->metadata->twitter) }}
 			<tr>
 				<td>Twitter :</td>
-				<td><a href="http://twitter.com/{{ $userMeta->twitter }}">@{{ $userMeta->twitter }}</a></td>
+				<td><a href="http://twitter.com/{{ $user->metadata->twitter }}">@{{ $user->metadata->twitter }}</a></td>
 			</tr>
 			{{ endif }}
 			<tr>
 				<td>About :</td>
-				<td>{{ $userMeta->biography }}</td>
+				<td>{{ $user->metadata->biography }}</td>
 			</tr>
 		</table>
 	</div>

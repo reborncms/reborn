@@ -2,10 +2,8 @@
 
 namespace User\Controller;
 
-use Reborn\Connector\Sentry\Sentry;
+use Auth;
 use Reborn\Util\Mailer as Mailer;
-use User\Model\UserMeta as UserMeta;
-use User\Model\User;
 
 class UserController extends \PublicController
 {
@@ -16,8 +14,8 @@ class UserController extends \PublicController
 
 	public function index()
 	{			
-		if(!Sentry::check()) return \Redirect::to('user/login');
-		return \Redirect::to('user/profile/'.Sentry::getUser()->id);
+		if(!Auth::check()) return \Redirect::to('user/login');
+		return \Redirect::to('user/profile/'.Auth::getUserId());
 	} 
 
 	/**
@@ -27,17 +25,13 @@ class UserController extends \PublicController
 	 **/
 	public function profile($id = null)
 	{
-		if(!Sentry::check() and is_null($id)) return \Redirect::to('user/login');
+		if(!Auth::check() and is_null($id)) return \Redirect::to('user/login');
 		
-		$user = User::find($id);
+		$user = \User::findBy('id', $id);
 
 		if(is_null($user)) return \Redirect::to('/');
 
-		$currentUser = Sentry::getUser();
-		$usermeta = UserMeta::where('user_id', '=', $user->id)->get();
-		foreach ($usermeta as $u) {
-			$usermeta = $u;
-		}
+		$currentUser = Auth::getUser();
 
 		$blogs = array();
 
@@ -48,8 +42,7 @@ class UserController extends \PublicController
 		$this->template->title(t('user::user.title.profile'))
 					->breadcrumb(t('user::user.title.profile'))
 					->set('user', $user)
-					->set('currentUser', $currentUser)
-					->set('userMeta', $usermeta)
+					->set('currentUser', $currentUser)					
 					->set('blogs', $blogs)
 					->setPartial('profile');
 	}
@@ -61,7 +54,7 @@ class UserController extends \PublicController
 	 **/
 	public function login()
 	{
-		if(Sentry::check()) return \Redirect::to('user');
+		if(Auth::check()) return \Redirect::to('user');
 
 		if (\Input::isPost()) {			
 			$rule = array(
@@ -87,7 +80,7 @@ class UserController extends \PublicController
 				        'password' => $password
 				    );
 
-				    if ($user = Sentry::authenticate($login, $remember)) {
+				    if ($user = Auth::authenticate($login, $remember)) {
 				    	$name = $user->first_name.' '.$user->last_name;
 				    	\Flash::success(sprintf(t('user::user.login.success'), $name));
 				        return \Redirect::to('/');
@@ -95,20 +88,20 @@ class UserController extends \PublicController
 				    	\Flash::error(t('user::user.login.fail'));
 				    }
 				}
-				catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
+				catch (\Cartalyst\Auth\Users\UserNotFoundException $e)
 				{
 					\Flash::error(t('user::user.login.fail'));
 				}
-				catch (\Cartalyst\Sentry\Users\UserNotActivatedException $e)
+				catch (\Cartalyst\Auth\Users\UserNotActivatedException $e)
 				{
 					\Flash::error(t('user::user.login.activate'));
 				}
-				catch (\Cartalyst\Sentry\Throttling\UserSuspendedException $e)
+				catch (\Cartalyst\Auth\Throttling\UserSuspendedException $e)
 				{
 					$time = $throttle->getSuspensionTime();
 				    \Flash::error(sprintf(t('user::user.login.suspended'), $time));
 				}
-				catch (\Cartalyst\Sentry\Throttling\UserBannedException $e)
+				catch (\Cartalyst\Auth\Throttling\UserBannedException $e)
 				{
 				    \Flash::error(t('user::user.login.banned'));
 				}
@@ -129,11 +122,11 @@ class UserController extends \PublicController
 	 */
 	public function logout()
 	{
-		if(!Sentry::check()) return \Redirect::to('login');
+		if(!Auth::check()) return \Redirect::to('login');
 		
 		\Event::call('reborn.user.logout');
 
-		Sentry::logout();
+		Auth::logout();
 		\Flash::success(t('user::user.logout'));
 		return \Redirect::to('/');
 	}
@@ -144,13 +137,13 @@ class UserController extends \PublicController
 	 **/	
 	public function edit()
 	{
-		if(!Sentry::check()) return \Redirect::to('login');
+		if(!Auth::check()) return \Redirect::to('login');
 
-		$user = Sentry::getUser();
+		$user = Auth::getUser();
 
 		if (\Input::isPost()) {
 			
-			$editUser = Sentry::getUserProvider()->findById(\Input::get('id'));
+			$editUser = Auth::getUserProvider()->findById(\Input::get('id'));
 
 			if($user->id == $editUser->id ) {
 
@@ -171,29 +164,22 @@ class UserController extends \PublicController
 				    	$user->last_name = $last_name;
 
 						if ($user->save()) {
-					    	$usermeta = self::saveMeta('edit', $user->id);
-							$usermeta->save();
+					    	$usermeta = $this->saveMeta($user);							
 							
 					        \Flash::success(t('user::user.profile.success'));
 					        return \Redirect::to('user/profile/'.$user->id);
 					    }
 
-					} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
+					} catch (\Cartalyst\Auth\Users\UserExistsException $e) {
 					   \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
 					}
 				}
 			}
 		}
 
-		$usermeta = UserMeta::where('user_id', '=', $user->id)->get();
-		foreach ($usermeta as $u) {
-			$usermeta = $u;
-		}
-
 		$this->template->title(t('user::user.profile.title'))
 			->breadcrumb(t('user::user.profile.title'))
-			->set('user', $user)
-			->set('usermeta', $usermeta)
+			->set('user', $user)			
 			->setPartial('edit');
 	}
 
@@ -203,7 +189,7 @@ class UserController extends \PublicController
 	 */
 	public function changePassword()
 	{
-		if(!Sentry::check()) return \Redirect::to('login');
+		if(!Auth::check()) return \Redirect::to('login');
 
 		if (\Input::isPost()) {		
 
@@ -218,7 +204,7 @@ class UserController extends \PublicController
 					$this->template->set('errors', $e);
 			} else {
 				try {
-				    $user = Sentry::getUser();
+				    $user = Auth::getUser();
 
 				    $oldPassword = \Input::get('oldPassword');
 				    $newPassword = \Input::get('newPassword');
@@ -241,7 +227,7 @@ class UserController extends \PublicController
 				    } else {
 				        \Flash::error('Old Password does not match.');
 				    }
-				} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
+				} catch (\Cartalyst\Auth\Users\UserNotFoundException $e) {
 				    \Flash::error('User does not exit');
 				}
 			}
@@ -259,7 +245,7 @@ class UserController extends \PublicController
 	**/
 	public function register()
 	{
-		if(Sentry::check()) return \Redirect::to('user');
+		if(Auth::check()) return \Redirect::to('user');
 
 		if (\Input::isPost()) {		
 			
@@ -282,7 +268,7 @@ class UserController extends \PublicController
 					
 					try 
 					{
-					    $user = Sentry::register(array(
+					    $user = Auth::register(array(
 					        'email'    => $email,
 					        'password' => $password,
 					        'first_name' => $first_name,
@@ -293,7 +279,7 @@ class UserController extends \PublicController
 					    $usermeta = self::saveMeta('create', $user->id);
 					    $usermeta->save();
 
-					    $groups = Sentry::getGroupProvider()->findById(3);
+					    $groups = Auth::getGroupProvider()->findById(3);
 				    	$user->addGroup($groups);
 
 					    $activationCode = $user->getActivationCode();
@@ -317,7 +303,7 @@ class UserController extends \PublicController
 						return \Redirect::to('user/activate');
 
 					}
-					catch (\Cartalyst\Sentry\Users\UserExistsException $e)
+					catch (\Cartalyst\Auth\Users\UserExistsException $e)
 					{
 					    \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
 					}
@@ -338,12 +324,12 @@ class UserController extends \PublicController
 	*/
 	public function activate($emailEncode = null, $activationCode = null)
 	{
-		if(Sentry::check()) return \Redirect::to('user');
+		if(Auth::check()) return \Redirect::to('user');
 
 		try {
 
 			$email = base64_decode($emailEncode);
-			$user = Sentry::getUserProvider()->findByLogin($email);
+			$user = Auth::getUserProvider()->findByLogin($email);
 
 			// Attempt user activation
 		    if ($user->attemptActivation($activationCode)) {
@@ -351,10 +337,10 @@ class UserController extends \PublicController
 		    } else {
 		       \Flash::error(t('user::user.activate.fail'));
 		    } 
-		} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
+		} catch (\Cartalyst\Auth\Users\UserNotFoundException $e) {
     		\Flash::error(t('user::user.auth.dunexist'));
     		return \Redirect::to('user/register');
-		} catch (\Cartalyst\Sentry\Users\UserAlreadyActivatedException $e) {
+		} catch (\Cartalyst\Auth\Users\UserAlreadyActivatedException $e) {
 			\Flash::error(t('user::user.auth.activated'));
 		}
 		return \Redirect::to('user/login');		
@@ -365,7 +351,7 @@ class UserController extends \PublicController
 	*/
 	public function resetPassword()
 	{
-		if(Sentry::check()) return \Redirect::to('user');
+		if(Auth::check()) return \Redirect::to('user');
 
 		if (\Input::isPost()) {
 
@@ -383,7 +369,7 @@ class UserController extends \PublicController
 				$email = \Input::get('email');
 				try
 				{
-				    $user = Sentry::getUserProvider()->findByLogin($email);
+				    $user = Auth::getUserProvider()->findByLogin($email);
 				    $resetCode = $user->getResetPasswordCode();
 				    $emailEncode = base64_encode($email);
 
@@ -403,7 +389,7 @@ class UserController extends \PublicController
 				    \Flash::success(t('user::user.resentPass'));
 					return \Redirect::to('/');
 				}
-				catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
+				catch (\Cartalyst\Auth\Users\UserNotFoundException $e)
 				{
 				    \Flash::error(t('user::user.auth.dunexist'));
 				}
@@ -423,7 +409,7 @@ class UserController extends \PublicController
 	*/
 	public function passwordReset($emailEncode, $hash)
 	{
-		if(Sentry::check()) return \Redirect::to('user');
+		if(Auth::check()) return \Redirect::to('user');
 
 		if (\Input::isPost()) {
 			
@@ -447,7 +433,7 @@ class UserController extends \PublicController
 					try
 					{
 						$email = base64_decode(\Uri::segment(3));
-					    $user = Sentry::getUserProvider()->findByLogin($email);
+					    $user = Auth::getUserProvider()->findByLogin($email);
 
 					    if ($user->checkResetPasswordCode($hash)) {
 					        // Attempt to reset the user password
@@ -461,7 +447,7 @@ class UserController extends \PublicController
 					    	\Flash::error('The provided password reset code is Invalid');
 					    }
 					}
-					catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
+					catch (\Cartalyst\Auth\Users\UserNotFoundException $e)
 					{
 					    \Flash::error(t('user::user.auth.dunexist'));
 						return \Redirect::to('user/register');
@@ -483,7 +469,7 @@ class UserController extends \PublicController
 	*/
 	public function resend()
 	{
-		if(Sentry::check()) return \Redirect::to('user');
+		if(Auth::check()) return \Redirect::to('user');
 
 		if (\Input::isPost()) {
 			$rule = array(
@@ -499,7 +485,7 @@ class UserController extends \PublicController
 				$email = \Input::get('email');
 				try
 				{
-				    $user = Sentry::findUserByLogin($email);
+				    $user = Auth::findUserByLogin($email);
 
 				    if ($user->isActivated()) {
 				        \Flash::error(sprintf(t('user::user.activate.already'), $email));
@@ -525,7 +511,7 @@ class UserController extends \PublicController
 						return \Redirect::to('user/activate');
 				    }				   
 				}
-				catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
+				catch (\Cartalyst\Auth\Users\UserNotFoundException $e)
 				{
 				    \Flash::error(t('user::user.auth.dunexist'));
 				}
@@ -542,22 +528,17 @@ class UserController extends \PublicController
 	 *
 	 * @return boolean
 	 **/
-	protected function saveMeta($method, $id) 
-	{
-		if ($method == 'create') {
-			$user = new UserMeta;
-		} else {
-			$user = UserMeta::find($id);
-		}
+	protected function saveMeta($user) 
+	{		
+		$metadata = $user->metadata;
 
-		$user->user_id = $id;
-		$user->biography = \Input::get('biography');
-		$user->country = \Input::get('country');
-		$user->website = \Input::get('website');
-		$user->facebook = \Input::get('facebook');
-		$user->twitter = \Input::get('twitter');
+		$metadata->biography = \Input::get('biography');
+		$metadata->country = \Input::get('country');
+		$metadata->website = \Input::get('website');
+		$metadata->facebook = \Input::get('facebook');
+		$metadata->twitter = \Input::get('twitter');		
 		
-		return $user;
+		return $metadata->save();
 	}
 
 	/**

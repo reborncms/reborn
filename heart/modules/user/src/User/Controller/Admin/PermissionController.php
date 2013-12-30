@@ -1,16 +1,13 @@
 <?php
 
 namespace User\Controller\Admin;
-use Reborn\Connector\Sentry\Sentry;
-use User\Model\Group as Group;
 
 class PermissionController extends \AdminController
 {
 	public function before()
 	{
 		$this->menu->activeParent('user');
-		$this->template->header = \Translate::get('user::permission.title');
-		if(!Sentry::check()) return \Redirect::to('login');
+		$this->template->header = \Translate::get('user::permission.title');		
 	}
 
 	/**
@@ -20,7 +17,7 @@ class PermissionController extends \AdminController
 	public function index()
 	{
 		if (!user_has_access('user.permission')) return $this->notFound();
-		$group = Group::all();
+		$group = \UserGroup::all();
 
 		$this->template->title(\Translate::get('user::permission.title'))
 				->breadcrumb(\Translate::get('user::permission.title'))
@@ -36,7 +33,7 @@ class PermissionController extends \AdminController
 	public function edit($groupid = null)
 	{
 		if (!user_has_access('user.permission.edit') or is_null($groupid)) return $this->notFound();
-		$group = Sentry::getGroupProvider()->findById($groupid);
+		$group = \UserGroup::findBy('id', $groupid);
 
 		if ( !$group ) {
 			return \Redirect::to('admin/user/permission');

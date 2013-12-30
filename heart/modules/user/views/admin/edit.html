@@ -20,7 +20,7 @@
     		<label for="">{{ Form::label(t('user::user.email'), 'email') }}<span class="required"></span></label>
       
   			<div class="form-right-block">
-    			{{ Form::email('email', $user->email, array('id' => 'email')) }}
+    			{{ Form::email('email', $user->email, array('id' => 'email', 'autocomplete' => 'off')) }}
           {{ if(isset($errors['email'])) }}
             <span class="msg error">{{ $errors['email'] }}</p>
           {{ endif }}
@@ -32,7 +32,7 @@
     		<label for="">{{ Form::label(t('user::user.lpassword'), 'password') }}<span class="required"></span></label>
       
   			<div class="form-right-block">
-    			{{ Form::password('password', '', array('id' => 'password')) }}
+    			{{ Form::password('password', '', array('id' => 'password', 'autocomplete' => 'off')) }}
     			{{ if(isset($errors['password'])) }}
             <span class="msg error">{{ $errors['password'] }}</p>
           {{ endif }}
@@ -67,21 +67,21 @@
         <label for="">{{ Form::label(t('user::user.lusername'), 'username') }}</label>
       
         <div class="form-right-block">
-          {{ Form::input('username', $usermeta->username, 'text', array('id' => 'user-username')) }}
+          {{ Form::input('username', $user->metadata->username, 'text', array('id' => 'user-username')) }}
           <p>{{ t('user::user.tusername') }}</p>     
       </div> <!-- end of form-right-block -->
 
     </div> <!-- end of form block -->
     <div class="form-block odd">
         <label for="">{{ Form::label(t('user::user.lusername'), 'biography') }}</label>      
-        {{ Form::textarea('biography', $usermeta->biography, array('id' => 'user-biography')) }}
+        {{ Form::textarea('biography', $user->metadata->biography, array('id' => 'user-biography')) }}
     </div> <!-- end of form block -->
 
     <div class="form-block even">
         <label for="">{{ Form::label(t('user::user.lcountry'), 'country') }}</label>
       
         <div class="form-right-block">
-          {{ Form::input('country', $usermeta->country, 'text', array('id' => 'user-country')) }}  
+          {{ Form::input('country', $user->metadata->country, 'text', array('id' => 'user-country')) }}  
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
@@ -89,7 +89,7 @@
         <label for="">{{ Form::label(t('user::user.lwebsite'), 'website') }}</label>
       
         <div class="form-right-block">
-          {{ Form::input('website', $usermeta->website, 'text', array('id' => 'user-website')) }}
+          {{ Form::input('website', $user->metadata->website, 'text', array('id' => 'user-website')) }}
           <p>{{ t('user::user.twebsite') }}</p> 
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
@@ -98,7 +98,7 @@
         <label for="">{{ Form::label(t('user::user.lfacebook'), 'facebook') }}</label>
       
         <div class="form-right-block">
-          {{ Form::input('facebook', $usermeta->facebook, 'text', array('id' => 'user-facebook')) }}
+          {{ Form::input('facebook', $user->metadata->facebook, 'text', array('id' => 'user-facebook')) }}
           <p>{{ t('user::user.tfacebook') }}</p>     
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
@@ -107,7 +107,7 @@
         <label for="">{{ Form::label(t('user::user.ltwitter'), 'twitter') }}</label>
       
         <div class="form-right-block">
-          {{ Form::input('twitter', $usermeta->twitter, 'text', array('id' => 'user-twitter')) }}
+          {{ Form::input('twitter', $user->metadata->twitter, 'text', array('id' => 'user-twitter')) }}
           <p>{{ t('user::user.ttwitter') }}</p>     
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->

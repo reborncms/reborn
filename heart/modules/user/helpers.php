@@ -37,7 +37,7 @@ function module_action_permission_ui($module, $permission)
 
 function user_has_access($role, $redirect_to = null)
 {
-	if (!\Sentry::check()) {
+	if (!\Auth::check()) {
 
 		if (!is_null($redirect_to)) {
 			return \Redirect::to($redirect_to);
@@ -46,7 +46,7 @@ function user_has_access($role, $redirect_to = null)
 		return false;
 	}
 
-	$user = \Sentry::getUser();
+	$user = \Auth::getUser();
 
 	if ($user->hasAccess($role)) {
 		return true;

@@ -19,7 +19,7 @@
     		<label for="">{{ Form::label(t('user::user.email'), 'email') }}<span class="required"></span></label>
       
   			<div class="form-right-block">
-    			{{ Form::email('email', '', array('id' => 'user-email')) }}
+    			{{ Form::email('email', '', array('id' => 'user-email', 'autocomplete' => 'off')) }}
           {{ if(isset($errors['email'])) }}
             <span class="msg error">{{ $errors['email'] }}</p>
           {{ endif }}
@@ -31,7 +31,7 @@
     		<label for="">{{ Form::label(t('user::user.lpassword'), 'password') }}<span class="required"></span></label>
       
   			<div class="form-right-block">
-    			{{ Form::password('password', '', array('id' => 'user-password')) }}
+    			{{ Form::password('password', '', array('id' => 'user-password', 'autocomplete' => 'off')) }}
           {{ if(isset($errors['password'])) }}
             <span class="msg error">{{ $errors['password'] }}</p>
           {{ endif }}

@@ -1,10 +1,8 @@
 <?php
 
 namespace User\Controller\Admin;
-use Reborn\Connector\Sentry\Sentry;
-use User\Model\User as User;
-use User\Model\Group as Group;
-use User\Model\UserMeta as UserMeta;
+
+use Auth;
 
 class UserController extends \AdminController
 {
@@ -14,33 +12,22 @@ class UserController extends \AdminController
 		$this->template->style('user.css', 'user');
 		$this->template->header = t('user::user.title.usermod');
 
-		if(!Sentry::check()) return \Redirect::to(adminUrl('login'));
+		if(!Auth::check()) return \Redirect::to(adminUrl('login'));
 	}
 
 	public function index()
 	{
 		$options = array(
-		    'total_items'       => User::count(),
+		    'total_items'       => \User::count(),
 		    'items_per_page'    => 10,
 		    'param_name' => 'usrpagi'
 		);
 
 		$pagination = \Pagination::create($options);
 
-		$users = User::skip(\Pagination::offset())
-						->take(\Pagination::limit())
-						->get();
+		$users = \User::findAllWithLimit(\Pagination::limit(), \Pagination::offset());						
 
-		$currentUser = Sentry::getUser();
-
-		foreach($users as $u) {
-			$id = $u->id;
-			$user = Sentry::getUserProvider()->findById($id);
-			$usergroup = $user->getGroups();
-			foreach ($usergroup as $g) {
-				$u->group = $g->name;
-			}
-		}
+		$currentUser = Auth::getUser();
 
 		$this->template->title(t('user::user.title.usermod'))
 					->breadcrumb(t('user::user.title.profile'))
@@ -48,18 +35,6 @@ class UserController extends \AdminController
 					->set('pagination', $pagination)
 					->set('currentUser', $currentUser)
 					->setPartial('admin/index');
-	}
-
-	/**
-	 * Users Logout
-	 * @access public
-	 * @return void
-	 */
-	public function logout()
-	{
-		Sentry::logout();
-		\Flash::success(t('user::user.logout'));
-		return \Redirect::to('/');
 	}
 
 	public function create()
@@ -95,7 +70,7 @@ class UserController extends \AdminController
 				} else {
 
 					try {
-						$user = Sentry::getUserProvider()->create(array(
+						$user = Auth::getUserProvider()->create(array(
 					        'email'    => $email,
 					        'password' => $password,
 					        'first_name' => $first_name,
@@ -107,22 +82,21 @@ class UserController extends \AdminController
 					        )
 					    ));
 
-					    $usermeta = self::saveMeta('create', $user->id);
-					    $usermeta->save();
+					    $usermeta = $this->saveMeta($user);
 
-					    $groups = Sentry::getGroupProvider()->findById($groups);
+					    $groups = Auth::getGroupProvider()->findById($groups);
 					    $user->addGroup($groups);
 
 					    \Flash::success(t('user::user.create.success'));
 					    return \Redirect::toAdmin('user');
-					} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
+					} catch (\Cartalyst\Auth\Users\UserExistsException $e) {
 					    \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
 					}
 				}
 			}
 		}
 
-		$groups = Group::all();
+		$groups = \UserGroup::all();
 
 		$this->template->title(t('user::user.title.create'))
 			->breadcrumb(t('user::user.title.create'))
@@ -134,7 +108,7 @@ class UserController extends \AdminController
 	{
 		if (!user_has_access('user.edit') or $uri == null) return $this->notFound();
 
-		$user = Sentry::getUserProvider()->findById($uri);
+		$user = Auth::getUserProvider()->findById($uri);
 		$usergroup = $user->getGroups();
 		foreach ($usergroup as $group) {
 			$group = $group->id;
@@ -169,16 +143,15 @@ class UserController extends \AdminController
 					    'admin' => $adminPanelAccess,
 					);
 
-					self::setPassword($user);
+					$this->setPassword($user);
 
 				    if ($user->save()) {
-				    	$usermeta = self::saveMeta('edit', $user->id);
-					    $usermeta->save();
+				    	$usermeta = $this->saveMeta($user);
 
 					    if ((int)$group !== $groups) {
-					    	$group = Sentry::getGroupProvider()->findById($group);
+					    	$group = Auth::getGroupProvider()->findById($group);
 					    	$user->removeGroup($group);
-					    	$groups = Sentry::getGroupProvider()->findById($groups);
+					    	$groups = Auth::getGroupProvider()->findById($groups);
 					    	$user->addGroup($groups);
 					    }
 
@@ -189,18 +162,13 @@ class UserController extends \AdminController
 				    } else {
 				    	\Flash::error(t('user::user.edit.fail'));
 				    }
-				} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
+				} catch (\Cartalyst\Auth\Users\UserExistsException $e) {
 				   \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
 				}
 			}			
 		}
 
-		$usermeta = UserMeta::where('user_id', '=', $user->id)->get();
-		foreach ($usermeta as $u) {
-			$usermeta = $u;
-		}
-
-		$groups = Group::all();
+		$groups = \UserGroup::all();
 
 		$adminAccess['dashboard'] = array_key_exists('admin', $user->getPermissions()) ?  true : false;
 		$adminAccess['superUser'] = array_key_exists('superuser', $user->getPermissions()) ?  true : false;
@@ -209,7 +177,6 @@ class UserController extends \AdminController
 			->breadcrumb(t('user::user.title.edit'))
 			->set('user', $user)
 			->set('group', $group)
-			->set('usermeta', $usermeta)
 			->set('groups', $groups)
 			->set('adminAccess', $adminAccess)
 			->setPartial('admin/edit');
@@ -224,7 +191,7 @@ class UserController extends \AdminController
 	public function activate($id)
 	{
 		try {
-			$user = Sentry::getUserProvider()->findById(1);
+			$user = Auth::getUserProvider()->findById(1);
 
 			if ($user->isActivated()) {
 				\Flash::error(sprintf(t('user::user.activate.admin'), $email));			
@@ -237,9 +204,9 @@ class UserController extends \AdminController
 			       \Flash::error(t('user::user.activate.admin'));
 			    }
 			}
-		} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
+		} catch (\Cartalyst\Auth\Users\UserNotFoundException $e) {
     		\Flash::error(t('user::user.auth.dunexist'));
-		} catch (\Cartalyst\SEntry\Users\UserAlreadyActivatedException $e) {
+		} catch (\Cartalyst\Auth\Users\UserAlreadyActivatedException $e) {
 			\Flash::error(t('user::user.auth.admin'));
 		}
 		return \Redirect::toAdmin('user');
@@ -254,13 +221,12 @@ class UserController extends \AdminController
 	{
 		if (!user_has_access('user.delete')) return $this->notFound();
 
-	    $user = Sentry::getUserProvider()->findById($uri);
+	    $user = \User::findBy('id', $uri);
 
 	    \Event::call('user_deleted',array($user));
-
+	    
 	    $user->delete();
-	    $usermeta = UserMeta::find($uri);
-	    $usermeta->delete();
+
 	    \Flash::success(t('user::user.delete.success'));
 		return \Redirect::toAdmin('user');
 	}
@@ -270,22 +236,17 @@ class UserController extends \AdminController
 	 *
 	 * @return boolean
 	 **/
-	protected function saveMeta($method, $id) {
-		if ($method == 'create') {
-			$user = new UserMeta;
-		} else {
-			$user = UserMeta::find($id);
-		}
+	protected function saveMeta($user) 
+	{				
+		$metadata = is_null($user->metadata) ? new \Reborn\Auth\Sentry\Eloquent\UserMetadata : $user->metadata;
 
-		$user->user_id = $id;
-		$user->username = \Input::get('username');
-		$user->biography = \Input::get('biography');
-		$user->country = \Input::get('country');
-		$user->website = \Input::get('website');
-		$user->facebook = \Input::get('facebook');
-		$user->twitter = \Input::get('twitter');
-
-		return $user;
+		$metadata->biography = \Input::get('biography');
+		$metadata->country = \Input::get('country');
+		$metadata->website = \Input::get('website');
+		$metadata->facebook = \Input::get('facebook');
+		$metadata->twitter = \Input::get('twitter');		
+		
+		return $metadata->save();
 	}
 
 	/**

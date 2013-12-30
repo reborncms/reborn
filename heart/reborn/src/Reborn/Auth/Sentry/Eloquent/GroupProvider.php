@@ -48,11 +48,11 @@ class GroupProvider extends Provider
 	 * @param string $move_to Group name to move deleted group's users. Default is "User"
 	 * @return void
 	 **/
-	public function delete($id, $move_to = 'User')
+	public function delete($id, $move_to = 3)
 	{
 		$delete_model = $model = $this->createModel();
 
-		$move = $model->where('name', '=', $move_to)->first();
+		$move = $model->where('id', '=', $move_to)->first();
 
 		// If "$move_to" group is exists,
 		// update delete group's user to "$move_to" group.
