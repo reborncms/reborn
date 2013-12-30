@@ -574,7 +574,9 @@ class Blueprint
 		$this->fields[$name]['type'] = 'select2';
 		$this->fields[$name]['info'] = $val['info'];
 		$this->labels[$name] = Form::label($val['label'], $name);
-		$this->fields[$name]['html'] = UIForm::select2($name, $options, $val['value'], $val['js_opts'], $val['multi']);
+		$multi = (isset($val['multi'])) ? $val['multi'] : false;
+		$js_opts = (isset($val['js_opts'])) ? $val['js_opts'] : array();
+		$this->fields[$name]['html'] = UIForm::select2($name, $options, $val['value'], $js_opts, $multi);
 	}
 
 	/** Number Field **/
