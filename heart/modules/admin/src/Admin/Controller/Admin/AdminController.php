@@ -2,8 +2,7 @@
 
 namespace Admin\Controller\Admin;
 
-use Event, Setting, Input, Flash, Redirect, Validation;
-use Reborn\Connector\Sentry\Sentry;
+use Auth, Event, Setting, Input, Flash, Redirect, Validation;
 use Admin\Presenter\DashboardWidget;
 
 class AdminController extends \AdminController
@@ -48,7 +47,7 @@ class AdminController extends \AdminController
 	 **/
 	public function login()
 	{
-		if(Sentry::check()) return Redirect::toAdmin();
+		if(Auth::check()) return Redirect::toAdmin();
 
 		if (Input::isPost())
 		{
@@ -71,8 +70,8 @@ class AdminController extends \AdminController
 			    );
 
 				try {
-					if ($user = Sentry::authenticate($login)) {
-				    	$username = $user->first_name.' '.$user->last_name;
+					if ($user = Auth::authenticate($login)) {
+				    	$username = $user->fullname;
 				        Flash::success(sprintf(t('global.welcome_ap'), $username));
 				        return Redirect::toAdmin();
 				    } else {
@@ -104,8 +103,8 @@ class AdminController extends \AdminController
 	 */
 	public function logout()
 	{
-		if(!Sentry::check()) return Redirect::toAdmin('login');
-		Sentry::logout();
+		if(!Auth::check()) return Redirect::toAdmin('login');
+		Auth::logout();
 		return Redirect::toAdmin('login');
 	}
 }
