@@ -79,7 +79,7 @@ class Menu
 		}
 		$icon = '<i class="icon-dashboard"></i>';
 		$output = '<li id="dashboard-dashboard" class="first '.$class.'">';
-		$output .= '<a href="'.adminUrl().'" >'.$icon.t('navigation.dashboard').'</a>';
+		$output .= '<a href="'.admin_url().'" >'.$icon.t('navigation.dashboard').'</a>';
 		$output .= '</li>';
 
 		foreach ($this->items as $order => $child) {
@@ -98,7 +98,7 @@ class Menu
 				if ( isset($name['child']) and empty($name['child'])) {
 					$class = ($name['link'] == $uri) ? 'active' : '';
 					$output .= '<li id="dashboard-'.$k.'" class="first '.$class.'">';
-					$output .= '<a href="'.adminUrl().$name['link'].'" >';
+					$output .= '<a href="'.admin_url($name['link']).'" >';
 					$output .= $icon.ucfirst($name['title']).'</a>';
 					$output .= '</li>';
 				} else {
@@ -106,12 +106,12 @@ class Menu
 						$class = ($this->activeParent == $k) ? 'active' : '';
 						$output .= '<li id="dashboard-'.$k.'" class="first am_has_child '.$class.'">';
 						$display = isset($name['title']) ? $name['title'] : static::displayName($k);
-						$output .= '<a href="'.adminUrl().'#" >'.$icon.ucfirst($display).'</a>';
+						$output .= '<a href="'.admin_url().'#" >'.$icon.ucfirst($display).'</a>';
 						$output .= '<ul class="dashboard-second-level">';
 						foreach ($child[$k]['child'] as $key => $val) {
 							$klass = ($val['link'] == $uri) ? 'active' : '';
 							$output .= '<li class="'.$klass.'">';
-							$output .= '<a href="'.adminUrl().$val['link'].'">';
+							$output .= '<a href="'.admin_url($val['link']).'">';
 							$output .= $val['title'];
 							$output .= '</a>';
 							$output .= '</li>';

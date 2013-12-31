@@ -714,12 +714,12 @@ class Template
 
         switch ($type) {
             case 'style':
-                $url = $base.'styles/'.rtrim($url, ',');
+                $url = $base.'/styles/'.rtrim($url, ',');
                 return '<link rel="stylesheet" type="text/css" href="'.$url.'">'."\n";
                 break;
 
             case 'script':
-                $url = $base.'scripts/'.rtrim($url, ',');
+                $url = $base.'/scripts/'.rtrim($url, ',');
                 return '<script type="text/javascript" src="'.$url.'"></script>'."\n";
                 break;
 

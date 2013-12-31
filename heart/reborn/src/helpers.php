@@ -271,7 +271,7 @@ if(! function_exists('remove_base_url'))
 	 **/
 	function remove_base_url($url)
 	{
-		return str_replace(rbUrl(), '', $url);
+		return str_replace(url(), '', $url);
 	}
 }
 
@@ -346,7 +346,7 @@ if(! function_exists('image_url'))
 		$width = is_null($width) ? null : '/'.$width;
 		$height = is_null($height) ? null : '/'.$height;
 
-		return Reborn\Http\Uri::create().'image/'.$name.$width.$height;
+		return Reborn\Http\Uri::create().'/image/'.$name.$width.$height;
 	}
 }
 
@@ -360,7 +360,7 @@ if(! function_exists('asset_url'))
 	 **/
 	function asset_url($path = '')
 	{
-		return rtrim(Reborn\Http\Uri::create($path), '/');
+		return Reborn\Http\Uri::create($path);
 	}
 }
 
@@ -379,7 +379,7 @@ if(! function_exists('css'))
 		$files = assetfile_preapre($file, $module);
 		$href = (defined('ADMIN')) ? url('assets/a/styles/') : url('assets/styles/');
 
-		return Reborn\Util\Html::style($href.$files, $media)."\n";
+		return Reborn\Util\Html::style($href.'/'.$files, $media)."\n";
 	}
 }
 
@@ -398,7 +398,7 @@ if(! function_exists('less'))
 		$files = assetfile_preapre($file, $module);
 		$href = (defined('ADMIN')) ? url('assets/a/less/') : url('assets/less/');
 
-		return Reborn\Util\Html::style($href.$files, $media)."\n";
+		return Reborn\Util\Html::style($href.'/'.$files, $media)."\n";
 	}
 }
 
@@ -416,7 +416,7 @@ if(! function_exists('js'))
 		$files = assetfile_preapre($file, $module);
 		$src = (defined('ADMIN')) ? url('assets/a/scripts/') : url('assets/scripts/');
 		$attrs = array(
-					'src'	=> $src.$files
+					'src'	=> $src.'/'.$files
 				);
 
 		return Reborn\Util\Html::tag('script', '', $attrs)."\n";
@@ -437,7 +437,7 @@ if(! function_exists('img'))
 	function img($file, $alt = null, $attr = array(), $module = null)
 	{
 		$src = (defined('ADMIN')) ? url('assets/a/images/') : url('assets/images/');
-		$src = $src.assetfile_preapre($file, $module);
+		$src = $src.'/'.assetfile_preapre($file, $module);
 		return Reborn\Util\Html::img($src, $alt, $attr)."\n";
 	}
 }
@@ -523,15 +523,15 @@ if (! function_exists('global_asset'))
 
 		switch($type) {
 			case 'css' :
-				return Reborn\Util\Html::style($url.'styles/'.$files)."\n";
+				return Reborn\Util\Html::style($url.'/styles/'.$files)."\n";
 				break;
 			case 'js' :
-				$attrs = array('src'	=> $url.'scripts/'.$files);
+				$attrs = array('src'	=> $url.'/scripts/'.$files);
 				return Reborn\Util\Html::tag('script', '', $attrs)."\n";
 				break;
 			case 'img' :
 			case 'image' :
-				$path = $url.'images/'.str_replace(array('\\', '/'), '/', $files);
+				$path = $url.'/images/'.str_replace(array('\\', '/'), '/', $files);
 				return Reborn\Util\Html::img($path)."\n";
 				break;
 			default :

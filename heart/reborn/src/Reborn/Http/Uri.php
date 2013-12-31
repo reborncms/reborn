@@ -19,15 +19,16 @@ class Uri
     protected static $segments = array();
 
     /**
-     * Variable for Request Object
+     * Request object instance
      *
-     * @var object
+     * @var \Reborn\Http\Request
      **/
     protected static $request;
 
     /**
-     * undocumented function
+     * Initialize Uri Class.
      *
+     * @param \Reborn\Http\Request $request
      * @return void
      **/
     public static function initialize(Request $request)
@@ -192,14 +193,14 @@ class Uri
      **/
     public static function create($path = '')
     {
-        $request = \Registry::get('app')->request;
+        $request = static::$request;
 
         $path = trim($path, '/');
         if ($path == '' || $path =='/') {
             $url = $request->baseUrl();
         } else {
             $path = str_replace(' ', '+', $path);
-            $url = $request->baseUrl().$path.'/';
+            $url = $request->baseUrl().$path;
         }
 
         return $url;
@@ -245,15 +246,13 @@ class Uri
             array_shift($uri);
         }
 
+        $lang = \Config::get('app.lang');
+
         if (isset($uri[0]) and (2 == strlen($uri[0]))) {
             if(array_key_exists($uri[0], $supLangs)) {
                 $lang = $uri[0];
                 array_shift($uri);
-            } else {
-                $lang = \Config::get('app.lang');
             }
-        } else {
-            $lang = \Config::get('app.lang');
         }
 
         \Config::set('app.lang', $lang);
