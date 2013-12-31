@@ -5,6 +5,7 @@ namespace Media\Controller\Admin;
 use Media\Model\Folders as Folders;
 use Media\Model\Files as Files;
 use Reborn\Fileupload\Uploader as Uploader;
+use Cache, Input, Flash;
 
 /**
  * Admin Controller for Meda Module
@@ -51,9 +52,7 @@ class MediaController extends \AdminController
 
         $this->allFolders = Folders::all();
         $this->allFiles = Files::all();
-        $this->user = \Sentry::getUser();
-
-        $this->template->set('allFolders', $this->allFolders);
+        $this->user = \Auth::getUser();
     }
 
     /**
