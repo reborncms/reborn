@@ -31,7 +31,9 @@ Thanks for opensource packages.
 * [tijsverkoyen/akismet](https://github.com/tijsverkoyen/Akismet)
 * [dflydev/markdown](https://github.com/dflydev/dflydev-markdown‎)
 * [leafo/lessphp](https://github.com/leafo/lessphp)
+* [meenie/munee](http://mun.ee)
 * [patchwork/utf8](https://packagist.org/packages/patchwork/utf8)
+* [verbalexpressions/php-verbal-expressions](https://packagist.org/packages/verbalexpressions/php-verbal-expressions)
 
 ### License
 
