@@ -311,7 +311,7 @@ SCRIPT;
      * @param boolean $multi Use multiple select.
      * @return string
      **/
-    public static function select2($name, $options, $value = null, $js_opts = array(), $multi = false)
+    public static function select2($name, $options, $value = null, $js_opts = array(), $multi = false, $ajax = false)
     {
         $js = global_asset('js', 'select2-3.4.5/select2.min.js');
         $css = global_asset('css', 'select2-3.4.5/select2.css');
@@ -331,7 +331,43 @@ $css
 $js
 SELECT;
 
-$select_script = <<<SCRIPT
+if ($ajax) {
+
+    $url = $options;
+
+    $select2_opts = rtrim(ltrim($select2_opts,'{'),'}').',';
+
+    $multiple = ($multi) ? 'multiple: true,' : '';
+    
+    $select_script = <<<SCRIPT
+<script type="text/javascript">
+(function($) {
+    $(function()
+    {
+        $("#$name").select2({
+            $multiple
+            $select2_opts
+            query: function (query) {
+                $.ajax({
+                    url : '$url',
+                    data : {
+                        term : query.term
+                    } 
+                }).done(function(data){
+                    var data = {results: data};
+                    query.callback(data);
+                });
+            }
+        });
+    });
+})(jQuery);
+</script>
+
+SCRIPT;
+
+} else {
+
+    $select_script = <<<SCRIPT
 <script type="text/javascript">
 (function($) {
     $(function()
@@ -342,8 +378,19 @@ $select_script = <<<SCRIPT
 </script>
 
 SCRIPT;
+
+}
         $value = static::getValue($name, $value);
-        $element = static::select($name, $options, $value, $e_attr);
+
+        if ($ajax) {
+
+            $element = static::hidden($name, $value);
+
+        } else {
+
+            $element = static::select($name, $options, $value, $e_attr);
+
+        }
 
         if (static::$select2) {
             return $element.$select_script;
@@ -366,6 +413,11 @@ SCRIPT;
     public static function select2Multi($name, $options, $value = null, $js_opts = array())
     {
         return static::select2($name, $options, $value, $js_opts, true);
+    }
+
+    public static function select2Ajax($name, $url, $value = null, $js_opts = array(), $multi = false)
+    {
+        return static::select2($name, $url, $value, $js_opts, $multi, true);
     }
 
 } // END class UIForm extends Form
