@@ -61,7 +61,7 @@ class Blog extends \Eloquent
      */
     public function author()
     {
-    	return $this->belongsTo('\User\Model\User');
+    	return $this->belongsTo('Reborn\Auth\Sentry\Eloquent\User');
     }
 
     /**
