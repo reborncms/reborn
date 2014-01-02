@@ -346,7 +346,7 @@ if(! function_exists('image_url'))
 		$width = is_null($width) ? null : '/'.$width;
 		$height = is_null($height) ? null : '/'.$height;
 
-		return Reborn\Http\Uri::create().'/image/'.$name.$width.$height;
+		return Reborn\Http\Uri::create().'image/'.$name.$width.$height;
 	}
 }
 
