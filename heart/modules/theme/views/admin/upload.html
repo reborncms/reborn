@@ -8,6 +8,15 @@
     </div> <!-- end of form-right-block -->
 </div> <!-- end of form block -->
 
+<div class="form-block">
+	<label for="">Upload theme for :</label>
+
+	<div class="form-right-block">
+		{{ Form::select('upload_path', array('main' => 'Main', 'share' => 'Share'), 'main') }}
+	</div>
+
+</div>
+
 <div class="form-block form-action">
 	{{ Form::submit('submit', t('theme::theme.upload.name'), array('id' => 'edit', 'class' => 'btn btn-green')) }}
 	<a href="{{ \Uri::create("$adminUrl/theme/") }}" class="btn">{{ t('theme::theme.cancel') }}</a>

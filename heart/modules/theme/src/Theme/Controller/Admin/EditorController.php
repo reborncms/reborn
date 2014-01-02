@@ -4,6 +4,11 @@ namespace Theme\Controller\Admin;
 
 class EditorController extends \AdminController
 {
+	/**
+	 * Before function for Theme Editor
+	 *
+	 * @return void
+	 **/
 	public function before() 
 	{
 		$this->menu->activeParent('appearance');
@@ -18,6 +23,12 @@ class EditorController extends \AdminController
 	                ));
 	}
 
+	/**
+	 * Show all editable files with associated file types
+	 * Default file is default.html
+	 *
+	 * @return void
+	 **/
 	public function index()
 	{	
 		if (!user_has_access('theme.editor')) return $this->notFound();
@@ -34,7 +45,7 @@ class EditorController extends \AdminController
 			$editableFiles[] = pathinfo($f);
 		}
 
-		$themeFile = self::getThemeFile($editableFiles);
+		$themeFile = $this->getThemeFile($editableFiles);
 		$content = htmlentities(file_get_contents($currentFile));
 		$currentFile = pathinfo($currentFile);
 
@@ -46,6 +57,14 @@ class EditorController extends \AdminController
 					->set('files', $themeFile);
 	}
 
+	/**
+	 * Get a file with filename and extension
+	 * Edit html, css and js files
+	 *
+	 * @param string $ext
+	 * @param string $file
+	 * @return void
+	 **/
 	public function edit($ext = null, $file = null)
 	{
 		if (!user_has_access('theme.editor')) return $this->notFound();

@@ -1,18 +1,28 @@
 <?php
 
 namespace Theme\Controller\Admin;
-Use \Theme\Model\Theme as Theme;
 
+use \Theme\Model\Theme as Theme;
 use Reborn\Util\Uploader as Upload;
 
 class ThemeController extends \AdminController
 {
+	/**
+	 * Before function for ThemeController
+	 *
+	 * @return void
+	 **/
 	public function before() 
 	{
 		$this->menu->activeParent('appearance');
 		$this->template->style('theme.css','theme');
 	}
 
+	/**
+	 * Display all usable themes along with currently activated theme
+	 *
+	 * @return void	 
+	 **/
 	public function index()
 	{
 		$themes = Theme::all();
@@ -25,6 +35,12 @@ class ThemeController extends \AdminController
 					->setPartial('admin/index');
 	}
 
+	/**
+	 * Activate a theme from usable themes
+	 *
+	 * @param string $name
+	 * @return void	 
+	 **/
 	public function activate($name)
 	{
 		if (!user_has_access('theme.activate')) return $this->notFound();
@@ -40,6 +56,13 @@ class ThemeController extends \AdminController
 		return \Redirect::to(ADMIN_URL.'/theme');
 	}
 
+	/**
+	 * Delete a theme
+	 * You cannot delete currently activated theme
+	 *
+	 * @param string $name
+	 * @return void	 
+	 **/
 	public function delete($name)
 	{
 		if (!user_has_access('theme.delete')) return $this->notFound();
@@ -64,14 +87,29 @@ class ThemeController extends \AdminController
 		return \Redirect::to(ADMIN_URL.'/theme');
 	}
 
+	/**
+	 * Upload new theme with .zip format
+	 * Saved on temporary folder and then extracted to specific theme folder
+	 * Please change upload_max_filesize in php.ini for larger theme zip files
+	 *
+	 * @return void	 
+	 **/
 	public function upload()
 	{
-		if (!user_has_access('theme.upload')) return $this->notFound();
+		if (!user_has_access('theme.upload')) return $this->notFound();		
 
-		if (\Input::isPost()) {
+		if (\Input::isPost()) {					
+
 			$tmp_path = STORAGES.'tmp'.DS;
-			$extract_path = THEMES;
+			
+			$uploadPath = \Input::get('upload_path');						
 
+			if ($uploadPath == 'main') {
+				$extract_path = THEMES;
+			} else {
+				$extract_path = SHARED.'themes'.DS;
+			}
+			
 			$config = array(
 				'savePath' => $tmp_path,
 				'createDir' => true,
