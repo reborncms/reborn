@@ -354,17 +354,23 @@ if ($ajax) {
             $multiple
             $select2_opts
             initSelection : function (element, callback) {
-                var data_count = element.val().split(",").length;
+
+                var data_key = element.val();
+                var data_val = (element.data('val')) ? element.data('val') : element.val();
+
+                var data_count = data_key.split(",").length;
+
                 if (data_count > 1) {
                     var data = [];
-                    var data_val = element.data('val').split(",");
+                    var data_key = data_key.split(",");
+                    var data_val = data_val.split(",");
                     var c = 0;
-                    $(element.val().split(",")).each(function () {
+                    $(data_key).each(function () {
                         data.push({id: this, text: data_val[c]});
                         c++;
                     });
                 } else {
-                   var data = {id: element.val(), text: element.data('val')}; 
+                    var data = {id: data_key, text: data_val};
                 }
                 
                 callback(data);
