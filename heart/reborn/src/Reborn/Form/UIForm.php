@@ -309,9 +309,11 @@ SCRIPT;
      * @param mixed $value Value for select2 element
      * @param array $js_opts Options for select2 js script
      * @param boolean $multi Use multiple select.
+     * @param boolean $ajax Use Ajax Select
+     * @param array $attrs HTML Attributes
      * @return string
      **/
-    public static function select2($name, $options, $value = null, $js_opts = array(), $multi = false, $ajax = false)
+    public static function select2($name, $options, $value = null, $js_opts = array(), $multi = false, $ajax = false, $attrs = array())
     {
         $js = global_asset('js', 'select2-3.4.5/select2.min.js');
         $css = global_asset('css', 'select2-3.4.5/select2.css');
@@ -319,7 +321,11 @@ SCRIPT;
         $rb = url();
         $jq = $rb.'global/assets/js/jquery-1.9.0.min.js';
 
-        $e_attr = ($multi) ? array('multiple' => 'multiple') : array();
+        if ($multi) {
+
+            $attrs['multiple'] = 'multiple';
+
+        }
 
         $select2_opts = \Reborn\Util\ToolKit::jsEncode($js_opts);
 
@@ -347,6 +353,22 @@ if ($ajax) {
         $("#$name").select2({
             $multiple
             $select2_opts
+            initSelection : function (element, callback) {
+                var data_count = element.val().split(",").length;
+                if (data_count > 1) {
+                    var data = [];
+                    var data_val = element.data('val').split(",");
+                    var c = 0;
+                    $(element.val().split(",")).each(function () {
+                        data.push({id: this, text: data_val[c]});
+                        c++;
+                    });
+                } else {
+                   var data = {id: element.val(), text: element.data('val')}; 
+                }
+                
+                callback(data);
+            },
             query: function (query) {
                 $.ajax({
                     url : '$url',
@@ -384,11 +406,11 @@ SCRIPT;
 
         if ($ajax) {
 
-            $element = static::hidden($name, $value);
+            $element = static::hidden($name, $value, $attrs);
 
         } else {
 
-            $element = static::select($name, $options, $value, $e_attr);
+            $element = static::select($name, $options, $value, $attrs);
 
         }
 
@@ -408,16 +430,28 @@ SCRIPT;
      * @param array $options Options tag data list for dropdown
      * @param mixed $value Value for select2 element
      * @param array $js_opts Options for select2 js script
+     * @param array $attrs HTML Attributes
      * @return string
      **/
-    public static function select2Multi($name, $options, $value = null, $js_opts = array())
+    public static function select2Multi($name, $options, $value = null, $js_opts = array(), $attrs = array())
     {
-        return static::select2($name, $options, $value, $js_opts, true);
+        return static::select2($name, $options, $value, $js_opts, true, false, $attrs);
     }
 
-    public static function select2Ajax($name, $url, $value = null, $js_opts = array(), $multi = false)
+    /**
+     * Select2 js dropdown field with Ajax
+     *
+     * @param string $name Name of the select element
+     * @param array $options Options tag data list for dropdown
+     * @param mixed $value Value for select2 element
+     * @param array $js_opts Options for select2 js script
+     * @param boolean $multi Use Multi Select
+     * @param array $attrs HTML Attributes
+     * @return string
+     **/
+    public static function select2Ajax($name, $url, $value = null, $js_opts = array(), $multi = false, $attrs = array())
     {
-        return static::select2($name, $url, $value, $js_opts, $multi, true);
+        return static::select2($name, $url, $value, $js_opts, $multi, true, $attrs);
     }
 
 } // END class UIForm extends Form

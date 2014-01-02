@@ -575,8 +575,32 @@ class Blueprint
 		$this->fields[$name]['info'] = $val['info'];
 		$this->labels[$name] = Form::label($val['label'], $name);
 		$multi = (isset($val['multi'])) ? $val['multi'] : false;
+		$ajax = (isset($val['ajax'])) ? $val['ajax'] : false;
 		$js_opts = (isset($val['js_opts'])) ? $val['js_opts'] : array();
-		$this->fields[$name]['html'] = UIForm::select2($name, $options, $val['value'], $js_opts, $multi);
+		$this->fields[$name]['html'] = UIForm::select2($name, $options, $val['value'], $js_opts, $multi, $ajax, $val['attr']);
+	}
+
+	/** Select Box with Select2 JS with Multi-select **/
+	protected function addSelect2Multi($name, $val)
+	{
+		$options = isset($val['option']) ? $val['option'] : array();
+
+		$this->fields[$name]['type'] = 'select2Multi';
+		$this->fields[$name]['info'] = $val['info'];
+		$this->labels[$name] = Form::label($val['label'], $name);
+		$js_opts = (isset($val['js_opts'])) ? $val['js_opts'] : array();
+		$this->fields[$name]['html'] = UIForm::select2Multi($name, $options, $val['value'], $js_opts, $val['attr']);
+	}
+
+	/** Select Box with Select2 JS with Ajax **/
+	protected function addSelect2Ajax($name, $val)
+	{
+		$this->fields[$name]['type'] = 'select2Ajax';
+		$this->fields[$name]['info'] = $val['info'];
+		$this->labels[$name] = Form::label($val['label'], $name);
+		$js_opts = (isset($val['js_opts'])) ? $val['js_opts'] : array();
+		$multi = (isset($val['multi'])) ? $val['multi'] : false;
+		$this->fields[$name]['html'] = UIForm::select2Ajax($name, $val['url'], $val['value'], $js_opts, $multi, $val['attr']);
 	}
 
 	/** Number Field **/
