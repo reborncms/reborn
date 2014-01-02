@@ -2,7 +2,7 @@
 
 namespace User;
 
-use Reborn\Connector\Sentry\Sentry;
+use Auth;
 
 class Widget extends \Reborn\Widget\AbstractWidget
 {
@@ -44,8 +44,8 @@ class Widget extends \Reborn\Widget\AbstractWidget
 
 	public function header()
 	{
-		if(Sentry::check()) {
-			$user = Sentry::getUser();
+		if(Auth::check()) {
+			$user = Auth::getUser();
 			$title = $this->get('title', '');
 			return $this->show(array('user' => $user, 'title' => $title), 'navdisplay');
 		} else {
@@ -56,8 +56,8 @@ class Widget extends \Reborn\Widget\AbstractWidget
 
 	public function sidebar()
 	{
-		if(Sentry::check()) {
-			$user = Sentry::getUser();
+		if(Auth::check()) {
+			$user = Auth::getUser();
 			$title = $this->get('title', 'User Panel');			
 			return $this->show(array('user' => $user, 'title' => $title));
 		} else {
