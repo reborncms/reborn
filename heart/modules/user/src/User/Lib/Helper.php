@@ -2,7 +2,7 @@
 
 namespace User\Lib;
 
-use User\Model\User;
+use \Reborn\Auth\Sentry\Eloquent\User;
 
 class Helper {
 
