@@ -317,6 +317,22 @@ class RouteCollection
 	}
 
 	/**
+	 * Get route path lists for all regsitered route.
+	 *
+	 * @return array
+	 **/
+	public function pathLists()
+	{
+		$paths = array();
+
+		foreach ($this->routes as $route) {
+			$paths[$route->name] = $route->getPath();
+		}
+
+		return $paths;
+	}
+
+	/**
 	 * Get the match route by given uri
 	 *
 	 * @param string $uri Uri Path

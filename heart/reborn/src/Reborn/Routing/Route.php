@@ -463,6 +463,7 @@ class Route
         switch (strtolower($type))
         {
             case "int":
+            case "num":
                 $pattern = "[0-9]++";
                 break;
             case "hex":

@@ -2,8 +2,8 @@
 
 namespace Reborn\MVC\Controller;
 
+use Auth;
 use Reborn\Http\Redirect;
-use Reborn\Connector\Sentry\Sentry;
 use Reborn\MVC\Controller\Exception\NotAuthException;
 
 class PrivateController extends PublicController
@@ -22,10 +22,10 @@ class PrivateController extends PublicController
      **/
     protected function checkAuthentication()
     {
-        if (!Sentry::check()) {
+        if (!Auth::check()) {
             return Redirect::to('login');
         } else {
-            $this->template->loggedin_user = Sentry::getUser();
+            $this->template->loggedin_user = Auth::getUser();
         }
 
         return true;

@@ -3,7 +3,7 @@
 namespace Reborn\Http;
 
 use Reborn\Route\Route;
-use \Symfony\Component\HttpFoundation\RedirectResponse as RedirectResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Redirect class for Reborn
@@ -19,7 +19,7 @@ class Redirect
      * @param string $url
      * @param int $status Response status code
      * @param array $headers Header properties for the Response
-     * @return void
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public static function to($url, $status = 302, $headers = array())
     {
@@ -36,7 +36,7 @@ class Redirect
      * @param string $url
      * @param int $status Response status code
      * @param array $headers Header properties for the Response
-     * @return void
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      **/
     public static function toAdmin($url = '', $status = 302, $headers = array())
     {
@@ -48,18 +48,31 @@ class Redirect
     }
 
     /**
+     * Redirect to the back url. (HTTP_REFERER)
+     *
+     * @param int $status Response status code
+     * @param array $headers Header properties for the Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     **/
+    public static function back($status = 302, $headers = array())
+    {
+        $url = static::getRequest()->headers->get('referer');
+
+        return static::send($url, $status, $headers);
+    }
+
+    /**
      * Redirect to the url with module prefix
      *
      * @param string $url
      * @param boolean $admin With admin panel prefix
      * @param int $status Response status code
      * @param array $headers Header properties for the Response
-     * @return void
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      **/
     public static function module($url = '', $admin = true, $status = 302, $headers = array())
     {
-        $request = \Facade::getApplication()->request;
-        $module = \Module::get($request->module, 'uri');
+        $module = \Module::get(static::getRequest()->module, 'uri');
         $url = ltrim($url, '/');
 
         if ($admin) {
@@ -77,7 +90,7 @@ class Redirect
     /**
      * Redirect to the route by name.
      *
-     * @return void
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      **/
     public static function route($name,
                 $data = array(),
@@ -94,29 +107,27 @@ class Redirect
     }
 
     /**
-     * Redirect to the 404 Route
-     *
-     * @return void
-     **/
-    /*public static function notFound()
-    {
-        $router = \Facade::getApplication()->router;
-
-        return $router->notFound();
-    }*/
-
-    /**
-     * Send the Redirect
+     * Create and Send the Redirect
      *
      * @param string $url
      * @param int $status Response status code
      * @param array $headers Header properties for the Response
-     * @return void
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    protected static function send($url, $status = 302, $headers = array())
+    public static function send($url, $status = 302, $headers = array())
     {
     	$redirect = new RedirectResponse($url, $status, $headers);
         return $redirect->send();
+    }
+
+    /**
+     * Get Request instance
+     *
+     * @return \Reborn\Http\Request
+     **/
+    protected static function getRequest()
+    {
+        return \Facade::getApplication()->request;
     }
 
 } // END class Redirect
