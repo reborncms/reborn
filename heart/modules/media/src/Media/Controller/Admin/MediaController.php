@@ -363,7 +363,7 @@ class MediaController extends \AdminController
             $current->id = 0;
             $current->name = t('media;:media.lbl.none');
             $current->desc = 'Default folder of media module.';
-            $current->user = \User\Model\User::find(1);
+            $current->user = \Reborn\Auth\Sentry\Eloquent\User::find(1);
         }
 
         if ($files->isEmpty() and $folders->isEmpty()) {

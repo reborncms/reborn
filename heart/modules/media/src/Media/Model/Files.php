@@ -22,7 +22,7 @@ class Files extends \Reborn\MVC\Model\Search
 
     public function user()
     {
-        return $this->belongsTo('User\Model\User');
+        return $this->belongsTo('Reborn\Auth\Sentry\Eloquent\User');
     }
 
     public function scopeImageOnly($query) {

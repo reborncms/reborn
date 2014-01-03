@@ -133,4 +133,11 @@ class MediaController extends \PublicController
 
         return \Response::clueless();
     }
+
+    public function test ()
+    {
+
+    }
+
+    
 } // END class MediaController

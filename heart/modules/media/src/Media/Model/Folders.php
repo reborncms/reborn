@@ -37,7 +37,7 @@ class Folders extends \Eloquent
      **/
     public function user()
     {
-        return $this->belongsTo('User\Model\User');
+        return $this->belongsTo('Reborn\Auth\Sentry\Eloquent\User');
     }
 
     /**
@@ -47,7 +47,7 @@ class Folders extends \Eloquent
      **/
     public function parent()
     {
-        return $this->hasOne('Media\Model\Folders', 'folder_id');
+        return $this->belongsTo('Media\Model\Folders', 'folder_id', 'id');
     }
 
     /**
@@ -125,6 +125,32 @@ class Folders extends \Eloquent
         
 
         return $id;
+    }
+
+    /**
+     * Get 
+     *
+     * @return void
+     * @author 
+     **/
+    protected function childFile()
+    {
+
+        return $this->hasMany('Media\Model\Files', 'folder_id', 'id');
+
+    }
+
+    /**
+     * undocumented function
+     *
+     * @return void
+     * @author 
+     **/
+    public function childFolder()
+    {
+
+        return $this->hasMany('Media\Model\Folders', 'folder_id', 'id');
+
     }
 
 } // END class MediaFolders
