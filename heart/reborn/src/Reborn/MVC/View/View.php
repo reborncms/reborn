@@ -23,8 +23,6 @@ class View implements ArrayAccess
      **/
     protected $data = array();
 
-    protected $block = array();
-
     /**
      * Parser Object for the file parsing
      *

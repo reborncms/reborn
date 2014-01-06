@@ -61,6 +61,30 @@ class AuthSentryProvider implements AuthProviderInterface, UserInterface
 	}
 
 	/**
+	 * Get Superuser's email address
+	 *
+	 * @return string
+	 **/
+	public function getSuperuserEmail()
+	{
+		$user = $this->auth->findAllUsersWithAccess(array('superuser'));
+
+		return $user[0]->email;
+	}
+
+	/**
+	 * Get Superuser's full name
+	 *
+	 * @return string
+	 **/
+	public function getSuperuserName()
+	{
+		$user = $this->auth->findAllUsersWithAccess(array('superuser'));
+
+		return $user[0]->fullname;
+	}
+
+	/**
 	 * Registers a user by giving the required credentials
 	 * and an optional flag for whether to activate the user.
 	 *

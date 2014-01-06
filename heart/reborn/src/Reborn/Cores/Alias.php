@@ -49,6 +49,7 @@ class Alias
             'Hash' => 'Reborn\Util\Hash',
             'Html' => 'Reborn\Util\Html',
             'HttpNotFoundException' => 'Reborn\Exception\HttpNotFoundException',
+            'Mailer' => '\Reborn\Mail\Mailer',
             'Pagination' => 'Reborn\Pagination\PaginationFacade',
             'RbException' => 'Reborn\Exception\RbException',
             'Request' => 'Reborn\Http\Request',
