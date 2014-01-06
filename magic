@@ -7,6 +7,8 @@ define('DS', DIRECTORY_SEPARATOR);
 // Define Base Dir Path
 define('BASE', __DIR__ . DS);
 
+date_default_timezone_set('UTC');
+
 /**
  * ---------------------------------------------------------
  * Load Reborn's sites manager file
@@ -30,6 +32,7 @@ use Reborn\Console\CompileCommand;
 use Reborn\Console\ModuleCommand;
 use Reborn\Console\CacheClearCommand;
 use Reborn\Console\MultisiteCommand;
+use Reborn\Console\AuthKeyGenerateCommand;
 use Reborn\Cores\Version;
 use Symfony\Component\Console\Application;
 
@@ -38,5 +41,6 @@ $application->add(new ModuleCommand);
 $application->add(new CacheClearCommand);
 $application->add(new CompileCommand);
 $application->add(new MultisiteCommand);
+$application->add(new AuthKeyGenerateCommand);
 $application->addCommands($commands);
 $application->run();
