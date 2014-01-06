@@ -5,7 +5,7 @@
 	<title>{{ setting('site_title') }} | {{ $layoutTitle }}</title>
 	{{ $metadata }}
 
-	<link rel="shortcut icon" type="image/x-icon" href="{{ assetPath('img') }}favicon.ico">
+	{{ Html::favicon() }}
 
 	{{ $headerStyle }}
 

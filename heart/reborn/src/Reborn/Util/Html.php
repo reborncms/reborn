@@ -19,6 +19,24 @@ class Html
 	protected static $singleTags = array('input', 'hr', 'br', 'img', 'base', 'link', 'meta');
 
 	/**
+	 * Html Favicon link tag
+	 *
+	 * @param string $filename
+	 * @param string $type
+	 * @return string
+	 **/
+	public static function favicon($filename = 'favicon.ico', $type = "image/x-icon")
+	{
+		$attrs = array(
+			'rel' => "shortcut icon",
+			'type' => $type,
+			'href' => assetPath('img').'/'.$filename
+		);
+
+		return static::tag('link', null, $attrs);
+	}
+
+	/**
 	 * Html style link tag
 	 *
 	 * @param string $url

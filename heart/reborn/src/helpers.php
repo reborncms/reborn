@@ -492,19 +492,21 @@ if(! function_exists('assetPath'))
 		$finder = new Reborn\Asset\AssetFinder();
 		switch($type) {
 			case 'css' :
-				return $finder->path('css', $module);
+				$path = $finder->path('css', $module);
 				break;
 			case 'js' :
-				return $finder->path('js', $module);
+				$path = $finder->path('js', $module);
 				break;
 			case 'img' :
 			case 'image' :
-				return $finder->path('img', $module);
+				$path = $finder->path('img', $module);
 				break;
 			default :
-				return $finder->path(null, $module);
+				$path = $finder->path(null, $module);
 				break;
 		}
+
+		return url(str_replace(BASE, '', $path));
 	}
 }
 
