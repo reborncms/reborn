@@ -33,6 +33,7 @@ use Reborn\Console\ModuleCommand;
 use Reborn\Console\CacheClearCommand;
 use Reborn\Console\MultisiteCommand;
 use Reborn\Console\AuthKeyGenerateCommand;
+use Reborn\Console\ExtensionCheckCommand;
 use Reborn\Cores\Version;
 use Symfony\Component\Console\Application;
 
@@ -42,5 +43,6 @@ $application->add(new CacheClearCommand);
 $application->add(new CompileCommand);
 $application->add(new MultisiteCommand);
 $application->add(new AuthKeyGenerateCommand);
+$application->add(new ExtensionCheckCommand);
 $application->addCommands($commands);
 $application->run();
