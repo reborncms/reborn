@@ -21,16 +21,16 @@
 				<td>
 				<div class="icons-bar">
 
-					<a href="{{ \Uri::create("user/profile/") }}{{ $u->id }}" class="ico-btn btn-green tipsy-tip" original-title="{{ t('user::user.view', array('name' => $u->fullname)) }}"><i class="icon-view"></i></a>
+					<a href="{{ url("user/profile/".$u->id) }}" class="ico-btn btn-green tipsy-tip" original-title="{{ t('user::user.view', array('name' => $u->fullname)) }}"><i class="icon-view"></i></a>
 
-					<a href="{{ \Uri::create("$adminUrl/user/edit/") }}{{ $u->id }}" class="ico-btn btn-green tipsy-tip" original-title="{{ t('user::permission.edit') }}"><i class="icon-edit"></i></a>
+					<a href="{{ adminUrl("user/edit/".$u->id) }}" class="ico-btn btn-green tipsy-tip" original-title="{{ t('user::permission.edit') }}"><i class="icon-edit"></i></a>
 
 					{{ if( !$u->activated ) }}
-					<a href="{{ \Uri::create("$adminUrl/user/activate/") }}{{ $u->id }}" class="ico-btn btn-green tipsy-tip" original-title="{{ t('user::user.title.activate') }}"><i class="icon-refreshbutton"></i></a>
+					<a href="{{ adminUrl("user/activate/".$u->id) }}" class="ico-btn btn-green tipsy-tip" original-title="{{ t('user::user.title.activate') }}"><i class="icon-refreshbutton"></i></a>
 					{{ endif }}
 					
 					{{ if (($currentUser->id != $u->id) AND ($u->id != 1)) }}
-					<a href="{{ \Uri::create("$adminUrl/user/delete/") }}{{ $u->id }}" class="ico-btn btn-red tipsy-tip confirm_delete" original-title="{{ t('user::permission.delete') }}"><i class="icon-remove"></i></a>
+					<a href="{{ adminUrl("user/delete/".$u->id) }}" class="ico-btn btn-red tipsy-tip confirm_delete" original-title="{{ t('user::permission.delete') }}"><i class="icon-remove"></i></a>
 					{{ endif }}
 
 				</div>

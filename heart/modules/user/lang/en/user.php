@@ -23,7 +23,7 @@ return array(
 	'firstname'		=> 'First Name',
 	'lastname'		=> 'Last Name',
 	'namexample'	=> 'e.g. John Doe',
-	'group'			=> 'Group',
+	'group'			=> 'Role',
 	'email'			=> 'Email',
 	'view'			=> 'View {:name} Profile',
 

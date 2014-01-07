@@ -6,6 +6,11 @@ use Auth;
 
 class UserController extends \AdminController
 {
+	/**
+	 * Before function for UserController
+	 *
+	 * @return void
+	 **/
 	public function before() 
 	{
 		$this->menu->activeParent('user');
@@ -15,11 +20,16 @@ class UserController extends \AdminController
 		if(!Auth::check()) return \Redirect::to(adminUrl('login'));
 	}
 
+	/**
+	 * Display all users with pagination
+	 *
+	 * @return void	 
+	 **/
 	public function index()
 	{
 		$options = array(
 		    'total_items'       => \User::count(),
-		    'items_per_page'    => 10,
+		    'items_per_page'    => 25,
 		    'param_name' => 'usrpagi'
 		);
 
@@ -37,6 +47,11 @@ class UserController extends \AdminController
 					->setPartial('admin/index');
 	}
 
+	/**
+	 * Create a new user without activation
+	 *
+	 * @return void	 
+	 **/
 	public function create()
 	{
 		if (!user_has_access('user.create')) return $this->notFound();
@@ -104,6 +119,12 @@ class UserController extends \AdminController
 			->setPartial('admin/create');
 	}
 
+	/**
+	 * Edit a registered user
+	 *
+	 * @param int $uri
+	 * @return void	 
+	 **/
 	public function edit($uri = null)
 	{
 		if (!user_has_access('user.edit') or $uri == null) return $this->notFound();
@@ -213,7 +234,7 @@ class UserController extends \AdminController
 	}
 
 	/**
-	 * User Delete
+	 * Delete a user
 	 *
 	 * @return void
 	 */
@@ -282,9 +303,5 @@ class UserController extends \AdminController
 			}
 		}
 	}
-
-	public function after($response)
-	{
-		return parent::after($response);
-	}
+	
 }
