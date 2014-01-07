@@ -50,7 +50,6 @@
 
 			<div class="ff-wrapper draggable f-left file" id="file_{{ $file->id }}" data-id='{{ $file->id }}'>
 
-				{= $imgUrl = rbUrl('media/image/'.$file->filename); =}
 				{= $parent = (is_null($file->folder)) ? t('m.lbl.none') : $file->folder->name =}
 
 				<div class="ff-actions p-relative">
@@ -71,7 +70,7 @@
 
 				<div class="thumb-body" data-target="file">
 					{{ if ('' == $file->thumb) }}
-						<div class="thumbs" title="{{ $file->name }}" style="background: url({{ $imgUrl.'80/60/' }}) center no-repeat">
+						<div class="thumbs" title="{{ $file->name }}" style="background: url('{{ image_url($file->filename, 80, 60) }}') center no-repeat">
 						</div> <!-- end of folder-thumb -->
 					{{ else }}
 						<div class="thumbs {{ $file->thumb }}" title="{{ $file->name }}">
