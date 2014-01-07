@@ -41,10 +41,13 @@ class PagesController extends \PublicController
 
             //Set Layout for Page
             if ($this->theme->hasLayout($query->page_layout)) {
+
                 $this->template->setLayout($query->page_layout);
-            }
-            else {
+
+            } else {
+
                 $this->template->setLayout('default');
+
             }
             $this->template->title($title)
                                ->set('page', PagesPresenter::make($query))

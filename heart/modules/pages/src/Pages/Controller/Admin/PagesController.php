@@ -136,17 +136,27 @@ class PagesController extends \AdminController
     protected function setValues($method, $id = null)
     {
         if ($method == 'create') {
+
             $page = new Pages;
+
         } else {
+
             $page = Pages::find($id);
+
         }
+
         $parent_id = \Input::get('parent_id');
+
         if (!empty($parent_id)) {
+
             $page->parent_id = $parent_id;
             $parent_uri = Pages::get_parent_uri((int) $parent_id);
             $uri = $parent_uri.'/'.\Input::get('slug');
+
         } else {
+
             $uri = \Input::get('slug');
+
         }
 
         $slug = (\Input::get('slug') == '') ? 'untitled' : \Input::get('slug');
@@ -156,6 +166,7 @@ class PagesController extends \AdminController
         $slug_check = self::slugDuplicateCheck($slug, $id);
 
         if ($slug_check) {
+
             $n = 1;
             do {
                 $match = preg_match('/(.+)_([0-9]+)$/', $slug, $matches);
@@ -166,12 +177,21 @@ class PagesController extends \AdminController
                 }
                 $check = self::slugDuplicateCheck($slug, $id);
                 $n++;
+
             } while ($check);
+
         }
 
         $current_user = \Auth::getUser();
         $button_save = \Input::get('page_save');
-        $status = ($button_save == t('global.save') || $button_save == t('global.publish')) ? 'live' : 'draft';
+
+        if ($button_save != null) {
+
+            $status = ($button_save == t('global.save') || $button_save == t('global.publish')) ? 'live' : 'draft';
+            $page->status = $status;
+
+        }
+
         $page->title = (\Input::get('title') == '') ? 'Untitled' : \Input::get('title');
         $page->slug = $slug;
         $page->uri = $uri;
@@ -183,18 +203,9 @@ class PagesController extends \AdminController
         $page->css = \Input::get('css');
         $page->js = \Input::get('js');
         $page->comments_enable = \Input::get('comments_enable');
-        $page->status = $status;
         $page->author_id = $current_user->id; //get author_id
 
         return $page;
-
-        /*$page_save = $page->save();
-
-        if ($page_save) {
-            return $page->id;
-        } else {
-            return $page_save;
-        }*/
     }
 
     protected function slugDuplicateCheck($slug, $id)
