@@ -34,6 +34,7 @@ use Reborn\Console\CacheClearCommand;
 use Reborn\Console\MultisiteCommand;
 use Reborn\Console\AuthKeyGenerateCommand;
 use Reborn\Console\ExtensionCheckCommand;
+use Reborn\Console\ThemeGenerateCommand;
 use Reborn\Cores\Version;
 use Symfony\Component\Console\Application;
 
@@ -44,5 +45,6 @@ $application->add(new CompileCommand);
 $application->add(new MultisiteCommand);
 $application->add(new AuthKeyGenerateCommand);
 $application->add(new ExtensionCheckCommand);
+$application->add(new ThemeGenerateCommand);
 $application->addCommands($commands);
 $application->run();
