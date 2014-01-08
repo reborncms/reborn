@@ -53,6 +53,5 @@
     },
     "config": {
             "vendor-dir": "heart/vendor"
-    },
-    "minimum-stability": "dev"
+    }
 }

@@ -35,6 +35,17 @@ class Api
 	}
 
 	/**
+	 * Get folder's data by id.
+	 *
+	 * @param integer $id
+	 * @return array
+	 **/
+	public function folder($id)
+	{
+		return Folders::find($id)->toArray();
+	}
+
+	/**
 	 * Get all folder lists with tree.
 	 *
 	 * @return array
@@ -43,6 +54,26 @@ class Api
 	{
 		// Use tree_lists helper function from helpers.php
 		return tree_lists($this->folders(), 'folder_id');
+	}
+
+	/**
+	 * Get all folder lists with tree.
+	 *
+	 * @return array
+	 **/
+	public function treeListForSelect($empty = null)
+	{
+		$lists = array();
+
+		if (! is_null($empty) ) {
+			$lists[] = '-- '.$empty.' --';
+		}
+
+		foreach ($this->folders() as $folder) {
+			$lists[$folder['id']] = str_repeat('&nbsp;&#187;&nbsp;', $folder['depth']) . $folder['name'];
+		}
+
+		return $lists;
 	}
 
 	/**

@@ -13,7 +13,6 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
     public function boot()
     {
-        require __DIR__ . DS . 'helpers.php';
         \Translate::load('media::media', 'm');
     }
 
@@ -51,6 +50,8 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
     public function register ()
     {
+        require __DIR__ . DS . 'helpers.php';
+
         // Load Zebra_Image
         require __DIR__.DS.'vendor'.DS.'Zebra'.DS.'Zebra_Image.php';
 
