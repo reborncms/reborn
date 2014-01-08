@@ -42,7 +42,11 @@ class Api
 	 **/
 	public function folder($id)
 	{
-		return Folders::find($id)->toArray();
+		if (! is_null($folder = Folders::find($id)) ) {
+			return $folder->toArray();
+		}
+
+		return array();
 	}
 
 	/**
@@ -82,35 +86,44 @@ class Api
 	 * @param integer $id Folder ID
 	 * @return array
 	 **/
-	public function folderData($id)
+	public function folderData($id = 0)
 	{
-		$data = array();
+		if ( is_null($folder = Folders::find($id)) ) {
+			return array();
+		}
 
-		$data['folders'] = Folders::where('folder_id', '=', $id)->get()->toArray();
-		$data['files'] = Files::where('folder_id', '=', $id)->get()->toArray();
-
-		return $data;
+		return $folder->toArray();
 	}
 
 	/**
 	 * Get image files data.
 	 *
+	 * @param integer $folder_id
 	 * @param integer $limit
 	 * @param integer|null $offset
-	 * @param string|null $type
+	 * @param string|null $type Image mime type
 	 * @return array
 	 **/
-	public function images($limit = 20, $offset = null, $type = null)
+	public function images($folder_id = 0, $limit = 20, $offset = null, $type = null)
 	{
 		$type = $this->getImageType($type);
 
 		$files = Files::whereIn('mime_type', $type)
-						->take($limit)
+						->where('folder_id', (int) $folder_id)
 						->skip($offset)
-						->orderBy('created_at', 'desc')
-						->get();
+						->orderBy('created_at', 'desc');
 
-		return $files->toArray();
+		if (! is_null($limit) ) {
+			$files->take($limit);
+		}
+
+		$all = $files->get();
+
+		if ($all->isEmpty()) {
+			return array();
+		}
+
+		return $all->toArray();
 	}
 
 	/**
