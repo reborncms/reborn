@@ -45,7 +45,7 @@
 		$('#form_slug, #form_title').bind('blur',function(){
 			var slug = $('#form_slug').val();
 			var post_data = $('#blog-create').serialize();
-			$.post(SITEURL+ADMIN+'/blog/check_slug',post_data,function(data){
+			$.post(SITEURL+ADMIN+'/blog/check-slug',post_data,function(data){
 				$('#slug_error').html(data);
 			});
 		});
@@ -66,13 +66,31 @@
 			});
 		};
 
+		var timeout;
+
+		CKEDITOR.on('instanceCreated', function (e) {
+			e.editor.on('change', function (ev) {
+				if (timeout) clearTimeout(timeout);
+				timeout = setTimeout(function(){
+					postAutoSave();
+				}, 30000);
+			});
+		});
+
+		$('#blog_form input, #blog_form textarea, #blog_form select').change(function(){
+			if (timeout) clearTimeout(timeout);
+			timeout = setTimeout(function () {
+				postAutoSave();
+			}, 30000);
+		});
+
 		// Autosave at 1 min
-		if(document.getElementById('blog-create') || document.getElementById('blog-edit'))
+		/*if(document.getElementById('blog-create') || document.getElementById('blog-edit'))
 		{
 			setInterval(function () {
 				postAutoSave();
 			}, 60000);
-		}
+		}*/
 
 		// Tag Input
 		if(document.getElementById('tags')) {

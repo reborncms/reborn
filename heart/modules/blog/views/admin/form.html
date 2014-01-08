@@ -1,4 +1,4 @@
-{{ Form::start(adminUrl('blog/'.$method), 'blog-create', true, array('class' => 'form blog_form')) }}
+{{ Form::start(adminUrl('blog/'.$method), 'blog-create', true, array('class' => 'form blog_form', 'id' => 'blog_form')) }}
     {{ Form::hidden('id', (isset($blog->id) and $method == 'edit') ? $blog->id : '', array('id' => 'post_id')) }}
     <div id="main-form-wrapper">
         <div id="form-wrapper">

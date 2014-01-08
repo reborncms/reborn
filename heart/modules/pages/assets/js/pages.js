@@ -3,7 +3,7 @@ jQuery(function(){
 	$('#form_slug, #form_title').bind('blur',function(){
 		var slug = $('#form_slug').val();
 		var post_data = $('#page_form').serialize();
-		$.post(SITEURL+ADMIN+'/pages/check_slug',post_data,function(data){
+		$.post(SITEURL+ADMIN+'/pages/check-slug',post_data,function(data){
 			$('#slug_error').html(data);
 		});
 	});
@@ -45,14 +45,32 @@ jQuery(function(){
 				}
 			});
 		};
+
+		var timeout;
+
+		CKEDITOR.on('instanceCreated', function (e) {
+			e.editor.on('change', function (ev) {
+				if (timeout) clearTimeout(timeout);
+				timeout = setTimeout(function(){
+					postAutoSave();
+				}, 30000);
+			});
+		});
+
+		$('#page_form input, #page_form textarea, #page_form select').change(function(){
+			if (timeout) clearTimeout(timeout);
+			timeout = setTimeout(function () {
+				postAutoSave();
+			}, 30000);
+		});
 		
 		// Autosave at 1 min
-		if(document.getElementById('page_form'))
+		/*if(document.getElementById('page_form'))
 		{
 			setInterval(function () {
 				postAutoSave();
 			}, 60000);
-		}
+		}*/
 
 
 });

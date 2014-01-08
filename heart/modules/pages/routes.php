@@ -18,7 +18,7 @@
 
 \Route::add('@admin/pages/status/{int:id}', 'Pages\Admin\Pages::status', 'admin_pages_status');
 
-\Route::post('@admin/pages/check_slug', 'Pages\Admin\Pages::checkSlug', 'admin_pages_checkslug');
+\Route::post('@admin/pages/check-slug', 'Pages\Admin\Pages::checkSlug', 'admin_pages_checkslug');
 
 \Route::post('@admin/pages/order', 'Pages\Admin\Pages::order', 'admin_pages_order');
 
