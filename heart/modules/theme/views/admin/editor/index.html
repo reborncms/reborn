@@ -4,7 +4,7 @@
 		<div id="form-left">			
 			<h3>Edit "{{ $currentFile['basename'] }}"</h3>
 
-			{{ Form::start("$adminUrl/theme/editor/edit/".$currentFile['extension']."/".$currentFile['filename'], 'theme_upload', true, array('class' => 'form')) }}
+			{{ Form::start(adminUrl("theme/editor/edit/".$currentFile['extension']."/".$currentFile['filename']), 'theme_upload', true, array('class' => 'form')) }}
 			<div class="form-block">			  	
 			    <textarea name="content" id="textEditor">{{ $content }}</textarea>			   
 			</div> <!-- end of form block -->

@@ -12,7 +12,7 @@
 		<tr>
 			<td>{{ $g->name }}</td>
 			<td>
-				<a href="{{ \Uri::create("$adminUrl/user/permission/edit/") }}{{ $g->id }}" class="btn">{{ t('user::permission.editPermission') }}</a>
+				<a href="{{ adminUrl("user/permission/edit/".$g->id) }}" class="btn">{{ t('user::permission.editPermission') }}</a>
 			</td>
 		</tr>
 		{= $i++ =}
@@ -25,4 +25,4 @@
 
 <br >
 
-<a href="{{ \Uri::create("$adminUrl/user/") }}" class="btn">{{ t('user::permission.back') }}</a>
+<a href="{{ adminUrl("user/") }}" class="btn">{{ t('user::permission.back') }}</a>

@@ -1,6 +1,6 @@
 <div id="user-container">
 
-	{{ Form::start("$adminUrl/user/group/create", 'group_create_form', false, array('class' => 'form')) }}
+	{{ Form::start(adminUrl("user/group/create"), 'group_create_form', false, array('class' => 'form')) }}
 
 		<div class="form-block odd">
     		<label for="">{{ Form::label(t('user::group.name'), 'name') }}<span class="required"></span></label>      
@@ -21,7 +21,7 @@
 
       <div class="form-block odd form-btn odd">
         {{ Form::submit('submit', t('user::permission.create'), array('id' => 'create', 'class' => 'btn btn-green')) }}
-        <a href="{{ \Uri::create("$adminUrl/user/group") }}" class="btn">{{ t('user::permission.cancel') }}</a>  
+        <a href="{{ adminUrl("user/group") }}" class="btn">{{ t('user::permission.cancel') }}</a>  
       </div>
 	{{ Form::end() }}
 </div>

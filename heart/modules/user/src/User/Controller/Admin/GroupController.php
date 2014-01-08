@@ -4,6 +4,11 @@ namespace User\Controller\Admin;
 
 class GroupController extends \AdminController
 {
+	/**
+	 * Before function for GroupController
+	 *
+	 * @return void
+	 **/
 	public function before() 
 	{
 		$this->menu->activeParent('user');
@@ -11,6 +16,11 @@ class GroupController extends \AdminController
 		$this->template->header = \Translate::get('user::group.title');		
 	}
 
+	/**
+	 * Show all usergroups
+	 *
+	 * @return void
+	 **/
 	public function index()
 	{
 		if (!user_has_access('user.group')) return $this->notFound();
@@ -22,6 +32,11 @@ class GroupController extends \AdminController
 					->setPartial('admin/group/index');
 	}
 
+	/**
+	 * Create a new usergroup
+	 *
+	 * @return void
+	 **/
 	public function create()
 	{
 		if (!user_has_access('user.group.create')) return $this->notFound();
@@ -58,6 +73,12 @@ class GroupController extends \AdminController
 			->setPartial('admin/group/create');
 	}
 
+	/**
+	 * Edit a created usergroup
+	 *
+	 * @return int $uri
+	 * @return void
+	 **/
 	public function edit($uri)
 	{
 		if (!user_has_access('user.group.edit')) return $this->notFound();
@@ -105,6 +126,11 @@ class GroupController extends \AdminController
 			->setPartial('admin/group/edit');
 	}
 
+	/**
+	 * Delete a group
+	 *
+	 * @return void
+	 **/
 	public function delete($uri)
 	{
 		if (!user_has_access('user.group.delete')) return $this->notFound();
@@ -114,7 +140,11 @@ class GroupController extends \AdminController
 	    return \Redirect::toAdmin('user/group');
 	}
 	
-
+	/**
+	 * Check form validation
+	 *
+	 * @return object
+	 **/
 	protected function validate()
 	{
 		$rule = array(
@@ -125,8 +155,4 @@ class GroupController extends \AdminController
 		return $v;
 	}
 
-	public function after($response)
-	{
-		return parent::after($response);
-	}
 }

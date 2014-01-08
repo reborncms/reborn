@@ -1,6 +1,6 @@
   <div id="user-container">
 
-	{{ Form::start("$adminUrl/user/edit/$user->id", 'user_edit_form', false, array('class' => 'form')) }}
+	{{ Form::start(adminUrl("user/edit/".$user->id), 'user_edit_form', false, array('class' => 'form')) }}
   
     {{ Form::hidden('id', $user->id) }}
 		<div class="form-block odd">
@@ -128,7 +128,7 @@
 
 		<div class="form-block odd">
 		{{ Form::submit('submit', t('user::permission.edit'), array('id' => 'edit', 'class' => 'btn btn-green')) }}
-		<a href="{{ \Uri::create("$adminUrl/user/") }}" class="btn">{{ t('user::permission.cancel') }}</a>
+		<a href="{{ adminUrl("user") }}" class="btn">{{ t('user::permission.cancel') }}</a>
 		</div>
 
 	{{ Form::end() }}

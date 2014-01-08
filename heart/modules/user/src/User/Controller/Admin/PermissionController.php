@@ -4,6 +4,11 @@ namespace User\Controller\Admin;
 
 class PermissionController extends \AdminController
 {
+	/**
+	 * Before function for PermissionController
+	 *
+	 * @return void
+	 **/
 	public function before()
 	{
 		$this->menu->activeParent('user');
@@ -13,6 +18,7 @@ class PermissionController extends \AdminController
 	/**
 	* Get groups to edit permissions for each group
 	*
+	* @return void
 	*/
 	public function index()
 	{
@@ -29,6 +35,7 @@ class PermissionController extends \AdminController
 	* Edit permissions for each usergroup
 	*
 	* @param int $groupid
+	* @return void
 	*/
 	public function edit($groupid = null)
 	{

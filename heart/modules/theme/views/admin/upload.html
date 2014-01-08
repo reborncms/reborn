@@ -1,4 +1,4 @@
-{{ Form::start("$adminUrl/theme/upload", 'theme_upload', true, array('class' => 'form')) }}
+{{ Form::start(adminUrl("theme/upload"), 'theme_upload', true, array('class' => 'form')) }}
 <div class="form-block">
     <label for="">{{ t('theme::theme.modToolbar') }}<span class="required"></span></label>
       
@@ -19,7 +19,7 @@
 
 <div class="form-block form-action">
 	{{ Form::submit('submit', t('theme::theme.upload.name'), array('id' => 'edit', 'class' => 'btn btn-green')) }}
-	<a href="{{ \Uri::create("$adminUrl/theme/") }}" class="btn">{{ t('theme::theme.cancel') }}</a>
+	<a href="{{ adminUrl("theme") }}" class="btn">{{ t('theme::theme.cancel') }}</a>
 </div> <!-- end of form block -->
 
 {{ Form::end() }}

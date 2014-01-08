@@ -171,10 +171,18 @@ class BlogController extends \PublicController
 			$blogs = Field::getAll('blog', $blogs, 'custom_field');
 		}
 
-		if (self::checkPartial('category')) {
+		if (self::checkPartial('category_'.$cat_info->slug)) {
+
+			$this->template->setPartial('category_'.$cat_info->slug);
+
+		} else if (self::checkPartial('category')) {
+
 			$this->template->setPartial('category');
+
 		} else {
+
 			$this->template->setPartial('index');
+
 		}
 
 		$this->template->title('Blog - Category:'.$cat_info->name)
@@ -227,9 +235,16 @@ class BlogController extends \PublicController
 			$blogs = Field::getAll('blog', $blogs, 'custom_field');
 		}
 
-		if (self::checkPartial('tag')) {
+		if (self::checkPartial('tag_'.$name)) {
+
+			$this->template->setPartial('tag_'.$name);
+
+		} else if (self::checkPartial('tag')) {
+
 			$this->template->setPartial('tag');
+
 		} else {
+
 			$this->template->setPartial('index');
 		}
 
@@ -277,10 +292,18 @@ class BlogController extends \PublicController
 			$blogs = Field::getAll('blog', $blogs, 'custom_field');
 		}
 
-		if (self::checkPartial('author')) {
+		if (self::checkPartial('author_'.$id)) {
+
+			$this->template->setPartial('author_'.$id);
+
+		} else if (self::checkPartial('author')) {
+
 			$this->template->setPartial('author');
+
 		} else {
+
 			$this->template->setPartial('index');
+
 		}
 
 		$this->template->title('Blog')

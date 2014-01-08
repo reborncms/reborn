@@ -3,7 +3,7 @@
 	<p>{{ t('user::permission.info') }}</p>
 </section>
 <section class="item">
-{{ Form::start("$adminUrl/user/permission/edit/$group->id") }}
+{{ Form::start(adminUrl("user/permission/edit/".$group->id)) }}
 <table class="stripe">
 	<thead>
 		<tr>
