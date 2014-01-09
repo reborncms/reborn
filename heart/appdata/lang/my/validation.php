@@ -24,12 +24,12 @@ return array(
 	'slug_duplicate'=> '*** ဒီနာမည်နှင့် slug ရှိပြီးသားဖြစ်နေပါသည်။ တခြားနာမည်တစ်ခုပြန်ရွေးစေလိုပါတယ်။',
 	'type'			=> "အဆိုပါ {key} သည် {type} အမျိုးအစား ဖြစ်ရမည်။",
 	'boolean'		=> "အဆိုပါ {key} သည် boolean အမျိုးအစား ဖြစ်ရမည်။",
-	'image'			=> "This {key} must be an image type {types}.",
-	'fileType'		=> "This {key} must be a file type {types}.",
-	'fileSize'		=> "Maximun uploaded file size is {size}",
-	'before'		=> "This \"{key}\" field must be date before {date}.",
-	'after'			=> "This \"{key}\" field must be date after {date}.",
-	'honeypot'		=> "You fill the honeypot field. This is wrong!",
-	'lat'			=> "Latitude value must be +90 to -90",
-	'long'			=> "Longitude value must be +180 to -180"
+	'image'			=> "ပုံအမျိုးအစားမှာ {types} ဖြစ်ရပါမည်။",
+	'fileType'		=> "ဖိုင်အမျိုးအစားမှာ {types} ဖြစ်ရပါမည်။",
+	'fileSize'		=> "သတ်မှတ်ထားသော ဖိုင်ဆိုဒ် {size} ထက်ကျော်နေပါသည်။",
+	'before'		=> "ရွေးချယ်ထားသော date {key} မှာ {date} မတိုင်မှီ ဖြစ်ရပါမည်။",
+	'after'			=> "ရွေးချယ်ထားသော date {key} မှာ {date} နောက်ပိုင်း ဖြစ်ရပါမည်။",
+	'honeypot'		=> "ဖြည့်စရာမလိုသော field ကို ဖြည့်ထားပါသည်။",
+	'lat'			=> "လတ္တီကျုဒ် တန်ဖိုးမှာ +၉၀ မှ -၉၀ ကြားတွင်ရှိရပါမည်။",
+	'long'			=> "လောင်ဂျီကျုဒ် တန်ဖိုးမှာ +၁၈၀ မှ -၁၈၀ ကြားတွင်ရှိရပါမည်။"
 );

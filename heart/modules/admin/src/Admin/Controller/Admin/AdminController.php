@@ -79,6 +79,12 @@ class AdminController extends \AdminController
 						return Redirect::toAdmin('login');
 				    }
 				} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
+					Flash::error(t('global.invalid_user'));
+					return Redirect::toAdmin('login');
+				} catch (\Cartalyst\Sentry\Throttling\UserSuspendedException $e) {
+					Flash::error(t('global.login_suspended'));
+					return Redirect::toAdmin('login');
+				} catch (\Exception $e) {
 					Flash::error(t('global.login_fail'));
 					return Redirect::toAdmin('login');
 				}
