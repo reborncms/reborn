@@ -72,12 +72,14 @@ class FoundationBuilder extends Builder
 	{
 		$prev_link = $this->current - 1;
 
-		$url = $this->url;
 		$class = ($prev_link == 0) ? ' unavailable' : '';
 
+		$page = null;
 		if ($prev_link > 1) {
-			$url = $url.'page-'.$prev_link;
+			$page = 'page-'.$prev_link;
 		}
+
+		$url = $this->buildUrl($page);
 
 		$link = '<li class="arrow'.$class.'">';
 		$link .= '<a href="'.$url.'" class="'.$this->template['prev_link_class'].'">';
@@ -102,11 +104,12 @@ class FoundationBuilder extends Builder
 			$class = ' class="current"';
 		}
 
-		$url = $this->url;
-
+		$page_no = null;
 		if ($page > 1) {
-			$url = $url.'page-'.$page;
+			$page_no = 'page-'.$page;
 		}
+
+		$url = $this->buildUrl($page_no);
 
 		$link = '<li'.$class.'>';
 		$link .= '<a href="'.$url.'"'.$class.'>'.$page.'</a>';
@@ -138,7 +141,12 @@ class FoundationBuilder extends Builder
 	{
 		$next_link = $this->current + 1;
 
-		$url = $this->url.'page-'.$next_link;
+		$page = null;
+		if ($next_link > 1) {
+			$page = 'page-'.$next_link;
+		}
+
+		$url = $this->buildUrl($page);
 
 		$class = ($this->total_pages == $this->current) ? ' unavailable' : '';
 

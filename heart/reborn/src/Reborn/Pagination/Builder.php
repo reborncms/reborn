@@ -32,6 +32,13 @@ class Builder implements BuilderInterface
 	protected $url;
 
 	/**
+	 * Query data array lists for http query string.
+	 *
+	 * @var array
+	 **/
+	protected $query = array();
+
+	/**
 	 * @var int Number of items to show on a page
 	 **/
 	public $items_per_page = 5;
@@ -113,6 +120,24 @@ class Builder implements BuilderInterface
 		if($page != null){
 			$this->current = (int) str_replace('page-', '', $page);
 		}
+	}
+
+	/**
+	 * Set query data for url.
+	 *
+	 * @param array $query
+	 * @param boolean $replace
+	 * @return \Reborn\Pagination\Builder
+	 **/
+	public function query(array $query, $replace = false)
+	{
+		if ($replace) {
+			$this->query = $query;
+		} else {
+			$this->query = array_merge($this->query, $query);
+		}
+
+		return $this;
 	}
 
 	/**
@@ -294,6 +319,7 @@ class Builder implements BuilderInterface
 	{
 		return array(
 			'url' => $this->url,
+			'query' => $this->query,
 			'current' => $this->current,
 			'show_pages' => $this->show_pages,
 			'param_name' => $this->param_name,
@@ -434,10 +460,12 @@ class Builder implements BuilderInterface
 
 		$prev_link = $this->current - 1;
 
-		$url = $this->url;
+		$page = null;
 		if ($prev_link > 1) {
-			$url = $this->url.'page-'.$prev_link;
+			$page = 'page-'.$prev_link;
 		}
+
+		$url = $this->buildUrl($page);
 
 		$link = '<li><a href="'.$url.'" class="'.$this->template['prev_link_class'].'">';
 		$link .= $this->template['prev_link_text'].'</a></li>';
@@ -459,11 +487,12 @@ class Builder implements BuilderInterface
 			$class = ' class="'.$this->template['active_class'].'"';
 		}
 
-		$url = $this->url;
-
+		$page_no = null;
 		if ($page > 1) {
-			$url = $url.'page-'.$page;
+			$page_no = 'page-'.$page;
 		}
+
+		$url = $this->buildUrl($page_no);
 
 		$link = '<li><a href="'.$url.'"'.$class.'>'.$page.'</a></li>';
 
@@ -497,12 +526,34 @@ class Builder implements BuilderInterface
 
 		$next_link = $this->current + 1;
 
-		$url = $this->url.'page-'.$next_link;
+		$url = $this->buildUrl('page-'.$next_link);
 
 		$link = '<li><a href="'.$url.'" class="'.$this->template['next_link_class'].'">';
 		$link .= $this->template['next_link_text'].'</a></li>';
 
 		return $link;
+	}
+
+	/**
+	 * Get url string.
+	 *
+	 * @return string
+	 **/
+	protected function buildUrl($with = null)
+	{
+		$url = $this->url;
+
+		if (! is_null($with) ) {
+			$url = $this->url.$with;
+		}
+
+		if ( empty($this->query) ) {
+			return $url;
+		}
+
+		$query = http_build_query($this->query);
+
+		return $url.'?'.$query;
 	}
 
 	/**
@@ -537,7 +588,7 @@ class Builder implements BuilderInterface
 			'total_pages' => $this->total_pages,
 			'total_items' => $this->total_items,
 			'item_per_page' => $this->items_per_page,
-			'url' => $this->url,
+			'url' => $this->buildUrl(),
 		);
 	}
 
