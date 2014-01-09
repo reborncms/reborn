@@ -19,8 +19,12 @@
     Deny from all
   </FilesMatch>
 
+  <FilesMatch "(magic|permission.sh|README.md|license.txt|composer.json|composer.lock)">
+    Deny from all
+  </FilesMatch>
+
   # 403 for Folder Access
-  RedirectMatch 403 ^/.*/(magic|permissions\.sh|README\.md|license\.txt|\.git|\.git/index|heart/vendor|composer\.json|composer\.lock|storages).*$
+  RedirectMatch 403 ^/.*/(bin|data|\.git|\.git/index|heart/vendor|storages).*$
 
 </IfModule>
 
