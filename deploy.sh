@@ -8,9 +8,9 @@ cat <<EOF
 * Compile with Magic Tool.                            *
 * =================================================== *
 EOF
-echo -e "\n"
+echo -e "\n\e[0m"
 git pull
 echo -e "\n"
-echo "Make PHP File Compile with Magic!"
+echo -e "\e[0;32mMake PHP File Compile with Magic!\e[0m"
 php magic compile
 
