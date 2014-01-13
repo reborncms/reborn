@@ -1,0 +1,15 @@
+{{ if($table->isEmpty()) }}
+	<div id="no-index-data">
+		Content is Empty Now!
+	</div>
+{{ else }}
+	{{ Form::start(admin_url('{uri}/delete')) }}
+
+	{{ $table->build() }}
+
+	<div class="button-wrapper" id="delete_select">
+		{{ Form::submit('submit_delete', t('global.delete_selected'), array('class' => 'confirm_delete btn btn-red', 'disabled' => 'disabled')) }}
+	</div>
+	{{ Form::end() }}
+{{ $pagination }}
+{{ endif }}

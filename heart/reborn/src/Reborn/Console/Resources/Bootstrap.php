@@ -19,7 +19,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 	 */
 	public function adminMenu(\Reborn\Util\Menu $menu, $modUri)
 	{
-		// eg: $menu->add('name', 'Title', 'link', $parent_menu = null, $icon = 'icon-class', $order = 35);
+		$menu->add('{table}', '{module}', $modUri, 'content', 35);
 	}
 
 	/**
@@ -29,7 +29,20 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 	 */
 	public function moduleToolbar()
 	{
-		return array();
+		return array(
+			'{table}' => array(
+				'url'	=> '{uri}',
+				'name'	=> '{module}',
+				'info'	=> 'View All {module}',
+				'class'	=> 'add'
+			),
+			'{table}_add' => array(
+				'url'	=> '{uri}/create',
+				'name'	=> 'Create {module}',
+				'info'	=> 'Create New {module}',
+				'class'	=> 'add'
+			)
+		);
 	}
 
 	/**

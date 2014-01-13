@@ -16,7 +16,7 @@ class {classname}Info extends \Reborn\Module\AbstractInfo
 	 *
 	 * @var string
 	 **/
-	protected $version = '{version}';
+	protected $version = '1.0';
 
 	/**
 	 * Module Display name variable.
