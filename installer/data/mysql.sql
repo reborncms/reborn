@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 --- db ---
 INSERT INTO `settings` (`slug`, `name`, `desc`, `value`, `default`, `module`) VALUES
-('default_module', 'Default Module', 'Default Module for Reborn CMS', '', 'Pages', 'system'),
+('default_module', 'Default Module', 'Default Module for Reborn CMS', '', 'pages', 'system'),
 ('home_page', 'Home Page', 'Home Page for your site', '', 'home', 'system'),
 ('site_title', 'Site Title', 'Site name for your site', '{SITETITLE}', 'Reborn CMS', 'system'),
 ('site_slogan', 'Site Slogan', 'Slogan for your site', '{SLOGAN}', 'Your slogan here', 'system'),

@@ -259,10 +259,12 @@ class Input
      */
     protected static function getByInputMethod($key, $default = null)
     {
-        if (static::isPost()) {
-            $v = static::getIns()->request->get($key, $default);
+        $instance = (static::isPost()) ? static::getIns()->request : static::getIns()->query;
+
+        if ( is_array($key) ) {
+            $v = array_intersect_key($instance->all(), array_flip($key));
         } else {
-            $v = static::getIns()->query->get($key, $default);
+            $v= $instance->get($key, $default);
         }
 
         return static::sanitize($v);
