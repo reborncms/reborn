@@ -333,6 +333,17 @@ class RouteCollection
 	}
 
 	/**
+	 * Make Filter for each route.
+	 *
+	 * @param \Closure $callback
+	 * @return array
+	 **/
+	public function filter(\Closure $callback)
+	{
+		return array_filter($this->routes, $callback);
+	}
+
+	/**
 	 * Get the match route by given uri
 	 *
 	 * @param string $uri Uri Path
@@ -345,6 +356,29 @@ class RouteCollection
 
 			if ($match = $route->match($uri, $request)) {
 				$this->current = $match;
+				return $match;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get the match route by given uri for asset files only.
+	 *
+	 * @param string $uri Uri Path
+	 * @param \Reborn\Http\Request $request Request instance
+	 * @return boolean|\Reborn\Routing\Route
+	 **/
+	public function matchForAsset($uri, Request $request)
+	{
+		$routes = $this->filter(function($route) {
+			return $route->forAsset();
+		});
+
+		foreach ($routes as $name => $route) {
+
+			if ($match = $route->match($uri, $request)) {
 				return $match;
 			}
 		}

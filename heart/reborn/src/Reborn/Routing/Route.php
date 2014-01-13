@@ -107,6 +107,13 @@ class Route
 	protected $skip_csrf = false;
 
 	/**
+	 * Route is asset file request route.
+	 *
+	 * @var boolean
+	 **/
+	protected $is_asset = false;
+
+	/**
 	 * Variable for the before middlewares
 	 *
 	 * @var array
@@ -239,6 +246,29 @@ class Route
 	public function skipCSRF()
 	{
 		return $this->skip_csrf;
+	}
+
+	/**
+	 * Defined this route is asset file request route.
+	 *
+	 * @param boolean $value
+	 * @return \Reborn\Routing\Route
+	 **/
+	public function isAsset($value = true)
+	{
+		$this->is_asset = (boolean) $value;
+
+		return $this;
+	}
+
+	/**
+	 * Check this route is asset file request route.
+	 *
+	 * @return boolean
+	 **/
+	public function forAsset()
+	{
+		return $this->is_asset;
 	}
 
 	/**

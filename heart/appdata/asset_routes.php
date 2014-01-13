@@ -6,28 +6,28 @@ Route::group('assets', function(){
 		$resolver = new \Reborn\Asset\MuneeResolver($path, 'less');
 		echo $resolver->run();
 		exit;
-	});
+	})->isAsset();
 
 	// Route for styles
 	Route::get('styles/{*:path}', function($path){
 		$resolver = new \Reborn\Asset\MuneeResolver($path);
 		echo $resolver->run();
 		exit;
-	});
+	})->isAsset();
 
 	// Route for scripts
 	Route::get('scripts/{*:path}', function($path){
 		$resolver = new \Reborn\Asset\MuneeResolver($path, 'js');
 		echo $resolver->run();
 		exit;
-	});
+	})->isAsset();
 
 	// Route for image
 	Route::get('images/{*:path}', function($path){
 		$resolver = new \Reborn\Asset\MuneeResolver($path, 'img');
 		echo $resolver->run();
 		exit;
-	});
+	})->isAsset();
 
 	// Group for global assets
 	Route::group('global/', function(){
@@ -36,14 +36,14 @@ Route::group('assets', function(){
 			$resolver->isGlobal();
 			echo $resolver->run();
 			exit;
-		});
+		})->isAsset();
 
 		Route::get('styles/{*:path}', function($path){
 			$resolver = new \Reborn\Asset\MuneeResolver($path);
 			$resolver->isGlobal();
 			echo $resolver->run();
 			exit;
-		});
+		})->isAsset();
 
 		// Route for scripts
 		Route::get('scripts/{*:path}', function($path){
@@ -51,7 +51,7 @@ Route::group('assets', function(){
 			$resolver->isGlobal();
 			echo $resolver->run();
 			exit;
-		});
+		})->isAsset();
 
 		// Route for image
 		Route::get('images/{*:path}', function($path){
@@ -59,7 +59,7 @@ Route::group('assets', function(){
 			$resolver->isGlobal();
 			echo $resolver->run();
 			exit;
-		});
+		})->isAsset();
 	});
 });
 
@@ -70,14 +70,14 @@ Route::group('assets/a/', function(){
 		$resolver->isAdmin();
 		echo $resolver->run();
 		exit;
-	});
+	})->isAsset();
 
 	Route::get('styles/{*:path}', function($path){
 		$resolver = new \Reborn\Asset\MuneeResolver($path);
 		$resolver->isAdmin();
 		echo $resolver->run();
 		exit;
-	});
+	})->isAsset();
 
 	// Route for scripts
 	Route::get('scripts/{*:path}', function($path){
@@ -85,7 +85,7 @@ Route::group('assets/a/', function(){
 		$resolver->isAdmin();
 		echo $resolver->run();
 		exit;
-	});
+	})->isAsset();
 
 	// Route for image
 	Route::get('images/{*:path}', function($path){
@@ -93,5 +93,5 @@ Route::group('assets/a/', function(){
 		$resolver->isAdmin();
 		echo $resolver->run();
 		exit;
-	});
+	})->isAsset();
 });

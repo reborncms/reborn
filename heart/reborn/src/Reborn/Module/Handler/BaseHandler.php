@@ -89,14 +89,14 @@ class BaseHandler
 
 		if (isset($this->modules[$name])) {
 			$found = $this->modules[$name];
-		}
-
-		// Fallback with "uri"
-		foreach ($this->modules as $module) {
-			if ($name === $module->uri) {
-				$found = $module;
-			}
-		}
+		} else {
+            // Fallback with "uri"
+            foreach ($this->modules as $module) {
+                if ($name === $module->uri) {
+                    $found = $module;
+                }
+            }
+        }
 
 		if ( !is_null($key) and !is_null($found) ) {
 			return $found->{$key};

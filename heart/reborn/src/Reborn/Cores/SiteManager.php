@@ -61,6 +61,36 @@ class SiteManager
         $this->site = rtrim($domain.$path, '/');
 	}
 
+	/**
+	 * Check Site is maintain mode or not.
+	 * But always return true for admin access user and
+	 * adminpanel login, logout request.
+	 *
+	 * @return boolean
+	 **/
+	public function isMaintain()
+	{
+		$maintain = Setting::get('frontend_enabled');
+
+		if ($this->app['auth_provider']->check()) {
+            // Allow to access admin only
+            if ($this->app['auth_provider']->hasAccess('admin')) return false;
+        } else {
+            $allow = array(admin_url(), admin_url('login'), admin_url('logout'));
+            $current = url(implode('/', \Uri::segments()));
+
+            if (in_array($current, $allow)) {
+                return false;
+            }
+        }
+
+        if ('disable' !== $maintain) {
+            return false;
+        }
+
+        return true;
+	}
+
 
 	/**
 	 * Check multi site process on or off.

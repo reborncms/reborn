@@ -103,7 +103,7 @@ class Controller
      * After Method for Controller
      * This method return the Response Object.
      *
-     * @param mixed $response
+     * @param \Symfony\Component\HttpFoundation\Response
      */
     public function after($response)
     {

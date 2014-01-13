@@ -4,6 +4,7 @@ namespace Reborn\Routing;
 
 use ReflectionClass;
 use Reborn\Cores\Application;
+use Reborn\Cores\Setting;
 use Reborn\Filesystem\File;
 use Reborn\Http\Uri;
 use Reborn\Http\Input;
@@ -12,6 +13,7 @@ use Reborn\Util\Security;
 use Reborn\Module\ModuleManager as Module;
 use Reborn\Exception\HttpNotFoundException;
 use Reborn\Exception\TokenNotMatchException;
+use Reborn\Exception\MaintainanceModeException;
 
 /**
  * Router Class for Reborn
@@ -68,7 +70,7 @@ class Router
         $this->request = $app->request;
         $this->collection = $app->route_collection;
 
-        $this->admin = \Setting::get('adminpanel_url');
+        $this->admin = Setting::get('adminpanel_url');
 
         $this->mapper = ControllerMap::create();
 
@@ -110,7 +112,18 @@ class Router
 
         $request_uri = implode('/', Uri::segments());
 
-        $route = $this->collection->match(rawurldecode($request_uri), $this->request);
+
+        // Check the Site is Maintainance Stage or not
+        // If site is maintainance stage, find asset file request route only
+        if ( $this->app['site_manager']->isMaintain() ) {
+            $route = $this->findForMaintain(rawurldecode($request_uri));
+
+            if (! $route ) {
+                throw new MaintainanceModeException("Website is Under Maintainance!");
+            }
+        } else {
+            $route = $this->findForAll(rawurldecode($request_uri));
+        }
 
         if ($route) {
 
@@ -146,6 +159,28 @@ class Router
         // Not found Route and Controller,
         // throw the HttpNotFoundException
         throw new HttpNotFoundException("Request URL is not found!");
+    }
+
+    /**
+     * Find asset routes for maintainance mode.
+     *
+     * @param string $uri
+     * @return boolean|\Reborn\Routing\Route
+     **/
+    protected function findForMaintain($uri)
+    {
+        return $this->collection->matchForAsset($uri, $this->request);
+    }
+
+    /**
+     * Find all routes.
+     *
+     * @param string $uri
+     * @return boolean|\Reborn\Routing\Route
+     **/
+    protected function findForAll($uri)
+    {
+        return $this->collection->match($uri, $this->request);
     }
 
     /**

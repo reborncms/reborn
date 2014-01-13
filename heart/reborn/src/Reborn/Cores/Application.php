@@ -22,6 +22,7 @@ use Reborn\Module\ModuleManager as Module;
 use Reborn\Exception\RbException;
 use Reborn\Exception\HttpNotFoundException;
 use Reborn\Exception\TokenNotMatchException;
+use Reborn\Exception\MaintainanceModeException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
@@ -263,10 +264,6 @@ class Application extends \Illuminate\Container\Container
             // Set Timezone for Application
             $this->setTimezone(\Setting::get('timezone', 'UTC'));
 
-            // Check the Site is Maintainance Stage or not
-            // If site is maintainance stage, give the maintain page and exit
-            $this->siteIsMaintain();
-
             $response = $this['router']->dispatch();
 
             $this->started = true;
@@ -286,6 +283,10 @@ class Application extends \Illuminate\Container\Container
             $redirect_url = str_replace($basepath, '', \Input::server('REDIRECT_URL'));
 
             return \Redirect::to($redirect_url);
+        } catch(MaintainanceModeException $e) {
+            $this->end(Response::maintain());
+
+            exit(1);
         }
     }
 
@@ -433,38 +434,6 @@ class Application extends \Illuminate\Container\Container
     public function setErrorHandler()
     {
         $this['error_handler']->register();
-    }
-
-    /**
-     * Check the site is maintainance stage or not.
-     * If site is maintainance stage, response the maintainance mode.
-     *
-     * @return void
-     **/
-    protected function siteIsMaintain()
-    {
-        $maintain = Setting::get('frontend_enabled');
-
-        if ($this['auth_provider']->check()) {
-            // Allow to access admin only
-            if ($this['auth_provider']->hasAccess('admin')) return false;
-        } else {
-            $allow = array(adminUrl(), adminUrl('login'), adminUrl('logout'));
-            $current = rbUrl(implode('/', \Uri::segments()));
-
-            if (in_array($current, $allow)) {
-                return false;
-            }
-        }
-
-        if ('disable' != $maintain) {
-            return false;
-        } else {
-
-            $this->end(Response::maintain());
-
-            exit(1);
-        }
     }
 
     /**

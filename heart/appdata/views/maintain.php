@@ -5,7 +5,7 @@
 	<title><?php echo Setting::get('site_title'); ?> - Under Construction</title>
 	<?php $theme = Setting::get('public_theme'); ?>
 	<base href="{{ url() }}" />
-	<link rel="shortcut icon" type="image/x-icon" href="<?php echo rtrim(str_replace(BASE, '', THEMES), DS).'/'.$theme; ?>/assets/img/favicon.ico">
+	<?php echo Html::favicon(); ?>
 	<style type="text/css">
 		body {
 			background: #f0f0f9;
