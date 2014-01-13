@@ -18,9 +18,11 @@
 
 	\Route::add('change-status/{int:id}', 'Blog\Admin\Blog::changeStatus', 'admin_blog_changeStatus');
 
+	\Route::add('publish/{int:id}', 'Blog\Admin\Blog::publish', 'admin_blog_publish_now');
+
 	\Route::add('delete/{int:id}?', 'Blog\Admin\Blog::delete', 'admin_blog_delete');
 
-	\Route::post('check-slug', 'Blog\Admin\Blog::checkSlug', 'admin_blog_checkSlug');
+	\Route::add('check-slug', 'Blog\Admin\Blog::checkSlug', 'admin_blog_checkSlug');
 
 	\Route::post('search', 'Blog\Admin\Blog::search', 'admin_blog_search');
 

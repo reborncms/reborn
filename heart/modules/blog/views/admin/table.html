@@ -1,11 +1,11 @@
 {{ if(count($blogs) > 0) }}
 	{# multi_delete #}
 	{{ Form::start(ADMIN_URL.'/blog/delete') }}
-	<table class="stripe">
+	<table class="stripe" id="blog_data_table">
 		<thead>
 			<tr>
 				<th width="3%">{{ Form::checkbox('action_to_all', '', false, array('class' => 'check-all')) }}</th>
-				<th width="27%">{{ t('blog::blog.title') }}</th>
+				<th width="22%">{{ t('blog::blog.title') }}</th>
 				<th width="10%">{{ t('blog::blog.lang') }}</th>
 				<th width="10%">{{ t('blog::blog.category') }}</th>
 				<th width="10%">{{ t('blog::blog.author') }}</th>
@@ -16,28 +16,32 @@
 				{{ if ($list_type == 'trash') }}
 					<th>Trashed at</th>
 				{{ endif }}
-				<th width="10%" style="min-width:125px;">{{ t('label.actions') }}</th>
+				<th width="15%" style="min-width:125px;">{{ t('label.actions') }}</th>
 			</tr>	
 		</thead>
 		<tbody>
 			{= $a = 1 =}
 			{{ loop($blogs as $blog) }}
+			{= $date = date_create($blog->created_at) =}
 			<tr>
 				<td class="checkbox">{{ Form::checkbox('action_to[]', $blog->id, false, array('id' => 'action'.$a)) }}</td>
-				<td>
+				<td style="width:22%;">
 					<span class="bg-title">
 						{{ if ($list_type != 'trash') }}
 
-							<a href="{{ adminUrl('blog/edit/'.$blog->id) }}">{{ $blog->title }}</a>
+							{{ if ($blog->created_at > date('Y-m-d H:i:s')) }}
+								<a href="#" class="scheduled_icon tipsy-tip" title="{{ t('blog::blog.schedule_label').' '. num(date_format($date, 'Y-m-d h:i a')) }}"><i class="icon-calendar icon-gray"></i></a>
+							{{ endif }}
+
 							{{ if($blog->status == 'draft') }}
-								<a href="{{ adminUrl('blog/changeStatus/'.$blog->id) }}">
+								<a href="{{ adminUrl('blog/change-status/'.$blog->id) }}" class="draft-label">
 									<span class="label label-info">{{ t('global.draft_label') }}</span>
 								</a>
 							{{ endif }}
 
-							{{ if ($blog->created_at > date('Y-m-d H:i:s')) }}
-								<span class="label schedule_label">{{ t('blog::blog.schedule_label') }}</span>
-							{{ endif }}
+							<a href="{{ adminUrl('blog/edit/'.$blog->id) }}" title="{{ $blog->title }}" class="no-overflow-txt tipsy-tip" style="width:82%">
+								{{ $blog->title }}
+							</a>
 
 						{{ else }}
 							{{ $blog->title }}
@@ -78,8 +82,11 @@
 					<td><a href="{{ adminUrl('comment') }}"><i class="icon-comment icon-gray"></i>{{ $blog->comment_count }}</a></td>
 				{{ endif }}
 				<td>
-					{= $date = date_create($blog->created_at) =}
-					{{ num(date_format($date, 'Y-m-d h:i a')) }}
+					{{ if ($blog->created_at > date('Y-m-d H:i:s')) }}
+						{{ t('blog::blog.schedule_label').' '. num(date_format($date, 'Y-m-d h:i a')) }}
+					{{ else }}
+						{{ num(date_format($date, 'Y-m-d h:i a')) }}
+					{{ endif }}
 				</td>
 				{{ if ($list_type == 'trash') }}
 					<td>
@@ -91,6 +98,7 @@
 					<div class="icons-bar">
 						{{ if ($list_type != 'trash') }}
 							<a href="{{ rbUrl('blog/preview/'.$blog->slug) }}" title="{{ t('global.preview') }}" class="tipsy-tip" target="_blank"><i class="icon-view"></i></a>
+							<a href="{{ adminUrl('blog/multilang/'.$blog->id) }}" title="{{ t('blog::blog.add_lang') }}" class="tipsy-tip"><i class="icon-earth"></i></a>
 							<a href="{{ adminUrl('blog/edit/'.$blog->id) }}" title="{{ t('global.edit') }}" class="tipsy-tip"><i class="icon-edit"></i></a>
 							<!-- delete for which has multi-lang -->
 							<a href="{{ adminUrl('blog/delete/'.$blog->id) }}" title="{{ t('global.delete') }}" class="confirm_delete tipsy-tip"><i class="icon-remove"></i></a>

@@ -290,6 +290,37 @@ class BlogController extends \AdminController
 	}
 
 	/**
+	 * Publish the scheduled post
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function publish($id)
+	{
+		if (!$id) {
+
+			return $this->notFound();
+
+		}
+
+		$blog = Blog::find($id);
+
+		$blog->created_at = new \DateTime();
+		$blog->updated_at = new \DateTime();
+
+		//dump($blog, true);
+
+		if ($blog->save(array(), false)) {
+			\Flash::success(t('blog::blog.publish_success'));
+		} else {
+			\Flash::error(t('blog::blog.publish_error'));
+		}
+
+		return Redirect::to(adminUrl('blog'));
+
+	}
+
+	/**
 	 * Restore from Trash
 	 *
 	 **/
@@ -577,17 +608,12 @@ class BlogController extends \AdminController
 
 		}
 
-		if (Input::get('publish') != null) {
+		$button_save = Input::get('blog_save');
 
-			$status = 'live';
-
-		} else if (Input::get('save_draft') != null) {
-
-			$status = 'draft';
-
-		} else {
-
-			$status = null;
+		if ($button_save !== null) {
+			
+			$status = ($button_save == t('global.save') || $button_save == t('global.publish')) ? 'live' : 'draft';
+			$blog->status = $status;
 
 		}
 
@@ -645,12 +671,6 @@ class BlogController extends \AdminController
 		}
 
 		$blog->comment_status = Input::get('comment_status');
-
-		if ($status != null) {
-
-			$blog->status = $status;
-
-		}
 
 		if (Input::get('sch_type') != null) {
 
@@ -753,9 +773,12 @@ class BlogController extends \AdminController
 			$pagination = Pagination::create($options);
 
 			$result = Blog::with(array('category','author'))
+								->where('lang_ref', null)
 								->skip(\Pagination::offset())
 								->take(\Pagination::limit())
+								->orderBy('created_at', 'desc')
 								->get();
+
 			$this->template->set('pagination', $pagination);
 
 		}

@@ -130,11 +130,13 @@ class Helper
 			foreach ($comments as $comment) {
 				$widget['body'] .= '<li>
 										<span class="date">'.date("d-m-Y", strtotime($comment->created_at)).'</span>
-										<span class="commenter">'.self::getUserNameWithLink($comment).'</span>
-										commented at
-										<span class="cmt-module">'. ucfirst($comment->module) .'</span>
-										on
-										<span class="cmt-title">'. $comment->content_title .'</span>
+										<span class="cmt_summary no-overflow-txt" style="width:70%;">
+											<span class="commenter">'.self::getUserNameWithLink($comment).'</span>
+											commented at
+											<span class="cmt-module">'. ucfirst($comment->module) .'</span>
+											on
+											<span class="cmt-title">'. $comment->content_title .'</span>
+										</span>
 										<span class="dashboard_widget_action">
 											'.self::commentStatusLabel($comment->id, $comment->status).'
 										</span>

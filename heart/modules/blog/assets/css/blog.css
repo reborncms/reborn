@@ -19,25 +19,47 @@
 }
 
 #add-f-img, #remove-f-img {display: block; margin: 10px 0;}
+
 #f-img-wrap {
 	min-height: 150px;
 	display: none;
 }
+
 #f-img-wrap img {
 	max-width: 230px;
 	border: 1px solid #E5E5E5;
 	min-width: 100px;
 }
+
 #manual-sch {display: none; margin-top: 10px;}
+
 .sch-data { font-size: 11px;font-style: oblique;}
-.bg-title { position: relative; display: block;}
-.bg-title span.label, span.schedule_label {
+
+#blog_data_table {
+	table-layout: fixed;
+}
+
+.bg-title { 
+	position: relative; 
+	display: block;
+}
+
+.scheduled_icon {
+	font-size: 10px;
+	position: relative;
+	top: -2px;
+	float:left;
+}
+
+.bg-title span.label {
 	font-size: 10px;
 	letter-spacing: 1px;
 	line-height: 1.2em;
 	min-height: 5px;
 	min-width: 20px;
 	padding: 1px 5px;
+	position: relative;
+	top: -3px;
 }
 .check-box {padding-left: 13px;}
 .cat-add-box { padding-left: 15px; display: none; color: #555555;}

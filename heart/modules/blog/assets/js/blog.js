@@ -44,7 +44,7 @@
 		//check slug
 		$('#form_slug, #form_title').bind('blur',function(){
 			var slug = $('#form_slug').val();
-			var post_data = $('#blog-create').serialize();
+			var post_data = $('#blog_form').serialize();
 			$.post(SITEURL+ADMIN+'/blog/check-slug',post_data,function(data){
 				$('#slug_error').html(data);
 			});

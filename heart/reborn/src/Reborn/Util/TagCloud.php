@@ -266,7 +266,7 @@ class TagCloud
 				$attr = 'style="font-size:'.$size.$this->fontUnit.';"';
 			}
 			$title = 'title="'.sprintf($this->title, $data['count']).'"';
-			$result[] = '<a href="'.$this->urlPrefix.$data['url'].'" '.$attr.' '.$title.' >'.$tag.'</a>';
+			$result[] = '<a href="'.$this->urlPrefix.'/'.$data['url'].'" '.$attr.' '.$title.' >'.$tag.'</a>';
 		}
 
 		if ($this->wrap == 'span') {

@@ -344,6 +344,10 @@ h2.blog_title {
   font-size: 12px;
 }
 
+.blog_meta .lang {
+  float:right;
+}
+
 .featured_img {
   float: left;
   margin-right: 10px;

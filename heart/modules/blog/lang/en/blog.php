@@ -61,8 +61,9 @@ return array(
 	'parent'				=> 'Parent',
 	'author_select'			=> '-- Select Author --',
 	'filter_search'			=> 'Filter Search',
-	'schedule_label'		=> 'Scheduled',
+	'schedule_label'		=> 'Scheduled to post on',
 	'auto_detect'			=> 'Auto Detect',
+	'current_lang'			=> 'Current Language',
 
 	// Button Label
 	'add_new_cat'			=> 'Add New Category',
@@ -71,6 +72,8 @@ return array(
 	'remove_featured_img'	=> 'Remove Featured Image',
 	'auto_schedule'			=> 'Set by automatically',
 	'manual_schedule'		=> 'Set by manually',
+	'add_lang'				=> 'Add another language',
+	'move_to_trash'			=> 'Move to Trash',
 
 	// Form Help Label
 	'tag_help'				=> 'Separate tags by commas',
@@ -104,6 +107,7 @@ return array(
 	
 	'assign_no_post'		=> 'Assign from user have no post!',
 	'not_allow_delete'		=> 'Default category is not allowed to delete.',
+	'save_before_lang'		=> 'Please save the post first before adding another language.',
 
 	// No Post ot Cat in Index View
 	'no_post'				=> 'You have no blog post in this moment',

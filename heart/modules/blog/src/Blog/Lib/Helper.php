@@ -147,7 +147,7 @@ class Helper {
 										<span class="blog-author"><i class="icon-user icon-white"></i>
 											<a href="'.rbUrl('user/profile/'.$post->author->id).'">'.$post->author_name.'</a>
 										</span>
-										<a href="'.rbUrl('blog/'.$post->slug).'" target="_black">'.$post->title.'</a>
+										<a href="'.rbUrl('blog/'.$post->slug).'" target="_black" class="no-overflow-txt" style="width: 65%;">'.$post->title.'</a>
 										<span class="dashboard_widget_action">
 											<a href="'.adminUrl('blog/edit/'.$post->id) .'" title="'. t('global.edit') .'" class="tipsy-tip"><i class="icon-edit icon-white"></i></a>
 										</span>

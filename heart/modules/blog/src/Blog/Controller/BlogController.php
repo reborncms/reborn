@@ -28,6 +28,7 @@ class BlogController extends \PublicController
 		$options = array(
 		    'total_items'       => Blog::active()->notOtherLang()->count(),
 		    'items_per_page'    => Setting::get('blog_per_page'),
+		    'url'				=> url('blog').'/'
 		);
 
 		$pagination = Pagination::create($options);
