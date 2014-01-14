@@ -88,20 +88,20 @@ class UserController extends \PublicController
 				    	\Flash::error(t('user::user.login.fail'));
 				    }
 				}
-				catch (\Cartalyst\Auth\Users\UserNotFoundException $e)
+				catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 				{
 					\Flash::error(t('user::user.login.fail'));
 				}
-				catch (\Cartalyst\Auth\Users\UserNotActivatedException $e)
+				catch (\Cartalyst\Sentry\Users\UserNotActivatedException $e)
 				{
 					\Flash::error(t('user::user.login.activate'));
 				}
-				catch (\Cartalyst\Auth\Throttling\UserSuspendedException $e)
+				catch (\Cartalyst\Sentry\Throttling\UserSuspendedException $e)
 				{
 					$time = $throttle->getSuspensionTime();
 				    \Flash::error(sprintf(t('user::user.login.suspended'), $time));
 				}
-				catch (\Cartalyst\Auth\Throttling\UserBannedException $e)
+				catch (\Cartalyst\Sentry\Throttling\UserBannedException $e)
 				{
 				    \Flash::error(t('user::user.login.banned'));
 				}
@@ -170,7 +170,7 @@ class UserController extends \PublicController
 					        return \Redirect::to('user/profile/'.$user->id);
 					    }
 
-					} catch (\Cartalyst\Auth\Users\UserExistsException $e) {
+					} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
 					   \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
 					}
 				}
@@ -227,7 +227,7 @@ class UserController extends \PublicController
 				    } else {
 				        \Flash::error('Old Password does not match.');
 				    }
-				} catch (\Cartalyst\Auth\Users\UserNotFoundException $e) {
+				} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
 				    \Flash::error('User does not exit');
 				}
 			}
@@ -303,7 +303,7 @@ class UserController extends \PublicController
 						return \Redirect::to('user/activate');
 
 					}
-					catch (\Cartalyst\Auth\Users\UserExistsException $e)
+					catch (\Cartalyst\Sentry\Users\UserExistsException $e)
 					{
 					    \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
 					}
@@ -337,10 +337,10 @@ class UserController extends \PublicController
 		    } else {
 		       \Flash::error(t('user::user.activate.fail'));
 		    } 
-		} catch (\Cartalyst\Auth\Users\UserNotFoundException $e) {
+		} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
     		\Flash::error(t('user::user.auth.dunexist'));
     		return \Redirect::to('user/register');
-		} catch (\Cartalyst\Auth\Users\UserAlreadyActivatedException $e) {
+		} catch (\Cartalyst\Sentry\Users\UserAlreadyActivatedException $e) {
 			\Flash::error(t('user::user.auth.activated'));
 		}
 		return \Redirect::to('user/login');		
@@ -389,7 +389,7 @@ class UserController extends \PublicController
 				    \Flash::success(t('user::user.resentPass'));
 					return \Redirect::to('/');
 				}
-				catch (\Cartalyst\Auth\Users\UserNotFoundException $e)
+				catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 				{
 				    \Flash::error(t('user::user.auth.dunexist'));
 				}
@@ -447,7 +447,7 @@ class UserController extends \PublicController
 					    	\Flash::error('The provided password reset code is Invalid');
 					    }
 					}
-					catch (\Cartalyst\Auth\Users\UserNotFoundException $e)
+					catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 					{
 					    \Flash::error(t('user::user.auth.dunexist'));
 						return \Redirect::to('user/register');
@@ -511,7 +511,7 @@ class UserController extends \PublicController
 						return \Redirect::to('user/activate');
 				    }				   
 				}
-				catch (\Cartalyst\Auth\Users\UserNotFoundException $e)
+				catch (\Cartalyst\Sentry\Users\UserNotFoundException $e)
 				{
 				    \Flash::error(t('user::user.auth.dunexist'));
 				}

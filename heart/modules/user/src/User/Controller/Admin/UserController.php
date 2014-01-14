@@ -104,7 +104,7 @@ class UserController extends \AdminController
 
 					    \Flash::success(t('user::user.create.success'));
 					    return \Redirect::toAdmin('user');
-					} catch (\Cartalyst\Auth\Users\UserExistsException $e) {
+					} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
 					    \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
 					}
 				}
@@ -183,7 +183,7 @@ class UserController extends \AdminController
 				    } else {
 				    	\Flash::error(t('user::user.edit.fail'));
 				    }
-				} catch (\Cartalyst\Auth\Users\UserExistsException $e) {
+				} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
 				   \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
 				}
 			}			
@@ -225,9 +225,9 @@ class UserController extends \AdminController
 			       \Flash::error(t('user::user.activate.admin'));
 			    }
 			}
-		} catch (\Cartalyst\Auth\Users\UserNotFoundException $e) {
+		} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
     		\Flash::error(t('user::user.auth.dunexist'));
-		} catch (\Cartalyst\Auth\Users\UserAlreadyActivatedException $e) {
+		} catch (\Cartalyst\Sentry\Users\UserAlreadyActivatedException $e) {
 			\Flash::error(t('user::user.auth.admin'));
 		}
 		return \Redirect::toAdmin('user');
