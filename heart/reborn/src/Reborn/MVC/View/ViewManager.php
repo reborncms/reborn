@@ -2,7 +2,6 @@
 
 namespace Reborn\MVC\View;
 
-use Reborn\Config\Config;
 use Reborn\Cores\Setting;
 use Reborn\Filesystem\File;
 use Reborn\Cores\Application;
@@ -69,9 +68,9 @@ class ViewManager
 
 		$this->checkHelpersFileFromTheme();
 
-		$this->view = new View(Config::get('template.cache_path'), new Block());
+		$this->view = new View($app['config']->get('template.cache_path'), new Block());
 
-		$this->ext = Config::get('template.template_extension');
+		$this->ext = $app['config']->get('template.template_extension');
 
 		$this->template = new Template($this->theme, $this->view, $this->ext);
 

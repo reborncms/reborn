@@ -2,10 +2,9 @@
 
 namespace Reborn\Util;
 
-use Symfony\Component\HttpFoundation\Session\Session;
-use Reborn\Config\Config;
 use Reborn\Form\Form;
-use Reborn\Cores\Registry;
+use Reborn\Cores\Application;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Security class for Reborn
@@ -15,6 +14,23 @@ use Reborn\Cores\Registry;
  **/
 class Security
 {
+    /**
+     * undocumented class variable
+     *
+     * @var string
+     **/
+    protected static $app;
+
+    /**
+     * undocumented function
+     *
+     * @return \Reborn\Cores\Application
+     * @author Nyan Lynn Htut
+     **/
+    public static function setApplication(Application $app)
+    {
+        static::$app = $app;
+    }
 
     /**
      * Make CSRF Token
@@ -66,7 +82,7 @@ class Security
      **/
     public static function CSRFvalid($key = null)
     {
-        $request = Registry::get('app')->request;
+        $request = static::$app->request;
 
         $session = static::getSession();
 
@@ -114,11 +130,12 @@ class Security
      **/
     protected static function getKey($key = null)
     {
+        $config = static::$app->config;
         // Set csrf_key
         if (is_null($key)) {
-            $csrf_key = Config::get('app.security.csrf_key');
+            $csrf_key = $config->get('app.security.csrf_key');
         } else {
-            $csrf_key = $key.'_'.Config::get('app.security.csrf_key');
+            $csrf_key = $key.'_'.$config->get('app.security.csrf_key');
         }
 
         return $csrf_key;
@@ -131,8 +148,10 @@ class Security
      **/
     protected static function getHaskToken()
     {
+        $config = static::$app->config;
+
         //Make CSRF Token
-        $encypt_method = Config::get('app.security.token_encrypt');
+        $encypt_method = $config->get('app.security.token_encrypt');
 
         if ( ! in_array($encypt_method, array('md5', 'sha1', 'random')) ) {
             $encypt_method = 'hash';
@@ -156,6 +175,6 @@ class Security
      **/
     protected static function getSession()
     {
-        return Registry::get('app')->session;
+        return static::$app->session;
     }
 }

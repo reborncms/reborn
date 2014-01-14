@@ -117,7 +117,13 @@ return array(
 	 * Default key name is "reborn_cms"
 	 *
 	 */
-	'sentry_keyname' => 'reborn_cms',
+	'sentry_keyname' => 'jsbB5cIKKc',
 
+	/**
+	 * Enable or Disable Profiler
+	 *
+	 * Type is boolean
+	 */
+	'profiler' => false,
 
 );

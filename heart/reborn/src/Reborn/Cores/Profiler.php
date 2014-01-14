@@ -53,7 +53,7 @@ class Profiler
     public function output($content)
     {
         $app = Registry::get('app');
-        if (('dev' == $app['env']) and \Config::get('dev.profiler')) {
+        if (('dev' == $app['env']) and \Config::get('app.profiler')) {
             $data = array();
 
             foreach ($this->profilers as $name => $p) {

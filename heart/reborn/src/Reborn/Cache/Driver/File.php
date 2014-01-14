@@ -35,9 +35,9 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
      * Default constructor method
      *
      */
-    public function __construct()
+    public function __construct($app)
     {
-        $this->path = Config::get('cache.file.storage_path');
+        $this->path = $app['config']->get('cache.file.storage_path');;
 
         if (!is_dir($this->path)) {
             $this->createFolder($this->path);

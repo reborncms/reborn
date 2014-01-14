@@ -31,7 +31,7 @@ class CacheClearCommand extends SfCommand
      *
      * @var array
      **/
-    protected $lists = array('cache', 'logs', 'maps', 'template', 'tmp');
+    protected $lists = array('cache', 'maps', 'template', 'tmp');
 
     /**
      * Skip files list for cache clear
@@ -39,6 +39,13 @@ class CacheClearCommand extends SfCommand
      * @var array
      **/
     protected $skips = array('.gitignore', '.gitkeep');
+
+    /**
+     * Fail process folders
+     *
+     * @var array
+     **/
+    protected $fails = array();
 
     /**
      * Configures the current command.
@@ -70,9 +77,21 @@ class CacheClearCommand extends SfCommand
             $this->clearChoose($folder);
         }
 
-        $name = is_null($folder) ? 'All' : ucfirst($folder);
+        if (empty($this->fails)) {
+            $output->writeln("<info>'Cache Clear is successfully'</info>");
+        } else {
+            foreach ($this->fails as $fail) {
+                $output->writeln("<error>Folder $fail is fail to clear.</error>");
+            }
 
-		$output->writeln("<info>Cache Cleared Successfully for $name!</info>");
+            $success = array_diff($this->lists, $this->fails);
+
+            if (! empty($success) ) {
+                foreach ($success as $name) {
+                    $output->writeln("<info>Folder $fail is success to clear.</info>");
+                }
+            }
+        }
     }
 
     /**
@@ -97,7 +116,9 @@ class CacheClearCommand extends SfCommand
     {
         if (in_array($folder, $this->lists)) {
             if (Dir::is($this->path.$folder.DS)) {
-                Dir::delete($this->path.$folder.DS, false, $this->skips);
+                if (! @Dir::delete($this->path.$folder.DS, false, $this->skips) ) {
+                    $this->fails[] = $folder;
+                }
             }
         }
     }

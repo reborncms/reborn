@@ -15,8 +15,8 @@ use Reborn\Widget\Widget;
 use Reborn\Util\Security;
 use Reborn\Translate\Loader\PHPFileLoader;
 use Reborn\Event\EventManager as Event;
-use Reborn\Cache\CacheManager as Cache;
-use Reborn\Connector\Log\LogManager as Log;
+use Reborn\Cache\CacheManager;
+use Reborn\Connector\Log\LogManager;
 use Reborn\Connector\DB\DBManager as DB;
 use Reborn\Module\ModuleManager as Module;
 use Reborn\Exception\RbException;
@@ -26,8 +26,10 @@ use Reborn\Exception\MaintainanceModeException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
-use Symfony\Component\HttpFoundation\Session\Session as Session;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 
 /**
@@ -62,67 +64,6 @@ class Application extends \Illuminate\Container\Container
         // Enable Http Method Override for (_method)
         Request::enableHttpMethodParameterOverride();
 
-        $this['site_manager'] = $this->share(function ($app){
-            return new SiteManager($app);
-        });
-
-        $this['route_collection'] =  $this->share(function ($app) {
-            return new RouteCollection();
-        });
-
-        $this['router'] =  $this->share(function ($app) {
-            return new Router($app);
-        });
-
-        $this['log'] = $this->share(function () {
-            return new Log();
-        });
-
-        $this['view_manager'] = $this->share( function($app) {
-            return new ViewManager($app);
-        });
-
-        $this['view'] = $this->share( function($app) {
-            return $app['view_manager']->getView();
-        });
-
-        $this['info_parser'] = $this->share( function($app) {
-            return new InfoParser();
-        });
-
-        $this['theme'] = $this->share( function($app) {
-            return $app['view_manager']->getTheme();
-        });
-
-        $this['template'] = $this->share( function($app) {
-            return $app['view_manager']->getTemplate();
-        });
-
-        $this['session'] = $this->share( function() {
-            $lifetime = Config::get('app.session_lifetime', 60) * 60;
-            $options = array('gc_maxlifetime' => $lifetime);
-
-            $h = new NativeFileSessionHandler(Config::get('app.session_path', null));
-
-            return new Session(new NativeSessionStorage($options, $h));
-        });
-
-        $this['cache'] = $this->share( function() {
-            return new Cache();
-        });
-
-        $this['widget'] = $this->share( function($app) {
-            return new Widget($app);
-        });
-
-        $this['profiler'] = $this->share( function() {
-            return new Profiler();
-        });
-
-        $this['translate_loader'] = $this->share( function($app) {
-            return new PHPFileLoader($app);
-        });
-
         // Set the Application Object into the Registry
         Registry::set('app', $this);
     }
@@ -139,6 +80,25 @@ class Application extends \Illuminate\Container\Container
         }
 
         return Request::createFromGlobals();
+    }
+
+    /**
+     * Solve Session Instance for Application
+     *
+     * @return \Symfony\Component\HttpFoundation\Session\Session
+     **/
+    public function solveSession()
+    {
+        if ($this->runInCli()) {
+            return new Session(new MockArraySessionStorage('reborn_session'));
+        } else {
+            $lifetime = $this['config']->get('app.session_lifetime', 60) * 60;
+            $options = array('gc_maxlifetime' => $lifetime);
+
+            $h = new NativeFileSessionHandler($this['config']->get('app.session_path', null));
+
+            return new Session(new NativeSessionStorage($options, $h));
+        }
     }
 
     /**
@@ -249,21 +209,32 @@ class Application extends \Illuminate\Container\Container
             throw new RbException("Reborn CMS Application is already started!");
         }
 
+        // Register to IOC contianer
+        $this->registerToContainer();
+
+        // Set Exception and Error Handler
+        $this->setErrorHandler();
+
+        // call the appInitialize method
+        $this->appInitialize();
+
+        $this->authProviderRegister();
+
+        // Call the Event Name App Start
+        Event::call('reborn.app.starting');
+
+        // Set Timezone for Application
+        $this->setTimezone(\Setting::get('timezone', 'UTC'));
+    }
+
+    /**
+     * Run Reborn Application.
+     *
+     * @return void
+     **/
+    public function run()
+    {
         try {
-            // Set Exception and Error Handler
-            $this->setErrorHandler();
-
-            // call the appInitialize method
-            $this->appInitialize();
-
-            $this->authProviderRegister();
-
-            // Call the Event Name App Start
-            Event::call('reborn.app.starting');
-
-            // Set Timezone for Application
-            $this->setTimezone(\Setting::get('timezone', 'UTC'));
-
             $response = $this['router']->dispatch();
 
             $this->started = true;
@@ -291,6 +262,73 @@ class Application extends \Illuminate\Container\Container
     }
 
     /**
+     * Register core class to container
+     *
+     * @return void
+     **/
+    protected function registerToContainer()
+    {
+        $this['config'] = $this->share(function($app) {
+            return new Config($app);
+        });
+
+        $this['site_manager'] = $this->share(function ($app){
+            return new SiteManager($app);
+        });
+
+        $this['cache'] = $this->share( function($app) {
+            return new CacheManager($app);
+        });
+
+        $this['route_collection'] =  $this->share(function ($app) {
+            return new RouteCollection();
+        });
+
+        $this['router'] =  $this->share(function ($app) {
+            return new Router($app);
+        });
+
+        $this['log'] = $this->share(function ($app) {
+            return new LogManager($app);
+        });
+
+        $this['view_manager'] = $this->share( function($app) {
+            return new ViewManager($app);
+        });
+
+        $this['view'] = $this->share( function($app) {
+            return $app['view_manager']->getView();
+        });
+
+        $this['info_parser'] = $this->share( function($app) {
+            return new InfoParser();
+        });
+
+        $this['theme'] = $this->share( function($app) {
+            return $app['view_manager']->getTheme();
+        });
+
+        $this['template'] = $this->share( function($app) {
+            return $app['view_manager']->getTemplate();
+        });
+
+        $this['session'] = $this->solveSession();
+
+        $this['widget'] = $this->share( function($app) {
+            return new Widget($app);
+        });
+
+        $this['profiler'] = $this->share( function() {
+            return new Profiler();
+        });
+
+        $this['translate_loader'] = $this->share( function($app) {
+            return new PHPFileLoader($app);
+        });
+
+    }
+
+    /**
      * Start the Initialize method from require classes.
      * But this method is call from application start method only.
      * Don't call more than once.
@@ -305,9 +343,10 @@ class Application extends \Illuminate\Container\Container
         // Start the Session
         if (isset($this['session'])) {
             $this['session']->start();
+            \Security::setApplication($this);
 
             // Check and Make CSRF Token
-            $csrf = Config::get('app.security.csrf_key');
+            $csrf = $this['config']->get('app.security.csrf_key');
 
             if ( ! $this['session']->has($csrf)) {
                 \Security::makeCSRFToken();
@@ -315,15 +354,15 @@ class Application extends \Illuminate\Container\Container
         }
 
         // Start the Profiler
-        if (('dev' == $this['env']) and Config::get('dev.profiler')) {
+        if (('dev' == $this['env']) and $this['config']->get('app.profiler')) {
             $this['profiler']->start();
         }
 
         // Start the Event initialize
-        Event::initialize();
+        Event::initialize($this);
 
         // Start the Database initialize
-        DB::initialize();
+        DB::initialize($this);
 
         // Start the Setting initialize
         Setting::initialize($this);
@@ -346,7 +385,7 @@ class Application extends \Illuminate\Container\Container
     public function end(SymfonyResponse $response)
     {
         // Stop the Profiler
-        if (('dev' == $this['env']) and Config::get('dev.profiler')) {
+        if (('dev' == $this['env']) and $this['config']->get('app.profiler')) {
             $this['profiler']->stop();
 
             if (!$response instanceof JsonResponse ||

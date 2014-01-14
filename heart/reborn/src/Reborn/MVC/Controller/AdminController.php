@@ -4,7 +4,6 @@ namespace Reborn\MVC\Controller;
 
 use Auth, Flash, Module, Translate;
 use Reborn\Cores\Setting;
-use Reborn\Config\Config;
 use Reborn\Http\Redirect;
 use Reborn\MVC\Controller\Exception\NotAuthException;
 use Reborn\MVC\Controller\Exception\NotAdminAccessException;
@@ -83,13 +82,13 @@ class AdminController extends Controller
     protected function getAdminLink()
     {
         $db = Setting::get('adminpanel_url');
-        $config = Config::get('app.adminpanel');
+        $config = $this->app['config']->get('app.adminpanel');
 
         if ($db != $config) {
-            Config::set('app.adminpanel', $db);
+            $this->app['config']->set('app.adminpanel', $db);
         }
 
-        return Config::get('app.adminpanel');
+        return $this->app['config']->get('app.adminpanel');
     }
 
     /**

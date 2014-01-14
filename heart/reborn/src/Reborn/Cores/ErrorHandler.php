@@ -6,7 +6,6 @@ use Closure;
 use Exception;
 use ReflectionFunction;
 use Reborn\Exception\HttpNotFoundException;
-use Reborn\Connector\Log\LogManager;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -87,7 +86,7 @@ class ErrorHandler
             $status = 500;
         }
 
-        LogManager::debug($e->getMessage());
+        $this->app['log']->debug($e->getMessage());
 
         $response = null;
 

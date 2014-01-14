@@ -2,7 +2,6 @@
 
 namespace Reborn\Event;
 
-use Reborn\Config\Config;
 use Reborn\Exception\EventException as EventException;
 use Reborn\Module\ModuleManager as Module;
 
@@ -33,10 +32,10 @@ class EventManager
 	 * Initialize the Event Manager
 	 *
 	 */
-	public static function initialize()
+	public static function initialize($app)
 	{
-		$default = Config::get('manager.event.default');
-		static::$drivers = Config::get('manager.event.support_drivers');
+		$default = $app['config']->get('manager.event.default');
+		static::$drivers = $app['config']->get('manager.event.support_drivers');
 
 		$events = require APP.'event'.DS.'register'.EXT;
 

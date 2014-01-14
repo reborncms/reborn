@@ -3,9 +3,8 @@
 namespace Reborn\MVC\View;
 
 use ArrayAccess;
-use Reborn\Exception\FileNotFoundException;
-use Reborn\Config\Config;
 use Reborn\Filesystem\File;
+use Reborn\Exception\FileNotFoundException;
 
 /**
  * View Class for Reborn
@@ -59,8 +58,7 @@ class View implements ArrayAccess
      **/
     public function __construct($cachePath = null, Block $block = null)
     {
-        $configCache = Config::get('template.cache_path');
-        $this->cache = is_null($cachePath) ? $configCache : $cachePath;
+        $this->cache = is_null($cachePath) ? STORAGES.'template'.DS : $cachePath;
 
         $this->_block = is_null($block) ? new Block : $block;
     }

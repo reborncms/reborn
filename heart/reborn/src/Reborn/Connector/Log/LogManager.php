@@ -2,9 +2,9 @@
 
 namespace Reborn\Connector\Log;
 
-use Reborn\Config\Config;
-use Reborn\Cores\Registry;
+use Reborn\Cores\Application;
 use Monolog\Logger;
+use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 
 /**
@@ -28,7 +28,6 @@ use Monolog\Handler\StreamHandler;
  **/
 class LogManager
 {
-
     /**
      * Variable for Log config items
      *
@@ -74,9 +73,9 @@ class LogManager
      * @param array $configs
      * @return void
      **/
-    public function __construct($name = 'rebornCMSLog', $configs = array())
+    public function __construct(Application $app, $name = 'rebornCMSLog', $configs = array())
     {
-        $defaultConfigs = Config::get('app.log');
+        $defaultConfigs = $app['config']->get('app.log');
 
         // Merge Default configs and given configs
         $this->configs = array_merge($defaultConfigs, $configs);
@@ -85,7 +84,11 @@ class LogManager
 
         $fullpath = $this->configs['path'].$this->configs['file_name'].$this->configs['ext'];
 
-        $this->logger->pushHandler(new StreamHandler($fullpath, Logger::DEBUG));
+        if ($app->runInCli()) {
+            $this->logger->pushHandler(new NullHandler($fullpath, Logger::DEBUG));
+        } else {
+            $this->logger->pushHandler(new StreamHandler($fullpath, Logger::DEBUG));
+        }
     }
 
     /**
@@ -109,23 +112,19 @@ class LogManager
     }
 
     /**
-     * PHP Magic __callStatic method.
-     */
-    public static function __callStatic($method, $args)
+     * Magic method call.
+     *
+     * @param string $method
+     * @param array $params
+     * @return mixed
+     **/
+    public function __call($method, $params)
     {
-        $log = Registry::get('app')->log;
-        $support = $log->getSupport();
-
-        if (array_key_exists($method, $support)) {
-            $method = $support[$method];
-        }
-        $args = (array)$args;
-
-        if (is_callable(array($log->getLogger(), $method))) {
-            return call_user_func_array(array($log->getLogger(), $method), $args);
+        if (array_key_exists($method, $this->support)) {
+            $method = $this->support[$method];
         }
 
-        throw new \BadMethodCallException("{$method} doesn't exsits in {$ins}");
+        return call_user_func_array(array($this->getLogger(), $method), $params);
     }
 
 } // END class LogManager

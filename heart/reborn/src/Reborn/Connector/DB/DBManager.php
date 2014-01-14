@@ -21,13 +21,17 @@ class DBManager
 
     protected static $eloquentIsSet = false;
 
+    protected static $app;
+
     /**
      * Initialize the DB class
      *
      * @return void
      **/
-    public static function initialize($name = null)
+    public static function initialize($app, $name = null)
     {
+        static::$app = $app;
+
         Event::call('reborn.db.initialize');
 
         if (is_null($name)) {
@@ -81,7 +85,7 @@ class DBManager
      **/
     public static function getDefaultConnectionName()
     {
-        return Config::get("db.active");
+        return static::$app['config']->get("db.active");
     }
 
     /**
@@ -93,15 +97,15 @@ class DBManager
     protected function getConfig($name)
     {
         $config = array(
-                'driver'    => Config::get("db.$name.driver"),
-                'database'  => Config::get("db.$name.database"),
-                'host'      => Config::get("db.$name.host"),
-                'port'      => Config::get("db.$name.port", 3306),
-                'username'  => Config::get("db.$name.username"),
-                'password'  => Config::get("db.$name.password"),
-                'charset'   => Config::get("db.$name.charset"),
-                'collation' => Config::get("db.$name.collation"),
-                'prefix'    => Config::get("db.$name.prefix")
+                'driver'    => static::$app['config']->get("db.$name.driver"),
+                'database'  => static::$app['config']->get("db.$name.database"),
+                'host'      => static::$app['config']->get("db.$name.host"),
+                'port'      => static::$app['config']->get("db.$name.port", 3306),
+                'username'  => static::$app['config']->get("db.$name.username"),
+                'password'  => static::$app['config']->get("db.$name.password"),
+                'charset'   => static::$app['config']->get("db.$name.charset"),
+                'collation' => static::$app['config']->get("db.$name.collation"),
+                'prefix'    => static::$app['config']->get("db.$name.prefix")
             );
 
         return $config;

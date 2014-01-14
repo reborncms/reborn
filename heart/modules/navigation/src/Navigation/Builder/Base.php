@@ -3,9 +3,7 @@
 namespace Navigation\Builder;
 
 use Reborn\Cores\Application;
-use Reborn\Cores\Facade;
 use Reborn\Cores\Setting;
-use Reborn\Cache\CacheManager as Cache;
 use Navigation\Lib\Helper;
 use Navigation\Model\Navigation as Group;
 use Navigation\Model\NavigationLinks as Links;
@@ -18,6 +16,13 @@ use Navigation\Model\NavigationLinks as Links;
  **/
 class Base
 {
+	/**
+	 * Reborn Application (IOC) Container instance
+	 *
+	 * @var \Reborn\Cores\Application
+	 **/
+	protected $app;
+
 	/**
 	 * Current request url
 	 *
@@ -45,6 +50,8 @@ class Base
 		$this->home = Setting::get('home_page');
 
 		$this->group = $group;
+
+		$this->app = $app;
 	}
 
 	/**
@@ -132,9 +139,9 @@ class Base
 			$url = $data['url'];
 		} else {
 			if ($data['url'] === $this->home) {
-				$url = rbUrl();
+				$url = url();
 			} else {
-				$url = rbUrl($data['url']);
+				$url = url($data['url']);
 			}
 		}
 
@@ -157,8 +164,8 @@ class Base
 
 		if ($this->current === rtrim($url,'/')) {
 				$class = $active;
-		} elseif (rtrim(rbUrl($this->home), '/') === rtrim($url,'/')) {
-			if (rtrim(rbUrl(), '/') == $current) {
+		} elseif (rtrim(url($this->home), '/') === rtrim($url,'/')) {
+			if (rtrim(url(), '/') == $current) {
 				$class = $active;
 			}
 		}
@@ -215,7 +222,7 @@ class Base
 
 		$id = $nav->id;
 
-		$tree = Cache::solve($cache_key, function() use($id)
+		$tree = $this->app['cache']->solve($cache_key, function() use($id)
 				{
 					$obj = Links::where('navigation_id', '=', $id)
 							->orderBy('link_order', 'asc')

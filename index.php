@@ -185,6 +185,8 @@ $app['sites'] = $sites;
  */
 if ($app->installed()) {
     $app->start();
+
+    $app->run();
 } else {
 	$app->install();
 }

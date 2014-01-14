@@ -99,6 +99,10 @@ class SiteManager
 	 **/
 	public function isMulti()
 	{
+		if ( $this->app->runInCli() ) {
+			return false;
+		}
+
 		return (bool) $this->app['sites']['multi_site'];
 	}
 

@@ -21,30 +21,32 @@ date_default_timezone_set('UTC');
  */
 $sites = require __DIR__.'/content/sites.php';
 
-// load Reborn CMS start file
+/**
+ * ---------------------------------------------------------
+ * Load Reborn's start helper file
+ * ---------------------------------------------------------
+ *
+ * Reborn define other constants for application,
+ * start timer and memory record for profiling and
+ * make class alias to easy access for developer.
+ *
+ */
 require_once __DIR__.'/heart/reborn/src/start.php';
-
-//require_once __DIR__.'/heart/vendor/autoload.php';
 
 $commands = require __DIR__.'/content/commands/register.php';
 
-use Reborn\Console\CompileCommand;
-use Reborn\Console\ModuleCommand;
-use Reborn\Console\CacheClearCommand;
-use Reborn\Console\MultisiteCommand;
-use Reborn\Console\AuthKeyGenerateCommand;
-use Reborn\Console\ExtensionCheckCommand;
-use Reborn\Console\ThemeGenerateCommand;
-use Reborn\Cores\Version;
-use Symfony\Component\Console\Application;
+/**
+ * ---------------------------------------------------------
+ * Now Create the Reborn Application Instance.
+ * ---------------------------------------------------------
+ *
+ * Create Reborn Application Object to start the application.
+ *
+ */
+$reborn = new Reborn\Cores\Application();
 
-$application = new Application(Version::getAppName(), Version::getVersion());
-$application->add(new ModuleCommand);
-$application->add(new CacheClearCommand);
-$application->add(new CompileCommand);
-$application->add(new MultisiteCommand);
-$application->add(new AuthKeyGenerateCommand);
-$application->add(new ExtensionCheckCommand);
-$application->add(new ThemeGenerateCommand);
+$application = new Reborn\Console\Application(Reborn\Cores\Version::getAppName(), Reborn\Cores\Version::getVersion());
+$application->setRebornApplication($reborn);
+$application->register();
 $application->addCommands($commands);
 $application->run();

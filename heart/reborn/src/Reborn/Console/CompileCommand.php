@@ -44,7 +44,7 @@ class CompileCommand extends SfCommand
             @unlink($outputfile);
         }
 
-		$files = \Reborn\Config\Config::get('compile_lists');
+		$files = \Config::get('compile_lists');
 
 		if (!$handle = fopen($outputfile, 'w')) {
             throw new \RuntimeException(

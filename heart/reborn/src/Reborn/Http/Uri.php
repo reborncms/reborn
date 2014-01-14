@@ -193,8 +193,7 @@ class Uri
      **/
     public static function create($path = '')
     {
-        $request = static::$request;
-
+        $request = is_null(static::$request) ? \Reborn\Http\Request::createFromGlobals() : static::$request;
         $path = trim($path, '/');
         if ($path == '' || $path =='/') {
             $url = $request->baseUrl();
