@@ -493,6 +493,7 @@ class MediaController extends \AdminController
     public function thumbnail($folderId = 0)
     {
         $images = Files::imageOnly()->where('folder_id', '=', $folderId)->get();
+        $this->template->allFolders = Folders::all();
 
         $this->checkAjax();
 
