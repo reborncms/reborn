@@ -2,11 +2,11 @@
 
 namespace Reborn\Form;
 
+use Config;
 use Reborn\Http\Uri;
 use Reborn\Util\Str;
 use Reborn\Util\Html;
 use Reborn\Util\Flash;
-use Reborn\Config\Config;
 
 /**
  * Form class for Reborn CMS

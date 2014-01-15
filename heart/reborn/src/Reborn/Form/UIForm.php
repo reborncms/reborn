@@ -2,7 +2,7 @@
 
 namespace Reborn\Form;
 
-use Reborn\Config\Config;
+use Config;
 use Reborn\Cores\Setting;
 use Reborn\Cores\Facade;
 
@@ -344,7 +344,7 @@ if ($ajax) {
     $select2_opts = rtrim(ltrim($select2_opts,'{'),'}').',';
 
     $multiple = ($multi) ? 'multiple: true,' : '';
-    
+
     $select_script = <<<SCRIPT
 <script type="text/javascript">
 (function($) {
@@ -372,7 +372,7 @@ if ($ajax) {
                 } else {
                     var data = {id: data_key, text: data_val};
                 }
-                
+
                 callback(data);
             },
             query: function (query) {
@@ -380,7 +380,7 @@ if ($ajax) {
                     url : '$url',
                     data : {
                         term : query.term
-                    } 
+                    }
                 }).done(function(data){
                     var data = {results: data};
                     query.callback(data);

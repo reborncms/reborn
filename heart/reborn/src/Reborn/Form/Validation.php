@@ -3,7 +3,7 @@
 namespace Reborn\Form;
 
 use Closure;
-use Reborn\Config\Config;
+use Config;
 use Reborn\Connector\DB\DBManager as DB;
 use Symfony\Component\HttpFoundation\File\File;
 
