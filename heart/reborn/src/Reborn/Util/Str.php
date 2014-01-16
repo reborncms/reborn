@@ -338,6 +338,18 @@ class Str
 	}
 
 	/**
+	 * Check given string is not blank or not.
+	 * Opposite of Str::isBlank().
+	 *
+	 * @param string|null $str
+	 * @return boolean
+	 **/
+	public static function isNotBlank($str)
+	{
+		return ! static::isBlank($str);
+	}
+
+	/**
 	 * Explode string by new line (\n)
 	 * <code>
 	 * 		$str = "Hello\nWorld";

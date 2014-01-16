@@ -4,6 +4,7 @@ namespace Reborn\Form;
 
 use Reborn\Http\Uri;
 use Reborn\Http\Input;
+use Reborn\Util\Str;
 
 /**
  * FormBuilder class for Reborn.
@@ -13,6 +14,13 @@ use Reborn\Http\Input;
  **/
 abstract class AbstractFormBuilder
 {
+	/**
+	 * Name of form. You can define multiple form with name.
+	 *
+	 * @var string
+	 **/
+	protected $name;
+
 	/**
 	 * Form name or Form process mode
 	 *
@@ -98,28 +106,6 @@ abstract class AbstractFormBuilder
 	protected $skipFields = array();
 
 	/**
-	 * Creat the FormBuilder Object.
-	 *
-	 * @param string $action From action URL
-	 * @param string $name Form name
-	 * @param string $attrs Form Attributes
-	 * @return void
-	 **/
-	public function __construct($action = '', $name = 'default', $attrs = array())
-	{
-		// Hook for elements setter
-		if (method_exists($this, 'setFields')) {
-			$this->setFields();
-		}
-
-		if ('' == $action) {
-			$action = Uri::current();
-		}
-
-		$this->builder = new Blueprint($action, $name, $this->file, $attrs, $this->honeypot);
-	}
-
-	/**
 	 * Static method to create new form Builder class
 	 *
 	 * @param string $action From action URL
@@ -131,6 +117,30 @@ abstract class AbstractFormBuilder
 	{
 		$class = get_called_class();
 		return new $class($action, $name, $attrs);
+	}
+
+	/**
+	 * Creat the FormBuilder Object.
+	 *
+	 * @param string|null $action From action URL
+	 * @param string $name Form name
+	 * @param string $attrs Form Attributes
+	 * @return void
+	 **/
+	public function __construct($action = null, $name = 'default', $attrs = array())
+	{
+		$this->name = $name;
+
+		// Hook for elements setter
+		if (method_exists($this, 'setFields')) {
+			$this->setFields($name);
+		}
+
+		if (Str::isBlank($action)) {
+			$action = Uri::current();
+		}
+
+		$this->builder = new Blueprint($action, $name, $this->file, $attrs, $this->honeypot);
 	}
 
 	/**
@@ -568,6 +578,7 @@ abstract class AbstractFormBuilder
 	 */
 	protected function prepareValidation()
 	{
+		//
 		foreach ($this->fields as $name => $val) {
 			// Set validation
 			if (isset($val['rule'])) {
