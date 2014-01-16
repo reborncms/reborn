@@ -63,25 +63,26 @@ class Validation
      * 08) - alphaDash [Input value is AlphaNumeric, Dash and Underscore(a-zA-Z0-9-_)]
      * 09) - alphaDashDot [Input value is alphaDash and Dot(a-zA-Z0-9-_.)]
      * 10) - numeric [Input value is Numeric(0-9)]
-     * 11) - integer [Input value is Integer value]
-     * 12) - email [Input value is Valid Email]
-     * 13) - url [Input value is Valid URL]
-     * 14) - ip [Input value is Valid IP address]
-     * 15) - between [Input value is Between first and last value eg:between:5,7]
-     * 16) - equal [Input value is Equal with given value or field name eg:equal:9]
-     * 17) - color [Input value is valid 6-digits color hexadecimal code eg:#efefef]
-     * 18) - patterm [Input value is valid regex pattern eg:"/\d{4}-\d{2}-\d{2}/"]
-     * 19) - unique [Input value is unique in mysql database. eg: unique:tablename.keyname]
-     * 20) - type [Input value's type must be $type. eg: type:string [string,array,float]
-     * 21) - boolean [Input value type must be boolean. [0, 1, on, off, true, false]
-     * 22) - image [Input value must be allow Image type. (eg: image:jpg,png)]
-     * 23) - fileType [Input value must be allow File Type. (eg: fileType:pdf,zip)]
-     * 24) - fileSize [Input value's maximum file size limit (eg: fileSize:2MB)]
-     * 25) - before [Input date must be before date (eg: before:10/22/2013)]
-     * 26) - after [Input date must be after date (eg: after:10/22/2013)]
-     * 27) - honeypot [Spam filter honey pot filed's validation]
-     * 28) - lat [Valid rule for latitude -90 to +90]
-     * 29) - long [Valid rule for longitude -180 to +180]
+     * 11) - emptyOrNumeric [Input value empty string or Numeric(0-9)]
+     * 12) - integer [Input value is Integer value]
+     * 13) - email [Input value is Valid Email]
+     * 14) - url [Input value is Valid URL]
+     * 15) - ip [Input value is Valid IP address]
+     * 16) - between [Input value is Between first and last value eg:between:5,7]
+     * 17) - equal [Input value is Equal with given value or field name eg:equal:9]
+     * 18) - color [Input value is valid 6-digits color hexadecimal code eg:#efefef]
+     * 19) - patterm [Input value is valid regex pattern eg:"/\d{4}-\d{2}-\d{2}/"]
+     * 20) - unique [Input value is unique in mysql database. eg: unique:tablename.keyname]
+     * 21) - type [Input value's type must be $type. eg: type:string [string,array,float]
+     * 22) - boolean [Input value type must be boolean. [0, 1, on, off, true, false]
+     * 23) - image [Input value must be allow Image type. (eg: image:jpg,png)]
+     * 24) - fileType [Input value must be allow File Type. (eg: fileType:pdf,zip)]
+     * 25) - fileSize [Input value's maximum file size limit (eg: fileSize:2MB)]
+     * 26) - before [Input date must be before date (eg: before:10/22/2013)]
+     * 27) - after [Input date must be after date (eg: after:10/22/2013)]
+     * 28) - honeypot [Spam filter honey pot filed's validation]
+     * 29) - lat [Valid rule for latitude -90 to +90]
+     * 30) - long [Valid rule for longitude -180 to +180]
      *
      * @var array
      **/
@@ -96,6 +97,7 @@ class Validation
                 'alphaDash',
                 'alphaDashDot',
                 'numeric',
+                'emptyOrNumeric',
                 'integer',
                 'email',
                 'url',
@@ -580,8 +582,17 @@ class Validation
         return is_numeric($value);
     }
 
-    protected function validInteger($value)
+    protected function validNumeric($value)
     {
+        return is_numeric($value);
+    }
+
+    protected function validEmptyOrNumeric($value)
+    {
+        if ( empty($value) || $value === '' || is_null($value) ) {
+            return true;
+        }
+
         return filter_var($value, FILTER_VALIDATE_INT) !== false;
     }
 

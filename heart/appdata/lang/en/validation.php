@@ -12,6 +12,7 @@ return array(
 	'alphaDash'		=> "The {key} accept only letter, number, dash and underscore.",
 	'alphaDashDot'	=> "The {key} accept only letter, number, dash, underscore and dot.",
 	'numeric'		=> "The {key} must be numeric.",
+	'emptyOrNumeric'=> "The {key} must be empty string or numeric.",
 	'integer'		=> "The {key} must be integer.",
 	'email'			=> "The {key} format is invalid.",
 	'url'			=> "The {key} format is invalid.",
