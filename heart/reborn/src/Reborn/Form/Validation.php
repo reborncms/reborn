@@ -584,11 +584,6 @@ class Validation
 
     protected function validEmptyOrNumeric($value)
     {
-        return is_numeric($value);
-    }
-
-    protected function validEmptyOrNumeric($value)
-    {
         if ( empty($value) || $value === '' || is_null($value) ) {
             return true;
         }
