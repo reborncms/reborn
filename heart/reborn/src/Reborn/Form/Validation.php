@@ -582,7 +582,7 @@ class Validation
         return is_numeric($value);
     }
 
-    protected function validNumeric($value)
+    protected function validEmptyOrNumeric($value)
     {
         return is_numeric($value);
     }
