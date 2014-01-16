@@ -54,7 +54,7 @@
 
 				<div class="ff-actions p-relative">
 					<div class="btns-group p-absolute">
-						<a href="#file-detail" class="action-detail btn btn-ico btn-dark" title="detail"  data-target='file' data-link='{{ $imgUrl }}' data-name='{{ $file->name }}' data-alt='{{ $file->alt_text }}' data-desc='{{ $file->description }}' data-folder='{{ $parent }}' data-user='{{ $file->user->first_name }} {{ $file->user->last_name }}' data-size='{{ num($file->filesize) }}' data-width='{{ num($file->width) }}' data-height='{{ num($file->height) }}'>
+						<a href="#file-detail" class="action-detail btn btn-ico btn-dark" title="detail"  data-target='file' data-link="{{ image_url($file->filename) }}" data-name='{{ $file->name }}' data-alt='{{ $file->alt_text }}' data-desc='{{ $file->description }}' data-folder='{{ $parent }}' data-user='{{ $file->user->first_name }} {{ $file->user->last_name }}' data-size='{{ num($file->filesize) }}' data-width='{{ num($file->width) }}' data-height='{{ num($file->height) }}'>
 							<i class="icon-view"></i>
 						</a>
 						<a class="action-option btn btn-ico btn-dark" title="options"><i class="icon-arrow-down"></i></a>

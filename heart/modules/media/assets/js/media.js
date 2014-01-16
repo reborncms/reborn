@@ -3,18 +3,23 @@
 $(function(){
 	$('.ff-mix-container').perfectScrollbar();
 
-	$('#media_upload').colorbox({
-		width: "900",
-		innerHeight: "360",
-		closeButton: false,
-		href: SITEURL + ADMIN + '/media/upload/' + $('#main-media-wrapper').attr('data-folder-id'),
-		onComplete: function() {
-			$('#cboxClose').hide();
-		},
-		onClosed: function() {
-			window.location.reload();
-		}
-	});
+	if (!RB.hasFolder) {
+		$('#media_upload').addClass('btn-disabled');
+		$('#media_upload').on('click', function(e) { e.preventDefault(); });
+	} else {
+		$('#media_upload').colorbox({
+			width: "900",
+			innerHeight: "360",
+			closeButton: false,
+			href: SITEURL + ADMIN + '/media/upload/' + $('#main-media-wrapper').attr('data-folder-id'),
+			onComplete: function() {
+				$('#cboxClose').hide();
+			},
+			onClosed: function() {
+				window.location.reload();
+			}
+		});
+	}	
 
 	$('#media_create_folder').colorbox({
 		width: "50%",
@@ -225,7 +230,7 @@ $(function(){
 
 				var alt = ($(this).attr('data-alt')) ? $(this).attr('data-alt') : '&nbsp;';
 
-				$('#detail-file-img').css("background", "url("+$(this).attr('data-link')+"0/180/) center no-repeat");
+				$('#detail-file-img').css("background", "url("+$(this).attr('data-link')+"/0/180/) center no-repeat");
 				$('#detail-file-link').html($(this).attr('data-link'));
 				$('#detail-file-alt').html(alt);
 				$('#detail-file-folder').html($(this).attr('data-folder'));
@@ -271,8 +276,6 @@ $(function(){
 	$('#uploaded-files').livequery(function(){
 		$(this).perfectScrollbar();
 	});
-
-	/* ===== Status ===== */
 	
 
 	/* ===== Main Actions ===== */
