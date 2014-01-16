@@ -588,6 +588,11 @@ class Validation
             return true;
         }
 
+        return is_numeric($value);
+    }
+
+    protected function validInteger($value)
+    {
         return filter_var($value, FILTER_VALIDATE_INT) !== false;
     }
 
