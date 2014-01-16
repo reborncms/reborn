@@ -2,9 +2,9 @@
 
 namespace Reborn\Util;
 
+use Config;
 use Reborn\Http\Input;
 use Reborn\Cores\Facade;
-use Reborn\Config\Config;
 
 /**
  * Flash Message class

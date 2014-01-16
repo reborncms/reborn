@@ -212,7 +212,7 @@ class TagCloud
 
 	public function setUrl($url)
 	{
-		$this->urlPrefix = rbUrl($url);
+		$this->urlPrefix = url($url);
 	}
 
 	public function add($tag, $url = null)

@@ -66,9 +66,9 @@ class Html
 	public static function a($url, $text = null, $options = array())
 	{
 		if ('@admin' == substr($url, 0, 6)) {
-			$url = adminUrl(ltrim(substr($url, 6), '/'));
+			$url = admin_url(ltrim(substr($url, 6), '/'));
 		} elseif (false != strpos($url, 'http')) {
-			$url = rbUrl($url);
+			$url = url($url);
 		}
 
 		$options['href'] = $url;
@@ -122,7 +122,7 @@ class Html
 			$alt = null;
 		}
 
-		$attrs['src'] = $reborn ? rbUrl('media/image/'.$src) : $src;
+		$attrs['src'] = $reborn ? url('media/image/'.$src) : $src;
 
 		if(!is_null($alt)) {
 			$attrs['alt'] = $alt;
