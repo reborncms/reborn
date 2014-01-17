@@ -10,14 +10,16 @@
 				<th width="10%">{{ t('blog::blog.category') }}</th>
 				<th width="10%">{{ t('blog::blog.author') }}</th>
 				{{ if ($list_type != 'trash') }}
-				<th width="4%" style="min-width:35px;"></th>
+				<th width="4%" style="min-width:35px;text-align:center;">
+					<i class="icon-comment icon-gray"></i>
+				</th>
 				{{ endif }}
 				<th width="13%">{{ t('global.created_at') }}</th>
 				{{ if ($list_type == 'trash') }}
 					<th>Trashed at</th>
 				{{ endif }}
-				<th width="15%" style="min-width:125px;">{{ t('label.actions') }}</th>
-			</tr>	
+				<th width="17%" style="min-width:125px;">{{ t('label.actions') }}</th>
+			</tr>
 		</thead>
 		<tbody>
 			{= $a = 1 =}
@@ -76,10 +78,12 @@
 					{{ endif }}
 				</td>
 				<td>
-					<a href="{{ rbUrl('user/profile/'.$blog->author->id) }}">{{ $blog->author_name }}</a>
+					<a href="{{ url('user/profile/'.$blog->author->id) }}">{{ $blog->author_name }}</a>
 				</td>
 				{{ if ($list_type != 'trash') }}
-					<td><a href="{{ adminUrl('comment') }}"><i class="icon-comment icon-gray"></i>{{ $blog->comment_count }}</a></td>
+					<td style="text-align:center;">
+						<a href="{{ admin_url('comment') }}">{{ $blog->comment_count }}</a>
+					</td>
 				{{ endif }}
 				<td>
 					{{ if ($blog->created_at > date('Y-m-d H:i:s')) }}
@@ -97,14 +101,14 @@
 				<td>
 					<div class="icons-bar">
 						{{ if ($list_type != 'trash') }}
-							<a href="{{ rbUrl('blog/preview/'.$blog->slug) }}" title="{{ t('global.preview') }}" class="tipsy-tip" target="_blank"><i class="icon-view"></i></a>
-							<a href="{{ adminUrl('blog/multilang/'.$blog->id) }}" title="{{ t('blog::blog.add_lang') }}" class="tipsy-tip"><i class="icon-earth"></i></a>
-							<a href="{{ adminUrl('blog/edit/'.$blog->id) }}" title="{{ t('global.edit') }}" class="tipsy-tip"><i class="icon-edit"></i></a>
+							<a href="{{ url('blog/preview/'.$blog->slug) }}" title="{{ t('global.preview') }}" class="tipsy-tip" target="_blank"><i class="icon-view"></i></a>
+							<a href="{{ admin_url('blog/multilang/'.$blog->id) }}" title="{{ t('blog::blog.add_lang') }}" class="tipsy-tip"><i class="icon-earth"></i></a>
+							<a href="{{ admin_url('blog/edit/'.$blog->id) }}" title="{{ t('global.edit') }}" class="tipsy-tip"><i class="icon-edit"></i></a>
 							<!-- delete for which has multi-lang -->
-							<a href="{{ adminUrl('blog/delete/'.$blog->id) }}" title="{{ t('global.delete') }}" class="confirm_delete tipsy-tip"><i class="icon-remove"></i></a>
+							<a href="{{ admin_url('blog/delete/'.$blog->id) }}" title="{{ t('global.delete') }}" class="confirm_delete tipsy-tip"><i class="icon-remove"></i></a>
 						{{ else }}
-							<a href="{{ adminUrl('blog/restore/'.$blog->id) }}" title="Restore" class="tipsy-tip"><i class="icon-undo"></i></a>
-							<a href="{{ adminUrl('blog/delete/'.$blog->id) }}" title="Permanently delete" class="confirm_delete tipsy-tip"><i class="icon-cross"></i></a>
+							<a href="{{ admin_url('blog/restore/'.$blog->id) }}" title="Restore" class="tipsy-tip"><i class="icon-undo"></i></a>
+							<a href="{{ admin_url('blog/delete/'.$blog->id) }}" title="Permanently delete" class="confirm_delete tipsy-tip"><i class="icon-cross"></i></a>
 						{{ endif }}
 					</div>
 				</td>

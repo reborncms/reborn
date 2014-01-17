@@ -353,6 +353,18 @@ class Builder implements BuilderInterface
 	}
 
 	/**
+	 * Use Pagination Style for Pure CSS 0.3.x
+	 *
+	 * @return \Reborn\Pagination\PureBuilder
+	 **/
+	public function purecss()
+	{
+		$ins = new PureBuilder($this->app, $this->collectOptions());
+
+		return $ins;
+	}
+
+	/**
 	 * Get Pager. (Previous ans Next only)
 	 *
 	 * @return string

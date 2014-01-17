@@ -13,11 +13,6 @@ use Auth,
 
 class BlogController extends \PublicController
 {
-	public function before()
-	{
-		
-	}
-
 	/**
 	 * Blog Index
 	 *
@@ -164,8 +159,8 @@ class BlogController extends \PublicController
 						->with(array('category', 'author'))
 						->whereIn('category_id', $catIds)
 						->orderBy('created_at', 'desc')
-						->skip(\Pagination::offset())
-						->take(\Pagination::limit())
+						->skip(Pagination::offset())
+						->take(Pagination::limit())
 						->get();
 
 		if (!$blogs->isEmpty()) {
@@ -400,7 +395,7 @@ class BlogController extends \PublicController
 	 * Check from frontend partial
 	 *
 	 * @return boolean
-	 * @author 
+	 * @author
 	 **/
 	protected function checkPartial($file)
 	{

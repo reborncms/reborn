@@ -16,6 +16,8 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
 			$table->integer('category_id');
 			$table->text('body');
 			$table->text('excerpt');
+			// Add Post Type for Version 1.2 [NLH]
+			$table->string('post_type', 50)->nullable()->default('standard');
 			$table->string('attachment')->nullable();
 			$table->integer('author_id');
 			$table->enum('comment_status', array('open', 'close'))->default('open');
@@ -101,7 +103,7 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
 		\Setting::remove('excerpt_length');
 
 		\Setting::remove('blog_content_default_lang');
-		
+
 		\Setting::remove('blog_content_default_lang');
 
 	}
@@ -125,6 +127,13 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
 				'module'	=> 'Blog'
 			);
 	    	\Setting::add($data);
+		}
+
+		if ($v < '1.2') {
+			\Schema::table($prefix.'blog', function($table)
+			{
+				$table->string('post_type', 50)->nullable()->default('standard');
+			});
 		}
 
 	}

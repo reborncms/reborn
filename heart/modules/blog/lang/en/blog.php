@@ -20,12 +20,12 @@ return array(
 
 	// Table Label
 	'created_at'			=> 'Created at',
-	
+
 	// Frontend Label
 	'posted_on'				=> 'Posted on',
 	'posted_by'				=> 'Posted by',
 	'tag_by'				=> 'Tagged',
-	
+
 	//Breadcrumb
 	'b_blog'				=> 'Blog',
 	'b_category'			=> 'Category',
@@ -64,6 +64,7 @@ return array(
 	'schedule_label'		=> 'Scheduled to post on',
 	'auto_detect'			=> 'Auto Detect',
 	'current_lang'			=> 'Current Language',
+	'post_type'				=> 'Post Type',
 
 	// Button Label
 	'add_new_cat'			=> 'Add New Category',
@@ -104,7 +105,7 @@ return array(
 	'cat_delete_success'	=> 'Your blog category is successfully deleted.',
 	'assign_success'		=> 'Blog post author assign is successfully.',
 	'change_status_success'	=> 'Successfully changed status',
-	
+
 	'assign_no_post'		=> 'Assign from user have no post!',
 	'not_allow_delete'		=> 'Default category is not allowed to delete.',
 	'save_before_lang'		=> 'Please save the post first before adding another language.',
@@ -114,7 +115,7 @@ return array(
 	'no_cat'				=> 'You have no blog category in this moment',
 	'no_author'				=> 'You have no author to assign.',
 	'no_poster'				=> 'Empty Blog Post.',
-	
+
 );
 
 

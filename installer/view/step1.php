@@ -85,7 +85,7 @@
 					$msg = 'PHP Version match.';
 					$class= "ok";
 				} else {
-					$msg = 'Need PHP Version 5.3.4';
+					$msg = 'Need PHP Version 5.4.0';
 					$class= "fail";
 				}
 			?>

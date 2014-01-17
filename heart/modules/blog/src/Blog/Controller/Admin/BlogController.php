@@ -293,7 +293,7 @@ class BlogController extends \AdminController
 	 * Publish the scheduled post
 	 *
 	 * @return void
-	 * @author 
+	 * @author
 	 **/
 	public function publish($id)
 	{
@@ -567,6 +567,7 @@ class BlogController extends \AdminController
 						->set('blog', $blog)
 						->set('custom_field', $fields)
 						->set('lang_list', $lang_list)
+						->set('post_types', Config::get('blog::blog.post_types'))
 						->jsValue('post_id', $blog->id)
 						->style(array(
 							'plugins/jquery.tagsinput_custom.css',
@@ -585,7 +586,7 @@ class BlogController extends \AdminController
 	 *
 	 * @return boolean
 	 **/
-	protected function setValues($method, $id = null) 
+	protected function setValues($method, $id = null)
 	{
 
 		if ($method == 'create') {
@@ -611,7 +612,7 @@ class BlogController extends \AdminController
 		$button_save = Input::get('blog_save');
 
 		if ($button_save !== null) {
-			
+
 			$status = ($button_save == t('global.save') || $button_save == t('global.publish')) ? 'live' : 'draft';
 			$blog->status = $status;
 
@@ -649,6 +650,7 @@ class BlogController extends \AdminController
 		$blog->slug = $slug;
 		$blog->category_id = Input::get('category_id');
 		$blog->excerpt = $excerpt;
+		$blog->post_type = Input::get('post_type');
 		$blog->body = Input::get('body');
 		$blog->author_id = $author;
 
@@ -803,14 +805,14 @@ class BlogController extends \AdminController
 
 			if (Input::isPost()) {
 
-				if ((Input::get('title') == '' ) and 
-					(Input::get('slug') == '') and 
+				if ((Input::get('title') == '' ) and
+					(Input::get('slug') == '') and
 					(Input::get('body') == ''))  {
 
 					return $this->returnJson(array('status' => 'no_save'));
 
 				} else if (Helper::langDuplicate(Input::get('lang'), Input::get('lang_ref'))) {
-					
+
 					return $this->returnJson(array(
 							'status'	=> 'no_save',
 							'msg'		=> 'Language already exist.'
@@ -832,8 +834,8 @@ class BlogController extends \AdminController
 					if ($blog->save()) {
 
 						return $this->returnJson(array(
-							'status' => 'save', 
-							'post_id' => $blog->id, 
+							'status' => 'save',
+							'post_id' => $blog->id,
 							'time' => sprintf(t('blog::blog.autosave_on'), date('d - M - Y H:i A', time()))));
 
 					}

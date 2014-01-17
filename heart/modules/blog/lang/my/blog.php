@@ -21,12 +21,12 @@ return array(
 
 	// Table Label
 	'created_at'			=> 'Created at',
-	
+
 	// Frontend Label
 	'posted_on'				=> 'Posted on',
 	'posted_by'				=> 'Posted by',
 	'tag_by'				=> 'Tagged',
-	
+
 	//Breadcrumb
 	'b_blog'				=> 'ဘလော့ဂ်',
 	'b_category'			=> 'အမျိုးအစား',
@@ -64,6 +64,8 @@ return array(
 	'filter_search'			=> 'ရှာဖွေမည်',
 	'schedule_label'		=> 'Scheduled',
 	'auto_detect'			=> 'အလိုအလျောက် သတ်မှတ်မည်။',
+	'current_lang'			=> 'ရွေးချယ်ထားသော ဘာသာစကား',
+	'post_type'				=> 'ပိုစ့်အမျိုးအစား',
 
 	// Button Label
 	'add_new_cat'			=> 'အမျိုးအစားအသစ်ထပ်ထည့်မည်',
@@ -102,7 +104,7 @@ return array(
 	'cat_delete_success'	=> 'ဘလော့ဂ် အမျိုးအစား ကို အောင်မြင်စွာ ဖျက် ပြီးပါပြီ။',
 	'assign_success'		=> 'Blog post author assign is successfully.',
 	'change_status_success'	=> 'ပို့စ် အခြေအနေ အောင်မြင်စွာ ပြောင်းလဲပြီးသည်။',
-	
+
 	'assign_no_post'		=> 'Assign from user have no post!',
 	'not_allow_delete'		=> 'Default category is not allowed to delete.',
 
@@ -111,7 +113,7 @@ return array(
 	'no_cat'				=> 'You have no blog category in this moment',
 	'no_author'				=> 'You have no author to assign.',
 	'no_poster'				=> 'Empty Blog Post.',
-	
+
 );
 
 

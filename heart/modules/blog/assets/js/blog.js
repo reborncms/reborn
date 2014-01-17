@@ -68,14 +68,16 @@
 
 		var timeout;
 
-		CKEDITOR.on('instanceCreated', function (e) {
-			e.editor.on('change', function (ev) {
-				if (timeout) clearTimeout(timeout);
-				timeout = setTimeout(function(){
-					postAutoSave();
-				}, 30000);
+		if(typeof CKEDITOR !== 'undefined') {
+			CKEDITOR.on('instanceCreated', function (e) {
+				e.editor.on('change', function (ev) {
+					if (timeout) clearTimeout(timeout);
+					timeout = setTimeout(function(){
+						postAutoSave();
+					}, 30000);
+				});
 			});
-		});
+		};
 
 		$('#blog_form input, #blog_form textarea, #blog_form select').change(function(){
 			if (timeout) clearTimeout(timeout);
@@ -194,8 +196,9 @@
 		});
 
 		/* Language Select Box */
-		
-		$('#change_lang').chosen({width: "95%"});
+		if (typeof $().chosen !== 'undefined') {
+			$('#change_lang').chosen({width: "95%"});
+		};
 
 		// Select option selected by value
 		function selectItemByValue(elmnt, value){

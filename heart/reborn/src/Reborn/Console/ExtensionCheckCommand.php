@@ -42,7 +42,7 @@ class ExtensionCheckCommand extends SfCommand
     {
         $lists = array();
 
-        if (version_compare(PHP_VERSION, '5.3.4', '>=')) {
+        if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
             $lists['PHP'] = '<info>PHP Version OK</info>';
         } else {
             $lists['PHP'] = '<error>Need to update PHP Version</error>';

@@ -316,7 +316,7 @@ class Installer
 		$data = array();
 		$data['pass'] = false;
 		$data['php']['version'] = phpversion();
-		$data['php']['status'] = (version_compare(PHP_VERSION, '5.3.4', '>=')) ? true : false;
+		$data['php']['status'] = (version_compare(PHP_VERSION, '5.4.0', '>=')) ? true : false;
 
 		$data['mysql']['status'] = function_exists('mysql_connect') ? true : false;
 

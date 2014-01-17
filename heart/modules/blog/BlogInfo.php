@@ -11,7 +11,7 @@ class BlogInfo extends \Reborn\Module\AbstractInfo
 		'my'	=> 'ဘလော့ဂ်'
 	);
 
-	protected $version = '1.1';
+	protected $version = '1.2';
 
 	protected $description = array(
 		'en'	=> 'Manage your blog',

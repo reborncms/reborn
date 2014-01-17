@@ -1,6 +1,6 @@
 {
     "name": "reborncms/reborncms",
-    "description": "The PHP 5.3 CMS",
+    "description": "The PHP 5.4 CMS",
     "keywords": ["cms, content_manager"],
     "homepage": "http://reborncms.com",
     "license": "MIT",
@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.4",
+        "php": ">=5.4.0",
         "cartalyst/sentry": "2.0.*@dev",
         "dflydev/markdown": "1.0.*@dev",
         "illuminate/container": "4.1.*@dev",

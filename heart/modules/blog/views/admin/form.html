@@ -273,6 +273,23 @@
                     </div>
 
                 </div> <!-- end of div.r-container -->
+
+                <!-- BLOG POST TYPE -->
+
+                <div class="r-container">
+                    <a href="javascript:void(0);" class="r-i-b">
+                        <div>
+                            <i class="icon-book"></i>
+                            <span>{{ t('blog::blog.post_type') }}</span>
+                        </div>
+                    </a>
+
+                    <div class="r-i-b-h" >
+                        {{ Form::select('post_type', $post_types, $blog->post_type, array('class' => 'thin xx-large')) }}
+                    </div>
+
+                </div> <!-- end of div.r-container -->
+
                 {{ endif }}
 
             </div> <!-- end of form-right -->
@@ -307,7 +324,7 @@
                 {{ endif }}
 
             </div> <!-- end of form-block -->
-            
+
             <!-- END FORM ACTIONS -->
 
         {{ Form::end() }}
