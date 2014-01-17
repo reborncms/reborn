@@ -289,6 +289,8 @@ class UserController extends \AdminController
 	{				
 		$metadata = is_null($user->metadata) ? new \Reborn\Auth\Sentry\Eloquent\UserMetadata : $user->metadata;
 
+		$metadata->user_id = $user->id;
+		$metadata->username = \Input::get('username');
 		$metadata->biography = \Input::get('biography');
 		$metadata->country = \Input::get('country');
 		$metadata->website = \Input::get('website');
