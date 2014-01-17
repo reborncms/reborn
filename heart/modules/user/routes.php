@@ -10,7 +10,7 @@ Route::group('user',function(){
 	Route::add('register', 'User\User::register', 'user_register');
 	Route::get('activate/{string:emailEncode}/{string:activationCode}', 'User\User::activate', 'user_activate');
 	Route::add('reset-password', 'User\User::resetPassword', 'user_password_reset');
-	Route::get('password-reset/{string:emailEncode}/{string:hash}', 'User\User::passwordReset', 'user_reset_password');
+	Route::add('password-reset/{string:emailEncode}/{string:hash}', 'User\User::passwordReset', 'user_reset_password');
 	Route::add('resend', 'User\User::resend', 'user_password_resend');
 });
 
