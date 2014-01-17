@@ -106,7 +106,7 @@
 		<div class="form_input">
 			{{ Form::hidden('id', $user->id )}}
 			{{ Form::submit('submit', 'Edit', array('id' => 'edit', 'class' => 'button button-red')) }}	
-			<a href="{{ \Uri::create("user") }}" class="button button-red">Cancel</a>
+			<a href="{{ url("user") }}" class="button button-red">Cancel</a>
 
 		</div> <!-- end of form_input -->
 	</div> <!-- end of input_group -->	

@@ -5,10 +5,10 @@
 		Welcome, {{ $user->first_name.' '.$user->last_name }}
 		<ul class="user-widget">
 		{{ if ($user->hasAccess('admin')) }}
-			<li><a href="{{ \Uri::create('admin/') }}">Dashboard</a></li>
+			<li><a href="{{ adminUrl() }}">Dashboard</a></li>
 		{{ endif }}
-			<li><a href="{{ \Uri::create('user/edit/') }}">Edit Profile</a></li>
-			<li><a href="{{ \Uri::create('user/logout/') }}">Logout</a></li>
+			<li><a href="{{ url('user/edit/') }}">Edit Profile</a></li>
+			<li><a href="{{ url('user/logout/') }}">Logout</a></li>
 		</ul>
 	</div>
 </div>

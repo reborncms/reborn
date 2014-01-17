@@ -287,7 +287,7 @@ class UserController extends \PublicController
 					        'permissions' => array(),
 					    ));
 
-					    $usermeta = $this->saveMeta($user->id);
+					    $usermeta = $this->saveMeta($user);
 
 					    if (Module::isEnabled('field')) {
 							Field::save('user', $user);

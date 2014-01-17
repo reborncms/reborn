@@ -109,7 +109,7 @@
 
 	<div class="block">
 	  {{ Form::submit('submit', 'Create', array('id' => 'edit')) }}
-	  <a href="{{ \Uri::create("/user/login") }}">Already had an account? Login here!</a>
+	  <a href="{{ url("/user/login") }}">Already had an account? Login here!</a>
 	</div>	
 
 	{{ Form::end() }}

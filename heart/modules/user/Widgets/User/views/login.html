@@ -9,8 +9,8 @@
 			{{ Form::label('Remember me', 'remember') }}
 			<p>{{ Form::submit('submit', 'Login', array('class' => 'widget-login btn')) }}</p>
 			<p>
-				<a href="{{ \Uri::create("/user/register") }}">Create a new account</a> <br/>
-				<a href="{{ \Uri::create("/user/reset-password") }}">Forget Password?</a>
+				<a href="{{ url("/user/register") }}">Create a new account</a> <br/>
+				<a href="{{ url("/user/reset-password") }}">Forget Password?</a>
 			</p>
 		{{ Form::end() }}
 	</div>

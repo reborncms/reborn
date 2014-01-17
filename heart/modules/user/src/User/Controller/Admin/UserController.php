@@ -275,6 +275,7 @@ class UserController extends \AdminController
 		}
 	    
 	    $user->delete();
+	    $user->metadata->delete();
 
 	    \Flash::success(t('user::user.delete.success'));
 		return \Redirect::toAdmin('user');

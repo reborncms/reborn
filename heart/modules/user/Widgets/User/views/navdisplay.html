@@ -4,10 +4,10 @@
 		<a href="#" class="username">{{ $user->first_name.' '.$user->last_name }}</a>
 		<ul class="action-links">
 		{{ if ($user->hasAccess('admin')) }}
-			<li><a href="http://localhost/reborncms/admin/">Dashboard</a></li>
+			<li><a href="{{ adminUrl() }}">Dashboard</a></li>
 		{{ endif }}
-			<li><a href="http://localhost/reborncms/user/edit/">Edit Profile</a></li>
-			<li><a href="http://localhost/reborncms/user/logout/">Logout</a></li>
+			<li><a href="{{ url("/user/edit") }}">Edit Profile</a></li>
+			<li><a href="{{ url("/user/logout") }}">Logout</a></li>
 		</ul>
 	</li>
 </ul>
