@@ -2,7 +2,7 @@
 
 namespace User\Controller;
 
-use Auth;
+use Auth, Field, Module;
 use Reborn\Util\Mailer as Mailer;
 
 class UserController extends \PublicController
@@ -164,7 +164,11 @@ class UserController extends \PublicController
 				    	$user->last_name = $last_name;
 
 						if ($user->save()) {
-					    	$usermeta = $this->saveMeta($user);							
+					    	$usermeta = $this->saveMeta($user);	
+
+					    	if (Module::isEnabled('field')) {
+								Field::update('user', $user);
+							}						
 							
 					        \Flash::success(t('user::user.profile.success'));
 					        return \Redirect::to('user/profile/'.$user->id);
@@ -177,9 +181,16 @@ class UserController extends \PublicController
 			}
 		}
 
+		$fields = array();
+
+		if (Module::isEnabled('field')) {
+			$fields = Field::getForm('user', $user);
+		}
+
 		$this->template->title(t('user::user.profile.title'))
 			->breadcrumb(t('user::user.profile.title'))
-			->set('user', $user)			
+			->set('user', $user)
+			->set('fields', $fields)
 			->setPartial('edit');
 	}
 
@@ -276,16 +287,19 @@ class UserController extends \PublicController
 					        'permissions' => array(),
 					    ));
 
-					    $usermeta = self::saveMeta('create', $user->id);
-					    $usermeta->save();
+					    $usermeta = $this->saveMeta($user->id);
 
-					    $groups = Auth::getGroupProvider()->findById(3);
+					    if (Module::isEnabled('field')) {
+							Field::save('user', $user);
+						}
+
+					    $groups = Auth::getGroupProvider()->findById(3);					    
 				    	$user->addGroup($groups);
 
 					    $activationCode = $user->getActivationCode();
 					    $emailEncode = base64_encode($email);
 
-					    $activationLink = rbUrl().'user/activate/'.$emailEncode.'/'.$activationCode;
+					    $activationLink = url().'user/activate/'.$emailEncode.'/'.$activationCode;
 					    
 					    // create config to mail user activation code
 					    $config = array(
@@ -300,7 +314,7 @@ class UserController extends \PublicController
 					    $mail = Mailer::send($config);
 
 					    \Flash::success(t('user::user.activate.check'));
-						return \Redirect::to('user/activate');
+						\Redirect::to('/');
 
 					}
 					catch (\Cartalyst\Sentry\Users\UserExistsException $e)
@@ -311,8 +325,15 @@ class UserController extends \PublicController
 			}
 		}
 
+		$fields = array();
+		
+		if(Module::isEnabled('field')) {
+			$fields = Field::getForm('user');
+		}
+
 		$this->template->title(t('user::user.title.registration'))
 			->breadcrumb(t('user::user.title.registration'))
+			->set('fields', $fields)
 			->setPartial('register');
 	}
 
@@ -373,7 +394,7 @@ class UserController extends \PublicController
 				    $resetCode = $user->getResetPasswordCode();
 				    $emailEncode = base64_encode($email);
 
-					$link = rbUrl().'user/password-reset/'.$emailEncode.'/'.$resetCode;
+					$link = url().'user/password-reset/'.$emailEncode.'/'.$resetCode;
 
 				    // Now you can send this code to your user via email for example.
 				    $config = array(
@@ -493,7 +514,7 @@ class UserController extends \PublicController
 				    } else {
 					    $activationCode = $user->getActivationCode();
 						$emailEncode = base64_encode($email);
-					    $activationLink = rbUrl().'user/activate/'.$emailEncode.'/'.$activationCode;
+					    $activationLink = url().'user/activate/'.$emailEncode.'/'.$activationCode;
 					    
 					    // create config to mail user activation code
 					    $config = array(
@@ -530,7 +551,7 @@ class UserController extends \PublicController
 	 **/
 	protected function saveMeta($user) 
 	{		
-		$metadata = $user->metadata;
+		$metadata = is_null($user->metadata) ? new \Reborn\Auth\Sentry\Eloquent\UserMetadata : $user->metadata;
 
 		$metadata->biography = \Input::get('biography');
 		$metadata->country = \Input::get('country');

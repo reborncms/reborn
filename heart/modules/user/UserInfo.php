@@ -54,6 +54,6 @@ class UserInfo extends \Reborn\Module\AbstractInfo
 	*
 	* @var boolean
 	**/
-	protected $allowCustomfield = false;
+	protected $allowCustomfield = true;
 
 }

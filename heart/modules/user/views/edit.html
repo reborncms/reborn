@@ -94,6 +94,14 @@
         </div> <!-- end of form-right-block -->
     </div> <!-- end of form block -->
 
+    <!-- CUSTOM FIELDS -->
+
+    {{ loop ($fields as $field) }}
+        {{ $field }}
+    {{ endloop }}
+
+    <!--  END COSTUM FIELDS -->
+
 	<div class="input_group">
 		<div class="form_input">
 			{{ Form::hidden('id', $user->id )}}
@@ -101,7 +109,7 @@
 			<a href="{{ \Uri::create("user") }}" class="button button-red">Cancel</a>
 
 		</div> <!-- end of form_input -->
-	</div> <!-- end of input_group -->
+	</div> <!-- end of input_group -->	
 
 	{{ Form::end() }}
 </div>

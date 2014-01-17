@@ -2,7 +2,7 @@
 
 namespace User\Controller\Admin;
 
-use Auth;
+use Auth, Field, Module;
 
 class UserController extends \AdminController
 {
@@ -102,6 +102,10 @@ class UserController extends \AdminController
 					    $groups = Auth::getGroupProvider()->findById($groups);
 					    $user->addGroup($groups);
 
+					    if (Module::isEnabled('field')) {
+							Field::save('user', $user);
+						}
+
 					    \Flash::success(t('user::user.create.success'));
 					    return \Redirect::toAdmin('user');
 					} catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
@@ -111,11 +115,18 @@ class UserController extends \AdminController
 			}
 		}
 
+		$fields = array();
+		
+		if(Module::isEnabled('field')) {
+			$fields = Field::getForm('user');
+		}
+
 		$groups = \UserGroup::all();
 
 		$this->template->title(t('user::user.title.create'))
 			->breadcrumb(t('user::user.title.create'))
 			->set('groups', $groups)
+			->set('fields', $fields)
 			->setPartial('admin/create');
 	}
 
@@ -176,6 +187,10 @@ class UserController extends \AdminController
 					    	$user->addGroup($groups);
 					    }
 
+					    if (Module::isEnabled('field')) {
+							Field::update('user', $user);
+						}
+
 					    \Event::call('user_edited',array($user));
 					    \Flash::success(t('user::user.edit.success'));
 					    return \Redirect::toAdmin('user');
@@ -189,6 +204,12 @@ class UserController extends \AdminController
 			}			
 		}
 
+		$fields = array();
+
+		if (Module::isEnabled('field')) {
+			$fields = Field::getForm('user', $user);
+		}
+
 		$groups = \UserGroup::all();
 
 		$adminAccess['dashboard'] = array_key_exists('admin', $user->getPermissions()) ?  true : false;
@@ -200,6 +221,7 @@ class UserController extends \AdminController
 			->set('group', $group)
 			->set('groups', $groups)
 			->set('adminAccess', $adminAccess)
+			->set('fields', $fields)
 			->setPartial('admin/edit');
 	}
 
@@ -209,10 +231,12 @@ class UserController extends \AdminController
 	* @param $email string
 	* @param $activationCode string
 	*/
-	public function activate($id)
+	public function activate($id = null)
 	{
+		if(is_null($id)) return $this->notFound();
+
 		try {
-			$user = Auth::getUserProvider()->findById(1);
+			$user = Auth::getUserProvider()->findById($id);
 
 			if ($user->isActivated()) {
 				\Flash::error(sprintf(t('user::user.activate.admin'), $email));			
@@ -245,6 +269,10 @@ class UserController extends \AdminController
 	    $user = \User::findBy('id', $uri);
 
 	    \Event::call('user_deleted',array($user));
+
+	    if (Module::isEnabled('field')) {
+			Field::delete('user', $user);
+		}
 	    
 	    $user->delete();
 

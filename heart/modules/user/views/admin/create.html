@@ -118,6 +118,14 @@
         </div> <!-- end of form-right-block -->
       </div> <!-- end of form block -->
 
+        <!-- CUSTOM FIELDS -->
+
+        {{ loop ($fields as $field) }}
+            {{ $field }}
+        {{ endloop }}
+
+        <!--  END COSTUM FIELDS -->
+
 		<div class="form-block even">
 		{{ Form::submit('submit', t('user::permission.create'), array('id' => 'create', 'class' => 'btn btn-green')) }}
 		<a href="{{ adminUrl("user") }}" class="btn">{{ t('user::permission.cancel') }}</a>
