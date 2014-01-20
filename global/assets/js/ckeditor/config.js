@@ -22,4 +22,6 @@ CKEDITOR.editorConfig = function( config ) {
 	config.pbckcode = {
 		modes : [['HTML', 'html'], ['CSS', 'css'], ['PHP', 'php'], ['JS', 'javascript'], ["Markdown", "markdown"], ["SQL", "sql"], ["LESS", "less"], ["JSON", "json"], ["XML", "xml"]]
 	}
+
+	config.allowedContent = true;
 };
