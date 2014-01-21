@@ -158,4 +158,21 @@ class Api
 		}
 	}
 
+	/**
+	 * Get files by a specific folder
+	 *
+	 * @param mix $id Id or slug of folder
+	 *
+	 * @return array
+	 **/
+	public function getFilesByFolder($id)
+	{
+
+		$folder = (is_numeric($id)) ? Folders::find($id) : 
+					Folders::where('slug', $id)->first();
+
+		return (is_null($folder)) ? array() : $folder->files->toArray();
+
+	}
+
 } // END class Api
