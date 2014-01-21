@@ -48,14 +48,18 @@ jQuery(function(){
 
 		var timeout;
 
-		CKEDITOR.on('instanceCreated', function (e) {
-			e.editor.on('change', function (ev) {
-				if (timeout) clearTimeout(timeout);
-				timeout = setTimeout(function(){
-					postAutoSave();
-				}, 30000);
+		if (typeof CKEDITOR != 'undefined') {
+
+			CKEDITOR.on('instanceCreated', function (e) {
+				e.editor.on('change', function (ev) {
+					if (timeout) clearTimeout(timeout);
+					timeout = setTimeout(function(){
+						postAutoSave();
+					}, 30000);
+				});
 			});
-		});
+
+		}
 
 		$('#page_form input, #page_form textarea, #page_form select').change(function(){
 			if (timeout) clearTimeout(timeout);
