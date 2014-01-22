@@ -52,7 +52,10 @@ class MediaController extends \AdminController
         $this->allFiles = Files::all();
         $this->user = \Auth::getUser();
 
-        $this->template->jsValue('hasFolder', (0 == Folders::count()) ? false : true);
+        $this->template->jsValue(array(
+                'hasFolder' => (0 == Folders::count()) ? false : true,
+                'adminMedia'=> admin_url('media'),
+            ));
     }
 
     /**
@@ -64,110 +67,6 @@ class MediaController extends \AdminController
     public function index()
     {
         $this->explore(0);
-    }
-
-# # # # # # # # # # Folders # # # # # # # # # #
-
-    /**
-     * This method will create folders
-     *
-     * @param int $folderId
-     * @return void
-     **/
-    public function createFolder($folderId = 0)
-    {
-        if (\Input::isPost()) {
-
-            $validate = $this->validation();
-
-            if ($validate->valid()) {
-                if ($this->saveData()) {
-                    if ($this->request->isAjax()) {
-                        return $this->returnJson(array('status' => 'success'));
-                    }
-
-                    \Flash::success(t('media::success.create'));
-
-                    return \Redirect::toAdmin('media');
-                } else {
-                    \Flash::error(\Translate::get('m.error.create'));
-                }
-            } else {
-                $this->template->error = $validate->getErrors();
-                \Flash::error(\Translate::get('m.error.create'));
-            }
-        }
-
-        $this->checkAjax();
-
-        $this->template->title(\Translate::get('m.title.create'))
-                        ->set('parentId', $folderId)
-                        ->setPartial('admin'.DS.'form'.DS.'folder');
-    }
-
-    /**
-     * Folders can be edited by using this method.
-     *
-     * @param int $id Id of the folder you want to edit
-     *
-     * @return void
-     **/
-    public function editFolder ($id)
-    {
-        if (\Input::isPost()) {
-
-            $validate = $this->validation();
-
-            if ($validate->valid()) {
-
-                if ($this->saveData(false, $id)) {
-                    \Flash::success(\Translate::get('m.success.folderUpdate'));
-                    return \Redirect::toAdmin('media');
-                } else {
-                    \Flash::error(\Translate::get('m.error.folderUpdate'));
-                }
-
-            } else {
-                $this->template->error = $validate->getErrors();
-                \Flash::error(\Translate::get('m.error.folderUpdate'));
-            }
-        }
-
-        $folderData = Folders::where('id', '=', $id)->first();
-
-        $this->checkAjax();
-
-        $this->template->title(\Translate::get('files.editFolder'))
-                        ->set('folderData', $folderData)
-                        ->setPartial('admin'.DS.'form'.DS.'folder');
-    }
-
-    /**
-     * Deleting folder or folders
-     *
-     * @param int $id Id of folder to be delete
-     *
-     * @return void
-     **/
-    public function deleteFolder($id)
-    {
-        $result = with(new Folders)->folderTreeIds($id);
-
-        $files = Files::whereIn('folder_id', $result)->get(array('id'))->toArray();
-
-        if (! empty($files)) {
-            $this->deleteFile(array_pluck($files, 'id'), false);
-        }
-
-        Folders::destroy($result);
-
-        if ($this->request->isAjax()) {
-            return $this->json(array('status' => 'success'));
-        }
-
-        \Flash::success(t('media::media.success.folderDel'));
-
-        return \Redirect::toAdmin('media');
     }
 
 # # # # # # # # # # Files # # # # # # # # # #
@@ -353,7 +252,7 @@ class MediaController extends \AdminController
 
         $files = Files::with(array('folder', 'user'))->where('folder_id', '=', $id)->get();
 
-        $folders = Folders::with(array('folder', 'user'))->where('folder_id', '=', $id)->get();
+        $folders = Folders::with(array('children', 'user'))->where('folder_id', '=', $id)->get();
 
         $current = Folders::find($id);
 
@@ -388,6 +287,7 @@ class MediaController extends \AdminController
                         ->set('files', $files)
                         ->set('folders', $folders)
                         ->set('actionBar', $actionBar)
+                        ->jsValue('currentFolder', $id)
                         ->setPartial('admin/index');
     }
 

@@ -39,6 +39,26 @@ if (! function_exists('folderTree')) {
 
 }
 
+if (! function_exists('duplicate')) {
+    function duplicate($name, $type = 'folder', $except = null)
+    {
+
+        $query = ('folder' == $type) ? Media\Model\Folders::where('name', $name) :
+                    Media\Model\Files::where('name', $name);
+
+        $query = (is_null($except)) ? $query->first() : 
+                    $query->where('name', '!=', $name)->first();
+
+        $finalName = $name;
+
+        if (! is_null($query)) {
+            $finalName = duplicate(increasemental($name), $type, $except);
+        }
+
+        return $finalName;
+
+    }
+}
 
 /**
  * This function will solve name duplication

@@ -25,9 +25,9 @@
 					</div> <!-- end of btns-group -->
 
 					<ul class="options p-absolute">
-						<li><a class='action_edits' href="{{ adminUrl('media/edit-folder/'.$folder->id) }}">Edit</a></li>
+						<li><a class='action_edits' href="{{ admin_url('media/folder/update/'.$folder->id) }}">Edit</a></li>
 						<li><a href="#">Move</a></li>
-						<li><a class='confirm_delete' href="{{ adminUrl('media/delete-folder/'.$folder->id) }}">Delete</a></li>
+						<li><a class='confirm_delete' href="{{ admin_url('media/folder/delete/'.$folder->id) }}">Delete</a></li>
 					</ul> <!-- end of options -->
 				</div> <!-- end of ff-actions -->
 
@@ -61,9 +61,9 @@
 					</div> <!-- end of btns-group -->
 
 					<ul class="options p-absolute">
-						<li><a class='action_edits' href="{{ adminUrl('media/edit-file/'.$file->id) }}">Edit</a></li>
+						<li><a class='action_edits' href="{{ admin_url('media/edit-file/'.$file->id) }}">Edit</a></li>
 						<li><a href="#">Move</a></li>
-						<li><a class='confirm_delete' href="{{ adminUrl('media/delete-file/'.$file->id) }}">Delete</a></li>
+						<li><a class='confirm_delete' href="{{ admin_url('media/delete-file/'.$file->id) }}">Delete</a></li>
 					</ul> <!-- end of options -->
 
 				</div> <!-- end of ff-actions -->

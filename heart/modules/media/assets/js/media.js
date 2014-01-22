@@ -24,7 +24,7 @@ $(function(){
 	$('#media_create_folder').colorbox({
 		width: "50%",
 		height: "400",
-		href: SITEURL + ADMIN + '/media/create-folder/' + $('#main-media-wrapper').attr('data-folder-id'),
+		href: RB.adminMedia + '/folder/create/' + RB.currentFolder,
 		scroll: false,
 		closeButton: false,
 		onComplete: function () {

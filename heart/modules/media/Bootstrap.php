@@ -38,7 +38,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
                     'id'    => 'media_upload',
                 ),
                 'folder'    => array(
-                    'url'   => 'media/create-folder/',
+                    'url'   => 'media/folder/create',
                     'name'  => t('media::media.btn.create'),
                     'info'  => t('media::media.info.create'),
                     'id'    => 'media_create_folder',

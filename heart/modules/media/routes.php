@@ -6,13 +6,6 @@
 			'media'
 		);
 
-	// Viewing images
-	\Route::get(
-			'media/image/{:target}/{int:width}?/{int:height}?',
-			'Media\Media::image', 
-			'image_preview_with_name'
-		);
-
 	// Setting thumbnail
 	\Route::get(
 			'@admin/media/thumbnail/{int:folderId}?',
@@ -27,13 +20,6 @@
 			'file_upload'
 		)->method(array('GET', 'POST'));
 
-	// Folder Delete
-	\Route::add(
-			'@admin/media/delete-folder/{int:id}',
-			'Media\Admin\Media::deleteFolder', 
-			'folder_delete'
-		);
-
 	// File Delete
 	\Route::add(
 			'@admin/media/delete-file/{int:id}/{int:redirect}?',
@@ -41,25 +27,33 @@
 			'file_delete'
 		);
 
+/* ===== Folder ===== */
 	// Folder create
 	\Route::add(
-			'@admin/media/create-folder/{int:folderId}?',
-			'Media\Admin\Media::createFolder', 
+			'@admin/media/folder/create/{int:folderId}?',
+			'Media\Admin\Folder::create', 
 			'folder_create'
 		)->method(array('GET', 'POST'));
+
+	// Edit Folder
+	\Route::add(
+			'@admin/media/folder/update/{int:id}?',
+			'Media\Admin\Folder::update',
+			'update_folder'
+		);
+
+	// Folder Delete
+	\Route::add(
+			'@admin/media/folder/delete/{int:id}',
+			'Media\Admin\Folder::delete', 
+			'folder_delete'
+		);
 
 	// Explore folders
 	\Route::get(
 			'@admin/media/explore/{int:id}',
 			'Media\Admin\Media::explore',
 			'explorer'
-		);
-
-	// Edit Folder
-	\Route::add(
-			'@admin/media/edit-folder/{int:id}',
-			'Media\Admin\Media::editFolder',
-			'edit_folder'
 		);
 
 	// Edit file
@@ -74,4 +68,12 @@
 			'@admin/media/wysiwyg/{int:folderId}?',
 			'Media\Admin\Media::wysiwyg',
 			'wysiwyg'
+		);
+
+/* ===== Frontend ===== */
+	// Viewing images
+	\Route::get(
+			'media/image/{:target}/{int:width}?/{int:height}?',
+			'Media\Media::image', 
+			'image_preview'
 		);

@@ -2,6 +2,8 @@
 
 namespace Media\Model;
 
+use Auth;
+
 /**
  * Model for Media Module which served CURD with media_folders table.
  *
@@ -21,13 +23,67 @@ class Folders extends \Eloquent
     protected $multisite = true;
 
     /**
-     * Parent folder's data
+     * Save new folder data to database
      *
-     * @return object Media\Model\Folders
+     * @return Media\Model\Folders
      **/
-    public function folder()
+    public function createFolder($data)
     {
-        return $this->belongsTo('Media\Model\Folders');
+    
+        $name = duplicate($data['name']);
+
+        $this->name = $name;
+        $this->slug = slug($name);
+        $this->description = $data['description'];
+        $this->folder_id = $data['folder_id'];
+        $this->user_id = Auth::getUser()->id;
+        $this->depth = defineDepth($data['folder_id']);
+
+
+        if ($this->save()) {
+            return $this;
+        }
+
+        return false;
+
+    }
+
+    /**
+     * Update folder data
+     *
+     * @return Media\Model\Folders
+     **/
+    public function updateFolder($data)
+    {
+
+        $name = duplicate($data['name'], 'folder', $this->name);
+
+        $this->name = $name;
+        $this->slug = slug($name);
+        $this->description = $data['description'];
+        $this->folder_id = $data['folder_id'];
+        $this->user_id = Auth::getUser()->id;
+        $this->depth = defineDepth($data['folder_id']);
+
+
+        if ($this->save()) {
+            return $this;
+        }
+
+        return false;
+
+    }
+
+    /**
+     * Child files' data
+     *
+     * @return Media\Model\Files
+     **/
+    public function files()
+    {
+
+        return $this->hasMany('Media\Model\Files', 'folder_id');
+
     }
 
     /**
