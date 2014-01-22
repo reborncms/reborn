@@ -45,14 +45,14 @@ class MediaController extends \AdminController
      **/
     public function before()
     {
-        $this->template->style('plugins.css', 'media');
-        $this->template->style('media.css', 'media');
-        $this->template->script('plugins.js', 'media');
-        $this->template->script('media.js', 'media');
+        $this->template->style(array('plugins.css', 'media.css'), 'media');
+        $this->template->script(array('plugins.min.js', 'media.js'), 'media');
 
         $this->allFolders = Folders::all();
         $this->allFiles = Files::all();
         $this->user = \Auth::getUser();
+
+        $this->template->jsValue('hasFolder', (0 == Folders::count()) ? false : true);
     }
 
     /**
