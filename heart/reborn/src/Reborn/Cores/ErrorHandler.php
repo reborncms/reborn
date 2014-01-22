@@ -88,6 +88,15 @@ class ErrorHandler
 
         $this->app['log']->debug($e->getMessage());
 
+        // Return message only if run in cli mode.
+        if ( $this->app->runInCli() ) {
+            $msg = $this->getMessageForConsole($e);
+            $writer = new \Symfony\Component\Console\Output\ConsoleOutput();
+            
+            $writer->writeln("<error>".$msg."</error>");
+            exit;
+        }
+
         $response = null;
 
         // Resolve Binding From Register Handlers
@@ -106,6 +115,21 @@ class ErrorHandler
         }
 
         exit(1);
+    }
+
+    /**
+     * Get Message for Console Output
+     *
+     * @param \Exception $e
+     * @return string
+     **/
+    protected function getMessageForConsole($e)
+    {
+        $msg = "\n============ Exception from [ ".get_class($e)." ] ============ \n\n";
+        $msg .= "\t".$e->getMessage();
+        $msg .= "\n\n============ Exception from [ ".get_class($e)." ] ============ \n\n";
+        
+        return $msg;
     }
 
     /**

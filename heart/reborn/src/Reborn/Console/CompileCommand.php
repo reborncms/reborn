@@ -44,7 +44,7 @@ class CompileCommand extends SfCommand
             @unlink($outputfile);
         }
 
-		$files = \Config::get('compile_lists');
+		$files = require APP.'config/compile_lists.php';
 
 		if (!$handle = fopen($outputfile, 'w')) {
             throw new \RuntimeException(

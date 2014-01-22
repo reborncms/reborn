@@ -27,22 +27,38 @@ class Application extends BaseApplication
 
 		\Reborn\Cores\Facade::setApplication($app);
 
-		$app->start();
+		if ($app->installed()) {
+			$app->start();
+		}
 	}
 
 	/**
-	 * Register Default Command.
+	 * Register Default Command For Reborn CMS.
 	 *
 	 * @return void
 	 **/
-	public function register()
+	public function registerForReborn()
 	{
-		$this->add(new ModuleCommand);
-		$this->add(new CompileCommand);
-		$this->add(new MultisiteCommand);
-		$this->add(new CacheClearCommand);
-		$this->add(new ThemeGenerateCommand);
-		$this->add(new ExtensionCheckCommand);
-		$this->add(new AuthKeyGenerateCommand);
+		foreach ( $this->getDefaultCommands() as $command ) {
+			$this->add($command);
+		}
+	}
+
+	/**
+	 * Get Default Commands from Reborn CMS
+	 *
+	 * @return array
+	 **/
+	public function getDefaultCommands()
+	{
+		return array(
+			'module'			=> new ModuleCommand,
+			'compile'			=> new CompileCommand,
+			'multisite'			=> new MultisiteCommand,
+			'cache_clear'		=> new CacheClearCommand,
+			'theme' 			=> new ThemeGenerateCommand,
+			'extension_check'	=> new ExtensionCheckCommand,
+			'auth_key_generate'	=> new AuthKeyGenerateCommand
+		);
 	}
 }

@@ -47,6 +47,6 @@ $reborn = new Reborn\Cores\Application();
 
 $application = new Reborn\Console\Application(Reborn\Cores\Version::getAppName(), Reborn\Cores\Version::getVersion());
 $application->setRebornApplication($reborn);
-$application->register();
+$application->registerForReborn();
 $application->addCommands($commands);
 $application->run();
