@@ -1,5 +1,7 @@
 <div class="widget widget-twitter-timeline">
-	<h2 class="widget-title">{{ $title }}</h2>
+	{{ ifnot (is_null( $title )) }}
+		<h2 class="widget-title">{{ $title }}</h2>
+	{{ endif }}
 	<div class="widget-body">
 		<a class="twitter-timeline" 
 			data-widget-id="{{ $widgetid }}"

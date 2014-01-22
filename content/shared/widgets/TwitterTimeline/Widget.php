@@ -97,7 +97,7 @@ class Widget extends \Reborn\Widget\AbstractWidget
 	public function render()
 	{
 		$data = array();
-		$data['title'] = $this->get('title', 'Google Doc Viewer');
+		$data['title'] = $this->get('title', null);
 
 		$data['widgetid'] = $this->get('widgetid');
 		$data['timeline_width'] = $this->get('width', 300);
