@@ -21,14 +21,14 @@ class Widget extends \Reborn\Widget\AbstractWidget
 	        'widgetid' => array(
 	            'label'		=> 'Widget ID',
 	            'type'		=> 'text',
-	            'info'		=> 'You need to <a href="https://twitter.com/settings/widgets/new/user" target="_blank">create a widget at Twitter.com</a>, and then enter your widget id (the long number found in the URL of your widget\'s config page) in the field below. <a href="http://en.support.wordpress.com/widgets/twitter-timeline-widget/" target="_blank">Read more.</a>',
+	            'info'		=> 'You need to <a href="https://twitter.com/settings/widgets/new/user" target="_blank">create a widget at Twitter.com</a>, and then enter your widget id (the long number found in the URL of your widget\'s config page) in the field below.',
 	        ),
 	        'width' => array(
-	            'label'		=> 'Width',
+	            'label'		=> 'Width (in px or %)',
 	            'type'		=> 'text',
 	        ),
 	        'height' => array(
-	            'label'		=> 'Height',
+	            'label'		=> 'Height (in px or %)',
 	            'type'		=> 'text',
 	        ),
 	        'noheader' => array(
@@ -88,7 +88,7 @@ class Widget extends \Reborn\Widget\AbstractWidget
 	            'type'		=> 'text',
 	        ),
 	        'limit' => array(
-	            'label'		=> 'Tweets Limit (max 20)',
+	            'label'		=> 'Tweets Limit (Max 20, Default is 5)',
 	            'type'		=> 'text',
 	        ),
 	    );
