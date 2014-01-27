@@ -52,14 +52,13 @@ class Collection implements Iterator, ArrayAccess, Countable
             $isObject = true;
         }
 
-        $models->each(function($model) use ($presenter, $isObject) {
-
+        foreach ($models as $model) {
             if ($isObject) {
                 $this->items[] = $presenter->model($model);
             } else {
                 $this->items[] = new $presenter($model);
             }
-        });
+        }
 
         $this->collection = $models;
 	}
