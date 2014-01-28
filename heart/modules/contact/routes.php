@@ -18,6 +18,8 @@ Route::add('@admin/contact/email-template/view/{int:id}','Contact\Admin\EmailTem
 
 Route::add('@admin/contact/email-template/edit/{int:id}','Contact\Admin\EmailTemplate::edit');
 
+Route::add('@admin/contact/email-template/create','Contact\Admin\EmailTemplate::create');
+
 /* add frontend route */
 
 Route::add('contact','Contact\Contact::index' , 'fornted_contact');
