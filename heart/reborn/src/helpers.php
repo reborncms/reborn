@@ -455,7 +455,7 @@ function assetfile_preapre($file, $module = null)
 
 	if (is_array($file)) {
 		foreach ($file as $f) {
-			if (isset($f['module'])) {
+			if (is_array($f) and isset($f['module'])) {
 				$name = $f['file'];
 				$mod = $f['module'];
 				$files[] = $mod.'__'.$name;
