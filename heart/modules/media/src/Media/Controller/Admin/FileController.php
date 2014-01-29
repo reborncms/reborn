@@ -41,8 +41,10 @@ class FileController extends \AdminController
 
                     $fileInfo['folder_id'] = $folderId;
 
-                    $dimension = getImgDimension($config['path']
-                        .$fileInfo['savedName'], $fileInfo['mimeType']);
+                    $path = Config::get('media::media.upload_config.path');
+
+                    $dimension = getImgDimension($path.$fileInfo['savedName'],
+                        $fileInfo['mimeType']);
 
                     $fileInfo['width'] = $dimension['width'];
                     $fileInfo['height'] = $dimension['height'];
