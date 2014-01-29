@@ -4,7 +4,7 @@
 	{= $formName = (isset($folderData)) ? 'edit-folder' : 'create-folder' =}
 	{= $name = (isset($folderData)) ? $folderData->name : '' =}
 	{= $description = (isset($folderData)) ? $folderData->description : '' =}
-	{= $folderId = (isset($parentId)) ? $parentId : $folderData->folderId =}
+	{= $folderId = (isset($folderData)) ? $folderData->folder_id : $parentId =}
 	{= $btnValue = (isset($folderData)) ? t('media::media.btn.update') :
 		t('media::media.btn.create') =}
 
@@ -40,7 +40,7 @@
 			<div class="form-right-block">
 				<select name="folder_id" class="medium required" id="folder_id">
 					<option value="0">{{ t('media::media.lbl.none') }}</option>
-					{{ folderTree($folders, 0, 0, $parentId) }}
+					{{ folderTree($folders, 0, 0, $folderId) }}
 	            </select>
 	            <span class="msg error" style="display: none;">
 					{{ t('media::media.warning.require') }}

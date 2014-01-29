@@ -11,7 +11,7 @@ $(function(){
 			width: "900",
 			innerHeight: "360",
 			closeButton: false,
-			href: SITEURL + ADMIN + '/media/upload/' + $('#main-media-wrapper').attr('data-folder-id'),
+			href: RB.adminMedia + '/upload/' + RB.currentFolder,
 			onComplete: function() {
 				$('#cboxClose').hide();
 			},

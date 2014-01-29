@@ -123,6 +123,13 @@ class FolderController extends \AdminController
             Files::destroy($files);
         }
 
+# @TODO - delete physical file
+       /* $files = Files::whereIn('folder_id', $result)->get(array('id'))->toArray();
+
+        if (! empty($files)) {
+            $this->deleteFile(array_pluck($files, 'id'), false);
+        }*/
+
         Folders::destroy($result);
 
         if ($this->request->isAjax()) {

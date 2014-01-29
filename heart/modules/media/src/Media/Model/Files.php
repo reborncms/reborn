@@ -2,6 +2,8 @@
 
 namespace Media\Model;
 
+use Auth;
+
 /**
  * Model for Media Module which served CRUD with media_files table.
  *
@@ -82,6 +84,53 @@ class Files extends \Reborn\MVC\Model\Search
 		return $thumb;
     }
 
+    /**
+     * Save new file data
+     *
+     * @return 
+     **/
+    public function saveFile($data)
+    {
 
+    	$this->name = $data['originBaseName'];
+    	$this->alt_text = $data['originBaseName'];
+    	$this->description = null;
+    	$this->folder_id = $data['folder_id'];
+    	$this->user_id = Auth::getUser()->id;
+    	$this->filename = $data['savedName'];
+    	$this->filesize = $data['fileSize'];
+    	$this->extension = $data['extension'];
+    	$this->mime_type = $data['mimeType'];
+    	$this->width = $data['width'];
+    	$this->height = $data['height'];
+
+    	if ($this->save()) {
+    		return $this;
+    	}
+
+    	return false;
+
+    }
+
+    /**
+     * Update file data
+     *
+     * @return void
+     **/
+    public function updateFile($data)
+    {
+
+    	$this->name = duplicate($data['name']);
+    	$this->alt_text = $data['alt_text'];
+    	$this->description = $data['description'];
+    	$this->folder_id = $data['folder_id'];
+
+    	if ($this->save()) {
+    		return $this;
+    	}
+
+    	return false;
+
+    }
 
 } // END class MediaFiles

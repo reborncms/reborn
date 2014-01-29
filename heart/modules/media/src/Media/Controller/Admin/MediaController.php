@@ -71,99 +71,6 @@ class MediaController extends \AdminController
 
 # # # # # # # # # # Files # # # # # # # # # #
 
-    /**
-     * File upload function
-     *
-     * @param int $folderId
-     * @param String $key name if file input field
-     *
-     * @return void
-     **/
-    public function upload ($folderId = 0, $key = 'files')
-    {
-
-        if (\Input::isPost()) {
-
-            $config = array(
-                'encName'   => true,
-                'path'      => UPLOAD . date('Y') . DS . date('m') . DS,
-                'prefix'    => 'rb_',
-                'maxFileSize'   => Uploader::maxUploadableFileSize(),
-                'createDir' => true,
-                'rename'    => true,
-                'dirChmod'      => 0777,
-                'recursive'     => true,
-                'allowedExt'    => array(
-                    'jpg', 'jpeg', 'png', 'gif', 'bmp', 'txt', 'rtf', 'doc', 'docx',
-                    'xls', 'xlsx', 'pdf', 'zip', 'tar', 'rar', 'mp3', 'wav', 'wma',
-                    ),
-                );
-
-            $fileObj = Uploader::fileUpload();
-
-            $fileObj->setConfig($config);
-            $fileObj->uploadInit();
-            $errors = $fileObj->getErrors();
-
-            if (empty($errors)) {
-
-                if ($fileObj->upload()) {
-                    $fileInfo = $fileObj->getFileInfo();
-
-                    $data = new Files();
-
-                    $returnData['name'] = $data->name = $fileInfo['originBaseName'];
-                    $data->alt_text = $fileInfo['originBaseName'];
-                    $data->description = null;
-                    $data->folder_id = $folderId;
-                    $data->user_id = $this->user->id;
-                    $data->filename = $fileInfo['savedName'];
-                    $data->filesize = $fileInfo['fileSize'];
-                    $data->extension = $fileInfo['extension'];
-                    $data->mime_type = $fileInfo['mimeType'];
-
-                    $dimension = getImgDimension($config['path']
-                        .$data->filename, $data->mime_type);
-
-                    $data->width = $dimension['width'];
-                    $data->height = $dimension['height'];
-
-                    if ($data->save()) {
-                        if ($this->request->isAjax()) {
-                            return $this->json(array('status' => 'success'));
-                        }
-
-                        \Flash::success(\Translate::get('m.success.upload'));
-
-                        return \Redirect::toAdmin('media');
-                    } else {
-                        if ($this->request->isAjax()) {
-                            return $this->json(array('status' => 'fail'));
-                        }
-
-                        \Flash::error(\Translate::get('m.error.upload'));
-
-                        return \Redirect::toAdmin('media');
-                    }
-                }
-            } else {
-                $errors = $fileObj->getErrors();
-            }
-
-            return \Redirect::toAdmin('media');
-        }
-
-        $this->checkAjax();
-
-        $fileType = '.jpg,.jpeg,.png,.gif,.bmp,.txt,.rtf,.doc,.docx,.xls,.xlsx,.pdf,.zip,.tar,.rar,.mp3,.wav,.wma';
-
-        $this->template->title(t('media::media.title.upload'))
-                        ->set('formName', 'upload')
-                        ->set('fileType', $fileType)
-                        ->set('folderId', $folderId)
-                        ->setPartial('admin'.DS.'form'.DS.'upload');
-    }
-
      /**
      * Can edit file data by using this method
      *
@@ -246,7 +153,7 @@ class MediaController extends \AdminController
      *
      * @return void
      **/
-    public function explore($id)
+    public function explore($id = 0)
     {
         $pagination = with(new Folders)->pagination($id);
 
@@ -287,7 +194,7 @@ class MediaController extends \AdminController
                         ->set('files', $files)
                         ->set('folders', $folders)
                         ->set('actionBar', $actionBar)
-                        ->jsValue('currentFolder', $id)
+                        ->jsValue('currentFolder', (0 == $id) ? '' : $id)
                         ->setPartial('admin/index');
     }
 

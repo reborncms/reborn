@@ -5,7 +5,11 @@
 
 {{ Form::end() }}
 
-{{ js('dropzone.js', 'media') }}
+{= $dropzone = assetPath('js', 'media') . DS .'dropzone.js' =}
+
+<script type="text/javascript">
+	window.Dropzone || document.write('<script type="text/javascript" src="{{ $dropzone }}"><\/script>');
+</script>
 
 <script type="text/javascript">
 
