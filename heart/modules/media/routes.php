@@ -1,5 +1,20 @@
 <?php
 
+	/* ===== File ===== */
+	// File upload
+	\Route::add(
+			'@admin/media/upload/{int:folderId}?/{str:key}?',
+			'Media\Admin\File::upload',
+			'file_upload'
+		)->method(array('GET', 'POST'));
+
+	// Edit file
+	\Route::add(
+			'@admin/media/edit-file/{int:id}',
+			'Media\Admin\Media::editFile',
+			'edit_file'
+		);
+
 	\Route::get(
 			'@admin/media',
 			'Media\Admin\Media::index',
@@ -12,13 +27,6 @@
 			'Media\Admin\Media::thumbnail', 
 			'thumbnail'
 		)->defaults(array('folderId' => 0));
-
-	// File upload
-	\Route::add(
-			'@admin/media/upload/{int:folderId}?/{str:key}?',
-			'Media\Admin\Media::upload',
-			'file_upload'
-		)->method(array('GET', 'POST'));
 
 	// File Delete
 	\Route::add(
@@ -56,13 +64,6 @@
 			'explorer'
 		);
 
-	// Edit file
-	\Route::add(
-			'@admin/media/edit-file/{int:id}',
-			'Media\Admin\Media::editFile',
-			'edit_file'
-		);
-
 	// wysiwyg
 	\Route::get(
 			'@admin/media/wysiwyg/{int:folderId}?',
@@ -76,4 +77,10 @@
 			'media/image/{:target}/{int:width}?/{int:height}?',
 			'Media\Media::image', 
 			'image_preview'
+		);
+
+	\Route::get(
+			'media/download/{int:id}',
+			'Media\Media::download',
+			'file_download'
 		);
