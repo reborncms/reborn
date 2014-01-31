@@ -2,10 +2,9 @@
 
 namespace Contact\Controller\Admin;
 
-use Reborn\Util\Mailer as Mailer;
 use Contact\Model\Mail as Mail;
 use Contact\Lib\Helper;
-use Event,Flash,Input,Redirect,Translate;
+use Event,Flash,Input,Mailer,Redirect,Translate;
 
 class SendMailController extends \AdminController
 {
@@ -28,6 +27,7 @@ class SendMailController extends \AdminController
 	{
 		if (!user_has_access('contact.reply')) return $this->notFound();
 		$mail =new \stdClass;
+		$sendMail = Mailer::create(array('type' => 'sendmail'));
 		$reply = Mail::where('id', '=', $id)->first();
 		if($reply){
 			$mail->email = $reply->email;
@@ -62,40 +62,30 @@ class SendMailController extends \AdminController
 					
 					$temp = Helper::getTemplate($data,'reply_template');
 					
-					
-					
-					$config = array(
-						'to'		=> $to,
-						'from'		=> $data['from'],
-						'name'		=> $data['name'],
-						'subject'	=> $data['subject'],
-						'body'		=> $temp,
-						'attachment'=> array(
-							'fieldName'=> 'attachment',
-							'value'		=> $data['attachment'],
-							),
-						'attachmentConfig'=> array(
-							'path'		=> UPLOAD.'contact_attachment',
-							'createDir'	=> true,
-							'allowedExt'=> array('jpg', 'jpeg', 'png', 'gif',
-											'txt','pdf','doc','docx','xls','zip','tar',
-											'xlsx','ppt','tif','tiff'),
-							),
-					);
-					
-					$sendmail = Mailer::send($config);
+					$sendMail->to($to);
+					$sendMail->from($data['from'],$data['name']);
+					$sendMail->subject($data['subject']);
+					$sendMail->body($temp);
 
-					$attName = Mailer::getAttName();
-					if ($attName) {
-						$data['attachment'] = UPLOAD.'contact_attachment'.DS.$attName;
+					if ($data['attachment']) {
+						$attachment = Helper::mailAttachment('attachment',array('jpg','jpeg','png','gif','txt','pdf','doc','docx','xls','zip','tar','xlsx','ppt','tif','tiff'));
+
+						if (isset($attachment['error'])) {
+							Flash::error($attachment['error']);
+							return Redirect::to($referer);
+						}
+						
+						$sendMail->attach($attachment['path']);
+						$data['attachment'] = $attachment['name'];
 					}
-					if (isset($sendmail['success'])) {
-						Flash::success($sendmail['success']);
+
+					if ($sendMail->send()) {
+						Flash::success(Translate::get('contact::contact.success_mail_send'));
+						
 						Event::call('reply_email_success' ,array($data,$to));
 						return Redirect::toAdmin('contact/send-mail');
-					}
-					if (isset($sendmail['fail'])) {
-						Flash::error($sendmail['fail']);
+					} else {
+						Flash::error($sendMail->getError());
 						return Redirect::toAdmin('contact/send-mail');
 					}
 					

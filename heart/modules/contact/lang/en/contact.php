@@ -27,6 +27,8 @@ return array(
 		'e_all_template' => 'All Email Template',
 		'add_template'	=> 'Add Template',
 		'add_des_template' => 'Create a new Email Template',
+		'success_mail_send'=> 'Email is Successfully send',
+		'error_host'	=> 'Connection could not be established with host',
 		'labels'	=> array(
 			'subject'	=> 'Subject',
 			'ip'		=> 'Ip',

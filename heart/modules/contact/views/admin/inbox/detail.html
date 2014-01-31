@@ -64,7 +64,7 @@
 		<i class="icon-undo icon-white"></i>
 		{{ t('contact::contact.labels.back') }}
 	</a>
-	<a href="{{ admin_url("contact/send-mail/index/".$mail->id) }}" title="{{ t('contact::contact.labels.reply') }}" class="btn tipsy-tip">
+	<a href="{{ admin_url("contact/send-mail/".$mail->id) }}" title="{{ t('contact::contact.labels.reply') }}" class="btn tipsy-tip">
 		<i class="icon-redo icon-white"></i>
 		{{ t('contact::contact.labels.reply') }}
 	</a>

@@ -4,9 +4,8 @@ namespace Contact\Controller;
 
 use Contact\Model\Mail as Mail;
 use Contact\Model\EmailTemplate as Etemplate;
-use Reborn\Util\Mailer as Mailer;
 use Contact\Lib\Helper;
-use Event,Flash,Input,Redirect,Translate;
+use Event,Flash,Input,Mailer,Redirect,Translate;
 
 class ContactController extends \PublicController
 {
@@ -23,9 +22,10 @@ class ContactController extends \PublicController
 	 **/
 	public function index($widget = false )
 	{
-		$mail = new \stdClass;
+		
 		$errors = new \Reborn\Form\ValidationError();
 		$hasAttach = \Setting::get('attach_field');
+		$mail = Mailer::create(array('type' => 'sendmail'));
 		if (Input::isPost()) {
 			$referer = Input::server('HTTP_REFERER');
 
@@ -39,41 +39,33 @@ class ContactController extends \PublicController
 				
 				$temp = Helper::getTemplate($data,'contact_template');
 				
-				$config = array(
-					'to'		=> array(\Setting::get('site_mail')),
-					'from'		=> $data['email'],
-					'name'		=> $data['name'],
-					'subject'	=> $data['subject'],
-					'body'		=> $temp,
-					'attachment'=> array(
-						'fieldName'=> 'attachment',
-						'value'		=> $data['attachment'],
-						),
+				$mail->to(\Setting::get('site_mail'), \Setting::get('site_title'));
+				
+				$mail->from($data['email'], $data['name']);
+				$mail->subject($data['subject']);
+				$mail->body($temp);
+				
+				if ($data['attachment']) {
+					$attachment = Helper::mailAttachment('attachment',array('jpg','jpeg','png','gif','txt','pdf','doc','docx','xls','zip','tar','xlsx','ppt','tif','tiff'));
+
+					if (isset($attachment['error'])) {
+						Flash::error($attachment['error']);
+						return Redirect::to($referer);
+					}
 					
-					'attachmentConfig'=> array(
-						'path'		=> UPLOAD.'contact_attachment',
-						'createDir'	=> true,
-						'allowedExt'=> array('jpg', 'jpeg', 'png', 'gif',
-										'txt','pdf','doc','docx','xls','zip','tar',
-										'xlsx','ppt','tif','tiff'),
-						),
-				);
-				
-				
-				$contact = Mailer::send($config);
-				
-				$attName = Mailer::getAttName();
-				if ($attName) {
-					$data['attachment'] = UPLOAD.'contact_attachment'.DS.$attName;
+					$mail->attach($attachment['path']);
+					$data['attachment'] = $attachment['name'];
 				}
-				if (isset($contact['success'])) {
-					Flash::success($contact['success']);
+				
+				
+				
+				if ($mail->send()) {
+					Flash::success(Translate::get('contact::contact.success_mail_send'));
 					$this->getData($data);
 					Event::call('receive_mail_success',array($data));
 					return Redirect::to($referer);
-				}
-				if (isset($contact['fail'])) {
-					Flash::error($contact['fail']);
+				} else {
+					Flash::error($mail->getError());
 					return Redirect::to($referer);
 				}
 				
@@ -140,7 +132,7 @@ class ContactController extends \PublicController
 	public static function validate()
 	{
 		$rule = array(
-			        'name'   => 'required|maxLength:25',
+			        'name'   => 'required|maxLength:50',
 			        'email'  => 'required|email',
 			        'subject'=> 'required|maxLength:50',
 			        'message'=> 'required'

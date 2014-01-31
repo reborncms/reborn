@@ -3,6 +3,7 @@
 namespace Contact\Lib;
 
 use Contact\Model\EmailTemplate as Etemplate;
+use Reborn\Fileupload\Uploader as Upload;
 
 class Helper {
 
@@ -80,5 +81,32 @@ class Helper {
         	$form = str_replace('{{'.$key.'}}', $value, $form);
         }
         return html_entity_decode($form);
+	}
+
+	/**
+	 * To upload for Mail Attachment
+	 *
+	 * @param string $name (attachment filed name)
+	 * @param array $ext   (Mime Type)
+	 * @param string $path (Upload Folder location)
+	 * @return array
+	 * @author RebornCMS Development Team
+	 **/
+	public static function mailAttachment($name,$ext = array(),$path = null)
+	{
+		
+		if ($path == null) {
+			$path = UPLOAD.'contact_attachment';
+		}
+		
+		$uploadError = Upload::uploadInit($name, array('path'=> $path,'createDir' => true,'allowedExt'=>$ext));
+
+		if ($uploadError) {
+			$result['error'] = $uploadError['errors']['0'];
+			return $result;
+		}
+
+		$attachmentName = Upload::upload($name);
+		return array('path'=>$path.DS.$attachmentName['savedName'],'name'=>$attachmentName['savedName']);
 	}
 }
