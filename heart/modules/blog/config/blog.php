@@ -7,7 +7,7 @@
  * @since  1.2
  */
 
-return [
+return array(
 
 	/**
 	 * Default Post Type for Blog Post
@@ -22,7 +22,7 @@ return [
 	 *  - Gallery [Post type for gallery. example: Trip gallery]
 	 *  - Status [Post type for short status, like twitter feed]
 	 */
-	'post_types' =>	[
+	'post_types' =>	array(
 						'standard'	=> 'Standard',
 						'image'		=> 'Image',
 						'quote'		=> 'Quote',
@@ -30,5 +30,5 @@ return [
 						'audio'		=> 'Audio',
 						'gallery'	=> 'Gallery',
 						'status'	=> 'Status'
-					]
-];
+					)
+);
