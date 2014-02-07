@@ -236,8 +236,11 @@ class Installer
 
 	protected static function moduleInstall()
 	{
+		// Start the Application
+		static::$app->start(true);
+
 		// Start the Database initialize
-        DB::initialize();
+        DB::initialize(static::$app);
 
         // Start the Setting initialize
         Setting::initialize(static::$app);

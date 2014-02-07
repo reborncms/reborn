@@ -201,9 +201,10 @@ class Application extends \Illuminate\Container\Container
     /**
      * Start the application
      *
+     * @param boolean $session_is_started
      * @return void
      **/
-    public function start()
+    public function start($session_is_started = false)
     {
         if ($this->started) {
             throw new RbException("Reborn CMS Application is already started!");
@@ -216,7 +217,7 @@ class Application extends \Illuminate\Container\Container
         $this->setErrorHandler();
 
         // call the appInitialize method
-        $this->appInitialize();
+        $this->appInitialize($session_is_started);
 
         $this->authProviderRegister();
 
@@ -333,8 +334,9 @@ class Application extends \Illuminate\Container\Container
      * But this method is call from application start method only.
      * Don't call more than once.
      *
+     * @param boolean $session_is_started
      */
-    public function appInitialize()
+    public function appInitialize($session_is_started)
     {
         if ($this->started) {
             return true;
@@ -342,7 +344,11 @@ class Application extends \Illuminate\Container\Container
 
         // Start the Session
         if (isset($this['session'])) {
-            $this['session']->start();
+
+            if (! $session_is_started ) {
+                $this['session']->start();    
+            }
+            
             \Security::setApplication($this);
 
             // Check and Make CSRF Token
