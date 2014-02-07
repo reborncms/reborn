@@ -314,7 +314,7 @@ class UserController extends \PublicController
 					    $mail = Mailer::send($config);
 
 					    \Flash::success(t('user::user.activate.check'));
-						\Redirect::to('/');
+						return \Redirect::to('/');
 
 					}
 					catch (\Cartalyst\Sentry\Users\UserExistsException $e)
@@ -603,6 +603,8 @@ class UserController extends \PublicController
 	        'email' => 'required|email',
 	        'first_name' =>'required|minLength:2|maxLength:40',
 	        'last_name' => 'required|minLength:2|maxLength:40',
+	        'password' => 'required|minLength:6',
+	        'confpass' => 'required|equal:password'
 	    );
 
 		$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
