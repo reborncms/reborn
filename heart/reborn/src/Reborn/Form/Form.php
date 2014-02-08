@@ -184,7 +184,11 @@ class Form
             $id = ' id="'.Str::sanitize($name, 'A-Za-z-0-9-_\s').'"';
         }
 
-        $value = static::getValue($name, $value);
+        if ($value == null) {
+
+            $value = static::getValue($name, $value);
+            
+        }
 
         $val = ' ';
         if (!is_null($value)) {
