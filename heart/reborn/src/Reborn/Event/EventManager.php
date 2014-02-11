@@ -45,7 +45,13 @@ class EventManager
 			throw new EventException("Evetn driver {$default} is not support!");
 		}
 
-		// Event from content folder
+		// Event from base content folder
+		// This event will be work for all site
+		if (file_exists(BASE_CONTENT.'events.php')) {
+			require BASE_CONTENT.'events.php';
+		}
+
+		// Event from current site content folder
 		if (file_exists(CONTENT.'events.php')) {
 			require CONTENT.'events.php';
 		}

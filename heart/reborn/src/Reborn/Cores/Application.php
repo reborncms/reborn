@@ -346,9 +346,9 @@ class Application extends \Illuminate\Container\Container
         if (isset($this['session'])) {
 
             if (! $session_is_started ) {
-                $this['session']->start();    
+                $this['session']->start();
             }
-            
+
             \Security::setApplication($this);
 
             // Check and Make CSRF Token
@@ -404,8 +404,22 @@ class Application extends \Illuminate\Container\Container
             }
         }
 
+        // Check event for Response content finalize.
+        // You can do html content compressing, minify with this step
+        // This event will be work for Normal Content Response
+        if (!$response instanceof JsonResponse ||
+                !$response instanceof StreamedResponse) {
+
+            if (Event::has('reborn.responsecontent.final')) {
+                $content = $response->getContent();
+                $content = Event::first('reborn.responsecontent.final', array($content));
+
+                $response->setContent($content);
+            }
+        }
+
         // Call the Event Name App Ending
-        Event::call('reborn.app.ending', $response);
+        Event::call('reborn.app.ending', array($response));
 
         return $response->send();
     }
