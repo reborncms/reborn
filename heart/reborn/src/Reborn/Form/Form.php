@@ -83,10 +83,10 @@ class Form
             $action = Uri::create($action);
         }
 
-        $id = (!isset($attrs['id'])) ? ' id = "'.$name.'"' : '';
+        $id = (!isset($attrs['id'])) ? ' id="'.$name.'"' : '';
         $enctype = ($file == true) ? " enctype='multipart/form-data'" : "";
 
-        return '<form name="'.$name.'"'.$method.' action="'.$action.'"'.$id.$attr.$enctype.'>';
+        return '<form name="'.$name.'"'.$method.' action="'.$action.'"'.$id.' '.$attr.$enctype.'>';
     }
 
     /**
@@ -187,7 +187,7 @@ class Form
         if ($value == null) {
 
             $value = static::getValue($name, $value);
-            
+
         }
 
         $val = ' ';
