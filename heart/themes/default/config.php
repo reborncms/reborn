@@ -7,6 +7,7 @@ return array(
 	 *  - green
 	 *  - dark
 	 *  - blue
+	 *  - light
 	 */
 	'theme'	=> null,
 );
