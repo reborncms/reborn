@@ -7,7 +7,6 @@
 	<meta name="author" content="Reborn CMS Development Team" />
 	<meta name="description" content="RebornCMS Dashboard" />
 	<meta name="keywords" content="reborn, cms, dashboard" />
-	<!--<base href="{{ rbUrl() }}" /> -->
 
 	<link rel="shortcut icon" type="image/x-icon" href="{{ assetPath('img') }}/favicon.ico">
 
@@ -21,6 +20,10 @@
 
 	{{ less('import.less') }}
 
+	{{ if(! is_null(theme_config('theme')) )}}
+		{{ less('theme-'.theme_config('theme').'.less') }}
+	{{ endif }}
+
 	{{ if('my' == \Facade::getApplication()->session->get('reborn_dashboard_language')) }}
 	{{ css('myanmar-language.css') }}
 	{{ endif }}
@@ -29,7 +32,7 @@
 
 	<script type="text/javascript">
 		var ADMIN = '{{ $adminUrl }}',
-			SITEURL = '{{ rbUrl() }}';
+			SITEURL = '{{ url() }}';
 	</script>
 
 	{{ js('vendor/jquery-1.9.0.min.js') }}

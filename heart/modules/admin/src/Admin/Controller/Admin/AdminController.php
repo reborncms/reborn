@@ -18,7 +18,7 @@ class AdminController extends \AdminController
 		$widgets['leftcolumn'] = new DashboardWidget(Event::call('reborn.dashboard.widgets.leftcolumn'));
 		$widgets['rightcolumn'] = new DashboardWidget(Event::call('reborn.dashboard.widgets.rightcolumn'));
 
-		$this->template->title(Setting::get('site_title').' - '.t('label.dashboard'))
+		$this->template->title(t('label.dashboard'))
 						->set('widgets', $widgets)
 						->view('dashboard');
 	}

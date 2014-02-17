@@ -211,9 +211,11 @@ input[type=button][disabled]:hover
 .block, .block-gray {
     width: 290px;
     display: block;
-    .bg(@gray_color);
+    background: #F5F5F5;
+    .shadow(0, 2px, 2px, #D3D4D5);
 
     h3 {
+        border-bottom: 1px solid @gray_color;
         color: #ffffff;
         padding: 10px 15px;
         font-family: @h_font;
@@ -232,45 +234,86 @@ input[type=button][disabled]:hover
         color: #ffffff;
         text-align: justify;
     }
+
+    ul {
+        li {
+            padding: 10px;
+            list-style:none;
+            color:#5C5C5C;
+            border-top: 1px solid #DADADA;
+
+            &:first-child {
+               border-top: none;
+            }
+
+            .widget-list-meta {
+                display: block;
+                margin-bottom: 5px;
+                display  : block;
+                *zoom    : 1;
+                *display : inline-block;
+
+                &:after {
+                    clear:both;
+                    content:".";
+                    display:block;
+                    font-size:0;
+                    height:0;
+                    visibility:hidden;
+                }
+            }
+
+            [class^="icon-"] {
+                color: #9D9C9C;
+            }
+
+            a {
+                color: #316499;
+
+                &:hover {
+                    color: #344A61;
+                }
+            }
+
+            .label {
+                padding: 0 8px;
+            }
+        }
+    }
 }
 
 .block-cyan {
-    .bg(@cyan_color);
-
     h3 {
         .bg(@cyan_light_color);
+        border-bottom: 1px solid @cyan_color;
     }
 }
 
 .block-dark {
-    .bg(@dark_color);
-
     h3 {
         .bg(@dark_light_color);
+        border-bottom: 1px solid @dark_color;
     }
 }
 
 .block-blue {
-    .bg(@blue_color);
-
     h3 {
         .bg(@blue_light_color);
+        border-bottom: 1px solid @blue_color;
     }
 }
 
 .block-red {
-    .bg(@red_color);
-
     h3 {
         .bg(@red_light_color);
+        border-bottom: 1px solid @red_color;
     }
 }
 
 .block-green {
-    .bg(@green_color);
-
     h3 {
         .bg(@green_light_color);
+        border-bottom: 1px solid @green_color;
     }
 }
 

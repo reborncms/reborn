@@ -56,6 +56,12 @@
     padding: @y @x;
 }
 
+.shadow (@x:0px, @y:1px, @blur:0px, @color:#efefef) {
+    -webkit-box-shadow: @x @y @blur @color;
+       -moz-box-shadow: @x @y @blur @color;
+            box-shadow: @x @y @blur @color;
+}
+
 .shadow_inset (@x:0px, @y:1px, @blur:0px, @color:#efefef) {
     -webkit-box-shadow: inset @x @y @blur @color;
        -moz-box-shadow: inset @x @y @blur @color;

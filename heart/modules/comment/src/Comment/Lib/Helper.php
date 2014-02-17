@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Comment\Lib;
 
@@ -13,7 +13,7 @@ class Helper
 		$s_comment .= '<li id="comment-'. $comment['id'] .'" class="single_comment'. $user_class .'">';
 		if ($comment['user_id'] != null) {
 			$user = \Auth::getUserProvider()->findById($comment['user_id']);
-			$author_name = $user->first_name . ' ' . $user->last_name; 
+			$author_name = $user->first_name . ' ' . $user->last_name;
 			$author_email = $user->email;
 			$author_link = rbUrl('user/profile/'.$user->id);
 		} else {
@@ -31,7 +31,7 @@ class Helper
 			$s_comment .= '<img src="'. $default_img .'" alt="'. $author_name .'" width="'.\Setting::get('comment_gravatar_size').'px" />';
 		}
 		$s_comment .= '</div>';
-		
+
 		$s_comment .= '<span class="author_name" id="comment_'.$comment['id'].'_author_name">';
 		if (!empty($author_link)) {
 			$s_comment .= '<a href="'. $author_link .'">'. $author_name .'</a>';
@@ -90,7 +90,7 @@ class Helper
 							->take($count)
 							->get();
 		$com = array();
-							
+
 		foreach ($comments as $comment) {
 			if ($comment->name == null) {
 				$comment->name = $comment->author_name;
@@ -129,7 +129,13 @@ class Helper
 		if (!empty($comments)) {
 			foreach ($comments as $comment) {
 				$widget['body'] .= '<li>
+									<div class="widget-list-meta">
 										<span class="date">'.date("d-m-Y", strtotime($comment->created_at)).'</span>
+										<span class="dashboard_widget_action">
+											'.self::commentStatusLabel($comment->id, $comment->status).'
+										</span>
+									</div>
+									<div class="widget-list-content">
 										<span class="cmt_summary no-overflow-txt" style="width:70%;">
 											<span class="commenter">'.self::getUserNameWithLink($comment).'</span>
 											commented at
@@ -137,9 +143,7 @@ class Helper
 											on
 											<span class="cmt-title">'. $comment->content_title .'</span>
 										</span>
-										<span class="dashboard_widget_action">
-											'.self::commentStatusLabel($comment->id, $comment->status).'
-										</span>
+									</div>
 									</li>';
 			}
 		} else {
@@ -154,13 +158,13 @@ class Helper
 	{
 		if ($status == 'approved') {
 			$status_class = 'label-success';
-			$change_info = t('comment::comment.info.unapprove'); 
+			$change_info = t('comment::comment.info.unapprove');
 		} elseif ($status == 'pending') {
 			$status_class = 'label-warning';
 			$change_info = t('comment::comment.info.approve');
 		} else {
 			$status_class = 'label-error';
-			$change_info = t('comment::comment.info.approve'); 
+			$change_info = t('comment::comment.info.approve');
 		}
 
 		$content = '<a href="'. adminUrl('comment/change-status/'.$id) .'" class="tipsy-tip" title="'. $change_info .'">
@@ -168,7 +172,7 @@ class Helper
 					</a>';
 
 		return $content;
-		
+
 	}
 
 	/**
@@ -186,7 +190,7 @@ class Helper
 	 *
 	 * @return boolean
 	 **/
-	public static function commentDelete($id, $type, $forceDelete = false) 
+	public static function commentDelete($id, $type, $forceDelete = false)
 	{
 		if ($forceDelete) {
 

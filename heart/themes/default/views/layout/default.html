@@ -93,6 +93,9 @@
 						{{ else }}
 						{{ $module['description']['en'] }}
 						{{ endif }}
+						{{ if($module['version'] > $module['db_version']) }}
+						<span style="color:red;"> ** Need to Update **</span>
+						{{ endif }}
 					</h2>
 
 					{{ if(isset($modToolbar) and (!empty($modToolbar))) }}

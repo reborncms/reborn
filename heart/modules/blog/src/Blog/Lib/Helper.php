@@ -56,7 +56,7 @@ class Helper {
 		return $gc;
 	}
 
-	public static function langList($id, $frontend = false) 
+	public static function langList($id, $frontend = false)
 	{
 		$langList = array();
 		$main = Blog::find($id);
@@ -65,10 +65,10 @@ class Helper {
 
 			$main = Blog::find($main->lang_ref);
 
-		} 
+		}
 
 		$langList[$main->lang] = array(
-			'id' => $main->id, 
+			'id' => $main->id,
 			'lang' => $main->lang,
 			'title' => $main->title,
 			'slug' => $main->slug,
@@ -84,7 +84,7 @@ class Helper {
 		foreach ($bLang as $lang) {
 
 			$langList[$lang->lang] = array(
-				'id' => $lang->id, 
+				'id' => $lang->id,
 				'lang' => $lang->lang,
 				'title' => $lang->title,
 				'slug' => $lang->slug,
@@ -143,14 +143,18 @@ class Helper {
 		if (count($posts) > 0) {
 			foreach ($posts as $post) {
 				$widget['body'] .= '<li>
-										<span class="date">'.$post->post_date('d M Y').'</span>
-										<span class="blog-author"><i class="icon-user icon-white"></i>
-											<a href="'.rbUrl('user/profile/'.$post->author->id).'">'.$post->author_name.'</a>
+									<div class="widget-list-meta">
+										<span class="date f-right">'.$post->post_date('d M Y').'</span>
+										<span class="blog-author"><i class="icon-user"></i>
+											<a href="'.url('user/profile/'.$post->author->id).'">'.$post->author_name.'</a>
 										</span>
-										<a href="'.rbUrl('blog/'.$post->slug).'" target="_black" class="no-overflow-txt" style="width: 65%;">'.$post->title.'</a>
+									</div>
+									<div class="widget-list-content">
+										<a href="'.url('blog/'.$post->slug).'" target="_black" class="no-overflow-txt" style="width: 65%;">'.$post->title.'</a>
 										<span class="dashboard_widget_action">
-											<a href="'.adminUrl('blog/edit/'.$post->id) .'" title="'. t('global.edit') .'" class="tipsy-tip"><i class="icon-edit icon-white"></i></a>
+											<a href="'.admin_url('blog/edit/'.$post->id) .'" title="'. t('global.edit') .'" class="tipsy-tip"><i class="icon-edit"></i></a>
 										</span>
+									</div>
 									</li>';
 			}
 		} else {
@@ -197,11 +201,11 @@ class Helper {
 	 * Check Language Duplicate
 	 *
 	 * @return void
-	 * @author 
+	 * @author
 	 **/
 	public static function langDuplicate($lang, $lang_ref)
 	{
-		
+
 		$check = Blog::where('lang', $lang)
 						->where('lang_ref', $lang_ref)
 						->count();
@@ -224,7 +228,7 @@ class Helper {
 	/**
 	 * Check the post is trashed or not
 	 *
-	 * @return bool 
+	 * @return bool
 	 **/
 	public static function isTrashed($id)
 	{
