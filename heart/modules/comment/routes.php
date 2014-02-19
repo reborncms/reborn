@@ -4,7 +4,7 @@
 
 // --- Back End --- //
 
-\Route::add('@admin/comment/index/{p:page}?', 'Comment\Admin\Comment::index', 'admin_comment_index');
+\Route::add('@admin/comment/{p:page}?', 'Comment\Admin\Comment::index', 'admin_comment_index');
 
 \Route::get('@admin/comment/filter/{alpha:status}/{p:page}?', 'Comment\Admin\Comment::filter', 'admin_comment_filter');
 

@@ -28,7 +28,7 @@
 
 	\Route::post('autosave', 'Blog\Admin\Blog::autosave', 'admin_blog_autosave');
 
-	\Route::post('trash/{p:page}?', 'Blog\Admin\Blog::trash', 'admin_blog_trash');
+	\Route::add('trash/{p:page}?', 'Blog\Admin\Blog::trash', 'admin_blog_trash');
 
 	\Route::add('restore/{int:id}', 'Blog\Admin\Blog::restore', 'admin_blog_restore');
 
