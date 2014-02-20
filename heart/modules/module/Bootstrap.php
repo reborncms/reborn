@@ -49,6 +49,11 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
         return $mod_toolbar;
 	}
 
-	public function register() {}
+	public function register()
+    {
+        \Event::on('reborn.dashboard.widgets.rightcolumn', function(){
+            return \Module\NotifyWidget::dashboardWidget();
+        });
+    }
 
 }

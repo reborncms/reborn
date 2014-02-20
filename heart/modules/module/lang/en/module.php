@@ -73,6 +73,10 @@ return array(
 	'btn_label_disable'		=> 'Click to Disable',
 	'btn_label_enable'		=> 'Click to Enable',
 
+	// Dashboard Widget Label
+	'dashboard_widget_title'=> 'Need to upgrade these module!',
+	'dashboard_widget_text'=> '"%s" Module update is avaliable now.',
+
 );
 
 
