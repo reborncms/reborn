@@ -12,7 +12,7 @@
 			</div> <!-- END of .mod-actions-box.left-box -->
 
 			<div class="mod-actions-box right-box">
-				{{ if($m->needToUpdate() and $k != 'module') }}
+				{{ if($m->needToUpdate()) }}
 				<a href="{{ admin_url('module/upgrade/'.$k) }}"
 				class="tipsy-tip"
 				title="{{ t('module::module.btn_label_upgrade') }}">
