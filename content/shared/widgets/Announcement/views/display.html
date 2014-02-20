@@ -1,6 +1,6 @@
 <div class="widget">
 	<h2 class="widget-title">{{ $title }}</h2>
 	<div class="widget-body{{ ($text_wrapper_class) ? ' '.$text_wrapper_class : '' }}">
-		{{ $text }}
+		{{ html_entity_decode($text) }}
 	</div>
 </div>
