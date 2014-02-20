@@ -12,11 +12,11 @@
 			</div> <!-- END of .mod-actions-box.left-box -->
 
 			<div class="mod-actions-box right-box">
-				{{ if($m->needToUpdate()) }}
-				<a href="{{ adminUrl('module/upgrade/'.$k) }}"
+				{{ if($m->needToUpdate() and $k != 'module') }}
+				<a href="{{ admin_url('module/upgrade/'.$k) }}"
 				class="tipsy-tip"
 				title="{{ t('module::module.btn_label_upgrade') }}">
-					<i class="icon-cloudup icon-white"></i>
+					<i class="icon-cloudup icon-red"></i>
 				</a>
 				{{ endif }}
 

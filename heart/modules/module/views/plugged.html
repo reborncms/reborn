@@ -8,14 +8,14 @@
 		<div class="module-actions clearfix">
 			<div class="mod-actions-box left-box">
 				{{ if( $m->isEnabled() ) }}
-				<a href="{{ adminUrl('module/disable/'.$k) }}"
+				<a href="{{ admin_url('module/disable/'.$k) }}"
 				class="tipsy-tip"
 				title="{{ t('module::module.btn_label_disable') }}">
 					<i class="icon-refresh icon-white"></i>
 					Disable
 				</a>
 				{{ else }}
-				<a href="{{ adminUrl('module/enable/'.$k) }}"
+				<a href="{{ admin_url('module/enable/'.$k) }}"
 				class="tipsy-tip"
 				title="{{ t('module::module.btn_label_enable') }}">
 					<i class="icon-refresh icon-white"></i>
@@ -26,21 +26,21 @@
 
 			<div class="mod-actions-box right-box">
 				{{ if($m->needToUpdate()) }}
-				<a href="{{ adminUrl('module/upgrade/'.$k) }}"
+				<a href="{{ admin_url('module/upgrade/'.$k) }}"
 				class="tipsy-tip"
 				title="{{ t('module::module.btn_label_upgrade') }}">
-					<i class="icon-cloudup icon-white"></i>
+					<i class="icon-cloudup icon-red"></i>
 				</a>
 				{{ endif }}
 
-				<a href="{{ adminUrl('module/uninstall/'.$k) }}"
+				<a href="{{ admin_url('module/uninstall/'.$k) }}"
 				class="tipsy-tip"
 				title="{{ t('module::module.btn_label_uninstall') }}">
 					<i class="icon-close icon-white"></i>
 				</a>
 
 				{{ ifnot($m->isCore()) }}
-				<a href="{{ adminUrl('module/delete/'.$k) }}"
+				<a href="{{ admin_url('module/delete/'.$k) }}"
 				class="tipsy-tip"
 				title="{{ t('module::module.btn_label_delete') }}">
 					<i class="icon-remove icon-white"></i>

@@ -24,5 +24,5 @@ Route::get('@admin/module/delete/{str:name}',
 
 Route::add('@admin/module/upload', 'Module\Admin\Module::upload', 'module_upload');
 
-// backward. Tmp route
+// backward. Tmp route for 1.0
 Route::add('@admin/module/update', 'Module\Admin\Module::update', 'module_update');
