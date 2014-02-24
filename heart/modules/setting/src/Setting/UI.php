@@ -117,11 +117,13 @@ class UI
     {
         list($value, $attrs) = static::getClassAndValue($v);
 
+        $checked = false;
+
         if ($value == '1' or $value === true) {
-            $attrs = $attrs + array('checked' => 'checked');
+            $checked = true;
         }
 
-        return \Form::checkbox($v['slug'], $value, $attrs);
+        return \Form::checkbox($v['slug'], $value, $checked, $attrs);
     }
 
     /**
