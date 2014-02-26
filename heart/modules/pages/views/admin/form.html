@@ -108,10 +108,12 @@
 
 				{{ Form::hidden('parent_id', $page->parent_id) }}
 
-				{{ Form::hidden('id', $page->id, array('id' => 'post_id')) }}
+				{{ Form::hidden('id', ($method == 'edit') ? $page->id : '', array('id' => 'post_id')) }}
 
 				{{ if($method == 'edit') }}
+
 					{{ Form::hidden('status', $status) }}
+
 				{{ endif }}
 
 				{{ if($method == 'create' || $status == 'draft') }}
