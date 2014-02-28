@@ -13,6 +13,10 @@
 
 	{{ global_asset('css', 'jqueryui/stupid/jquery-ui-1.10.3.custom.min.css') }}
 
+	<script type="text/javascript">
+	var SITEURL = '{{ url() }}';
+	</script>
+
 	{{ global_asset('js', 'jquery.min.js') }}
 
 	{{ global_asset('js', 'jqueryui/jquery-ui-1.10.3.custom.min.js') }}

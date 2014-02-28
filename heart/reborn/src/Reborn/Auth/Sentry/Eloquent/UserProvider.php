@@ -16,7 +16,7 @@ class UserProvider extends Provider
 	/**
 	 * Count all User.
 	 *
-	 * @return integer	 
+	 * @return integer
 	 **/
 	public function count()
 	{
@@ -58,8 +58,8 @@ class UserProvider extends Provider
 	 * @param mixed $value
 	 * @param integer|null $limit
 	 * @param integer|null $offset
-	 * @param array $columns	 
-	 * @return \Illuminate\Database\Eloquent\Collection	 
+	 * @param array $columns
+	 * @return \Illuminate\Database\Eloquent\Collection
 	 **/
 	public function findAllBy($key, $value, $limit = null, $offset = null, $columns = array('*'))
 	{
@@ -78,12 +78,12 @@ class UserProvider extends Provider
 	}
 
 	/**
-	 * Find all user with limit 
+	 * Find all user with limit
 	 *
 	 * @param integer $limit
 	 * @param integer|null $offset
-	 * @param array $columns	
-	 * @return \Illuminate\Database\Eloquent\Collection	 
+	 * @param array $columns
+	 * @return \Illuminate\Database\Eloquent\Collection
 	 **/
 	public function findAllWithLimit($limit, $offset = null, $columns = array('*'))
 	{
@@ -95,7 +95,7 @@ class UserProvider extends Provider
 	/**
 	 * Delete User
 	 *
-	 * @param integer $id	 
+	 * @param integer $id
 	 * @return void
 	 **/
 	public function delete($id)
@@ -104,6 +104,39 @@ class UserProvider extends Provider
 
 		$model->metadata->delete();
 
-		$model->delete();		
+		$model->delete();
+	}
+
+	/**
+	 * Search user with first name or last name.
+	 * Example
+	 * <code>
+	 * 		// Search for user's name include "nyan"
+	 *   	User::search('nyan');
+	 *
+	 *     	// Search user's name include nyan without ID 1
+	 *      User::search('nyan', array(1));
+	 * </code>
+	 *
+	 * @param string $name User's name keyword to search
+	 * @param array $notIn User IDs for whereNotIn
+	 * @return \Illuminate\Database\Eloquent\Collection
+	 **/
+	public function search($name, $notIn = array())
+	{
+		$model = $this->createModel();
+
+		if ( ! empty($notIn) ) {
+			return $model->whereNotIn('id', $notIn)
+						->where(function($q) use ($name)
+						{
+							$q->where('first_name', 'like', '%'.$name.'%')
+								->orWhere('last_name', 'like', '%'.$name.'%');
+						})->get();
+		}
+
+		return $model->where('first_name', 'like', '%'.$name.'%')
+				->orWhere('last_name', 'like', '%'.$name.'%')
+				->get();
 	}
 }
