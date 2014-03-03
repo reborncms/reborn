@@ -26,4 +26,6 @@
 
 \Route::add('pages/preview/{*:slug}', 'Pages\Pages::preview', 'pages_preview');
 
+\Route::add('{*:slug}/comments/{p:page}?', 'Pages\Pages::index', 'pages_view_with_comment');
+
 \Route::add('{*:slug}', 'Pages\Pages::index', 'pages_view');

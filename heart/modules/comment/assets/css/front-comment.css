@@ -37,6 +37,11 @@
 	clear:both;
 }
 
+#comment-pagination {
+	margin-bottom: 15px;
+	float:right;
+}
+
 #comment_form input[type=text], #comment_form input[type=email], #comment_form input[type=url] {
 	border: 1px solid #CECECE;
 	padding: 8px;

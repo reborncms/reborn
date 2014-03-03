@@ -13,7 +13,7 @@ class Pages extends \Eloquent
         'slug' => 'required|maxLength:225'
     );
 
-    public static function page_structure($no_draft = false)
+    public static function pageStructure($no_draft = false)
     {
         $ins = new static();
 
@@ -48,7 +48,7 @@ class Pages extends \Eloquent
      *
      * @return void
      **/
-    public static function get_parent_uri($id)
+    public static function getParentUri($id)
     {
         $ins = new static();
 

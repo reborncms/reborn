@@ -101,7 +101,12 @@
 				<td>
 					<div class="icons-bar">
 						{{ if ($list_type != 'trash') }}
-							<a href="{{ url('blog/preview/'.$blog->slug) }}" title="{{ t('global.preview') }}" class="tipsy-tip" target="_blank"><i class="icon-view"></i></a>
+							{{ if($blog->status == 'draft') }}
+								{= $view_url = url('blog/preview/'.$blog->slug) =}
+							{{ else }}
+								{= $view_url = url('blog/'.$blog->slug) =}
+							{{ endif }}
+							<a href="{{ $view_url }}" title="{{ t('global.preview') }}" class="tipsy-tip" target="_blank"><i class="icon-view"></i></a>
 							<a href="{{ admin_url('blog/multilang/'.$blog->id) }}" title="{{ t('blog::blog.add_lang') }}" class="tipsy-tip"><i class="icon-earth"></i></a>
 							<a href="{{ admin_url('blog/edit/'.$blog->id) }}" title="{{ t('global.edit') }}" class="tipsy-tip"><i class="icon-edit"></i></a>
 							<!-- delete for which has multi-lang -->

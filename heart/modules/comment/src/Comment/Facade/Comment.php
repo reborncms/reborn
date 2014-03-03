@@ -21,7 +21,7 @@ class Comment extends \Facade
 	 * @param int $status Comment status
 	 * @return string
 	 **/
-	protected function get($content_id, $module, $status)
+	protected function get($content_id, $module, $status, $cmt_uri_segment = 3)
 	{
 		$app = static::$app;
 
@@ -33,32 +33,54 @@ class Comment extends \Facade
 
 		$comment_form = '';
 
-		$restructured = array();
+		$comments = array();
 
-		$comments = Model::with('author')->where('content_id', $content_id)
+		$total_comments = Model::where('content_id', $content_id)
 								->where('module', $module)
 								->where('status', 'approved')
-								->get()
-								->toArray();
-
-		$total_comments = count($comments);
+								->count();
 
 		if ($total_comments > 0) {
-			foreach ($comments as $comment) {
-				$com[$comment['id']] = $comment;
+
+			$total_parent_comments = Model::where('parent_id', 0)
+								->where('content_id', $content_id)
+								->where('module', $module)
+								->where('status', 'approved')
+								->count();
+
+			$options = array(
+			    'total_items'       => $total_parent_comments,
+			    'items_per_page'    => \Setting::get('comment_per_page', 10),
+			    'pagi_numbers'		=> false,
+			    'template'			=> array(
+			    	'start_container' => '<div class="pagination" id="comment-pagination">',
+			    ),
+			);
+
+			if (!\Uri::segment($cmt_uri_segment)) {
+				$options['url'] = \Uri::current().'/comments/';
 			}
 
-			foreach ($com as $c) {
-				if (array_key_exists($c['parent_id'], $com)) {
-					$com[$c['parent_id']]['children'][] =& $com[$c['id']];
-				}
-				if ($c['parent_id'] == 0) {
-					$restructured[] =& $com[$c['id']];
-				}
+			$pagination = \Pagination::create($options);
+
+			if ($pagination->isInvalid()) {
+				return \Response::clueless();
 			}
+
+			$comments = Model::with('author')
+								->where('parent_id', 0)
+								->where('content_id', $content_id)
+								->where('module', $module)
+								->where('status', 'approved')
+								->skip(\Pagination::offset())
+								->take(\Pagination::limit())				      
+								->get();
+
+			$app->template->set('pagination', $pagination);
+
 		}
 
-		$app->template->set('comments', $restructured)
+		$app->template->set('comments', $comments)
 						->set('total_comments', $total_comments)
 						->set('status', $status)
 						->set('module', $module)
@@ -69,9 +91,13 @@ class Comment extends \Facade
 		}
 
 		if ($status == 'open') {
+
 			$comment_form = $app->template->partialRender('comment::commentForm');
-		} else if ($status == 'close' and $total_comments > 0) {
+
+		} elseif ($status == 'close' and $total_comments > 0) {
+
 			$comment_form = "Comment closed.";
+
 		}
 
 		$app->template->set('comment_form', $comment_form);

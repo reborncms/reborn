@@ -4,9 +4,9 @@
 		<ol class="sortable no-list">
 			{{ loop($pages as $page) }}
 				<li id="page_{{ $page['id'] }}" class="parents">
-					{{ Pages\Lib\Helper::page_structure($page) }}
+					{{ Pages\Lib\Helper::pageStructure($page) }}
 					{{ if(isset($page['children'])) }}
-						{{ Pages\Lib\Helper::generate_children($page['children']) }}
+						{{ Pages\Lib\Helper::generateChildren($page['children']) }}
 					{{ endif }}
 				</li>
 			{{ endloop }}

@@ -12,7 +12,7 @@ class Helper
 
     protected static $page_list;
 
-    public static function page_structure($page)
+    public static function pageStructure($page)
     {
         $ps = '';
         /*if (isset($page['children'])) {
@@ -61,15 +61,15 @@ class Helper
         }
     }
 
-    public static function generate_children($children)
+    public static function generateChildren($children)
     {
         $gc = '';
         $gc .= '<ol>';
         foreach ($children as $page) {
             $gc .= '<li id="page_'.$page['id'].'">';
-            $gc .= self::page_structure($page);
+            $gc .= self::pageStructure($page);
             if (isset($page['children'])) {
-                $gc .= self::generate_children($page['children']);
+                $gc .= self::generateChildren($page['children']);
             }
             $gc .= '</li>';
         }
@@ -80,7 +80,7 @@ class Helper
 
     public static function pageList()
     {
-        $all_page = Pages::page_structure(true);
+        $all_page = Pages::pageStructure(true);
         foreach ($all_page as $page) {
             static::$page_list[$page['uri']] = $page['title'];
             if (isset($page['children'])) {
@@ -89,6 +89,15 @@ class Helper
             }
         }
         return static::$page_list;
+    }
+
+    public static function parentPages()
+    {
+        $pages = Pages::where('parent_id', null)->get();
+        foreach ($pages as $page) {
+            $list[$page->uri] = $page->title;
+        }
+        return $list;
     }
 
     protected static function childPage($children, $lvl = 0)
