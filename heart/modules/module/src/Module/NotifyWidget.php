@@ -19,7 +19,7 @@ class NotifyWidget
 
 		foreach ($all as $module) {
 			if ($module->needToUpdate()) {
-				$results[] = $module->displayName();
+				$results[$module->uri] = $module->displayName();
 			}
 		}
 
@@ -28,9 +28,10 @@ class NotifyWidget
 		}
 
 		$text = t('module::module.dashboard_widget_text');
-		foreach ($results as $mod) {
+		foreach ($results as $uri => $mod) {
 			$output .= '<li>';
 			$output .= sprintf($text, $mod);
+			$output .= '<a href="'.admin_url('module/upgrade/'.$uri).'" class="btn btn-green">Upgrade</a>';
 			$output .= '</li>';
 		}
 
