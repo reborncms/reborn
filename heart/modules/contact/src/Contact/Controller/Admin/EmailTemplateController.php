@@ -1,165 +1,161 @@
-<?php 
+<?php
 
 namespace Contact\Controller\Admin;
 
 use Contact\Model\EmailTemplate as Etemplate;
-use Event,Flash,Input,Pagination,Redirect,Translate;
+use Event, Flash, Input, Pagination, Redirect, Translate;
 
 class EmailTemplateController extends \AdminController
 {
 
-	public function before()
-	{
-		$this->menu->activeParent(\Module::get('contact', 'uri'));
-		$this->template->style('contact.css', 'contact');
-	}
+    public function before()
+    {
+        $this->menu->activeParent(\Module::get('contact', 'uri'));
+        $this->template->style('contact.css', 'contact');
+    }
 
-	/**
-	 * Email Template
-	 *
-	 * @package Contact\EmailTemplate
-	 * @author RebornCMS Development Team
-	 **/
-	public function index()
-	{
-		$result = Etemplate::all();
+    /**
+     * Email Template
+     *
+     * @package Contact\EmailTemplate
+     * @author RebornCMS Development Team
+     **/
+    public function index()
+    {
+        $result = Etemplate::all();
 
-		$options = array(
-			'total_items'	=> Etemplate::count(),
-			'items_per_page'=> \Setting::get('admin_item_per_page'),
-			);
-			
-		$pagination = Pagination::create($options);
+        $options = array(
+            'total_items'	=> Etemplate::count(),
+            'items_per_page'=> \Setting::get('admin_item_per_page'),
+            );
 
-		if (Pagination::isInvalid())
-		{
-			return $this->notFound();
-		}
+        $pagination = Pagination::create($options);
 
-		$result = Etemplate::skip(Pagination::offset())
-							->take(Pagination::limit())
-							->orderBy('id','asc')
-							->get();
-		
-		$this->template->title(Translate::get('contact::contact.e_template'))
-					->breadcrumb(Translate::get('contact::contact.p_title'))
-					->set('templates', $result)
-					->set('pagination',$pagination)
-					->view('admin\emailtemplate\index');
-	}
+        if (Pagination::isInvalid()) {
+            return $this->notFound();
+        }
 
-	/**
-	 * Add new Email Template
-	 *
-	 * @package Contact\EmailTemplate
-	 * @author RebornCMS Development Team
-	 **/
-	public function create()
-	{
-		if (!user_has_access('contact.template.add')) return $this->notFound();
-		$template =new \stdClass;
-		$errors = new \Reborn\Form\ValidationError();
-		if (Input::isPost()) {
-			 
-			$v = $this->validate();
-			if ($v->valid()) {
+        $result = Etemplate::skip(Pagination::offset())
+                            ->take(Pagination::limit())
+                            ->orderBy('id','asc')
+                            ->get();
 
-				$check = $this->uni_slug(Input::get('slug'),Input::get('name'));
-				
-				if ($check == true) {
-					$this->fillData('create');
-					Flash::success(Translate::get('contact::contact.success_template'));
+        $this->template->title(Translate::get('contact::contact.e_template'))
+                    ->breadcrumb(Translate::get('contact::contact.p_title'))
+                    ->set('templates', $result)
+                    ->set('pagination',$pagination)
+                    ->view('admin\emailtemplate\index');
+    }
 
-					return Redirect::toAdmin('contact/email-template');
+    /**
+     * Add new Email Template
+     *
+     * @package Contact\EmailTemplate
+     * @author RebornCMS Development Team
+     **/
+    public function create()
+    {
+        if (!user_has_access('contact.template.add')) return $this->notFound();
+        $template =new \stdClass;
+        $errors = new \Reborn\Form\ValidationError();
+        if (Input::isPost()) {
 
-				} else
-				{
-					Flash::error(Translate::get('contact::contact.error_template'));
-					$template = (object)Input::get('*');
-				}
-				
-			} else {
-				$errors = $v->getErrors();
-				$template = (object)Input::get('*');
-			}
-			
-		}
+            $v = $this->validate();
+            if ($v->valid()) {
 
-		$this->template->title(Translate::get('contact::contact.add_email_temp'))
-						->set('errors',$errors)
-						->set('method', 'create')
-						->set('template',$template)
-						->view('admin/emailtemplate/form');
-	}
+                $check = $this->uni_slug(Input::get('slug'),Input::get('name'));
 
+                if ($check == true) {
+                    $this->fillData('create');
+                    Flash::success(Translate::get('contact::contact.success_template'));
 
-	/**
-	 * view email template
-	 *
-	 * @package Contact\EmailTemplate
-	 * @author RebornCMS Development Team
-	 **/
-	public function view($id)
-	{
-		$template = Etemplate::find($id);
+                    return Redirect::toAdmin('contact/email-template');
 
-		if (count($template) == 0) {
-			return $this->notFound();
-		}
+                } else {
+                    Flash::error(Translate::get('contact::contact.error_template'));
+                    $template = (object) Input::get('*');
+                }
 
-		if ($this->request->isAjax()) {
-			$this->template->partialOnly();
-		}
-		$this->template->title(Translate::get('contact::contact.e_template'))
-						->breadcrumb($template->name)
-						->set('template',$template)
-						->view('admin\emailtemplate\view');
-	}
+            } else {
+                $errors = $v->getErrors();
+                $template = (object) Input::get('*');
+            }
 
+        }
 
-	/**
-	 * Add new Email Template
-	 *
-	 * @package Contact\EmailTemplate
-	 * @author RebornCMS Development Team
-	 **/
-	public function edit($id = null)
-	{
-		if (!user_has_access('contact.template.edit')) return $this->notFound();
-		$template = Etemplate::find($id);
-		$errors = new \Reborn\Form\ValidationError();
-		if (Input::isPost()) {
-			 
-			$v = $this->validate();
-			if ($v->valid()) {
-				$check = $this->uni_slug(Input::get('slug'),Input::get('name'),Input::get('id'));
-				
-				if ($check == true) {
-					$this->fillData('edit',Input::get('id'));
-					Flash::success(Translate::get('contact::contact.success_template'));
-					return Redirect::toAdmin('contact/email-template');
+        $this->template->title(Translate::get('contact::contact.add_email_temp'))
+                        ->set('errors',$errors)
+                        ->set('method', 'create')
+                        ->set('template',$template)
+                        ->view('admin/emailtemplate/form');
+    }
 
-				} else
-				{
-					Flash::error(Translate::get('contact::contact.error_template'));
-					$template = (object)Input::get('*');
-				}
-				
-			} else {
-				$errors = $v->getErrors();
-				$template = (object)Input::get('*');
-			}
-			
-		}
+    /**
+     * view email template
+     *
+     * @package Contact\EmailTemplate
+     * @author RebornCMS Development Team
+     **/
+    public function view($id)
+    {
+        $template = Etemplate::find($id);
 
-		$this->template->title(Translate::get('contact::contact.edit_email_temp'))
-						->set('errors',$errors)
-						->set('method', 'edit')
-						->set('template',$template)
-						->view('admin/emailtemplate/form');
-	}
+        if (count($template) == 0) {
+            return $this->notFound();
+        }
 
-	/**
+        if ($this->request->isAjax()) {
+            $this->template->partialOnly();
+        }
+        $this->template->title(Translate::get('contact::contact.e_template'))
+                        ->breadcrumb($template->name)
+                        ->set('template',$template)
+                        ->view('admin\emailtemplate\view');
+    }
+
+    /**
+     * Add new Email Template
+     *
+     * @package Contact\EmailTemplate
+     * @author RebornCMS Development Team
+     **/
+    public function edit($id = null)
+    {
+        if (!user_has_access('contact.template.edit')) return $this->notFound();
+        $template = Etemplate::find($id);
+        $errors = new \Reborn\Form\ValidationError();
+        if (Input::isPost()) {
+
+            $v = $this->validate();
+            if ($v->valid()) {
+                $check = $this->uni_slug(Input::get('slug'),Input::get('name'),Input::get('id'));
+
+                if ($check == true) {
+                    $this->fillData('edit',Input::get('id'));
+                    Flash::success(Translate::get('contact::contact.success_template'));
+
+                    return Redirect::toAdmin('contact/email-template');
+
+                } else {
+                    Flash::error(Translate::get('contact::contact.error_template'));
+                    $template = (object) Input::get('*');
+                }
+
+            } else {
+                $errors = $v->getErrors();
+                $template = (object) Input::get('*');
+            }
+
+        }
+
+        $this->template->title(Translate::get('contact::contact.edit_email_temp'))
+                        ->set('errors',$errors)
+                        ->set('method', 'edit')
+                        ->set('template',$template)
+                        ->view('admin/emailtemplate/form');
+    }
+
+    /**
      * Email Template Duplicate
      *
      * @return void
@@ -174,102 +170,103 @@ class EmailTemplateController extends \AdminController
                     ->view('admin\emailtemplate\form');
     }
 
-	/**
-	 * Delete Email Template
-	 *
-	 * @package Contact\EmailTemplate
-	 * @author RebornCMS Development Team
-	 **/
-	public function delete($id = 0)
-	{
-		if (!user_has_access('contact.template.delete')) return $this->notFound();
-		$ids = ($id) ? array($id) : Input::get('action_to');
+    /**
+     * Delete Email Template
+     *
+     * @package Contact\EmailTemplate
+     * @author RebornCMS Development Team
+     **/
+    public function delete($id = 0)
+    {
+        if (!user_has_access('contact.template.delete')) return $this->notFound();
+        $ids = ($id) ? array($id) : Input::get('action_to');
 
-		$templates = array();
+        $templates = array();
 
-		foreach ($ids as $id) {
-			if ($template = Etemplate::find($id)) {
-				$template->delete();
-				$templates[] = "success";
-			}
-		}
-		
-		if (!empty($templates)) {
-			if (count($templates) == 1) {
-				Flash::success(Translate::get('contact::contact.template_delete'));
-			} else {
-				Flash::success(Translate::get('contact::contact.templates_delete'));
-			}
-		} else {
-			Flash::error(Translate::get('contact::contact.template_error'));
-		}
-		Event::call('template_delete',array(true));
-		return Redirect::toAdmin('contact/email-template');
-		
-	}
+        foreach ($ids as $id) {
+            if ($template = Etemplate::find($id)) {
+                $template->delete();
+                $templates[] = "success";
+            }
+        }
 
-	/**
-	 * Save Data
-	 *
-	 * @return void
-	 * @author RebornCMS Development Team
-	 **/
-	public function fillData($method ,$id = null)
-	{
-		if ($method == 'create') {
-			$get = new Etemplate;
-		} else {
-			$get = Etemplate::find($id);
-		}
-		$get->name = Input::get('name');
-		$get->slug = Input::get('slug');
-		$get->description = Input::get('description');
-		$get->body = Input::get('body');
-		$get->save();
+        if (!empty($templates)) {
+            if (count($templates) == 1) {
+                Flash::success(Translate::get('contact::contact.template_delete'));
+            } else {
+                Flash::success(Translate::get('contact::contact.templates_delete'));
+            }
+        } else {
+            Flash::error(Translate::get('contact::contact.template_error'));
+        }
+        Event::call('template_delete',array(true));
 
-		Event::call('template_'.$method.'_success',array($get));
-	}
+        return Redirect::toAdmin('contact/email-template');
 
-	/**
-	 * Checking valid slug
-	 *
-	 * @return boolean
-	 * @author RebornCMS Development Team
-	 **/
-	public function uni_slug($slug ,$name ,$id = null)
-	{
-		$data = null;
+    }
 
-		$data = Etemplate::where('slug', '=', $slug)->first();
-		$data2 = Etemplate::where('name', '=' ,$name)->first();
+    /**
+     * Save Data
+     *
+     * @return void
+     * @author RebornCMS Development Team
+     **/
+    public function fillData($method ,$id = null)
+    {
+        if ($method == 'create') {
+            $get = new Etemplate;
+        } else {
+            $get = Etemplate::find($id);
+        }
+        $get->name = Input::get('name');
+        $get->slug = Input::get('slug');
+        $get->description = Input::get('description');
+        $get->body = Input::get('body');
+        $get->save();
 
-		if ($data == null && $data2 == null) {
-			return true;
-		} elseif ($data2->id == $id) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+        Event::call('template_'.$method.'_success',array($get));
+    }
 
-	/**
-	 * Validation Email
-	 *
-	 * @package Contact\EmailTemplate
-	 * @author RebornCMS Development Team
-	 **/
-	protected function validate()
-	{
-		$rule = array(
-			        'name'  => 'required',
-			        'slug'=> 'required',
-			        'description'=> 'required|maxLength:50',
-			        'body'	=> 'required'
-			    );
+    /**
+     * Checking valid slug
+     *
+     * @return boolean
+     * @author RebornCMS Development Team
+     **/
+    public function uni_slug($slug ,$name ,$id = null)
+    {
+        $data = null;
 
-		$v = new \Reborn\Form\Validation(Input::get('*'), $rule);
+        $data = Etemplate::where('slug', '=', $slug)->first();
+        $data2 = Etemplate::where('name', '=' ,$name)->first();
 
-		return $v;
-	}
-	
+        if ($data == null && $data2 == null) {
+            return true;
+        } elseif ($data2->id == $id) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Validation Email
+     *
+     * @package Contact\EmailTemplate
+     * @author RebornCMS Development Team
+     **/
+    protected function validate()
+    {
+        $rule = array(
+                    'name'  => 'required',
+                    'slug'=> 'required',
+                    'description'=> 'required|maxLength:50',
+                    'body'	=> 'required'
+                );
+
+        $v = new \Reborn\Form\Validation(Input::get('*'), $rule);
+
+        return $v;
+    }
+
 }

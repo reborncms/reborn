@@ -3,117 +3,117 @@
 namespace Contact\Controller\Admin;
 
 use Contact\Model\Mail as Mail;
-use Event,Flash,Input,Pagination,Redirect,Translate;
+use Event, Flash, Input, Pagination, Redirect, Translate;
 
 class ContactController extends \AdminController
 {
-	public function before() {
-		$this->menu->activeParent(\Module::get('contact', 'uri'));
-		$this->template->style('contact.css', 'contact');
-	}
+    public function before()
+    {
+        $this->menu->activeParent(\Module::get('contact', 'uri'));
+        $this->template->style('contact.css', 'contact');
+    }
 
-	/**
-	 * Show all Email to Admin
-	 *
-	 * @package Contact\Controller
-	 * @author RebornCMS Development Team
-	 **/
-	public function index()
-	{	
+    /**
+     * Show all Email to Admin
+     *
+     * @package Contact\Controller
+     * @author RebornCMS Development Team
+     **/
+    public function index()
+    {
 
-		$options = array(
-			'total_items'	=> Mail::count(),
-			'items_per_page'=> \Setting::get('admin_item_per_page'),
-			);
-			
-		$pagination = Pagination::create($options);
+        $options = array(
+            'total_items'	=> Mail::count(),
+            'items_per_page'=> \Setting::get('admin_item_per_page'),
+            );
 
-		if (Pagination::isInvalid())
-		{
-			return $this->notFound();
-		}
+        $pagination = Pagination::create($options);
 
-		$result = Mail::skip(Pagination::offset())
-							->take(Pagination::limit())
-							->orderBy('id','desc')
-							->get();
+        if (Pagination::isInvalid()) {
+            return $this->notFound();
+        }
 
-		$this->template->title(Translate::get('contact::contact.inbox'))
-					->breadcrumb(Translate::get('contact::contact.all_con'))
-					->set('mails', $result)
-					->set('pagination',$pagination)
-					->view('admin\inbox\index');
-	}
+        $result = Mail::skip(Pagination::offset())
+                            ->take(Pagination::limit())
+                            ->orderBy('id','desc')
+                            ->get();
 
-	/**
-	 * Show detail Email to Admin
-	 *
-	 * @package Contact\Controller
-	 * @author RebornCMS Development Team
-	 **/
-	public function detail($id)
-	{
-		if (!user_has_access('contact.view')) return $this->notFound();
-		$mail = Mail::where('id', '=', $id)->first();
-		
-		if (count($mail) == 0) return $this->notFound();
-		
-		$mail->read_mail = 1;
-		$mail->save();
+        $this->template->title(Translate::get('contact::contact.inbox'))
+                    ->breadcrumb(Translate::get('contact::contact.all_con'))
+                    ->set('mails', $result)
+                    ->set('pagination',$pagination)
+                    ->view('admin\inbox\index');
+    }
 
-		Event::call('email_receive_detail',array($mail));
-		$temp = array();
-		if (\Module::isEnabled('field')) {
+    /**
+     * Show detail Email to Admin
+     *
+     * @package Contact\Controller
+     * @author RebornCMS Development Team
+     **/
+    public function detail($id)
+    {
+        if (!user_has_access('contact.view')) return $this->notFound();
+        $mail = Mail::where('id', '=', $id)->first();
 
-				$temp = \Field::get('contact', $mail);
+        if (count($mail) == 0) return $this->notFound();
 
-			}
+        $mail->read_mail = 1;
+        $mail->save();
 
-		$this->template->title(Translate::get('contact::contact.title'))
-					->breadcrumb($mail->subject)
-					->set('mail',$mail)
-					->set('field',$temp->extended_fields)
-					->view('admin\inbox\detail');
-	}
+        Event::call('email_receive_detail',array($mail));
+        $temp = array();
+        if (\Module::isEnabled('field')) {
 
-	/**
-	 * Delete Email from Database
-	 *
-	 * @package Contact\Controller
-	 * @author RebornCMS Development Team
-	 **/
-	public function delete($id = 0)
-	{
-		if (!user_has_access('contact.delete')) return $this->notFound();
-		$ids = ($id) ? array($id) : Input::get('action_to');
+                $temp = \Field::get('contact', $mail);
 
-		$mails = array();
+            }
 
-		foreach ($ids as $id) {
-			if ($mail = Mail::find($id)) {
-				if ($mail->delete()) {
-					if (\Module::isEnabled('field')) {
+        $this->template->title(Translate::get('contact::contact.title'))
+                    ->breadcrumb($mail->subject)
+                    ->set('mail',$mail)
+                    ->set('field',$temp->extended_fields)
+                    ->view('admin\inbox\detail');
+    }
 
-						\Field::delete('contact', $mail);
+    /**
+     * Delete Email from Database
+     *
+     * @package Contact\Controller
+     * @author RebornCMS Development Team
+     **/
+    public function delete($id = 0)
+    {
+        if (!user_has_access('contact.delete')) return $this->notFound();
+        $ids = ($id) ? array($id) : Input::get('action_to');
 
-					}
-				}
-				$mails[] = "success";
-			}
-		}
-		
-		if (!empty($mails)) {
-			if (count($mails) == 1) {
-				Flash::success(Translate::get('contact::contact.mail_delete'));
-			} else {
-				Flash::success(Translate::get('contact::contact.mails_delete'));
-			}
-		} else {
-			Flash::error(Translate::get('contact::contact.template_error'));
-		}
-		Event::call('email_receive_delete', array(true));
-		return Redirect::toAdmin('contact');
-	}
+        $mails = array();
 
-	
+        foreach ($ids as $id) {
+            if ($mail = Mail::find($id)) {
+                if ($mail->delete()) {
+                    if (\Module::isEnabled('field')) {
+
+                        \Field::delete('contact', $mail);
+
+                    }
+                }
+                $mails[] = "success";
+            }
+        }
+
+        if (!empty($mails)) {
+            if (count($mails) == 1) {
+                Flash::success(Translate::get('contact::contact.mail_delete'));
+            } else {
+                Flash::success(Translate::get('contact::contact.mails_delete'));
+            }
+        } else {
+            Flash::error(Translate::get('contact::contact.template_error'));
+        }
+        Event::call('email_receive_delete', array(true));
+
+        return Redirect::toAdmin('contact');
+    }
+
 }

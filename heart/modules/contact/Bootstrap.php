@@ -39,22 +39,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 					'class'	=> 'add'
 					)
 				);
-		}/* elseif ($uri == 'contact-form') {
-			$mod_toolbar = array(
-				'contactform' => array(
-					'url'  => 'contact/contact-form/edit/1',
-					'name' => 'Text Edit',
-					'info' => 'Edit Title & Description',
-					'class'=> 'add'
-					),
-				'contactfield' => array(
-					'url'  => 'contact/contact-form/field-edit/1',
-					'name' => 'Field Eidt',
-					'info' => 'Edit Field of contact form',
-					'class'=> 'add'
-					),
-				);
-		}*/ else {
+		} else {
 			$mod_toolbar = array();
 		}
 		return $mod_toolbar;
