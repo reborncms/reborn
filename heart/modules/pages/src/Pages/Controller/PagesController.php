@@ -15,7 +15,9 @@ class PagesController extends \PublicController
 
         $uri = implode("/", \Uri::segments());
 
-        $uri = strstr($uri, '/comments', true);
+        if (strstr($uri, '/comments')) {
+            $uri = strstr($uri, '/comments', true);
+        }
 
         if (empty($uri)) {
             
