@@ -23,7 +23,7 @@ class PHPFileLoader implements LoaderInterface
     /**
      * Default instance method for PHP File Loader
      *
-     * @param \Reborn\Cores\Application $app
+     * @param  \Reborn\Cores\Application $app
      * @return void
      */
     public function __construct(Application $app)
@@ -36,8 +36,8 @@ class PHPFileLoader implements LoaderInterface
      * eg: pages::label [label.php lang file from pages module]
      * eg: label [label.php file from core lang folder]
      *
-     * @param string $resource Lang file name
-     * @param string $locale locale folder name
+     * @param  string      $resource Lang file name
+     * @param  string      $locale   locale folder name
      * @return array|false
      */
     public function load($resource, $locale)
@@ -54,8 +54,8 @@ class PHPFileLoader implements LoaderInterface
     /**
      * Load language file form active theme
      *
-     * @param string $resource File resource string(eg: theme@caption)
-     * @param string $locale locale folder name
+     * @param  string      $resource File resource string(eg: theme@caption)
+     * @param  string      $locale   locale folder name
      * @return array|fasle
      **/
     protected function themeFileLoader($resource, $locale)
@@ -75,8 +75,8 @@ class PHPFileLoader implements LoaderInterface
     /**
      * Lang file loader from the module
      *
-     * @param string $resource File resource string(eg: pages::label)
-     * @param string $locale locale folder name
+     * @param  string      $resource File resource string(eg: pages::label)
+     * @param  string      $locale   locale folder name
      * @return array|fasle
      */
     protected function moduleFileLoader($resource, $locale)
@@ -99,8 +99,8 @@ class PHPFileLoader implements LoaderInterface
     /**
      * Lang file loader from the core lang folder
      *
-     * @param string $resource File resource string(eg: label)
-     * @param string $locale locale folder name
+     * @param  string      $resource File resource string(eg: label)
+     * @param  string      $locale   locale folder name
      * @return array|fasle
      */
     protected function coreFileLoader($resource, $locale)

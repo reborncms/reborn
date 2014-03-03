@@ -11,12 +11,11 @@ namespace Reborn\Pagination;
 interface BuilderInterface
 {
 
-	/**
-	 * Render the pagination user interface.
-	 *
-	 * @return string
-	 **/
-	public function render();
-
+    /**
+     * Render the pagination user interface.
+     *
+     * @return string
+     **/
+    public function render();
 
 } // END interface BuilderInterface

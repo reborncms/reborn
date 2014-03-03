@@ -11,160 +11,163 @@ namespace Reborn\Dummy;
 class Generator extends \Facade
 {
 
-	/**
-	 * Dummy text file
-	 *
-	 * @var string
-	 */
-	protected $file_path;
+    /**
+     * Dummy text file
+     *
+     * @var string
+     */
+    protected $file_path;
 
-	/**
-	 * Constructor method
-	 */
-	public function __construct()
-	{
-		$this->file_path = __DIR__.DS.'stub'.DS;
-	}
+    /**
+     * Constructor method
+     */
+    public function __construct()
+    {
+        $this->file_path = __DIR__.DS.'stub'.DS;
+    }
 
-	/**
-	 * Generate paragraph
-	 *
-	 * @param int $amount Paragraph amount
-	 * @param int|null $word_limit Paragraph word limit
-	 * @param string $ending Word limit ending. eg(...)
-	 * @return text
-	 */
-	public function generateParagraph($amount = 1, $word_limit = null, $ending = '')
-	{
-		$texts = $this->getText($amount);
+    /**
+     * Generate paragraph
+     *
+     * @param  int      $amount     Paragraph amount
+     * @param  int|null $word_limit Paragraph word limit
+     * @param  string   $ending     Word limit ending. eg(...)
+     * @return text
+     */
+    public function generateParagraph($amount = 1, $word_limit = null, $ending = '')
+    {
+        $texts = $this->getText($amount);
 
-		$no_limit = is_null($word_limit);
+        $no_limit = is_null($word_limit);
 
-		foreach ($texts as $t) {
-			if ($no_limit) {
-				$result[] = '<p>'.$t.'</p>';
-			} else {
-				$result[] = '<p>'.\Str::words($t, $word_limit, $ending).'</p>';
-			}
-		}
-		return implode("\n", $result);
-	}
+        foreach ($texts as $t) {
+            if ($no_limit) {
+                $result[] = '<p>'.$t.'</p>';
+            } else {
+                $result[] = '<p>'.\Str::words($t, $word_limit, $ending).'</p>';
+            }
+        }
 
-	/**
-	 * Generate li
-	 *
-	 * @param int $amount li tag amount
-	 * @param boolean $with_anchor Use li with anchor tag
-	 * @return string
-	 **/
-	public function generateLi($amount = 5, $with_anchor = false)
-	{
-		$texts = $this->getText($amount, 'list');
+        return implode("\n", $result);
+    }
 
-		foreach ($texts as $t) {
-			if ($with_anchor) {
-				$result[] = '<li><a href="#">'.$t.'</a></li>';
-			} else {
-				$result[] = '<li>'.$t.'</li>';
-			}
-		}
+    /**
+     * Generate li
+     *
+     * @param  int     $amount      li tag amount
+     * @param  boolean $with_anchor Use li with anchor tag
+     * @return string
+     **/
+    public function generateLi($amount = 5, $with_anchor = false)
+    {
+        $texts = $this->getText($amount, 'list');
 
-		return implode("\n", $result);
-	}
+        foreach ($texts as $t) {
+            if ($with_anchor) {
+                $result[] = '<li><a href="#">'.$t.'</a></li>';
+            } else {
+                $result[] = '<li>'.$t.'</li>';
+            }
+        }
 
-	/**
-	 * Generate Table with 4 columns 4 rows
-	 *
-	 * @param string $class Class for table
-	 * @param string $id Id for table
-	 * @return string
-	 **/
-	public function generateTable($class = '', $id = '')
-	{
-		if(\File::is($this->file_path.'en.php')) {
-			$words = require $this->file_path.'en.php';
-		}
+        return implode("\n", $result);
+    }
 
-		$headers = $words['table']['header'];
-		$body = $words['table']['body'];
+    /**
+     * Generate Table with 4 columns 4 rows
+     *
+     * @param  string $class Class for table
+     * @param  string $id    Id for table
+     * @return string
+     **/
+    public function generateTable($class = '', $id = '')
+    {
+        if (\File::is($this->file_path.'en.php')) {
+            $words = require $this->file_path.'en.php';
+        }
 
-		$result = '<table class="'.$class.'" id="'.$id.'" >';
-		$result .= '<thead><tr>';
+        $headers = $words['table']['header'];
+        $body = $words['table']['body'];
 
-		foreach ($headers as $head) {
-			$result .= '<th>'.$head.'</th>';
-		}
+        $result = '<table class="'.$class.'" id="'.$id.'" >';
+        $result .= '<thead><tr>';
 
-		$result .= '</tr><tbody>';
+        foreach ($headers as $head) {
+            $result .= '<th>'.$head.'</th>';
+        }
 
-		foreach ($body as $k => $v) {
-			$result .= '<tr>';
-			foreach ($v as $l) {
-				$result .= '<td>'.$l.'</td>';
-			}
-		}
-		$result .= '</tbody></table>';
-		return $result;
-	}
+        $result .= '</tr><tbody>';
 
-	/**
-	 * Get Blog Post Body
-	 *
-	 * @return string
-	 **/
-	public function generatePost()
-	{
-		if(\File::is($this->file_path.'post.txt')) {
-			return \File::getContent($this->file_path.'post.txt');
-		}
-		return null;
-	}
+        foreach ($body as $k => $v) {
+            $result .= '<tr>';
+            foreach ($v as $l) {
+                $result .= '<td>'.$l.'</td>';
+            }
+        }
+        $result .= '</tbody></table>';
 
-	/**
-	 * Get dummy text data from dummy text file.
-	 *
-	 * @param int $amount
-	 * @param string $type Text type
-	 * @return array
-	 **/
-	protected function getText($amount = 1, $type = 'p')
-	{
-		if(\File::is($this->file_path.'en.php')) {
-			$words = require $this->file_path.'en.php';
-		}
+        return $result;
+    }
 
-		$words = $words[$type];
+    /**
+     * Get Blog Post Body
+     *
+     * @return string
+     **/
+    public function generatePost()
+    {
+        if (\File::is($this->file_path.'post.txt')) {
+            return \File::getContent($this->file_path.'post.txt');
+        }
 
-		for ($i=0; $i < (int) $amount; $i++) {
-			$key = $i % count($words);
-			$result[] = $words[$key];
-		}
+        return null;
+    }
 
-		return $result;
-	}
+    /**
+     * Get dummy text data from dummy text file.
+     *
+     * @param  int    $amount
+     * @param  string $type   Text type
+     * @return array
+     **/
+    protected function getText($amount = 1, $type = 'p')
+    {
+        if (\File::is($this->file_path.'en.php')) {
+            $words = require $this->file_path.'en.php';
+        }
 
-	/**
-	 * Get Instance method for Facade
-	 *
-	 * @return \Reborn\Dummy\Generator
-	 **/
-	protected static function getInstance()
-	{
-		return new static();
-	}
+        $words = $words[$type];
 
-	/**
-	 * Solve static call for object
-	 *
-	 * @param string $method
-	 * @param array $args
-	 * @return void
-	 **/
-	public static function __callStatic($method, $args)
-	{
-		$method = 'generate'.ucfirst($method);
+        for ($i=0; $i < (int) $amount; $i++) {
+            $key = $i % count($words);
+            $result[] = $words[$key];
+        }
 
-		return parent::__callStatic($method, $args);
-	}
+        return $result;
+    }
+
+    /**
+     * Get Instance method for Facade
+     *
+     * @return \Reborn\Dummy\Generator
+     **/
+    protected static function getInstance()
+    {
+        return new static();
+    }
+
+    /**
+     * Solve static call for object
+     *
+     * @param  string $method
+     * @param  array  $args
+     * @return void
+     **/
+    public static function __callStatic($method, $args)
+    {
+        $method = 'generate'.ucfirst($method);
+
+        return parent::__callStatic($method, $args);
+    }
 
 } // END class Generator

@@ -4,7 +4,7 @@ namespace Reborn\Asset\Extensions\Type;
 
 class Css extends \Munee\Asset\Type\Css
 {
-	/**
+    /**
      * Fixes relative paths to absolute paths
      * Update at line 25 (Add new rule),
      * line28 (replace '/' with DS)

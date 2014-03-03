@@ -11,7 +11,7 @@ namespace Reborn\Cache;
 interface CacheNamespaceStoreInterface
 {
 
-	/**
+    /**
      * Delete the cache by Namespace
      *
      * @param string $namespace Namespace of the cache

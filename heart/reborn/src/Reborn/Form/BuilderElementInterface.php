@@ -12,12 +12,12 @@ namespace Reborn\Form;
 interface BuilderElementInterface
 {
 
-	/**
-	 * Form Element Render method interface
-	 *
-	 * @param string $name Form element (field) name
-	 * @param array $value Field's array value
-	 */
-	public function render($name, $value);
+    /**
+     * Form Element Render method interface
+     *
+     * @param string $name  Form element (field) name
+     * @param array  $value Field's array value
+     */
+    public function render($name, $value);
 
 }

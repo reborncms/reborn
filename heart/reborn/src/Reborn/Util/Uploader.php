@@ -23,7 +23,7 @@ use Reborn\Exception\RbException as RbException;
  * if (\Uploader::isSuccess()) {
  *      \Uploader::upload('files');
  * } else {
- *      foreach(\Uploader::errors() as $error) {
+ *      foreach (\Uploader::errors() as $error) {
  *           echo $error;
  *      }
  * }
@@ -83,7 +83,8 @@ class Uploader
      * @return void
      * @author RebornCMS Development Team
      **/
-    public static function setErrorCode($errCode) {
+    public static function setErrorCode($errCode)
+    {
         array_replace_recursive(static::$errorCodes, $errCode);
     }
 
@@ -93,7 +94,8 @@ class Uploader
      * @return boolean $success
      * @author RebornCMS Development Team
      **/
-    public static function isSuccess() {
+    public static function isSuccess()
+    {
         return static::$success;
     }
 
@@ -103,15 +105,16 @@ class Uploader
      * @return array $errors
      * @author RebornCMS Development Team
      **/
-    public static function errors() {
+    public static function errors()
+    {
         return static::$errors;
     }
 
     /**
      * Initializing the files
      *
-     * @param String $key Name of input field. The default is 'files'.
-     * @param array $config The array of upload Configration.
+     * @param  String $key    Name of input field. The default is 'files'.
+     * @param  array  $config The array of upload Configration.
      * @return void
      * @author RebornCMS Development Team
      **/
@@ -196,9 +199,9 @@ class Uploader
     /**
      * Uplod function for RebornCMS. This function will be called by other class to upload file/files.
      *
-     * @param String $key Name of input field. The default is 'files'.
-     * @param array $config The array of upload Configration.
-     * @return array $uploadedData Uploaded data
+     * @param  String $key    Name of input field. The default is 'files'.
+     * @param  array  $config The array of upload Configration.
+     * @return array  $uploadedData Uploaded data
      * @author RebornCMS Development Team
      **/
     public static function upload($key = 'files')
@@ -275,7 +278,7 @@ class Uploader
     /**
      * This method will convert the given filesize in 'b' to 'k', 'm', 'g'.
      *
-     * @param int $size
+     * @param  int    $size
      * @return string Converted filesize with 'k', 'm' or 'g'
      * @author RebornCMS Development Team
      **/
@@ -286,15 +289,15 @@ class Uploader
         $tmpSize = $size;
 
         if ($tmpSize >= 1073741824) {
-            return $tmpSize = ceil((float)($tmpSize/1073741824)) . 'g';
+            return $tmpSize = ceil((float) ($tmpSize/1073741824)) . 'g';
         }
 
         if ($tmpSize >= 1048576) {
-            return $tmpSize = ceil((float)($tmpSize/1048576)) . 'm';
+            return $tmpSize = ceil((float) ($tmpSize/1048576)) . 'm';
         }
 
         if ($tmpSize >= 1024) {
-            return $tmpSize = ceil((float)($tmpSize/1024)) . 'k';
+            return $tmpSize = ceil((float) ($tmpSize/1024)) . 'k';
         }
 
         return $tmpSize;
@@ -305,8 +308,8 @@ class Uploader
      * this method will rename the uploaded filename with serial surfix.
      * (eg. file_1.ext, file_2.ext)
      *
-     * @param String $fileDir the directory you want to upload
-     * @param String $fileName the name of the file you uploaded
+     * @param  String $fileDir  the directory you want to upload
+     * @param  String $fileName the name of the file you uploaded
      * @return String Renamed filename will return
      * @author RebornCMS Development Team
      **/

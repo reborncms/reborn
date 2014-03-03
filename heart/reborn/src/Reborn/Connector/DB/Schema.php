@@ -16,6 +16,7 @@ class Schema
     {
         $args = $params;
         $schemaBuilder = DB::getSchemaBuilder();
+
         return call_user_func_array(array($schemaBuilder, $method), $args);
     }
 

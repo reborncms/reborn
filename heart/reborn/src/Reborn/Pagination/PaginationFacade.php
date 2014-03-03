@@ -12,32 +12,32 @@ use Reborn\Cores\Facade as Base;
  **/
 class PaginationFacade extends Base
 {
-	protected static $pagi;
+    protected static $pagi;
 
-	/**
-	 * Create new pagination instance
-	 *
-	 * @param array $options
-	 * @return \Reborn\Pagination\BuilderInterface
-	 **/
-	public static function create($options = array())
-	{
-		$ins = static::getInstance();
+    /**
+     * Create new pagination instance
+     *
+     * @param  array                               $options
+     * @return \Reborn\Pagination\BuilderInterface
+     **/
+    public static function create($options = array())
+    {
+        $ins = static::getInstance();
 
-		if ( ! is_null($options) ) {
-			$ins->options($options);
-		}
+        if ( ! is_null($options) ) {
+            $ins->options($options);
+        }
 
-		return $ins;
-	}
+        return $ins;
+    }
 
-	protected static function getInstance()
-	{
-		if (is_null(static::$pagi)) {
-			static::$pagi = new \Reborn\Pagination\Builder(static::$app);
-		}
+    protected static function getInstance()
+    {
+        if (is_null(static::$pagi)) {
+            static::$pagi = new \Reborn\Pagination\Builder(static::$app);
+        }
 
-		return static::$pagi;
-	}
+        return static::$pagi;
+    }
 
 } // END class Facade extends Base

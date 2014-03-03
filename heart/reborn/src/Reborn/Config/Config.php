@@ -47,8 +47,8 @@ class Config
     /**
      * Set configuration values
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  string                $key
+     * @param  mixed                 $value
      * @return \Reborn\Config\Config
      */
     public function set($key, $value)
@@ -69,8 +69,8 @@ class Config
      * Set the Config value and Get the this value with directly.
      * Same with set() method but this method will return setter value.
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  string $key
+     * @param  mixed  $value
      * @return mixed
      */
     /*public static function setToGet($key, $value)
@@ -81,6 +81,7 @@ class Config
             return static::$caches[$key]['value'] = $value;
         } else {
             static::get($key);
+
             return static::$caches[$key]['value'] = $value;
         }
     }*/
@@ -88,8 +89,8 @@ class Config
     /**
      * Get the configuration value
      *
-     * @param string $key
-     * @param mixed $default Default value for required $key is not set
+     * @param  string $key
+     * @param  mixed  $default Default value for required $key is not set
      * @return array
      */
     public function get($key, $default = null)
@@ -146,7 +147,7 @@ class Config
     /**
      * Config file load method
      *
-     * @param string $file
+     * @param  string $file
      * @return array
      */
     public function load($file)
@@ -167,7 +168,7 @@ class Config
     /**
      * Get config from Reborn Heart
      *
-     * @param string $file
+     * @param  string $file
      * @return array
      **/
     protected function getFromHeart($file)
@@ -180,8 +181,8 @@ class Config
     /**
      * Get config from Reborn Module
      *
-     * @param string $module
-     * @param string $file
+     * @param  string $module
+     * @param  string $file
      * @return array
      **/
     protected function getFromModule($module, $file)
@@ -194,8 +195,8 @@ class Config
     /**
      * Get Merged config values for environment stage.
      *
-     * @param string $basepath
-     * @param string $file
+     * @param  string $basepath
+     * @param  string $file
      * @return array
      **/
     protected function getMergedValues($basepath, $file)
@@ -222,7 +223,7 @@ class Config
     /**
      * Parse the key string to array(moduleName, fileName, configItems) value.
      *
-     * @param string $key
+     * @param  string $key
      * @return array
      */
     protected function keyParser($key)

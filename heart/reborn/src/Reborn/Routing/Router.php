@@ -2,7 +2,6 @@
 
 namespace Reborn\Routing;
 
-use ReflectionClass;
 use Reborn\Cores\Application;
 use Reborn\Cores\Setting;
 use Reborn\Filesystem\File;
@@ -31,12 +30,12 @@ class Router
      **/
     protected $app;
 
-	/**
-	 * Variable for request obj
-	 *
-	 * @var \Reborn\Http\Request
-	 **/
-	protected $request;
+    /**
+     * Variable for request obj
+     *
+     * @var \Reborn\Http\Request
+     **/
+    protected $request;
 
     /**
      * Variable for route collection
@@ -112,13 +111,12 @@ class Router
 
         $request_uri = implode('/', Uri::segments());
 
-
         // Check the Site is Maintainance Stage or not
         // If site is maintainance stage, find asset file request route only
         if ( $this->app['site_manager']->isMaintain() ) {
             $route = $this->findForMaintain(rawurldecode($request_uri));
 
-            if (! $route ) {
+            if (! $route) {
                 throw new MaintainanceModeException("Website is Under Maintainance!");
             }
         } else {
@@ -133,7 +131,7 @@ class Router
             }
 
             // Route with callback function.
-            if($route->isClosure) {
+            if ($route->isClosure) {
                 return call_user_func_array($route->callback, $route->params);
             }
 
@@ -164,7 +162,7 @@ class Router
     /**
      * Find asset routes for maintainance mode.
      *
-     * @param string $uri
+     * @param  string                        $uri
      * @return boolean|\Reborn\Routing\Route
      **/
     protected function findForMaintain($uri)
@@ -175,7 +173,7 @@ class Router
     /**
      * Find all routes.
      *
-     * @param string $uri
+     * @param  string                        $uri
      * @return boolean|\Reborn\Routing\Route
      **/
     protected function findForAll($uri)
@@ -187,7 +185,7 @@ class Router
      * Find the Controller and action when not found in
      * Route Collection
      *
-     * @param string $uri
+     * @param  string        $uri
      * @return array|boolean
      */
     protected function detectController()
@@ -210,7 +208,7 @@ class Router
             return false;
         }
 
-        if(is_null($controller)) {
+        if (is_null($controller)) {
             $controller = ucfirst($mod['ns']);
         }
 
@@ -262,7 +260,7 @@ class Router
         }
         //Set Parameters
         $segments = Uri::segments();
-        for($i = 0; $i < $action_pos; $i++) {
+        for ($i = 0; $i < $action_pos; $i++) {
             unset($segments[$i]);
         }
         $route->params = $segments;
@@ -289,12 +287,10 @@ class Router
         return $resolver->resolve();
     }
 
-
-
     /**
      * Add the route file from the module
      *
-     * @param string $path Module path
+     * @param  string $path Module path
      * @return void
      */
     protected function addModuleRoute($path)

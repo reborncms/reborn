@@ -16,9 +16,9 @@ class Redirect
     /**
      * Redirect to the given url
      *
-     * @param string $url
-     * @param int $status Response status code
-     * @param array $headers Header properties for the Response
+     * @param  string                                             $url
+     * @param  int                                                $status  Response status code
+     * @param  array                                              $headers Header properties for the Response
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public static function to($url, $status = 302, $headers = array())
@@ -33,9 +33,9 @@ class Redirect
     /**
      * Redirect to the url with admin panel url
      *
-     * @param string $url
-     * @param int $status Response status code
-     * @param array $headers Header properties for the Response
+     * @param  string                                             $url
+     * @param  int                                                $status  Response status code
+     * @param  array                                              $headers Header properties for the Response
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      **/
     public static function toAdmin($url = '', $status = 302, $headers = array())
@@ -50,8 +50,8 @@ class Redirect
     /**
      * Redirect to the back url. (HTTP_REFERER)
      *
-     * @param int $status Response status code
-     * @param array $headers Header properties for the Response
+     * @param  int                                                $status  Response status code
+     * @param  array                                              $headers Header properties for the Response
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      **/
     public static function back($status = 302, $headers = array())
@@ -64,10 +64,10 @@ class Redirect
     /**
      * Redirect to the url with module prefix
      *
-     * @param string $url
-     * @param boolean $admin With admin panel prefix
-     * @param int $status Response status code
-     * @param array $headers Header properties for the Response
+     * @param  string                                             $url
+     * @param  boolean                                            $admin   With admin panel prefix
+     * @param  int                                                $status  Response status code
+     * @param  array                                              $headers Header properties for the Response
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      **/
     public static function module($url = '', $admin = true, $status = 302, $headers = array())
@@ -97,26 +97,27 @@ class Redirect
                 $status = 302,
                 $headers = array())
     {
-    	$url = \Route::getUrlByRouteName($name, $data);
+        $url = \Route::getUrlByRouteName($name, $data);
 
         if (is_null($url)) {
             return null;
         }
 
-    	return static::to($url, $status, $headers);
+        return static::to($url, $status, $headers);
     }
 
     /**
      * Create and Send the Redirect
      *
-     * @param string $url
-     * @param int $status Response status code
-     * @param array $headers Header properties for the Response
+     * @param  string                                             $url
+     * @param  int                                                $status  Response status code
+     * @param  array                                              $headers Header properties for the Response
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public static function send($url, $status = 302, $headers = array())
     {
-    	$redirect = new RedirectResponse($url, $status, $headers);
+        $redirect = new RedirectResponse($url, $status, $headers);
+
         return $redirect->send();
     }
 

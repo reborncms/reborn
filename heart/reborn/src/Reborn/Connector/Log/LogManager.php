@@ -69,8 +69,8 @@ class LogManager
      * );
      * </code>
      *
-     * @param string $name
-     * @param array $configs
+     * @param  string $name
+     * @param  array  $configs
      * @return void
      **/
     public function __construct(Application $app, $name = 'rebornCMSLog', $configs = array())
@@ -114,8 +114,8 @@ class LogManager
     /**
      * Magic method call.
      *
-     * @param string $method
-     * @param array $params
+     * @param  string $method
+     * @param  array  $params
      * @return mixed
      **/
     public function __call($method, $params)

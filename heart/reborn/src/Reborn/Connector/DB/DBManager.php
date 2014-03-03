@@ -46,7 +46,7 @@ class DBManager
     /**
      * Constructor Method for DB Class
      *
-     * @param string $name Name of db config. But this is optional.
+     * @param  string                          $name Name of db config. But this is optional.
      * @return \Illuminate\Database\Connection
      */
     public function __construct($name = null)
@@ -91,7 +91,7 @@ class DBManager
     /**
      * Get the Database Configuration
      *
-     * @param string $name Name of the config key from db.php
+     * @param  string $name Name of the config key from db.php
      * @return array
      */
     protected function getConfig($name)

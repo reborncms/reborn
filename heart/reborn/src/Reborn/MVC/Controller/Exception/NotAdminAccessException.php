@@ -2,7 +2,6 @@
 
 namespace Reborn\MVC\Controller\Exception;
 
-
 /**
  * Exception for Not Admin Aceess Permission
  *
@@ -12,7 +11,7 @@ namespace Reborn\MVC\Controller\Exception;
 class NotAdminAccessException extends NotAuthException
 {
 
-	public function __construct($code=NULL)
+    public function __construct($code=NULL)
     {
         parent::__construct("You don't have permission for admin panel!", 401);
     }

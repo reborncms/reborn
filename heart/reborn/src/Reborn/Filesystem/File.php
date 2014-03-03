@@ -20,7 +20,7 @@ class File
      * Check the file is exists or not.
      * This method is equal with php's file_exists() function.
      *
-     * @param string $file
+     * @param  string  $file
      * @return boolean
      **/
     public static function is($file)
@@ -31,7 +31,7 @@ class File
     /**
      * Get Content from Given File (file_get_contents)
      *
-     * @param string $path File's path
+     * @param  string $path File's path
      * @return string
      */
     public static function getContent($path)
@@ -46,7 +46,7 @@ class File
     /**
      * Get content from Remote Host
      *
-     * @param array $path File's path
+     * @param  array $path File's path
      * @return mixed
      */
     public static function getFromRemote($path)
@@ -58,9 +58,9 @@ class File
      * Write new file with given contents.
      * Note : If file is doesn't already in given path, auto create this file.
      *
-     * @param string $path Path of file locate
-     * @param string $filename File name to save or create.
-     * @param string $content Contents for file.
+     * @param  string $path     Path of file locate
+     * @param  string $filename File name to save or create.
+     * @param  string $content  Contents for file.
      * @return void
      */
     public static function write($path, $filename, $content = null)
@@ -94,9 +94,9 @@ class File
      * [third parameter]. Default is false for this.
      * See details at php's file_put_contents()
      *
-     * @param string $path File's path
-     * @param string $data Data content to put a file
-     * @param boolean $append Default is false.
+     * @param  string  $path   File's path
+     * @param  string  $data   Data content to put a file
+     * @param  boolean $append Default is false.
      * @return mixed
      */
     public static function put($path, $data, $append = false)
@@ -111,7 +111,7 @@ class File
     /**
      * Delete the given file.
      *
-     * @param string $path File path
+     * @param  string  $path File path
      * @return boolean
      */
     public static function delete($path)

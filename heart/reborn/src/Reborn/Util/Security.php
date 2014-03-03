@@ -51,7 +51,7 @@ class Security
     /**
      * Refresh the CSRF Token
      *
-     * @param string $key CSRF-Key
+     * @param  string $key CSRF-Key
      * @return void
      **/
     public static function refreshToken($key = null)
@@ -62,8 +62,8 @@ class Security
     /**
      * CSRF hidden field
      *
-     * @param string $key
-     * @param boolean $refresh Make refresh the token key
+     * @param  string  $key
+     * @param  boolean $refresh Make refresh the token key
      * @return string
      **/
     public static function CSRField($key = null)
@@ -106,7 +106,7 @@ class Security
     /**
      * Get CSRF Token
      *
-     * @param string $key
+     * @param  string $key
      * @return string
      **/
     protected static function getCSRFToken($key)
@@ -125,7 +125,7 @@ class Security
     /**
      * Get CSRF Key Name
      *
-     * @param string $key CSRF Key Prefix
+     * @param  string $key CSRF Key Prefix
      * @return string
      **/
     protected static function getKey($key = null)

@@ -19,36 +19,36 @@ use Reborn\Connector\DB\DBManager as DB;
  **/
 class BaseHandler
 {
-	/**
-	 * Application IOC Container
-	 *
-	 * @var \Reborn\Cores\Application
-	 **/
-	protected $app;
+    /**
+     * Application IOC Container
+     *
+     * @var \Reborn\Cores\Application
+     **/
+    protected $app;
 
-	/**
-	 * Module data lists
-	 *
-	 * @var array
-	 **/
-	protected $modules;
+    /**
+     * Module data lists
+     *
+     * @var array
+     **/
+    protected $modules;
 
-	/**
-	 * Default instance method
-	 *
-	 * @param \Reborn\Cores\Application $app
-	 * @return void
-	 **/
-	public function __construct(Application $app)
-	{
-		$this->app = $app;
+    /**
+     * Default instance method
+     *
+     * @param  \Reborn\Cores\Application $app
+     * @return void
+     **/
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
 
-		$all = $this->prepareFromDatabase();
+        $all = $this->prepareFromDatabase();
 
-		$this->modules = $this->createModuleBuilder($all);
-	}
+        $this->modules = $this->createModuleBuilder($all);
+    }
 
-	/**
+    /**
      * Register for Installed Modules
      *
      * @return void
@@ -62,34 +62,34 @@ class BaseHandler
         $this->otherModulesRegister();
     }
 
-	/**
-	 * Get all register module.
-	 *
-	 * @return array
-	 **/
-	public function getAll()
-	{
-		return $this->modules;
-	}
+    /**
+     * Get all register module.
+     *
+     * @return array
+     **/
+    public function getAll()
+    {
+        return $this->modules;
+    }
 
-	/**
-	 * Get module by name or uri.
-	 * Find with "uri" is fallback of "name".
-	 * Because sometime need to find module with URI Segment.
-	 *
-	 * @param string $name
-	 * @param string|null $key
-	 * @return \Reborn\Module\Builder|null
-	 **/
-	public function get($name, $key = null)
-	{
+    /**
+     * Get module by name or uri.
+     * Find with "uri" is fallback of "name".
+     * Because sometime need to find module with URI Segment.
+     *
+     * @param  string                      $name
+     * @param  string|null                 $key
+     * @return \Reborn\Module\Builder|null
+     **/
+    public function get($name, $key = null)
+    {
         $name = strtolower(preg_replace('/(.)([A-Z])/', '$1_$2', $name));
 
-		$found = null;
+        $found = null;
 
-		if (isset($this->modules[$name])) {
-			$found = $this->modules[$name];
-		} else {
+        if (isset($this->modules[$name])) {
+            $found = $this->modules[$name];
+        } else {
             // Fallback with "uri"
             foreach ($this->modules as $module) {
                 if ($name === $module->uri) {
@@ -98,32 +98,32 @@ class BaseHandler
             }
         }
 
-		if ( !is_null($key) and !is_null($found) ) {
-			return $found->{$key};
-		}
+        if ( !is_null($key) and !is_null($found) ) {
+            return $found->{$key};
+        }
 
-		return $found;
-	}
+        return $found;
+    }
 
-	/**
-	 * Check module has or not.
-	 *
-	 * @return boolean
-	 **/
-	public function has($name)
-	{
-		if (!is_null($this->get($name))) {
-			return true;
-		}
+    /**
+     * Check module has or not.
+     *
+     * @return boolean
+     **/
+    public function has($name)
+    {
+        if (!is_null($this->get($name))) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
+    /**
      * Get modules by filter on their key and value
      *
-     * @param string $key Module's data key name
-     * @param mixed $value Value for Module's data key
+     * @param  string $key   Module's data key name
+     * @param  mixed  $value Value for Module's data key
      * @return array
      **/
     public function getModulesByFilter($key, $value)
@@ -132,43 +132,43 @@ class BaseHandler
 
         $modules = array();
 
-        $modules = array_filter($all, function($m) use($key, $value) {
+        $modules = array_filter($all, function ($m) use ($key, $value) {
             return ($value == $m->{$key});
         });
 
         return $modules;
     }
 
-	/**
-	 * Module load with name.
-	 *
-	 * @param string $name
-	 * @return boolean
-	 **/
-	public function load($name)
-	{
-		$module = $this->get($name);
+    /**
+     * Module load with name.
+     *
+     * @param  string  $name
+     * @return boolean
+     **/
+    public function load($name)
+    {
+        $module = $this->get($name);
 
-		if(is_null($module)) return false;
+        if(is_null($module)) return false;
 
-		return $module->load();
-	}
+        return $module->load();
+    }
 
-	/**
-	 * Bootable the Module
-	 *
-	 * @param string $name
-	 * @return boolean
-	 **/
-	public function boot($name)
-	{
-		$module = $this->get($name);
+    /**
+     * Bootable the Module
+     *
+     * @param  string  $name
+     * @return boolean
+     **/
+    public function boot($name)
+    {
+        $module = $this->get($name);
 
-		if(is_null($module)) {
-			throw new ModuleException("Module $name not found to Boot!");
-		}
+        if (is_null($module)) {
+            throw new ModuleException("Module $name not found to Boot!");
+        }
 
-		$class = $this->getBootstrap($module);
+        $class = $this->getBootstrap($module);
 
         if ($class) {
             $class->boot();
@@ -176,8 +176,8 @@ class BaseHandler
             return true;
         }
 
-		return false;
-	}
+        return false;
+    }
 
     /**
      * Find brand new modules.
@@ -201,7 +201,7 @@ class BaseHandler
         return $results;
     }
 
-	/**
+    /**
      * Find All modules from Module Folders
      * Core Modules, Shared Modules and Addon Modules
      *
@@ -217,7 +217,7 @@ class BaseHandler
     /**
      * Find All modules from given path
      *
-     * @param string|array $paths
+     * @param  string|array $paths
      * @return array
      **/
     public function findFrom($paths)
@@ -261,7 +261,7 @@ class BaseHandler
 
         // Require the {ModuleName}Info.php
         if (! file_exists($path.$name.'Info.php') ) {
-        	throw new ModuleException("Module Info file missing at $name");
+            throw new ModuleException("Module Info file missing at $name");
         }
 
         $classname = $name.'\\'.$name.'Info';
@@ -285,7 +285,7 @@ class BaseHandler
     /**
      * Install the given module to DB table
      *
-     * @param string $name
+     * @param  string  $name
      * @return boolean
      **/
     public function install($name)
@@ -306,6 +306,7 @@ class BaseHandler
             if ($this->app->runInProduction()) {
                 return false;
             }
+
             return $e;
         }
 
@@ -323,7 +324,7 @@ class BaseHandler
     /**
      * UnInstall the given module to DB table
      *
-     * @param string $name
+     * @param  string  $name
      * @return boolean
      **/
     public function uninstall($name)
@@ -342,6 +343,7 @@ class BaseHandler
                 if ($this->app->runInProduction()) {
                     return false;
                 }
+
                 return $e;
             }
 
@@ -357,7 +359,7 @@ class BaseHandler
     /**
      * Upgrade the given module to DB table
      *
-     * @param string $name
+     * @param  string  $name
      * @return boolean
      **/
     public function upgrade($name)
@@ -374,6 +376,7 @@ class BaseHandler
                 if ($this->app->runInProduction()) {
                     return false;
                 }
+
                 return $e;
             }
 
@@ -389,7 +392,7 @@ class BaseHandler
     /**
      * Enable the given module to DB table
      *
-     * @param string $name
+     * @param  string  $name
      * @return boolean
      **/
     public function enable($name)
@@ -408,6 +411,7 @@ class BaseHandler
 
             if ($ok) {
                 $module->enabled = true;
+
                 return true;
             }
         }
@@ -418,7 +422,7 @@ class BaseHandler
     /**
      * Disable the given module to DB table
      *
-     * @param string $name
+     * @param  string  $name
      * @return boolean
      **/
     public function disable($name)
@@ -437,6 +441,7 @@ class BaseHandler
 
             if ($ok) {
                 $module->enabled = false;
+
                 return true;
             }
         }
@@ -447,7 +452,7 @@ class BaseHandler
     /**
      * Module Toolbar for Admin Panel
      *
-     * @param string $name
+     * @param  string     $name
      * @return array|null
      **/
     public function moduleToolbar($name)
@@ -468,8 +473,8 @@ class BaseHandler
     /**
      * Admin Menu for the given Module
      *
-     * @param \Reborn\Util\Menu $menu
-     * @param string $name
+     * @param  \Reborn\Util\Menu $menu
+     * @param  string            $name
      * @return array|null
      **/
     public function adminMenu(\Reborn\Util\Menu $menu, $name)
@@ -490,7 +495,7 @@ class BaseHandler
     /**
      * Settings list from module
      *
-     * @param string $name
+     * @param  string     $name
      * @return array|null
      **/
     public function settings($name)
@@ -508,24 +513,24 @@ class BaseHandler
         return null;
     }
 
-	/**
-	 * Get Database table name
-	 *
-	 * @return string
-	 **/
-	protected function getTable()
-	{
-		return 'modules';
-	}
+    /**
+     * Get Database table name
+     *
+     * @return string
+     **/
+    protected function getTable()
+    {
+        return 'modules';
+    }
 
-	/**
-	 * Prepare modules from database.
-	 *
-	 * @return void
-	 **/
-	protected function prepareFromDatabase()
-	{
-		$all = array();
+    /**
+     * Prepare modules from database.
+     *
+     * @return void
+     **/
+    protected function prepareFromDatabase()
+    {
+        $all = array();
 
         $mods = DB::table($this->getTable())->get();
 
@@ -538,50 +543,50 @@ class BaseHandler
         }
 
         return $all;
-	}
+    }
 
-	/**
-	 * Create module lists with Builder
-	 *
-	 * @param array $all
-	 * @return array
-	 **/
-	protected function createModuleBuilder(array $all)
-	{
+    /**
+     * Create module lists with Builder
+     *
+     * @param  array $all
+     * @return array
+     **/
+    protected function createModuleBuilder(array $all)
+    {
         $modules = array();
 
-		foreach ($all as $name => $data) {
-			$path = $this->findPath($name);
+        foreach ($all as $name => $data) {
+            $path = $this->findPath($name);
 
-			if(is_null($path)) continue;
+            if(is_null($path)) continue;
 
-			$info =  $this->getModuleInfo($path, $name);
+            $info =  $this->getModuleInfo($path, $name);
 
-			if ($info['allow_uri_change']) {
-				$info['uri'] = $data['uri'];
-			}
+            if ($info['allow_uri_change']) {
+                $info['uri'] = $data['uri'];
+            }
 
-			$info['enabled'] = isset($data['enabled']) ? $data['enabled'] : false;
-			$info['db_version'] = $data['version'];
+            $info['enabled'] = isset($data['enabled']) ? $data['enabled'] : false;
+            $info['db_version'] = $data['version'];
 
-			$module = new Builder($path, $info);
-			$module->load();
+            $module = new Builder($path, $info);
+            $module->load();
 
-			$modules[$name] = $module;
-		}
+            $modules[$name] = $module;
+        }
 
         return $modules;
-	}
+    }
 
-	/**
-	 * Get module folder paths
-	 *
-	 * @return array
-	 **/
-	protected function getModulePaths()
-	{
-		return array(CORE_MODULES, MODULES, SHARED.'modules'.DS);
-	}
+    /**
+     * Get module folder paths
+     *
+     * @return array
+     **/
+    protected function getModulePaths()
+    {
+        return array(CORE_MODULES, MODULES, SHARED.'modules'.DS);
+    }
 
     /**
      * Find module's directory path
@@ -590,15 +595,15 @@ class BaseHandler
      **/
     protected function findPath($name)
     {
-    	$paths = $this->getModulePaths();
+        $paths = $this->getModulePaths();
 
-    	foreach ($paths as $path) {
-    		if (file_exists($path.$name)) {
-    			return $path.$name;
-    		}
-    	}
+        foreach ($paths as $path) {
+            if (file_exists($path.$name)) {
+                return $path.$name;
+            }
+        }
 
-    	return null;
+        return null;
     }
 
     /**
@@ -612,7 +617,7 @@ class BaseHandler
 
         foreach ($cores as $name => $core) {
 
-            if(!$core->isEnabled()) {
+            if (!$core->isEnabled()) {
                 continue;
             }
 
@@ -633,7 +638,7 @@ class BaseHandler
 
         foreach ($addons as $name => $addon) {
 
-            if(!$addon->isEnabled()) {
+            if (!$addon->isEnabled()) {
                 continue;
             }
 
@@ -645,7 +650,7 @@ class BaseHandler
     /**
      * Get the Module's Bootstrap file
      *
-     * @param string $module Module name
+     * @param  string                     $module Module name
      * @return BootstrapClass|false|throw
      */
     protected function getBootstrap($module)
@@ -665,10 +670,10 @@ class BaseHandler
                 return $class;
             } else {
                 throw new ModuleException(
-                	sprintf(
-                		'% Class must be instanceof AbstractBootstrap',
-                		$classname
-                	)
+                    sprintf(
+                        '% Class must be instanceof AbstractBootstrap',
+                        $classname
+                    )
                 );
             }
         }
@@ -679,7 +684,7 @@ class BaseHandler
     /**
      * Get the Module's Installer file
      *
-     * @param string $module Module name
+     * @param  string                     $module Module name
      * @return InstallerClass|false|throw
      */
     protected function getInstaller($module)
@@ -698,9 +703,9 @@ class BaseHandler
             } else {
                 throw new ModuleException(
                     sprintf(
-                		'% Class must be instanceof AbstractInstaller',
-                		$classname
-                	)
+                        '% Class must be instanceof AbstractInstaller',
+                        $classname
+                    )
                         );
             }
         }
@@ -711,20 +716,20 @@ class BaseHandler
     /**
      * Dynamically accsess method from Builder.
      *
-     * @param string $method
-     * @param array $args
+     * @param  string $method
+     * @param  array  $args
      * @return void
      **/
     public function __call($method, $args)
     {
-    	$name = array_shift($args);
-    	$module = $this->get($name);
+        $name = array_shift($args);
+        $module = $this->get($name);
 
-    	if (is_null($module) || !is_callable(array($module, $method))) {
-    		throw new \BadMethodCallException("Method [ $method ] not found!");
-    	}
+        if (is_null($module) || !is_callable(array($module, $method))) {
+            throw new \BadMethodCallException("Method [ $method ] not found!");
+        }
 
-    	return call_user_func_array(array($module, $method), $args);
+        return call_user_func_array(array($module, $method), $args);
     }
 
 } // END class BaseHandler

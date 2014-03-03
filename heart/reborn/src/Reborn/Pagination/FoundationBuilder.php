@@ -12,38 +12,38 @@ use Reborn\Cores\Application;
  **/
 class FoundationBuilder extends Builder
 {
-	/**
-	 * Foundation pagination align center.
-	 * http://foundation.zurb.com/docs/components/pagination.html
-	 *
-	 * @var boolean
-	 **/
-	protected $center = false;
+    /**
+     * Foundation pagination align center.
+     * http://foundation.zurb.com/docs/components/pagination.html
+     *
+     * @var boolean
+     **/
+    protected $center = false;
 
-	/**
-	 * Make Foundation Pagination Builder instance.
-	 *
-	 * @return void
-	 **/
-	public function __construct(Application $app, $options)
-	{
-		$this->app = $app;
+    /**
+     * Make Foundation Pagination Builder instance.
+     *
+     * @return void
+     **/
+    public function __construct(Application $app, $options)
+    {
+        $this->app = $app;
 
-		$this->options($options);
-	}
+        $this->options($options);
+    }
 
-	/**
-	 * Set pagination center or not.
-	 *
-	 * @param boolean $bool
-	 * @return \Reborn\Pagination\FoundationBuilder
-	 **/
-	public function center($bool = true)
-	{
-		$this->center = (bool) $bool;
+    /**
+     * Set pagination center or not.
+     *
+     * @param  boolean                              $bool
+     * @return \Reborn\Pagination\FoundationBuilder
+     **/
+    public function center($bool = true)
+    {
+        $this->center = (bool) $bool;
 
-		return $this;
-	}
+        return $this;
+    }
 
 /**
  * =====================================================
@@ -51,111 +51,111 @@ class FoundationBuilder extends Builder
  * =====================================================
  */
 
-	/**
-	 * Get Foundation Pagination Wrapper
-	 *
-	 * @return string
-	 **/
-	protected function getWrapper()
-	{
-		$class = $this->center ? ' pagination-centered' : '';
+    /**
+     * Get Foundation Pagination Wrapper
+     *
+     * @return string
+     **/
+    protected function getWrapper()
+    {
+        $class = $this->center ? ' pagination-centered' : '';
 
-		return '<div class="pagi-wrapper '.$class.'"><ul class="pagination">';
-	}
+        return '<div class="pagi-wrapper '.$class.'"><ul class="pagination">';
+    }
 
-	/**
-	 * Get Foundation Pagination Previous Link
-	 *
-	 * @return string
-	 **/
-	protected function getPreviousLink()
-	{
-		$prev_link = $this->current - 1;
+    /**
+     * Get Foundation Pagination Previous Link
+     *
+     * @return string
+     **/
+    protected function getPreviousLink()
+    {
+        $prev_link = $this->current - 1;
 
-		$class = ($prev_link == 0) ? ' unavailable' : '';
+        $class = ($prev_link == 0) ? ' unavailable' : '';
 
-		$page = null;
-		if ($prev_link > 1) {
-			$page = 'page-'.$prev_link;
-		}
+        $page = null;
+        if ($prev_link > 1) {
+            $page = 'page-'.$prev_link;
+        }
 
-		$url = $this->buildUrl($page);
+        $url = $this->buildUrl($page);
 
-		$link = '<li class="arrow'.$class.'">';
-		$link .= '<a href="'.$url.'" class="'.$this->template['prev_link_class'].'">';
-		$link .= $this->template['prev_link_text'].'</a>';
-		$link .= '</li>';
+        $link = '<li class="arrow'.$class.'">';
+        $link .= '<a href="'.$url.'" class="'.$this->template['prev_link_class'].'">';
+        $link .= $this->template['prev_link_text'].'</a>';
+        $link .= '</li>';
 
-		return $link;
-	}
+        return $link;
+    }
 
-	/**
-	 * Get Foundation Pagination Link with "li" tag.
-	 *
-	 * @param int $page
-	 * @param string $url
-	 * @return string
-	 **/
-	protected function getLink($page)
-	{
-		$class = '';
+    /**
+     * Get Foundation Pagination Link with "li" tag.
+     *
+     * @param  int    $page
+     * @param  string $url
+     * @return string
+     **/
+    protected function getLink($page)
+    {
+        $class = '';
 
-		if ($this->current == $page) {
-			$class = ' class="current"';
-		}
+        if ($this->current == $page) {
+            $class = ' class="current"';
+        }
 
-		$page_no = null;
-		if ($page > 1) {
-			$page_no = 'page-'.$page;
-		}
+        $page_no = null;
+        if ($page > 1) {
+            $page_no = 'page-'.$page;
+        }
 
-		$url = $this->buildUrl($page_no);
+        $url = $this->buildUrl($page_no);
 
-		$link = '<li'.$class.'>';
-		$link .= '<a href="'.$url.'"'.$class.'>'.$page.'</a>';
-		$link .= '</li>';
+        $link = '<li'.$class.'>';
+        $link .= '<a href="'.$url.'"'.$class.'>'.$page.'</a>';
+        $link .= '</li>';
 
-		return $link;
-	}
+        return $link;
+    }
 
-	/**
-	 * Get Foundation Separator Dot Block
-	 *
-	 * @return string
-	 **/
-	protected function getSeparator()
-	{
-		$sep = '<li class="unavailable">';
-		$sep .= '<span>'.$this->template['separator'].'</span>';
-		$sep .= '</li>';
+    /**
+     * Get Foundation Separator Dot Block
+     *
+     * @return string
+     **/
+    protected function getSeparator()
+    {
+        $sep = '<li class="unavailable">';
+        $sep .= '<span>'.$this->template['separator'].'</span>';
+        $sep .= '</li>';
 
-		return $sep;
-	}
+        return $sep;
+    }
 
-	/**
-	 * Get Foundation Pagination Next Link
-	 *
-	 * @return string
-	 **/
-	protected function getNextLink()
-	{
-		$next_link = $this->current + 1;
+    /**
+     * Get Foundation Pagination Next Link
+     *
+     * @return string
+     **/
+    protected function getNextLink()
+    {
+        $next_link = $this->current + 1;
 
-		$page = null;
-		if ($next_link > 1) {
-			$page = 'page-'.$next_link;
-		}
+        $page = null;
+        if ($next_link > 1) {
+            $page = 'page-'.$next_link;
+        }
 
-		$url = $this->buildUrl($page);
+        $url = $this->buildUrl($page);
 
-		$class = ($this->total_pages == $this->current) ? ' unavailable' : '';
+        $class = ($this->total_pages == $this->current) ? ' unavailable' : '';
 
-		$link = '<li class="arrow'.$class.'">';
-		$link .= '<a href="'.$url.'" class="'.$this->template['next_link_class'].'">';
-		$link .= $this->template['next_link_text'].'</a>';
-		$link .= '</li>';
+        $link = '<li class="arrow'.$class.'">';
+        $link .= '<a href="'.$url.'" class="'.$this->template['next_link_class'].'">';
+        $link .= $this->template['next_link_text'].'</a>';
+        $link .= '</li>';
 
-		return $link;
-	}
+        return $link;
+    }
 
 } // END class FoundationBuilder extends Builder

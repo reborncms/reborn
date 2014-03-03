@@ -16,8 +16,8 @@ class Directory
      * Get the data form the given directory.
      * This method is equal with php's glob() function.
      *
-     * @param string $path Path for the dir
-     * @param int $flag Detail at php's glob().
+     * @param  string $path Path for the dir
+     * @param  int    $flag Detail at php's glob().
      * @return void
      **/
     public static function get($path, $flag = 0)
@@ -31,7 +31,7 @@ class Directory
      * Check the given path is directory or not.
      * This method is equal with php's is_dir() function.
      *
-     * @param string $path
+     * @param  string  $path
      * @return boolean
      **/
     public static function is($path)
@@ -43,9 +43,9 @@ class Directory
      * Make the new directory.
      * This method is equal with php's mkdir() function.
      *
-     * @param string $path
-     * @param int $mode Default mode is 0777
-     * @param boolean $recursive Allows the creation of nested directories.
+     * @param  string  $path
+     * @param  int     $mode      Default mode is 0777
+     * @param  boolean $recursive Allows the creation of nested directories.
      * @return boolean
      **/
     public static function make($path, $mode = 0777, $recursive = false)
@@ -56,8 +56,8 @@ class Directory
     /**
      * Copy the Directory.
      *
-     * @param string $path Original Folder path
-     * @param string $dest Destination path
+     * @param  string  $path Original Folder path
+     * @param  string  $dest Destination path
      * @return boolean
      **/
     public static function copy($path, $dest)
@@ -72,10 +72,10 @@ class Directory
             $files = scandir($path);
 
             if (sizeof($files) > 0) {
-                foreach ($files as $file ) {
+                foreach ($files as $file) {
 
                     // Skip file is "." or ".."
-                    if ( $file == "." || $file == ".." ) {
+                    if ($file == "." || $file == "..") {
                         continue;
                     }
 
@@ -87,6 +87,7 @@ class Directory
                     }
                 }
             }
+
             return true;
         } elseif (is_file($path)) {
             return copy($path, $dest);
@@ -100,8 +101,8 @@ class Directory
      * This method is equal with php's rmdir() function.
      * But this method is support recursive delete from the given folder.
      *
-     * @param string $dirpath
-     * @param boolean $remove_this Remove this given folder
+     * @param  string  $dirpath
+     * @param  boolean $remove_this Remove this given folder
      * @return boolean
      **/
     public static function delete($dirpath, $remove_this = true, $skips = array())
@@ -119,15 +120,17 @@ class Directory
 
                 if (!$dir->isDot() and !$dir->isDir()) {
                     File::delete($dir->getRealPath());
-                } elseif(!$dir->isDot() and $dir->isDir()) {
+                } elseif (!$dir->isDot() and $dir->isDir()) {
                     static::delete($dir->getRealPath());
                 }
             }
 
             if ($remove_this) {
                 @chmod($path, 0777);
+
                 return @rmdir($path);
             }
+
             return true;
         } else {
             return false;

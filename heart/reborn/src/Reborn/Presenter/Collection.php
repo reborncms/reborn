@@ -21,7 +21,7 @@ class Collection implements Iterator, ArrayAccess, Countable
      *
      * @var array
      */
-	protected $items = array();
+    protected $items = array();
 
     /**
      * Model Collection Class
@@ -35,17 +35,17 @@ class Collection implements Iterator, ArrayAccess, Countable
      *
      * @var int
      */
-	private $pos = 0;
+    private $pos = 0;
 
     /**
      * Constructor method for Collection
      *
-     * @param Object $model Data Model Object
-     * @param string|Pressentation $presenter Presenter Object or Presenter Class Name
+     * @param  Object               $model     Data Model Object
+     * @param  string|Pressentation $presenter Presenter Object or Presenter Class Name
      * @return void
      */
-	public function __construct($models, $presenter)
-	{
+    public function __construct($models, $presenter)
+    {
         $isObject = false;
 
         if ($presenter instanceof Presentation) {
@@ -61,7 +61,7 @@ class Collection implements Iterator, ArrayAccess, Countable
         }
 
         $this->collection = $models;
-	}
+    }
 
     /**
      * Count total items from data collection.
@@ -79,7 +79,7 @@ class Collection implements Iterator, ArrayAccess, Countable
      * @param  string  $key
      * @return boolean
      */
-	public function offsetExists($key)
+    public function offsetExists($key)
     {
         return array_key_exists($key, $this->items);
     }
@@ -87,7 +87,7 @@ class Collection implements Iterator, ArrayAccess, Countable
     /**
      * Get the item at a given offset.
      *
-     * @param  string  $key
+     * @param  string $key
      * @return void
      */
     public function offsetGet($key)
@@ -98,8 +98,8 @@ class Collection implements Iterator, ArrayAccess, Countable
     /**
      * Set the item at a given offset.
      *
-     * @param  string  $key
-     * @param mixed $value
+     * @param  string $key
+     * @param  mixed  $value
      * @return void
      */
     public function offsetSet($key, $value)
@@ -110,7 +110,7 @@ class Collection implements Iterator, ArrayAccess, Countable
     /**
      * Unset the item at a given offset.
      *
-     * @param  string  $key
+     * @param  string $key
      * @return void
      */
     public function offsetUnset($key)
@@ -123,7 +123,8 @@ class Collection implements Iterator, ArrayAccess, Countable
      *
      * @return void
      */
-    public function rewind() {
+    public function rewind()
+    {
         $this->pos = 0;
     }
 
@@ -132,7 +133,8 @@ class Collection implements Iterator, ArrayAccess, Countable
      *
      * @return mixed
      */
-    public function current() {
+    public function current()
+    {
         return $this->items[$this->pos];
     }
 
@@ -141,7 +143,8 @@ class Collection implements Iterator, ArrayAccess, Countable
      *
      * @return integer
      */
-    public function key() {
+    public function key()
+    {
         return $this->pos;
     }
 
@@ -150,7 +153,8 @@ class Collection implements Iterator, ArrayAccess, Countable
      *
      * @return void
      */
-    public function next() {
+    public function next()
+    {
         ++$this->pos;
     }
 
@@ -159,7 +163,8 @@ class Collection implements Iterator, ArrayAccess, Countable
      *
      * @return boolean
      */
-    public function valid() {
+    public function valid()
+    {
         return isset($this->items[$this->pos]);
     }
 
@@ -174,8 +179,7 @@ class Collection implements Iterator, ArrayAccess, Countable
             return array();
         }
 
-        return array_map(function($val)
-                {
+        return array_map(function ($val) {
                     return $val->toArray();
 
                 }, $this->items);
@@ -184,7 +188,7 @@ class Collection implements Iterator, ArrayAccess, Countable
     /**
      * Get the collection of items as JSON string.
      *
-     * @param  integer  $options
+     * @param  integer $options
      * @return string
      */
     public function toJson($options = 0)
@@ -205,14 +209,14 @@ class Collection implements Iterator, ArrayAccess, Countable
     /**
      * PHP Magic method __call for dynamic method call
      *
-     * @param string $method
-     * @param array $params
+     * @param  string $method
+     * @param  array  $params
      * @return mixed
      **/
     public function __call($method, $params)
     {
         if (! method_exists($this->collection, $method)) {
-            if(Facade::getApplication()->runInDevelopment()) {
+            if (Facade::getApplication()->runInDevelopment()) {
                 throw new \BadMethodCallException("Method {$method}() not found!");
             }
 

@@ -13,7 +13,7 @@ use Reborn\Exception\RbException;
 class NotAuthException extends RbException
 {
 
-	public function __construct($code=NULL)
+    public function __construct($code=NULL)
     {
         parent::__construct("You don't have permission for this process!", 401);
     }

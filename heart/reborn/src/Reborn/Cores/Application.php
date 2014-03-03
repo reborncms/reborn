@@ -20,7 +20,6 @@ use Reborn\Connector\Log\LogManager;
 use Reborn\Connector\DB\DBManager as DB;
 use Reborn\Module\ModuleManager as Module;
 use Reborn\Exception\RbException;
-use Reborn\Exception\HttpNotFoundException;
 use Reborn\Exception\TokenNotMatchException;
 use Reborn\Exception\MaintainanceModeException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,7 +28,6 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 
 /**
@@ -110,7 +108,7 @@ class Application extends \Illuminate\Container\Container
      *  (3) - production (For Production Stage)
      * </code>
      *
-     * @param string $env
+     * @param  string $env
      * @return void
      **/
     public function setAppEnvironment($env)
@@ -176,8 +174,7 @@ class Application extends \Illuminate\Container\Container
      **/
     public function installed()
     {
-        if(! File::is(APP.'config'.DS.'db.php'))
-        {
+        if (! File::is(APP.'config'.DS.'db.php')) {
             if (!\Reborn\Filesystem\Directory::is(BASE.'installer')) {
                 throw new RbException("Can't find db.php at config folder");
             }
@@ -195,7 +192,7 @@ class Application extends \Illuminate\Container\Container
      **/
     public function install()
     {
-        if(File::is(APP.'config'.DS.'db.php')) {
+        if (File::is(APP.'config'.DS.'db.php')) {
             throw new RbException("Reborn CMS is already installed!");
         }
 
@@ -211,7 +208,7 @@ class Application extends \Illuminate\Container\Container
     /**
      * Start the application
      *
-     * @param boolean $session_is_started
+     * @param  boolean $session_is_started
      * @return void
      **/
     public function start($session_is_started = false)
@@ -250,13 +247,13 @@ class Application extends \Illuminate\Container\Container
 
             $this->started = true;
 
-            if(!$response instanceof SymfonyResponse) {
+            if (!$response instanceof SymfonyResponse) {
                 $response = new Response($response);
             }
 
             // Send response to the end method
             $this->end($response);
-        } catch(TokenNotMatchException $e) {
+        } catch (TokenNotMatchException $e) {
             // For CSRF Fail
             \Translate::load('global');
             \Flash::error(t('global.csrf_fail'));
@@ -265,7 +262,7 @@ class Application extends \Illuminate\Container\Container
             $redirect_url = str_replace($basepath, '', \Input::server('REDIRECT_URL'));
 
             return \Redirect::to($redirect_url);
-        } catch(MaintainanceModeException $e) {
+        } catch (MaintainanceModeException $e) {
             $this->end(Response::maintain());
 
             exit(1);
@@ -279,15 +276,15 @@ class Application extends \Illuminate\Container\Container
      **/
     protected function registerToContainer()
     {
-        $this['config'] = $this->share(function($app) {
+        $this['config'] = $this->share(function ($app) {
             return new Config($app);
         });
 
-        $this['site_manager'] = $this->share(function ($app){
+        $this['site_manager'] = $this->share(function ($app) {
             return new SiteManager($app);
         });
 
-        $this['cache'] = $this->share( function($app) {
+        $this['cache'] = $this->share( function ($app) {
             return new CacheManager($app);
         });
 
@@ -303,37 +300,37 @@ class Application extends \Illuminate\Container\Container
             return new LogManager($app);
         });
 
-        $this['view_manager'] = $this->share( function($app) {
+        $this['view_manager'] = $this->share( function ($app) {
             return new ViewManager($app);
         });
 
-        $this['view'] = $this->share( function($app) {
+        $this['view'] = $this->share( function ($app) {
             return $app['view_manager']->getView();
         });
 
-        $this['info_parser'] = $this->share( function($app) {
+        $this['info_parser'] = $this->share( function ($app) {
             return new InfoParser();
         });
 
-        $this['theme'] = $this->share( function($app) {
+        $this['theme'] = $this->share( function ($app) {
             return $app['view_manager']->getTheme();
         });
 
-        $this['template'] = $this->share( function($app) {
+        $this['template'] = $this->share( function ($app) {
             return $app['view_manager']->getTemplate();
         });
 
         $this['session'] = $this->solveSession();
 
-        $this['widget'] = $this->share( function($app) {
+        $this['widget'] = $this->share( function ($app) {
             return new Widget($app);
         });
 
-        $this['profiler'] = $this->share( function() {
+        $this['profiler'] = $this->share( function () {
             return new Profiler();
         });
 
-        $this['translate_loader'] = $this->share( function($app) {
+        $this['translate_loader'] = $this->share( function ($app) {
             return new PHPFileLoader($app);
         });
 
@@ -355,7 +352,7 @@ class Application extends \Illuminate\Container\Container
         // Start the Session
         if (isset($this['session'])) {
 
-            if (! $session_is_started ) {
+            if (! $session_is_started) {
                 $this['session']->start();
             }
 
@@ -437,19 +434,19 @@ class Application extends \Illuminate\Container\Container
     /**
      * Register the AuthProvider for Reborn CMS.
      *
-     * @param \Closure|null $callback Custom AuthProvider regsiter function.
+     * @param  \Closure|null                     $callback Custom AuthProvider regsiter function.
      * @return \Reborn\Auth\AuthProviderInstance
      **/
     public function authProviderRegister(\Closure $callback = null)
     {
-        $this['auth_provider'] = $this->share( function($app) use ($callback) {
+        $this['auth_provider'] = $this->share( function ($app) use ($callback) {
             $provider = null;
 
             if (! is_null($callback) ) {
                 $provider = $callback($app);
             }
 
-            if(! $provider instanceof \Reborn\Auth\AuthProvider ) {
+            if (! $provider instanceof \Reborn\Auth\AuthProvider) {
                 $provider = new \Reborn\Auth\AuthSentryProvider($app);
             }
 
@@ -457,12 +454,12 @@ class Application extends \Illuminate\Container\Container
         });
 
         // Register for User Provider
-        $this['user_provider'] = $this->share( function($app) {
+        $this['user_provider'] = $this->share( function ($app) {
             return $app['auth_provider']->getUserProvider();
         });
 
         // Register for UserGroup Provider
-        $this['usergroup_provider'] = $this->share( function($app) {
+        $this['usergroup_provider'] = $this->share( function ($app) {
             return $app['auth_provider']->getGroupProvider();
         });
     }
@@ -471,7 +468,7 @@ class Application extends \Illuminate\Container\Container
      * Set Locale for application.
      * Default locale is en
      *
-     * @param string $locale
+     * @param  string $locale
      * @return void
      **/
     public function setLocale($locale = 'en')
@@ -487,7 +484,7 @@ class Application extends \Illuminate\Container\Container
      * Set Timezone for application.
      * Default timezone is UTC
      *
-     * @param string $tz
+     * @param  string $tz
      * @return void
      **/
     public function setTimezone($tz = 'UTC')
@@ -508,8 +505,8 @@ class Application extends \Illuminate\Container\Container
     /**
      * Magic setter method
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  string $key
+     * @param  mixed  $value
      * @return void
      **/
     public function __set($key, $value)
@@ -520,7 +517,7 @@ class Application extends \Illuminate\Container\Container
     /**
      * Magic getter method
      *
-     * @param string $key
+     * @param  string $key
      * @return mixed
      **/
     public function __get($key)
@@ -531,7 +528,7 @@ class Application extends \Illuminate\Container\Container
     /**
      * Inject CSRF Token
      *
-     * @param \Reborn\Http\Response $response Response Object
+     * @param  \Reborn\Http\Response $response Response Object
      * @return string
      **/
     public function injectCSRFToken($response)

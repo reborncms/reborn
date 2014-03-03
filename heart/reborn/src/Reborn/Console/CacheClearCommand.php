@@ -2,10 +2,8 @@
 
 namespace Reborn\Console;
 
-use Reborn\Filesystem\File;
 use Reborn\Filesystem\Directory as Dir;
 use Symfony\Component\Console\Command\Command as SfCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -50,7 +48,7 @@ class CacheClearCommand extends SfCommand
     /**
      * Configures the current command.
      */
-	protected function configure()
+    protected function configure()
     {
         $this->setName('cache:clear')
             ->setDescription('Clear Application Caches');
@@ -69,7 +67,7 @@ class CacheClearCommand extends SfCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-		$folder = $input->getOption('folder');
+        $folder = $input->getOption('folder');
 
         if (is_null($folder)) {
             $this->clearAll();
@@ -109,7 +107,7 @@ class CacheClearCommand extends SfCommand
     /**
      * Clear Cache from choose folder
      *
-     * @param string $folder Folder path
+     * @param  string $folder Folder path
      * @return void
      **/
     protected function clearChoose($folder)

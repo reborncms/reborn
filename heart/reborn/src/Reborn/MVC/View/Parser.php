@@ -2,8 +2,6 @@
 
 namespace Reborn\MVC\View;
 
-use Reborn\MVC\View\AbstractHandler;
-
 /**
  * Template Parser class for Reborn View
  *
@@ -67,12 +65,12 @@ class Parser
      * Add (register) new parser handler for the parser.
      * example :
      * <code>
-     *      $parser->addHander('while', function() {
+     *      $parser->addHander('while', function () {
      *              return new MyParser\Handler\While;
      *          });
      * </code>
      *
-     * @param array $handlers Parse handler array
+     * @param  array                  $handlers Parse handler array
      * @return Reborn\MVC\View\Parser
      **/
     public function addHandler($name, $handler)
@@ -85,8 +83,8 @@ class Parser
     /**
      * Parse the given template file.
      *
-     * @param string $template Template file content
-     * @param mixed $data
+     * @param  string $template Template file content
+     * @param  mixed  $data
      * @return string
      */
     public function parse($template, $data)
@@ -101,7 +99,7 @@ class Parser
     /**
      * Parse template string.
      *
-     * @param string $template Template string
+     * @param  string $template Template string
      * @return string
      */
     public function parseString($template)
@@ -116,18 +114,16 @@ class Parser
             } else {
                 $handler = new $handler($this);
 
-                if($handler instanceof AbstractHandler) {
+                if ($handler instanceof AbstractHandler) {
                     $template = $handler->handle($template, $this->data);
                 }
             }
         }
 
         // Second step is Handle by the default handlers
-        foreach($this->handlers as $key => $func)
-        {
+        foreach ($this->handlers as $key => $func) {
             $pattern = '/(?<!\w)(\s*)\{\{\s*('.$key.'.+?)\s*\}\}/';
-            if (preg_match($pattern, $template))
-            {
+            if (preg_match($pattern, $template)) {
                 $template = $this->{$func}($template);
             }
         }
@@ -152,7 +148,7 @@ class Parser
     /**
      * Split the Content string to array
      *
-     * @param string $string Content String
+     * @param  string $string Content String
      * @return mixed
      **/
     public function splitContent($string, $keyStr = '_main')
@@ -183,7 +179,7 @@ class Parser
     /**
      * Parse the PHP Tag to string.
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      */
     protected function parsePHPTag($template)
@@ -194,7 +190,7 @@ class Parser
     /**
      * Handler for noparse string replace
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleUnParse($template)
@@ -213,7 +209,7 @@ class Parser
     /**
      * Handler for replace noparse key with their value
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleReParse($template)
@@ -224,7 +220,7 @@ class Parser
     /**
      * Handle the Theme file include
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleInclude($template)
@@ -239,14 +235,14 @@ class Parser
     /**
      * Handle the Navigation
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleNavigation($template)
     {
         $pattern = '/\{\{\s*(nav):(.*)\s*\}\}/';
 
-        $callback = function($matches) {
+        $callback = function ($matches) {
 
             $arr = explode('.', rtrim($matches[2], ' '));
             $nav = array_shift($arr);
@@ -265,7 +261,7 @@ class Parser
     /**
      * Handle the Module Parial Render
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handlePartial($template)
@@ -280,7 +276,7 @@ class Parser
     /**
      * Handle the Module Parial Loop Render
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handlePartialLoop($template)
@@ -290,11 +286,10 @@ class Parser
         return preg_replace($pattern, '<?php echo $this->partialLoop$1; ?>', $template);
     }
 
-
     /**
      * Handle the Loop(foreach only) for parser.
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      */
     protected function handleLoop($template)
@@ -310,7 +305,7 @@ class Parser
     /**
      * Handle the PHP if statement
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleIf($template)
@@ -326,7 +321,7 @@ class Parser
     /**
      * Handle the PHP if statement with not operator
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleIfNot($template)
@@ -342,7 +337,7 @@ class Parser
     /**
      * Handle the PHP if statement with empty function
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleIfEmpty($template)
@@ -355,7 +350,7 @@ class Parser
     /**
      * Handle the PHP if statement with not empty function
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleIfNotEmpty($template)
@@ -368,7 +363,7 @@ class Parser
      /**
      * Handle the PHP if statement with isset function
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleIfIsset($template)
@@ -381,7 +376,7 @@ class Parser
      /**
      * Handle the PHP if statement with not isset function
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleIfNotIsset($template)
@@ -394,7 +389,7 @@ class Parser
     /**
      * Handle the PHP elsif statement
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleElseIf($template)
@@ -407,7 +402,7 @@ class Parser
     /**
      * Handle the PHP else statement
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleElse($template)
@@ -420,7 +415,7 @@ class Parser
     /**
      * Handle the Template Breadcrumb
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleBreadcrumb($template)
@@ -442,14 +437,14 @@ class Parser
     /**
      * Handle the ViewData::make()
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleMaker($template)
     {
         $pattern = '/\{\{\s*make:(\w+)\s(.*)\s*\}\}/';
 
-        $callback = function($match) {
+        $callback = function ($match) {
             $name = $match[1];
             $params = $match[2];
 
@@ -483,7 +478,7 @@ class Parser
     /**
      * Handle View Block
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleBlock($template)
@@ -508,7 +503,7 @@ class Parser
     /**
      * Handle the PHP Comments
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleComment($template)
@@ -521,7 +516,7 @@ class Parser
     /**
      * Handle the PHP comment single line
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleCommentSingleLine($template)
@@ -534,7 +529,7 @@ class Parser
     /**
      * Handle the PHP comment block
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleCommentBlock($template)
@@ -547,7 +542,7 @@ class Parser
     /**
      * Handle the code block variable
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleCodeBlock($template)
@@ -564,7 +559,7 @@ class Parser
     /**
      * Handle the variable echo
      *
-     * @param string $template
+     * @param  string $template
      * @return string
      **/
     protected function handleEcho($template)

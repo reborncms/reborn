@@ -103,8 +103,8 @@ class Version
     /**
      * Compare the Given Version and Current Version of Reborn CMS.
      *
-     * @param string $version Version of the given to compare with current version.
-     * @return int Return is same with version_compare() function from PHP.
+     * @param  string $version Version of the given to compare with current version.
+     * @return int    Return is same with version_compare() function from PHP.
      */
     public static function compare($new_version)
     {
@@ -118,8 +118,7 @@ class Version
     {
         $server_verison = File::getRemote('http://www.reborncms.com/check/version?current=1.0.0-beta');
 
-        if($server_verison['status'] == 'needUpdate')
-        {
+        if ($server_verison['status'] == 'needUpdate') {
             static::update($server_verison);
         }
     }
@@ -127,7 +126,6 @@ class Version
     public static function update($data = array())
     {
         $file_host = $data['fileHost'];
-
 
     }*/
 } // END class Version

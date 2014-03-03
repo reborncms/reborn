@@ -12,13 +12,13 @@ use Reborn\Cores\Facade;
  **/
 class ConfigFacade extends Facade
 {
-	/**
-	 * Get config instance.
-	 *
-	 * @return \Reborn\Config\Config
-	 **/
-	public static function getInstance()
-	{
-		return static::$app['config'];
-	}
+    /**
+     * Get config instance.
+     *
+     * @return \Reborn\Config\Config
+     **/
+    public static function getInstance()
+    {
+        return static::$app['config'];
+    }
 }

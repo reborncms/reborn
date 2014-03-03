@@ -34,7 +34,7 @@ class ErrorHandler
     /**
      * Default instance method
      *
-     * @param \Reborn\Cores\Application $app
+     * @param  \Reborn\Cores\Application $app
      * @return void
      **/
     public function __construct(Application $app)
@@ -56,8 +56,8 @@ class ErrorHandler
     /**
      * Bind to Exception Hanlder
      *
-     * @param Closure $handler Closure function for handler
-     * @param boolean $append Handler is append in $this->handlers
+     * @param  Closure                    $handler Closure function for handler
+     * @param  boolean                    $append  Handler is append in $this->handlers
      * @return \Reborn\Cores\ErrorHandler
      */
     public function bind(Closure $handler, $append = false)
@@ -120,7 +120,7 @@ class ErrorHandler
     /**
      * Get Message for Console Output
      *
-     * @param \Exception $e
+     * @param  \Exception $e
      * @return string
      **/
     protected function getMessageForConsole($e)
@@ -135,7 +135,7 @@ class ErrorHandler
     /**
      * Resolve Handler Binding
      *
-     * @param \Exception $e
+     * @param  \Exception      $e
      * @return boolean|Closure
      **/
     protected function resolveBinding($e)
@@ -159,8 +159,8 @@ class ErrorHandler
     /**
      * Default Exception Handling
      *
-     * @param \Exception $e
-     * @param integer $status
+     * @param  \Exception            $e
+     * @param  integer               $status
      * @return \Reborn\Http\Response
      **/
     protected function defaultHandling($e, $status)
@@ -193,8 +193,8 @@ class ErrorHandler
     /**
      * Exception handler for ajax request. Return json string
      *
-     * @param \Exception $e
-     * @param integer $status
+     * @param  \Exception            $e
+     * @param  integer               $status
      * @return \Reborn\Http\Response
      **/
     protected function jsonResponseHandler($e, $status)
@@ -228,7 +228,7 @@ class ErrorHandler
     /**
      * Get Class Name From Exception
      *
-     * @param array $t Traces array
+     * @param  array       $t Traces array
      * @return string|null
      */
     protected function getClass($t)
@@ -239,7 +239,7 @@ class ErrorHandler
     /**
      * Get Function Name From Exception
      *
-     * @param array $t Traces array
+     * @param  array       $t Traces array
      * @return string|null
      */
     protected function getFunction($t)
@@ -252,8 +252,8 @@ class ErrorHandler
     /**
      * Get File Name From Exception
      *
-     * @param array $t Traces array
-     * @param boolean $remove_basepath Remove base path form file
+     * @param  array       $t               Traces array
+     * @param  boolean     $remove_basepath Remove base path form file
      * @return string|null
      */
     protected function getFile($t, $remove_basepath =false)
@@ -270,7 +270,7 @@ class ErrorHandler
     /**
      * Get Line Number From Exception
      *
-     * @param array $t Traces array
+     * @param  array  $t Traces array
      * @return string
      */
     protected function getLine($t)
@@ -281,7 +281,7 @@ class ErrorHandler
     /**
      * Get Code Block to show at exception view
      *
-     * @param array $t Traces array
+     * @param  array  $t Traces array
      * @return string
      */
     protected function getCodeLine($t)
@@ -300,14 +300,15 @@ class ErrorHandler
         $codeLines = array_slice($lines, $line - 6, 10, true);
         $codeLines[$line - 1] = '<strong>'.$codeLines[$line -1].'</strong>';
         $codeLines = implode("\n", $codeLines);
+
         return '<pre>'.$codeLines.'</pre>';
     }
 
     /**
      * Get Error Line from source file.
      *
-     * @param string $file
-     * @param integer $line
+     * @param  string  $file
+     * @param  integer $line
      * @return string
      **/
     protected function getErrorLine($file, $line)
@@ -485,4 +486,3 @@ STYLE;
     }
 
 } // END class ErrorHandler
-

@@ -12,75 +12,76 @@ use Reborn\Http\Request;
  **/
 class Middleware
 {
-	/**
-	 * Registered middleware collection array
-	 *
-	 * @var array
-	 **/
-	protected static $middlwares = array();
+    /**
+     * Registered middleware collection array
+     *
+     * @var array
+     **/
+    protected static $middlwares = array();
 
-	/**
-	 * Register the route middleware
-	 *
-	 * @param string $name Middleware name
-	 * @param Closure|string $callback Callback for middleware
-	 * @return void
-	 **/
-	public static function register($name, $callback)
-	{
-		static::$middlwares[$name] = $callback;
-	}
+    /**
+     * Register the route middleware
+     *
+     * @param  string         $name     Middleware name
+     * @param  Closure|string $callback Callback for middleware
+     * @return void
+     **/
+    public static function register($name, $callback)
+    {
+        static::$middlwares[$name] = $callback;
+    }
 
-	/**
-	 * Run the middleware callback by give name
-	 *
-	 * @param string $name
-	 * @param \Reborn\Http\Request $request
-	 * @param \Reborn\Routing\Route $route
-	 * @return void
-	 **/
-	public static function run($name, Request $request, Route $route)
-	{
-		list($name, $param) = static::callbackAndParams($name);
+    /**
+     * Run the middleware callback by give name
+     *
+     * @param  string                $name
+     * @param  \Reborn\Http\Request  $request
+     * @param  \Reborn\Routing\Route $route
+     * @return void
+     **/
+    public static function run($name, Request $request, Route $route)
+    {
+        list($name, $param) = static::callbackAndParams($name);
 
-		if (! isset(static::$middlwares[$name]) ) {
-			return null;
-		}
+        if (! isset(static::$middlwares[$name]) ) {
+            return null;
+        }
 
-		$callback = static::$middlwares[$name];
+        $callback = static::$middlwares[$name];
 
-		// If callback is string, this is object and call the run() method
-		if (is_string($callback)) {
-			$ins = new $callback;
-			return $ins->run($request, $route, $param);
-		}
+        // If callback is string, this is object and call the run() method
+        if (is_string($callback)) {
+            $ins = new $callback;
 
-		// Callback is Closure
-		return $callback($request, $route, $param);
-	}
+            return $ins->run($request, $route, $param);
+        }
 
-	/**
-	 * Parse callback name to callback
-	 *
-	 * @param string $name Middleware callback name
-	 * @return array
-	 **/
-	protected static function callbackAndParams($name)
-	{
-		if (false === strpos($name, ':')) {
-			return array($name, array());
-		}
+        // Callback is Closure
+        return $callback($request, $route, $param);
+    }
 
-		$lists = explode(':', $name, 2);
+    /**
+     * Parse callback name to callback
+     *
+     * @param  string $name Middleware callback name
+     * @return array
+     **/
+    protected static function callbackAndParams($name)
+    {
+        if (false === strpos($name, ':')) {
+            return array($name, array());
+        }
 
-		$data = explode(',', $lists[1]);
-		$params = array();
-		foreach ($data as $d) {
-			list($k, $v) = explode('=', $d);
-			$params[$k] = $v;
-		}
+        $lists = explode(':', $name, 2);
 
-		return array($lists[0], $params);
-	}
+        $data = explode(',', $lists[1]);
+        $params = array();
+        foreach ($data as $d) {
+            list($k, $v) = explode('=', $d);
+            $params[$k] = $v;
+        }
+
+        return array($lists[0], $params);
+    }
 
 } // END class Middleware

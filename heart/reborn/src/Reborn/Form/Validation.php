@@ -3,7 +3,6 @@
 namespace Reborn\Form;
 
 use Closure;
-use Config;
 use Reborn\Connector\DB\DBManager as DB;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -130,8 +129,8 @@ class Validation
     /**
      * Static Method for Validation Instance
      *
-     * @param array $inputs Input fields
-     * @param array $rules Rules for Input fields
+     * @param  array                   $inputs Input fields
+     * @param  array                   $rules  Rules for Input fields
      * @return \Reborn\Form\Validation
      **/
     public static function create($inputs = array(), $rules)
@@ -170,8 +169,8 @@ class Validation
      *      }
      * </code>
      *
-     * @param array $inputs Input fields
-     * @param array $rules Rules for Input fields
+     * @param  array $inputs Input fields
+     * @param  array $rules  Rules for Input fields
      * @return void
      **/
     public function __construct($inputs = array(), $rules)
@@ -191,8 +190,8 @@ class Validation
     /**
      * Add validation rule.
      *
-     * @param string $name
-     * @param array $rules
+     * @param  string                  $name
+     * @param  array                   $rules
      * @return \Reborn\Form\Validation
      **/
     public function rule($name, array $rules)
@@ -205,10 +204,10 @@ class Validation
     /**
      * Add new rules or change base on condition.
      *
-     * @param string $name
-     * @param array $rules
-     * @param \Closure $condition
-     * @param boolean $merge
+     * @param  string                  $name
+     * @param  array                   $rules
+     * @param  \Closure                $condition
+     * @param  boolean                 $merge
      * @return \Reborn\Form\Validation
      **/
     public function when($name, array $rules, Closure $condition, $merge = true)
@@ -227,8 +226,8 @@ class Validation
     /**
      * Set Custom Message for Validation Rules
      *
-     * @param string $for Input key name
-     * @param string $message
+     * @param  string                  $for     Input key name
+     * @param  string                  $message
      * @return \Reborn\Form\Validation
      **/
     public function message($for, $message)
@@ -241,9 +240,9 @@ class Validation
     /**
      * Extend new validation rule.
      *
-     * @param string $name Validation name
-     * @param string $msg Error message for this rule
-     * @param Closure $callback Callback function for rule
+     * @param  string                  $name     Validation name
+     * @param  string                  $msg      Error message for this rule
+     * @param  Closure                 $callback Callback function for rule
      * @return \Reborn\Form\Validation
      **/
     public function extend($name, $message, $callback)
@@ -264,7 +263,7 @@ class Validation
     /**
      * Get Input Value
      *
-     * @param string|null $key Key name or null for all
+     * @param  string|null $key Key name or null for all
      * @return mixed
      **/
     public function getInput($key = null)
@@ -276,13 +275,14 @@ class Validation
                 return $this->inputs[$key];
             }
         }
+
         return null;
     }
 
     /**
      * Has Input Values
      *
-     * @param string $key Key name
+     * @param  string  $key Key name
      * @return boolean
      **/
     public function hasInput($key)
@@ -353,8 +353,8 @@ class Validation
     /**
      * Compute the Input and his rule is valid or not.
      *
-     * @param string $input Input field name
-     * @param string $rule Validation rule for given input field
+     * @param  string  $input Input field name
+     * @param  string  $rule  Validation rule for given input field
      * @return boolean
      **/
     protected function compute($input, $rule)
@@ -394,7 +394,7 @@ class Validation
      * Have a char ':' at given rule, parse the rule name and param.
      * If doesn't have ':', return rule name and param is null.
      *
-     * @param string $rule
+     * @param  string $rule
      * @return array
      **/
     protected function ruleParser($rule)
@@ -410,10 +410,10 @@ class Validation
      * set the validation error.
      * This method is call from $this->compute() when the validation is invalid.
      *
-     * @param string $rule Name of the validation rule
-     * @param string $key Input field name.
-     * @param string $arg Argumetn string for rule (eg: max,min etc:)
-     * @param boolean $addedRule This error from addedMethods or default Methods
+     * @param  string  $rule      Name of the validation rule
+     * @param  string  $key       Input field name.
+     * @param  string  $arg       Argumetn string for rule (eg: max,min etc:)
+     * @param  boolean $addedRule This error from addedMethods or default Methods
      * @return void
      **/
     protected function setError($rule, $key, $arg, $addedRule = false)
@@ -427,7 +427,7 @@ class Validation
             if ($addedRule) {
                 $msg = $this->extended[$rule]['msg'];
                 // Message is callback
-                if($msg instanceof Closure) {
+                if ($msg instanceof Closure) {
                     $msg = $msg($key, $arg, $rule);
                 }
             } else {
@@ -521,34 +521,33 @@ class Validation
         return str_replace(array('{key}', '{date}'), array(ucfirst($key), $date), $msg);
     }
 
-
     /* =============== Validation Method Lists =================== */
 
     protected function validMax($value, $max)
     {
-        return ($value <= (int)$max);
+        return ($value <= (int) $max);
     }
 
     protected function validMin($value, $min)
     {
-        return ($value >= (int)$min);
+        return ($value >= (int) $min);
     }
 
     protected function validMaxLength($value, $max)
     {
-        return (strlen($value) <= (int)$max);
+        return (strlen($value) <= (int) $max);
     }
 
     protected function validMinLength($value, $min)
     {
-        return (strlen($value) >= (int)$min);
+        return (strlen($value) >= (int) $min);
     }
 
     protected function validRequired($value)
     {
         if (is_string($value) and trim($value) == '') {
             return false;
-        } elseif(is_null($value)) {
+        } elseif (is_null($value)) {
             return false;
         } elseif ($value instanceof File) {
             return (string) $value->getPath() != '';
@@ -615,7 +614,7 @@ class Validation
     {
         list($first, $last) = explode(',', $bet);
 
-        return (((int)$first < (int)$value) and ((int)$value < (int)$last));
+        return (((int) $first < (int) $value) and ((int) $value < (int) $last));
     }
 
     /**
@@ -655,6 +654,7 @@ class Validation
         if (is_null($result)) {
             return true;
         }
+
         return false;
     }
 
@@ -689,7 +689,7 @@ class Validation
     /**
      * Valid method for Honeypot
      *
-     * @param string $value
+     * @param  string  $value
      * @return boolean
      **/
     protected function validHoneypot($value)
@@ -700,7 +700,7 @@ class Validation
     /**
      * Valid method for Latitude
      *
-     * @param string $value
+     * @param  string  $value
      * @return boolean
      **/
     protected function validLat($value)
@@ -711,7 +711,7 @@ class Validation
     /**
      * Valid method for Longitude
      *
-     * @param string $value
+     * @param  string  $value
      * @return boolean
      **/
     protected function validLong($value)
@@ -722,8 +722,8 @@ class Validation
     /**
      * Check Image validation
      *
-     * @param File|null $value
-     * @param string|null $types
+     * @param  File|null   $value
+     * @param  string|null $types
      * @return boolean
      **/
     protected function validImage($value, $types = null)
@@ -740,8 +740,8 @@ class Validation
     /**
      * Check File MIME Types
      *
-     * @param File|null $value
-     * @param string|array $types
+     * @param  File|null    $value
+     * @param  string|array $types
      * @return boolean
      **/
     protected function validFileType($value, $types)
@@ -760,8 +760,8 @@ class Validation
     /**
      * Check File MaxSize
      *
-     * @param File|null $value
-     * @param string|null $types
+     * @param  File|null   $value
+     * @param  string|null $types
      * @return boolean
      **/
     protected function validFileSize($value, $size)
@@ -778,8 +778,8 @@ class Validation
     /**
      * Check value date must be before Rule date
      *
-     * @param string $value
-     * @param string $before
+     * @param  string  $value
+     * @param  string  $before
      * @return boolean
      **/
     protected function validBefore($value, $before)
@@ -796,8 +796,8 @@ class Validation
     /**
      * Check value date must be after Rule date
      *
-     * @param string $value
-     * @param string $after
+     * @param  string  $value
+     * @param  string  $after
      * @return boolean
      **/
     protected function validAfter($value, $after)
@@ -814,8 +814,8 @@ class Validation
     /**
      * Prepare Date format for Before, After Rules
      *
-     * @param string|null $value
-     * @param string $rules
+     * @param  string|null $value
+     * @param  string      $rules
      * @return array
      **/
     protected function prepareDateFormat($value, $rules)

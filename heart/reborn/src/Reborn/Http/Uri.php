@@ -28,7 +28,7 @@ class Uri
     /**
      * Initialize Uri Class.
      *
-     * @param \Reborn\Http\Request $request
+     * @param  \Reborn\Http\Request $request
      * @return void
      **/
     public static function initialize(Request $request)
@@ -53,14 +53,13 @@ class Uri
      *      // Output is - null
      * </code>
      *
-     * @param string $key URI segment array key no
+     * @param  string      $key URI segment array key no
      * @return string|null
      **/
     public static function segment($key)
     {
         $key = $key - 1;
         if (! is_int($key) || $key < 0) return null;
-
         return isset(static::$segments[$key]) ? static::$segments[$key] : null;
     }
 
@@ -87,7 +86,7 @@ class Uri
     /**
      * Get Last Uri Segment.
      *
-     * @param boolean $number If this param is true, return segment number
+     * @param  boolean             $number If this param is true, return segment number
      * @return string|integer|null
      **/
     public static function last($number = false)
@@ -95,6 +94,7 @@ class Uri
         if ($number) {
             return count(static::$segments);
         }
+
         return end(static::$segments);
     }
 
@@ -111,8 +111,8 @@ class Uri
      *      // return false;
      * </code>
      *
-     * @param string $name Name of the segment
-     * @param int $key Segment array key number
+     * @param  string  $name Name of the segment
+     * @param  int     $key  Segment array key number
      * @return boolean
      */
     public static function hasInSegment($name, $key)
@@ -140,14 +140,14 @@ class Uri
      *      // Output is - http://localhost/myapp/product/category/mobile
      * </code>
      *
-     * @param array|object $array Data Array (or) Object
-     * @param boolean $fullURL If this value is true, return full URL (with host name)
+     * @param  array|object $array   Data Array (or) Object
+     * @param  boolean      $fullURL If this value is true, return full URL (with host name)
      * @return string
      **/
     public static function arrayToUri($array = array(), $fullURL = false)
     {
         if (! is_array($array)) {
-            $array = (array)$array;
+            $array = (array) $array;
         }
 
         $string = implode('/', $array);
@@ -162,13 +162,13 @@ class Uri
     /**
      * Get Current Uri (Orginal is array) to URI String.
      *
-     * @param int $offset URI Segment Offset
-     * @param int|null $length Return Length for URI String
+     * @param  int      $offset URI Segment Offset
+     * @param  int|null $length Return Length for URI String
      * @return string
      **/
     public static function uriString($offset = 1, $length = null)
     {
-        $offset = (int)$offset - 1;
+        $offset = (int) $offset - 1;
 
         $uri = array_slice(static::$segments, $offset, $length);
 
@@ -188,7 +188,7 @@ class Uri
     /**
      * Create given path to the full url.
      *
-     * @param string $path
+     * @param  string $path
      * @return string
      **/
     public static function create($path = '')
@@ -223,7 +223,7 @@ class Uri
             static::$segments = static::setLanguage($uriArray);
         }
 
-        if((isset(static::$segments[0])) and (static::$segments[0] == \Setting::get('adminpanel_url'))) {
+        if ((isset(static::$segments[0])) and (static::$segments[0] == \Setting::get('adminpanel_url'))) {
             if (! defined('ADMIN')) {
                 define('ADMIN', true);
             }
@@ -233,7 +233,7 @@ class Uri
     /**
      * Set the Language for app, if uri's first element is language code
      *
-     * @param array $uri
+     * @param  array $uri
      * @return array
      */
     protected static function setLanguage($uri)
@@ -248,7 +248,7 @@ class Uri
         $lang = \Config::get('app.lang');
 
         if (isset($uri[0]) and (2 == strlen($uri[0]))) {
-            if(array_key_exists($uri[0], $supLangs)) {
+            if (array_key_exists($uri[0], $supLangs)) {
                 $lang = $uri[0];
                 array_shift($uri);
             }

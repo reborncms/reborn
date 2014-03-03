@@ -3,7 +3,6 @@
 namespace Reborn\Translate;
 
 use Reborn\Translate\Loader\LoaderInterface;
-use Reborn\Translate\Loader\PHPFileLoader;
 
 /**
  * Translate Manager Class for Reborn.
@@ -52,8 +51,8 @@ class TranslateManager
      * Initialize method for Translate Manager.
      * Set locale and fallback locale for Manager.
      *
-     * @param string $locale Locale code
-     * @param string $fallback_locale Fallback locale, default is 'en'
+     * @param  string $locale          Locale code
+     * @param  string $fallback_locale Fallback locale, default is 'en'
      * @return viod
      */
     public static function initialize($locale, $fallback_locale = 'en')
@@ -67,7 +66,7 @@ class TranslateManager
     /**
      * Set locale for Translate
      *
-     * @param string $locale Locale code
+     * @param  string $locale Locale code
      * @return void
      **/
     public static function setLocale($locale)
@@ -88,7 +87,7 @@ class TranslateManager
     /**
      * Set File Loader
      *
-     * @param string $loader File Loader Key Name
+     * @param  string $loader File Loader Key Name
      * @return void
      **/
     public static function setLoader(LoaderInterface $loader)
@@ -117,9 +116,9 @@ class TranslateManager
      *  Translate::get('navigation::navigation.title');
      * </code>
      *
-     * @param string $resource Resource File name
-     * @param string $subname SubName for Resource File. This is shortcut name
-     * @param string $locale This is optional
+     * @param  string  $resource Resource File name
+     * @param  string  $subname  SubName for Resource File. This is shortcut name
+     * @param  string  $locale   This is optional
      * @return boolean
      */
     public static function load($resource, $shortcut = null, $locale = null)
@@ -138,7 +137,7 @@ class TranslateManager
 
         $loader = static::getLoader();
 
-        if(!$loader instanceof LoaderInterface) {
+        if (!$loader instanceof LoaderInterface) {
             static::setLoader(\Facade::getApplication()->translate_loader);
             $loader = static::getLoader();
         }
@@ -167,8 +166,8 @@ class TranslateManager
     /**
      * Add shortcut name for resource name
      *
-     * @param string $resource Resource name
-     * @param string $shortcut Shortcut name for resource
+     * @param  string $resource Resource name
+     * @param  string $shortcut Shortcut name for resource
      * @return void
      **/
     public static function addShortcut($resource, $shortcut)
@@ -181,9 +180,9 @@ class TranslateManager
     /**
      * Get the language resource string.
      *
-     * @param string $key
-     * @param array $replace Replace value for langauge string
-     * @param string $default Default result, will return not found $key
+     * @param  string      $key
+     * @param  array       $replace Replace value for langauge string
+     * @param  string      $default Default result, will return not found $key
      * @return string|null
      **/
     public static function get($key, $replace = null, $default = null)
@@ -216,7 +215,7 @@ class TranslateManager
     /**
      * Parse the key name with resource and lang key
      *
-     * @param string $key
+     * @param  string $key
      * @return array
      **/
     protected static function parseKey($key)
@@ -227,8 +226,8 @@ class TranslateManager
     /**
      * String replacae with key and value
      *
-     * @param string $str Language string
-     * @param array $replace Replace data
+     * @param  string $str     Language string
+     * @param  array  $replace Replace data
      * @return string
      **/
     protected static function replacer($str, $replace)

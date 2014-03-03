@@ -2,8 +2,6 @@
 
 namespace Reborn\MVC\Controller;
 
-use Reborn\MVC\Controller\Controller;
-use Reborn\Cores\Setting;
 use Reborn\Cores\Version;
 use Reborn\Http\Uri;
 

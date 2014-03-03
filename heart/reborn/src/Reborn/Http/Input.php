@@ -90,8 +90,8 @@ class Input
      *      Input::get('age', 26);
      * </code>
      *
-     * @param string $key
-     * @param mixed $default Default value if request key is not set
+     * @param  string $key
+     * @param  mixed  $default Default value if request key is not set
      * @return mixed
      */
     public static function get($key = '*', $default = null)
@@ -116,8 +116,8 @@ class Input
     /**
      * Get request file information. Same with ($_FILES).
      *
-     * @param string $key
-     * @param mixed $default Default value if request key is not set
+     * @param  string $key
+     * @param  mixed  $default Default value if request key is not set
      * @return mixed
      **/
     public static function file($key, $default = null)
@@ -134,8 +134,8 @@ class Input
      *      echo Input::server('http_host');
      * </code>
      *
-     * @param string $key
-     * @param mixed $default Default value if request key is not set
+     * @param  string $key
+     * @param  mixed  $default Default value if request key is not set
      * @return mixed
      **/
     public static function server($key, $default = null)
@@ -151,7 +151,7 @@ class Input
     /**
      * Get HTTP_REFERER value from $_SERVER
      *
-     * @param null|string $default Default value
+     * @param  null|string $default Default value
      * @return string|null
      **/
     public static function referer($default = null)
@@ -162,7 +162,7 @@ class Input
     /**
      * Get REDIRECT_URL value from $_SERVER
      *
-     * @param null|string $default Default value
+     * @param  null|string $default Default value
      * @return string|null
      **/
     public static function redirect($default = null)
@@ -253,8 +253,8 @@ class Input
     /**
      * This method decide ($request[$_POST] or $query[$_GET]) base on request method
      *
-     * @param string $key
-     * @param mixed $default Default value if request key is not set
+     * @param  string $key
+     * @param  mixed  $default Default value if request key is not set
      * @return mixed
      */
     protected static function getByInputMethod($key, $default = null)
@@ -273,7 +273,7 @@ class Input
     /**
      * Clean the Input Value
      *
-     * @param mixed $value
+     * @param  mixed $value
      * @return mixed
      */
     protected static function sanitize($value)

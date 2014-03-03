@@ -36,8 +36,8 @@ class SimpleEvent implements \Reborn\Event\EventInterface
      * Add(Register) the Event.
      * Note: Use prefix to prevent event name conflict.
      *
-     * @param string $name Event name (eg: blog_post_create)
-     * @param string $callback Callback function name.
+     * @param  string $name     Event name (eg: blog_post_create)
+     * @param  string $callback Callback function name.
      * @return void
      */
     public function on($name, $callback)
@@ -52,7 +52,7 @@ class SimpleEvent implements \Reborn\Event\EventInterface
     /**
      * Check the given event name is have or not
      *
-     * @param string $name Event name
+     * @param  string  $name Event name
      * @return boolean
      */
     public function has($name)
@@ -63,7 +63,7 @@ class SimpleEvent implements \Reborn\Event\EventInterface
     /**
      * Remove(UnRegister) the given event name.
      *
-     * @param string $name Name of the event
+     * @param  string $name Name of the event
      * @return void
      */
     public function off($name)
@@ -86,13 +86,13 @@ class SimpleEvent implements \Reborn\Event\EventInterface
     /**
      * Call the event first register
      *
-     * @param string $name Name of event
-     * @param array $params Paramater array for callback event (optional)
+     * @param  string $name   Name of event
+     * @param  array  $params Paramater array for callback event (optional)
      * @return mixed
      **/
     public function first($name, $params = array())
     {
-        $params = (array)$params;
+        $params = (array) $params;
 
         if (isset($this->events[$name])) {
             return $this->callTheEvents($this->events[$name][0], $params);
@@ -104,15 +104,15 @@ class SimpleEvent implements \Reborn\Event\EventInterface
     /**
      * Call(Trigger) the event.
      *
-     * @param string $name Name of event
-     * @param array $params Paramater array for callback event (optional)
+     * @param  string $name   Name of event
+     * @param  array  $params Paramater array for callback event (optional)
      * @return mixed
      */
     public function call($name, $params = array())
     {
         $result = array();
 
-        $params = (array)$params;
+        $params = (array) $params;
 
         if (isset($this->events[$name])) {
             foreach ($this->events[$name] as $call) {
@@ -134,7 +134,7 @@ class SimpleEvent implements \Reborn\Event\EventInterface
     /**
      * Subscribe for events
      *
-     * @param mixed $handler Event subscribe handler
+     * @param  mixed $handler Event subscribe handler
      * @return void
      **/
     public function subscribe($handler)
@@ -149,8 +149,8 @@ class SimpleEvent implements \Reborn\Event\EventInterface
     /**
      * Call the event
      *
-     * @param array $event Event data
-     * @param array $params
+     * @param  array $event  Event data
+     * @param  array $params
      * @return mixed
      **/
     protected function callTheEvents($event, $params)
@@ -160,6 +160,7 @@ class SimpleEvent implements \Reborn\Event\EventInterface
         } elseif ( isset($event['subscribe']) ) {
             list($class, $method) = explode('::', $event['subscribe']);
             $class = new $class;
+
             return call_user_func_array(array($class, $method), $params);
         }
 

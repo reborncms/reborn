@@ -23,7 +23,7 @@ class Profiler
     /**
      * Start the Profiling.
      *
-     * @param string $name Profiler name
+     * @param  string $name Profiler name
      * @return void
      **/
     public function start($name = 'Reborn CMS Application')
@@ -35,7 +35,7 @@ class Profiler
     /**
      * Stop the Profiling
      *
-     * @param string $name Profiler name
+     * @param  string $name Profiler name
      * @return void
      **/
     public function stop($name = 'Reborn CMS Application')
@@ -47,7 +47,7 @@ class Profiler
     /**
      * Output the Profiler View
      *
-     * @param string $name Profiler name
+     * @param  string $name Profiler name
      * @return string
      **/
     public function output($content)
@@ -91,7 +91,7 @@ class Profiler
     /**
      * Get the Total Time for profiler name
      *
-     * @param string $name Profiler name
+     * @param  string $name Profiler name
      * @return string
      **/
     public function totalTime($name = 'Reborn CMS Application')
@@ -109,7 +109,7 @@ class Profiler
     /**
      * Get total memory for profiler name
      *
-     * @param string $name Profiler name
+     * @param  string $name Profiler name
      * @return string
      **/
     public function totalMemory($name = 'Reborn CMS Application')
@@ -127,7 +127,7 @@ class Profiler
     /**
      * Get Start time from profiler name
      *
-     * @param string $name Profiler name
+     * @param  string $name Profiler name
      * @return string
      **/
     protected function startTimer($name)
@@ -152,7 +152,7 @@ class Profiler
     /**
      * Get Start memory from profiler name
      *
-     * @param string $name Profiler name
+     * @param  string $name Profiler name
      * @return string
      **/
     protected function startMemory($name)

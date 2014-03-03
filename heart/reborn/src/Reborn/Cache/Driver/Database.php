@@ -3,7 +3,6 @@
 namespace Reborn\Cache\Driver;
 
 use Reborn\Cache\CacheDriverInterface;
-use Reborn\Cores\Facade;
 
 /**
  * Database Cache Driver for Reborn

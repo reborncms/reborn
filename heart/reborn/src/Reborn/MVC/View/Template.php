@@ -3,7 +3,6 @@
 namespace Reborn\MVC\View;
 
 use Reborn\Cores\Facade;
-use Reborn\Asset\AssetFinder;
 use Reborn\Module\ModuleManager as Module;
 use Reborn\Exception\FileNotFoundException;
 
@@ -189,7 +188,7 @@ class Template
     /**
      * Default constructor method.
      *
-     * @param array $options Options array for the Template
+     * @param  array                     $options Options array for the Template
      * @return \Reborn\MVC\View\Template
      */
     public function __construct(Theme $theme, View $view, $ext)
@@ -238,8 +237,8 @@ class Template
     /**
      * Find template file form the given path.
      *
-     * @param string $file Template file name
-     * @param string $type Template type. Default is partial
+     * @param  string         $file Template file name
+     * @param  string         $type Template type. Default is partial
      * @return string|boolean
      */
     public function findFile($file, $type = 'partial')
@@ -264,7 +263,7 @@ class Template
     /**
      * Set the layout for the template
      *
-     * @param string $layout Layout name without extension
+     * @param  string                    $layout Layout name without extension
      * @return \Reborn\MVC\View\Template
      **/
     public function setLayout($layout)
@@ -279,8 +278,8 @@ class Template
     /**
      * Set the partial view for the template
      *
-     * @param string $partial
-     * @param array $data
+     * @param  string                    $partial
+     * @param  array                     $data
      * @return \Reborn\MVC\View\Template
      **/
     public function view($partial, $data = array())
@@ -306,8 +305,8 @@ class Template
     /**
      * Set the data for the template.
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  string                    $key
+     * @param  mixed                     $value
      * @return \Reborn\MVC\View\Template
      **/
     public function set($key, $value = null)
@@ -320,7 +319,7 @@ class Template
     /**
      * Set the Page title for the view
      *
-     * @param string $title
+     * @param  string                    $title
      * @return \Reborn\MVC\View\Template
      **/
     public function title($title)
@@ -333,20 +332,18 @@ class Template
     /**
      * Set the stylesheet file for the template
      *
-     * @param string|array $files Stylesheet files array or single file
-     * @param string $module If asset file from module, set the module name
-     * @param string $place Place for the stylesheet area.(header and footer)
+     * @param  string|array              $files  Stylesheet files array or single file
+     * @param  string                    $module If asset file from module, set the module name
+     * @param  string                    $place  Place for the stylesheet area.(header and footer)
      * @return \Reborn\MVC\View\Template
      **/
     public function style($files = array(), $module = null, $place = 'header')
     {
-        if(! is_array($files))
-        {
+        if (! is_array($files)) {
             $files = (array) $files;
         }
 
-        foreach($files as $file)
-        {
+        foreach ($files as $file) {
             $this->style[$place][] = array('file' => $file, 'module' => $module);
         }
 
@@ -356,8 +353,8 @@ class Template
     /**
      * Set the inline stylesheet code for the template
      *
-     * @param string $styles Style Code String
-     * @param string $place Place for the styles code area.(header and footer)
+     * @param  string                    $styles Style Code String
+     * @param  string                    $place  Place for the styles code area.(header and footer)
      * @return \Reborn\MVC\View\Template
      **/
     public function inlineStyle($styles, $place = 'header')
@@ -370,20 +367,18 @@ class Template
     /**
      * Set the script file for the template
      *
-     * @param string|array $files Script files array or single file
-     * @param string $module If asset file from module, set the module name
-     * @param string $place Place for the script area.(header and footer)
+     * @param  string|array              $files  Script files array or single file
+     * @param  string                    $module If asset file from module, set the module name
+     * @param  string                    $place  Place for the script area.(header and footer)
      * @return \Reborn\MVC\View\Template
      **/
     public function script($files = array(), $module = null, $place = 'header')
     {
-        if(! is_array($files))
-        {
+        if (! is_array($files)) {
             $files = (array) $files;
         }
 
-        foreach($files as $file)
-        {
+        foreach ($files as $file) {
             $this->script[$place][] = array('file' => $file, 'module' => $module);
         }
 
@@ -393,8 +388,8 @@ class Template
     /**
      * Set the inline script code for the template
      *
-     * @param string $scripts Scripts Code String
-     * @param string $place Place for the scripts code area.(header and footer)
+     * @param  string                    $scripts Scripts Code String
+     * @param  string                    $place   Place for the scripts code area.(header and footer)
      * @return \Reborn\MVC\View\Template
      **/
     public function inlineScript($scripts, $place = 'header')
@@ -407,8 +402,8 @@ class Template
     /**
      * Set JS variables for the template
      *
-     * @param string|array $key JS variable key or key value array
-     * @param mixed|null $value Value for JS variable
+     * @param  string|array              $key   JS variable key or key value array
+     * @param  mixed|null                $value Value for JS variable
      * @return \Reborn\MVC\View\Template
      **/
     public function jsValue($key, $value = null)
@@ -428,22 +423,20 @@ class Template
      * Set the metadata for the template
      * Metadata type (default is "meta", support type [og, twitter, link])
      *
-     * @param string $name Metadata name
-     * @param string $content Metadata content
-     * @param string $type Metadata type
+     * @param  string                    $name    Metadata name
+     * @param  string                    $content Metadata content
+     * @param  string                    $type    Metadata type
      * @return \Reborn\MVC\View\Template
      **/
     public function metadata($name, $content, $type = 'meta')
     {
         $name = htmlspecialchars(strip_tags($name));
         $content = htmlspecialchars(strip_tags($content));
-        if ($name == 'keywords' AND ! strpos($content, ','))
-        {
+        if ($name == 'keywords' AND ! strpos($content, ',')) {
             $content = preg_replace('/[\s]+/', ', ', trim($content));
         }
 
-        switch($type)
-        {
+        switch ($type) {
             case 'meta':
             case 'twitter':
                 $this->metadata[$name] = '<meta name="'.$name.'" content="'.$content.'" />';
@@ -464,13 +457,14 @@ class Template
     /**
      * Set the breadcrumb for the template.
      *
-     * @param string $label Breadcrumb name
-     * @param string $uri URI for the breadcrumb
+     * @param  string                    $label Breadcrumb name
+     * @param  string                    $uri   URI for the breadcrumb
      * @return \Reborn\MVC\View\Template
      **/
     public function breadcrumb($label, $uri = null)
     {
         $this->breadcrumb[$label] = $uri;
+
         return $this;
     }
 
@@ -483,6 +477,7 @@ class Template
     public function partialOnly()
     {
         $this->useLayout = false;
+
         return $this;
     }
 
@@ -499,7 +494,7 @@ class Template
             $mainContent = '';
         }
 
-        if($this->useLayout) {
+        if ($this->useLayout) {
 
             $this->setLayoutVariables();
 
@@ -514,7 +509,7 @@ class Template
     /**
      * Render the 404 Template
      *
-     * @param string|null $message Message for 404 View
+     * @param  string|null $message Message for 404 View
      * @return string
      */
     public function render404($message = null)
@@ -533,7 +528,7 @@ class Template
     /**
      * Render the Maintain Mode Template
      *
-     * @param string|null $message Message for maintain View
+     * @param  string|null $message Message for maintain View
      * @return string
      */
     public function renderMaintain($message = null)
@@ -594,7 +589,7 @@ class Template
             $file = $this->path.$modFormTheme.DS.$filename;
         } elseif (file_exists($modPath.$filename)) {
             $file = $modPath.$filename;
-        } elseif(file_exists($this->path.$this->partialFolder.DS.$filename)) {
+        } elseif (file_exists($this->path.$this->partialFolder.DS.$filename)) {
             $file = $this->path.$this->partialFolder.DS.$filename;
         } else {
             throw new FileNotFoundException($filename, 'Relative');
@@ -668,7 +663,7 @@ class Template
     /**
      * Complie JS variables with header scripts string.
      *
-     * @param string $scripts Header Scripts Group String
+     * @param  string $scripts Header Scripts Group String
      * @return string
      **/
     protected function compileJsVars($scripts)
@@ -681,8 +676,8 @@ class Template
     /**
      * Get asset element tag
      *
-     * @param string $place
-     * @param string $type
+     * @param  string      $place
+     * @param  string      $type
      * @return string|null
      **/
     protected function getAssetTag($place, $type)
@@ -692,7 +687,7 @@ class Template
         // Call Event
         $res = \Event::call('reborn.template.'.$type.'.render.'.$place, array($files));
 
-        if(! empty($res[0])) {
+        if (! empty($res[0])) {
             $files = $res[0];
         }
 
@@ -715,11 +710,13 @@ class Template
         switch ($type) {
             case 'style':
                 $url = $base.'/styles/'.rtrim($url, ',');
+
                 return '<link rel="stylesheet" type="text/css" href="'.$url.'">'."\n";
                 break;
 
             case 'script':
                 $url = $base.'/scripts/'.rtrim($url, ',');
+
                 return '<script type="text/javascript" src="'.$url.'"></script>'."\n";
                 break;
 
@@ -732,7 +729,7 @@ class Template
     /**
      * Get the Script string from the inlineScripts array from template.
      *
-     * @param string $place
+     * @param  string $place
      * @return string
      **/
     protected function getInlineScriptString($place)
@@ -748,6 +745,7 @@ class Template
                 $scripts .= $s;
                 $scripts .= '</script>'."\n";
             }
+
             return $scripts;
         }
 
@@ -757,7 +755,7 @@ class Template
     /**
      * Get the Stylesheet string from the inlineStyles array from template.
      *
-     * @param string $place
+     * @param  string $place
      * @return string
      **/
     protected function getInlineStyleString($place)
@@ -773,6 +771,7 @@ class Template
                 $styles .= $s;
                 $styles .= '</style>'."\n";
             }
+
             return $styles;
         }
 
@@ -796,7 +795,7 @@ class Template
     /**
      * Parser the key (eg: blog::view)
      *
-     * @param string $key
+     * @param  string $key
      * @return array
      **/
     protected function keyParse($key)
@@ -821,7 +820,7 @@ class Template
     /**
      * Get the views file path for the given moduel.
      *
-     * @param string $module
+     * @param  string $module
      * @return string
      **/
     protected function getModulePath($module)
@@ -834,8 +833,8 @@ class Template
     /**
      * Magic method for template data setter
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  string $key
+     * @param  mixed  $value
      * @return void
      **/
     public function __set($key, $value)

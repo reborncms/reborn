@@ -41,13 +41,13 @@ class Form
     /**
      * Extend the Form Element.
      *
-     * @param string $name Element name
-     * @param Closure $callback Callback function for this element
+     * @param  string  $name     Element name
+     * @param  Closure $callback Callback function for this element
      * @return void
      **/
     public static function extend($name, $callback)
     {
-        if(!is_callable($callback)) {
+        if (!is_callable($callback)) {
             throw new \RbException("Second parameter for Form::extend() must be callable!");
         }
 
@@ -57,16 +57,16 @@ class Form
     /**
      * Form open tag element
      *
-     * @param string $action Form action
-     * @param string $name Form name
-     * @param boolean $file Enable for enctype='multipart/form-data'
-     * @param string $attrs Form tag attributes
+     * @param  string  $action Form action
+     * @param  string  $name   Form name
+     * @param  boolean $file   Enable for enctype='multipart/form-data'
+     * @param  string  $attrs  Form tag attributes
      * @return string
      **/
     public static function start($action = '', $name = null, $file = false, $attrs=array())
     {
         // Skip $file
-        if(is_array($file)) {
+        if (is_array($file)) {
             $attrs = $file;
             $file = false;
         }
@@ -92,10 +92,10 @@ class Form
     /**
      * From open tag element for "$data".
      *
-     * @param string $action Form action
-     * @param string $name Form name
-     * @param boolean $file Enable for enctype='multipart/form-data'
-     * @param string $attrs Form tag attributes
+     * @param  string  $action Form action
+     * @param  string  $name   Form name
+     * @param  boolean $file   Enable for enctype='multipart/form-data'
+     * @param  string  $attrs  Form tag attributes
      * @return string
      **/
     public static function startFor($data, $action = '', $name = null, $file = false, $attrs=array())
@@ -108,7 +108,7 @@ class Form
     /**
      * Set Data Provider (Model) for Form
      *
-     * @param mixed $provider
+     * @param  mixed $provider
      * @return void
      **/
     public static function provider($provider)
@@ -129,9 +129,9 @@ class Form
     /**
      * Fieldset start
      *
-     * @param string $legend Legend Text
-     * @param string $name Fieldset name
-     * @param array $attrs Attributes
+     * @param  string $legend Legend Text
+     * @param  string $name   Fieldset name
+     * @param  array  $attrs  Attributes
      * @return string
      **/
     public static function fieldsetStart($legend = null, $name = null, $attrs = array())
@@ -156,13 +156,14 @@ class Form
     /**
      * Honey Pot Filed for Spam Filter
      *
-     * @param string|null $name Field name. Default name is "honey_pot"
+     * @param  string|null $name Field name. Default name is "honey_pot"
      * @return string
      **/
     public static function honeypot($name = null)
     {
         $name = is_null($name) ? 'honey_pot' : $name;
         $attr = array('style' => 'display:none;');
+
         return static::input($name, '', 'text', $attr);
     }
 
@@ -170,9 +171,9 @@ class Form
      * Input Field
      *
      * @return string
-     * @param string $name Input Field Name
-     * @param string $type Input Field Type
-     * @param string $attrs Attributes
+     * @param  string $name  Input Field Name
+     * @param  string $type  Input Field Type
+     * @param  string $attrs Attributes
      **/
     public static function input($name, $value = null, $type = 'text', $attrs = array())
     {
@@ -206,9 +207,9 @@ class Form
     /**
      * Text Input
      *
-     * @param string $name Text input name
-     * @param mixed $value Value of text input
-     * @param array $attrs Attributes
+     * @param  string $name  Text input name
+     * @param  mixed  $value Value of text input
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function text($name, $value = null, $attrs = array())
@@ -219,9 +220,9 @@ class Form
     /**
      * Password Input
      *
-     * @param string $name Password input name
-     * @param mixed $value Value of password input
-     * @param array $attrs Attributes
+     * @param  string $name  Password input name
+     * @param  mixed  $value Value of password input
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function password($name, $value = null, $attrs = array())
@@ -232,9 +233,9 @@ class Form
     /**
      * Hidden Input
      *
-     * @param string $name hidden input name
-     * @param mixed $value Value of hidden input
-     * @param array $attrs Attributes
+     * @param  string $name  hidden input name
+     * @param  mixed  $value Value of hidden input
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function hidden($name, $value = null, $attrs = array())
@@ -245,8 +246,8 @@ class Form
     /**
      * File Input
      *
-     * @param string $name file input name
-     * @param array $attrs Attributes
+     * @param  string $name  file input name
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function file($name, $attrs = array())
@@ -257,9 +258,9 @@ class Form
     /**
      * Email Input
      *
-     * @param string $name email input name
-     * @param mixed $value Value of email input
-     * @param array $attrs Attributes
+     * @param  string $name  email input name
+     * @param  mixed  $value Value of email input
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function email($name, $value = null, $attrs = array())
@@ -270,9 +271,9 @@ class Form
     /**
      * Url Input
      *
-     * @param string $name url input name
-     * @param mixed $value Value of url input
-     * @param array $attrs Attributes
+     * @param  string $name  url input name
+     * @param  mixed  $value Value of url input
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function url($name, $value = null, $attrs = array())
@@ -283,9 +284,9 @@ class Form
     /**
      * Tel Input
      *
-     * @param string $name tel input name
-     * @param mixed $value Value of tel input
-     * @param array $attrs Attributes
+     * @param  string $name  tel input name
+     * @param  mixed  $value Value of tel input
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function tel($name, $value = null, $attrs = array())
@@ -296,9 +297,9 @@ class Form
     /**
      * Search Input
      *
-     * @param string $name search input name
-     * @param mixed $value Value of search input
-     * @param array $attrs Attributes
+     * @param  string $name  search input name
+     * @param  mixed  $value Value of search input
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function search($name, $value = null, $attrs = array())
@@ -309,11 +310,11 @@ class Form
     /**
      * Number Input
      *
-     * @param string $name number input name
-     * @param int $min Minimum value
-     * @param int $max Maximum value
-     * @param int $value Default value
-     * @param int $step Specific legal number intervals
+     * @param  string $name  number input name
+     * @param  int    $min   Minimum value
+     * @param  int    $max   Maximum value
+     * @param  int    $value Default value
+     * @param  int    $step  Specific legal number intervals
      * @return string
      **/
     public static function number($name, $min, $max, $value = null, $step = null)
@@ -325,15 +326,16 @@ class Form
         if ($step != null) {
             $attrs['step'] = $step;
         }
+
         return static::input($name, $value, 'number', $attrs);
     }
 
     /**
      * Submit button
      *
-     * @param string $name Submit Button
-     * @param mixed $value Value of Submit button
-     * @param array $attrs Attributes
+     * @param  string $name  Submit Button
+     * @param  mixed  $value Value of Submit button
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function submit($name, $value, $attrs = array())
@@ -344,9 +346,9 @@ class Form
     /**
      * Reset button
      *
-     * @param string $name Reset Button
-     * @param mixed $value Value of Reset button
-     * @param array $attrs Attributes
+     * @param  string $name  Reset Button
+     * @param  mixed  $value Value of Reset button
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function reset($name, $value, $attrs = array())
@@ -357,10 +359,10 @@ class Form
     /**
      * Button
      *
-     * @param string $name Button Name
-     * @param string $value Button Text
-     * @param string $type Button Type
-     * @param string $attrs Attributes
+     * @param  string $name  Button Name
+     * @param  string $value Button Text
+     * @param  string $type  Button Type
+     * @param  string $attrs Attributes
      * @return string
      **/
     public static function button($name, $text, $type = 'button', $attrs=array())
@@ -375,8 +377,8 @@ class Form
     /**
      * Form Label
      *
-     * @param string $for Label For
-     * @param string $text Label Text
+     * @param  string $for  Label For
+     * @param  string $text Label Text
      * @return string
      **/
     public static function label($text, $for = null, $attrs=array())
@@ -384,16 +386,17 @@ class Form
         $attr = Html::buildAttributes($attrs);
 
         $labelFor = ($for != null) ? ' for = "'.Str::sanitize($for, 'A-Za-z0-9-_').'"' : '';
+
         return '<label'.$labelFor.$attr.'>'.$text.'</label>';
     }
 
     /**
      * Radio Input
      *
-     * @param string $name Radio Name
-     * @param string $value Radio Value
-     * @param boolean $checked Checked radio or not
-     * @param array $attrs other attributes
+     * @param  string  $name    Radio Name
+     * @param  string  $value   Radio Value
+     * @param  boolean $checked Checked radio or not
+     * @param  array   $attrs   other attributes
      * @return string
      **/
     public static function radio($name, $value, $checked = false, $attrs = array())
@@ -402,15 +405,16 @@ class Form
            $checked = array('checked' => 'checked');
            $attrs = array_merge($attrs, $checked);
         }
+
         return static::input($name, $value, 'radio', $attrs);
     }
 
     /**
      * Radio Group
      *
-     * @param string $name Radio input name
-     * @param array $val_lab Value and Label for Radio input array('value' => 'label')
-     * @param string $checkedVal default checked value for radio input
+     * @param  string $name       Radio input name
+     * @param  array  $val_lab    Value and Label for Radio input array('value' => 'label')
+     * @param  string $checkedVal default checked value for radio input
      * @return string
      **/
     public static function radioGroup($name, $val_lab = array(), $checkedVal = null)
@@ -440,15 +444,15 @@ class Form
     /**
      * Checkbox Input
      *
-     * @param string $name Checkbox Name
-     * @param string $value Checkbox Value
-     * @param boolean $checked Checked checkbox or not
-     * @param array $attrs other attributes
+     * @param  string  $name    Checkbox Name
+     * @param  string  $value   Checkbox Value
+     * @param  boolean $checked Checked checkbox or not
+     * @param  array   $attrs   other attributes
      * @return string
      **/
     public static function checkbox($name, $value, $checked = false, $attrs = array())
     {
-        if($checked == true) {
+        if ($checked == true) {
             $checked = array('checked' => 'checked');
             $attrs = array_merge($attrs, $checked);
         }
@@ -459,9 +463,9 @@ class Form
     /**
      * Checkbox Group
      *
-     * @param string $name Checkbox Name
-     * @param array $val_lab Checkbox Value and Label
-     * @param array $checkVals Default Checked Values
+     * @param  string $name      Checkbox Name
+     * @param  array  $val_lab   Checkbox Value and Label
+     * @param  array  $checkVals Default Checked Values
      * @return string
      **/
     public static function checkGroup($name, $val_lab = array(), $checkVals = array())
@@ -499,9 +503,9 @@ class Form
     /**
      * TextArea
      *
-     * @param string $name TextArea Name
-     * @param string $value TextArea Value
-     * @param array $attrs Attributes
+     * @param  string $name  TextArea Name
+     * @param  string $value TextArea Value
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function textarea($name, $value = null, $attrs = array())
@@ -518,11 +522,11 @@ class Form
     /**
      * Select Box
      *
-     * @param string $name Selectbox Name
-     * @param array $options Select Options
-     * @param boolean $multisel Enable multiple select
-     * @param mixed $selected Default Selected Value
-     * @param array $attrs Attributes
+     * @param  string  $name     Selectbox Name
+     * @param  array   $options  Select Options
+     * @param  boolean $multisel Enable multiple select
+     * @param  mixed   $selected Default Selected Value
+     * @param  array   $attrs    Attributes
      * @return string
      **/
     public static function select($name, $options, $defaultSel = null, $attrs = array())
@@ -561,9 +565,9 @@ class Form
     /**
      * Draft and Live Status Dropdown List
      *
-     * @param string $name
-     * @param mixed $value
-     * @param array $attrs
+     * @param  string $name
+     * @param  mixed  $value
+     * @param  array  $attrs
      * @return string
      **/
     public static function status($name, $value = null, $attrs = array())
@@ -586,7 +590,6 @@ class Form
 
         return static::select('country_list', $config[0]);
     }
-
 
     /**
      * Make output options
@@ -611,7 +614,7 @@ class Form
      **/
     public static function __callStatic($method, $args)
     {
-        if(! isset(static::$extends['ext_'.$method])) {
+        if (! isset(static::$extends['ext_'.$method])) {
             return null;
         }
 
@@ -621,8 +624,8 @@ class Form
     /**
      * Get value for form element tag
      *
-     * @param string $name
-     * @param mixed $value
+     * @param  string $name
+     * @param  mixed  $value
      * @return mixed
      **/
     protected static function getValue($name, $value = null)
@@ -643,7 +646,7 @@ class Form
     /**
      * Get element value from Flash::inputs()
      *
-     * @param string $name
+     * @param  string $name
      * @return mixed
      **/
     protected static function getFromFlash($name)
@@ -662,7 +665,7 @@ class Form
     /**
      * Get element value from static::$data
      *
-     * @param string $name
+     * @param  string $name
      * @return mixed
      **/
     protected static function getFromData($name)
@@ -686,15 +689,14 @@ class Form
      * Get realtion object data.
      * This method is base on Laravel's object_get()
      *
-     * @param string $name
+     * @param  string $name
      * @return mixed
      **/
     protected static function getRelationData($name)
     {
         $object = static::$data;
 
-        foreach (explode('.', $name) as $segment)
-        {
+        foreach (explode('.', $name) as $segment) {
             $object = $object->{$segment};
 
             if (! is_object($object) ) {

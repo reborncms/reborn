@@ -13,164 +13,164 @@ use Reborn\Connector\DB\DBManager as DB;
  **/
 class MultisiteHandler extends BaseHandler
 {
-	/**
-	 * Database prefix name.
-	 *
-	 * @var string
-	 **/
-	protected $prefix;
+    /**
+     * Database prefix name.
+     *
+     * @var string
+     **/
+    protected $prefix;
 
-	/**
-	 * Module content path for site.
-	 *
-	 * @var string
-	 **/
-	protected $module_path;
+    /**
+     * Module content path for site.
+     *
+     * @var string
+     **/
+    protected $module_path;
 
-	/**
-	 * Override Default instance from BaseHandler
-	 *
-	 * @param \Reborn\Cores\Application $app
-	 * @param string|null $prefix
-	 * @return void
-	 **/
-	public function __construct(Application $app, $prefix = null)
-	{
-		$this->prefix = $prefix;
+    /**
+     * Override Default instance from BaseHandler
+     *
+     * @param  \Reborn\Cores\Application $app
+     * @param  string|null               $prefix
+     * @return void
+     **/
+    public function __construct(Application $app, $prefix = null)
+    {
+        $this->prefix = $prefix;
 
-		parent::__construct($app);
-	}
+        parent::__construct($app);
+    }
 
-	/**
-	 * Build for new site.
-	 *
-	 * @param array $force_share
-	 * @return boolean
-	 **/
-	public function buildForNewSite($force_share)
-	{
-		list($public, $private) = $this->findModuleForNewSite();
+    /**
+     * Build for new site.
+     *
+     * @param  array   $force_share
+     * @return boolean
+     **/
+    public function buildForNewSite($force_share)
+    {
+        list($public, $private) = $this->findModuleForNewSite();
 
-		$this->installForNewSite($public, false, $force_share);
+        $this->installForNewSite($public, false, $force_share);
 
-		return $this->installForNewSite($private, true);
-	}
+        return $this->installForNewSite($private, true);
+    }
 
-	/**
-	 * Remove modules of site.
-	 *
-	 * @param array $force_share
-	 * @return boolean
-	 **/
-	public function removeSiteModules($force_share)
-	{
-		list($public, $private) = $this->findModuleForNewSite();
+    /**
+     * Remove modules of site.
+     *
+     * @param  array   $force_share
+     * @return boolean
+     **/
+    public function removeSiteModules($force_share)
+    {
+        list($public, $private) = $this->findModuleForNewSite();
 
-		$this->removeFromSite($public, false, $force_share);
+        $this->removeFromSite($public, false, $force_share);
 
-		return $this->removeFromSite($private, true);
-	}
+        return $this->removeFromSite($private, true);
+    }
 
-	/**
-	 * Set table prefix name.
-	 *
-	 * @param string $prefix
-	 * @return void
-	 **/
-	public function setModulePath($path)
-	{
-		$this->module_path = $path.DS.'modules'.DS;
-	}
+    /**
+     * Set table prefix name.
+     *
+     * @param  string $prefix
+     * @return void
+     **/
+    public function setModulePath($path)
+    {
+        $this->module_path = $path.DS.'modules'.DS;
+    }
 
-	/**
-	 * Set table prefix name.
-	 *
-	 * @param string $prefix
-	 * @return void
-	 **/
-	public function setPrefix($prefix)
-	{
-		$this->prefix = $prefix;
-	}
+    /**
+     * Set table prefix name.
+     *
+     * @param  string $prefix
+     * @return void
+     **/
+    public function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
+    }
 
-	/**
-	 * Get table prefix for module table.
-	 *
-	 * @return string
-	 **/
-	public function getPrefix()
-	{
-		if (is_null($this->prefix)) {
-			return $this->app->site_manager->tablePrefix();
-		}
+    /**
+     * Get table prefix for module table.
+     *
+     * @return string
+     **/
+    public function getPrefix()
+    {
+        if (is_null($this->prefix)) {
+            return $this->app->site_manager->tablePrefix();
+        }
 
-		return $this->prefix.'_';
-	}
+        return $this->prefix.'_';
+    }
 
-	/**
-	 * Get Database table name
-	 *
-	 * @return string
-	 **/
-	protected function getTable()
-	{
-		return $this->getPrefix().'modules';
-	}
+    /**
+     * Get Database table name
+     *
+     * @return string
+     **/
+    protected function getTable()
+    {
+        return $this->getPrefix().'modules';
+    }
 
-	/**
-	 * Get module folder paths
-	 *
-	 * @return array
-	 **/
-	protected function getModulePaths()
-	{
-		if (is_null($this->module_path)) {
-			return array(CORE_MODULES, MODULES, SHARED.'modules'.DS);
-		}
+    /**
+     * Get module folder paths
+     *
+     * @return array
+     **/
+    protected function getModulePaths()
+    {
+        if (is_null($this->module_path)) {
+            return array(CORE_MODULES, MODULES, SHARED.'modules'.DS);
+        }
 
-		return array(CORE_MODULES, BASE_CONTENT.$this->module_path, SHARED.'modules'.DS);
-	}
+        return array(CORE_MODULES, BASE_CONTENT.$this->module_path, SHARED.'modules'.DS);
+    }
 
-	/**
-	 * Find Public (Core and Shared) and Private Modules.
-	 *
-	 * @return array
-	 **/
-	protected function findModuleForNewSite()
-	{
-		$public = $this->findFrom(array(CORE_MODULES, SHARED.'modules'.DS));
-		$private = $this->findFrom(BASE_CONTENT.$this->module_path);
+    /**
+     * Find Public (Core and Shared) and Private Modules.
+     *
+     * @return array
+     **/
+    protected function findModuleForNewSite()
+    {
+        $public = $this->findFrom(array(CORE_MODULES, SHARED.'modules'.DS));
+        $private = $this->findFrom(BASE_CONTENT.$this->module_path);
 
-		return array(
-			$this->createModuleBuilder($public),
-			$this->createModuleBuilder($private)
-		);
-	}
+        return array(
+            $this->createModuleBuilder($public),
+            $this->createModuleBuilder($private)
+        );
+    }
 
-	/**
-	 * Install modules for new site.
-	 *
-	 * @param array $all
-	 * @param boolean $force Force for install
-	 * @param array $force_share Shared by User
-	 * @return boolean
-	 **/
-	protected function installForNewSite($all, $force = false, $force_share = array())
-	{
-		foreach ($all as $name => $module) {
+    /**
+     * Install modules for new site.
+     *
+     * @param  array   $all
+     * @param  boolean $force       Force for install
+     * @param  array   $force_share Shared by User
+     * @return boolean
+     **/
+    protected function installForNewSite($all, $force = false, $force_share = array())
+    {
+        foreach ($all as $name => $module) {
 
-			if ($name !== 'setting' and $name !== 'module') {
-				// Force install for private module and
-				// install only not sharable data for public
-				// and doesn't shared by user force
-				if ($force) {
-					$this->moduleProcessing($module);
-				} elseif (!$module->shared_data and !in_array($name, $force_share)) {
-					$this->moduleProcessing($module);
-				}
-			}
+            if ($name !== 'setting' and $name !== 'module') {
+                // Force install for private module and
+                // install only not sharable data for public
+                // and doesn't shared by user force
+                if ($force) {
+                    $this->moduleProcessing($module);
+                } elseif (!$module->shared_data and !in_array($name, $force_share)) {
+                    $this->moduleProcessing($module);
+                }
+            }
 
-        	DB::table($this->getTable())
+            DB::table($this->getTable())
                 ->insert(
                     array(
                         'uri' => $module->uri,
@@ -179,60 +179,60 @@ class MultisiteHandler extends BaseHandler
                         'version' => $module->version
                     )
                 );
-		}
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * UnInstall modules from site.
-	 *
-	 * @param array $all
-	 * @param boolean $force Force for remove
-	 * @param array $force_share Shared by User
-	 * @return boolean
-	 **/
-	protected function removeFromSite(array $all, $force = false, $force_share = array())
-	{
-		foreach ($all as $name => $module) {
+    /**
+     * UnInstall modules from site.
+     *
+     * @param  array   $all
+     * @param  boolean $force       Force for remove
+     * @param  array   $force_share Shared by User
+     * @return boolean
+     **/
+    protected function removeFromSite(array $all, $force = false, $force_share = array())
+    {
+        foreach ($all as $name => $module) {
 
-			if ($name !== 'setting' and $name !== 'module') {
-				// Force uninstall for private module and
-				// uninstall only not sharable data for public
-				// and doesn't shared by user force
-				if ($force) {
-					$this->moduleProcessing($module, 'uninstall');
-				} elseif (!$module->shared_data and !in_array($name, $force_share)) {
-					$this->moduleProcessing($module, 'uninstall');
-				}
-			}
+            if ($name !== 'setting' and $name !== 'module') {
+                // Force uninstall for private module and
+                // uninstall only not sharable data for public
+                // and doesn't shared by user force
+                if ($force) {
+                    $this->moduleProcessing($module, 'uninstall');
+                } elseif (!$module->shared_data and !in_array($name, $force_share)) {
+                    $this->moduleProcessing($module, 'uninstall');
+                }
+            }
 
-			DB::table($this->getTable())
+            DB::table($this->getTable())
                     ->where('uri', '=', $module->uri)
                     ->where('name', '=', $name)
                     ->delete();
-		}
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Make Module Install?Uninstall processing.
-	 *
-	 * @param \Reborn\Module\Builder $module
-	 * @param string $method Processing method. (install or uninstall)
-	 * @return void
-	 **/
-	protected function moduleProcessing($module, $method = 'install')
-	{
-		$prefix = $this->getPrefix();
+    /**
+     * Make Module Install?Uninstall processing.
+     *
+     * @param  \Reborn\Module\Builder $module
+     * @param  string                 $method Processing method. (install or uninstall)
+     * @return void
+     **/
+    protected function moduleProcessing($module, $method = 'install')
+    {
+        $prefix = $this->getPrefix();
 
-		try {
+        try {
             $processor = $this->getInstaller($module);
             $processor->{$method}($prefix);
         } catch (\Exception $e) {
             return $e;
         }
-	}
+    }
 
 } // END class MultisiteHandler

@@ -2,8 +2,6 @@
 
 namespace Reborn\Cores;
 
-use Reborn\Cores\Facade;
-
 /**
  * Error Facade Class
  *
@@ -12,14 +10,14 @@ use Reborn\Cores\Facade;
  **/
 class ErrorFacade extends Facade
 {
-	/**
-	 * Get Error Handler Instance to Bind the Error
-	 *
-	 * @return \Reborn\Cores\ErrorHandler
-	 */
-	protected static function getInstance()
-	{
-		return static::$app['error_handler'];
-	}
+    /**
+     * Get Error Handler Instance to Bind the Error
+     *
+     * @return \Reborn\Cores\ErrorHandler
+     */
+    protected static function getInstance()
+    {
+        return static::$app['error_handler'];
+    }
 
 } // END class ErrorFacade extends Facade

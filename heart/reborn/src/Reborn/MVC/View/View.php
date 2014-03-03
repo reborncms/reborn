@@ -52,8 +52,8 @@ class View implements ArrayAccess
     /**
      * Constructor Method
      *
-     * @param string|null $cachePath
-     * @param null|\Reborn\MVC\View\Block $block
+     * @param  string|null                 $cachePath
+     * @param  null|\Reborn\MVC\View\Block $block
      * @return void
      **/
     public function __construct($cachePath = null, Block $block = null)
@@ -66,7 +66,7 @@ class View implements ArrayAccess
     /**
      * Set the View Parser.
      *
-     * @param Reborn\MVC\View\Parser $parser
+     * @param  Reborn\MVC\View\Parser $parser
      * @return void
      */
     public function setObject(Parser $parser, Template $template)
@@ -88,7 +88,7 @@ class View implements ArrayAccess
     /**
      * Render the given view file
      *
-     * @param string $file
+     * @param  string $file
      * @return string
      */
     public function render($file)
@@ -109,7 +109,7 @@ class View implements ArrayAccess
 
             extract($data, EXTR_SKIP);
 
-            if(isset($hook_data) and !is_null($hook_data)) {
+            if (isset($hook_data) and !is_null($hook_data)) {
                 foreach ($hook_data as $hook) {
                     if(is_null($hook)) continue;
                     extract($hook, EXTR_SKIP);
@@ -123,6 +123,7 @@ class View implements ArrayAccess
             }
 
             $result = ob_get_clean();
+
             return $result;
         } else {
             throw new FileNotFoundException($file, $this->theme);
@@ -132,8 +133,8 @@ class View implements ArrayAccess
     /**
      * Render the String Template
      *
-     * @param string $template
-     * @param array $data
+     * @param  string $template
+     * @param  array  $data
      * @return string
      **/
     public function renderAsStr($template, $data = array())
@@ -174,8 +175,8 @@ class View implements ArrayAccess
      *      $this->view->set($data);
      * </code>
      *
-     * @param string $key Key name for the data
-     * @param mixed $value Data value for given key name
+     * @param  string             $key   Key name for the data
+     * @param  mixed              $value Data value for given key name
      * @return \Reborn\Cores\View
      */
     public function set($key, $value = null)
@@ -192,7 +193,7 @@ class View implements ArrayAccess
     /**
      * Include the partial file
      *
-     * @param string $file Partial file name
+     * @param  string      $file Partial file name
      * @return string|null
      **/
     protected function includeFile($file)
@@ -210,19 +211,20 @@ class View implements ArrayAccess
     /**
      * Loop for Partial
      *
-     * @param string $file Partial file name
-     * @param array|object $model Data Model
-     * @param string $value_name value_name for loop eg: ($model as $value_name)
-     * @param string $key_name key_name for loop eg: ($model as $key_name as $value_name)
+     * @param  string       $file       Partial file name
+     * @param  array|object $model      Data Model
+     * @param  string       $value_name value_name for loop eg: ($model as $value_name)
+     * @param  string       $key_name   key_name for loop eg: ($model as $key_name as $value_name)
      * @return string
      **/
     protected function partialLoop($file, $model = null, $value_name = '_value', $key_name = '_key')
     {
         $content = '';
-        if(!is_array($model) || !is_object($model)) {
+        if (!is_array($model) || !is_object($model)) {
             if (is_null($model)) {
                 return $this->template->partialRender($file);
             }
+
             return $content;
         }
         foreach ($model as $key => $value) {
@@ -230,27 +232,29 @@ class View implements ArrayAccess
             $this->data[$value_name] = $value;
             $content .= $this->template->partialRender($file);
         }
+
         return $content;
     }
 
     /**
      * Render the Module partial file
      *
-     * @param string $file Partial file name
+     * @param  string      $file Partial file name
      * @return string|null
      **/
     protected function partialFile($file)
     {
         // Trim the space
         $file = trim($file, ' ');
+
         return $this->template->partialRender($file);
     }
 
     /**
      * Parser the given file to php file and cache this file.
      *
-     * @param string $file View file with full path
-     * @param array $data
+     * @param  string $file View file with full path
+     * @param  array  $data
      * @return string
      */
     protected function fileParse($file, $data)
@@ -276,17 +280,19 @@ class View implements ArrayAccess
      * 1) Check the file is exists or not.
      * 2) Check the original file is modified after caching or not.
      *
-     * @param string $cacheFile Full path of cache file
-     * @param string $file Full path of original template file
+     * @param  string         $cacheFile Full path of cache file
+     * @param  string         $file      Full path of original template file
      * @return string|boolean
      */
     protected function cacheFileCheck($cacheFile, $file)
     {
         if (file_exists($cacheFile)) {
-            if($this->isModified($cacheFile, $file)) {
+            if ($this->isModified($cacheFile, $file)) {
                 File::delete($cacheFile);
+
                 return false;
             }
+
             return $cacheFile;
         }
 
@@ -296,8 +302,8 @@ class View implements ArrayAccess
     /**
      * Check origianl template file is modified or not.
      *
-     * @param string $cacheFile Full path of cache file
-     * @param string $file Full path of original template file
+     * @param  string  $cacheFile Full path of cache file
+     * @param  string  $file      Full path of original template file
      * @return boolean
      */
     protected function isModified($cacheFile, $file)
@@ -335,8 +341,8 @@ class View implements ArrayAccess
     /**
      * Set the value to the data array with given key name
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  string $key
+     * @param  mixed  $value
      * @return void
      **/
     public function offsetSet($key, $value)
@@ -347,7 +353,7 @@ class View implements ArrayAccess
     /**
      * Get the value from the data array with given key
      *
-     * @param string $key
+     * @param  string $key
      * @return mixed
      **/
     public function offsetGet($key)
@@ -358,7 +364,7 @@ class View implements ArrayAccess
     /**
      * Check key is exists or not in the data array
      *
-     * @param string $key
+     * @param  string  $key
      * @return boolean
      **/
     public function offsetExists($key)
@@ -369,7 +375,7 @@ class View implements ArrayAccess
     /**
      * Unset the key from the data array
      *
-     * @param string $key
+     * @param  string $key
      * @return void
      **/
     public function offsetUnset($key)

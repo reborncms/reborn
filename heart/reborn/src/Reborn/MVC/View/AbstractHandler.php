@@ -11,13 +11,13 @@ namespace Reborn\MVC\View;
 abstract class AbstractHandler
 {
 
-	protected $parser;
+    protected $parser;
 
-	public function __construct(Parser $parser)
-	{
-		$this->parser = $parser;
-	}
+    public function __construct(Parser $parser)
+    {
+        $this->parser = $parser;
+    }
 
-	abstract public function handle($template, $data);
+    abstract public function handle($template, $data);
 
 } // END abstract class AbstractHandler

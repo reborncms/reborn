@@ -11,10 +11,10 @@ namespace Reborn\Cache;
 interface CacheFolderStoreInterface
 {
 
-	/**
+    /**
      * Delete the cache by Folder
      *
-     * @param string $key
+     * @param  string  $key
      * @return boolean
      */
     public function deleteFolder($folder);

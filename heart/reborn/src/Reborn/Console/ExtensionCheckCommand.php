@@ -2,13 +2,8 @@
 
 namespace Reborn\Console;
 
-use Reborn\Util\Str;
-use Reborn\Config\Config;
-use Reborn\Filesystem\File;
 use Symfony\Component\Console\Command\Command as SfCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -23,7 +18,7 @@ class ExtensionCheckCommand extends SfCommand
     /**
      * Configures the current command.
      */
-	protected function configure()
+    protected function configure()
     {
         $this->setName('check:extension')
             ->setDescription('Check require extension are already have or not.');

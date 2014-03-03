@@ -3,7 +3,6 @@
 namespace Reborn\Cores;
 
 use Reborn\Config\Config;
-use Reborn\Cores\Application;
 use Reborn\Connector\DB\Schema;
 use Reborn\Connector\DB\DBManager as DB;
 
@@ -61,7 +60,7 @@ class Setting
             return true;
         }
 
-        if($app->site_manager->isMulti()) {
+        if ($app->site_manager->isMulti()) {
             $prefix = $app->site_manager->tablePrefix();
             static::$_table = $prefix.static::$_table;
         }
@@ -72,9 +71,9 @@ class Setting
     /**
      * Get the setting item with key name (slug Column in db table).
      *
-     * @param string $key Key(slug) name for setting item
-     * @param mixed $default
-     * @return mixed If item not found, return default value.
+     * @param  string $key     Key(slug) name for setting item
+     * @param  mixed  $default
+     * @return mixed  If item not found, return default value.
      */
     public static function get($key, $default = null)
     {
@@ -88,7 +87,7 @@ class Setting
     /**
      * Check the given key is exists or not.
      *
-     * @param string $key
+     * @param  string  $key
      * @return boolean
      **/
     public static function has($key)
@@ -99,8 +98,8 @@ class Setting
     /**
      * Set the data to setting table.
      *
-     * @param string $key Key name from the setting table
-     * @param mixed $value
+     * @param  string $key   Key name from the setting table
+     * @param  mixed  $value
      * @return void
      */
     public static function set($key, $value)
@@ -118,8 +117,8 @@ class Setting
     /**
      * Add the new setting data to setting table.
      *
-     * @param array $data Setting data array
-     * @param mixed $value
+     * @param  array   $data  Setting data array
+     * @param  mixed   $value
      * @return boolean
      */
     public static function add($data, $prefix = null)
@@ -134,8 +133,8 @@ class Setting
     /**
      * Remove the data from setting table.
      *
-     * @param string $key Slug name from the setting table
-     * @param mixed $value
+     * @param  string $key   Slug name from the setting table
+     * @param  mixed  $value
      * @return void
      */
     public static function remove($key, $prefix = null)
@@ -154,8 +153,8 @@ class Setting
      *      Setting::is('site_title', "Hello World"); // return false;
      * </code>
      *
-     * @param string $key Name of the setting item
-     * @param mixed $thinkValue Think value for given setting item name
+     * @param  string  $key        Name of the setting item
+     * @param  mixed   $thinkValue Think value for given setting item name
      * @return boolean
      */
     public static function is($key, $thinkValue)
@@ -180,10 +179,10 @@ class Setting
             if (! empty($set)) {
                 foreach ($set as $n => $s) {
                     $val = isset(static::$moduleItems[$n])
-                                ? (array)static::$moduleItems[$n]  : array();
+                                ? (array) static::$moduleItems[$n]  : array();
                     if (!empty($val)) {
                         $s['require'] = isset($s['require']) ? $s['require'] : false;
-                        $sv = array_merge($s, (array)$val);
+                        $sv = array_merge($s, (array) $val);
                         $settings['modules'][$name][$n] = $sv;
                     }
                 }
@@ -197,7 +196,7 @@ class Setting
                 continue;
             }
 
-            $settings['system'][$k] = (array)$v;
+            $settings['system'][$k] = (array) $v;
             $settings['system'][$k]['type'] = \Config::get("setting.$k.type");
             $settings['system'][$k]['class'] = \Config::get("setting.$k.class");
             $settings['system'][$k]['attrs'] = \Config::get("setting.$k.attrs", array());
@@ -214,7 +213,7 @@ class Setting
     /**
      * Set table name and prepare for MultiSite
      *
-     * @param string $prefix
+     * @param  string $prefix
      * @return void
      **/
     public static function setTableForMultisite($prefix)
@@ -229,15 +228,14 @@ class Setting
     /**
      * Create new setting table and fill default data
      *
-     * @param string|null $table
+     * @param  string|null $table
      * @return void
      **/
     protected static function createNewSettingTable($table = null)
     {
         $table_name = is_null($table) ? static::$_table : $table;
 
-        Schema::table($table_name, function($table)
-        {
+        Schema::table($table_name, function ($table) {
             $table->create();
             $table->string('slug', 255);
             $table->string('name', 255);

@@ -85,7 +85,7 @@ class Alias
      * Construct method is final, don't allow to override these method.
      *
      */
-    final function __construct() {}
+    final public function __construct() {}
 
     /**
      * Class Alias for Reborn's Cores Class.
@@ -113,7 +113,7 @@ class Alias
      *      Shopper::calculate();
      * </code>
      *
-     * @param array $classes Array data for class alias
+     * @param  array $classes Array data for class alias
      * @return void
      */
     public static function aliasRegister($classes = array())

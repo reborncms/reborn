@@ -47,9 +47,9 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
     /**
      * Set the cache data from given key name with given data
      *
-     * @param string $key
-     * @param mixed $value Data for cache
-     * @param integer $time Cache life time(expire)
+     * @param  string  $key
+     * @param  mixed   $value Data for cache
+     * @param  integer $time  Cache life time(expire)
      * @return mixed
      */
     public function set($key, $value, $time = 10080)
@@ -72,8 +72,8 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
     /**
      * Get the cache data from given key name
      *
-     * @param string $key
-     * @param mixed $default
+     * @param  string $key
+     * @param  mixed  $default
      * @return mixed
      */
     public function get($key, $default = null)
@@ -96,9 +96,9 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
     /**
      * Get the cache data from cache or set the callback data.
      *
-     * @param string $key
-     * @param Closure $callback Callback method for solve cache value if require
-     * @param integer $time Cache ttl minutes
+     * @param  string  $key
+     * @param  Closure $callback Callback method for solve cache value if require
+     * @param  integer $time     Cache ttl minutes
      * @return mixed
      */
     public function solve($key, Closure $callback, $time = 10080)
@@ -120,7 +120,7 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
     /**
      * Check the given cache is has or not
      *
-     * @param string $key
+     * @param  string  $key
      * @return boolean
      **/
     public function has($key)
@@ -135,7 +135,7 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
     /**
      * Delete the cache file
      *
-     * @param string $key Cache file key name
+     * @param  string  $key Cache file key name
      * @return boolean
      **/
     public function delete($key)
@@ -149,7 +149,7 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
      * Delete the cache by folder.
      * Notice :: Folder name is case sensative.
      *
-     * @param string $folder Cache folder name
+     * @param  string  $folder Cache folder name
      * @return boolean
      **/
     public function deleteFolder($folder)
@@ -160,7 +160,7 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
     /**
      * Set the Cache Folder Path
      *
-     * @param string $path
+     * @param  string $path
      * @return void
      */
     public function setPath($path)
@@ -184,7 +184,7 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
      *      Cache::setExtension('jpg');
      * </code>
      *
-     * @param string $ext
+     * @param  string                    $ext
      * @return \Reborn\Cache\Driver\File
      **/
     public function setExtension($ext)
@@ -207,7 +207,7 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
     /**
      * Parse the given key to filename and full_file_path
      *
-     * @param string $key
+     * @param  string $key
      * @return array
      **/
     protected function keyParse($key)
@@ -230,10 +230,10 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
     /**
      * Write the cache file in given path
      *
-     * @param string $path Cache file saving path
-     * @param string $filename Cache file name
-     * @param mixed $value Cache data value
-     * @param integer $time Cache expire time with minute
+     * @param  string  $path     Cache file saving path
+     * @param  string  $filename Cache file name
+     * @param  mixed   $value    Cache data value
+     * @param  integer $time     Cache expire time with minute
      * @return void
      */
     protected function write($path, $filename, $value, $time)
@@ -250,7 +250,7 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
     /**
      * Check the given cache is expire or not
      *
-     * @param string $data Cache data
+     * @param  string  $data Cache data
      * @return boolean
      */
     protected function checkExpire($data)
@@ -263,7 +263,7 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
     /**
      * Serialize the given data
      *
-     * @param array|object $data
+     * @param  array|object $data
      * @return string
      */
     protected function serializer($data)
@@ -274,7 +274,7 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
     /**
      * Unserialize the given data
      *
-     * @param string $data
+     * @param  string $data
      * @return array
      */
     protected function unserializer($data)
@@ -285,7 +285,7 @@ class File implements CacheDriverInterface, CacheFolderStoreInterface
     /**
      * Create the folder for cache file
      *
-     * @param string $path
+     * @param  string  $path
      * @return boolean
      */
     protected function createFolder($path)

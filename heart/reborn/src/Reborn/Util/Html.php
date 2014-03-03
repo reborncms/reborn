@@ -11,285 +11,286 @@ namespace Reborn\Util;
 class Html
 {
 
-	/**
-	 * Single(< />) tag lists
-	 *
-	 * @var array
-	 **/
-	protected static $singleTags = array('input', 'hr', 'br', 'img', 'base', 'link', 'meta');
+    /**
+     * Single(< />) tag lists
+     *
+     * @var array
+     **/
+    protected static $singleTags = array('input', 'hr', 'br', 'img', 'base', 'link', 'meta');
 
-	/**
-	 * Html Favicon link tag
-	 *
-	 * @param string $filename
-	 * @param string $type
-	 * @return string
-	 **/
-	public static function favicon($filename = 'favicon.ico', $type = "image/x-icon")
-	{
-		$attrs = array(
-			'rel' => "shortcut icon",
-			'type' => $type,
-			'href' => assetPath('img').'/'.$filename
-		);
+    /**
+     * Html Favicon link tag
+     *
+     * @param  string $filename
+     * @param  string $type
+     * @return string
+     **/
+    public static function favicon($filename = 'favicon.ico', $type = "image/x-icon")
+    {
+        $attrs = array(
+            'rel' => "shortcut icon",
+            'type' => $type,
+            'href' => assetPath('img').'/'.$filename
+        );
 
-		return static::tag('link', null, $attrs);
-	}
+        return static::tag('link', null, $attrs);
+    }
 
-	/**
-	 * Html style link tag
-	 *
-	 * @param string $url
-	 * @param string $media
-	 * @return string
-	 **/
-	public static function style($url, $media = 'all')
-	{
-		$attrs = array(
-					'href'	=> $url,
-					'media'	=> $media,
-					'rel'	=> 'stylesheet',
-					'type'	=> 'text/css'
-				);
+    /**
+     * Html style link tag
+     *
+     * @param  string $url
+     * @param  string $media
+     * @return string
+     **/
+    public static function style($url, $media = 'all')
+    {
+        $attrs = array(
+                    'href'	=> $url,
+                    'media'	=> $media,
+                    'rel'	=> 'stylesheet',
+                    'type'	=> 'text/css'
+                );
 
-		return static::tag('link', null, $attrs);
-	}
+        return static::tag('link', null, $attrs);
+    }
 
-	/**
-	 * HTML Anchor Tag. (<a>Title</a>)
-	 *
-	 * @param string $url
-	 * @param string $text a tag's text (<a>$text</a>)
-	 * @param array $options
-	 * @return string
-	 **/
-	public static function a($url, $text = null, $options = array())
-	{
-		if ('@admin' == substr($url, 0, 6)) {
-			$url = admin_url(ltrim(substr($url, 6), '/'));
-		} elseif (false != strpos($url, 'http')) {
-			$url = url($url);
-		}
+    /**
+     * HTML Anchor Tag. (<a>Title</a>)
+     *
+     * @param  string $url
+     * @param  string $text    a tag's text (<a>$text</a>)
+     * @param  array  $options
+     * @return string
+     **/
+    public static function a($url, $text = null, $options = array())
+    {
+        if ('@admin' == substr($url, 0, 6)) {
+            $url = admin_url(ltrim(substr($url, 6), '/'));
+        } elseif (false != strpos($url, 'http')) {
+            $url = url($url);
+        }
 
-		$options['href'] = $url;
+        $options['href'] = $url;
 
-		if (is_null($text)) {
-			$text = $url;
-		}
+        if (is_null($text)) {
+            $text = $url;
+        }
 
-		return static::tag('a', $text, $options);
-	}
+        return static::tag('a', $text, $options);
+    }
 
-	/**
-	 * HTML Anchor Tag for mailto. (<a href="mailto:">Title</a>)
-	 *
-	 * @param string $address
-	 * @param string $text a tag's text (<a>$text</a>)
-	 * @param array $options
-	 * @return string
-	 **/
-	public static function mailto($address, $text = null, $options = array())
-	{
-		$options['href'] = 'mailto:'.$address;
+    /**
+     * HTML Anchor Tag for mailto. (<a href="mailto:">Title</a>)
+     *
+     * @param  string $address
+     * @param  string $text    a tag's text (<a>$text</a>)
+     * @param  array  $options
+     * @return string
+     **/
+    public static function mailto($address, $text = null, $options = array())
+    {
+        $options['href'] = 'mailto:'.$address;
 
-		if (is_null($text)) {
-			$text = $address;
-		}
+        if (is_null($text)) {
+            $text = $address;
+        }
 
-		return static::tag('a', $text, $options);
-	}
+        return static::tag('a', $text, $options);
+    }
 
-	/**
-	 * Html img tag
-	 *
-	 * @param string $src Image source file
-	 * @param string|null $alt Alternative text
-	 * @param array $attrs Img tag attribtues
-	 * @return string
-	 **/
-	public static function img($src, $alt = null, $attrs = array(), $reborn = false)
-	{
-		if (is_array($alt)) {
-			if (is_bool($attrs)) {
-				$reborn = $attrs;
-			}
-			$attrs = $alt;
-			$alt = null;
-		}
+    /**
+     * Html img tag
+     *
+     * @param  string      $src   Image source file
+     * @param  string|null $alt   Alternative text
+     * @param  array       $attrs Img tag attribtues
+     * @return string
+     **/
+    public static function img($src, $alt = null, $attrs = array(), $reborn = false)
+    {
+        if (is_array($alt)) {
+            if (is_bool($attrs)) {
+                $reborn = $attrs;
+            }
+            $attrs = $alt;
+            $alt = null;
+        }
 
-		if(is_bool($alt)) {
-			$reborn = $alt;
-			$alt = null;
-		}
+        if (is_bool($alt)) {
+            $reborn = $alt;
+            $alt = null;
+        }
 
-		$attrs['src'] = $reborn ? url('media/image/'.$src) : $src;
+        $attrs['src'] = $reborn ? url('media/image/'.$src) : $src;
 
-		if(!is_null($alt)) {
-			$attrs['alt'] = $alt;
-		}
+        if (!is_null($alt)) {
+            $attrs['alt'] = $alt;
+        }
 
-		return static::tag('img', null, $attrs);
-	}
+        return static::tag('img', null, $attrs);
+    }
 
-	/**
-	 * HTML Unorder List Tag. (<ul>)
-	 *
-	 * @param array $lists_array
-	 * @param array $options
-	 * @return string
-	 **/
-	public static function ul($lists_array, $options = array())
-	{
-		if (empty($lists_array)) return null;
+    /**
+     * HTML Unorder List Tag. (<ul>)
+     *
+     * @param  array  $lists_array
+     * @param  array  $options
+     * @return string
+     **/
+    public static function ul($lists_array, $options = array())
+    {
+        if (empty($lists_array)) return null;
 
-		$lists = static::li($lists_array);
+        $lists = static::li($lists_array);
 
-		return static::tag('ul', "\n".$lists."\n", $options);
-	}
+        return static::tag('ul', "\n".$lists."\n", $options);
+    }
 
-	/**
-	 * HTML Order List Tag. (<ol>)
-	 *
-	 * @param array $lists_array
-	 * @param array $options
-	 * @return string
-	 **/
-	public static function ol($lists_array, $options = array())
-	{
-		if (empty($lists_array)) return null;
+    /**
+     * HTML Order List Tag. (<ol>)
+     *
+     * @param  array  $lists_array
+     * @param  array  $options
+     * @return string
+     **/
+    public static function ol($lists_array, $options = array())
+    {
+        if (empty($lists_array)) return null;
 
-		$lists = static::li($lists_array, array(), 'ol');
+        $lists = static::li($lists_array, array(), 'ol');
 
-		return static::tag('ol', "\n".$lists."\n", $options);
-	}
+        return static::tag('ol', "\n".$lists."\n", $options);
+    }
 
-	/**
-	 * HTML List Tag. (<li>)
-	 *
-	 * @param array $lists_array
-	 * @param array $options
-	 * @param string $type List type (ul or ol)
-	 * @return string
-	 **/
-	public static function li($list_array, $options = array(), $type = 'ul')
-	{
-		$list = '';
+    /**
+     * HTML List Tag. (<li>)
+     *
+     * @param  array  $lists_array
+     * @param  array  $options
+     * @param  string $type        List type (ul or ol)
+     * @return string
+     **/
+    public static function li($list_array, $options = array(), $type = 'ul')
+    {
+        $list = '';
 
-		foreach ($list_array as $li) {
-			if (is_array($li)) {
-				// Fixed for PHP5.3.*
-				if ('ol' == $type) {
-					$content = static::ol($li);
-				} else {
-					$content = static::ul($li);
-				}
-				$list .= '<li>'.$content.'</li>';
-			} else {
-				$list .= static::tag('li', "\n".$li."\n", $options);
-			}
-		}
-		return $list;
-	}
+        foreach ($list_array as $li) {
+            if (is_array($li)) {
+                // Fixed for PHP5.3.*
+                if ('ol' == $type) {
+                    $content = static::ol($li);
+                } else {
+                    $content = static::ul($li);
+                }
+                $list .= '<li>'.$content.'</li>';
+            } else {
+                $list .= static::tag('li', "\n".$li."\n", $options);
+            }
+        }
 
-	/**
-	 * HTML base Tag. (<base href="#">)
-	 *
-	 * @param string $href
-	 * @return string
-	 **/
-	public static function base($href)
-	{
-		return static::tag('base', null, array('href' => $href) );
-	}
+        return $list;
+    }
 
-	/**
-	 * HTML meta Tag. (<meta name="keywords" content="Reborncms, Myanmar, CMS" >)
-	 *
-	 * @param string $name Meta tag name
-	 * @param string $content Meta tag content
-	 * @return string
-	 **/
-	public static function meta($name, $content)
-	{
-		return static::tag('meta', null, array('name' => $name, 'content' => $content));
-	}
+    /**
+     * HTML base Tag. (<base href="#">)
+     *
+     * @param  string $href
+     * @return string
+     **/
+    public static function base($href)
+    {
+        return static::tag('base', null, array('href' => $href) );
+    }
 
-	/**
-	 * HTML Header Tag. (<ul>)
-	 *
-	 * @param string $head (h1, h2, h3, h4, h5 or h6)
-	 * @param string $content
-	 * @param array $options
-	 * @return string
-	 **/
-	public static function header($head = 'h1', $content, $options = array())
-	{
-		return static::tag($head, $content, $options);
-	}
+    /**
+     * HTML meta Tag. (<meta name="keywords" content="Reborncms, Myanmar, CMS" >)
+     *
+     * @param  string $name    Meta tag name
+     * @param  string $content Meta tag content
+     * @return string
+     **/
+    public static function meta($name, $content)
+    {
+        return static::tag('meta', null, array('name' => $name, 'content' => $content));
+    }
 
-	/**
-	 * HTML br Tag. (<br />)
-	 *
-	 * @param int $repeat
-	 * @param array $options
-	 * @return string
-	 **/
-	public static function br($repeat = 1, $options = array())
-	{
-		return str_repeat(static::tag('br', null, $options), $repeat);
-	}
+    /**
+     * HTML Header Tag. (<ul>)
+     *
+     * @param  string $head    (h1, h2, h3, h4, h5 or h6)
+     * @param  string $content
+     * @param  array  $options
+     * @return string
+     **/
+    public static function header($head = 'h1', $content, $options = array())
+    {
+        return static::tag($head, $content, $options);
+    }
 
-	/**
-	 * HTML nbsp Tag. ($nbsp;)
-	 *
-	 * @param int $repeat
-	 * @return string
-	 **/
-	public static function nbsp($repeat = 1)
-	{
-		return str_repeat('&nbsp;', $repeat);
-	}
+    /**
+     * HTML br Tag. (<br />)
+     *
+     * @param  int    $repeat
+     * @param  array  $options
+     * @return string
+     **/
+    public static function br($repeat = 1, $options = array())
+    {
+        return str_repeat(static::tag('br', null, $options), $repeat);
+    }
 
-	/**
-	 * HTML Tag generate.
-	 *
-	 * @param string $tag_name
-	 * @param string|null $content
-	 * @param array $options
-	 * @return string
-	 **/
-	public static function tag($tag_name, $content = null, $options = array())
-	{
-		$tag = '<'.$tag_name.' '.self::buildAttributes($options);
+    /**
+     * HTML nbsp Tag. ($nbsp;)
+     *
+     * @param  int    $repeat
+     * @return string
+     **/
+    public static function nbsp($repeat = 1)
+    {
+        return str_repeat('&nbsp;', $repeat);
+    }
 
-		if (in_array(strtolower($tag_name), static::$singleTags)
-			|| is_null($content)
-			) {
-			return $tag .= '/>';
-		} else {
-			return $tag .= '>'.$content.'</'.$tag_name.'>';
-		}
-	}
+    /**
+     * HTML Tag generate.
+     *
+     * @param  string      $tag_name
+     * @param  string|null $content
+     * @param  array       $options
+     * @return string
+     **/
+    public static function tag($tag_name, $content = null, $options = array())
+    {
+        $tag = '<'.$tag_name.' '.self::buildAttributes($options);
 
-	/**
-	 * Build tag attribute string from given array
-	 *
-	 * @param array $options
-	 * @return string
-	 **/
-	public static function buildAttributes(array $options = array())
-	{
-		$attrs = '';
+        if (in_array(strtolower($tag_name), static::$singleTags)
+            || is_null($content)
+            ) {
+            return $tag .= '/>';
+        } else {
+            return $tag .= '>'.$content.'</'.$tag_name.'>';
+        }
+    }
 
-		foreach ($options as $key => $value) {
-			if (is_string($key)) {
-				$attrs .= $key.'="'.$value . '" ';
-			} else {
-				$attrs .= $value . ' ';
-			}
-		}
+    /**
+     * Build tag attribute string from given array
+     *
+     * @param  array  $options
+     * @return string
+     **/
+    public static function buildAttributes(array $options = array())
+    {
+        $attrs = '';
 
-		return $attrs;
-	}
+        foreach ($options as $key => $value) {
+            if (is_string($key)) {
+                $attrs .= $key.'="'.$value . '" ';
+            } else {
+                $attrs .= $value . ' ';
+            }
+        }
+
+        return $attrs;
+    }
 
 } // END class Html

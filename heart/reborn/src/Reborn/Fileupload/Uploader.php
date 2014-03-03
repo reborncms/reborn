@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Reborn\Fileupload;
 
@@ -15,9 +15,9 @@ use Reborn\Exception\RbException as RbException;
  **/
 class Uploader
 {
-	private static $files = null;
+    private static $files = null;
 
-	/**
+    /**
      * Checking file object
      *
      * @return void
@@ -40,106 +40,106 @@ class Uploader
      *
      * @return mixed $filObject Return file object or file object array
      **/
-	public static function fileUpload($key = 'files') 
-	{
-		$files = \Input::file($key);
+    public static function fileUpload($key = 'files')
+    {
+        $files = \Input::file($key);
 
-		static::checkFileObject($files);
+        static::checkFileObject($files);
 
-		if (is_array($files)) {
-			$fileObj = array();
+        if (is_array($files)) {
+            $fileObj = array();
 
-			for ($i=0; $i < count($files); $i++) { 
-				$fileObj[$i] = new FileUpload($files[$i]);
-			}
-		} else {
-			$fileObj = new FileUpload($files);
-		}
+            for ($i=0; $i < count($files); $i++) {
+                $fileObj[$i] = new FileUpload($files[$i]);
+            }
+        } else {
+            $fileObj = new FileUpload($files);
+        }
 
-		return $fileObj;
-	}
+        return $fileObj;
+    }
 
-	/**
-	 * Initialize or setup method to upload files.
-	 *
-	 * @param String $key Name of file input.
-	 * @param array $config Customize configuration for files
-	 *
-	 * @return mixed $initedFiles will return error array or null
-	 **/
-	public static function uploadInit ($key = 'files', $config = array())
-	{
-		$files = static::fileUpload($key);
+    /**
+     * Initialize or setup method to upload files.
+     *
+     * @param String $key    Name of file input.
+     * @param array  $config Customize configuration for files
+     *
+     * @return mixed $initedFiles will return error array or null
+     **/
+    public static function uploadInit ($key = 'files', $config = array())
+    {
+        $files = static::fileUpload($key);
 
-		static::$files = $files;
+        static::$files = $files;
 
-		$initedFiles = null;
+        $initedFiles = null;
 
-		if (is_array($files)) {
-			$i = 0;
+        if (is_array($files)) {
+            $i = 0;
 
-			foreach ($files as $file) {
-				$file->setConfig($config);
-				$file->uploadInit();
+            foreach ($files as $file) {
+                $file->setConfig($config);
+                $file->uploadInit();
 
-				$errors = $file->getErrors();
+                $errors = $file->getErrors();
 
-				if (! empty($errors)) {
-					$fileInfo = $file->getFileInfo();
+                if (! empty($errors)) {
+                    $fileInfo = $file->getFileInfo();
 
-					$initedFiles[$i]['name'] = $fileInfo['originName'];
-					$initedFiles[$i]['errors'] = $errors;
+                    $initedFiles[$i]['name'] = $fileInfo['originName'];
+                    $initedFiles[$i]['errors'] = $errors;
 
-					$i++;
-				}
-			}
-		} else {
-			$files->setConfig($config);
-			$files->uploadInit();
+                    $i++;
+                }
+            }
+        } else {
+            $files->setConfig($config);
+            $files->uploadInit();
 
-			$errors = $files->getErrors();
+            $errors = $files->getErrors();
 
-			if (! empty($errors)) {
-				$fileInfo = $files->getfileInfo();
+            if (! empty($errors)) {
+                $fileInfo = $files->getfileInfo();
 
-				$initedFiles['name'] = $fileInfo['originName'];
-				$initedFiles['errors'] = $errors;
-			}
-		}
+                $initedFiles['name'] = $fileInfo['originName'];
+                $initedFiles['errors'] = $errors;
+            }
+        }
 
-		return $initedFiles;
-	}
+        return $initedFiles;
+    }
 
-	/**
-	 * This method will upload files
-	 *
-	 * @return mixed $uploadedFiles will return null or uploaded files' data. 
-	 **/
-	public static function upload ()
-	{
-		$uploadedFiles = null;
+    /**
+     * This method will upload files
+     *
+     * @return mixed $uploadedFiles will return null or uploaded files' data.
+     **/
+    public static function upload()
+    {
+        $uploadedFiles = null;
 
-		if (is_array(static::$files)) {
-			for ($i=0; $i < count(static::$files); $i++) { 
-				if (static::$files[$i]->upload()) {
-					$uploadedFiles[$i] = static::$files[$i]->getFileInfo();
-				}
-			}
-		} else {
-			if (static::$files->upload()) {
-				$uploadedFiles = static::$files->getFileInfo();
-			}
-		}
+        if (is_array(static::$files)) {
+            for ($i=0; $i < count(static::$files); $i++) {
+                if (static::$files[$i]->upload()) {
+                    $uploadedFiles[$i] = static::$files[$i]->getFileInfo();
+                }
+            }
+        } else {
+            if (static::$files->upload()) {
+                $uploadedFiles = static::$files->getFileInfo();
+            }
+        }
 
-		return $uploadedFiles;
-	}
+        return $uploadedFiles;
+    }
 
-	/**
+    /**
      * This method will return the maximum uploadable file size which is defined in php.ini.
      *
      * @return String
      **/
-    public static function maxUploadableFileSize ()
+    public static function maxUploadableFileSize()
     {
         return \Symfony\Component\HttpFoundation\File\UploadedFile::getMaxFileSize();
     }

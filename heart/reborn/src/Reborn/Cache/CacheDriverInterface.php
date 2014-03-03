@@ -25,9 +25,9 @@ interface CacheDriverInterface
      *      Cache::set('Navigation::nav_groups', [1,2,3,4], 15)
      * </code>
      *
-     * @param string $key Key name of Cache.
-     * @param mixed $value
-     * @param integer $time Cache ttl minutes.
+     * @param  string  $key   Key name of Cache.
+     * @param  mixed   $value
+     * @param  integer $time  Cache ttl minutes.
      * @return void
      */
     public function set($key, $value, $time = 10080);
@@ -35,8 +35,8 @@ interface CacheDriverInterface
     /**
      * Get the cache data from cache by key
      *
-     * @param string $key
-     * @param mixed $default Default value for cache not found
+     * @param  string $key
+     * @param  mixed  $default Default value for cache not found
      * @return mixed
      */
     public function get($key, $default = null);
@@ -44,9 +44,9 @@ interface CacheDriverInterface
     /**
      * Get the cache data from cache or set the callback data.
      *
-     * @param string $key
-     * @param Closure $callback Callback method for solve cache value if require
-     * @param integer $time Cache ttl minutes
+     * @param  string  $key
+     * @param  Closure $callback Callback method for solve cache value if require
+     * @param  integer $time     Cache ttl minutes
      * @return mixed
      */
     public function solve($key, Closure $callback, $time = 10080);
@@ -54,7 +54,7 @@ interface CacheDriverInterface
     /**
      * Check the given cache key is has or not
      *
-     * @param string $key
+     * @param  string  $key
      * @return boolean
      */
     public function has($key);
@@ -62,7 +62,7 @@ interface CacheDriverInterface
     /**
      * Delete the cache data by key
      *
-     * @param string $key
+     * @param  string  $key
      * @return boolean
      */
     public function delete($key);

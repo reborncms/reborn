@@ -4,7 +4,6 @@ namespace Reborn\Form;
 
 use Config;
 use Reborn\Cores\Setting;
-use Reborn\Cores\Facade;
 
 /**
  * Advanced UI Element Form
@@ -15,7 +14,7 @@ use Reborn\Cores\Facade;
 class UIForm extends Form
 {
 
-	/**
+    /**
      * Variable for ckeditor js declare
      *
      * @var boolean
@@ -46,10 +45,10 @@ class UIForm extends Form
     /**
      * Get textarea with CkEditor
      *
-     * @param string $name TextArea Name
-     * @param string $value TextArea Value
-     * @param string $type Ckeditor config type (mini, sample, normal)
-     * @param array $attrs Attributes
+     * @param  string $name  TextArea Name
+     * @param  string $value TextArea Value
+     * @param  string $type  Ckeditor config type (mini, sample, normal)
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function ckeditor($name, $value = null, $type = 'normal', $attrs = array())
@@ -80,15 +79,14 @@ $ck_jq
 <script type="text/javascript">
     var instance;
 
-    function update_instance()
+    public function update_instance()
     {
         instance = CKEDITOR.currentInstance;
     }
 </script>
 <script type="text/javascript">
-(function($) {
-    $(function()
-    {
+(function ($) {
+    $(function () {
         $('textarea.wysiwyg-mini').ckeditor({
             skin : 'reborn',
             toolbar: $mini_toolbar,
@@ -155,9 +153,9 @@ ck;
     /**
      * Helper for ckeditor mini
      *
-     * @param string $name TextArea Name
-     * @param string $value TextArea Value
-     * @param array $attrs Attributes
+     * @param  string $name  TextArea Name
+     * @param  string $value TextArea Value
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function ckmini($name, $value = null, $attrs = array())
@@ -168,9 +166,9 @@ ck;
     /**
      * Helper for ckeditor simple
      *
-     * @param string $name TextArea Name
-     * @param string $value TextArea Value
-     * @param array $attrs Attributes
+     * @param  string $name  TextArea Name
+     * @param  string $value TextArea Value
+     * @param  array  $attrs Attributes
      * @return string
      **/
     public static function cksimple($name, $value = null, $attrs = array())
@@ -181,10 +179,10 @@ ck;
     /**
      * jQueryUI Datepicker field
      *
-     * @param string $name Field name
-     * @param string $value Field Value
-     * @param string|arrau $format Date Picker Format (or) Options array
-     * @param array $attrs Field attributes
+     * @param  string       $name   Field name
+     * @param  string       $value  Field Value
+     * @param  string|arrau $format Date Picker Format (or) Options array
+     * @param  array        $attrs  Field attributes
      * @return string
      **/
     public static function datepicker($name, $value = null, $format = 'mm-dd-yy', $attrs = array())
@@ -221,9 +219,8 @@ $ui_css
 </script>
 $ui
 <script type="text/javascript">
-(function($) {
-    $(function()
-    {
+(function ($) {
+    $(function () {
         $( ".datepicker" ).datepicker({ $options });
     });
 })(jQuery);
@@ -246,10 +243,10 @@ dp;
     /**
      * Jquery Tagsinput field
      *
-     * @param string $name Field name
-     * @param string $value Field Value
-     * @param array $attrs Field attributes
-     * @param string $url Tag ajax URL. (Deafult is adminUrl('tag/autocomplete'))
+     * @param  string $name  Field name
+     * @param  string $value Field Value
+     * @param  array  $attrs Field attributes
+     * @param  string $url   Tag ajax URL. (Deafult is adminUrl('tag/autocomplete'))
      * @return string
      **/
     public static function tags($name, $value = null, $attrs = array(), $url = null)
@@ -261,7 +258,7 @@ dp;
         $jq = $rb.'global/assets/js/jquery-1.9.0.min.js';
 
         if (is_null($url)) {
-        	$url = adminUrl('tag/autocomplete');
+            $url = adminUrl('tag/autocomplete');
         }
 
         $tag_init = <<<TAG
@@ -274,9 +271,8 @@ TAG;
 
 $tag_script = <<<SCRIPT
 <script type="text/javascript">
-(function($) {
-    $(function()
-    {
+(function ($) {
+    $(function () {
         $('#$name').tagsInput({
             width:'auto',
             autocomplete_url: '$url'
@@ -304,13 +300,13 @@ SCRIPT;
     /**
      * Select2 js dropdown field
      *
-     * @param string $name Name of the select element
-     * @param array $options Options tag data list for dropdown
-     * @param mixed $value Value for select2 element
-     * @param array $js_opts Options for select2 js script
-     * @param boolean $multi Use multiple select.
-     * @param boolean $ajax Use Ajax Select
-     * @param array $attrs HTML Attributes
+     * @param  string  $name    Name of the select element
+     * @param  array   $options Options tag data list for dropdown
+     * @param  mixed   $value   Value for select2 element
+     * @param  array   $js_opts Options for select2 js script
+     * @param  boolean $multi   Use multiple select.
+     * @param  boolean $ajax    Use Ajax Select
+     * @param  array   $attrs   HTML Attributes
      * @return string
      **/
     public static function select2($name, $options, $value = null, $js_opts = array(), $multi = false, $ajax = false, $attrs = array())
@@ -347,9 +343,8 @@ if ($ajax) {
 
     $select_script = <<<SCRIPT
 <script type="text/javascript">
-(function($) {
-    $(function()
-    {
+(function ($) {
+    $(function () {
         $("#$name").select2({
             $multiple
             $select2_opts
@@ -381,7 +376,7 @@ if ($ajax) {
                     data : {
                         term : query.term
                     }
-                }).done(function(data){
+                }).done(function (data) {
                     var data = {results: data};
                     query.callback(data);
                 });
@@ -397,9 +392,8 @@ SCRIPT;
 
     $select_script = <<<SCRIPT
 <script type="text/javascript">
-(function($) {
-    $(function()
-    {
+(function ($) {
+    $(function () {
         $('#$name').select2($select2_opts);
     });
 })(jQuery);
@@ -432,11 +426,11 @@ SCRIPT;
     /**
      * Select2 js dropdown field with multi select
      *
-     * @param string $name Name of the select element
-     * @param array $options Options tag data list for dropdown
-     * @param mixed $value Value for select2 element
-     * @param array $js_opts Options for select2 js script
-     * @param array $attrs HTML Attributes
+     * @param  string $name    Name of the select element
+     * @param  array  $options Options tag data list for dropdown
+     * @param  mixed  $value   Value for select2 element
+     * @param  array  $js_opts Options for select2 js script
+     * @param  array  $attrs   HTML Attributes
      * @return string
      **/
     public static function select2Multi($name, $options, $value = null, $js_opts = array(), $attrs = array())
@@ -447,12 +441,12 @@ SCRIPT;
     /**
      * Select2 js dropdown field with Ajax
      *
-     * @param string $name Name of the select element
-     * @param array $options Options tag data list for dropdown
-     * @param mixed $value Value for select2 element
-     * @param array $js_opts Options for select2 js script
-     * @param boolean $multi Use Multi Select
-     * @param array $attrs HTML Attributes
+     * @param  string  $name    Name of the select element
+     * @param  array   $options Options tag data list for dropdown
+     * @param  mixed   $value   Value for select2 element
+     * @param  array   $js_opts Options for select2 js script
+     * @param  boolean $multi   Use Multi Select
+     * @param  array   $attrs   HTML Attributes
      * @return string
      **/
     public static function select2Ajax($name, $url, $value = null, $js_opts = array(), $multi = false, $attrs = array())

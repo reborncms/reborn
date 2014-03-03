@@ -12,13 +12,13 @@ use Reborn\Cores\Facade;
  **/
 class CacheFacade extends Facade
 {
-	/**
-	 * Get config instance.
-	 *
-	 * @return \Reborn\Config\Config
-	 **/
-	public static function getInstance()
-	{
-		return static::$app['cache']->getDriver();
-	}
+    /**
+     * Get config instance.
+     *
+     * @return \Reborn\Config\Config
+     **/
+    public static function getInstance()
+    {
+        return static::$app['cache']->getDriver();
+    }
 }

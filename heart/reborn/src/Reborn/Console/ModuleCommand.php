@@ -6,9 +6,7 @@ use Reborn\Util\Str;
 use Reborn\Filesystem\File;
 use Reborn\Filesystem\Directory as Dir;
 use Symfony\Component\Console\Command\Command as SfCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -30,7 +28,7 @@ class ModuleCommand extends SfCommand
     /**
      * Configures the current command.
      */
-	protected function configure()
+    protected function configure()
     {
         $this->setName('module:generate')
             ->setDescription('Module generate from console');
@@ -47,11 +45,11 @@ class ModuleCommand extends SfCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-		$data = $this->collectData($output);
+        $data = $this->collectData($output);
 
-		$output->writeln("<info>Module create......</info>");
+        $output->writeln("<info>Module create......</info>");
 
-		$this->create($data);
+        $this->create($data);
 
         $output->writeln("<info>".$data['name']." Module created</info>");
     }
@@ -59,14 +57,14 @@ class ModuleCommand extends SfCommand
     /**
      * Create the module process
      *
-     * @param array $data
+     * @param  array $data
      * @return void
      */
     protected function create($data)
     {
-    	$path = MODULES.strtolower(str_replace(' ', '_', $data['name']));
+        $path = MODULES.strtolower(str_replace(' ', '_', $data['name']));
         // make module folder path
-    	Dir::make($path);
+        Dir::make($path);
 
         $data['classname'] = Str::studly($data['module']);
 
@@ -76,24 +74,24 @@ class ModuleCommand extends SfCommand
         Dir::make($path.DS.'src'.DS.$data['classname']);
         $src = $path.DS.'src'.DS.$data['classname'];
 
-    	$dirs = array(
-    			$path.DS.'lang',
+        $dirs = array(
+                $path.DS.'lang',
                 $path.DS.'lang'.DS.'en',
-    			$path.DS.'config',
-    			$path.DS.'assets',
-    			$path.DS.'assets'.DS.'css',
-    			$path.DS.'assets'.DS.'js',
-    			$path.DS.'assets'.DS.'img',
-    			$path.DS.'views',
-    			$src.DS.'Controller',
-    			$src.DS.'Model',
-    		);
+                $path.DS.'config',
+                $path.DS.'assets',
+                $path.DS.'assets'.DS.'css',
+                $path.DS.'assets'.DS.'js',
+                $path.DS.'assets'.DS.'img',
+                $path.DS.'views',
+                $src.DS.'Controller',
+                $src.DS.'Model',
+            );
 
-    	foreach ($dirs as $d) {
-    		Dir::make($d);
-    	}
+        foreach ($dirs as $d) {
+            Dir::make($d);
+        }
 
-        if ( $data['backend'] ) {
+        if ($data['backend']) {
             $admin = $src.DS.'Controller'.DS.'Admin';
             Dir::make($admin);
             // Make Admin View Folder
@@ -102,10 +100,10 @@ class ModuleCommand extends SfCommand
 
         $data['src_path'] = $src;
 
-    	$this->makeInfo($data, $path);
-    	$this->makeInstaller($data, $path);
-    	$this->makeBootstrap($data, $path);
-    	$this->makeController($data, $path);
+        $this->makeInfo($data, $path);
+        $this->makeInstaller($data, $path);
+        $this->makeBootstrap($data, $path);
+        $this->makeController($data, $path);
         $this->makeModel($data);
 
         $this->makeRouteFile($data, $path);
@@ -114,18 +112,18 @@ class ModuleCommand extends SfCommand
     /**
      * Generate the route file for Module
      *
-     * @param array $data
-     * @param string $path
+     * @param  array  $data
+     * @param  string $path
      * @return void
      **/
     protected function makeRouteFile($data, $path)
     {
-        if ( $data['backend'] ) {
+        if ($data['backend']) {
             $uri = $this->uri;
             $route_name = 'admin.'.strtolower($data['classname']);
             $ctrl_name = $data['classname'].'\Admin\\'.$data['classname'];
             $route_data = <<<EOT
-Route::group('@admin/$uri', function(){
+Route::group('@admin/$uri', function () {
     Route::get('{p:page}?', '$ctrl_name::index', '$route_name.index');
     Route::add('create', '$ctrl_name::create', '$route_name.create');
     Route::add('edit/{int:id}', '$ctrl_name::edit', '$route_name.edit');
@@ -136,7 +134,7 @@ EOT;
             $route_data = '';
         }
 
-        if ( $data['frontend'] ) {
+        if ($data['frontend']) {
             $uri = $this->uri;
             $route_name = strtolower($data['classname']);
             $ctrl_name = $data['classname'].'\\'.$data['classname'];
@@ -165,97 +163,97 @@ EOT;
     /**
      * Generate the Info File for Module
      *
-     * @param array $data
+     * @param  array $data
      * @return void
      */
     protected function makeInfo($data, $path)
     {
-    	$file = __DIR__.DS.'Resources'.DS.'Info.php';
+        $file = __DIR__.DS.'Resources'.DS.'Info.php';
 
-    	$fileData = File::getContent($file);
+        $fileData = File::getContent($file);
 
-    	if ( $data['frontend'] ) {
-    		$data['frontend'] = 'true';
-    	} else {
-    		$data['frontend'] = 'false';
-    	}
+        if ($data['frontend']) {
+            $data['frontend'] = 'true';
+        } else {
+            $data['frontend'] = 'false';
+        }
 
-    	if ( $data['backend'] ) {
-    		$data['backend'] = 'true';
-    	} else {
-    		$data['backend'] = 'false';
-    	}
+        if ($data['backend']) {
+            $data['backend'] = 'true';
+        } else {
+            $data['backend'] = 'false';
+        }
 
-        if ( $data['allowDefaultModule'] ) {
+        if ($data['allowDefaultModule']) {
             $data['allowDefaultModule'] = 'true';
         } else {
             $data['allowDefaultModule'] = 'false';
         }
 
-        if ( $data['allowToChangeUriPrefix'] ) {
+        if ($data['allowToChangeUriPrefix']) {
             $data['allowToChangeUriPrefix'] = 'true';
         } else {
             $data['allowToChangeUriPrefix'] = 'false';
         }
 
-    	foreach ($data as $k => $v) {
-    		$fileData = str_replace('{'.$k.'}', $data[$k], $fileData);
-    	}
+        foreach ($data as $k => $v) {
+            $fileData = str_replace('{'.$k.'}', $data[$k], $fileData);
+        }
 
-    	File::write($path, $data['classname'].'Info.php', $fileData);
+        File::write($path, $data['classname'].'Info.php', $fileData);
     }
 
     /**
      * Generate the Installer File for Module
      *
-     * @param array $data
-     * @param string $path
+     * @param  array  $data
+     * @param  string $path
      * @return void
      */
     protected function makeInstaller($data, $path)
     {
-    	$file = __DIR__.DS.'Resources'.DS.'Installer.php';
+        $file = __DIR__.DS.'Resources'.DS.'Installer.php';
 
-    	$fileData = File::getContent($file);
+        $fileData = File::getContent($file);
 
         $search = array('{module}', '{table}');
         $replace = array($data['classname'], $data['table']);
 
-    	$fileData = str_replace($search, $replace, $fileData);
+        $fileData = str_replace($search, $replace, $fileData);
 
-    	File::write($path, $data['classname'].'Installer.php', $fileData);
+        File::write($path, $data['classname'].'Installer.php', $fileData);
     }
 
     /**
      * Generate the Bootstrap File for Module
      *
-     * @param array $data
+     * @param  array $data
      * @return void
      */
     protected function makeBootstrap($data, $path)
     {
-    	$file = __DIR__.DS.'Resources'.DS.'Bootstrap.php';
+        $file = __DIR__.DS.'Resources'.DS.'Bootstrap.php';
 
-    	$fileData = File::getContent($file);
+        $fileData = File::getContent($file);
 
         $search = array('{module}', '{table}', '{uri}');
         $replace = array($data['classname'], $data['table'], $this->uri);
 
         $fileData = str_replace($search, $replace, $fileData);
 
-    	File::write($path, 'Bootstrap.php', $fileData);
+        File::write($path, 'Bootstrap.php', $fileData);
     }
 
     /**
      * Generate the Controller File for Module
      *
-     * @param array $data
-     * @param string $path
+     * @param  array  $data
+     * @param  string $path
      * @return void
      */
     protected function makeController($data, $path)
     {
-    	if ( $data['frontend'] ) {
+        if ($data['frontend']) {
             $file = __DIR__.DS.'Resources'.DS.'Controller.php';
 
             $fileData = File::getContent($file);
@@ -271,7 +269,7 @@ EOT;
             $this->makeViews($path);
         }
 
-        if ( $data['backend'] ) {
+        if ($data['backend']) {
             $admin = __DIR__.DS.'Resources'.DS.'AdminController.php';
 
             $adminData = File::getContent($admin);
@@ -305,8 +303,8 @@ EOT;
     /**
      * Make Form Builder Class
      *
-     * @param string $path
-     * @param string $class
+     * @param  string $path
+     * @param  string $class
      * @return void
      **/
     protected function makeFormClass($path, $class)
@@ -323,8 +321,8 @@ EOT;
     /**
      * Make Table Class
      *
-     * @param string $path
-     * @param string $class
+     * @param  string $path
+     * @param  string $class
      * @return void
      **/
     protected function makeTableClass($path, $class)
@@ -344,8 +342,8 @@ EOT;
     /**
      * Make module views.
      *
-     * @param string $path
-     * @param boolean $backend
+     * @param  string  $path
+     * @param  boolean $backend
      * @return void
      **/
     protected function makeViews($path, $backend = false)
@@ -368,7 +366,7 @@ EOT;
     /**
      * Generate the Model File for Module
      *
-     * @param array $data
+     * @param  array $data
      * @return void
      */
     protected function makeModel($data)
@@ -389,8 +387,8 @@ EOT;
     /**
      * Get View Content for Module
      *
-     * @param string $name
-     * @param boolean $backend
+     * @param  string  $name
+     * @param  boolean $backend
      * @return string
      **/
     protected function getViewContent($name, $backend)
@@ -401,6 +399,7 @@ EOT;
         switch ($name) {
             case 'index':
                 $file = $path.'index.html';
+
                 return str_replace('{uri}', $this->uri, File::getContent($file));
                 break;
 
@@ -417,23 +416,22 @@ EOT;
     /**
      * Collect module data from the user
      *
-     * @param OutputInterface $output
+     * @param  OutputInterface $output
      * @return array
      */
     protected function collectData($output)
     {
-    	$dialog = $this->getHelperSet()->get('dialog');
+        $dialog = $this->getHelperSet()->get('dialog');
 
         $name = $dialog->ask($output, "<question>Please enter the name of the module : </question>", null);
 
         $description = $dialog->ask($output, "<question>Please enter the description of the module : </question>", null);
 
+        $author = $dialog->ask($output, "<question>Please enter the author of the module : </question>", null);
 
-		$author = $dialog->ask($output, "<question>Please enter the author of the module : </question>", null);
+        $authorEmail = $dialog->ask($output, "<question>Please enter the author email of the module : </question>", null);
 
-		$authorEmail = $dialog->ask($output, "<question>Please enter the author email of the module : </question>", null);
-
-		$authorUrl = $dialog->ask($output, "<question>Please enter the author URL of the module : </question>", null);
+        $authorUrl = $dialog->ask($output, "<question>Please enter the author URL of the module : </question>", null);
 
         $backend = false;
 
@@ -482,22 +480,22 @@ EOT;
 
         $this->uri = $prefix;
 
-		$data = array(
-				'module' => ucfirst($name),
-				'name' => $name,
+        $data = array(
+                'module' => ucfirst($name),
+                'name' => $name,
                 'table' => str_replace(' ', '_', strtolower($name)),
-				'description' => $description,
-				'author' => $author,
-				'authorEmail' => $authorEmail,
-				'authorUrl' => $authorUrl,
-				'backend' => $backend,
-				'frontend' => $frontend,
+                'description' => $description,
+                'author' => $author,
+                'authorEmail' => $authorEmail,
+                'authorUrl' => $authorUrl,
+                'backend' => $backend,
+                'frontend' => $frontend,
                 'allowDefaultModule' => $allowDefaultModule,
                 'prefix' => "'".$prefix."'",
                 'allowToChangeUriPrefix' => $allowToChangeUriPrefix
-			);
+            );
 
-		return $data;
+        return $data;
     }
 
 } // END class Console

@@ -26,7 +26,7 @@ class LogReader
     /**
      * Get the File Lists form given log dir path
      *
-     * @param string $path Log Folder Path
+     * @param  string $path Log Folder Path
      * @return array
      */
     public function getFileLists($path)
@@ -47,8 +47,8 @@ class LogReader
     /**
      * Get the Log file data
      *
-     * @param string $name Name od the log file(with extension)
-     * @param string $path Log File Path
+     * @param  string      $name Name od the log file(with extension)
+     * @param  string      $path Log File Path
      * @return array|false
      */
     public function getLogData($name, $path)

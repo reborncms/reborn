@@ -61,7 +61,7 @@ class CacheManager
      *      Cache::extend($dri);
      * </code>
      *
-     * @param array $lists Driver list array
+     * @param  array $lists Driver list array
      * @return void
      **/
     public function extend($lists)
@@ -76,8 +76,8 @@ class CacheManager
     /**
      * Create the Cache Driver Instance
      *
-     * @param string $driver Supported cache driver name
-     * @param \Reborn\Cores\Application $app
+     * @param  string                    $driver Supported cache driver name
+     * @param  \Reborn\Cores\Application $app
      * @return void
      */
     public function createDriver($driver, $app)
@@ -92,7 +92,7 @@ class CacheManager
     /**
      * Set the Cache File Path
      *
-     * @param string $path
+     * @param  string                     $path
      * @return \Reborn\Cache\CacheManager
      **/
     public function setCachePath($path)
@@ -105,13 +105,13 @@ class CacheManager
     /**
      * Dynamically method call for static
      *
-     * @param string $method
-     * @param array $param
+     * @param  string $method
+     * @param  array  $param
      * @return mixed
      **/
     public function __call($method, $param)
     {
-        return call_user_func_array(array($this->getDriver(), $method), (array)$param);
+        return call_user_func_array(array($this->getDriver(), $method), (array) $param);
     }
 
 } // END class CacheManager

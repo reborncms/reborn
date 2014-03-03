@@ -40,9 +40,9 @@ class Theme
     /**
      * Default constructor method
      *
-     * @param \Reborn\Cores\Application $app
-     * @param string $name Theme name
-     * @param string $path Theme path
+     * @param  \Reborn\Cores\Application $app
+     * @param  string                    $name Theme name
+     * @param  string                    $path Theme path
      * @return Object($this)
      **/
     public function __construct(Application $app, $name, $path)
@@ -59,7 +59,7 @@ class Theme
     /**
      * Get all theme from private path and shared path.
      *
-     * @param boolean $name_only
+     * @param  boolean $name_only
      * @return array
      **/
     public function all($name_only = false)
@@ -91,7 +91,7 @@ class Theme
     /**
      * Find theme from theme paths
      *
-     * @param string $theme
+     * @param  string      $theme
      * @return string|null
      **/
     public function findTheme($theme)
@@ -110,7 +110,7 @@ class Theme
     /**
      * Set the theme path
      *
-     * @param string $path Theme path
+     * @param  string $path Theme path
      * @return void
      */
     public function setPath($path)
@@ -125,8 +125,7 @@ class Theme
      **/
     public function getThemePath()
     {
-        if(! Dir::is($this->path.$this->theme))
-        {
+        if (! Dir::is($this->path.$this->theme)) {
             throw new \Exception("{$this->theme} folder doesn't exists in {$this->path}");
         }
 
@@ -177,7 +176,7 @@ class Theme
     /**
      * Check the given layout name is exists in the active theme's layout folder.
      *
-     * @param string $name Layout name, no need file extension
+     * @param  string  $name Layout name, no need file extension
      * @return boolean
      **/
     public function hasLayout($name)
@@ -190,8 +189,8 @@ class Theme
     /**
      * Check the given file name is has in this theme
      *
-     * @param string $name File name
-     * @param string $folder Default is partial
+     * @param  string  $name   File name
+     * @param  string  $folder Default is partial
      * @return boolean
      */
     public function hasFile($name, $folder = 'partial')
@@ -204,9 +203,9 @@ class Theme
     /**
      * Get the theme information from active theme's info file or given theme name
      *
-     * @param string $name Theme name, if you set this value is null
-     *                      return info from active theme
-     * @param boolean $frontend_only Only theme from frontend theme path
+     * @param  string  $name          Theme name, if you set this value is null
+     *                                return info from active theme
+     * @param  boolean $frontend_only Only theme from frontend theme path
      * @return array
      **/
     public function info($name = null, $frontend_only = false)
@@ -218,7 +217,7 @@ class Theme
                 return $this->parseThemeInfo($file);
             }
         } else {
-            if(File::is($this->path.$theme.DS.'info.php')) {
+            if (File::is($this->path.$theme.DS.'info.php')) {
                 return require $this->path.$theme.DS.'info.php';
             } elseif (File::is($this->path.$theme.DS.'theme.info')) {
                 return $this->parseThemeInfo($this->path.$theme.DS.'theme.info');
@@ -231,9 +230,9 @@ class Theme
     /**
      * Get the theme config from active theme's info file or given theme name
      *
-     * @param string $name Theme name, if you set this value is null
-     *                      return config from active theme
-     * @param boolean $frontend_only Only theme from frontend theme path
+     * @param  string  $name          Theme name, if you set this value is null
+     *                                return config from active theme
+     * @param  boolean $frontend_only Only theme from frontend theme path
      * @return array
      **/
     public function config($name = null, $frontend_only = false)
@@ -245,7 +244,7 @@ class Theme
                 return $file;
             }
         } else {
-            if(File::is($this->path.$theme.DS.'config.php')) {
+            if (File::is($this->path.$theme.DS.'config.php')) {
                 return require $this->path.$theme.DS.'config.php';
             }
         }
@@ -257,7 +256,7 @@ class Theme
     /**
      * Find the Widgets from theme
      *
-     * @param string $name Theme name, if you set this value is null
+     * @param  string $name Theme name, if you set this value is null
      *                      return info from active theme
      * @return array
      **/
@@ -267,7 +266,7 @@ class Theme
 
         $path = $this->findTheme($theme);
 
-        if(!Dir::is($path.DS.'widgets')) {
+        if (!Dir::is($path.DS.'widgets')) {
             return array();
         }
 
@@ -279,7 +278,7 @@ class Theme
     /**
      * Parse Theme Inof file
      *
-     * @param string $file file with full path
+     * @param  string $file file with full path
      * @return array
      **/
     protected function parseThemeInfo($file)
@@ -292,8 +291,8 @@ class Theme
     /**
      * Get theme file from theme's root folder
      *
-     * @param string $theme
-     * @param string $filename
+     * @param  string      $theme
+     * @param  string      $filename
      * @return string|null
      **/
     protected function findThemeFile($theme, $filename)
@@ -313,7 +312,7 @@ class Theme
      * Get theme folder paths.
      * If you pass theme name, return path with theme name.
      *
-     * @param string|null $theme
+     * @param  string|null $theme
      * @return array
      **/
     protected function getThemeFolderPaths($theme = null)

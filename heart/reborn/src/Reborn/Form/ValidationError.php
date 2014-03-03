@@ -4,8 +4,6 @@ namespace Reborn\Form;
 
 use Illuminate\Support\Collection;
 use ArrayAccess;
-use ArrayIterator;
-use IteratorAggregate;
 
 /**
  * ValidationError Class
@@ -15,43 +13,43 @@ use IteratorAggregate;
  **/
 class ValidationError extends Collection
 {
-	/**
-	 * Set Errors for ValidationError
-	 *
-	 * @param array $errros Errors messages
-	 * @return ValidationError
-	 **/
-	public function setErrors(array $errors)
-	{
-		$this->items = $errors;
+    /**
+     * Set Errors for ValidationError
+     *
+     * @param  array           $errros Errors messages
+     * @return ValidationError
+     **/
+    public function setErrors(array $errors)
+    {
+        $this->items = $errors;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get an item at a given offset.
-	 *
-	 * @param  mixed  $key
-	 * @return mixed
-	 */
-	public function offsetGet($key)
-	{
-		return $this->__get($key);
-	}
+    /**
+     * Get an item at a given offset.
+     *
+     * @param  mixed $key
+     * @return mixed
+     */
+    public function offsetGet($key)
+    {
+        return $this->__get($key);
+    }
 
-	/**
-	 * Magic getter method
-	 *
-	 * @return string|null
-	 **/
-	public function __get($key)
-	{
-		if (isset($this->items[$key])) {
-			return $this->items[$key];
-		}
+    /**
+     * Magic getter method
+     *
+     * @return string|null
+     **/
+    public function __get($key)
+    {
+        if (isset($this->items[$key])) {
+            return $this->items[$key];
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * Magic toString method, Override parent::__toString()
@@ -60,9 +58,9 @@ class ValidationError extends Collection
      **/
     public function __toString()
     {
-    	$errors = implode("\n", $this->items);
+        $errors = implode("\n", $this->items);
 
-    	return $errors;
+        return $errors;
     }
 
 } // END class ValidationError implements ArrayAccess

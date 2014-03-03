@@ -3,10 +3,8 @@
 namespace Reborn\MVC\Model;
 
 use Reborn\Cores\Facade;
-use Reborn\Config\Config;
 use Reborn\Http\Input;
 use Reborn\Form\Validation;
-use Reborn\Form\ValidationError;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 
 /**
@@ -50,8 +48,8 @@ abstract class Model extends BaseModel
     /**
      * Find a model by its slug key.
      *
-     * @param  string  $slug
-     * @param  array  $columns
+     * @param  string                                                $slug
+     * @param  array                                                 $columns
      * @return \Illuminate\Database\Eloquent\Model|Collection|static
      */
     public static function findBySlug($slug, $columns = array('*'))
@@ -75,8 +73,8 @@ abstract class Model extends BaseModel
     /**
      * Change the rule by name.
      *
-     * @param string $name Rule key name
-     * @param string $rule Rule for given name
+     * @param  string $name Rule key name
+     * @param  string $rule Rule for given name
      * @return void
      **/
     public function changeRule($name, $rule)
@@ -116,8 +114,9 @@ abstract class Model extends BaseModel
             }
         }
 
-        if($v->fail()) {
+        if ($v->fail()) {
             $this->validation_errors = $v->getErrors();
+
             return false;
         }
 
@@ -127,16 +126,16 @@ abstract class Model extends BaseModel
     /**
      * Get Validation Errors
      *
-     * @param null|string $key validation error key
+     * @param  null|string $key validation error key
      * @return mixed
      **/
     public function errors($key = null)
     {
-        if( is_null($this->validation_errors) ) {
+        if ( is_null($this->validation_errors) ) {
             return null;
         }
 
-        if( is_null($key) ) {
+        if ( is_null($key) ) {
             return $this->validation_errors;
         }
 
@@ -147,8 +146,8 @@ abstract class Model extends BaseModel
      * Save the model to the database.
      * Reborn Model add validation process in this method.
      *
-     * @param  array  $options
-     * @param boolean $need_validation Need to check validation
+     * @param  array   $options
+     * @param  boolean $need_validation Need to check validation
      * @return bool
      */
     public function save(array $options = array(), $need_validation = true)
@@ -189,9 +188,9 @@ abstract class Model extends BaseModel
     /**
      * Auto incremnt for unique slug value.
      *
-     * @param string $key Input key name or slug value
-     * @param boolean $from_key $key is Input key name. Default is true
-     * @param string $separator Separator value for increment value. Default is '-'
+     * @param  string  $key       Input key name or slug value
+     * @param  boolean $from_key  $key is Input key name. Default is true
+     * @param  string  $separator Separator value for increment value. Default is '-'
      * @return string
      **/
     protected function autoSlug($key, $input_key = true, $separator = '-')

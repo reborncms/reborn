@@ -6,7 +6,6 @@ use Reborn\Util\Str;
 use Reborn\Config\Config;
 use Reborn\Filesystem\File;
 use Symfony\Component\Console\Command\Command as SfCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,7 +22,7 @@ class AuthKeyGenerateCommand extends SfCommand
     /**
      * Configures the current command.
      */
-	protected function configure()
+    protected function configure()
     {
         $this->setName('auth:key-generate')
             ->setDescription('Generate key for Authentication Session');
@@ -42,7 +41,7 @@ class AuthKeyGenerateCommand extends SfCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-		$key = $input->getOption('key');
+        $key = $input->getOption('key');
 
         if (is_null($key)) {
             $key = Str::random();
@@ -56,7 +55,7 @@ class AuthKeyGenerateCommand extends SfCommand
 
         File::put(APP.'config'.DS.'app.php', $content);
 
-		$output->writeln("<info>New Key is $key</info>");
+        $output->writeln("<info>New Key is $key</info>");
     }
 
 } // END class Console

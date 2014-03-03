@@ -4,7 +4,6 @@ namespace Reborn\Console;
 
 use Symfony\Component\Console\Command\Command as SfCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -19,7 +18,7 @@ class CompileCommand extends SfCommand
     /**
      * Configures the current command.
      */
-	protected function configure()
+    protected function configure()
     {
         $this->setName('compile')
             ->setDescription('PHP Class File Compiler for Performance');
@@ -36,7 +35,7 @@ class CompileCommand extends SfCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-		$output->writeln("<info>--- Start Compiling ---</info>");
+        $output->writeln("<info>--- Start Compiling ---</info>");
 
         $outputfile = STORAGES.'compile.php';
 
@@ -44,9 +43,9 @@ class CompileCommand extends SfCommand
             @unlink($outputfile);
         }
 
-		$files = require APP.'config/compile_lists.php';
+        $files = require APP.'config/compile_lists.php';
 
-		if (!$handle = fopen($outputfile, 'w')) {
+        if (!$handle = fopen($outputfile, 'w')) {
             throw new \RuntimeException(
                 "Unable to open {$outputfile} for writing"
             );
@@ -66,19 +65,19 @@ class CompileCommand extends SfCommand
     /**
      * Get Class Content  from given file
      *
-     * @param string $file
+     * @param  string $file
      * @return string
      **/
     protected function getContent($file)
     {
-    	if (!is_readable($file)) {
-    		throw new \RuntimeException("Cannot open {".$file."} for reading");
-    	}
+        if (!is_readable($file)) {
+            throw new \RuntimeException("Cannot open {".$file."} for reading");
+        }
 
         // Get content without comment and whitespace
-    	$content = php_strip_whitespace($file);
+        $content = php_strip_whitespace($file);
 
-    	if (substr($content, 0, 5) == "<?php") {
+        if (substr($content, 0, 5) == "<?php") {
             $content = substr($content, 5);
         }
 

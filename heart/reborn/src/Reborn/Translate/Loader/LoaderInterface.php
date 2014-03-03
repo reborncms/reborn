@@ -14,11 +14,10 @@ interface LoaderInterface
     /**
      * File Load Method
      *
-     * @param string $resource
-     * @param string $locale
+     * @param  string  $resource
+     * @param  string  $locale
      * @return boolean
      */
     public function load($resource, $locale);
-
 
 } // END interface LoaderInterface

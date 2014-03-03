@@ -150,8 +150,8 @@ class Controller
      * Set JS variables for the template.
      * Shortcut of $this->template->jsValue()
      *
-     * @param string|array $key JS variable key or key value array
-     * @param mixed|null $value Value for JS variable
+     * @param  string|array $key   JS variable key or key value array
+     * @param  mixed|null   $value Value for JS variable
      * @return void
      **/
     protected function jsValue($key, $value = null)
@@ -162,9 +162,9 @@ class Controller
     /**
      * Return the Json from Controller
      *
-     * @param mixed   $data    The response data
-     * @param integer $status  The response status code
-     * @param array   $headers An array of response headers
+     * @param  mixed                                          $data    The response data
+     * @param  integer                                        $status  The response status code
+     * @param  array                                          $headers An array of response headers
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      **/
     protected function returnJson($data, $status = 200, $headers = array())
@@ -175,9 +175,9 @@ class Controller
     /**
      * Return the Json from Controller
      *
-     * @param mixed   $data    The response data
-     * @param integer $status  The response status code
-     * @param array   $headers An array of response headers
+     * @param  mixed                                          $data    The response data
+     * @param  integer                                        $status  The response status code
+     * @param  array                                          $headers An array of response headers
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      **/
     protected function json($data, $status = 200, $headers = array())
@@ -188,9 +188,9 @@ class Controller
     /**
      * Return the Stream Response from Controller
      *
-     * @param mixed   $callback Callback function for StreamResponse
-     * @param integer $status  The response status code
-     * @param array   $headers An array of response headers
+     * @param  mixed                                            $callback Callback function for StreamResponse
+     * @param  integer                                          $status   The response status code
+     * @param  array                                            $headers  An array of response headers
      * @return \Symfony\Component\HttpFoundation\StreamResponse
      **/
     protected function stream($callback, $status = 200, $headers = array())
@@ -201,9 +201,9 @@ class Controller
     /**
      * Call the Action Method
      *
-     * @param \Reborn\Cores\Application $app Application instance
-     * @param string $method Action method name
-     * @param array $params Parameter array for action method
+     * @param  \Reborn\Cores\Application $app    Application instance
+     * @param  string                    $method Action method name
+     * @param  array                     $params Parameter array for action method
      * @return \Reborn\Http\Response
      **/
     public function actionCaller(Application $app, $method, $params)
@@ -231,7 +231,7 @@ class Controller
 
         // Catch for Method Parameters Problem
         try {
-            $response = call_user_func_array(array($this, $method), (array)$params);
+            $response = call_user_func_array(array($this, $method), (array) $params);
         } catch (\Exception $e) {
             if ($this->app['env'] == 'dev') {
                 throw $e;
@@ -250,8 +250,8 @@ class Controller
     /**
      * Get request param by name.
      *
-     * @param string $name Param name
-     * @param mixed $default Default value for param name
+     * @param  string $name    Param name
+     * @param  mixed  $default Default value for param name
      * @return mixed
      **/
     protected function param($name, $default = null)
@@ -300,7 +300,7 @@ class Controller
     /**
      * Set the current theme's layout name
      *
-     * @param string $name Layout name for current theme
+     * @param  string $name Layout name for current theme
      * @return void
      **/
     protected function setLayout($name)
@@ -311,8 +311,8 @@ class Controller
     /**
      * Set the session flush message
      *
-     * @param string $key Flush name
-     * @param string $value Flash value
+     * @param  string $key   Flush name
+     * @param  string $value Flash value
      * @return void
      **/
     protected function flash($key, $value)
@@ -323,7 +323,7 @@ class Controller
     /**
      * Return 404 Result
      *
-     * @param string $message Message for 404 template
+     * @param  string                $message Message for 404 template
      * @return \Reborn\Http\Response
      **/
     protected function notFound($message = null)
@@ -334,8 +334,8 @@ class Controller
     /**
      * Parse the template string.
      *
-     * @param string $template
-     * @param array $data
+     * @param  string $template
+     * @param  array  $data
      * @return string
      **/
     protected function parse($template, $data = array())
@@ -348,7 +348,7 @@ class Controller
     /**
      * Set the HTTP status code to use at response.
      *
-     * @param int $code HTTP status code.
+     * @param  int  $code HTTP status code.
      * @return void
      */
     protected function setHTTPstatus($code)

@@ -12,63 +12,63 @@ namespace Reborn\Util;
 class Hash
 {
 
-	/**
-	 * Rounds value
-	 *
-	 * @var int
-	 **/
-	protected $rounds;
+    /**
+     * Rounds value
+     *
+     * @var int
+     **/
+    protected $rounds;
 
-	/**
-	 * Default constructor method
-	 *
-	 * @param integer $rounds Value of rounds. Default is 10
-	 * @return void
-	 */
-	public function __construct($rounds = 10)
-	{
-		$this->rounds = $rounds;
-	}
+    /**
+     * Default constructor method
+     *
+     * @param  integer $rounds Value of rounds. Default is 10
+     * @return void
+     */
+    public function __construct($rounds = 10)
+    {
+        $this->rounds = $rounds;
+    }
 
-	/**
-	 * Hash the given value to bCrypt hash
-	 *
-	 * @param string $input
-	 * @return string
-	 **/
-	public function hash($input)
-	{
-		$salt = $this->getSalt();
+    /**
+     * Hash the given value to bCrypt hash
+     *
+     * @param  string $input
+     * @return string
+     **/
+    public function hash($input)
+    {
+        $salt = $this->getSalt();
 
-		$hash = crypt($input, $salt);
+        $hash = crypt($input, $salt);
 
-		return $hash;
-	}
+        return $hash;
+    }
 
-	/**
-	 * Check the hash value is true or false.
-	 *
-	 * @param string $input
-	 * @param string $hashedValue Hashed value
-	 * @return boolean
-	 */
-	public function check($input, $hashedValue)
-	{
-		$hash = crypt($input, $hashedValue);
+    /**
+     * Check the hash value is true or false.
+     *
+     * @param  string  $input
+     * @param  string  $hashedValue Hashed value
+     * @return boolean
+     */
+    public function check($input, $hashedValue)
+    {
+        $hash = crypt($input, $hashedValue);
 
-		return $hash === $hashedValue;
-	}
+        return $hash === $hashedValue;
+    }
 
-	/**
-	 * Get the salt key to hash
-	 *
-	 * @return string
-	 */
-	protected function getSalt()
-	{
-		$salt = sprintf('$2a$%02d$', $this->rounds);
+    /**
+     * Get the salt key to hash
+     *
+     * @return string
+     */
+    protected function getSalt()
+    {
+        $salt = sprintf('$2a$%02d$', $this->rounds);
 
-		return $salt.random_str(22);
-	}
+        return $salt.random_str(22);
+    }
 
 } // END class Hash

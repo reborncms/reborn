@@ -22,7 +22,7 @@ class Registry
      * Set the object for registry
      *
      * @param string $key
-     * @param mixed $obj
+     * @param mixed  $obj
      */
     public static function set($key, $obj)
     {
@@ -32,7 +32,7 @@ class Registry
     /**
      * Get the object from registry
      *
-     * @param string $key Key for registry object
+     * @param  string $key Key for registry object
      * @return mixed
      */
     public static function get($key)
@@ -47,7 +47,7 @@ class Registry
     /**
      * Remove the object from registry
      *
-     * @param string $key
+     * @param  string $key
      * @return void
      */
     public static function remove($key)

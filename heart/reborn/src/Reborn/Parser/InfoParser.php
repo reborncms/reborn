@@ -14,63 +14,63 @@ use Config, Cache;
 class InfoParser
 {
 
-	/**
-	 * Info file variable
-	 *
-	 * @var string
-	 **/
-	protected $file;
+    /**
+     * Info file variable
+     *
+     * @var string
+     **/
+    protected $file;
 
-	/**
-	 * Compile cache file storage path
-	 *
-	 * @var string
-	 **/
-	protected $cache_path;
+    /**
+     * Compile cache file storage path
+     *
+     * @var string
+     **/
+    protected $cache_path;
 
-	/**
-	 * Default instance method
-	 *
-	 * @param string $file Info file with full path
-	 * @return void
-	 **/
-	public function __construct($file = null)
-	{
-		if (!is_null($file)) {
-			$this->file = $file;
-		}
+    /**
+     * Default instance method
+     *
+     * @param  string $file Info file with full path
+     * @return void
+     **/
+    public function __construct($file = null)
+    {
+        if (!is_null($file)) {
+            $this->file = $file;
+        }
 
-		$this->cache_path = Config::get('cache.file.storage_path');
-	}
+        $this->cache_path = Config::get('cache.file.storage_path');
+    }
 
-	/**
+    /**
      * Parse Info File (name.info) to array data
      *
-     * @param string $file name.info file path
+     * @param  string $file name.info file path
      * @return array
      **/
-	public function parse($file = null)
-	{
-		if (!is_null($file)) {
-			$this->file = $file;
-		}
+    public function parse($file = null)
+    {
+        if (!is_null($file)) {
+            $this->file = $file;
+        }
 
-		if ($cache = $this->getFromCache($file)) {
-			return $cache;
-		}
+        if ($cache = $this->getFromCache($file)) {
+            return $cache;
+        }
 
-		return $this->makeParsing($this->file);
-	}
+        return $this->makeParsing($this->file);
+    }
 
-	/**
-	 * Make Parse Info File to Array data and make cache
-	 *
-     * @param string $file
-	 * @return array
-	 **/
-	protected function makeParsing($file)
-	{
-		$data = File::getContent($file);
+    /**
+     * Make Parse Info File to Array data and make cache
+     *
+     * @param  string $file
+     * @return array
+     **/
+    protected function makeParsing($file)
+    {
+        $data = File::getContent($file);
 
         $lines = explode("\n", $data);
 
@@ -95,40 +95,40 @@ class InfoParser
         $this->makeCacheFile($info);
 
         return $info;
-	}
+    }
 
     /**
      * Get Value with format
      *
-     * @param string $value
+     * @param  string $value
      * @return mixed
      **/
     protected function getValue($value)
     {
-    	$value = $this->clearString($value);
+        $value = $this->clearString($value);
 
-    	// Check array or not
+        // Check array or not
         if ('[' == substr($value, 0, 1)) {
             return $this->parseArrayString($value);
         }
 
-    	switch ($value) {
-    		case 'true':
-    			return true;
-    			break;
+        switch ($value) {
+            case 'true':
+                return true;
+                break;
 
-    		case 'false':
-    			return false;
-    			break;
+            case 'false':
+                return false;
+                break;
 
-    		case 'null':
-    			return null;
-    			break;
+            case 'null':
+                return null;
+                break;
 
-    		default:
-    			return $value;
-    			break;
-    	}
+            default:
+                return $value;
+                break;
+        }
     }
 
     /**
@@ -140,7 +140,7 @@ class InfoParser
      *      array('key1' => 'value', 'key2' => 'value2', 'key3' => 'value3')
      * </code>
      *
-     * @param string $string
+     * @param  string $string
      * @return array
      **/
     protected function parseArrayString($string)
@@ -152,7 +152,7 @@ class InfoParser
         $values = array();
 
         if ('' === $matches[1]) {
-        	return $values;
+            return $values;
         }
 
         foreach ($lists as $list) {
@@ -174,61 +174,61 @@ class InfoParser
     /**
      * Clean the given string
      *
-     * @param string $value
+     * @param  string $value
      * @return string
      **/
     protected function clearString($value)
     {
-    	$value = trim($value, ' ');
-    	$value = str_replace(array("\r\n", "\r"), "\n", $value);
-    	$value = trim($value, "\n");
+        $value = trim($value, ' ');
+        $value = str_replace(array("\r\n", "\r"), "\n", $value);
+        $value = trim($value, "\n");
 
-    	return $value;
+        return $value;
     }
 
     /**
      * Get data form cache file.
      *
-     * @param string $file
+     * @param  string $file
      * @return array
      **/
     protected function getFromCache($file)
     {
-    	$time = filemtime($file);
+        $time = filemtime($file);
 
-    	if(! Cache::has($file) ) return false;
+        if(! Cache::has($file) ) return false;
 
-    	$cachefile = $this->cache_path.md5($file).'.cache';
+        $cachefile = $this->cache_path.md5($file).'.cache';
 
-    	if ($time > filemtime($cachefile)) {
-    		$this->deleteCache($file);
+        if ($time > filemtime($cachefile)) {
+            $this->deleteCache($file);
 
-    		return false;
-    	}
+            return false;
+        }
 
-    	return Cache::get($file);
+        return Cache::get($file);
     }
 
     /**
      * Set the cache data file
      *
-     * @param string $file
+     * @param  string $file
      * @return void
      **/
     protected function makeCacheFile($info)
     {
-    	Cache::set($this->file, $info);
+        Cache::set($this->file, $info);
     }
 
     /**
      * Delete the cache data file
      *
-     * @param string $file
+     * @param  string $file
      * @return void
      **/
     public function deleteCache($file)
     {
-    	Cache::delete($file);
+        Cache::delete($file);
     }
 
 } // END class InfoParser
