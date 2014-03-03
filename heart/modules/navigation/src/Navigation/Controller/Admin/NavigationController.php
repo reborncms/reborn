@@ -8,349 +8,350 @@ use Navigation\Lib\Helper;
 
 class NavigationController extends \AdminController
 {
-	public function before()
-	{
-		$this->menu->activeParent('appearance');
+    public function before()
+    {
+        $this->menu->activeParent('appearance');
 
-		$allGroups = Navigation::all();
-		$this->links = array();
-		$this->groups = array();
-		$items = array();
-		$default = array();
-		foreach ($allGroups as $g) {
+        $allGroups = Navigation::all();
+        $this->links = array();
+        $this->groups = array();
+        $items = array();
+        $default = array();
+        foreach ($allGroups as $g) {
 
-			$id = $g->id;
+            $id = $g->id;
 
-			$obj = \Cache::solve('Navigation::navigation_group'.$id,
-						function() use($id)
-						{
-							return Links::where('navigation_id', '=', $id)
-									->orderBy('link_order', 'asc')
-									->get()->toArray();
-						});
+            $obj = \Cache::solve('Navigation::navigation_group'.$id,
+                        function () use ($id) {
+                            return Links::where('navigation_id', '=', $id)
+                                    ->orderBy('link_order', 'asc')
+                                    ->get()->toArray();
+                        });
 
-			$this->links[$g->slug] = Helper::getNavTree($obj);
-			$this->groups[$g->slug] = $g;
-			$default[] = $g->id;
-		}
+            $this->links[$g->slug] = Helper::getNavTree($obj);
+            $this->groups[$g->slug] = $g;
+            $default[] = $g->id;
+        }
 
-		$this->groupSelect = e2s($allGroups, 'id', 'title');
-		$this->moduleSelect = Helper::moduleSelect();
-		$this->defaultGroup = $default[0];
-		$this->pageSelects = Helper::pageSelect();
+        $this->groupSelect = e2s($allGroups, 'id', 'title');
+        $this->moduleSelect = Helper::moduleSelect();
+        $this->defaultGroup = $default[0];
+        $this->pageSelects = Helper::pageSelect();
 
-		$this->template->style('form.css')
-						->style('navigation.css','navigation' )
-						->script('plugins/jquery.mjs.nestedSortable.js')
-						->script('navigation.js', 'navigation', 'footer');
-	}
+        $this->template->style('form.css')
+                        ->style('navigation.css','navigation' )
+                        ->script('plugins/jquery.mjs.nestedSortable.js')
+                        ->script('navigation.js', 'navigation', 'footer');
+    }
 
-	public function index()
-	{
-		$this->template
-				->title(\Translate::get('navigation::navigation.title'))
-				->set('links', $this->links)
-				->set('groups', $this->groups)
-				->set('groupSelect', $this->groupSelect)
-				->set('moduleSelect', $this->moduleSelect)
-				->set('pageSelect', $this->pageSelects)
-				->set('defaultGroup', $this->defaultGroup)
-				->view('admin/index');
-	}
+    public function index()
+    {
+        $this->template
+                ->title(\Translate::get('navigation::navigation.title'))
+                ->set('links', $this->links)
+                ->set('groups', $this->groups)
+                ->set('groupSelect', $this->groupSelect)
+                ->set('moduleSelect', $this->moduleSelect)
+                ->set('pageSelect', $this->pageSelects)
+                ->set('defaultGroup', $this->defaultGroup)
+                ->view('admin/index');
+    }
 
-	/**
-	 * Order the Menu Items
-	 */
-	public function order()
-	{
-		$order	= \Input::get('order');
-		$group	= \Input::get('group');
+    /**
+     * Order the Menu Items
+     */
+    public function order()
+    {
+        $order	= \Input::get('order');
+        $group	= \Input::get('group');
 
-		if (is_array($order)) {
+        if (is_array($order)) {
 
-			// Update the db result's parent are 0
-			$g = Links::where('navigation_id', '=', $group)
-					->update(array('parent_id' => 0));
+            // Update the db result's parent are 0
+            $g = Links::where('navigation_id', '=', $group)
+                    ->update(array('parent_id' => 0));
 
-			foreach ($order as $key => $link) {
-				Links::where('id', '=', $link['id'])
-							->update(array('link_order' => $key));
-				if (isset($link['children'])) {
-					Links::setTheChild($link);
-				}
-			}
+            foreach ($order as $key => $link) {
+                Links::where('id', '=', $link['id'])
+                            ->update(array('link_order' => $key));
+                if (isset($link['children'])) {
+                    Links::setTheChild($link);
+                }
+            }
 
-			\Cache::deleteFolder('Navigation');
-		}
+            \Cache::deleteFolder('Navigation');
+        }
 
-		return $this->returnJson(array('status' => 'ok'));
-	}
+        return $this->returnJson(array('status' => 'ok'));
+    }
 
-	/**
-	 * Create the new Menu item
-	 */
-	public function create()
-	{
-		if(\Input::isPost()) {
+    /**
+     * Create the new Menu item
+     */
+    public function create()
+    {
+        if (\Input::isPost()) {
 
-			$v = $this->validation();
+            $v = $this->validation();
 
-			if ($v->valid()) {
+            if ($v->valid()) {
 
-				$link = new Links();
+                $link = new Links();
 
-				$link->title = \Input::get('title');
-				$link->navigation_id = \Input::get('group');
-				$link->link_type = \Input::get('type');
-				$link->url = $this->getUrl();
-				$link->parent_id = 0;
-				$link->link_order = Links::getLinkOrder(\Input::get('group'));
-				$link->class = \Input::get('class');
-				$link->target = \Input::get('target');
-				$link->permission = \Input::get('permission', '');
+                $link->title = \Input::get('title');
+                $link->navigation_id = \Input::get('group');
+                $link->link_type = \Input::get('type');
+                $link->url = $this->getUrl();
+                $link->parent_id = 0;
+                $link->link_order = Links::getLinkOrder(\Input::get('group'));
+                $link->class = \Input::get('class');
+                $link->target = \Input::get('target');
+                $link->permission = \Input::get('permission', '');
 
-				if ($link->save()) {
-					\Cache::deleteFolder('Navigation');
-					$msg = \Translate::get('navigation::navigation.message.create_success');
-					\Flash::success($msg);
+                if ($link->save()) {
+                    \Cache::deleteFolder('Navigation');
+                    $msg = \Translate::get('navigation::navigation.message.create_success');
+                    \Flash::success($msg);
 
-					return \Redirect::toAdmin('navigation');
-				} else {
-					$msg = \Translate::get('navigation::navigation.message.create_error');
-					\Flash::error($msg);
+                    return \Redirect::toAdmin('navigation');
+                } else {
+                    $msg = \Translate::get('navigation::navigation.message.create_error');
+                    \Flash::error($msg);
 
-					return \Redirect::toAdmin('navigation');
-				}
-			} else {
-				$errors = $v->getErrors();
-				\Flash::error(implode("\n\r", $errors));
+                    return \Redirect::toAdmin('navigation');
+                }
+            } else {
+                $errors = $v->getErrors();
+                \Flash::error(implode("\n\r", $errors));
 
-				return \Redirect::toAdmin('navigation');
-			}
-		}
-	}
+                return \Redirect::toAdmin('navigation');
+            }
+        }
+    }
 
-	public function edit($id)
-	{
-		if (!user_has_access('nav.edit')) {
-			return $this->template->set('make', 'editing')
-								->set('type', 'link')
-								->partialOnly()
-								->view('admin/noaccess')->render();
-		}
-		$link = Links::find($id);
+    public function edit($id)
+    {
+        if (!user_has_access('nav.edit')) {
+            return $this->template->set('make', 'editing')
+                                ->set('type', 'link')
+                                ->partialOnly()
+                                ->view('admin/noaccess')->render();
+        }
+        $link = Links::find($id);
 
-		switch($link->type) {
-			case 'module' :
-				$link->module = $link->url;
-			break;
+        switch ($link->type) {
+            case 'module' :
+                $link->module = $link->url;
+            break;
 
-			case 'url' :
-				$link->urlStr = $link->url;
-			break;
+            case 'url' :
+                $link->urlStr = $link->url;
+            break;
 
-			case 'page' :
-				$link->page = $link->url;
-			break;
+            case 'page' :
+                $link->page = $link->url;
+            break;
 
-			default :
-				$link->uri = $link->url;
-			break;
-		}
+            default :
+                $link->uri = $link->url;
+            break;
+        }
 
-		if (\Input::isPost()) {
-			$v = $this->validation();
+        if (\Input::isPost()) {
+            $v = $this->validation();
 
-			if ($v->valid()) {
-				if (\Input::get('current_group') != \Input::get('group')) {
-					$parent = 0;
-					$group_change = true;
-					$link_order = Links::getLinkOrder((int)\Input::get('group'));
-				} else {
-					$parent = (int)\Input::get('parent');
-					$group_change = false;
-					$link_order = (int)\Input::get('order');
-				}
+            if ($v->valid()) {
+                if (\Input::get('current_group') != \Input::get('group')) {
+                    $parent = 0;
+                    $group_change = true;
+                    $link_order = Links::getLinkOrder((int) \Input::get('group'));
+                } else {
+                    $parent = (int) \Input::get('parent');
+                    $group_change = false;
+                    $link_order = (int) \Input::get('order');
+                }
 
-				$link->title = \Input::get('title');
-				$link->navigation_id = \Input::get('group');
-				$link->link_type = \Input::get('type');
-				$link->url = $this->getUrl();
-				$link->parent_id = $parent;
-				$link->link_order = $link_order;
-				$link->class = \Input::get('class');
-				$link->target = \Input::get('target');
-				$link->permission = \Input::get('permission', '');
+                $link->title = \Input::get('title');
+                $link->navigation_id = \Input::get('group');
+                $link->link_type = \Input::get('type');
+                $link->url = $this->getUrl();
+                $link->parent_id = $parent;
+                $link->link_order = $link_order;
+                $link->class = \Input::get('class');
+                $link->target = \Input::get('target');
+                $link->permission = \Input::get('permission', '');
 
-				unset($link->uri);
-				unset($link->module);
-				unset($link->page);
-				unset($link->urlStr);
+                unset($link->uri);
+                unset($link->module);
+                unset($link->page);
+                unset($link->urlStr);
 
-				if ($link->updateLink(\Input::get('current_group'), $group_change)) {
+                if ($link->updateLink(\Input::get('current_group'), $group_change)) {
 
-					\Cache::deleteFolder('Navigation');
+                    \Cache::deleteFolder('Navigation');
 
-					return $this->returnJson(array('status' => 'success', 'message' => t('navigation::navigation.message.edit_success') ));
+                    return $this->returnJson(array('status' => 'success', 'message' => t('navigation::navigation.message.edit_success') ));
 
-				} else {
-					return $this->returnJson(array('status' => 'fail', 'message' => t('navigation::navigation.message.edit_error') ));
-				}
-			}
-			else
-			{
-				return $this->returnJson(array('status' => 'error', 'message' => 'Validation Error' ));
-			}
-		}
+                } else {
+                    return $this->returnJson(array('status' => 'fail', 'message' => t('navigation::navigation.message.edit_error') ));
+                }
+            } else {
+                return $this->returnJson(array('status' => 'error', 'message' => 'Validation Error' ));
+            }
+        }
 
-		$type = array(
-				'uri'		=> t('navigation::navigation.labels.uri'),
-				'page'		=> t('navigation::navigation.labels.page'),
-				'module'	=> t('navigation::navigation.labels.module'),
-				'url'		=> t('navigation::navigation.labels.url'),
-			);
+        $type = array(
+                'uri'		=> t('navigation::navigation.labels.uri'),
+                'page'		=> t('navigation::navigation.labels.page'),
+                'module'	=> t('navigation::navigation.labels.module'),
+                'url'		=> t('navigation::navigation.labels.url'),
+            );
 
-		$this->template->title(t('navigation::navigation.link.title'))
-						->set('link', $link)
-						->set('groups', $this->groups)
-						->set('groupSelect', $this->groupSelect)
-						->set('moduleSelect', $this->moduleSelect)
-						->set('pageSelect', $this->pageSelects)
-						->set('defaultGroup', $this->defaultGroup)
-						->set('type', $type)
-						->partialOnly()
-						->view('admin/edit');
-	}
+        $this->template->title(t('navigation::navigation.link.title'))
+                        ->set('link', $link)
+                        ->set('groups', $this->groups)
+                        ->set('groupSelect', $this->groupSelect)
+                        ->set('moduleSelect', $this->moduleSelect)
+                        ->set('pageSelect', $this->pageSelects)
+                        ->set('defaultGroup', $this->defaultGroup)
+                        ->set('type', $type)
+                        ->partialOnly()
+                        ->view('admin/edit');
+    }
 
-	public function delete($id)
-	{
-		$link = Links::find($id);
+    public function delete($id)
+    {
+        $link = Links::find($id);
 
-		if (is_null($link)) {
-			return $this->notFound();
-		}
+        if (is_null($link)) {
+            return $this->notFound();
+        }
 
-		$link->updateParent();
+        $link->updateParent();
 
-		try {
-			$link->delete();
-			\Cache::deleteFolder('Navigation');
-			$msg = \Translate::get('navigation::navigation.message.delete_success');
-			\Flash::success($msg);
-		} catch (\Exception $e) {
-			$msg = \Translate::get('navigation::navigation.message.delete_error');
-			\Flash::error($msg);
-		}
+        try {
+            $link->delete();
+            \Cache::deleteFolder('Navigation');
+            $msg = \Translate::get('navigation::navigation.message.delete_success');
+            \Flash::success($msg);
+        } catch (\Exception $e) {
+            $msg = \Translate::get('navigation::navigation.message.delete_error');
+            \Flash::error($msg);
+        }
 
-		return \Redirect::toAdmin('navigation');
-	}
+        return \Redirect::toAdmin('navigation');
+    }
 
-	public function group()
-	{
-		$groups = Navigation::all();
+    public function group()
+    {
+        $groups = Navigation::all();
 
-		$this->template->title(t('navigation::navigation.group.title'))
-						->set('groups', $groups)
-						->view('admin/group');
-	}
+        $this->template->title(t('navigation::navigation.group.title'))
+                        ->set('groups', $groups)
+                        ->view('admin/group');
+    }
 
-	public function groupCreate()
-	{
-		if (! \Input::isPost()) {
-			return \Redirect::toAdmin('navigation/group');
-		}
+    public function groupCreate()
+    {
+        if (! \Input::isPost()) {
+            return \Redirect::toAdmin('navigation/group');
+        }
 
-		if (is_null(\Input::get('group'))) {
-			\Flash::error(t('navigation::navigation.message.required'));
-			return \Redirect::toAdmin('navigation/group');
-		}
+        if (is_null(\Input::get('group'))) {
+            \Flash::error(t('navigation::navigation.message.required'));
 
-		if (in_array(ucfirst(\Input::get('group')), $this->groupSelect)) {
-			\Flash::error(t('navigation::navigation.message.exists'));
-			return \Redirect::toAdmin('navigation/group');
-		}
+            return \Redirect::toAdmin('navigation/group');
+        }
 
-		$group = new Navigation();
-		$group->title = \Input::get('group');
-		$group->slug = slug(\Input::get('group'));
-		if($group->save()) {
-			\Flash::success(t('navigation::navigation.message.group_success'));
-		} else {
-			\Flash::error(t('navigation::navigation.message.group_error'));
-		}
+        if (in_array(ucfirst(\Input::get('group')), $this->groupSelect)) {
+            \Flash::error(t('navigation::navigation.message.exists'));
 
-		return \Redirect::toAdmin('navigation/group');
-	}
+            return \Redirect::toAdmin('navigation/group');
+        }
 
-	/**
-	 * Get the URL for menu base on menu type
-	 */
-	protected function getUrl()
-	{
-		$type = \Input::get('type');
+        $group = new Navigation();
+        $group->title = \Input::get('group');
+        $group->slug = slug(\Input::get('group'));
+        if ($group->save()) {
+            \Flash::success(t('navigation::navigation.message.group_success'));
+        } else {
+            \Flash::error(t('navigation::navigation.message.group_error'));
+        }
 
-		switch ($type) {
-			case 'url' :
-				$url = \Input::get('url');
-			break;
+        return \Redirect::toAdmin('navigation/group');
+    }
 
-			case 'module':
-				$url = \Input::get('module');
-			break;
+    /**
+     * Get the URL for menu base on menu type
+     */
+    protected function getUrl()
+    {
+        $type = \Input::get('type');
 
-			case 'page':
-				$url = \Input::get('page');
-			break;
+        switch ($type) {
+            case 'url' :
+                $url = \Input::get('url');
+            break;
 
-			default :
-				$url = \Input::get('uri');
-			break;
-		}
+            case 'module':
+                $url = \Input::get('module');
+            break;
 
-		return $url;
-	}
+            case 'page':
+                $url = \Input::get('page');
+            break;
 
-	/**
-	 * Validation check for module item
-	 */
-	protected function validation()
-	{
-		$rule = array(
-			        'title' => 'required|maxLength:100',
-			        'type' => 'required',
-			        'url' => 'navUrl',
-			        'uri' => 'navUrl',
-			        'module' => 'navUrl',
-			        'page' => 'navUrl',
-			        'group' => 'required',
-			        'class' => 'maxLength:255'
-			    );
+            default :
+                $url = \Input::get('uri');
+            break;
+        }
 
-		$v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+        return $url;
+    }
 
-		$ins = $this;
-		$v->addRule('navUrl',
-					'Test is fail',
-					function() use ($ins){
-			        	$type = \Input::get('type');
-				        switch ($type) {
-							case 'module':
-								$value = \Input::get('module');
-								return array_key_exists($value, $ins->moduleSelect);
-							break;
+    /**
+     * Validation check for module item
+     */
+    protected function validation()
+    {
+        $rule = array(
+                    'title' => 'required|maxLength:100',
+                    'type' => 'required',
+                    'url' => 'navUrl',
+                    'uri' => 'navUrl',
+                    'module' => 'navUrl',
+                    'page' => 'navUrl',
+                    'group' => 'required',
+                    'class' => 'maxLength:255'
+                );
 
-							case 'page':
-								$value = \Input::get('page');
-								return array_key_exists($value, $ins->pageSelects);
-							break;
+        $v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
 
-							default :
-								return true;
-							break;
-						}
-			    	}
-			    );
+        $ins = $this;
+        $v->addRule('navUrl',
+                    'Test is fail',
+                    function () use ($ins) {
+                        $type = \Input::get('type');
+                        switch ($type) {
+                            case 'module':
+                                $value = \Input::get('module');
 
-		return $v;
-	}
+                                return array_key_exists($value, $ins->moduleSelect);
+                            break;
+
+                            case 'page':
+                                $value = \Input::get('page');
+
+                                return array_key_exists($value, $ins->pageSelects);
+                            break;
+
+                            default :
+                                return true;
+                            break;
+                        }
+                    }
+                );
+
+        return $v;
+    }
 }

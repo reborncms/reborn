@@ -11,32 +11,32 @@ namespace Setting;
 class UI
 {
 
-	/**
-	 * Extended UI Field
-	 *
-	 * @var array
-	 **/
-	protected static $extended = array();
+    /**
+     * Extended UI Field
+     *
+     * @var array
+     **/
+    protected static $extended = array();
 
-	/**
-	 * Extend new field UI.
-	 * Example :
-	 * <code>
-	 * 		Setting\UI::extend('custom', function($value, $attrs) {
-	 * 			return Form::datepicker(....);
-	 * 		});
-	 * </code>
-	 *
-	 * @param name $name Type name
-	 * @param Closure|String $callback Callback function
-	 * @return void
-	 **/
-	public static function extend($name, $callback)
-	{
-		static::$extended[$name] = $callback;
-	}
+    /**
+     * Extend new field UI.
+     * Example :
+     * <code>
+     * 		Setting\UI::extend('custom', function ($value, $attrs) {
+     * 			return Form::datepicker(....);
+     * 		});
+     * </code>
+     *
+     * @param  name           $name     Type name
+     * @param  Closure|String $callback Callback function
+     * @return void
+     **/
+    public static function extend($name, $callback)
+    {
+        static::$extended[$name] = $callback;
+    }
 
-	/**
+    /**
      * Generate the Form Field
      *
      * @return string|null
@@ -48,10 +48,12 @@ class UI
         $type = $v['type'];
         if (in_array($type, $supports)) {
             $method = $v['type'].'Field';
+
             return static::$method($v);
         } elseif (static::$extended[$type]) {
             list($value, $attrs) = static::getClassAndValue($v);
             $callback = static::$extended[$type];
+
             return call_user_func_array($callback, array($v['slug'], $value, $attrs));
         }
 
@@ -65,9 +67,9 @@ class UI
      **/
     protected static function selectField($v)
     {
-    	list($value, $attrs) = static::getClassAndValue($v);
+        list($value, $attrs) = static::getClassAndValue($v);
 
-    	return \Form::select($v['slug'], $v['options'], $value, $attrs );
+        return \Form::select($v['slug'], $v['options'], $value, $attrs );
     }
 
     /**
@@ -77,9 +79,9 @@ class UI
      **/
     protected static function textField($v)
     {
-    	list($value, $attrs) = static::getClassAndValue($v);
+        list($value, $attrs) = static::getClassAndValue($v);
 
-    	return \Form::input($v['slug'], $value,'text', $attrs);
+        return \Form::input($v['slug'], $value,'text', $attrs);
     }
 
     /**
@@ -141,7 +143,7 @@ class UI
     /**
      * Get the Class and Value for Field
      *
-     * @param array $v Value array
+     * @param  array $v Value array
      * @return array
      **/
     protected static function getClassAndValue($v)

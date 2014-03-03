@@ -11,8 +11,8 @@ class Navigation extends \Eloquent
     protected $multisite = true;
 
     public function links()
-	{
-		return $this->hasMany('Navigation\Model\NavigationLinks');
-	}
+    {
+        return $this->hasMany('Navigation\Model\NavigationLinks');
+    }
 
 }

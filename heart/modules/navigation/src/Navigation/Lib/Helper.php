@@ -8,190 +8,190 @@ use Navigation\Model\NavigationLinks as Links;
 
 class Helper
 {
-	public static function render($group = 'header', $tag = 'ul', $active = 'active')
-	{
-		$nav = Navigation::where('slug', '=', $group)->first();
+    public static function render($group = 'header', $tag = 'ul', $active = 'active')
+    {
+        $nav = Navigation::where('slug', '=', $group)->first();
 
-		// Make Cache Key
-		$cache_key = 'Navigation::navigation_'.$group.'_trees';
+        // Make Cache Key
+        $cache_key = 'Navigation::navigation_'.$group.'_trees';
 
-		$id = $nav->id;
-		$tree = \Cache::solve($cache_key, function() use($id)
-					{
-						$obj = Links::where('navigation_id', '=', $id)
-								->orderBy('link_order', 'asc')
-								->get()
-								->toArray();
+        $id = $nav->id;
+        $tree = \Cache::solve($cache_key, function () use ($id) {
+                        $obj = Links::where('navigation_id', '=', $id)
+                                ->orderBy('link_order', 'asc')
+                                ->get()
+                                ->toArray();
 
-						return \Navigation\Lib\Helper::getNavTree($obj);
-					});
+                        return \Navigation\Lib\Helper::getNavTree($obj);
+                    });
 
-		$current = rtrim(Facade::getApplication()->request->requestUrl(), '/');
+        $current = rtrim(Facade::getApplication()->request->requestUrl(), '/');
 
-		$homepage = \Setting::get('home_page');
+        $homepage = \Setting::get('home_page');
 
-		$o = "<$tag>\n";
-			foreach ($tree as $t) {
+        $o = "<$tag>\n";
+            foreach ($tree as $t) {
 
-				if ('url' == $t['link_type']) {
-					$url = $t['url'];
-				} else {
-					if ($t['url'] == $homepage) {
-						$url = rbUrl();
-					} else {
-						$url = rbUrl($t['url']);
-					}
-				}
+                if ('url' == $t['link_type']) {
+                    $url = $t['url'];
+                } else {
+                    if ($t['url'] == $homepage) {
+                        $url = rbUrl();
+                    } else {
+                        $url = rbUrl($t['url']);
+                    }
+                }
 
-				if ($current == rtrim($url,'/')) {
-					$activeClass = $active;
-				} elseif (rtrim(rbUrl($homepage), '/') == rtrim($url,'/')) {
-					if (rtrim(rbUrl(), '/') == $current) {
-						$activeClass = $active;
-					} else {
-						$activeClass = '';
-					}
-				} else {
-					$activeClass = '';
-				}
+                if ($current == rtrim($url,'/')) {
+                    $activeClass = $active;
+                } elseif (rtrim(rbUrl($homepage), '/') == rtrim($url,'/')) {
+                    if (rtrim(rbUrl(), '/') == $current) {
+                        $activeClass = $active;
+                    } else {
+                        $activeClass = '';
+                    }
+                } else {
+                    $activeClass = '';
+                }
 
-				$id = slug($t['title']);
-				$o .= "\t".'<li id="'.$id.'" class="'.$activeClass.'">';
-				$o .= '<a href="'.$url.'" class="'.$t['class'].'" >';
-				$o .= $t['title'];
-				$o .= '</a>';
-				if ($t['child']) {
-					$o .= static::renderChild($tag, $t);
-				}
-				$o .= "\t</li>\n";
-			}
-		$o .= "</$tag>";
+                $id = slug($t['title']);
+                $o .= "\t".'<li id="'.$id.'" class="'.$activeClass.'">';
+                $o .= '<a href="'.$url.'" class="'.$t['class'].'" >';
+                $o .= $t['title'];
+                $o .= '</a>';
+                if ($t['child']) {
+                    $o .= static::renderChild($tag, $t);
+                }
+                $o .= "\t</li>\n";
+            }
+        $o .= "</$tag>";
 
-		return $o;
-	}
+        return $o;
+    }
 
-	protected static function renderChild($tag, $link, $level = 1)
-	{
-		$output = '';
-		if ($link['child']):
-			$tab = str_repeat("\t", $level);
-			$inner = $tab."\t";
-			$output .= "\n$tab<$tag class=\"level-$level\">\n";
-			foreach($link['child'] as $link) :
+    protected static function renderChild($tag, $link, $level = 1)
+    {
+        $output = '';
+        if ($link['child']):
+            $tab = str_repeat("\t", $level);
+            $inner = $tab."\t";
+            $output .= "\n$tab<$tag class=\"level-$level\">\n";
+            foreach($link['child'] as $link) :
 
-					$output .= $inner.'<li id="'. $link['title'].'">';
-					$output .= '<a href="'.$link['url'].'" class="'.$link['class'].'" >';
-					$output .= $link['title'];
-					$output .= '</a>';
+                    $output .= $inner.'<li id="'. $link['title'].'">';
+                    $output .= '<a href="'.$link['url'].'" class="'.$link['class'].'" >';
+                    $output .= $link['title'];
+                    $output .= '</a>';
 
-				if (! empty($link['child'])) :
-						$output .=	static::renderChild($tag, $link, $level +1);
-					$output .= $inner."</li>\n";
-				else :
-					$output .= "</li>\n";
-				endif;
+                if (! empty($link['child'])) :
+                        $output .=	static::renderChild($tag, $link, $level +1);
+                    $output .= $inner."</li>\n";
+                else :
+                    $output .= "</li>\n";
+                endif;
 
-			endforeach;
+            endforeach;
 
-			$output .= "$tab</$tag>\n";
+            $output .= "$tab</$tag>\n";
 
-		endif;
+        endif;
 
-		return $output;
-	}
+        return $output;
+    }
 
-	public static function pageSelect()
-	{
-		if(! \Module::isEnabled('Pages')) {
-			return array();
-		}
+    public static function pageSelect()
+    {
+        if (! \Module::isEnabled('Pages')) {
+            return array();
+        }
 
-		\Module::load('Pages');
-		return \Pages\Lib\Helper::pageList();
-	}
+        \Module::load('Pages');
 
-	public static function moduleSelect()
-	{
-		$modules = \Module::getAll();
-		$select = array();
-		foreach($modules as $name => $m) {
-			if(\Module::isEnabled($name) and ($m['frontend_support'])) {
-				$select[strtolower($name)] = $name;
-			}
-		}
+        return \Pages\Lib\Helper::pageList();
+    }
 
-		return $select;
-	}
+    public static function moduleSelect()
+    {
+        $modules = \Module::getAll();
+        $select = array();
+        foreach ($modules as $name => $m) {
+            if (\Module::isEnabled($name) and ($m['frontend_support'])) {
+                $select[strtolower($name)] = $name;
+            }
+        }
 
-	/**
-	 * Get nav tree array
-	 */
-	public static function getNavTree(&$categories)
-	{
-		 $map = array(
-			0 => array('child' => array())
-		);
+        return $select;
+    }
 
-		foreach ($categories as &$category) {
-			$category['child'] = array();
-			$map[$category['id']] = &$category;
-		}
+    /**
+     * Get nav tree array
+     */
+    public static function getNavTree(&$categories)
+    {
+         $map = array(
+            0 => array('child' => array())
+        );
 
-		foreach ($categories as &$category) {
-			$map[$category['parent_id']]['child'][] = &$category;
-		}
+        foreach ($categories as &$category) {
+            $category['child'] = array();
+            $map[$category['id']] = &$category;
+        }
 
-		return $map[0]['child'];
-	}
+        foreach ($categories as &$category) {
+            $map[$category['parent_id']]['child'][] = &$category;
+        }
 
-	/**
-	 * Build the html for the admin link tree view
-	 *
-	 * @param array $link Current navigation link
-	 */
-	public static function tree_builder($link)
-	{
-		$output = '';
-		if ($link['child']):
+        return $map[0]['child'];
+    }
 
-			foreach($link['child'] as $link) :
+    /**
+     * Build the html for the admin link tree view
+     *
+     * @param array $link Current navigation link
+     */
+    public static function tree_builder($link)
+    {
+        $output = '';
+        if ($link['child']):
 
-					$output .= '<li id="link_'. $link['id'].'">';
-					$output .=	'<div class="draggable_wrap">';
+            foreach($link['child'] as $link) :
 
-					$output .=	'<div class="nav_title">'. $link['title'].'</div>';
+                    $output .= '<li id="link_'. $link['id'].'">';
+                    $output .=	'<div class="draggable_wrap">';
 
-					$output .=	'<div class="nav_actions">';
+                    $output .=	'<div class="nav_title">'. $link['title'].'</div>';
 
-					if(user_has_access('nav.edit')) {
-						$output .= '<a href="'.adminUrl('navigation/edit/'.$link['id']);
-						$output .= '" title="'.t('global.edit').'" class="link-edit tipsy-tip">';
-						$output .= '<i class="icon-edit icon-black"></i>';
-						$output .= '</a>';
-					}
+                    $output .=	'<div class="nav_actions">';
 
-					if(user_has_access('nav.delete')) {
-						$output .= '<a href="'.adminUrl('navigation/delete/'.$link['id']);
-						$output .= '" title="'.t('global.delete').'" class="confirm_delete tipsy-tip">';
-						$output .= '<i class="icon-remove icon-black"></i>';
-						$output .= '</a>';
-					}
+                    if (user_has_access('nav.edit')) {
+                        $output .= '<a href="'.adminUrl('navigation/edit/'.$link['id']);
+                        $output .= '" title="'.t('global.edit').'" class="link-edit tipsy-tip">';
+                        $output .= '<i class="icon-edit icon-black"></i>';
+                        $output .= '</a>';
+                    }
 
-					$output .= '</div></div> <!-- end of draggable_wrap -->';
+                    if (user_has_access('nav.delete')) {
+                        $output .= '<a href="'.adminUrl('navigation/delete/'.$link['id']);
+                        $output .= '" title="'.t('global.delete').'" class="confirm_delete tipsy-tip">';
+                        $output .= '<i class="icon-remove icon-black"></i>';
+                        $output .= '</a>';
+                    }
 
-				if (! empty($link['child'])) :
-						$output .= '<ol>';
-						$output .=	static::tree_builder($link);
-						$output .= '</ol>';
-					$output .= '</li>';
-				else :
-					$output .= '</li>';
-				endif;
+                    $output .= '</div></div> <!-- end of draggable_wrap -->';
 
-			endforeach;
+                if (! empty($link['child'])) :
+                        $output .= '<ol>';
+                        $output .=	static::tree_builder($link);
+                        $output .= '</ol>';
+                    $output .= '</li>';
+                else :
+                    $output .= '</li>';
+                endif;
 
-		endif;
+            endforeach;
 
-		return $output;
-	}
+        endif;
+
+        return $output;
+    }
 }

@@ -4,97 +4,97 @@ namespace SiteManager\Services;
 
 class Form extends \FormBuilder
 {
-	protected $model = '\SiteManager\Model\SiteManager';
+    protected $model = '\SiteManager\Model\SiteManager';
 
-	protected $skipFields = array('shared_by_force');
+    protected $skipFields = array('shared_by_force');
 
-	/**
-	 * Set from element fields
-	 *
-	 * @access public
-	 * @return void
-	 **/
-	public function setFields()
-	{
-		$this->fields = array(
+    /**
+     * Set from element fields
+     *
+     * @access public
+     * @return void
+     **/
+    public function setFields()
+    {
+        $this->fields = array(
 
-			'name'	=> array(
-				'type'	=> 'text',
-				'label'	=> 'Name',
-				'rule'	=> 'required'
-				),
+            'name'	=> array(
+                'type'	=> 'text',
+                'label'	=> 'Name',
+                'rule'	=> 'required'
+                ),
 
-			'domain'	=> array(
-				'type'	=> 'select',
-				'label'	=> 'Domain',
-				'rule'	=> 'required',
-				'option' => $this->getRegisterDomains()
-				),
+            'domain'	=> array(
+                'type'	=> 'select',
+                'label'	=> 'Domain',
+                'rule'	=> 'required',
+                'option' => $this->getRegisterDomains()
+                ),
 
-			'description'	=> array(
-				'type'	=> 'textarea',
-				'label'	=> 'Description'
-				),
+            'description'	=> array(
+                'type'	=> 'textarea',
+                'label'	=> 'Description'
+                ),
 
-			'shared_by_force' => array(
-				'type' => 'checkboxGroup',
-				'label' => 'Shared By Force',
-				'checkbox_label' => $this->getModules()
-				),
-			);
+            'shared_by_force' => array(
+                'type' => 'checkboxGroup',
+                'label' => 'Shared By Force',
+                'checkbox_label' => $this->getModules()
+                ),
+            );
 
-		$this->submit = array('submit' => array(
-			'value' => t('global.save'),
-			));
-	}
+        $this->submit = array('submit' => array(
+            'value' => t('global.save'),
+            ));
+    }
 
-	/**
-	 * Get registered domain lists
-	 *
-	 * @return array
-	 **/
-	protected function getRegisterDomains()
-	{
-		$sites = require BASE_CONTENT.'sites.php';
+    /**
+     * Get registered domain lists
+     *
+     * @return array
+     **/
+    protected function getRegisterDomains()
+    {
+        $sites = require BASE_CONTENT.'sites.php';
 
-		$lists = array();
+        $lists = array();
 
-		$model = \SiteManager\Model\SiteManager::all(array('domain'))->lists('domain');
+        $model = \SiteManager\Model\SiteManager::all(array('domain'))->lists('domain');
 
-		foreach ($sites['content_path'] as $site => $path) {
-			if (!in_array($site, $model)) {
-				$lists[$site] = $site;
-			}
-		}
+        foreach ($sites['content_path'] as $site => $path) {
+            if (!in_array($site, $model)) {
+                $lists[$site] = $site;
+            }
+        }
 
-		if (empty($lists)) {
-			$lists = array('' => 'Need to Register Site Domain');
-		}
+        if (empty($lists)) {
+            $lists = array('' => 'Need to Register Site Domain');
+        }
 
-		return $lists;
-	}
+        return $lists;
+    }
 
-	/**
-	 * Get module lists for Shared Datatable by Force
-	 *
-	 * @return array
-	 **/
-	protected function getModules()
-	{
-		$modules = \Module::findFrom(array(CORE_MODULES, SHARED.'modules'.DS));
+    /**
+     * Get module lists for Shared Datatable by Force
+     *
+     * @return array
+     **/
+    protected function getModules()
+    {
+        $modules = \Module::findFrom(array(CORE_MODULES, SHARED.'modules'.DS));
 
-		$modules = array_filter($modules, function($m) {
+        $modules = array_filter($modules, function ($m) {
             return (false == $m['shared_data']);
         });
 
         $results = array();
 
         foreach ($modules as $name => $data) {
-        	if ($data['allow_shared_by_user']) {
-        		$results[$name] = $data['name'];
-        	}
+            if ($data['allow_shared_by_user']) {
+                $results[$name] = $data['name'];
+            }
         }
 
         return $results;
-	}
+    }
 }
