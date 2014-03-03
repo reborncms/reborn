@@ -35,7 +35,7 @@
 				<a href="{{ rbUrl('user/logout') }}" id="logout_link">{{ t('comment::comment.label.logout') }}</a>
 			</div>	
 		{{ endif }}
-			{{ Form::hidden('d0ntF1ll') }}
+			{{ Form::hidden(Setting::get('spam_filter')) }}
 			{{ Form::hidden('parent_id', '') }}
 			{{ Form::hidden('module', $module) }}
 			{{ Form::hidden('content_id', $content_id) }}

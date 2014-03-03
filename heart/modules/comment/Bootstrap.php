@@ -47,6 +47,9 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 			'comment_need_approve' => array(
 				'type'	=> 'checkbox'
 			),
+			'comment_per_page' 	=> array(
+				'type'	=> 'text'
+			),
 		);
 	}
 

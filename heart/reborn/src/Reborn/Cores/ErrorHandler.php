@@ -92,7 +92,7 @@ class ErrorHandler
         if ( $this->app->runInCli() ) {
             $msg = $this->getMessageForConsole($e);
             $writer = new \Symfony\Component\Console\Output\ConsoleOutput();
-            
+
             $writer->writeln("<error>".$msg."</error>");
             exit;
         }
@@ -128,7 +128,7 @@ class ErrorHandler
         $msg = "\n============ Exception from [ ".get_class($e)." ] ============ \n\n";
         $msg .= "\t".$e->getMessage();
         $msg .= "\n\n============ Exception from [ ".get_class($e)." ] ============ \n\n";
-        
+
         return $msg;
     }
 
@@ -325,6 +325,10 @@ class ErrorHandler
      */
     public function errorHandler($errno, $errstr, $errfile, $errline)
     {
+        if ($this->app['env'] == 'production') {
+            return null;
+        }
+
         $code = $this->getErrorLine($errfile, $errline);
 
         $errfile = str_replace(BASE, '{{ CMS }} &raquo; ', $errfile);

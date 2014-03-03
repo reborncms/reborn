@@ -79,6 +79,16 @@ class CommentInstaller extends \Reborn\Module\AbstractInstaller
 	    	'module'	=> 'Comment'
 	    );
 	    \Setting::add($data);
+
+	    $data = array(
+	    	'slug'		=> 'comment_per_page',
+	    	'name'		=> 'Comment Per Page',
+	    	'desc'		=> 'Parent comment per page in frontend',
+	    	'value'		=> '10',
+	    	'default'	=> '10',
+	    	'module'	=> 'Comment'
+	    );
+	    \Setting::add($data);
 		
 	}
 
@@ -95,6 +105,8 @@ class CommentInstaller extends \Reborn\Module\AbstractInstaller
 		\Setting::remove('comment_enable');
 
 		\Setting::remove('comment_need_approve');
+
+		\Setting::remove('comment_per_page');
 	}
 
 	public function upgrade($v, $prefix = null)
@@ -104,6 +116,18 @@ class CommentInstaller extends \Reborn\Module\AbstractInstaller
 		    {
 		     	$table->softDeletes();    
 		    });
+		}
+
+		if ($v < '1.11') {
+			$data = array(
+				'slug'		=> 'comment_per_page',
+				'name'		=> 'Comment Per Page',
+				'desc'		=> 'Parent comment per page in frontend',
+				'value'		=> '10',
+				'default'	=> '10',
+				'module'	=> 'Comment'
+			);
+			\Setting::add($data);
 		}
 	}
 

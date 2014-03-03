@@ -75,6 +75,8 @@
 
 	\Route::get('{p:page}?', 'Blog\Blog::index', 'blog_index');
 
+	\Route::get('{*:slug}/comments/{p:page}?', 'Blog\Blog::view', 'blog_single_with_comment');
+
 	// Now change {str:slug} to {*:slug} for Myanmar Font Uri.
 	// Thuesday, 8 October 2013
 	\Route::get('{*:slug}', 'Blog\Blog::view', 'blog_single');

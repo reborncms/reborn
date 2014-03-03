@@ -73,6 +73,10 @@ return array(
 	'btn_label_disable'		=> 'အသုံးပြုမှု ရပ်ဆိုင်းရန်',
 	'btn_label_enable'		=> 'ပြန်လည် အသုံးပြုရန်',
 
+	// Dashboard Widget Label
+	'dashboard_widget_title'=> 'ဒီမော်ဂျူးများအား အဆင့်မြှင့်တင်ရန် လိုအပ်သည်။',
+	'dashboard_widget_text'=> '"%s" မော်ဂျူးအား အဆင့်မြှင့်တင်၍ ရပါပြီ။',
+
 );
 
 

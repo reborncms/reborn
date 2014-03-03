@@ -12,7 +12,10 @@ class PagesController extends \PublicController
 
     public function index()
     {
+
         $uri = implode("/", \Uri::segments());
+
+        $uri = strstr($uri, '/comments', true);
 
         if (empty($uri)) {
             

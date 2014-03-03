@@ -23,7 +23,7 @@ class PagesController extends \AdminController
      **/
     public function index()
     {
-        $all = Pages::page_structure();
+        $all = Pages::pageStructure();
 
         $this->template->title('Manage Your Pages')
                     ->set('pages', $all)
@@ -150,7 +150,7 @@ class PagesController extends \AdminController
         if (!empty($parent_id)) {
 
             $page->parent_id = $parent_id;
-            $parent_uri = Pages::get_parent_uri((int) $parent_id);
+            $parent_uri = Pages::getParentUri((int) $parent_id);
             $uri = $parent_uri.'/'.\Input::get('slug');
 
         } else {
@@ -269,7 +269,7 @@ class PagesController extends \AdminController
 
         $page = Pages::find($id);
         $parent_id = $page->parent_id;
-        $parent_uri = Pages::get_parent_uri((int) $parent_id);
+        $parent_uri = Pages::getParentUri((int) $parent_id);
         $page_delete = $page->delete();
 
         if ($page_delete) {
@@ -438,7 +438,7 @@ class PagesController extends \AdminController
             $order++;
         }
         //dump($result, true);
-        $get_pages = Pages::page_structure();
+        $get_pages = Pages::pageStructure();
         //dump($get_pages, true);
         $this->template->setPartial('admin/index')
                     ->set('pages', $get_pages)
@@ -457,7 +457,7 @@ class PagesController extends \AdminController
         foreach ($children as $child) {
             $id = (int) $child['id'];
             $page = Pages::find($id);
-            $parent_uri = Pages::get_parent_uri($parent_id);
+            $parent_uri = Pages::getParentUri($parent_id);
             $new_uri = $parent_uri.'/'.$page->slug;
             $page->page_order = $order;
             $page->parent_id = $parent_id;

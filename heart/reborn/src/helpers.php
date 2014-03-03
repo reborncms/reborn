@@ -678,15 +678,26 @@ if (! function_exists('checkOnline'))
 	 **/
 	function checkOnline($url = 'www.google.com', $port = 80)
 	{
-		$is_conn = false;
+		$app = Facade::getApplication();
 
-	    $connected = @fsockopen($url, $port);
-	    if ($connected){
-	        $is_conn = true;
-	        fclose($connected);
+		$env = $app->getAppEnvironment();
+
+		// Make tweak for error reporting for this function
+		if ( ! $app->runInProduction() ) {
+			$app->setAppEnvironment('production');
+		}
+
+		$is_online = true;
+
+	    if (! $connected = @fsockopen($url, $port, $num, $error, 20)) {
+	    	$is_online = false;
+	    } else {
+	    	fclose($connected);
 	    }
 
-	    return $is_conn;
+	    $app->setAppEnvironment($env);
+
+    	return $is_online;
 	}
 }
 

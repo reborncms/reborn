@@ -59,6 +59,13 @@ class Builder implements BuilderInterface
 	protected $show_pages = 13;
 
 	/**
+	 * Show Pagination numbers or not
+	 *
+	 * @var Boolean
+	 **/
+	protected $pagi_numbers = true;
+
+	/**
 	 * Adjacent value for pagination
 	 *
 	 * @var int
@@ -242,54 +249,59 @@ class Builder implements BuilderInterface
 
 		$template = $this->template;
 
-		// Maximum limit of pages to shwo in pagination.
-		// If total pages is more than show_pages, need to make
-		// (...) sliding style pagination. Minimum value of show_pages is 13
-		$show_pages = ($this->show_pages > 12) ? $this->show_pages : 13;
+		$pagis = '';
 
-		$adjacent = (int) floor($show_pages / $this->adjacent);
+		if ($this->pagi_numbers === true) {
 
-		// Return null on no pagi page
-		if ($total < 2) {
-			return '';
-		}
+			// Maximum limit of pages to shwo in pagination.
+			// If total pages is more than show_pages, need to make
+			// (...) sliding style pagination. Minimum value of show_pages is 13
+			$show_pages = ($this->show_pages > 12) ? $this->show_pages : 13;
 
-		if ($total <= $show_pages) {
+			$adjacent = (int) floor($show_pages / $this->adjacent);
 
-			$pagis = $this->getPaginationLinks(1, $total);
+			// Return null on no pagi page
+			if ($total < 2) {
+				return '';
+			}
 
-		} elseif ($this->current <= $adjacent) {
-			// Style : PREV|1|2|3|4|current|6|7|8|9|...|12|13|NEXT
+			if ($total <= $show_pages) {
 
-			$pagis = $this->getPaginationLinks(1, $adjacent + 2);
+				$pagis = $this->getPaginationLinks(1, $total);
 
-			$pagis .= $this->getSeparator();
+			} elseif ($this->current <= $adjacent) {
+				// Style : PREV|1|2|3|4|current|6|7|8|9|...|12|13|NEXT
 
-			$pagis .= $this->getPaginationLinks($total - 1, $total);
+				$pagis = $this->getPaginationLinks(1, $adjacent + 2);
 
-		} elseif ($this->current >= ($total - $adjacent)) {
-			// Style : PREV|1|2|...|6|7|current|9|10|11|12|13|NEXT
+				$pagis .= $this->getSeparator();
 
-			$pagis = $this->getPaginationLinks(1, 2);
+				$pagis .= $this->getPaginationLinks($total - 1, $total);
 
-			$pagis .= $this->getSeparator();
+			} elseif ($this->current >= ($total - $adjacent)) {
+				// Style : PREV|1|2|...|6|7|current|9|10|11|12|13|NEXT
 
-			$pagis .= $this->getPaginationLinks($total - 8, $total);
+				$pagis = $this->getPaginationLinks(1, 2);
 
-		} else {
-			// Style : PREV|1|2|...|4|5|6|current|8|9|...|11|12|13|NEXT
+				$pagis .= $this->getSeparator();
 
-			$current = $this->current;
+				$pagis .= $this->getPaginationLinks($total - 8, $total);
 
-			$pagis = $this->getPaginationLinks(1, 2);
+			} else {
+				// Style : PREV|1|2|...|4|5|6|current|8|9|...|11|12|13|NEXT
 
-			$pagis .= $this->getSeparator();
+				$current = $this->current;
 
-			$pagis .= $this->getPaginationLinks($current - 3, $current + 3);
+				$pagis = $this->getPaginationLinks(1, 2);
 
-			$pagis .= $this->getSeparator();
+				$pagis .= $this->getSeparator();
 
-			$pagis .= $this->getPaginationLinks($total - 1, $total);
+				$pagis .= $this->getPaginationLinks($current - 3, $current + 3);
+
+				$pagis .= $this->getSeparator();
+
+				$pagis .= $this->getPaginationLinks($total - 1, $total);
+			}
 		}
 
 		// Add previous link

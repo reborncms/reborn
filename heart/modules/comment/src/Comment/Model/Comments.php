@@ -21,6 +21,11 @@ class Comments extends \Eloquent
         parent::__construct($attributes);
     }
 
+    public function children()
+    {
+        return $this->hasMany('Comment\Model\Comments', 'parent_id', 'id');
+    }
+
     /**
      * Relationship with Author
      */

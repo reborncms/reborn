@@ -8,19 +8,21 @@
 	{{ endif }}
 	<ul class="comments_wrapper" style="list-style:none;">
 		{{ loop ($comments as $comment) }}
-			{{ Comment\Lib\Helper::single_comment($comment) }}
-			{{ if (isset($comment['children'])) }}
-				{{ Comment\Lib\Helper::get_children($comment['children']) }}
+			{{ Comment\Lib\Helper::singleComment($comment) }}
+			{{ if ($comment->children) }}
+				{{ Comment\Lib\Helper::getChildren($comment->children) }}
 			{{ endif }}
 		{{ endloop }}
 	</ul><!-- end of comments_wrapper -->
-
+	{{ if (isset($pagination)) }}
+		{{ $pagination }}
+	{{ endif }}
 {{ else }}
 	{{ if ($status == 'open') }}
 		<h3>{{ t('comment::comment.message.no_comment') }}</h3>
 	{{ endif }}
 {{ endif }}
-
+<div class="clearfix"></div>
 {{ $comment_form }}
 </div> <!-- end of comment_area -->
 

@@ -41,9 +41,9 @@ CREATE TABLE `groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 --- db ---
 INSERT INTO `groups` (`id`, `name`, `permissions`, `created_at`, `updated_at`) VALUES
-(1, 'Administrator', '{"Admin":1}', '{NOW}', '{NOW}'),
-(2, 'Moderator', '{"Admin":1}', '{NOW}', '{NOW}'),
-(3, 'User', '', '{NOW}', '{NOW}'),
+(1, 'Administrator', '{"admin":1,"navigation":1,"tag":1,"pages":1,"user":1,"setting":1,"module":1,"media":1,"theme":1,"maintenance":1,"contact":1,"widgets":1,"blog":1,"field":1,"comment":1,"site":1,"nav.create":1,"nav.edit":1,"nav.delete":1,"tag.create":1,"tag.edit":1,"tag.delete":1,"pages.create":1,"pages.edit":1,"pages.delete":1,"user.create":1,"user.edit":1,"user.delete":1,"user.group":1,"user.group.create":1,"user.group.edit":1,"user.group.delete":1,"user.permission":1,"user.permission.edit":1,"module.upload":1,"module.install":1,"module.disable":1,"module.enable":1,"theme.upload":1,"theme.activate":1,"theme.delete":1,"theme.editor":1,"contact.view":1,"contact.reply":1,"contact.delete":1,"contact.template.add":1,"contact.template.edit":1,"contact.template.delete":1,"blog.create":1,"blog.edit":1,"blog.delete":1,"blog_cat.create":1,"blog_cat.edit":1,"blog_cat.delete":1,"comment.reply":1,"comment.edit":1,"comment.delete":1}', '{NOW}', '{NOW}'),
+(2, 'Moderator', '{"admin":1,"tag":1,"pages":1,"media":1,"blog":1,"comment":1,"tag.create":1,"tag.edit":1,"tag.delete":1,"pages.create":1,"pages.edit":1,"pages.delete":1,"blog.create":1,"blog.edit":1,"blog.delete":1,"blog_cat.create":1,"blog_cat.edit":1,"blog_cat.delete":1,"comment.reply":1,"comment.edit":1,"comment.delete":1}', '{NOW}', '{NOW}'),
+(3, 'User', '{"blog":1,"blog.create":1,"blog.edit":1,"blog.delete":1,"blog_cat.create":1,"blog_cat.edit":1,"blog_cat.delete":1}', '{NOW}', '{NOW}'),
 (6, 'Subscriber', '', '{NOW}', '{NOW}');
 --- db ---
 CREATE TABLE `throttle` (
@@ -93,12 +93,12 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 --- db ---
 CREATE TABLE IF NOT EXISTS `users_metadata` (
   `user_id` int(11) NOT NULL,
-  `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `biography` text COLLATE utf8_unicode_ci NOT NULL,
-  `country` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `website` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `facebook` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `twitter` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+  `username` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `biography` text COLLATE utf8_unicode_ci,
+  `country` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `website` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `facebook` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `twitter` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 --- db ---
 INSERT INTO `users_metadata` (`user_id`, `username`, `biography`, `country`, `website`, `facebook`, `twitter`) VALUES

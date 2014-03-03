@@ -6,38 +6,57 @@ use Comment\Model\Comments as Comment;
 
 class Helper
 {
-	public static function single_comment($comment)
+
+	public static function singleComment($comment)
 	{
 		$s_comment = '';
 		$user_class = ($comment['user_id'] != null) ? " user_comment" : "";
 		$s_comment .= '<li id="comment-'. $comment['id'] .'" class="single_comment'. $user_class .'">';
+
 		if ($comment['user_id'] != null) {
+
 			$user = \Auth::getUserProvider()->findById($comment['user_id']);
 			$author_name = $user->first_name . ' ' . $user->last_name;
 			$author_email = $user->email;
 			$author_link = rbUrl('user/profile/'.$user->id);
+
 		} else {
+
 			$author_name = $comment['name'];
 			$author_email = $comment['email'];
 			$author_link = $comment['url'];
+
 		}
+
 		$s_comment .= '<div class="author_info">';
-		$default_img = assetPath('img', 'comment').'default_avatar.jpg';
+		$default_img = assetPath('img', 'comment').'/default_avatar.jpg';
 
 		$s_comment .= '<div class="gravi">';
+
 		if (checkOnline()) {
+
 			$s_comment .= gravatar($author_email, \Setting::get('comment_gravatar_size'), $author_name);
+
 		} else {
+
 			$s_comment .= '<img src="'. $default_img .'" alt="'. $author_name .'" width="'.\Setting::get('comment_gravatar_size').'px" />';
+
 		}
+
 		$s_comment .= '</div>';
 
 		$s_comment .= '<span class="author_name" id="comment_'.$comment['id'].'_author_name">';
+
 		if (!empty($author_link)) {
+
 			$s_comment .= '<a href="'. $author_link .'">'. $author_name .'</a>';
+
 		} else {
+
 			$s_comment .= $author_name;
+
 		}
+
 		$s_comment .= '</span>'; //end of author_name
 		$s_comment .= '</div>'; //end of author_info
 		$s_comment .= '<div class="comment_body">';
@@ -50,16 +69,23 @@ class Helper
 		return $s_comment;
 	}
 
-	public static function get_children($children)
+	public static function getChildren($children)
 	{
 		$cc = '';
 		$cc .= '<ul class="children" style="list-style:none;">';
+
 		foreach ($children as $comment) {
-			$cc .= self::single_comment($comment);
-			if (isset($comment['children'])) {
-				$cc .= self::get_children($comment['children']);
+
+			$cc .= self::singleComment($comment);
+
+			if ($comment->children) {
+
+				$cc .= self::getChildren($comment->children);
+
 			}
+
 		}
+
 		$cc .= '</ul>';
 
 		return $cc;
@@ -67,20 +93,29 @@ class Helper
 
 	public static function getContentTitle($id, $content_type, $title_field = 'title')
 	{
+
 		$title = \DB::table($content_type)->where('id' , $id)->pluck($title_field);
     	return $title;
+
 	}
 
 	public static function userDeleted($user)
 	{
+
 		$name = $user->first_name.' '.$user->last_name;
 		$email = $user->email;
 		$cmt_update = Comment::where('user_id', $user->id)->update(array('user_id' => null, 'name' => $name, 'email' => $email));
+
 		if ($cmt_update) {
+
 			return true;
+
 		} else {
+
 			return false;
+
 		}
+
 	}
 
 	public static function getLatestComments($count) {
@@ -92,29 +127,45 @@ class Helper
 		$com = array();
 
 		foreach ($comments as $comment) {
+
 			if ($comment->name == null) {
+
 				$comment->name = $comment->author_name;
+
 			}
+
 			$comment->content_title = self::getContentTitle($comment->content_id, $comment->module, $comment->content_title_field);
 			$com[] = $comment;
+
 		}
+
 		return $com;
 	}
 
 	public static function getUserNameWithLink($comment)
 	{
 		if ($comment->user_id != null) {
+
 			$name = $comment->author_name;
 			$url = rbUrl('user/profile/'.$comment->user_id);
+
 		} else {
+
 			$name = $comment->name;
 			$url = $comment->url;
+
 		}
+
 		if ($url) {
+
 			return '<a href="'.$url.'" target="_blank">'.$name.'</a>';
+
 		} else {
+
 			return $name;
+
 		}
+
 	}
 
 	public static function dashboardWidget()
@@ -126,8 +177,11 @@ class Helper
 		$widget['body'] = '';
 		$comments = self::getLatestComments(5);
 		$widget['body'] .= '<ul>';
+
 		if (!empty($comments)) {
+
 			foreach ($comments as $comment) {
+
 				$widget['body'] .= '<li>
 									<div class="widget-list-meta">
 										<span class="date">'.date("d-m-Y", strtotime($comment->created_at)).'</span>
@@ -146,9 +200,13 @@ class Helper
 									</div>
 									</li>';
 			}
+
 		} else {
+
 			$widget['body'] .= '<li><span class="empty-list">'.t('label.last_comment_empty').'</span></li>';
+
 		}
+
 		$widget['body'] .= '</ul>';
 
 		return $widget;
@@ -156,15 +214,22 @@ class Helper
 
 	public static function commentStatusLabel($id, $status)
 	{
+
 		if ($status == 'approved') {
+
 			$status_class = 'label-success';
 			$change_info = t('comment::comment.info.unapprove');
+
 		} elseif ($status == 'pending') {
+
 			$status_class = 'label-warning';
 			$change_info = t('comment::comment.info.approve');
+
 		} else {
+
 			$status_class = 'label-error';
 			$change_info = t('comment::comment.info.approve');
+
 		}
 
 		$content = '<a href="'. adminUrl('comment/change-status/'.$id) .'" class="tipsy-tip" title="'. $change_info .'">

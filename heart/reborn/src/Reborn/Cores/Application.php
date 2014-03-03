@@ -120,6 +120,16 @@ class Application extends \Illuminate\Container\Container
     }
 
     /**
+     * Get current Reborn CMS Environment.
+     *
+     * @return string
+     **/
+    public function getAppEnvironment()
+    {
+        return $this['env'];
+    }
+
+    /**
      * Check Application Environment is "dev".
      *
      * @return boolean

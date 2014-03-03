@@ -95,10 +95,6 @@ class ModuleController extends \AdminController
 	 */
 	public function upgrade($name)
 	{
-		if (! $this->checkAction($name) ) {
-			return $this->notFound();
-		}
-
 		if (Module::upgrade($name)) {
 			$msg = sprintf(t('module::module.upgrade_success'), $name);
 			Flash::success($msg);
