@@ -29,7 +29,12 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 
 	public function settings()
 	{
-		return array();
+		return array(
+			'user_registration' => array(
+				'type'	=> 'select',
+				'options' => array('enable'=>'Enable','disable'=>'Disable')
+			),
+		);
 	}
 
 	public function moduleToolbar()

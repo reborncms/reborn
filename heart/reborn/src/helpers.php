@@ -616,12 +616,14 @@ if ( ! function_exists('gravatar')) {
      *
      * @param  string  $email    Email address for gravatar
      * @param  int     $size     Size for gravatar. Default is 50
+     * @param  string  $name     Name of gravatar, using user's name
+     * @param  string  $class    Class attributes
      * @param  string  $rating   Rating for gravatar. Default is 'g'
      * @param  string  $default  Default key for gravatar
      * @param  boolean $url_only Set true if you want gravater url only. Default is false
      * @return string  URL
      */
-    function gravatar($email = '', $size = 50, $name = null, $rating = 'g', $default = null, $url_only = false)
+    function gravatar($email = '', $size = 50, $name = null, $class= null, $rating = 'g', $default = null, $url_only = false)
     {
          $base_url 	= '//www.gravatar.com/avatar/';
          $email = empty($email) ? '00000000000000000000000000000000' : md5(strtolower(trim($email)));
@@ -632,7 +634,7 @@ if ( ! function_exists('gravatar')) {
          $gravatar = $base_url . $email . $size . $rating . $default;
 
          if ($url_only != true) {
-            $gravatar = "<img src='$gravatar' alt='$name' class='gravatar' />";
+            $gravatar = "<img src='$gravatar' alt='$name' class='gravatar $class' />";
          }
 
          return $gravatar;

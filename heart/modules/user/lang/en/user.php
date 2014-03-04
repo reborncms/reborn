@@ -60,6 +60,7 @@ return array(
 		'loginrequire' => 'Login field required',
 		'activated' => 'Your account is already activated. Please try login.',
 		'dunexist' => 'User was not found. Please Register to create your account.',
+		'offreg' => 'User registration is currently disable. Please contact administor to create account.',
 	),
 
 	'login' => array(

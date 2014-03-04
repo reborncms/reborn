@@ -5,13 +5,14 @@ namespace User;
 class UserInstaller extends \Reborn\Module\AbstractInstaller
 {
 
-	public function install($prefix = null) {
+	public function install($prefix = null) 
+	{
 		$data = array(
 	    	'slug'		=> 'user_registration',
 	    	'name'		=> 'Allow user registration',
 	    	'desc'		=> 'Anyone can register',
-	    	'value'		=> '1',
-	    	'default'	=> '1',
+	    	'value'		=> 'enable',
+	    	'default'	=> 'enable',
 	    	'module'	=> 'User'
 	    );
 	    \Setting::add($data);
@@ -24,7 +25,17 @@ class UserInstaller extends \Reborn\Module\AbstractInstaller
 
 	public function upgrade($v, $prefix = null)
 	{
-		return $v;
+		if ($v == '1.0') {
+			$data = array(
+		    	'slug'		=> 'user_registration',
+		    	'name'		=> 'Allow user registration',
+		    	'desc'		=> 'Anyone can register',
+		    	'value'		=> 'enable',
+		    	'default'	=> 'enable',
+		    	'module'	=> 'User'
+		    );
+		    \Setting::add($data);
+		}
 	}
 
 }

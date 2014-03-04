@@ -2,8 +2,7 @@
 
 namespace User\Controller;
 
-use Auth, Field, Module;
-use Reborn\Util\Mailer as Mailer;
+use Auth, Field, Module, Mailer;
 
 class UserController extends \PublicController
 {
@@ -83,7 +82,7 @@ class UserController extends \PublicController
 				    if ($user = Auth::authenticate($login, $remember)) {
 				    	$name = $user->first_name.' '.$user->last_name;
 				    	\Flash::success(sprintf(t('user::user.login.success'), $name));
-				        return \Redirect::to('/');
+				        return \Redirect::back();
 				    } else {
 				    	\Flash::error(t('user::user.login.fail'));
 				    }
@@ -122,12 +121,12 @@ class UserController extends \PublicController
 	 */
 	public function logout()
 	{
-		if(!Auth::check()) return \Redirect::to('login');
+		if(!Auth::check()) return \Redirect::to('login');		
 		
 		\Event::call('reborn.user.logout');
+		Auth::logout();		
 
-		Auth::logout();
-		\Flash::success(t('user::user.logout'));
+		\Flash::success(t('user::user.logout'));		
 		return \Redirect::to('/');
 	}
 
@@ -258,6 +257,11 @@ class UserController extends \PublicController
 	{
 		if(Auth::check()) return \Redirect::to('user');
 
+		if(\Setting::get('user_registration') == 'disable') {
+			 \Flash::error(sprintf(t('user::user.auth.offreg'), $email));
+			 return \Redirect::to('');
+		}
+
 		if (\Input::isPost()) {		
 			
 			$v = $this->validate();
@@ -278,7 +282,7 @@ class UserController extends \PublicController
 				} else {
 					
 					try 
-					{
+					{						
 					    $user = Auth::register(array(
 					        'email'    => $email,
 					        'password' => $password,
@@ -300,18 +304,13 @@ class UserController extends \PublicController
 					    $emailEncode = base64_encode($email);
 
 					    $activationLink = url().'user/activate/'.$emailEncode.'/'.$activationCode;
-					    
-					    // create config to mail user activation code
-					    $config = array(
-							'to'		=> array($email),
-							'from'		=> \Setting::get('site_mail'),
-							'name'		=> \Setting::get('site_title'),
-							'subject'	=> t('user::user.activate.subject'),
-							'body'		=> 'Please active your account by using following link: <br /><a href="'.$activationLink.'">'.$activationLink.'</a>',
-						);
 
-					    // sent mail to register user
-					    $mail = Mailer::send($config);
+					    $mail = Mailer::create(array('type' => 'sendmail'));
+					    $mail->to($email, $first_name);
+						$mail->from(\Setting::get('site_mail'), \Setting::get('site_title'));
+						$mail->subject(t('user::user.activate.subject'));
+						$mail->body('Please active your account by using following link: <br /><a href="'.$activationLink.'">'.$activationLink.'</a>');
+						$mail->send(true);					
 
 					    \Flash::success(t('user::user.activate.check'));
 						return \Redirect::to('/');
