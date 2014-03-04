@@ -52,13 +52,14 @@ class Application extends BaseApplication
     public function getDefaultCommands()
     {
         return array(
-            'module'			=> new ModuleCommand,
-            'compile'			=> new CompileCommand,
-            'multisite'			=> new MultisiteCommand,
-            'cache_clear'		=> new CacheClearCommand,
-            'theme' 			=> new ThemeGenerateCommand,
-            'extension_check'	=> new ExtensionCheckCommand,
-            'auth_key_generate'	=> new AuthKeyGenerateCommand
+            'module'                        => new ModuleCommand,
+            'compile'                       => new CompileCommand,
+            'multisite'                     => new MultisiteCommand,
+            'cache_clear'                   => new CacheClearCommand,
+            'theme'                         => new ThemeGenerateCommand,
+            'extension_check'               => new ExtensionCheckCommand,
+            'auth_key_generate'	            => new AuthKeyGenerateCommand,
+            'authorize_key_table_migrate'   => new AuthorizeKeyLoginMigrateCommand
         );
     }
 }

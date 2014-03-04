@@ -446,7 +446,7 @@ class Application extends \Illuminate\Container\Container
                 $provider = $callback($app);
             }
 
-            if (! $provider instanceof \Reborn\Auth\AuthProvider) {
+            if (! $provider instanceof \Reborn\Auth\AuthProviderInterface) {
                 $provider = new \Reborn\Auth\AuthSentryProvider($app);
             }
 

@@ -21,7 +21,7 @@ use Cartalyst\Sentry\Throttling\Eloquent\Provider;
 class AuthSentryProvider implements AuthProviderInterface, UserInterface
 {
     /**
-     * Reborn Application (ICO) Container instance.
+     * Reborn Application (IOC) Container instance.
      *
      * @var \Reborn\Cores\Application
      **/
