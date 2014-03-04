@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ include:metadata }}
+</head>
+<body>
+    
+    {{ include:header }}
+
+    <section id="content">
+        <div class="container">
+
+            {{ include:breadcrumb }}
+
+            <div class="jumbotron">
+                {{ $layoutBody }}
+            </div>
+
+            <div class="row">
+                {{ loop(Blog::posts(array('limit' => '3')) as $post) }}
+                <div class="col-lg-4 latest-blog">
+                  <h2>{{ $post->title }}</h2>
+                  <p>{{ $post->excerpt }}</p>
+                  <p><a class="btn btn-primary" href="{{ $post->url }}" role="button">View details »</a></p>
+                </div>
+                {{ endloop }}         
+            </div>
+
+        </div>        
+    </section>
+
+    {{ include:footer }}
+
+</body>
+</html>

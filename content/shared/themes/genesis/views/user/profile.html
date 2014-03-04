@@ -1,0 +1,64 @@
+<!-- BEGIN PAGE CONTENT-->
+<div class="row profile">
+    <div class="col-md-12">
+
+        <!--BEGIN TABS-->
+        <div class="tabbable tabbable-custom tabbable-full-width">
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_1_1">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ul class="list-unstyled profile-nav">
+                                <li>{{ gravatar($user->email, 243, $user->fullname, 'img-responsive profile-avatar') }}</li>
+                            
+                            {{ if($currentUser and $user->id == $currentUser->id) }}
+                                <li><a href="{{ \Uri::create('user/edit/') }}" class="btn btn-default btn-block" >Edit Profile</a></li>
+								<li><a href="{{ \Uri::create('user/change-password/')}}" class="btn btn-default btn-block">Change Password</a></li>								
+                            {{ endif }}	
+                            </ul>
+                        </div>
+                        
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-8 profile-info user-profile">
+                                    <h3 class="user-name">{{ $user->fullname }}</h3>
+                                 </div>
+                                 <!--end col-md-8-->
+                                
+                              </div>
+                              <!--end row-->
+                              <div class="tabbable tabbable-custom tabbable-custom-profile">
+                                 <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tab_1_11" data-toggle="tab">Written Posts</a></li>
+                                 </ul>
+                                 <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1_11">
+                                       <div class="portlet-body">
+                                          <table class="table">
+                                             <tbody>
+										{{ if(count($blogs) > 0) }}
+											{{ loop($blogs as $blog) }}
+                                                <tr>
+                                                   <td width=400><a href="{{ $blog->url }}">{{ $blog->title }}</a> </td>
+                                                   <td><a href="{{ $blog->category_url }}"> {{ $blog->post_date('F d, Y') }}</a></td>
+                                                </tr>                                                
+                                            {{ endloop }}
+										{{ else }}
+												<tr><td>Sorry, {{ $user->fullname }} doesn't blog anything yet.</td></tr>
+										{{ endif }}
+                                             </tbody>
+                                          </table>
+                                       </div>
+                                    </div>                                                                       
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!--end tab-pane-->
+                  </div>
+               </div>
+               <!--END TABS-->
+            </div>
+            </div>
+            <!-- END PAGE CONTENT-->

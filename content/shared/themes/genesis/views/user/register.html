@@ -1,0 +1,66 @@
+<div id="user-container">
+
+	{{ Form::start("user/register", 'user_registration_form', false, array('class' => 'form')) }}
+
+    <div class="form-block">
+        <label for="">{{ Form::label('Display Name', 'display_name') }}<span class="required"></span></label>
+      
+        <div class="form-inline">
+            {{ Form::input('first_name', '', 'text', array('id' => 'first_name', 'placeholder' => 'First Name', 'class' => 'form-control')) }}
+            {{ Form::input('last_name', '', 'text', array('id' => 'last_name', 'placeholder' => 'Last Name', 'class' => 'form-control')) }}
+    
+        {{ if ((isset($errors['first_name'])) AND (isset($errors['last_name']))) }}
+            <span class="msg error">You must fill both First Name and Last Name.</span>
+        {{ endif }}
+        </div> <!-- end of form-group -->
+        
+    </div> <!-- end of form block -->
+
+	<div class="form-block">
+  	<label for="">{{ Form::label('Email', 'email') }}<span class="required"></span></label>
+    
+		<div class="form-group">      
+  		{{ Form::email('email', '', array('id' => 'email', 'placeholder' => 'Enter your email', 'class' => 'form-control')) }}
+  		{{ if(isset($errors['email'])) }}
+        <p class="er">{{ $errors['email'] }}</p>
+      {{ endif }}
+		</div> <!-- end of form-group -->
+  </div> <!-- end of form block -->
+
+  <div class="form-block">
+  	<label for="">{{ Form::label('Password', 'password') }}<span class="required"></span></label>
+      
+  	<div class="form-group">      
+    	{{ Form::password('password', '', array('id' => 'password', 'placeholder' => 'Enter your new password', 'class' => 'form-control')) }}
+    	{{ if(isset($errors['password'])) }}
+        <p class="er">{{ $errors['password'] }}</p>
+        {{ endif }}
+		</div> <!-- end of form-group -->
+  </div> <!-- end of form block -->
+
+  <div class="form-block">
+    <label for="">{{ Form::label('Confirm Password', 'confpass') }}<span class="required"></span></label>
+      
+  	<div class="form-group">
+		{{ Form::password('confpass', '', array('id' => 'confpass', 'placeholder' => 'Type the same password again', 'class' => 'form-control')) }}
+		{{ if(isset($errors['confpass'])) }}
+        <p class="er">{{ $errors['confpass'] }}</p>
+        {{ endif }}
+		</div> <!-- end of form-group -->
+  </div> <!-- end of form block -->
+    
+
+  <!-- CUSTOM FIELDS -->
+
+    {{ loop ($fields as $field) }}
+        {{ $field }}
+    {{ endloop }}
+
+    <!--  END COSTUM FIELDS -->
+
+	<div class="form-group">
+	  {{ Form::submit('submit', 'Create', array('id' => 'create', 'class' => 'btn btn-primary')) }}
+	</div>	
+
+	{{ Form::end() }}
+</div>

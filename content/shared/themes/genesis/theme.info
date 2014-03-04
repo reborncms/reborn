@@ -1,7 +1,7 @@
 name = Genesis
-description = Two-Column, simple theme of RebornCMS.
+description = Built with Bootstrap, simple theme of RebornCMS. 
 author = Reborn Development Team
-website = http://www.reborncms.com
-version = 1.0
+website = http://reborncms.com
+version = 1.1
 min-require = 2.0
-widget_areas = [sidebar : Sidebar Area,header : Header Area, footer : Footer Area]
+widget_areas = [header : Header Area, sidebar : Sidebar Area, footer : Footer Area]

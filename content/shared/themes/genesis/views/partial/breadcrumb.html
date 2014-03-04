@@ -1,0 +1,23 @@
+ <!-- Breadcrumb Start -->
+ <ol class="breadcrumb">
+  <li>
+
+    <a href="{{ url() }}">
+        <span class="glyphicon glyphicon-home"></span>
+        Home
+    </a>
+     {{ loop($breadcrumbs as $name => $url) }}
+
+     	{{ if($name !== 'Home') }}     	
+         	 {{ if(! is_null($url)) }}
+         	 	<li><a href="{{ $url }}" >{{ $name }}</a></li>
+         	 {{ else }}
+         	 	<li class="active">{{ $name }}</li>
+         	 {{ endif }}
+     	{{ endif }}
+
+     {{ endloop }}
+  </li>
+</ol>
+
+{{ Flash::bootstrap(false) }}

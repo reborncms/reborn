@@ -1,0 +1,32 @@
+{{ Form::start("user/edit", 'user', false, array('class' => 'form user-form')) }}
+	
+	<div class="form-group">
+		{{ Form::label('Firat Name', 'first_name') }}    	
+		{{ Form::input('first_name', $user->first_name, 'text', array('class' => 'form-control')) }}
+		{{ if(isset($errors['first_name'])) }}			
+			<span class="input-error">{{ $errors['first_name'] }}</span>
+		{{ endif }}   	
+    </div>
+
+    <div class="form-group">
+		{{ Form::label('Last Name', 'last_name') }}	
+		{{ Form::input('last_name', $user->last_name, 'text', array('class' => 'form-control')) }}		
+		{{ if(isset($errors['last_name'])) }}			
+			<span class="input-error">{{ $errors['last_name'] }}</span>
+		{{ endif }}   	
+    </div>
+
+    <div class="form-group">
+		{{ Form::label('Email', 'email') }}
+		{{ Form::email('email', $user->email, array('class' => 'form-control')) }}	
+		{{ if(isset($errors['email'])) }}			
+			<span class="input-error">{{ $errors['email'] }}</span>
+		{{ endif }}   	
+    </div>
+
+    <div class="form-actions">
+		{{ Form::submit('submit', 'Save Profile', array('class' => 'btn btn-primary')) }}	
+		<a href="{{ \Uri::create("user") }}" class="btn">Back to profile</a>
+	</div>
+
+{{ Form::end() }}

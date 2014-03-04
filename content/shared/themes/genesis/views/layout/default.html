@@ -1,32 +1,29 @@
-<!DOCTYPE HTML>
-<html lang="en-US">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	{{ include:metadata }}
+    {{ include:metadata }}
 </head>
 <body>
+    
+    {{ include:header }}
 
-	{{ include:header }}
+    <section id="content">
+        <div class="container">
 
-	<div id="main">
+        	{{ include:breadcrumb }}       
 
-		<div id="breadcrumb" class="container clearfix">
-			You are Here! : {{ breadcrumb }}
-		</div>
+        	<div class="col-md-8">
+        		{{ $layoutBody }}	
+        	</div>
 
-		<div class="container clearfix">
+        	<div class="col-md-4">
+        		{{ widgetArea:sidebar }}
+        	</div>
 
-			<div id="content">
-				{{ $layoutBody }}
-			</div>
+        </div>        
+    </section>
 
-			<div class="sidebar">
-				{{ widgetArea:sidebar }}
-			</div>
-
-		</div>
-	</div>
-
-	{{ include:footer }}
+    {{ include:footer }}
 
 </body>
 </html>

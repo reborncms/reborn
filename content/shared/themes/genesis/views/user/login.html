@@ -1,31 +1,48 @@
-<div id="user-container" class="user-login">
+{{ Form::start("user/login") }}
 
-	{{ Form::start("user/login") }}
-	
-		<div class="block login-email">
+	<div class="form-group">
 		{{ Form::label('Email', 'email') }}
-		{{ Form::email('email', '', array('id' => 'email', 'placeholder' => 'Enter your email')) }}
-		{{ if(isset($errors['email'])) }}
-		<span class="er">{{ $errors['email'] }}</span>
-		{{ endif }}
-		</div>
+		<div class="form-field-block">
+			{{ Form::email('email', '', array('id' => 'email', 'placeholder' => 'Enter your email', 'class' => 'form-control')) }}
+			{{ if (isset($errors['email'])) }}
+				<span class="field-error">{{ $errors['email'] }}</span>
+			{{ endif }}
+		</div> 
+	</div>
 
-		<div class="block login-password">
+	<div class="form-group">
 		{{ Form::label('Password', 'password') }}
-		{{ Form::password('password', '', array('id' => 'password')) }}
-		{{ if(isset($errors['password'])) }}
-		<span class="er">{{ $errors['password'] }}</span>
-		{{ endif }}
-		</div>
+		<div class="form-field-block">
+			{{ Form::password('password', '', array('id' => 'password', 'class' => 'form-control')) }}
+			{{ if (isset($errors['email'])) }}
+				<span class="field-error">{{ $errors['password'] }}</span>
+			{{ endif }}
+		</div> 
+	</div>
 
-		<div class="block login-remember">
-		{{ Form::label('Remember me', 'remember') }}
+	<div class="form-group">	
 		{{ Form::checkbox('remember', 1) }}
-		</div>
+		{{ Form::label('Remember me', 'remember') }}
+	</div>
 
-		{{ Form::submit('submit', 'Login', array('id' => 'login', 'class' => 'btns default_btn')) }}
-		<a href="{{ \Uri::create("/user/register") }}">Create a new account</a>
-		<a href="{{ \Uri::create("/user/reset-password") }}">Forget Password?</a>
+	<div class="form-group">
+		{{ Form::submit('submit', 'Login', array('id' => 'login', 'class' => 'btn btn-primary')) }}
+	</div>
 
-	{{ Form::end() }}
-</div>
+	<hr />
+
+	<div class="forget-password">
+        <h4>Forget your password ?</h4>
+        <p>
+          Don't worry! <a href="{{ url('user/reset-password') }}"  id="forget-password">Click here</a>
+          to rest password.
+        </p>
+      </div>
+      <div class="create-account">
+        <p>
+          Don't have an account? &nbsp; 
+          <a href="{{ url('user/register/') }}" id="register-btn" >Click this to register</a>!
+        </p>
+      </div>
+
+{{ Form::end() }}

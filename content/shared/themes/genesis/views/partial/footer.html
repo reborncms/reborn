@@ -1,12 +1,17 @@
-<div id="footer">
-
-	<div class="upper-footer">
-		<div class="container clearfix">
-			{{ widgetArea:footer }}
-		</div>
-	</div>
-
+<footer>
 	<div class="container">
-		<p class="ftext">Proudly Powered by <a href="http://www.reborncms.com">RebornCMS</a></p>
-	</div>
-</div>
+		<p>
+			Built with <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>. Powered by <a href="http://reborncms.com">RebornCMS</a>.
+		</p>	
+	</div>	
+</footer>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+{{ 
+	js(array(
+		'jquery.min.js',
+		'bootstrap.min.js',
+	)) 
+}}
