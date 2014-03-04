@@ -11,35 +11,37 @@ namespace Field\Type;
 class Textarea extends \Field\AbstractType
 {
 
-	public function filler($default = null, $options = null)
-	{
-		$f = '<label for="text-deafult">Default Value</label>';
-		$f .= '<div class="form-right-block">';
-		$f .= '<textarea id="textarea-default" name="default" value="'.$default.'"></textarea>';
-		$f .= '</div>';
-		return $f;
-	}
+    public function filler($default = null, $options = null)
+    {
+        $f = '<label for="text-deafult">Default Value</label>';
+        $f .= '<div class="form-right-block">';
+        $f .= '<textarea id="textarea-default" name="default" value="'.$default.'"></textarea>';
+        $f .= '</div>';
 
-	public function displayForm($field, $value = null)
-	{
-		$key = $field->field_slug;
-		$label = \Form::label($field->field_name, $key);
-		$info = $this->makeInfo($field->description);
-		$value = $value ? $value : $this->getValue($key, $field->default);
+        return $f;
+    }
 
-		$area = \Form::textarea($key, $value);
+    public function displayForm($field, $value = null)
+    {
+        $key = $field->field_slug;
+        $label = \Form::label($field->field_name, $key);
+        $info = $this->makeInfo($field->description);
+        $value = $value ? $value : $this->getValue($key, $field->default);
 
-		$f = <<<FORM
-		<div class="form-block">
-			$label
+        $area = \Form::textarea($key, $value);
 
-			<div class="form-right-block">
-				$area
-				$info
-			</div>
-		</div>
+        $f = <<<FORM
+        <div class="form-block">
+            $label
+
+            <div class="form-right-block">
+                $area
+                $info
+            </div>
+        </div>
 FORM;
-		return $f;
-	}
+
+        return $f;
+    }
 
 } // END class Textarea extends \Field\AbstractType

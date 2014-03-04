@@ -11,14 +11,14 @@ namespace Field\Facade;
 class Field extends \Facade
 {
 
-	/**
-	 * Get Instance for Field\Builder
-	 *
-	 * @return \Field\Builder
-	 **/
-	protected static function getInstance()
-	{
-		return static::$app['\Field\Builder'];
-	}
+    /**
+     * Get Instance for Field\Builder
+     *
+     * @return \Field\Builder
+     **/
+    protected static function getInstance()
+    {
+        return static::$app['\Field\Builder'];
+    }
 
 } // END class Field

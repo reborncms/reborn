@@ -14,26 +14,24 @@ class BlogCategory extends \Eloquent
 
     public static function cat_stucture()
     {
-    	$all = \DB::table('blog_categories')->orderBy('order')->get();
+        $all = \DB::table('blog_categories')->orderBy('order')->get();
 
-    	foreach($all as $row) {
-    		$cat[$row->id] = (array)$row;
-    	}
+        foreach ($all as $row) {
+            $cat[$row->id] = (array) $row;
+        }
 
-    	unset($all);
+        unset($all);
 
-    	foreach ($cat as $row) {
-    		if(array_key_exists($row['parent_id'], $cat))
-    		{
-    			$cat[$row['parent_id']]['children'][] =& $cat[$row['id']];
-    		}
-    		if ($row['parent_id'] == 0)
-    		{
-    			$cat_structure[] =& $cat[$row['id']];
-    		}
-    	}
+        foreach ($cat as $row) {
+            if (array_key_exists($row['parent_id'], $cat)) {
+                $cat[$row['parent_id']]['children'][] =& $cat[$row['id']];
+            }
+            if ($row['parent_id'] == 0) {
+                $cat_structure[] =& $cat[$row['id']];
+            }
+        }
 
-    	return $cat_structure;
+        return $cat_structure;
     }
 
     public static function getCatIds($slug)
@@ -42,7 +40,7 @@ class BlogCategory extends \Eloquent
 
         static::$cat[] = $cat;
 
-        if(!$cat){
+        if (!$cat) {
             return false;
         }
 

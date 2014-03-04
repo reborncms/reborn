@@ -7,273 +7,271 @@ use Comment\Model\Comments as Comment;
 class Helper
 {
 
-	public static function singleComment($comment)
-	{
-		$s_comment = '';
-		$user_class = ($comment['user_id'] != null) ? " user_comment" : "";
-		$s_comment .= '<li id="comment-'. $comment['id'] .'" class="single_comment'. $user_class .'">';
+    public static function singleComment($comment)
+    {
+        $s_comment = '';
+        $user_class = ($comment['user_id'] != null) ? " user_comment" : "";
+        $s_comment .= '<li id="comment-'. $comment['id'] .'" class="single_comment'. $user_class .'">';
 
-		if ($comment['user_id'] != null) {
+        if ($comment['user_id'] != null) {
 
-			$user = \Auth::getUserProvider()->findById($comment['user_id']);
-			$author_name = $user->first_name . ' ' . $user->last_name;
-			$author_email = $user->email;
-			$author_link = rbUrl('user/profile/'.$user->id);
+            $user = \Auth::getUserProvider()->findById($comment['user_id']);
+            $author_name = $user->first_name . ' ' . $user->last_name;
+            $author_email = $user->email;
+            $author_link = rbUrl('user/profile/'.$user->id);
 
-		} else {
+        } else {
 
-			$author_name = $comment['name'];
-			$author_email = $comment['email'];
-			$author_link = $comment['url'];
+            $author_name = $comment['name'];
+            $author_email = $comment['email'];
+            $author_link = $comment['url'];
 
-		}
+        }
 
-		$s_comment .= '<div class="author_info">';
-		$default_img = assetPath('img', 'comment').'/default_avatar.jpg';
+        $s_comment .= '<div class="author_info">';
+        $default_img = assetPath('img', 'comment').'/default_avatar.jpg';
 
-		$s_comment .= '<div class="gravi">';
+        $s_comment .= '<div class="gravi">';
 
-		if (checkOnline()) {
+        if (checkOnline()) {
 
-			$s_comment .= gravatar($author_email, \Setting::get('comment_gravatar_size'), $author_name);
+            $s_comment .= gravatar($author_email, \Setting::get('comment_gravatar_size'), $author_name);
 
-		} else {
+        } else {
 
-			$s_comment .= '<img src="'. $default_img .'" alt="'. $author_name .'" width="'.\Setting::get('comment_gravatar_size').'px" />';
+            $s_comment .= '<img src="'. $default_img .'" alt="'. $author_name .'" width="'.\Setting::get('comment_gravatar_size').'px" />';
 
-		}
+        }
 
-		$s_comment .= '</div>';
+        $s_comment .= '</div>';
 
-		$s_comment .= '<span class="author_name" id="comment_'.$comment['id'].'_author_name">';
+        $s_comment .= '<span class="author_name" id="comment_'.$comment['id'].'_author_name">';
 
-		if (!empty($author_link)) {
+        if (!empty($author_link)) {
 
-			$s_comment .= '<a href="'. $author_link .'">'. $author_name .'</a>';
+            $s_comment .= '<a href="'. $author_link .'">'. $author_name .'</a>';
 
-		} else {
+        } else {
 
-			$s_comment .= $author_name;
+            $s_comment .= $author_name;
 
-		}
+        }
 
-		$s_comment .= '</span>'; //end of author_name
-		$s_comment .= '</div>'; //end of author_info
-		$s_comment .= '<div class="comment_body">';
-		$s_comment .= '<div class="comment_date">'. $comment['created_at'] .'</div>';
-		$s_comment .= '<a href="#comment_form_wrapper" class="reply_link" onclick="setParentId('.$comment['id'].')">'. t('comment::comment.reply') .'</a>';
-		$s_comment .= '<p class="comment_message">'.$comment['value'].'</p>';
-		$s_comment .= '</div>'; //end of comment_body
-		$s_comment .= '</li>'; // end of comment_wrapper
+        $s_comment .= '</span>'; //end of author_name
+        $s_comment .= '</div>'; //end of author_info
+        $s_comment .= '<div class="comment_body">';
+        $s_comment .= '<div class="comment_date">'. $comment['created_at'] .'</div>';
+        $s_comment .= '<a href="#comment_form_wrapper" class="reply_link" onclick="setParentId('.$comment['id'].')">'. t('comment::comment.reply') .'</a>';
+        $s_comment .= '<p class="comment_message">'.$comment['value'].'</p>';
+        $s_comment .= '</div>'; //end of comment_body
+        $s_comment .= '</li>'; // end of comment_wrapper
 
-		return $s_comment;
-	}
+        return $s_comment;
+    }
 
-	public static function getChildren($children)
-	{
-		$cc = '';
-		$cc .= '<ul class="children" style="list-style:none;">';
+    public static function getChildren($children)
+    {
+        $cc = '';
+        $cc .= '<ul class="children" style="list-style:none;">';
 
-		foreach ($children as $comment) {
+        foreach ($children as $comment) {
 
-			$cc .= self::singleComment($comment);
+            $cc .= self::singleComment($comment);
 
-			if ($comment->children) {
+            if ($comment->children) {
 
-				$cc .= self::getChildren($comment->children);
+                $cc .= self::getChildren($comment->children);
 
-			}
+            }
 
-		}
+        }
 
-		$cc .= '</ul>';
+        $cc .= '</ul>';
 
-		return $cc;
-	}
+        return $cc;
+    }
 
-	public static function getContentTitle($id, $content_type, $title_field = 'title')
-	{
+    public static function getContentTitle($id, $content_type, $title_field = 'title')
+    {
 
-		$title = \DB::table($content_type)->where('id' , $id)->pluck($title_field);
-    	return $title;
+        $title = \DB::table($content_type)->where('id' , $id)->pluck($title_field);
 
-	}
+        return $title;
 
-	public static function userDeleted($user)
-	{
+    }
 
-		$name = $user->first_name.' '.$user->last_name;
-		$email = $user->email;
-		$cmt_update = Comment::where('user_id', $user->id)->update(array('user_id' => null, 'name' => $name, 'email' => $email));
+    public static function userDeleted($user)
+    {
 
-		if ($cmt_update) {
+        $name = $user->first_name.' '.$user->last_name;
+        $email = $user->email;
+        $cmt_update = Comment::where('user_id', $user->id)->update(array('user_id' => null, 'name' => $name, 'email' => $email));
 
-			return true;
+        if ($cmt_update) {
+            return true;
 
-		} else {
+        } else {
+            return false;
 
-			return false;
+        }
 
-		}
+    }
 
-	}
+    public static function getLatestComments($count)
+    {
+        $comments = Comment::with('author')->where('status', '!=', 'spam')
+                            ->orderBy('created_at', 'desc')
+                            ->take($count)
+                            ->get();
+        $com = array();
 
-	public static function getLatestComments($count) {
+        foreach ($comments as $comment) {
 
-		$comments = Comment::with('author')->where('status', '!=', 'spam')
-							->orderBy('created_at', 'desc')
-							->take($count)
-							->get();
-		$com = array();
+            if ($comment->name == null) {
 
-		foreach ($comments as $comment) {
+                $comment->name = $comment->author_name;
 
-			if ($comment->name == null) {
+            }
 
-				$comment->name = $comment->author_name;
+            $comment->content_title = self::getContentTitle($comment->content_id, $comment->module, $comment->content_title_field);
+            $com[] = $comment;
 
-			}
+        }
 
-			$comment->content_title = self::getContentTitle($comment->content_id, $comment->module, $comment->content_title_field);
-			$com[] = $comment;
+        return $com;
+    }
 
-		}
+    public static function getUserNameWithLink($comment)
+    {
+        if ($comment->user_id != null) {
 
-		return $com;
-	}
+            $name = $comment->author_name;
+            $url = rbUrl('user/profile/'.$comment->user_id);
 
-	public static function getUserNameWithLink($comment)
-	{
-		if ($comment->user_id != null) {
+        } else {
 
-			$name = $comment->author_name;
-			$url = rbUrl('user/profile/'.$comment->user_id);
+            $name = $comment->name;
+            $url = $comment->url;
 
-		} else {
+        }
 
-			$name = $comment->name;
-			$url = $comment->url;
+        if ($url) {
+            return '<a href="'.$url.'" target="_blank">'.$name.'</a>';
 
-		}
+        } else {
+            return $name;
 
-		if ($url) {
+        }
 
-			return '<a href="'.$url.'" target="_blank">'.$name.'</a>';
+    }
 
-		} else {
+    public static function dashboardWidget()
+    {
+        $widget = array();
+        $widget['title'] = t('label.last_comment');
+        $widget['icon'] = 'icon-comment';
+        $widget['id'] = 'comment';
+        $widget['body'] = '';
+        $comments = self::getLatestComments(5);
+        $widget['body'] .= '<ul>';
 
-			return $name;
+        if (!empty($comments)) {
 
-		}
+            foreach ($comments as $comment) {
 
-	}
+                $widget['body'] .= '<li>
+                                    <div class="widget-list-meta">
+                                        <span class="date">'.date("d-m-Y", strtotime($comment->created_at)).'</span>
+                                        <span class="dashboard_widget_action">
+                                            '.self::commentStatusLabel($comment->id, $comment->status).'
+                                        </span>
+                                    </div>
+                                    <div class="widget-list-content">
+                                        <span class="cmt_summary no-overflow-txt" style="width:70%;">
+                                            <span class="commenter">'.self::getUserNameWithLink($comment).'</span>
+                                            commented at
+                                            <span class="cmt-module">'. ucfirst($comment->module) .'</span>
+                                            on
+                                            <span class="cmt-title">'. $comment->content_title .'</span>
+                                        </span>
+                                    </div>
+                                    </li>';
+            }
 
-	public static function dashboardWidget()
-	{
-		$widget = array();
-		$widget['title'] = t('label.last_comment');
-		$widget['icon'] = 'icon-comment';
-		$widget['id'] = 'comment';
-		$widget['body'] = '';
-		$comments = self::getLatestComments(5);
-		$widget['body'] .= '<ul>';
+        } else {
 
-		if (!empty($comments)) {
+            $widget['body'] .= '<li><span class="empty-list">'.t('label.last_comment_empty').'</span></li>';
 
-			foreach ($comments as $comment) {
+        }
 
-				$widget['body'] .= '<li>
-									<div class="widget-list-meta">
-										<span class="date">'.date("d-m-Y", strtotime($comment->created_at)).'</span>
-										<span class="dashboard_widget_action">
-											'.self::commentStatusLabel($comment->id, $comment->status).'
-										</span>
-									</div>
-									<div class="widget-list-content">
-										<span class="cmt_summary no-overflow-txt" style="width:70%;">
-											<span class="commenter">'.self::getUserNameWithLink($comment).'</span>
-											commented at
-											<span class="cmt-module">'. ucfirst($comment->module) .'</span>
-											on
-											<span class="cmt-title">'. $comment->content_title .'</span>
-										</span>
-									</div>
-									</li>';
-			}
+        $widget['body'] .= '</ul>';
 
-		} else {
+        return $widget;
+    }
 
-			$widget['body'] .= '<li><span class="empty-list">'.t('label.last_comment_empty').'</span></li>';
+    public static function commentStatusLabel($id, $status)
+    {
 
-		}
+        if ($status == 'approved') {
 
-		$widget['body'] .= '</ul>';
+            $status_class = 'label-success';
+            $change_info = t('comment::comment.info.unapprove');
 
-		return $widget;
-	}
+        } elseif ($status == 'pending') {
 
-	public static function commentStatusLabel($id, $status)
-	{
+            $status_class = 'label-warning';
+            $change_info = t('comment::comment.info.approve');
 
-		if ($status == 'approved') {
+        } else {
 
-			$status_class = 'label-success';
-			$change_info = t('comment::comment.info.unapprove');
+            $status_class = 'label-error';
+            $change_info = t('comment::comment.info.approve');
 
-		} elseif ($status == 'pending') {
+        }
 
-			$status_class = 'label-warning';
-			$change_info = t('comment::comment.info.approve');
+        $content = '<a href="'. adminUrl('comment/change-status/'.$id) .'" class="tipsy-tip" title="'. $change_info .'">
+                        <span class="label '. $status_class .'">'. t('comment::comment.label.'.$status).'</span>
+                    </a>';
 
-		} else {
+        return $content;
 
-			$status_class = 'label-error';
-			$change_info = t('comment::comment.info.approve');
+    }
 
-		}
+    /**
+     * Get Comment Count
+     *
+     * @return void
+     **/
+    public static function commentCount($id, $content_type)
+    {
+        return Comment::where('content_id', $id)->where('module', $content_type)->count();
+    }
 
-		$content = '<a href="'. adminUrl('comment/change-status/'.$id) .'" class="tipsy-tip" title="'. $change_info .'">
-						<span class="label '. $status_class .'">'. t('comment::comment.label.'.$status).'</span>
-					</a>';
+    /**
+     * Delete comment if comment delete
+     *
+     * @return boolean
+     **/
+    public static function commentDelete($id, $type, $forceDelete = false)
+    {
+        if ($forceDelete) {
 
-		return $content;
+            $comment_delete = Comment::withTrashed()->where('content_id', $id)->where('module', $type)->forceDelete();
 
-	}
+        } else {
 
-	/**
-	 * Get Comment Count
-	 *
-	 * @return void
-	 **/
-	public static function commentCount($id, $content_type)
-	{
-		return Comment::where('content_id', $id)->where('module', $content_type)->count();
-	}
+            $comment_delete = Comment::where('content_id', $id)->where('module', $type)->delete();
 
-	/**
-	 * Delete comment if comment delete
-	 *
-	 * @return boolean
-	 **/
-	public static function commentDelete($id, $type, $forceDelete = false)
-	{
-		if ($forceDelete) {
+        }
 
-			$comment_delete = Comment::withTrashed()->where('content_id', $id)->where('module', $type)->forceDelete();
+        return true;
+    }
 
-		} else {
+    public static function commentRestore($id, $type)
+    {
+        Comment::withTrashed()->where('content_id', $id)->where('module', $type)->restore();
 
-			$comment_delete = Comment::where('content_id', $id)->where('module', $type)->delete();
-
-		}
-		return true;
-	}
-
-	public static function commentRestore($id, $type)
-	{
-		Comment::withTrashed()->where('content_id', $id)->where('module', $type)->restore();
-
-		return true;
-	}
+        return true;
+    }
 
 }

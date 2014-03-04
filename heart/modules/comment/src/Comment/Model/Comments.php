@@ -10,8 +10,8 @@ class Comments extends \Eloquent
 
     protected $multisite = true;
 
-    public function __construct(array $attributes = array()) {
-
+    public function __construct(array $attributes = array())
+    {
         if (\Module::get('comment', 'db_version') >= 1.1) {
 
             $this->softDelete = true;
@@ -31,7 +31,7 @@ class Comments extends \Eloquent
      */
     public function author()
     {
-    	return $this->belongsTo('Reborn\Auth\Sentry\Eloquent\User', 'user_id');
+        return $this->belongsTo('Reborn\Auth\Sentry\Eloquent\User', 'user_id');
     }
 
     /**
@@ -41,5 +41,5 @@ class Comments extends \Eloquent
     {
         return $this->author->first_name.' '.$this->author->last_name;
     }
-        
+
 }

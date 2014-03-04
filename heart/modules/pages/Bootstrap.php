@@ -5,7 +5,7 @@ namespace Pages;
 class Bootstrap extends \Reborn\Module\AbstractBootstrap
 {
 
-    public function boot() 
+    public function boot()
     {
         \Translate::load('pages::pages');
     }
@@ -23,7 +23,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
     public function moduleToolbar()
     {
         $mod_toolbar = array();
-        
+
         if (user_has_access('pages.create')) {
             $mod_toolbar = array(
                 'add'   => array(
@@ -38,11 +38,11 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
         return $mod_toolbar;
     }
 
-    public function register() {
-
+    public function register()
+    {
         \Alias::aliasRegister(array('Pages' => 'Pages\Facade\Pages'));
 
-        \Event::on('user_deleted', function($user){
+        \Event::on('user_deleted', function ($user) {
             return \Pages\Lib\Helper::changeAuthor($user->id);
         });
     }

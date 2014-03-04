@@ -24,7 +24,7 @@ class Pages extends \Eloquent
         }
 
         $page_structure = $pages = array();
-        
+
         foreach ($all as $row) {
             $pages[$row->id] = $row->toArray();
         }
@@ -57,10 +57,9 @@ class Pages extends \Eloquent
         return $query;
     }
 
-    public function getPageBodyAttribute() 
+    public function getPageBodyAttribute()
     {
         return (isset($this->attributes['content'])) ? $this->attributes['content'] : '';
     }
-
 
 }

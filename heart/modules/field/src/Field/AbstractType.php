@@ -14,131 +14,131 @@ use Reborn\Cores\Application;
 abstract class AbstractType
 {
 
-	protected $type;
+    protected $type;
 
-	/**
-	 * IOC Container Instance
-	 *
-	 * @var \Reborn\Cores\Application
-	 **/
-	protected $app;
+    /**
+     * IOC Container Instance
+     *
+     * @var \Reborn\Cores\Application
+     **/
+    protected $app;
 
-	/**
-	 * Default Instance Method
-	 *
-	 * @return void
-	 **/
-	public function __construct(Application $app)
-	{
-		$this->app = $app;
-	}
+    /**
+     * Default Instance Method
+     *
+     * @return void
+     **/
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
 
-	abstract public function filler($default = null, $options = null);
+    abstract public function filler($default = null, $options = null);
 
-	/**
-	 * Get display form view to insert data
-	 *
-	 * @return string
-	 **/
-	public function displayForm($field, $value = null)
-	{
-		return null;
-	}
+    /**
+     * Get display form view to insert data
+     *
+     * @return string
+     **/
+    public function displayForm($field, $value = null)
+    {
+        return null;
+    }
 
-	/**
-	 * Make field info.
-	 * eg: <p class="info">This field is what</p>
-	 *
-	 * @param string|null $info Field Info (description)
-	 * @return string
-	 **/
-	protected function makeInfo($info)
-	{
-		return $info ? '<p class="info">'.$info.'</p>' : '';
-	}
+    /**
+     * Make field info.
+     * eg: <p class="info">This field is what</p>
+     *
+     * @param  string|null $info Field Info (description)
+     * @return string
+     **/
+    protected function makeInfo($info)
+    {
+        return $info ? '<p class="info">'.$info.'</p>' : '';
+    }
 
-	/**
-	 * Get Field value.
-	 *
-	 * @param string $key Field element name
-	 * @param string $default Default value
-	 * @return string
-	 **/
-	protected function getValue($key, $default)
-	{
-		return Input::get($key, $default);
-	}
+    /**
+     * Get Field value.
+     *
+     * @param  string $key     Field element name
+     * @param  string $default Default value
+     * @return string
+     **/
+    protected function getValue($key, $default)
+    {
+        return Input::get($key, $default);
+    }
 
-	/**
-	 * Make Options string to array for dropdown|checkbox|radio
-	 *
-	 * @param string $str options string
-	 * @return array
-	 **/
-	protected function makeOptions($str)
-	{
-		$lines = explode("\n", $str);
+    /**
+     * Make Options string to array for dropdown|checkbox|radio
+     *
+     * @param  string $str options string
+     * @return array
+     **/
+    protected function makeOptions($str)
+    {
+        $lines = explode("\n", $str);
 
-		$options = array();
+        $options = array();
 
-		foreach ($lines as $line) {
-			list($key, $value) = explode('=', $line);
-			$options[$key] = $value;
-		}
+        foreach ($lines as $line) {
+            list($key, $value) = explode('=', $line);
+            $options[$key] = $value;
+        }
 
-		return $options;
-	}
+        return $options;
+    }
 
-	/**
-	 * Pre Check before saving.
-	 *
-	 * @param Field\Model\Field $field Field Model Object
-	 * @return boolean
-	 **/
-	public function preSaveCheck($field)
-	{
-		$key = $field->field_slug;
+    /**
+     * Pre Check before saving.
+     *
+     * @param  Field\Model\Field $field Field Model Object
+     * @return boolean
+     **/
+    public function preSaveCheck($field)
+    {
+        $key = $field->field_slug;
 
-		$value = Input::get($key);
+        $value = Input::get($key);
 
-		if ('' == $value) return false;
+        if ('' == $value) return false;
 
-		if (\Event::has('field.'.$key.'save_check')) {
-			$res = \Event::call('field.'.$key.'save_check', array($value));
+        if (\Event::has('field.'.$key.'save_check')) {
+            $res = \Event::call('field.'.$key.'save_check', array($value));
 
-			return isset($res[0]) ? $res[0] : false;
-		}
+            return isset($res[0]) ? $res[0] : false;
+        }
 
-		return is_array($value) ? json_encode($value) : $value;
-	}
+        return is_array($value) ? json_encode($value) : $value;
+    }
 
-	/**
-	 * Pre Check before updating.
-	 *
-	 * @param Field\Model\Field $field Field Model Object
-	 * @param mixed $value Field value form db
-	 * @return mixed
-	 **/
-	public function preUpdateCheck($field, $value)
-	{
-		$key = $field->field_slug;
+    /**
+     * Pre Check before updating.
+     *
+     * @param  Field\Model\Field $field Field Model Object
+     * @param  mixed             $value Field value form db
+     * @return mixed
+     **/
+    public function preUpdateCheck($field, $value)
+    {
+        $key = $field->field_slug;
 
-		$new_value = Input::get($key);
+        $new_value = Input::get($key);
 
-		$new_value = is_array($new_value) ? json_encode($new_value) : $new_value;
+        $new_value = is_array($new_value) ? json_encode($new_value) : $new_value;
 
-		if ('' == $new_value) return false;
+        if ('' == $new_value) return false;
 
-		// Same value, not need to update
-		if ($value == $new_value) return false;
+        // Same value, not need to update
+        if ($value == $new_value) return false;
 
-		if (\Event::has('field.'.$key.'update_check')) {
-			$res = \Event::call('field.'.$key.'update_check', array($new_value));
+        if (\Event::has('field.'.$key.'update_check')) {
+            $res = \Event::call('field.'.$key.'update_check', array($new_value));
 
-			return isset($res[0]) ? $res[0] : false;
-		}
+            return isset($res[0]) ? $res[0] : false;
+        }
 
-		return $new_value;
-	}
+        return $new_value;
+    }
 
 } // END abstract class AbstractType
