@@ -18,6 +18,6 @@ class FieldGroup extends \Eloquent
 
     public function getFieldsAttribute()
     {
-    	return json_decode($this->attributes['fields']);
+        return json_decode($this->attributes['fields']);
     }
 }

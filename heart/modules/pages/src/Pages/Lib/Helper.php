@@ -32,7 +32,7 @@ class Helper
         $ps .= '<a href="'.rbUrl('pages/preview/'.$page['uri']).'" title="'.t('global.view').'" class="tipsy-tip" target="_blank"><i class="icon-view icon-black"></i></a>';
 
         if (user_has_access('pages.create')) {
-             $ps .= '<a href="'.adminUrl('pages/duplicate/'.$page['id']).'" title="'.t('pages::pages.labels.page_duplicate').'" class="tipsy-tip"><i class="icon-copy icon-black"></i></a>';   
+             $ps .= '<a href="'.adminUrl('pages/duplicate/'.$page['id']).'" title="'.t('pages::pages.labels.page_duplicate').'" class="tipsy-tip"><i class="icon-copy icon-black"></i></a>';
         }
 
         if (user_has_access('pages.edit')) {
@@ -40,9 +40,9 @@ class Helper
         }
 
         if (user_has_access('pages.delete') && $page['id'] != 1) {
-            $ps .= '<a href="'.adminUrl('pages/delete/'.$page['id']).'" title="'.t('global.delete').'" class="confirm_delete tipsy-tip"><i class="icon-remove icon-black"></i></a>'; 
+            $ps .= '<a href="'.adminUrl('pages/delete/'.$page['id']).'" title="'.t('global.delete').'" class="confirm_delete tipsy-tip"><i class="icon-remove icon-black"></i></a>';
         }
-        
+
         $ps .= '</div>';
         $ps .= '</div>
                     </div>';
@@ -88,6 +88,7 @@ class Helper
                 self::childPage($page['children'], 1);
             }
         }
+
         return static::$page_list;
     }
 
@@ -97,6 +98,7 @@ class Helper
         foreach ($pages as $page) {
             $list[$page->uri] = $page->title;
         }
+
         return $list;
     }
 
@@ -104,7 +106,7 @@ class Helper
     {
         foreach ($children as $page) {
             static::$page_list[$page['uri']] = str_repeat('>', $lvl). ' ' . $page['title'];
-            if(isset($page['children'])) {
+            if (isset($page['children'])) {
                 static::$level++;
                 static::$inc_count++;
                 self::childPage($page['children'], static::$level);

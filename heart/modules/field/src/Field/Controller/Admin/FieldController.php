@@ -3,254 +3,259 @@
 namespace Field\Controller\Admin;
 
 use Input, Redirect, Flash,
-	Field\Model\Field,
-	Field\Model\FieldGroup,
-	Field\Model\FieldProvider,
-	Field\Model\FieldGroupProvider,
-	Field\Util\FieldTable,
-	Field\Util\FieldGroupTable;
+    Field\Model\Field,
+    Field\Model\FieldGroup,
+    Field\Model\FieldProvider,
+    Field\Model\FieldGroupProvider,
+    Field\Util\FieldTable,
+    Field\Util\FieldGroupTable;
 
 class FieldController extends \AdminController
 {
 
-	protected $field;
+    protected $field;
 
-	public function __construct(\Field\Builder $field)
-	{
-		$this->field = $field;
-	}
+    public function __construct(\Field\Builder $field)
+    {
+        $this->field = $field;
+    }
 
-	public function before()
-	{
-		$this->menu->activeParent('content');
+    public function before()
+    {
+        $this->menu->activeParent('content');
 
-		$this->template->style('fields.css', 'field');
-	}
+        $this->template->style('fields.css', 'field');
+    }
 
-	public function index()
-	{
-		$field = Field::all();
+    public function index()
+    {
+        $field = Field::all();
 
-		$empty = $field->isEmpty();
+        $empty = $field->isEmpty();
 
-		if (!$empty) {
-			$this->template->table = FieldTable::make($field);
-		}
+        if (!$empty) {
+            $this->template->table = FieldTable::make($field);
+        }
 
-		$this->template->title('Field')
-						->set('empty', $empty)
-						->view('admin/field/index');
-	}
+        $this->template->title('Field')
+                        ->set('empty', $empty)
+                        ->view('admin/field/index');
+    }
 
-	public function create()
-	{
-		$field = new Field();
+    public function create()
+    {
+        $field = new Field();
 
-		if(Input::isPost()) {
+        if (Input::isPost()) {
 
-			$provider = new FieldProvider();
+            $provider = new FieldProvider();
 
-			if ($provider->save($field)) {
-				Flash::success('Field is successfully created');
-				return Redirect::toAdmin('field');
-			} else {
-				Flash::error('Error occured to create Field!');
-			}
-		}
+            if ($provider->save($field)) {
+                Flash::success('Field is successfully created');
 
-		$this->template->title('Field Create')
-						->set('field', $field)
-						->set('method', 'create')
-						->set('supported_type', supported_field_types())
-						->view('admin/field/form');
-	}
+                return Redirect::toAdmin('field');
+            } else {
+                Flash::error('Error occured to create Field!');
+            }
+        }
 
-	public function edit($id)
-	{
-		$field = Field::find($id);
+        $this->template->title('Field Create')
+                        ->set('field', $field)
+                        ->set('method', 'create')
+                        ->set('supported_type', supported_field_types())
+                        ->view('admin/field/form');
+    }
 
-		if (is_null($field)) return $this->notFound();
+    public function edit($id)
+    {
+        $field = Field::find($id);
 
-		if(Input::isPost()) {
+        if (is_null($field)) return $this->notFound();
 
-			$provider = new FieldProvider();
+        if (Input::isPost()) {
 
-			if ($provider->save($field)) {
-				Flash::success('Field is successfully edited');
-				return Redirect::toAdmin('field');
-			} else {
-				Flash::error('Error occured to edit Field!');
-			}
-		}
+            $provider = new FieldProvider();
 
-		$field_body = $this->getTypeDisplay($field->field_type, $field->default, $field->options);
+            if ($provider->save($field)) {
+                Flash::success('Field is successfully edited');
 
-		$this->template->title('Field Edit')
-						->set('field', $field)
-						->set('method', 'edit/'.$field->id)
-						->set('supported_type', supported_field_types())
-						->set('field_body', $field_body)
-						->view('admin/field/form');
-	}
+                return Redirect::toAdmin('field');
+            } else {
+                Flash::error('Error occured to edit Field!');
+            }
+        }
 
-	/**
-	 * Delete the field
-	 *
-	 * @return void
-	 **/
-	public function delete($id)
-	{
-		$field = Field::find($id);
+        $field_body = $this->getTypeDisplay($field->field_type, $field->default, $field->options);
 
-		if (is_null($field)) {
-			Flash::error('Field not found');
-			return Redirect::toAdmin('field');
-		}
+        $this->template->title('Field Edit')
+                        ->set('field', $field)
+                        ->set('method', 'edit/'.$field->id)
+                        ->set('supported_type', supported_field_types())
+                        ->set('field_body', $field_body)
+                        ->view('admin/field/form');
+    }
 
-		\Event::call('field'.$field->field_slug.'.delete', $field);
+    /**
+     * Delete the field
+     *
+     * @return void
+     **/
+    public function delete($id)
+    {
+        $field = Field::find($id);
 
-		// Delete Field Data
-		$provider = new FieldProvider();
-		$provider->delete($field->id);
+        if (is_null($field)) {
+            Flash::error('Field not found');
 
-		$field->delete();
+            return Redirect::toAdmin('field');
+        }
 
-		Flash::success('Field is successfully deleted');
+        \Event::call('field'.$field->field_slug.'.delete', $field);
 
-		return Redirect::toAdmin('field');
-	}
+        // Delete Field Data
+        $provider = new FieldProvider();
+        $provider->delete($field->id);
 
-	/**
-	 * Get Field Type Form Display
-	 *
-	 * @return string
-	 **/
-	public function getTypeDisplay($type, $default = null, $options = null)
-	{
-		$form = $this->field->getTypeForm($type, $default, $options);
+        $field->delete();
 
-		if($this->request->isAjax()) {
-			return $this->json(array('text' => $form));
-		}
+        Flash::success('Field is successfully deleted');
 
-		return $form;
-	}
+        return Redirect::toAdmin('field');
+    }
 
-	/**
-	 * Get all Field Group
-	 *
-	 * @return void
-	 **/
-	public function group()
-	{
-		$all = FieldGroup::all();
-		$empty = $all->isEmpty();
+    /**
+     * Get Field Type Form Display
+     *
+     * @return string
+     **/
+    public function getTypeDisplay($type, $default = null, $options = null)
+    {
+        $form = $this->field->getTypeForm($type, $default, $options);
 
-		if (!$empty) {
-			$this->template->table = FieldGroupTable::make($all);
-		}
+        if ($this->request->isAjax()) {
+            return $this->json(array('text' => $form));
+        }
 
-		$this->template->title('Field Group')
-						->set('empty', $empty)
-						->view('admin/group/index');
-	}
+        return $form;
+    }
 
-	/**
-	 * Create Field Group
-	 *
-	 * @return void
-	 **/
-	public function groupCreate()
-	{
-		$group = new FieldGroup();
+    /**
+     * Get all Field Group
+     *
+     * @return void
+     **/
+    public function group()
+    {
+        $all = FieldGroup::all();
+        $empty = $all->isEmpty();
 
-		$fields = Field::all();
+        if (!$empty) {
+            $this->template->table = FieldGroupTable::make($all);
+        }
 
-		if(Input::isPost()) {
+        $this->template->title('Field Group')
+                        ->set('empty', $empty)
+                        ->view('admin/group/index');
+    }
 
-			$provider = new FieldGroupProvider($fields);
+    /**
+     * Create Field Group
+     *
+     * @return void
+     **/
+    public function groupCreate()
+    {
+        $group = new FieldGroup();
 
-			if ($provider->save($group)) {
-				Flash::success('Group '.$group->name.' is successfully created');
-				return Redirect::toAdmin('field/group');
-			} else {
-				Flash::error('Error occured to create Group!');
-			}
-		}
+        $fields = Field::all();
 
-		$this->template->title('Field Group Create')
-						->set('group', $group)
-						->set('fields', $fields)
-						->set('method', 'group-create')
-						->set('select', module_select())
-						->view('admin/group/form');
-	}
+        if (Input::isPost()) {
 
-	/**
-	 * Create Field Group
-	 *
-	 * @return void
-	 **/
-	public function groupEdit($id)
-	{
-		$group = FieldGroup::find($id);
+            $provider = new FieldGroupProvider($fields);
 
-		if (is_null($group)) return $this->notFound();
+            if ($provider->save($group)) {
+                Flash::success('Group '.$group->name.' is successfully created');
 
-		if(empty($group->fields)) {
-			$fields = Field::all();
-		} else {
-			$fields = Field::whereNotIn('id', $group->fields)->get();
+                return Redirect::toAdmin('field/group');
+            } else {
+                Flash::error('Error occured to create Group!');
+            }
+        }
 
-			$group_fields = Field::whereIn('id', $group->fields)->get();
+        $this->template->title('Field Group Create')
+                        ->set('group', $group)
+                        ->set('fields', $fields)
+                        ->set('method', 'group-create')
+                        ->set('select', module_select())
+                        ->view('admin/group/form');
+    }
 
-			$this->template->set('group_fields', $group_fields);
-		}
+    /**
+     * Create Field Group
+     *
+     * @return void
+     **/
+    public function groupEdit($id)
+    {
+        $group = FieldGroup::find($id);
 
-		if(Input::isPost()) {
+        if (is_null($group)) return $this->notFound();
 
-			$provider = new FieldGroupProvider($fields);
+        if (empty($group->fields)) {
+            $fields = Field::all();
+        } else {
+            $fields = Field::whereNotIn('id', $group->fields)->get();
 
-			if ($provider->save($group)) {
-				Flash::success('Group '.$group->name.' is successfully edited');
-				return Redirect::toAdmin('field/group');
-			} else {
-				Flash::error('Error occured to edit Group!');
-			}
-		}
+            $group_fields = Field::whereIn('id', $group->fields)->get();
 
-		$this->template->title('Field Group Edit')
-						->set('group', $group)
-						->set('fields', $fields)
-						->set('method', 'group-edit/'.$group->id)
-						->set('select', module_select(true, false))
-						->view('admin/group/form');
-	}
+            $this->template->set('group_fields', $group_fields);
+        }
 
-	/**
-	 * Delete Given Field Group
-	 *
-	 * @return void
-	 **/
-	public function groupDelete($id)
-	{
-		$group = FieldGroup::find($id);
+        if (Input::isPost()) {
 
-		if (is_null($group)) {
-			Flash::error('Field Group not found');
-			return Redirect::toAdmin('field/group');
-		}
+            $provider = new FieldGroupProvider($fields);
 
-		\Event::call('field.group.delete', $group);
+            if ($provider->save($group)) {
+                Flash::success('Group '.$group->name.' is successfully edited');
 
-		$provider = new FieldGroupProvider();
-		$provider->delete($group->id);
+                return Redirect::toAdmin('field/group');
+            } else {
+                Flash::error('Error occured to edit Group!');
+            }
+        }
 
-		$group->delete();
+        $this->template->title('Field Group Edit')
+                        ->set('group', $group)
+                        ->set('fields', $fields)
+                        ->set('method', 'group-edit/'.$group->id)
+                        ->set('select', module_select(true, false))
+                        ->view('admin/group/form');
+    }
 
-		Flash::success('Field Group successfully deleted');
+    /**
+     * Delete Given Field Group
+     *
+     * @return void
+     **/
+    public function groupDelete($id)
+    {
+        $group = FieldGroup::find($id);
 
-		return Redirect::toAdmin('field/group');
-	}
+        if (is_null($group)) {
+            Flash::error('Field Group not found');
+
+            return Redirect::toAdmin('field/group');
+        }
+
+        \Event::call('field.group.delete', $group);
+
+        $provider = new FieldGroupProvider();
+        $provider->delete($group->id);
+
+        $group->delete();
+
+        Flash::success('Field Group successfully deleted');
+
+        return Redirect::toAdmin('field/group');
+    }
 }
-

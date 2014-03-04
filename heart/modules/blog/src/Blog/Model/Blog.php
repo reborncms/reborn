@@ -47,7 +47,6 @@ class Blog extends \Eloquent
      **/
     public $custom_field;
 
-
     /**
      * Relationship with Blog Category
      */
@@ -61,7 +60,7 @@ class Blog extends \Eloquent
      */
     public function author()
     {
-    	return $this->belongsTo('Reborn\Auth\Sentry\Eloquent\User');
+        return $this->belongsTo('Reborn\Auth\Sentry\Eloquent\User');
     }
 
     /**
@@ -108,13 +107,14 @@ class Blog extends \Eloquent
     /**
      * Blog post Date
      *
-     * @param string $format Date format string
+     * @param  string $format Date format string
      * @return string
      */
     public function getPostDateAttribute($format)
     {
         $format = is_null($format) ? 'jS F Y h:i:s A' : $format;
         $date = Carbon::createFromFormat('Y-m-d H:i:s', $this->attributes['created_at']);
+
         return $date->format($format);
     }
 
@@ -163,12 +163,13 @@ class Blog extends \Eloquent
     /**
      * Blog post's Tags as string
      *
-     * @param string $separator Tag string separator
+     * @param  string $separator Tag string separator
      * @return string
      */
     public function getTagsAttribute($separator)
     {
         $separator = is_null($separator) ? ',' : $separator;
+
         return implode($separator.' ', $this->getTags());
     }
 
@@ -205,6 +206,7 @@ class Blog extends \Eloquent
             $key = \Config::get('langcodes.'.$key);
             $lang[] = "<a href='".rbUrl('blog/'.$value['slug'])."'>".$key."</a>";
         }
+
         return $lang;
     }
 
@@ -223,14 +225,14 @@ class Blog extends \Eloquent
     /**
      * Get Blog Post Tags
      *
-     * @param string $type (arr|string)
+     * @param  string       $type (arr|string)
      * @return array|string
      **/
     protected function getTags($type = 'string')
     {
         if ( \Module::isEnabled('Tag') ) {
 
-            if(is_null($this->tags_data)) {
+            if (is_null($this->tags_data)) {
                 $tags = \Tag\Lib\Helper::getTags($this->attributes['id'], 'blog', 'arr');
 
                 foreach ($tags as &$tag) {
@@ -252,15 +254,15 @@ class Blog extends \Eloquent
     /**
      * Fill some of requirement in parent __call method
      *
-     * @param  string  $method
-     * @param  array   $parameters
+     * @param  string $method
+     * @param  array  $parameters
      * @return mixed
      **/
     public function __call($method, $parameters)
     {
         $check_method = 'get'.studly_case($method).'Attribute';
 
-        if(method_exists($this, $check_method)) {
+        if (method_exists($this, $check_method)) {
             return call_user_func_array(array($this, $check_method), $parameters);
         }
 

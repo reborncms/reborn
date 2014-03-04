@@ -25,5 +25,3 @@
 \Route::add('comment/show/{int:content_id}/{alpha:module}/{alpha:status}', 'Comment\Comment::show', 'comment_show');
 
 \Route::post('comment/post', 'Comment\Comment::post', 'comment_post');
-
-

@@ -94,7 +94,7 @@ class PagesController extends \AdminController
                 \Flash::success(t('pages::pages.messages.success.edit'));
 
                 return \Redirect::to(adminUrl('pages'));
-                
+
             }
         }
 
@@ -234,7 +234,7 @@ class PagesController extends \AdminController
                     return $this->returnJson(array('status' => 'no_save'));
                 } else {
                     if (\Input::get('name') == '') {
-                        
+
                     }
                     if (\Input::get('id') == '') {
                         $page = self::setValues('create');
@@ -248,6 +248,7 @@ class PagesController extends \AdminController
                 }
             }
         }
+
         return \Redirect::to(adminUrl('pages'));
     }
 
@@ -264,6 +265,7 @@ class PagesController extends \AdminController
 
         if ($id == 1) {
             \Flash::error(t('pages::pages.messages.error.delete_home_page'));
+
             return \Redirect::to(adminUrl('pages'));
         }
 
@@ -451,7 +453,7 @@ class PagesController extends \AdminController
      * @return void
      * @author
      **/
-    protected function orderChild ($children,$parent_id)
+    protected function orderChild($children,$parent_id)
     {
         $order = 0;
         foreach ($children as $child) {

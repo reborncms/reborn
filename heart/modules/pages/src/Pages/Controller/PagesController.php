@@ -20,7 +20,7 @@ class PagesController extends \PublicController
         }
 
         if (empty($uri)) {
-            
+
             $uri = \Setting::get('home_page');
         }
 
@@ -34,7 +34,6 @@ class PagesController extends \PublicController
         $query = Pages::where('uri' , '=', $uri)->first();
 
         if ($query == null or $query->status == 'draft') {
-
             return $this->notFound();
 
         } else {
@@ -82,7 +81,6 @@ class PagesController extends \PublicController
         $uri = $this->param('slug');
 
         if (is_null($uri)) {
-
            return $this->notFound();
 
         }
@@ -92,9 +90,8 @@ class PagesController extends \PublicController
         if (\Auth::check()) {
 
             $query = Pages::where('uri' , '=', $uri_string)->first();
-            
-            if (($query == null) or !\Auth::getUser()->hasAccess('admin')) {
 
+            if (($query == null) or !\Auth::getUser()->hasAccess('admin')) {
                 return $this->notFound();
 
             } else {
@@ -122,7 +119,6 @@ class PagesController extends \PublicController
             }
 
         } else {
-
             return $this->notFound();
 
         }

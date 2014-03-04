@@ -4,34 +4,34 @@ namespace Field;
 
 class FieldInfo extends \Reborn\Module\AbstractInfo
 {
-	protected $name = 'Field';
+    protected $name = 'Field';
 
-	protected $version = '1.0';
+    protected $version = '1.0';
 
-	protected $displayName = array(
-								'en' => 'Field'
-								);
+    protected $displayName = array(
+                                'en' => 'Field'
+                                );
 
-	protected $description = array(
-							'en' => 'Custom Fields Module'
-							);
+    protected $description = array(
+                            'en' => 'Custom Fields Module'
+                            );
 
-	protected $author = 'Nyan Lynn Htut';
+    protected $author = 'Nyan Lynn Htut';
 
-	protected $authorUrl = 'http://reborncms.com';
+    protected $authorUrl = 'http://reborncms.com';
 
-	protected $authorEmail = 'lynnhtut87@gmail.com';
+    protected $authorEmail = 'lynnhtut87@gmail.com';
 
-	protected $frontendSupport = false;
+    protected $frontendSupport = false;
 
-	protected $backendSupport = true;
+    protected $backendSupport = true;
 
-	protected $useAsDefaultModule = false;
+    protected $useAsDefaultModule = false;
 
-	protected $uriPrefix = 'field';
+    protected $uriPrefix = 'field';
 
-	protected $allowToChangeUriPrefix = false;
+    protected $allowToChangeUriPrefix = false;
 
-	protected $sharedData = false;
+    protected $sharedData = false;
 
 }

@@ -30,9 +30,9 @@ class PagesInfo extends \Reborn\Module\AbstractInfo
 
     protected $uriPrefix = 'pages';
 
-	protected $allowToChangeUriPrefix = false;
+    protected $allowToChangeUriPrefix = false;
 
-	protected $useAsDefaultModule = true;
+    protected $useAsDefaultModule = true;
 
     protected $sharedData = false;
 

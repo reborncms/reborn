@@ -7,27 +7,26 @@ class PagesInstaller extends \Reborn\Module\AbstractInstaller
 
     public function install($prefix = null)
     {
-    	\Schema::table($prefix.'pages', function($table)
-    	{
-    		$table->create();
-    		$table->increments('id');
-    		$table->string('title');
-    		$table->string('slug')->unique();
-    		$table->string('uri');
-    		$table->text('content')->nullable();
-    		$table->string('page_layout', 50);
-    		$table->integer('parent_id')->nullable();
-    		$table->string('meta_title')->nullable();
-    		$table->string('meta_keyword')->nullable();
-    		$table->text('meta_description')->nullable();
-    		$table->text('css')->nullable();
-    		$table->text('js')->nullable();
-    		$table->integer('comments_enable');
-    		$table->enum('status', array('draft','live'))->default('draft');
-    		$table->integer('author_id');
-    		$table->integer('page_order')->default(0);
-    		$table->timestamps();
-    	});
+        \Schema::table($prefix.'pages', function ($table) {
+            $table->create();
+            $table->increments('id');
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->string('uri');
+            $table->text('content')->nullable();
+            $table->string('page_layout', 50);
+            $table->integer('parent_id')->nullable();
+            $table->string('meta_title')->nullable();
+            $table->string('meta_keyword')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->text('css')->nullable();
+            $table->text('js')->nullable();
+            $table->integer('comments_enable');
+            $table->enum('status', array('draft','live'))->default('draft');
+            $table->integer('author_id');
+            $table->integer('page_order')->default(0);
+            $table->timestamps();
+        });
 
         \DB::table($prefix.'pages')->insert(array(
             'title'             => 'Home',
@@ -58,14 +57,14 @@ class PagesInstaller extends \Reborn\Module\AbstractInstaller
 
     public function uninstall($prefix = null)
     {
-    	\Schema::drop($prefix.'pages');
+        \Schema::drop($prefix.'pages');
 
         \Setting::remove('home_page');
     }
 
     public function upgrade($v, $prefix = null)
     {
-    	return $v;
+        return $v;
     }
 
 }

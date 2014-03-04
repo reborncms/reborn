@@ -4,80 +4,80 @@ namespace Widgets\Lib;
 
 use Widgets\Model\Widgets;
 
-class optionsForm {
+class optionsForm
+{
+    public static function render($name, $id)
+    {
+        $options = \Widget::options($name);
 
-	public static function render($name, $id) {
+        $form = '';
 
-		$options = \Widget::options($name);
+        if ($options != null) {
 
-		$form = '';
+            $data = Widgets::where('id', $id)->pluck('options');
 
-		if ($options != null) {
+            $options_data = unserialize($data);
 
-			$data = Widgets::where('id', $id)->pluck('options');
+            $form .= '<div class="option-form-wrapper">';
 
-			$options_data = unserialize($data);
+            $form .= '<div id="error-options"></div>';
 
-			$form .= '<div class="option-form-wrapper">';
+            $form .= \Form::start(adminUrl('widgets/options-save'), $name.'-option-form', false, array('class' => 'form'));
 
-			$form .= '<div id="error-options"></div>';
+            $form .= \Form::hidden('widget_id', $id);
 
-			$form .= \Form::start(adminUrl('widgets/options-save'), $name.'-option-form', false, array('class' => 'form'));
+            foreach ($options as $name => $values) {
 
-			$form .= \Form::hidden('widget_id', $id);
+                $form .= '<div class="form-field-wrapper">';
 
-			foreach ($options as $name => $values) {
+                $form .= \Form::label($values['label'], $name);
 
-				$form .= '<div class="form-field-wrapper">';
+                $type = $values['type'];
 
-				$form .= \Form::label($values['label'], $name);
+                $value = (isset($options_data[$name])) ? $options_data[$name] : '';
 
-				$type = $values['type'];
+                switch ($type) {
+                    case 'text':
+                        $form .= \Form::input($name, $value);
+                        break;
 
-				$value = (isset($options_data[$name])) ? $options_data[$name] : '';
+                    case 'textarea':
+                        $form .= \Form::textarea($name, $value);
+                        break;
 
-				switch ($type) {
-					case 'text':
-						$form .= \Form::input($name, $value);
-						break;
+                    case 'select':
+                        $form .= \Form::select($name, $values['options'], $value);
+                        break;
 
-					case 'textarea':
-						$form .= \Form::textarea($name, $value);
-						break;
+                    default:
+                        $form .= \Form::input($name, $value, $type);
+                        break;
+                }
 
-					case 'select':
-						$form .= \Form::select($name, $values['options'], $value);
-						break;
-					
-					default:
-						$form .= \Form::input($name, $value, $type);
-						break;
-				}
+                $form .= '</div>'; // end of form-field-wrapper
 
-				$form .= '</div>'; // end of form-field-wrapper
+                if (isset($values['info'])) {
+                    $form .= '<span class="option_info">'.$values['info'].'</span>';
+                }
 
-				if (isset($values['info'])) {
-					$form .= '<span class="option_info">'.$values['info'].'</span>';
-				}
+            }
 
-			}
+            $form .= '<div class="option-form-action">';
 
-			$form .= '<div class="option-form-action">';
+            $form .= \Form::submit('save_option', 'Save', array('class' => 'btn btn-green', 'id' => 'save_option_btn'));
 
-			$form .= \Form::submit('save_option', 'Save', array('class' => 'btn btn-green', 'id' => 'save_option_btn'));
+            $form .= \Form::button('cancel', 'Cancel', 'button', array('class' => 'btn btn-red', 'id' => 'option-cancel-btn'));
 
-			$form .= \Form::button('cancel', 'Cancel', 'button', array('class' => 'btn btn-red', 'id' => 'option-cancel-btn'));
+            $form .= '</div>'; // end of option-form-action
 
-			$form .= '</div>'; // end of option-form-action 
+            $form .= \Form::end();
 
-			$form .= \Form::end();
+            $form .= '</div>'; // end of option-form-wrapper
 
-			$form .= '</div>'; // end of option-form-wrapper
+        }
 
-		}
+        return $form;
 
-		return $form;
-
-	}
+    }
 
 }
