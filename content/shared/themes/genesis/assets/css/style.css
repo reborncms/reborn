@@ -110,6 +110,10 @@ footer {
 
 .blog_excerpt { margin-bottom: 20px; }
 
+.blog_body img {
+	max-width: 100%;
+}
+
 .blog_meta {
 	font-size: 12px;
 	margin-bottom: 15px;
@@ -263,13 +267,10 @@ footer {
   font-size: 16px;
 }
 
-#reply_info {
-  font-style: oblique;
-  color: #5CC63A;
-}
 #login_info {
   margin: 10px 0;
 }
+
 .gravi img {
   border-radius: 50%;
   margin-bottom: 10px;
@@ -281,4 +282,66 @@ footer {
 
 .comment_message {
   line-height: 1.8em;
+}
+
+.single_comment {
+	padding: 10px;
+	overflow : hidden;
+	margin-bottom: 15px;
+	clear:both;
+	border-bottom: 1px solid #eee;
+}
+
+.author_info {
+	float:left;
+	text-align: center;
+	margin-right: 15px;
+	color: #747171;
+}
+
+.comment_body {
+	overflow:auto;
+}
+
+.comment_date {
+	float:left;
+	color: #747171;
+	font-size: 11px;
+}
+
+.reply_link {
+	float: right;
+	text-decoration: none;
+	font-size: 11px;
+	background: rgb(48, 139, 255);
+	color: #fff;
+	padding: 1px 10px;
+	border-radius: 5px;
+}
+
+.comment_message {
+	clear:both;
+}
+
+#comment-pagination {
+	margin-bottom: 15px;
+	float:right;
+}
+
+#comment_form input[type=text], #comment_form input[type=email], #comment_form input[type=url] {
+	border: 1px solid #CECECE;
+	padding: 8px;
+	width: 250px;
+}
+
+#comment_form textarea {
+	border: 1px solid #CECECE;
+	padding: 10px;
+	width: 500px;
+	height: 200px;
+}
+
+.com_read_more {
+	float: right;
+	font-size: 11px;
 }

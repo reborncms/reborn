@@ -15,7 +15,7 @@ class UserController extends \PublicController
     {
         if(!Auth::check()) return \Redirect::to('user/login');
 
-        return \Redirect::to('user/profile/'.Auth::getUserId());
+        return \Redirect::to('/');
     }
 
     /**
@@ -124,7 +124,7 @@ class UserController extends \PublicController
 
         \Flash::success(t('user::user.logout'));
 
-        return \Redirect::to('/');
+        return \Redirect::back();
     }
 
     /**

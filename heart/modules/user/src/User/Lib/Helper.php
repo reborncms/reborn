@@ -13,7 +13,7 @@ class Helper
         $widget['icon'] = 'icon-users';
         $widget['id'] = 'user';
         $widget['body'] = '';
-        $last_login = User::take(5)->orderBy('last_login', 'desc')->get();
+        $last_login = User::whereNotNull('last_login')->take(5)->orderBy('last_login', 'desc')->get();        
         $widget['body'] .= '<ul>';
 
         foreach ($last_login as $user) {
