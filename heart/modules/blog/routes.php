@@ -34,7 +34,7 @@
 
     \Route::add('post-links/{int:id}?/{p:page}?', 'Blog\Admin\Blog::postLinks', 'post_links_for_editor');
 
-    \Route::post('search-links/{p:page}?', 'Blog\Admin\Blog::searchLinks', 'search_links_for_editor');
+    \Route::post('search-links/{p:page}?', 'Blog\Admin\Blog::searchLists', 'search_links_for_editor');
 
     //Blog Category
 

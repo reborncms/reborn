@@ -249,7 +249,7 @@ if (! function_exists('is_json')) {
 
 if (! function_exists('remove_base_url')) {
     /**
-     * Helper function fto remove baseUrl from given url
+     * Helper function to remove baseUrl from given url
      *
      * @param  string $url
      * @return string
