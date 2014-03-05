@@ -27,7 +27,7 @@ class SendMailController extends \AdminController
     {
         if (!user_has_access('contact.reply')) return $this->notFound();
         $mail =new \stdClass;
-        $sendMail = Mailer::create(array('type' => 'sendmail'));
+        $sendMail = Mailer::create(array('type' => \Setting::get('transport_mail')));
         $reply = Mail::where('id', '=', $id)->first();
         if ($reply) {
             $mail->email = $reply->email;
