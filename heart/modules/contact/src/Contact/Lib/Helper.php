@@ -40,11 +40,11 @@ class Helper
         $t = Etemplate::where('slug', '=', \Setting::get($template))->first();
 
         if ($t == null) {
-            $t = Etemplate::where('slug','=' ,'contact')->first();
-           }
+            $t = Etemplate::where('slug', '=', 'contact')->first();
+        }
         $temp = $t->body;
 
-           $temp = static::decodeHtml($data,$temp);
+        $temp = static::decodeHtml($data,$temp);
 
         return $temp;
 
@@ -56,16 +56,16 @@ class Helper
      * @package Contact\Lib\Helper
      * @author RebronCMS Development Team
      **/
-    public static function selectTemplate($data,$slug)
+    public static function selectTemplate($data, $slug)
     {
         $t = Etemplate::where('slug', '=', $slug)->first();
 
         if ($t == null) {
-            $t = Etemplate::where('slug','=' ,'contact')->first();
-           }
+            $t = Etemplate::where('slug', '=', 'contact')->first();
+        }
         $temp = $t->body;
 
-           $temp = static::decodeHtml($data,$temp);
+        $temp = static::decodeHtml($data, $temp);
 
         return $temp;
     }
@@ -76,9 +76,9 @@ class Helper
      * @package Contact\Lib\Helper
      * @author RebronCMS Development Team
      **/
-    public static function decodeHtml($data,$form)
+    public static function decodeHtml($data, $form)
     {
-         foreach ($data as $key => $value) {
+        foreach ($data as $key => $value) {
             $form = str_replace('{{'.$key.'}}', $value, $form);
         }
 
@@ -94,14 +94,14 @@ class Helper
      * @return array
      * @author RebornCMS Development Team
      **/
-    public static function mailAttachment($name,$ext = array(),$path = null)
+    public static function mailAttachment($name, $ext = array(), $path = null)
     {
 
         if ($path == null) {
             $path = UPLOAD.'contact_attachment';
         }
 
-        $uploadError = Upload::uploadInit($name, array('path'=> $path,'createDir' => true,'allowedExt'=>$ext));
+        $uploadError = Upload::uploadInit($name, array('path'=> $path, 'createDir' => true, 'allowedExt'=>$ext));
 
         if ($uploadError) {
             $result['error'] = $uploadError['errors']['0'];
@@ -111,6 +111,6 @@ class Helper
 
         $attachmentName = Upload::upload($name);
 
-        return array('path'=>$path.DS.$attachmentName['savedName'],'name'=>$attachmentName['savedName']);
+        return array('path'=>$path.DS.$attachmentName['savedName'], 'name'=>$attachmentName['savedName']);
     }
 }
