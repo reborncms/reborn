@@ -4,56 +4,56 @@ namespace User;
 
 class UserInfo extends \Reborn\Module\AbstractInfo
 {
-	protected $name = 'User';
+    protected $name = 'User';
 
-	protected $displayName = array(
-		'en' => 'User', 
-		'my' => 'အသုံးပြုသူများ'
-	);
+    protected $displayName = array(
+        'en' => 'User',
+        'my' => 'အသုံးပြုသူများ'
+    );
 
-	protected $version = '1.1';
+    protected $version = '1.1';
 
-	protected $description = array(
-		'en' => 'User, Group, and Permission managament with Cataclyst\Sentry.', 
-		'my' => 'အသုံးပြုသူများ၊ အဖွဲ့နေရာစီမံ ခန့်ခွဲခြင်း နှင့် မော်ဂျူး ခွင့်ပြုချက်များအား လုပ်ဆောင်နိုင်ပါသည်။ Cataclyst\Sentry ကို အသုံးပြုထားသည်။'
-	);
+    protected $description = array(
+        'en' => 'User, Group, and Permission managament with Cataclyst\Sentry.',
+        'my' => 'အသုံးပြုသူများ၊ အဖွဲ့နေရာစီမံ ခန့်ခွဲခြင်း နှင့် မော်ဂျူး ခွင့်ပြုချက်များအား လုပ်ဆောင်နိုင်ပါသည်။ Cataclyst\Sentry ကို အသုံးပြုထားသည်။'
+    );
 
-	protected $author = 'K';
+    protected $author = 'K';
 
-	protected $authorUrl = 'http://khay.me';
+    protected $authorUrl = 'http://khay.me';
 
-	protected $authorEmail = 'khayusaki@gmail.com';
+    protected $authorEmail = 'khayusaki@gmail.com';
 
-	protected $frontendSupprot = true;
+    protected $frontendSupprot = true;
 
-	protected $backendSupport = true;
+    protected $backendSupport = true;
 
-	protected $uriPrefix = 'user';
+    protected $uriPrefix = 'user';
 
-	protected $allowToChangeUriPrefix = false;
+    protected $allowToChangeUriPrefix = false;
 
-	protected $useAsDefaultModule = true;
+    protected $useAsDefaultModule = true;
 
-	protected $sharedData = true;
+    protected $sharedData = true;
 
-	protected $roles = array(
-		'user.create' => 'Create',
-		'user.edit' => 'Edit',
-		'user.delete' => 'Delete',
-		'user.group' => 'Groups',
-		'user.group.create' => 'Create Group',
-		'user.group.edit' => 'Edit Group',
-		'user.group.delete' => 'Delete Group',
-		'user.permission' => 'Permission',
-		'user.permission.edit' => 'Edit Permission',
-	);
+    protected $roles = array(
+        'user.create' => 'Create',
+        'user.edit' => 'Edit',
+        'user.delete' => 'Delete',
+        'user.group' => 'Groups',
+        'user.group.create' => 'Create Group',
+        'user.group.edit' => 'Edit Group',
+        'user.group.delete' => 'Delete Group',
+        'user.permission' => 'Permission',
+        'user.permission.edit' => 'Edit Permission',
+    );
 
-	/**
-	* Variable for Allow Custom Field.
-	* If you allow custom field in your module, set true
-	*
-	* @var boolean
-	**/
-	protected $allowCustomfield = true;
+    /**
+    * Variable for Allow Custom Field.
+    * If you allow custom field in your module, set true
+    *
+    * @var boolean
+    **/
+    protected $allowCustomfield = true;
 
 }

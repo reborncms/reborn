@@ -1,113 +1,113 @@
 <?php
 
 return array(
-	
-	'title' => array(
-		'usermod' => 'User Management',
-		'user' => 'User',
-		'profile' => 'User Profile',
-		'login' => 'User Login',
-		'registration' => 'Registration',
-		'activate'	=> 'Activate',
-		'create' => 'User Create',
-		'edit'	=> 'User Edit',
-	),
 
-	'modToolbar' => array(
-		'name' => 'Create User',
-		'info'	=> 'Create a new user',
-	),
+    'title' => array(
+        'usermod' => 'User Management',
+        'user' => 'User',
+        'profile' => 'User Profile',
+        'login' => 'User Login',
+        'registration' => 'Registration',
+        'activate'	=> 'Activate',
+        'create' => 'User Create',
+        'edit'	=> 'User Edit',
+    ),
 
-	//View Language
-	'displayName' 	=> 'Display Name',
-	'firstname'		=> 'First Name',
-	'lastname'		=> 'Last Name',
-	'namexample'	=> 'e.g. John Doe',
-	'group'			=> 'Role',
-	'email'			=> 'Email',
-	'view'			=> 'View {:name} Profile',
+    'modToolbar' => array(
+        'name' => 'Create User',
+        'info'	=> 'Create a new user',
+    ),
 
-	'lpassword' => 'Password',
-	'lconfPass' => 'Confirm Password',
-	'lgroup' => 'Group',
-	'lusername' => 'Username',
-	'lbiography' => 'Biography',
-	'lcountry' => 'Country',
-	'lwebsite' => 'Website',
-	'lfacebook' => 'Facebook',
-	'ltwitter' => 'Twitter',
-	'adminpanelaccess' => 'Can access to Dashboard?',
-	'gravatar' => 'Change your avatar at Gravatar',
+    //View Language
+    'displayName' 	=> 'Display Name',
+    'firstname'		=> 'First Name',
+    'lastname'		=> 'Last Name',
+    'namexample'	=> 'e.g. John Doe',
+    'group'			=> 'Role',
+    'email'			=> 'Email',
+    'view'			=> 'View {:name} Profile',
 
-	'temail' => 'Please enter valid Email Address',
-	'tpassword' => 'Type a secure password',
-	'tconfPass' => 'Confirm new password if you typed new password',
-	'tusername' => 'Username must not include space, or special characters.',
-	'twebsite' => 'Personal blog or webpage of this user',
-	'tfacebook' => 'Enter this user\'s facebook username',
-	'ttwitter' => 'Enter this user\'s twitter username',
+    'lpassword' => 'Password',
+    'lconfPass' => 'Confirm Password',
+    'lgroup' => 'Group',
+    'lusername' => 'Username',
+    'lbiography' => 'Biography',
+    'lcountry' => 'Country',
+    'lwebsite' => 'Website',
+    'lfacebook' => 'Facebook',
+    'ltwitter' => 'Twitter',
+    'adminpanelaccess' => 'Can access to Dashboard?',
+    'gravatar' => 'Change your avatar at Gravatar',
 
-	'menu'		=> 'Users',
-	'admin' 	=> 'User Admin',
-	'save'		=> 'Save',
-	'delete'	=> 'Delete',
-	'cancel'	=> 'Cancel',
-	'Create'	=> 'Create',
+    'temail' => 'Please enter valid Email Address',
+    'tpassword' => 'Type a secure password',
+    'tconfPass' => 'Confirm new password if you typed new password',
+    'tusername' => 'Username must not include space, or special characters.',
+    'twebsite' => 'Personal blog or webpage of this user',
+    'tfacebook' => 'Enter this user\'s facebook username',
+    'ttwitter' => 'Enter this user\'s twitter username',
 
-	'auth' => array(
-		'noequalpass' => 'Password doesn\'t match, please type again',
-		'userexist' => 'Email %s is already registered, please try with another email.',
-		'loginrequire' => 'Login field required',
-		'activated' => 'Your account is already activated. Please try login.',
-		'dunexist' => 'User was not found. Please Register to create your account.',
-		'offreg' => 'User registration is currently disable. Please contact administor to create account.',
-	),
+    'menu'		=> 'Users',
+    'admin' 	=> 'User Admin',
+    'save'		=> 'Save',
+    'delete'	=> 'Delete',
+    'cancel'	=> 'Cancel',
+    'Create'	=> 'Create',
 
-	'login' => array(
-		'success' => 'Welcome back, %s.',
-		'fail' => 'Invalid Email or Password. Please try again.',
-		'suspended' => 'Your account is suspended for %s minutes.',
-		'banned' => 'Your account is banned.',
-		'activate' => 'You need to activate your account to login.',
-	),
+    'auth' => array(
+        'noequalpass' => 'Password doesn\'t match, please type again',
+        'userexist' => 'Email %s is already registered, please try with another email.',
+        'loginrequire' => 'Login field required',
+        'activated' => 'Your account is already activated. Please try login.',
+        'dunexist' => 'User was not found. Please Register to create your account.',
+        'offreg' => 'User registration is currently disable. Please contact administor to create account.',
+    ),
 
-	'logout' => 'You are successfully logout',
+    'login' => array(
+        'success' => 'Welcome back, %s.',
+        'fail' => 'Invalid Email or Password. Please try again.',
+        'suspended' => 'Your account is suspended for %s minutes.',
+        'banned' => 'Your account is banned.',
+        'activate' => 'You need to activate your account to login.',
+    ),
 
-	'create' => array(
-		'success' => 'User successfully created',
-		'fail' => 'Failed to create new user',
-	),
+    'logout' => 'You are successfully logout',
 
-	'edit' => array(
-		'success' => 'User successfully edited',
-		'fail'	=> 'Failed to edit user',
-	),
+    'create' => array(
+        'success' => 'User successfully created',
+        'fail' => 'Failed to create new user',
+    ),
 
-	'password' => array(
-		'fail' => 'Password do not match',
-	),
+    'edit' => array(
+        'success' => 'User successfully edited',
+        'fail'	=> 'Failed to edit user',
+    ),
 
-	'delete' => array(
-		'success' => 'User successfully deleted.',
-		'fail'	=> 'Failed to delete user.',
-	),
+    'password' => array(
+        'fail' => 'Password do not match',
+    ),
 
-	'profile' => array(
-		'title' => 'Edit Profile',
-		'success' => 'Profile successfully updated',
-		'fail' => 'Failed to update your profile, please try again!',
-	),
+    'delete' => array(
+        'success' => 'User successfully deleted.',
+        'fail'	=> 'Failed to delete user.',
+    ),
 
-	'csrf' => 'Error occur for security reason!',
+    'profile' => array(
+        'title' => 'Edit Profile',
+        'success' => 'Profile successfully updated',
+        'fail' => 'Failed to update your profile, please try again!',
+    ),
 
-	'resentPass' => 'Password RestCode Successfully sent!',
+    'csrf' => 'Error occur for security reason!',
 
-	'activate' => array(
-		'subject' => 'Activate Your Account',
-		'check' => 'Check your mail for activaion code',
-		'success' => 'Your account is successfully activated',
-		'fail'	=> 'Fail to activate your account! Pleaes try again.',
-		'already' => 'Email %s is already activated.',
-		'admin' => 'User is already activated, cheating?',
-	),
+    'resentPass' => 'Password RestCode Successfully sent!',
+
+    'activate' => array(
+        'subject' => 'Activate Your Account',
+        'check' => 'Check your mail for activaion code',
+        'success' => 'Your account is successfully activated',
+        'fail'	=> 'Fail to activate your account! Pleaes try again.',
+        'already' => 'Email %s is already activated.',
+        'admin' => 'User is already activated, cheating?',
+    ),
 );

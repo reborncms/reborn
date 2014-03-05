@@ -7,182 +7,186 @@ use Reborn\Util\Uploader as Upload;
 
 class ThemeController extends \AdminController
 {
-	/**
-	 * Before function for ThemeController
-	 *
-	 * @return void
-	 **/
-	public function before() 
-	{
-		$this->menu->activeParent('appearance');
-		$this->template->style('theme.css','theme');
-	}
+    /**
+     * Before function for ThemeController
+     *
+     * @return void
+     **/
+    public function before()
+    {
+        $this->menu->activeParent('appearance');
+        $this->template->style('theme.css','theme');
+    }
 
-	/**
-	 * Display all usable themes along with currently activated theme
-	 *
-	 * @return void	 
-	 **/
-	public function index()
-	{
-		$themes = Theme::all();
-		$active = \Setting::get('public_theme');
+    /**
+     * Display all usable themes along with currently activated theme
+     *
+     * @return void
+     **/
+    public function index()
+    {
+        $themes = Theme::all();
+        $active = \Setting::get('public_theme');
 
-		$this->template->title(\Translate::get('theme::theme.title'))
-					->breadcrumb(\Translate::get('theme::theme.title'))
-					->set('themes', $themes)
-					->set('active', $active)
-					->setPartial('admin/index');
-	}
+        $this->template->title(\Translate::get('theme::theme.title'))
+                    ->breadcrumb(\Translate::get('theme::theme.title'))
+                    ->set('themes', $themes)
+                    ->set('active', $active)
+                    ->setPartial('admin/index');
+    }
 
-	/**
-	 * Activate a theme from usable themes
-	 *
-	 * @param string $name
-	 * @return void	 
-	 **/
-	public function activate($name)
-	{
-		if (!user_has_access('theme.activate')) return $this->notFound();
+    /**
+     * Activate a theme from usable themes
+     *
+     * @param  string $name
+     * @return void
+     **/
+    public function activate($name)
+    {
+        if (!user_has_access('theme.activate')) return $this->notFound();
 
-		$themes = Theme::all();
+        $themes = Theme::all();
 
-		if (array_key_exists($name, $themes)) {
-			\Setting::set('public_theme', $name);
-			\Flash::success(sprintf(\Translate::get('theme::theme.activate.success'), $themes[$name]['name']));
-		} else {
-			\Flash::error(\Translate::get('theme::theme.activate.error'));
-		}
-		return \Redirect::to(ADMIN_URL.'/theme');
-	}
+        if (array_key_exists($name, $themes)) {
+            \Setting::set('public_theme', $name);
+            \Flash::success(sprintf(\Translate::get('theme::theme.activate.success'), $themes[$name]['name']));
+        } else {
+            \Flash::error(\Translate::get('theme::theme.activate.error'));
+        }
 
-	/**
-	 * Delete a theme
-	 * You cannot delete currently activated theme
-	 *
-	 * @param string $name
-	 * @return void	 
-	 **/
-	public function delete($name)
-	{
-		if (!user_has_access('theme.delete')) return $this->notFound();
+        return \Redirect::to(ADMIN_URL.'/theme');
+    }
 
-		$themes = Theme::all();
+    /**
+     * Delete a theme
+     * You cannot delete currently activated theme
+     *
+     * @param  string $name
+     * @return void
+     **/
+    public function delete($name)
+    {
+        if (!user_has_access('theme.delete')) return $this->notFound();
 
-		if (array_key_exists($name,$themes)) {
-			if (is_dir(THEMES.$name)) {
-				$delete = \Dir::delete(THEMES.$name);
+        $themes = Theme::all();
 
-				if ($delete) {
-					\Flash::success(\Translate::get('theme::theme.delete.success'));
-				} else {
-					\Flash::error(\Translate::get('theme::theme.delete.error'));
-				}
-			} else {
-				\Flash::error(\Translate::get('theme::theme.delete.error'));
-			}
-		} else {
-			\Flash::error(\Translate::get('theme::theme.delete.error'));
-		}
-		return \Redirect::to(ADMIN_URL.'/theme');
-	}
+        if (array_key_exists($name,$themes)) {
+            if (is_dir(THEMES.$name)) {
+                $delete = \Dir::delete(THEMES.$name);
 
-	/**
-	 * Upload new theme with .zip format
-	 * Saved on temporary folder and then extracted to specific theme folder
-	 * Please change upload_max_filesize in php.ini for larger theme zip files
-	 *
-	 * @return void	 
-	 **/
-	public function upload()
-	{
-		if (!user_has_access('theme.upload')) return $this->notFound();		
+                if ($delete) {
+                    \Flash::success(\Translate::get('theme::theme.delete.success'));
+                } else {
+                    \Flash::error(\Translate::get('theme::theme.delete.error'));
+                }
+            } else {
+                \Flash::error(\Translate::get('theme::theme.delete.error'));
+            }
+        } else {
+            \Flash::error(\Translate::get('theme::theme.delete.error'));
+        }
 
-		if (\Input::isPost()) {					
+        return \Redirect::to(ADMIN_URL.'/theme');
+    }
 
-			$tmp_path = STORAGES.'tmp'.DS;
-			
-			$uploadPath = \Input::get('upload_path');						
+    /**
+     * Upload new theme with .zip format
+     * Saved on temporary folder and then extracted to specific theme folder
+     * Please change upload_max_filesize in php.ini for larger theme zip files
+     *
+     * @return void
+     **/
+    public function upload()
+    {
+        if (!user_has_access('theme.upload')) return $this->notFound();
 
-			if ($uploadPath == 'main') {
-				$extract_path = THEMES;
-			} else {
-				$extract_path = SHARED.'themes'.DS;
-			}
-			
-			$config = array(
-				'savePath' => $tmp_path,
-				'createDir' => true,
-				'allowedExt' => array('zip')
-			);
+        if (\Input::isPost()) {
 
-			
-			$v = \Validation::create(
-				array('file' => \Input::file('file')),
-				array('file' => 'required')
-			);
+            $tmp_path = STORAGES.'tmp'.DS;
 
-			$e = new \Reborn\Form\ValidationError();
+            $uploadPath = \Input::get('upload_path');
 
-			if ($v->valid()) {
+            if ($uploadPath == 'main') {
+                $extract_path = THEMES;
+            } else {
+                $extract_path = SHARED.'themes'.DS;
+            }
 
-				if (Upload::isSuccess()) {
-					Upload::initialize('file', $config);
+            $config = array(
+                'savePath' => $tmp_path,
+                'createDir' => true,
+                'allowedExt' => array('zip')
+            );
 
-					$data = Upload::upload('file');
-					$data[0]['status'] = 'success';
-				} else {
-					$v = Upload::errors();
-					$data[0]['status'] = 'fail';
-					$error = '';
-					foreach ($v[0] as $k => $s) {
-						if (is_int($k)) {
-							$error .= $s.' ';
-						}
-					}
-					$data[0]['errors'] = $error;
+            $v = \Validation::create(
+                array('file' => \Input::file('file')),
+                array('file' => 'required')
+            );
 
-					\Flash::error($error);
+            $e = new \Reborn\Form\ValidationError();
 
-					return \Redirect::toAdmin('theme/upload');
-				}
+            if ($v->valid()) {
 
-				try {
-					$zip_file = $tmp_path.$data[0]['savedName'];
+                if (Upload::isSuccess()) {
+                    Upload::initialize('file', $config);
 
-					$filename = str_replace('.zip', '', $data[0]['savedName']);
+                    $data = Upload::upload('file');
+                    $data[0]['status'] = 'success';
+                } else {
+                    $v = Upload::errors();
+                    $data[0]['status'] = 'fail';
+                    $error = '';
+                    foreach ($v[0] as $k => $s) {
+                        if (is_int($k)) {
+                            $error .= $s.' ';
+                        }
+                    }
+                    $data[0]['errors'] = $error;
 
-					// create object
-					$zip = new \ZipArchive() ;
+                    \Flash::error($error);
 
-					// open archive
-					if ($zip->open($zip_file) !== TRUE) {
-						\Flash::error(sprintf(t('theme::theme.unzip_error'),$filename));
-						\File::delete($zip_file);
-						return \Redirect::toAdmin('theme/upload');
-					}
+                    return \Redirect::toAdmin('theme/upload');
+                }
 
-					// extract contents to destination directory
-					$zip->extractTo($extract_path);
+                try {
+                    $zip_file = $tmp_path.$data[0]['savedName'];
 
-					// close archive
-					$zip->close();
+                    $filename = str_replace('.zip', '', $data[0]['savedName']);
 
-					\File::delete($zip_file);
-					\Flash::success(sprintf(t('theme::theme.upload.success'),$filename));
-					return \Redirect::toAdmin('theme');
-				} catch (\Exception $e) {
-					\Flash::error($e);
-					return \Redirect::toAdmin('theme/upload');
-				}
-			} else {
-				$e = $v->getErrors();
-				\Flash::error(implode("\n\r", $e));
-			}			
-		}
+                    // create object
+                    $zip = new \ZipArchive() ;
 
-		$this->template->title(\Translate::get('theme::theme.title'))
-					->breadcrumb(\Translate::get('theme::theme.title'))
-					->setPartial('admin/upload');
-	}
+                    // open archive
+                    if ($zip->open($zip_file) !== TRUE) {
+                        \Flash::error(sprintf(t('theme::theme.unzip_error'),$filename));
+                        \File::delete($zip_file);
+
+                        return \Redirect::toAdmin('theme/upload');
+                    }
+
+                    // extract contents to destination directory
+                    $zip->extractTo($extract_path);
+
+                    // close archive
+                    $zip->close();
+
+                    \File::delete($zip_file);
+                    \Flash::success(sprintf(t('theme::theme.upload.success'),$filename));
+
+                    return \Redirect::toAdmin('theme');
+                } catch (\Exception $e) {
+                    \Flash::error($e);
+
+                    return \Redirect::toAdmin('theme/upload');
+                }
+            } else {
+                $e = $v->getErrors();
+                \Flash::error(implode("\n\r", $e));
+            }
+        }
+
+        $this->template->title(\Translate::get('theme::theme.title'))
+                    ->breadcrumb(\Translate::get('theme::theme.title'))
+                    ->setPartial('admin/upload');
+    }
 }
