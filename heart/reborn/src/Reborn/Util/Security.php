@@ -15,17 +15,17 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class Security
 {
     /**
-     * undocumented class variable
+     * Reborn\Cores\Application instance.
      *
-     * @var string
+     * @var \Reborn\Cores\Application
      **/
     protected static $app;
 
     /**
-     * undocumented function
+     * Set Reborn\Cores\Application instance.
      *
-     * @return \Reborn\Cores\Application
-     * @author Nyan Lynn Htut
+     * @param \Reborn\Cores\Application $app
+     * @return void
      **/
     public static function setApplication(Application $app)
     {

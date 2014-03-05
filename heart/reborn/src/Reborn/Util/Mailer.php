@@ -7,6 +7,7 @@ use Reborn\Fileupload\Uploader as Upload;
 
 /**
  * Send Mail class for Reborn
+ * *** This class will be remove at 2.0 stable version ***
  *
  * @package Reborn\Util
  * @author Myanmar Links Professional Web Development Team
