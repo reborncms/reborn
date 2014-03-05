@@ -27,10 +27,6 @@ class UserController extends \PublicController
     {
         if(!Auth::check() and is_null($id)) return \Redirect::to('user/login');
 
-        $hash = new Hash;
-
-        $makeHash = $hash->hash('khayusaki@gmail.com');
-
         $user = \User::findBy('id', $id);
 
         if(is_null($user)) return \Redirect::to('/');
