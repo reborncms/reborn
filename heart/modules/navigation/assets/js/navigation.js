@@ -86,6 +86,10 @@ $('.link-edit').colorbox({
 					}
 
 					$.colorbox.resize();
+
+					if (result.status == 'success') {
+						$.colorbox.close();
+					};
 				}
 			});
 

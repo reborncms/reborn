@@ -107,7 +107,7 @@ class Helper
 
         \Module::load('Pages');
 
-        return \Pages\Lib\Helper::pageList();
+        return array_merge(array('' => '-- Select Page --'), \Pages\Lib\Helper::pageList());
     }
 
     public static function moduleSelect()
@@ -115,8 +115,9 @@ class Helper
         $modules = \Module::getAll();
         $select = array();
         foreach ($modules as $name => $m) {
+
             if (\Module::isEnabled($name) and ($m['frontend_support'])) {
-                $select[strtolower($name)] = $name;
+                $select[$m->uri] = ucfirst($name);
             }
         }
 

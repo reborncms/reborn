@@ -34,19 +34,19 @@
 
 		<div id="pagee" class="nav-type-wrap-e" style="{= echo ($link->link_type != 'page') ? 'display:none' : '' =}">
 
-			{{ Form::select('page', $pageSelect, isset($link->page) ? $link->page : '', array('class' => 'large thin')) }}
+			{{ Form::select('page', $pageSelect, isset($link->uri) ? $link->uri : '', array('class' => 'large thin')) }}
 
 		</div> <!-- end of div#page.nav-type-wrap -->
 
 		<div id="modulee" class="nav-type-wrap-e" style="{= echo ($link->link_type != 'module') ? 'display:none' : '' =}">
 
-			{{ Form::select('module', $moduleSelect, isset($link->module) ? $link->module : '', array('class' => 'large thin')) }}
+			{{ Form::select('module', $moduleSelect, isset($link->uri) ? $link->uri : '', array('class' => 'large thin')) }}
 
 		</div> <!-- end of div#module.nav-type-wrap -->
 
 		<div id="urle" class="nav-type-wrap-e" style="{= echo ($link->link_type != 'url') ? 'display:none' : '' =}">
 
-			{{ Form::input('url', isset($link->urlStr) ? $link->urlStr : 'http://', 'text', array('class' => 'large thin', 'placeholder' => 'Input URL with http://')) }}
+			{{ Form::input('url', isset($link->url) ? $link->url : 'http://', 'text', array('class' => 'large thin', 'placeholder' => 'Input URL with http://')) }}
 
 		</div> <!-- end of div#url.nav-type-wrap -->
 
