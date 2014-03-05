@@ -364,6 +364,20 @@ abstract class AbstractFormBuilder
     }
 
     /**
+     * Build the form with Bootstrap 3 Layout.
+     *
+     * @param  array   $hiddenData External Hidden Data
+     * @param  boolean $merge      Merge with original hiddens data. Default is false
+     * @return string
+     **/
+    public function buildWithBootstrap($hiddenData = array(), $merge = false)
+    {
+        $this->builder->setTemplate(__DIR__.'/template/bootstrap.php');
+
+        return $this->build($hiddenData, $merge);
+    }
+
+    /**
      * Change the form field's value
      *
      * @param  string                           $name Field name
@@ -522,11 +536,18 @@ abstract class AbstractFormBuilder
             $attrs['info'] = isset($attrs['info']) ? $attrs['info'] : '';
             $attrs['attr'] = isset($attrs['attr']) ? $attrs['attr'] : array();
 
+            // Add bootstrap classname for form element tag
+            if ( isset($attrs['attr']['class']) ) {
+                $attrs['attr']['class'] = 'form-control '.$attrs['attr']['class'];
+            } else {
+                $attrs['attr']['class'] = 'form-control';
+            }
+
             // For Radio Group
             if ('radioGroup' === $attrs['type']) {
-                $attrs['radio_label'] = array();
+                $radio_label = array();
 
-                if ( isset($attrs['radio_label']) ) {
+                if (! isset($attrs['radio_label']) ) {
                     $attrs['radio_label'] = $attrs['radio_label'];
                 }
             }

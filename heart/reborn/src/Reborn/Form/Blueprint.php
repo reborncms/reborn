@@ -312,7 +312,7 @@ class Blueprint
 
             // Set Btn Class From Reborn Admin Theme
             if (!isset($attrs['class'])) {
-                $attrs['class'] = 'btn btn-green';
+                $attrs['class'] = 'btn btn-default btn-green';
             }
 
             $this->submit[] = Form::submit($name, $value['value'], $attrs);
@@ -344,7 +344,7 @@ class Blueprint
         $class = isset($val['class']) ? $val['class'] : '';
         $id = isset($val['id']) ? $val['id'] : '';
 
-        $this->cancel = '<a href="'.rbUrl($val['url']).'" class="'.$class.'" id="'.$id.'" >'.$name.'</a>';
+        $this->cancel = '<a href="'.url($val['url']).'" class="'.$class.'" id="'.$id.'" >'.$name.'</a>';
     }
 
     /**
@@ -383,7 +383,7 @@ class Blueprint
         if (array_key_exists($method, $this->exElements)) {
             $this->fields[$name]['type'] = $method;
             $this->fields[$name]['info'] = $value['info'];
-            $this->labels[$name] = Form::label($value['label'], $name);
+            $this->labels[$name] = $this->getLabelHtml($value['label'], $name);
 
             require $this->exElements[$method]['path'];
             $callback = new $this->exElements[$method]['class']();
@@ -454,7 +454,7 @@ class Blueprint
         //$this->addInput($name, $val, 'radio');
         $this->fields[$name]['type'] = 'radioGroup';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         if (is_string($val['radio_label'])) {
             $val['radio_label'] = (array) $val['radio_label'];
         }
@@ -471,7 +471,7 @@ class Blueprint
     {
         $this->fields[$name]['type'] = 'checkboxGroup';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         if (is_string($val['checkbox_label'])) {
             $val['checkbox_label'] = (array) $val['checkbox_label'];
         }
@@ -486,7 +486,7 @@ class Blueprint
     {
         $this->fields[$name]['type'] = $type;
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $this->fields[$name]['html'] = Form::input($name, $val['value'], $type, $val['attr']);
     }
 
@@ -495,7 +495,7 @@ class Blueprint
     {
         $this->fields[$name]['type'] = 'textarea';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $this->fields[$name]['html'] = Form::textarea($name, $val['value'], $val['attr']);
     }
 
@@ -504,7 +504,7 @@ class Blueprint
     {
         $this->fields[$name]['type'] = 'ckeditor';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $this->fields[$name]['html'] = UIForm::ckeditor($name, $val['value'], 'normal', $val['attr']);
     }
 
@@ -513,7 +513,7 @@ class Blueprint
     {
         $this->fields[$name]['type'] = 'ckeditor';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $this->fields[$name]['html'] = UIForm::ckeditor($name, $val['value'], 'mini', $val['attr']);
     }
 
@@ -522,7 +522,7 @@ class Blueprint
     {
         $this->fields[$name]['type'] = 'ckeditor';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $this->fields[$name]['html'] = UIForm::ckeditor($name, $val['value'], 'simple', $val['attr']);
     }
 
@@ -532,7 +532,7 @@ class Blueprint
         $format = isset($val['format']) ? $val['format'] : 'mm-dd-yy';
         $this->fields[$name]['type'] = 'datepicker';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $this->fields[$name]['html'] = UIForm::datepicker($name, $val['value'], $format, $val['attr']);
     }
 
@@ -541,7 +541,7 @@ class Blueprint
     {
         $this->fields[$name]['type'] = 'tags';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $url = isset($val['url']) ? $val['url'] : null;
         $this->fields[$name]['html'] = UIForm::tags($name, $val['value'], $val['attr'], $url);
     }
@@ -551,7 +551,7 @@ class Blueprint
     {
         $this->fields[$name]['type'] = 'countryList';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $this->fields[$name]['html'] = Form::CountryList($name, $val['value']);
     }
 
@@ -562,7 +562,7 @@ class Blueprint
 
         $this->fields[$name]['type'] = 'select';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $this->fields[$name]['html'] = Form::select($name, $options, $val['value'], $val['attr']);
     }
 
@@ -573,7 +573,7 @@ class Blueprint
 
         $this->fields[$name]['type'] = 'select2';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $multi = (isset($val['multi'])) ? $val['multi'] : false;
         $ajax = (isset($val['ajax'])) ? $val['ajax'] : false;
         $js_opts = (isset($val['js_opts'])) ? $val['js_opts'] : array();
@@ -587,7 +587,7 @@ class Blueprint
 
         $this->fields[$name]['type'] = 'select2Multi';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $js_opts = (isset($val['js_opts'])) ? $val['js_opts'] : array();
         $this->fields[$name]['html'] = UIForm::select2Multi($name, $options, $val['value'], $js_opts, $val['attr']);
     }
@@ -597,7 +597,7 @@ class Blueprint
     {
         $this->fields[$name]['type'] = 'select2Ajax';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $js_opts = (isset($val['js_opts'])) ? $val['js_opts'] : array();
         $multi = (isset($val['multi'])) ? $val['multi'] : false;
         $this->fields[$name]['html'] = UIForm::select2Ajax($name, $val['url'], $val['value'], $js_opts, $multi, $val['attr']);
@@ -612,7 +612,7 @@ class Blueprint
         $step = isset($val['step']) ? $val['step'] : null;
         $this->fields[$name]['type'] = 'number';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $this->fields[$name]['html'] = Form::number($name, $val['min'], $val['max'], $val['value'], $step);
     }
 
@@ -621,7 +621,7 @@ class Blueprint
     {
         $this->fields[$name]['type'] = 'yesno';
         $this->fields[$name]['info'] = $val['info'];
-        $this->labels[$name] = Form::label($val['label'], $name);
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $this->fields[$name]['html'] = Form::radioGroup($name, array(
                                         '1' => 'Yes',
                                         '0' => 'No'
@@ -638,5 +638,17 @@ class Blueprint
         $this->labels[$name] = '';
         $type = isset($val['btn_type']) ? $val['btn_type'] : 'buttton';
         $this->fields[$name]['html'] = Form::button($name, $val['label'], $type, $val['attr']);
+    }
+
+    /**
+     * Get Html string for Form label tag.
+     *
+     * @param string $label
+     * @param string $for
+     * @return string
+     **/
+    protected function getLabelHtml($label, $for)
+    {
+        return Form::label($label, $for, array('class' => 'control-label'));
     }
 }

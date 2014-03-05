@@ -11,9 +11,14 @@ namespace Reborn\Exception;
 class FileNotFoundException extends RbException
 {
 
-    public function __construct($file, $path, $code=NULL)
+    public function __construct($file, $path = null, $code = null)
     {
-        $message = sprintf("{ %s } file doesn't exits in given %s.", $file, $path);
+        if ( is_null($path) ) {
+            $message = sprintf("File doesn't exits in given %s.", $file);
+        } else {
+            $message = sprintf("{ %s } file doesn't exits in given %s.", $file, $path);
+        }
+
         parent::__construct($message, $code);
     }
 

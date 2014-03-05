@@ -432,7 +432,7 @@ class Form
                 $checked = false;
             }
 
-            $radios .= '<label for="'.$label.'">';
+            $radios .= '<label for="'.$label.'" class="radio-inline">';
             $radios .= static::radio($name, $val, $checked, $attr);
             $radios .= $lab;
             $radios .= '</label>';
@@ -481,7 +481,7 @@ class Form
                 $checked = false;
             }
             $real_name = $name.'['.$n.']';
-            $ckbox .= '<label for="'.$label.'">';
+            $ckbox .= '<label for="'.$label.'" class="checkbox-inline">';
             $ckbox .= static::checkbox($real_name, $val, $checked, $attr);
             $ckbox .= $lab;
             $ckbox .= '</label>';

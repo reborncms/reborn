@@ -22,7 +22,7 @@ return array(
 		 *
 		 */
 		'templates' => array(
-				'sample' => CORES.'Form'.DS.'template'.DS.'sample.php'
+				'sample' => SYSTEM.'reborn'.DS.'src'.DS.'Reborn'.DS.'Form'.DS.'template'.DS.'sample.php'
 			),
 
 		/**

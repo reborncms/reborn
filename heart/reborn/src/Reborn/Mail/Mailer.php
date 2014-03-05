@@ -485,7 +485,10 @@ class Mailer
     {
         $body = '{{message_body}}';
 
-        if ( \File::is($this->template_path.$template) ) {
+        // Check template is file name or content string and
+        // get file content if "$template" is file.
+        if ( \Str::endWith('.html', $template) and
+            \File::is($this->template_path.$template) ) {
             $body = \File::getContent($this->template_path.$template);
         }
 
