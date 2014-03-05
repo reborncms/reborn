@@ -25,7 +25,7 @@ class ContactController extends \PublicController
 
         $errors = new \Reborn\Form\ValidationError();
         $hasAttach = \Setting::get('attach_field');
-        $mail = Mailer::create(array('type' => 'sendmail'));
+        $mail = Mailer::create(array('type' => \Setting::get('transport_mail')));
         if (Input::isPost()) {
             $referer = Input::server('HTTP_REFERER');
 
