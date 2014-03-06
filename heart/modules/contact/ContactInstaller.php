@@ -50,26 +50,6 @@ class ContactInstaller extends \Reborn\Module\AbstractInstaller
             )
         );
 
-		$data = array(
-			'slug'		=> 'sever_mail',
-			'name'		=> 'Sever Mail',
-			'desc'		=> 'Email for outgoing Email',
-			'value'		=> '',
-			'default'	=> '',
-			'module'	=> 'Contact'
-			);
-	    \Setting::add($data);
-
-	    $data = array(
-			'slug'		=> 'site_mail',
-			'name'		=> 'Site Mail',
-			'desc'		=> 'Contact for your Website',
-			'value'		=> '',
-			'default'	=> '',
-			'module'	=> 'Contact'
-			);
-	    \Setting::add($data);
-
 	    $data = array(
 			'slug'		=> 'transport_mail',
 			'name'		=> 'Mail Service',

@@ -28,7 +28,9 @@ INSERT INTO `settings` (`slug`, `name`, `desc`, `value`, `default`, `module`) VA
 ('timezone', 'Select your Timezone', 'Set timezone for your server', '', 'UTC', 'system'),
 ('admin_item_per_page', 'Items to show in one page (Admin Panel)', 'Item limit to show in admin Data Tables', '', '10', 'system'),
 ('frontend_enabled', 'Frontend Status', 'If your site in maintenance condition, you can closed your site.', '', 'enable', 'system'),
-('spam_filter', 'Spam Filter Key', 'Use this key for spam filter from bot', '', 'D0ntFillINthI$FielD', 'system');
+('spam_filter', 'Spam Filter Key', 'Use this key for spam filter from bot', '', 'D0ntFillINthI$FielD', 'system'),
+('sever_mail', 'Sever Mail', 'Email for outgoing Email', '', '{EMAIL}', 'Contact'),
+('site_mail', 'Site Mail', 'Contact for your Website', '', '{EMAIL}', 'Contact');
 --- db ---
 CREATE TABLE `groups` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
