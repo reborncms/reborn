@@ -146,7 +146,7 @@ class TranslateManager
                                         );
             }
 
-            static::setLoader(\Facade::getApplication()->translate_loader);
+            static::setLoader($driver);
             $loader = static::getLoader();
         }
 
