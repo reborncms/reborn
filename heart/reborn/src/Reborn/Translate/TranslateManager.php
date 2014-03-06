@@ -138,6 +138,14 @@ class TranslateManager
         $loader = static::getLoader();
 
         if (!$loader instanceof LoaderInterface) {
+            $driver = \Facade::getApplication()->translate_loader;
+
+            if (is_null($driver)) {
+                $driver = new \Reborn\Translate\Loader\PHPFileLoader(
+                                            \Facade::getApplication()
+                                        );
+            }
+
             static::setLoader(\Facade::getApplication()->translate_loader);
             $loader = static::getLoader();
         }
