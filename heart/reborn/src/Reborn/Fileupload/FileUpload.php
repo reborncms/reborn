@@ -2,15 +2,22 @@
 
 namespace Reborn\Fileupload;
 
+use Dir, Event, RbException, File;
+use \Symfony\Component\HttpFoundation\File\UploadedFile;
+use Reborn\Fileupload\Exception\DirectoryNotFoundException;
+use Reborn\Fileupload\Exception\DirectoryNotCreatedException;
+use Reborn\Fileupload\Exception\DirectoryNotWritabledException;
+use Reborn\Fileupload\Exception\LargeFileSizeException;
+
 class FileUpload
 {
 
     /**
-     * Variable for setting upload configration
+     * Upload configuration
      *
      * @var array
      **/
-    private $config = array(
+    protected $config = array(
             'encName'       => false,   // Encrypt file name with md5
             'path'          => UPLOAD,  // Directory the uploaded file save to
             'prefix'        => '',
@@ -18,32 +25,18 @@ class FileUpload
             'createDir'     => false,
             'overwrite'     => false,
             'rename'        => false,
-            'fileChmod'     => 0777,
+            'fileChmod'     => 0775,
             'dirChmod'      => 0777,
-            'recursive'		=> false,
+            'recursive'     => false,
             'allowedExt'    => array(),
         );
 
     /**
-     * Set method for config
+     * File is uploaded or not
      *
-     * @param  array $config Cusrom configuration to set
-     * @return void
+     * @var boolean
      **/
-    public function setConfig($config)
-    {
-        $this->config = array_replace_recursive($this->config, $config);
-    }
-
-    /**
-     * Get method for config
-     *
-     * @return array $config
-     **/
-    public function getConfig()
-    {
-        return $this->config;
-    }
+    protected $fail = false;
 
     /**
      * File object
@@ -60,53 +53,32 @@ class FileUpload
     protected $fileInfo = array();
 
     /**
-     * Get method for fileInfo
+     *  Uploaded file errors
      *
-     * @return array $fileInfo An array of file information
-     **/
-    public function getFileInfo()
-    {
-        return $this->fileInfo;
-    }
+     *  Error codes
+     *
+     * 0 - UPLOAD_ERR_OK
+     * 1 - UPLOAD_ERR_INI_SIZE
+     * 2 - UPLOAD_ERR_FORM_SIZE
+     * 3 - UPLOAD_ERR_PARTIAL
+     * 4 - UPLOAD_ERR_NO_FILE
+     * 6 - UPLOAD_ERR_NO_TMP_DIR
+     * 7 - UPLOAD_ERR_CANT_WRITE
+     * 8 - UPLOAD_ERR_EXTENSION
+     * 9 - File duplication
+     * 10 - File size is larger than $config['maxFileSize']
+     * 11 - File type is not allowed to be uploaded
+     *
+     *  @var array
+     */
+    protected $error;
 
     /**
-     * Error container
+     * Instance of FileUpload Class
      *
-     * @var array $errors
+     * @var Reborn\Fileupload\FileUpload
      **/
-    protected $errors = array();
-
-    /**
-     * Get method for errors
-     *
-     * @return array $errors
-     **/
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    /**
-     * Possible error message
-     *
-     * @var array $errorMsg
-     **/
-    protected $errorMsg = array(
-            'notAllowExt'   => 'This file type is not allowed to be uploaded.',
-            'largeFile'     => 'File size is too large to upload.',
-            'fileExist'     => 'File is already exist.',
-        );
-
-    /**
-     * Set method for errorMsg
-     *
-     * @param  array $errorMsg Custom error message to set
-     * @return void
-     **/
-    public function setErrorMsg($errorMsg)
-    {
-        $this->errorMsg = array_replace_recursive($this->errorMsg, $errorMsg);
-    }
+    protected static $instance;
 
     /**
      * Constructer method fo FileUpload calss
@@ -114,77 +86,107 @@ class FileUpload
      * @return void
      * @author RebornCMS Development Team
      **/
-    public function __construct($file)
+    public function __construct($file, Array $config = null)
     {
         $this->file = $file;
 
+        $this->setConfig($config);
+
         $this->fileInfo = array(
-            'extension'		=> $file->getClientOriginalExtension(),
-            'originName'	=> $file->getClientOriginalName(),
+            'extension'     => strtolower($file->getClientOriginalExtension()),
+            'originName'    => $file->getClientOriginalName(),
             'originBaseName'=> basename($file->getClientOriginalName(),
                     '.' . $file->getClientOriginalExtension()),
-            'savedName'		=> '',
-            'savedBaseName'	=> '',
-            'fileSize'		=> $file->getClientSize(),
-            'mimeType'		=> $file->getClientMimeType(),
+            'savedName'     => '',
+            'savedBaseName' => '',
+            'fileSize'      => $file->getClientSize(),
+            'mimeType'      => $file->getClientMimeType(),
+            'width'         => 0,
+            'height'        => 0,
             );
+
+        static::$instance = $this;
+
+        Event::call('reborn.fileupload.start', array($this));
     }
 
     /**
-     * Initializing the uplod config
+     * Initializing upload config and files
      *
-     * @return void
+     * @return
      **/
-    public function uploadInit()
+    public static function initialize($file = null, Array $config = null)
     {
-        if (! \Dir::is($this->config['path'])) {
 
-            if (! $this->config['createDir']) {
-                throw new \RbException('Directory not found.');
+        $ins = (is_null(static::$instance)) ? new static($file, $config)
+                     : static::$instance;
 
-                exit;
-            } else {
-                \Dir::make($this->config['path'], $this->config['dirChmod'],
-                    $this->config['recursive']);
-            }
-        }
+        Event::call('reborn.fileupload.initialize', array($ins));
 
-        if (! is_writable($this->config['path'])) {
-            throw new \RbException('Directory is not writable !');
+        if (! $ins->createDir()) {
+            throw new DirectoryNotCreatedException();
 
             exit;
         }
 
-        if ((! \Dir::is($this->config['path'])) and (! $this->config['createDir'])) {
-            throw new \RbException('Directory not found.');
+        if (! Dir::is($ins->config['path'])) {
+            throw new DirectoryNotFoundException();
+
+            exit;
         }
 
-        if (! $this->file->isValid()) {
-            $this->errors = array($this->file->getError());
-        } else {
-            $i = 0;
+        if (! is_writable($ins->config['path'])) {
+            throw new DirectoryNotWritabledException();
 
-            if (! $this->config['overwrite']) {
-                if (! $this->config['rename']) {
-                    $f = $this->config['path'].$this->file->getClientOriginalName();
-                    if (\File::is($f)) {
-                        $this->errors[$i] = $this->errorMsg['fileExist'];
-                        $i++;
-                    }
-                }
-            }
+            exit;
+        }
 
-            if ($this->config['maxFileSize'] != 0
-                and $this->file->getClientSize() > $this->config['maxFileSize']) {
-                $this->errors[$i] = $this->errorMsg['largeFile'];
-            }
+        if ($ins->config['maxFileSize'] > UploadedFile::getMaxFilesize()) {
+            throw new LargeFileSizeException('Maximum uploadable file size is
+             larger than maximum uploadable file size which is defined in php.ini!');
 
-            $extension = strtolower($this->file->getClientOriginalExtension());
+            exit;
+        }
 
-            if ((! empty($this->config['allowedExt']))
-                and (! in_array($extension, $this->config['allowedExt']))) {
-                $this->errors[$i] = $this->errorMsg['notAllowExt'];
-            }
+        $ins->encryptFilename();
+
+        $ins->addPrefix();
+
+        if (! $ins->rename()) {
+            $ins->error[] = 9;     // File Duplication
+            $ins->fail = true;
+        }
+
+        $ins->config['maxFileSize'] = (0 == $ins->config['maxFileSize'])
+            ? UploadedFile::getMaxFilesize() : $ins->config['maxFileSize'];
+
+        if ($ins->fileInfo['fileSize'] > $ins->config['maxFileSize']) {
+            $ins->error[] = 4;     // File size is larger than $config['maxFileSize']
+            $ins->fail = true;
+        }
+
+        if (! $ins->checkExtension()) {
+            $ins->error[] = 5;     // File type is not allowed to be uploaded
+            $ins->fail = true;
+        }
+
+        if (! $ins->file->isValid()) {
+            $ins->error[] = $ins->file->getError();
+            $ins->fail = true;
+        }
+
+    }
+
+    /**
+     * Set method for config
+     *
+     * @param  array $config Cusrom configuration to set
+     * @return void
+     **/
+    public function setConfig($config)
+    {
+        if (! is_null($config)) {
+            $this->config = array_replace_recursive($this->config, $config);
         }
     }
 
@@ -196,48 +198,127 @@ class FileUpload
      **/
     public function upload()
     {
-        if ($this->config['encName']) {
-            $this->fileInfo['savedBaseName'] = hash('md5',
-                $this->fileInfo['originBaseName']);
 
-            $this->fileInfo['savedName'] = $this->fileInfo['savedBaseName']
-                . '.' . $this->fileInfo['extension'];
-        } else {
-            $this->fileInfo['savedName'] = $this->fileInfo['originName'];
-            $this->fileInfo['savedBaseName'] = $this->fileInfo['originBaseName'];
+        Event::call('reborn.fielupload.upload', array($this));
+
+        if (! $this->isFail()) {
+
+            $path = $this->config['path'];
+            $file = $this->fileInfo['savedName'];
+            $chmod = $this->config['fileChmod'];
+
+            $this->file->move($path, $file);
+
+            chmod($path . $file, $chmod);
+
+            $this->addExtraData();
+
         }
+
+    }
+
+    /**
+     * Check the extension is allowed to be uploaded or not
+     *
+     * @return boolean
+     **/
+    protected function checkExtension()
+    {
+
+        if (empty($this->config['allowedExt'])) {
+            return true;
+        }
+
+        return (in_array($this->fileInfo['extension'], $this->config['allowedExt']))
+                ? true : false;
+
+    }
+
+    /**
+     * Add extra data to file info
+     *
+     * @return void
+     **/
+    protected function addExtraData()
+    {
+
+        $this->fileInfo['path'] = $this->config['path'];
+        $this->fileInfo['fullPath'] = $this->config['path']
+                                            . $this->fileInfo['savedName'];
+
+        list($group, $type) = explode('/', $this->fileInfo['mimeType']);
+
+        if ('image' == $group) {
+            list($width, $height, $type, $attr) = getimagesize(
+                                                    $this->fileInfo['fullPath']
+                                                );
+
+            $this->fileInfo['width'] = $width;
+            $this->fileInfo['height'] = $height;
+
+        }
+
+    }
+
+    /**
+     * Add prefix to file name
+     *
+     * @return void
+     **/
+    protected function addPrefix()
+    {
 
         if (! empty($this->config['prefix'])) {
-            $this->fileInfo['savedBaseName'] = $this->config['prefix'] . $this
-                ->fileInfo['savedBaseName'];
 
-            $this->fileInfo['savedName'] = $this->config['prefix'] . $this
-                ->fileInfo['savedName'];
+            $this->fileInfo['savedBaseName'] = $this->config['prefix']
+                    . $this->fileInfo['savedBaseName'];
+
+            $this->fileInfo['savedName'] = $this->config['prefix']
+                    . $this->fileInfo['savedName'];
         }
 
-        if (\File::is($this->config['path'] . $this->fileInfo['savedName'])) {
-            if ($this->config['overwrite']) {
-                $file->move($this->config['path'], $this->fileInfo['savedName']);
-            } else {
-                while (\File::is($this->config['path'] . $this->fileInfo['savedName'])) {
-                    $this->rename();
-                }
+    }
 
-                $this->file->move($this->config['path'], $this->fileInfo['savedName']);
-            }
+    /**
+     * Create directory if $config['createDir'] is set to true
+     *
+     * @return boolean
+     **/
+    protected function createDir()
+    {
 
-            chmod($this->config['path'] . $this->fileInfo['savedName'],
-                $this->config['fileChmod']);
+        if ($this->config['createDir']) {
+            return (Dir::is($this->config['path'])) ? true : Dir::make(
+                    $this->config['path'],
+                    $this->config['dirChmod'],
+                    $this->config['recursive']
+                );
+        }
 
-            return true;
+        return true;
+
+    }
+
+    /**
+     * Hash filename with by ushing md5
+     *
+     * @return void
+     **/
+    protected function encryptFilename()
+    {
+
+        if ($this->config['encName']) {
+            $hashed = hash('md5', $this->fileInfo['originBaseName']);
+
+            $this->fileInfo['savedBaseName'] = $hashed;
+
+            $this->fileInfo['savedName'] = $hashed . '.' . $this->fileInfo['extension'];
         } else {
-            $this->file->move($this->config['path'], $this->fileInfo['savedName']);
+            $this->fileInfo['savedBaseName'] = $this->fileInfo['originBaseName'];
 
-            chmod($this->config['path'] . $this->fileInfo['savedName'],
-                $this->config['fileChmod']);
-
-            return true;
+            $this->fileInfo['savedName'] = $this->fileInfo['originName'];
         }
+
     }
 
     /**
@@ -245,29 +326,94 @@ class FileUpload
      * this method will rename the uploaded filename with serial surfix.
      * (eg. file_1.ext, file_2.ext)
      *
-     * @param  String $fileDir the directory you want to upload
-     * @param  String $name    the name of the file you uploaded
      * @return String Renamed filename will return
-     * @author RebornCMS Development Team
      **/
-    private function rename()
+    protected function rename()
     {
-        $matching = preg_match_all('/^(\w*)_(\d\d?)\.(\w*)$/',
-            $this->fileInfo['savedName'], $match);
 
-        if ($matching) {
-            $count = ((int) $match[2][0])+1;
-
-            $this->fileInfo['savedName'] = $match[1][0] . '_' . $count . '.'
-                . $match[3][0];
-
-            $this->fileInfo['savedBaseName'] = $match[1][0] . '_' . $count;
-
-        } else {
-            $this->fileInfo['savedName'] = $this->fileInfo['savedBaseName']
-                . '_1' . '.' . $this->fileInfo['extension'];
-
-            $this->fileInof['savedBaseName'] = $this->fileInfo['savedBaseName'] . '_1';
+        if ($this->config['overwrite']) {
+            return true;
         }
+
+        $savedName = $this->fileInfo['savedName'];
+        $savedBaseName = $this->fileInfo['savedBaseName'];
+        $file = $this->config['path'] . $savedName;
+
+        if (File::is($file)) {
+
+            if ($this->config['rename']) {
+
+                while (File::is($file)) {
+
+                    $matching = preg_match_all('/^(\w*)_(\d\d?)\.(\w*)$/',
+                        $savedName, $match);
+
+                    if ($matching) {
+
+                        $counter = ((int) $match[2][0])+1;
+
+                        $savedBaseName = $match[1][0] . '_' . $counter;
+
+                        $savedName = $savedBaseName . '.' . $match[3][0];
+
+                    } else {
+
+                        $savedBaseName = $savedBaseName. '_1';
+
+                        $savedName = $savedBaseName . '.'
+                                    . $this->fileInfo['extension'];
+                    }
+
+                }
+
+                $this->fileInfo['savedName'] = $savedName;
+                $this->fileInfo['savedBaseName'] = $saveBasedName;
+
+            } else {
+                return false;
+
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Can be called method start with get
+     *
+     * @param string $name
+     * @param array  $args
+     *
+     * @return mix
+     **/
+    public function __call($name, $args)
+    {
+
+        switch ($name) {
+            case 'getConfig':
+                return $this->config;
+                break;
+
+            case 'getFileInfo':
+                return $this->fileInfo;
+                break;
+
+            case 'getFileUpload':
+                return $this->fileUpload;
+                break;
+
+            case 'isFail':
+                return $this->fail;
+                break;
+
+            case 'getError':
+                return $this->error;
+                break;
+
+            default:
+                return false;
+                break;
+        }
+
     }
 }
