@@ -23,6 +23,7 @@ class PagesInstaller extends \Reborn\Module\AbstractInstaller
             $table->text('js')->nullable();
             $table->integer('comments_enable');
             $table->enum('status', array('draft','live'))->default('draft');
+            $table->enum('editor_type', array('wysiwyg', 'markdown'))->default('wysiwyg');
             $table->integer('author_id');
             $table->integer('page_order')->default(0);
             $table->timestamps();
@@ -64,7 +65,11 @@ class PagesInstaller extends \Reborn\Module\AbstractInstaller
 
     public function upgrade($v, $prefix = null)
     {
-        return $v;
+        if ($v < '1.1') {
+            \Schema::table($prefix.'pages', function($table){
+                $table->enum('editor_type', array('wysiwyg', 'markdown'))->default('wysiwyg');
+            });
+        }
     }
 
 }

@@ -8,14 +8,6 @@ jQuery(function(){
 		});
 	});
 
-	$('#page-css').each(function(){
-		CodeMirror.fromTextArea(this,{mode:"css",autoClearEmptyLines:true}).setSize(600, 395);
-	});
-	
-	$('#page-js').each(function(){
-		CodeMirror.fromTextArea(this,{mode:"javascript",autoClearEmptyLines:true}).setSize(600, 395);
-	});	
-
 	$(".design").colorbox({
 		inline:true,
 		width:"60%",

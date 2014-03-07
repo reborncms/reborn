@@ -47,8 +47,15 @@
                 <div class="form-block">
 
                     <span class="msg error">{{ $blog->errors('body') }}</span>
-    				{{ Form::ckeditor('body', (isset($blog->body) and $method == 'edit') ? $blog->body : '') }}
 
+                    {= $editor_type = (isset($blog->editor_type) and $blog->editor_type) ? $blog->editor_type : $content_editor =}
+
+                    {{ if ($editor_type == 'markdown') }}
+                        {{ Form::codemirror('body', (isset($blog->body) and $method == 'edit') ? $blog->body : '', '92%', '500px', array('mode' => 'markdown', 'theme' => 'cobalt')) }}
+                    {{ else }}
+                        {{ Form::ckeditor('body', (isset($blog->body) and $method == 'edit') ? $blog->body : '') }}
+                    {{ endif }}
+                    {{ Form::hidden('editor_type', $editor_type) }}
                 </div> <!-- end of form-block -->
 
                 <!-- BLOG EXCERPT -->

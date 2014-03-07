@@ -205,6 +205,10 @@ class PagesController extends \AdminController
         $page->comments_enable = \Input::get('comments_enable');
         $page->author_id = $current_user->id; //get author_id
 
+        if (\Module::get('pages', 'db_version') >= 1.1) {
+            $page->editor_type = \Input::get('editor_type');
+        }
+
         return $page;
     }
 
@@ -375,16 +379,18 @@ class PagesController extends \AdminController
     protected function formElements()
     {
         $layout_list = self::layoutList();
+        $content_editor = (\Setting::get('content_editor')) ? \Setting::get('content_editor') : 'wysiwyg';
+        $this->template->set('content_editor', $content_editor);
         $this->template->style(array(
                     'form.css',
-                    'plugins/codemirror/codemirror.css'
+                    //'plugins/codemirror/codemirror.css'
                 ))
                 ->script(array(
                     'form.js',
                     //'plugins/jquery.colorbox.js',
-                    'plugins/codemirror/codemirror.js',
-                    'plugins/codemirror/css.js',
-                    'plugins/codemirror/javascript.js'
+                    //'plugins/codemirror/codemirror.js',
+                    //'plugins/codemirror/css.js',
+                    //'plugins/codemirror/javascript.js'
                 ))
                 ->set('layoutList', $layout_list);
     }

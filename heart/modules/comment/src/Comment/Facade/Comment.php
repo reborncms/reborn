@@ -51,7 +51,7 @@ class Comment extends \Facade
             $options = array(
                 'total_items'       => $total_parent_comments,
                 'items_per_page'    => \Setting::get('comment_per_page', 10),
-                'pagi_numbers'		=> false,
+                //'pagi_numbers'		=> false,
                 'template'			=> array(
                     'start_container' => '<div class="pagination" id="comment-pagination">',
                 ),

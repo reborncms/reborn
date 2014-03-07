@@ -21,7 +21,7 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
             $table->integer('author_id');
             $table->enum('comment_status', array('open', 'close'))->default('open');
             $table->enum('status', array('draft', 'live'))->default('draft');
-            //type
+            $table->enum('editor_type', array('wysiwyg', 'markdown'))->default('wysiwyg');
             $table->integer('view_count')->default(0);
             $table->integer('lang_ref')->nullable();
             $table->string('lang', 20)->nullable();
@@ -87,6 +87,18 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
             'module'	=> 'Blog'
             );
         \Setting::add($data);
+
+        //Have to move this setting as content setting
+        $data = array(
+           'slug'       => 'content_editor',
+           'name'       => 'Contents editor',
+           'desc'       => 'Text Editor for contents',
+           'value'      => '',
+           'default'    => 'wysiwyg',
+           'module'     => 'Blog'
+        );
+
+        \Setting::add($data);
     }
 
     public function uninstall($prefix = null)
@@ -130,6 +142,23 @@ class BlogInstaller extends \Reborn\Module\AbstractInstaller
             \Schema::table($prefix.'blog', function ($table) {
                 $table->string('post_type', 50)->nullable()->default('standard');
             });
+        }
+
+        if ($v < '1.21') {
+            \Schema::table($prefix.'blog', function($table) {
+                $table->enum('editor_type', array('wysiwyg', 'markdown'))->default('wysiwyg');
+            });
+            //Have to move this setting as content setting
+            $data = array(
+               'slug'       => 'content_editor',
+               'name'       => 'Contents editor',
+               'desc'       => 'Text Editor for contents',
+               'value'      => '',
+               'default'    => 'wysiwyg',
+               'module'     => 'Blog'
+            );
+
+            \Setting::add($data);
         }
 
     }

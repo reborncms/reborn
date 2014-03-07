@@ -11,7 +11,7 @@ class PagesInfo extends \Reborn\Module\AbstractInfo
         'my'    => 'စာမျက်နှာများ'
     );
 
-    protected $version = '1.0';
+    protected $version = '1.1';
 
     protected $description = array(
         'en'    =>'Manage Pages of your website',

@@ -25,11 +25,14 @@ class Helper
         $ps .= 	$page['title'];
 
         if ($page['status'] == 'draft') {
-            $ps .= '<a href="'.adminUrl('pages/status/'.$page['id']).'" style="cursor:pointer;">';
+            $ps .= '<a href="'.admin_url('pages/status/'.$page['id']).'" style="cursor:pointer;">';
             $ps .= '<span class="label label-info">'.t('global.draft_label').'</span>';
+            $view_url = url('pages/preview/'.$page['uri']);
+        } else {
+            $view_url = url($page['uri']);
         }
         $ps .= '<div class="page_actions">';
-        $ps .= '<a href="'.rbUrl('pages/preview/'.$page['uri']).'" title="'.t('global.view').'" class="tipsy-tip" target="_blank"><i class="icon-view icon-black"></i></a>';
+        $ps .= '<a href="'.$view_url.'" title="'.t('global.view').'" class="tipsy-tip" target="_blank"><i class="icon-view icon-black"></i></a>';
 
         if (user_has_access('pages.create')) {
              $ps .= '<a href="'.adminUrl('pages/duplicate/'.$page['id']).'" title="'.t('pages::pages.labels.page_duplicate').'" class="tipsy-tip"><i class="icon-copy icon-black"></i></a>';

@@ -15,7 +15,7 @@
 		{{ endloop }}
 	</ul><!-- end of comments_wrapper -->
 	{{ if (isset($pagination)) }}
-		{{ $pagination }}
+		{{ $pagination->pager() }}
 	{{ endif }}
 {{ else }}
 	{{ if ($status == 'open') }}

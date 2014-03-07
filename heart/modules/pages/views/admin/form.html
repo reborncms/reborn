@@ -24,7 +24,14 @@
 					</div>
 				</div>
 				<div class="form-block">
-					{{ Form::ckeditor('content', $page->page_body) }}
+					{= $editor_type = (isset($page->editor_type) and $page->editor_type) ? $page->editor_type : $content_editor =}
+
+					{{ if($editor_type == 'markdown') }}
+						{{ Form::codemirror('content', $page->page_body, '92%', '500px', array('mode' => 'markdown', 'theme' => 'neat')) }}
+					{{ else }}
+						{{ Form::ckeditor('content', $page->page_body) }}
+					{{ endif }}
+					{{ Form::hidden('editor_type', $editor_type) }}
 				</div>
 			</div> <!-- end of form-left -->
 			<div id="form-right">
@@ -94,10 +101,10 @@
 						</ul>
 						<div id="tab-contents">
 							<div id="tab-css">
-								{{ Form::textarea('css', $page->css, array('id' => 'page-css')) }}
+								{{ Form::codemirror('css', $page->css, '600px', '395px', array('mode' => 'css', 'theme' => 'neat'), array('id' => 'page-css')) }}
 							</div> 
 							<div id="tab-js">
-								{{ Form::textarea('js', $page->js, array('id' => 'page-js')) }}
+								{{ Form::codemirror('js', $page->css, '600px', '395px', array('mode' => 'javascript', 'theme' => 'neat'), array('id' => 'page-js')) }}
 							</div> 
 						</div> 
 					</div>

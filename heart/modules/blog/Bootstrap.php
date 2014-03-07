@@ -31,6 +31,13 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
                 'type'	=> 'select',
                 'options' => \Config::get('langcodes')
             ),
+            'content_editor' => array(
+                'type'  => 'select',
+                'options'   => array(
+                    'wysiwyg' => 'WYSIWYG Editor',
+                    'markdown'  => 'Markdown Editor'
+                ),
+            ),
         );
     }
 

@@ -190,7 +190,11 @@ class Blog extends \Eloquent
 
     public function getContentAttribute()
     {
-        return html_entity_decode($this->attributes['body'], ENT_QUOTES);
+        if (isset($this->attributes['editor_type']) and $this->attributes['editor_type'] == 'markdown') {
+            return html_entity_decode(markdown_extra($this->attributes['body']));
+        } else {
+            return html_entity_decode($this->attributes['body'], ENT_QUOTES);
+        }
     }
 
     public function getLangListAttribute()

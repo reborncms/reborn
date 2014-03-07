@@ -454,4 +454,62 @@ SCRIPT;
         return static::select2($name, $url, $value, $js_opts, $multi, true, $attrs);
     }
 
+    /**
+     * Code Mirror 
+     *
+     * @param string $name Name of the Code Form
+     * @param string $value Value of the Field.
+     * @param string $width Width of the Field.
+     * @param string $height Height of the Field.
+     *
+     * @return string
+     **/
+    public static function codemirror($name, $value, $width = 600, $height = 400, $js_opts = array(), $attrs = array())
+    {
+        $js = global_asset('js', 'codemirror/codemirror.js');
+
+        $css = global_asset('css', 'codemirror/codemirror.css');
+
+        $mode_script = '';
+
+        $theme_css = '';
+
+        if(isset($js_opts['mode']) and $js_opts['mode']) {
+            $mode_script = global_asset('js', 'codemirror/mode/'.$js_opts['mode'].'.js');
+        }
+
+        if (isset($js_opts['theme']) and $js_opts['theme']) {
+            $theme_css = global_asset('css', 'codemirror/theme/'.$js_opts['theme'].'.css');   
+        }
+
+        if(!isset($js_opts['autoClearEmptyLines']))
+        {
+            $js_opts['autoClearEmptyLines'] = true;
+        }
+
+        $opts = \Reborn\Util\ToolKit::jsEncode($js_opts);
+
+        if (isset($attrs['id'])) {
+            $element = $attrs['id'];
+        } else {
+            $element = $name;
+        }
+
+        $init = <<<EDITOR
+$css
+$js
+$mode_script
+$theme_css
+<script type="text/javascript">
+        var element = document.getElementById('$element');
+        CodeMirror.fromTextArea(element,$opts).setSize('$width', '$height');
+</script>
+EDITOR;
+    
+    $element = static::textarea($name, $value, $attrs);
+
+    return $element.$init;
+
+    }
+
 } // END class UIForm extends Form

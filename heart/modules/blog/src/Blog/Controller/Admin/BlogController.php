@@ -79,7 +79,8 @@ class BlogController extends \AdminController
     public function create()
     {
         if (!user_has_access('blog.create')) {
-                return $this->notFound();
+
+            return $this->notFound();
 
         }
 
@@ -556,12 +557,15 @@ class BlogController extends \AdminController
 
         $lang_list = array_merge(array('none' => '-- Choose Language --'), Config::get('langcodes'));
 
+        $content_editor = (\Setting::get('content_editor')) ? \Setting::get('content_editor') : 'wysiwyg';
+
         $this->template->setPartial('admin/form')
                         ->set('authors', $authors)
                         ->set('blog', $blog)
                         ->set('custom_field', $fields)
                         ->set('lang_list', $lang_list)
                         ->set('post_types', Config::get('blog::blog.post_types'))
+                        ->set('content_editor', $content_editor)
                         ->jsValue('post_id', $blog->id)
                         ->style(array(
                             'plugins/jquery.tagsinput_custom.css',
@@ -615,7 +619,15 @@ class BlogController extends \AdminController
         //if excerpt is empty get some part from body
         if (Input::get('excerpt') == '') {
 
-            $excerpt = Str::words(strip_tags(html_entity_decode(Input::get('body'))), Setting::get('excerpt_length'));
+            $body_text = Input::get('body');
+
+            if (\Input::get('editor_type') == 'markdown') {
+                $body_text = markdown_extra($body_text);
+            } else {
+                $body_text = html_entity_decode($body_text);
+            }
+
+            $excerpt = Str::words(strip_tags($body_text), Setting::get('excerpt_length'));
 
         } else {
 
@@ -647,6 +659,10 @@ class BlogController extends \AdminController
         $blog->post_type = Input::get('post_type');
         $blog->body = Input::get('body');
         $blog->author_id = $author;
+
+        if (Module::get('blog', 'db_version') >= 1.21) {
+            $blog->editor_type = Input::get('editor_type');
+        }
 
         if (Module::get('blog', 'db_version') >= 1.1) {
 
