@@ -24,7 +24,10 @@ class Css extends \Munee\Asset\Type\Css
         $changedContent = preg_replace_callback($regEx, function ($match) use ($originalFile, $webroot) {
             $filePath = trim($match[2]);
             // Skip conversion if the first character is a '/' since it's already an absolute path
-            if ($filePath[0] !== '/' && false === strpos($filePath, '://')) {
+            if ($filePath[0] !== '/' &&
+                false === strpos($filePath, '://') &&
+                strpos($filePath, 'data:') !== 0) {
+
                 $basePath = SUB_FOLDER  . str_replace($webroot, '', dirname($originalFile));
                 $basePathParts = array_reverse(array_filter(explode(DS, $basePath)));
 
