@@ -102,7 +102,7 @@ if (! function_exists('duplication')) {
 
 /**
  * Rename with increasemental surfix like _1, _2, etc.
- * Default string is like this (name_1, name_2, name_3)
+ * Default string is like this (name_1.ext, name_2.ext, name_3.ext)
  * Maximum increasement number is 99
  *
  * @param String $target String to be increased
@@ -111,16 +111,35 @@ if (! function_exists('duplication')) {
  **/
 if (! function_exists('increasemental')) {
 
-    function increasemental($target)
+    function increasemental($target, $file = true)
     {
-        $matching = preg_match_all('/^(\w*)_(\d\d?)$/', $target, $matches);
 
-        if ($matching) {
-            $count = ((int) $matches[2][0])+1;
+        if ($file) {
 
-            $target = $matches[1][0] . '_' . $count;
+            $matching = preg_match_all('/^(\w*)_(\d\d?)\.(\w*)$/', $target, $match);
+
+            if ($matching) {
+                $counter = ((int) $match[2][0])+1;
+                $target = $match[1][0] . '_' . $counter . '.' . $match[3][0];
+            } else {
+                $exploded = explode('.', $target);
+                $room = count($exploded) - 2;
+                $exploded[$room] .= '_1';
+                $target = implode('.', $exploded);
+            }
+
         } else {
-            $target = $target.'_1';
+
+            $matching = preg_match_all('/^(\w*)_(\d\d?)$/', $target, $matches);
+
+            if ($matching) {
+                $count = ((int) $matches[2][0])+1;
+
+                $target = $matches[1][0] . '_' . $count;
+            } else {
+                $target = $target.'_1';
+            }
+
         }
 
        return $target;
@@ -209,5 +228,23 @@ if (! function_exists('doScale')) {
         }
 
         return (int) round($scaled);
+    }
+}
+
+if (! function_exists('get_file_path')) {
+    function get_file_path($file)
+    {
+        
+        if (is_object($file)) {
+            return UPLOAD 
+                    . date('Y', strtotime($file->created_at))
+                    . DS
+                    .date('m', strtotime($file->created_at)) 
+                    . DS  
+                    . $file->filename;
+        }
+
+        return false;
+
     }
 }

@@ -11,7 +11,7 @@ return array(
         'file_rename'   => true,
         'create_dir'    => true,
         'encrypt'       => true,
-
+        'default_name'  => 'RBFolder',
         'upload_config' => array(
                 'encName'   => true,
                 'path'      => UPLOAD . date('Y') . DS . date('m') . DS,

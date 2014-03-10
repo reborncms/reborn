@@ -5,7 +5,7 @@ namespace Media\Controller\Admin;
 use Media\Model\Files;
 use Media\Model\Folders;
 use Reborn\Fileupload\Uploader as Uploader;
-use Input, Flash, Redirect, Config, Validation;
+use Input, Flash, Redirect, Config, Validation, File;
 
 /**
  * Controller class for media files
@@ -22,7 +22,7 @@ class FileController extends \AdminController
      * @param int    $folderId
      * @param String $key      name if file input field
      *
-     * @return void
+     * @return String
      **/
     public function upload($folderId = 0, $key = 'files')
     {
@@ -99,7 +99,8 @@ class FileController extends \AdminController
      * Can edit file data by using this method
      *
      * @param int $id File id to be edited
-     * @author RebornCMS Development Team
+     *
+     * @return String
      **/
     public function update($id = 0)
     {
@@ -122,12 +123,35 @@ class FileController extends \AdminController
             $this->template->partialOnly();
         }
 
-        $this->template->fileData = $model;
-
-        $this->template->allFolders = Folders::all();
-
         $this->template->title(t('m.title.fileEdit'))
+                        ->set('fileData', $model)
+                        ->set('allFolders', Folders::all())
                         ->setPartial('admin/form/edit');
+    }
+
+    /**
+     * Delete file or files
+     *
+     * @param mix $id Array or int
+     *
+     * @return String
+     **/
+    public function delete($id)
+    {
+
+        $ids = (array) $id;
+
+        $files = Files::whereIn('id', $ids)->get();
+
+        foreach ($files as $file) {
+
+            $file->deleteFile();
+        }
+
+        Flash::success(t('media::media.success.fileDel'));
+
+        return Redirect::module();
+
     }
 
     /**
@@ -143,17 +167,9 @@ class FileController extends \AdminController
         $name = $filename;
 
         while (Files::hasFile($name)) {
-            $matching = preg_match_all('/^(\w*)_(\d\d?)\.(\w*)$/', $name, $match);
 
-            if ($matching) {
-                $counter = ((int) $match[2][0])+1;
-                $name = $match[1][0] . '_' . $counter . '.' . $match[3][0];
-            } else {
-                $exploded = explode('.', $name);
-                $room = count($exploded) - 2;
-                $exploded[$room] .= '_1';
-                $name = implode('.', $exploded);
-            }
+            $name = increasemental($name);
+            
         }
 
         return $name;

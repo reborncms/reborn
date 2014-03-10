@@ -30,8 +30,8 @@
 
     // File Delete
     \Route::add(
-            '@admin/media/delete-file/{int:id}/{int:redirect}?',
-            'Media\Admin\Media::deleteFile',
+            '@admin/media/delete-file/{int:id}',
+            'Media\Admin\File::delete',
             'file_delete'
         );
 
@@ -84,6 +84,3 @@
             'Media\Media::download',
             'file_download'
         );
-
-/* ===== TESTING ===== */
-\Route::add('@admin/media/file/testing', 'Media\Admin\File::testing');

@@ -25,28 +25,22 @@ class FolderController extends \AdminController
     {
         if (Input::isPost()) {
 
-            $validate = $this->validation();
+            $folder = new Folders;
 
-            if ($validate->valid()) {
-                $folder = new Folders;
+            if ($saved = $folder->createFolder(Input::get('*'))) {
+                Event::call('media.folder.create', array($saved));
 
-                if ($saved = $folder->createFolder(Input::get('*'))) {
-                    Event::call('media.folder.create', array($saved));
-
-                    if ($this->request->isAjax()) {
-                        return $this->returnJson(array('status' => 'success'));
-                    }
-
-                    Flash::success(t('media::success.create'));
-
-                    return Redirect::toAdmin('media');
-                } else {
-                    Flash::error(t('m.error.create'));
+                if ($this->request->isAjax()) {
+                    return $this->returnJson(array('status' => 'success'));
                 }
+
+                Flash::success(t('media::success.create'));
+
+                return Redirect::toAdmin('media');
             } else {
-                $this->template->error = $validate->getErrors();
                 Flash::error(t('m.error.create'));
             }
+            
         }
 
         if ($this->request->isAjax()) {
@@ -72,26 +66,17 @@ class FolderController extends \AdminController
 
         if (Input::isPost()) {
 
-            $validate = $this->validation();
+            if ($saved = $folder->updateFolder(Input::get('*'))) {
+                Event::call('omi.session.update', array($saved));
 
-            if ($validate->valid()) {
-
-                if ($saved = $folder->updateFolder(Input::get('*'))) {
-                    Event::call('omi.session.update', array($saved));
-
-                    if ($this->request->isAjax()) {
-                        return $this->returnJson(array('status' => 'success'));
-                    }
-
-                    Flash::success(t('m.success.folderUpdate'));
-
-                    return Redirect::module();
-                } else {
-                    Flash::error(t('m.error.folderUpdate'));
+                if ($this->request->isAjax()) {
+                    return $this->returnJson(array('status' => 'success'));
                 }
 
+                Flash::success(t('m.success.folderUpdate'));
+
+                return Redirect::module();
             } else {
-                $this->template->error = $validate->getErrors();
                 Flash::error(t('m.error.folderUpdate'));
             }
         }
@@ -117,18 +102,13 @@ class FolderController extends \AdminController
     {
         $result = with(new Folders)->folderTreeIds($id);
 
-        $files = Files::whereIn('folder_id', $result)->get(array('id'))->lists('id');
+        $files = Files::whereIn('folder_id', $result)->get();
 
         if (! empty($files)) {
-            Files::destroy($files);
+            foreach ($files as $file) {
+                $file->deleteFile();
+            }
         }
-
-# @TODO - delete physical file
-       /* $files = Files::whereIn('folder_id', $result)->get(array('id'))->toArray();
-
-        if (! empty($files)) {
-            $this->deleteFile(array_pluck($files, 'id'), false);
-        }*/
 
         Folders::destroy($result);
 
@@ -139,19 +119,6 @@ class FolderController extends \AdminController
         Flash::success(t('media::media.success.folderDel'));
 
         return Redirect::module();
-    }
-
-    /**
-     * This method will check validation for forms
-     *
-     * @return Reborn\Form\Validation
-     **/
-    protected function validation()
-    {
-        return new Validation(Input::get('*'), array(
-                'name'      => 'required|maxLength:200',
-                'folder_id' => 'required|integer',
-            ));
     }
 
 } // END class FolderController extends \AdminController

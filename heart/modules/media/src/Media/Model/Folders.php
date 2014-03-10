@@ -3,6 +3,7 @@
 namespace Media\Model;
 
 use Auth;
+use Config;
 
 /**
  * Model for Media Module which served CURD with media_folders table.
@@ -25,19 +26,28 @@ class Folders extends \Eloquent
     /**
      * Save new folder data to database
      *
+     * @param array $data
+     *
      * @return Media\Model\Folders
      **/
     public function createFolder($data)
     {
 
-        $name = duplicate($data['name']);
+        $folder_id = (empty($data['folder_id'])) ? 0 : $data['folder_id'];
+        $name = (empty($data['name'])) 
+                ? Config::get('media::media.default_name')
+                : $data['name'];
+
+        $name = $this->duplication('name', $name, $folder_id);
+        $slug = slug($name);
+        $slug = $this->duplication('slug', $slug);
 
         $this->name = $name;
-        $this->slug = slug($name);
+        $this->slug = $slug;
         $this->description = $data['description'];
-        $this->folder_id = $data['folder_id'];
+        $this->folder_id = $folder_id;
         $this->user_id = Auth::getUser()->id;
-        $this->depth = defineDepth($data['folder_id']);
+        $this->depth = defineDepth($folder_id);
 
         if ($this->save()) {
             return $this;
@@ -55,14 +65,18 @@ class Folders extends \Eloquent
     public function updateFolder($data)
     {
 
-        $name = duplicate($data['name'], 'folder', $this->name);
+        $folder_id = (empty($data['folder_id'])) ? 0 : $data['folder_id'];
+        $name = (empty($data['name'])) ? $this->name : $data['name'];
+        $name = $this->duplication('name', $name, $folder_id);
+        $slug = slug($name);
+        $slug = $this->duplication('slug', $slug);
 
         $this->name = $name;
-        $this->slug = slug($name);
+        $this->slug = $slug;
         $this->description = $data['description'];
-        $this->folder_id = $data['folder_id'];
+        $this->folder_id = $folder_id;
         $this->user_id = Auth::getUser()->id;
-        $this->depth = defineDepth($data['folder_id']);
+        $this->depth = defineDepth($folder_id);
 
         if ($this->save()) {
             return $this;
@@ -200,6 +214,44 @@ class Folders extends \Eloquent
     public function childFolder()
     {
         return $this->hasMany('Media\Model\Folders', 'folder_id', 'id');
+
+    }
+
+    /**
+     * Solve name duplication
+     *
+     * @return String $name renamed
+     **/
+    protected function duplication($key, $value, $folder = null)
+    {
+
+        $name = $value;
+
+        while (static::hasFolder($key, $name, $folder)) {
+            $name = increasemental($name, false);
+        }
+
+        return $name;
+
+    }
+
+    /**
+     * Check folder name or slug has already existed or not
+     *
+     * @return boolean
+     **/
+    public function hasFolder($key, $value, $folder = null)
+    {
+
+        $ins = new static;
+
+        $result = $ins->where($key, $value);
+
+        $result = (is_null($folder)) 
+                    ? $result->where('folder_id', $folder)->first()
+                    : $result->first();
+
+        return (is_null($result)) ? false : true;
 
     }
 
