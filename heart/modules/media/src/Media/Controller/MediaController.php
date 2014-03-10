@@ -35,8 +35,7 @@ class MediaController extends \PublicController
      **/
     public function before()
     {
-        if(! \Dir::is(STORAGES . 'cache/media/'))
-        {
+        if (! \Dir::is(STORAGES . 'cache/media/')) {
             \Dir::make(STORAGES . 'cache/media/', 0777, TRUE);
         }
 
@@ -63,11 +62,11 @@ class MediaController extends \PublicController
             $width = $file->width;
             $height = $file->height;
 
-        } elseif (0 === (int)$height) {
+        } elseif (0 === (int) $height) {
 
             $height = doScale($file->width, $file->height, $width, 'height');
 
-        } elseif (0 === (int)$width) {
+        } elseif (0 === (int) $width) {
 
             $width = doScale($file->width, $file->height, $height, 'width');
 
@@ -110,7 +109,7 @@ class MediaController extends \PublicController
 
         $headers['Last-Modified'] = gmdate('D, d M Y H:i:s', filemtime($cacheImg)) . ' GMT';
 
-        return StreamedResponse::create(function() use($cacheImg){
+        return StreamedResponse::create(function () use ($cacheImg) {
                 ob_end_clean();
                 readfile($cacheImg);
             }, $status, $headers)->send();
@@ -134,10 +133,9 @@ class MediaController extends \PublicController
         return \Response::clueless();
     }
 
-    public function test ()
+    public function test()
     {
 
     }
 
-    
 } // END class MediaController

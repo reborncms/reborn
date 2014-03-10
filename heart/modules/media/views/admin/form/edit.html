@@ -1,6 +1,6 @@
 <div id="media-form-wrapper">
 
-	{{ Form::start('admin/media/edit-file/' . $fileData->id, 'fileEdit', false, array('class' => 'form')) }}
+	{{ Form::start('admin/media/file/update/' . $fileData->id, 'fileEdit', false, array('class' => 'form')) }}
 
 		{{ Form::hidden('originName', $fileData->name) }}
 

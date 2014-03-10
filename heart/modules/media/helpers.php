@@ -11,11 +11,9 @@ if (! function_exists('folderTree')) {
     function folderTree($folders, $parent, $depth, $selected = 0,
     $style = '&nbsp;&#187;&nbsp;')
     {
-        foreach($folders as $folder)
-        {
-            if($folder->folder_id == $parent)
-            {
-                if($selected == $folder->id){?>
+        foreach ($folders as $folder) {
+            if ($folder->folder_id == $parent) {
+                if ($selected == $folder->id) {?>
 
                 <option value="<?php echo $folder->id; ?>" selected = "selected">
 
@@ -23,7 +21,7 @@ if (! function_exists('folderTree')) {
 
                 </option>
 
-                <?php }else{?>
+                <?php } else {?>
 
                 <option value="<?php echo $folder->id; ?>">
 
@@ -46,7 +44,7 @@ if (! function_exists('duplicate')) {
         $query = ('folder' == $type) ? Media\Model\Folders::where('name', $name) :
                     Media\Model\Files::where('name', $name);
 
-        $query = (is_null($except)) ? $query->first() : 
+        $query = (is_null($except)) ? $query->first() :
                     $query->where('name', '!=', $name)->first();
 
         $finalName = $name;
@@ -102,7 +100,6 @@ if (! function_exists('duplication')) {
 
 }
 
-
 /**
  * Rename with increasemental surfix like _1, _2, etc.
  * Default string is like this (name_1, name_2, name_3)
@@ -119,7 +116,7 @@ if (! function_exists('increasemental')) {
         $matching = preg_match_all('/^(\w*)_(\d\d?)$/', $target, $matches);
 
         if ($matching) {
-            $count = ((int)$matches[2][0])+1;
+            $count = ((int) $matches[2][0])+1;
 
             $target = $matches[1][0] . '_' . $count;
         } else {

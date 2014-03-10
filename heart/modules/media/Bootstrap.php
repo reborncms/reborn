@@ -48,7 +48,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
         return $mod_toolbar;
     }
 
-    public function register ()
+    public function register()
     {
         require __DIR__ . DS . 'helpers.php';
 
@@ -65,7 +65,6 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
         \Form::extend(
                 'thumbnail',
                 function($name, $value, $width = null, $labels = array()) {
-
             return \Media::thumbnailForm($name, $value, $width, $labels);
 
         });
@@ -79,7 +78,6 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
                         $folderId = null,
                         $fileType = null
                     ) {
-
                     return \Media::uploadForm($name, $formName, $folderId, $fileType);
 
                 }
@@ -93,7 +91,6 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
                         $formName = null,
                         $folderId = null
                     ) {
-
                     return \Media::uploadForm($name, $formName, $folderId,
                         '.jpg,.jpeg,.png,.gif,.bmp');
 

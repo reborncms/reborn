@@ -14,8 +14,7 @@ class MediaInstaller extends \Reborn\Module\AbstractInstaller
     public function install($prefix = null)
     {
         // Creating files table
-        \Schema::table($prefix.'media_files', function($table)
-        {
+        \Schema::table($prefix.'media_files', function ($table) {
             $table->create();
             $table->increments('id');
             $table->string('name');
@@ -33,8 +32,7 @@ class MediaInstaller extends \Reborn\Module\AbstractInstaller
             $table->timestamps();
         });
 
-        \Schema::table($prefix.'media_folders', function($table)
-        {
+        \Schema::table($prefix.'media_folders', function ($table) {
             // Creating folder table
             $table->create();
             $table->increments('id');

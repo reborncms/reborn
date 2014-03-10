@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Media\Controller\Admin;
 
@@ -15,10 +15,10 @@ use Flash, Input, Event, Redirect, Validation;
 class FolderController extends \AdminController
 {
 
-	/**
+    /**
      * This method will create folders
      *
-     * @param int $folderId
+     * @param  int    $folderId
      * @return String
      **/
     public function create($folderId = 0)
@@ -66,7 +66,7 @@ class FolderController extends \AdminController
      *
      * @return String
      **/
-    public function update ($id)
+    public function update($id)
     {
         $folder = Folders::find($id);
 
@@ -113,7 +113,7 @@ class FolderController extends \AdminController
      *
      * @return void
      **/
-    public function delete ($id)
+    public function delete($id)
     {
         $result = with(new Folders)->folderTreeIds($id);
 
@@ -146,7 +146,7 @@ class FolderController extends \AdminController
      *
      * @return Reborn\Form\Validation
      **/
-    protected function validation ()
+    protected function validation()
     {
         return new Validation(Input::get('*'), array(
                 'name'      => 'required|maxLength:200',

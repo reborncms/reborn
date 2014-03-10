@@ -16,22 +16,27 @@
 	Dropzone.autoDiscover = false;
 	$('#uploader').dropzone({
 		paramName: "files",
-		dictDefaultMessage: "{{ t('media::media.lbl.uploadAreaText') }}",
+		dictDefaultMessage: "Upload here",
 		acceptedFiles: window.DzfileType,
 		maxFilesize: 2,
 		init: function() {
 			$('#file-field').hide();
 			$('#upload-submit').hide();
 		},
-		success: function (file) {
+		success: function (file, done) {
 			var template = file.previewTemplate;
 
-			if ('success' == file.status) {
-				$(template).find('.dz-progress').fadeOut();
+			$(template).find('.dz-progress').fadeOut();
+
+			if ('success' == done.status) {
 
 				$(template).find('.dz-success-mark').css('opacity', '1');
 
 			} else {
+
+				$(template).find('.dz-details').parent().removeClass('dz-processing').addClass("dz-error");
+
+				$(template).find('.dz-error-message').html("<span data-dz-errormessage>"+done.error[0]+"</span>");
 
 				$(template).find('.dz-error-mark').css('opacity', '1');
 

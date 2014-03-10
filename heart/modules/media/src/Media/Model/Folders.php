@@ -12,12 +12,12 @@ use Auth;
  **/
 class Folders extends \Eloquent
 {
-	/**
-	 * Table name
-	 *
-	 * @access protected
-	 * @var string
-	 **/
+    /**
+     * Table name
+     *
+     * @access protected
+     * @var string
+     **/
     protected $table = 'media_folders';
 
     protected $multisite = true;
@@ -29,7 +29,7 @@ class Folders extends \Eloquent
      **/
     public function createFolder($data)
     {
-    
+
         $name = duplicate($data['name']);
 
         $this->name = $name;
@@ -38,7 +38,6 @@ class Folders extends \Eloquent
         $this->folder_id = $data['folder_id'];
         $this->user_id = Auth::getUser()->id;
         $this->depth = defineDepth($data['folder_id']);
-
 
         if ($this->save()) {
             return $this;
@@ -65,7 +64,6 @@ class Folders extends \Eloquent
         $this->user_id = Auth::getUser()->id;
         $this->depth = defineDepth($data['folder_id']);
 
-
         if ($this->save()) {
             return $this;
         }
@@ -81,7 +79,6 @@ class Folders extends \Eloquent
      **/
     public function files()
     {
-
         return $this->hasMany('Media\Model\Files', 'folder_id');
 
     }
@@ -125,13 +122,13 @@ class Folders extends \Eloquent
      **/
     public function folderTreeIds($id)
     {
-    	$result = static::find($id);
+        $result = static::find($id);
 
-    	$ids = array();
+        $ids = array();
 
-    	$ids[] = $result->id;
+        $ids[] = $result->id;
 
-    	if ($result->children) {
+        if ($result->children) {
             $ids = $this->findChild($ids, $result->children);
         }
 
@@ -156,7 +153,7 @@ class Folders extends \Eloquent
         $i = 0;
         $a = array();
 
-        if (0 !== (int)$obj['folder_id']) {
+        if (0 !== (int) $obj['folder_id']) {
             $test = static::find($obj['folder_id']);
 
             $a[] = $test;
@@ -178,20 +175,18 @@ class Folders extends \Eloquent
                $id[] = $q->id;
             }
         }
-        
 
         return $id;
     }
 
     /**
-     * Get 
+     * Get
      *
      * @return void
-     * @author 
+     * @author
      **/
     protected function childFile()
     {
-
         return $this->hasMany('Media\Model\Files', 'folder_id', 'id');
 
     }
@@ -200,11 +195,10 @@ class Folders extends \Eloquent
      * undocumented function
      *
      * @return void
-     * @author 
+     * @author
      **/
     public function childFolder()
     {
-
         return $this->hasMany('Media\Model\Folders', 'folder_id', 'id');
 
     }

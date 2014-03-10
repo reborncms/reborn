@@ -19,11 +19,11 @@ class Plugins
      *
      * @param mix $target Filename or id
      *
-     * @return Object 
+     * @return Object
      **/
     public static function getFile($target, $json = false)
     {
-        $file = (is_numeric($target)) ? Files::find($target) : 
+        $file = (is_numeric($target)) ? Files::find($target) :
                                 Files::where('filename', '=', $target)->get();
 
         return ($json) ? $file->toJson() : $file;
@@ -60,12 +60,12 @@ class Plugins
     /**
      * Get all files or folers or files and folders by folder slug
      *
-     * @param String $slug Slug of folder (none = media home page)
-     * @param String $pointer What you want to get. (file, folder, all)
+     * @param  String $slug    Slug of folder (none = media home page)
+     * @param  String $pointer What you want to get. (file, folder, all)
      * @return array
      * @author RebornCMS Development Team
      **/
-    public static function getBySlug ($slug = 'none', $pointer = 'all')
+    public static function getBySlug($slug = 'none', $pointer = 'all')
     {
         if ($pointer == 'file') {
             if ($slug != 'none') {

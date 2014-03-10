@@ -4,7 +4,6 @@ namespace Media\Controller\Admin;
 
 use Media\Model\Folders as Folders;
 use Media\Model\Files as Files;
-use Reborn\Fileupload\Uploader as Uploader;
 use Cache, Input, Flash;
 
 /**
@@ -112,7 +111,7 @@ class MediaController extends \AdminController
     /**
      * Deleting files
      *
-     * @param int $id
+     * @param int     $id
      * @param boolean $redirect
      *
      * @return void
@@ -202,11 +201,11 @@ class MediaController extends \AdminController
      * This method will save data.
      *
      * @param String $saveFor Which for
-     * @param int $id id of the file or folder to be edit
+     * @param int    $id      id of the file or folder to be edit
      *
      * @return boolean
      **/
-    protected function saveData ($file = false, $id = 0)
+    protected function saveData($file = false, $id = 0)
     {
         if ($file) {
             $data = Files::find($id);
@@ -255,7 +254,7 @@ class MediaController extends \AdminController
      *
      * @return Object $validate Validation Object
      **/
-    protected function validation ($validateFor = 'folder')
+    protected function validation($validateFor = 'folder')
     {
         switch ($validateFor) {
             case 'folder':
@@ -293,7 +292,7 @@ class MediaController extends \AdminController
     /**
      * Inserting thumbnail images
      *
-     * @param int $folderId 
+     * @param int $folderId
      *
      * @return void
      **/
@@ -321,8 +320,8 @@ class MediaController extends \AdminController
      *
      * @return void
      **/
-    public function wysiwyg($folderId = 0) {
-
+    public function wysiwyg($folderId = 0)
+    {
         $images = Files::imageOnly()->where('folder_id', '=', $folderId)->get();
 
         $this->template->title(t('media::media.ext.thumbnail'))
