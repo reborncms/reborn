@@ -33,21 +33,7 @@ class Folders extends \Eloquent
     public function createFolder($data)
     {
 
-        $folder_id = (empty($data['folder_id'])) ? 0 : $data['folder_id'];
-        $name = (empty($data['name'])) 
-                ? Config::get('media::media.default_name')
-                : $data['name'];
-
-        $name = $this->duplication('name', $name, $folder_id);
-        $slug = slug($name);
-        $slug = $this->duplication('slug', $slug);
-
-        $this->name = $name;
-        $this->slug = $slug;
-        $this->description = $data['description'];
-        $this->folder_id = $folder_id;
-        $this->user_id = Auth::getUser()->id;
-        $this->depth = defineDepth($folder_id);
+        $this->prepareData($data, 'create');
 
         if ($this->save()) {
             return $this;
@@ -65,11 +51,55 @@ class Folders extends \Eloquent
     public function updateFolder($data)
     {
 
+        $this->prepareData($data, 'update');
+
+        if ($this->save()) {
+            return $this;
+        }
+
+        return false;
+
+    }
+
+    /**
+     * Prepare folder data to save
+     *
+     * @return array
+     **/
+    protected function prepareData($data, $method = 'create')
+    {
+
         $folder_id = (empty($data['folder_id'])) ? 0 : $data['folder_id'];
-        $name = (empty($data['name'])) ? $this->name : $data['name'];
-        $name = $this->duplication('name', $name, $folder_id);
-        $slug = slug($name);
-        $slug = $this->duplication('slug', $slug);
+        
+        $name = null;
+        $slug = null;
+
+        if ('create' == $method) {
+
+            $name = (empty($data['name'])) 
+                ? Config::get('media::media.default_name')
+                : $data['name'];
+            $name = $this->duplication('name', $name, $folder_id);
+            $slug = slug($name);
+            $slug = $this->duplication('slug', $slug);
+
+        } else {
+            $name = (empty($data['name'])) ? $this->name : $data['name'];
+            $slug = slug($name);
+
+            if ($this->name != $data['name'] or $this->folder_id != $folder_id) {
+
+                $name = $this->duplication('name', $name, $folder_id);
+                $slug = $this->duplication('slug', $slug);
+
+            } else {
+
+                $name = $this->name;
+                $slug = $this->slug;
+
+            }
+
+        }
 
         $this->name = $name;
         $this->slug = $slug;
@@ -77,12 +107,6 @@ class Folders extends \Eloquent
         $this->folder_id = $folder_id;
         $this->user_id = Auth::getUser()->id;
         $this->depth = defineDepth($folder_id);
-
-        if ($this->save()) {
-            return $this;
-        }
-
-        return false;
 
     }
 

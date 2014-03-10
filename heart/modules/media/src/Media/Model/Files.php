@@ -195,7 +195,7 @@ class Files extends \Reborn\MVC\Model\Search
         $name = (empty($data['name'])) ? $this->name : $data['name'];
         $folder_id = (empty($data['folder_id'])) ? 0 : $data['folder_id'];
 
-        $this->name = duplicate($name);
+        $this->name = $name;
         $this->alt_text = $data['alt_text'];
         $this->description = $data['description'];
         $this->folder_id = $folder_id;
