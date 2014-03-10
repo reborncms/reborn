@@ -27,9 +27,6 @@ label {
 }
 
 .navbar-default {
-	-webkit-transition:all 0.15s ease-out 0;
-	-moz-transition:all 0.15s ease-out 0;
-	transition:all 0.15s ease-out 0;
 	background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#fff),color-stop(25%,#fff),color-stop(100%,rgba(255,255,255,0.83)));
 	background: linear,to bottom,#fff 0%,#fff 25%,rgba(255,255,255,255.83) 100%;
 	background: -moz-linear-gradient(#fff, rgba(255,255,255,0.83));
@@ -192,7 +189,9 @@ footer {
 }
 
 .field_wrapper input, 
-.field_wrapper textarea {
+.field_wrapper textarea,
+.widget-user input[type=email],
+.widget-user input[type=password] {
 	display: block;
 	width: 100%;
 	height: 34px;
@@ -344,4 +343,11 @@ footer {
 .com_read_more {
 	float: right;
 	font-size: 11px;
+}
+
+/* Widget User */
+
+.widget-user input[type=email],
+.widget-user input[type=password]  {
+	margin-bottom: 10px;
 }
