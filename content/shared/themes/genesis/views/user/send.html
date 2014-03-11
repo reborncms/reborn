@@ -1,0 +1,12 @@
+{{ Form::start("user/reset-password", false, 'resetPassword', array('class' => 'form user-form')) }}
+
+	<div class="form-group">
+		{{ Form::label('Enter your email address to send password rest link', 'email') }}    	
+    	{{ Form::email('email', '', array('class' => 'form-control')) }}      	
+    </div>
+
+	<div class="form-actions">
+		{{ Form::submit('submit', 'Send', array('class' => 'btn btn-primary')) }}	
+	</div>
+
+{{ Form::end() }}

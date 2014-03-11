@@ -1,0 +1,21 @@
+{{ Form::start("user/password-reset/".$emailEncode."/".$hash) }}
+
+	<div class="form-group">
+		{{ Form::label('Enter new password', 'new_password') }}
+		{{ Form::password('new_password', '', array('class' => 'form-control')) }}
+		{{ if(isset($errors['new_password'])) }}
+		<span class="er">{{ $errors['new_password'] }}</span>
+		{{ endif }}
+	</div>
+
+	<div class="form-group">
+		{{ Form::label('Confirm new password', 'conf_new_password') }}
+		{{ Form::password('conf_new_password', '', array('class' => 'form-control')) }}
+		{{ if(isset($errors['conf_new_password'])) }}
+		<span class="er">{{ $errors['conf_new_password'] }}</span>
+		{{ endif }}
+	</div>
+
+	{{ Form::submit('submit', 'Reset', array('id' => 'password-reset', 'class' => 'btn btn-primary')) }}
+
+{{ Form::end() }}
