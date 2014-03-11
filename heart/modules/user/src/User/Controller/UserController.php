@@ -296,11 +296,11 @@ class UserController extends \PublicController
                         $user->addGroup($groups);
 
                         $activationCode = $user->getActivationCode();
-                        $emailEncode = base64_encode($email);
+                        $emailEncode = $this->base64UrlEncode($email);
 
                         $activationLink = url().'user/activate/'.$emailEncode.'/'.$activationCode;
 
-                        $mail = Mailer::create(array('type' => 'sendmail'));
+                        $mail = Mailer::create(array('type' => \Setting::get('transport_mail')));
                         $mail->to($email, $first_name);
                         $mail->from(\Setting::get('site_mail'), \Setting::get('site_title'));
                         $mail->subject(t('user::user.activate.subject'));
@@ -342,7 +342,7 @@ class UserController extends \PublicController
 
         try {
 
-            $email = base64_decode($emailEncode);
+            $email = $this->base64UrlDecode($emailEncode);
             $user = Auth::getUserProvider()->findByLogin($email);
 
             // Attempt user activation
@@ -385,20 +385,16 @@ class UserController extends \PublicController
                 try {
                     $user = Auth::getUserProvider()->findByLogin($email);
                     $resetCode = $user->getResetPasswordCode();
-                    $emailEncode = base64_encode($email);
+                    $emailEncode = $this->base64UrlEncode($email);
 
                     $link = url().'user/password-reset/'.$emailEncode.'/'.$resetCode;
 
-                    // Now you can send this code to your user via email for example.
-                    $config = array(
-                        'to'		=> $email,
-                        'from'		=> \Setting::get('site_mail'),
-                        'name'		=> \Setting::get('site_title'),
-                        'subject'	=> 'Password Reset Code',
-                        'body'		=> 'Use this link to reset your password: '.$link,
-                    );
-
-                    $mail = Mailer::send($config);
+                    $mail = Mailer::create(array(\Setting::get('transport_mail')));
+                    $mail->to($email, $user->fullname);
+                    $mail->from(\Setting::get('site_mail'), \Setting::get('site_title'));
+                    $mail->subject('Password Reset Code');
+                    $mail->body('Use this link to reset your password: '.$link);
+                    $mail->send(); 
 
                     \Flash::success(t('user::user.resentPass'));
 
@@ -421,7 +417,7 @@ class UserController extends \PublicController
     * @param $hash string
     */
     public function passwordReset($emailEncode, $hash)
-    {
+    {       
         if(Auth::check()) return \Redirect::to('user');
 
         if (\Input::isPost()) {
@@ -441,23 +437,23 @@ class UserController extends \PublicController
                 $confNewPassword = \Input::get('conf_new_password');
 
                 if ($newPassword !== $confNewPassword) {
-                    \Flash::error('New Password doesn\'t matched. Pleaes try again');
+                    \Flash::error(t('user::user.password.notMatch'));
                 } else {
                     try {
-                        $email = base64_decode(\Uri::segment(3));
+                        $email = $this->base64UrlDecode(\Uri::segment(3));
                         $user = Auth::getUserProvider()->findByLogin($email);
 
                         if ($user->checkResetPasswordCode($hash)) {
                             // Attempt to reset the user password
                             if ($user->attemptResetPassword($hash, $newPassword)) {
-                                \Flash::success('Successfully password reset! Please login with your new pasword.');
+                                \Flash::success(t('user::user.password.success'));
 
                                 return \Redirect::to('user/login');
                             } else {
-                                \Flash::error('Failed to reset Password');
+                                \Flash::error(t('user::user.password.fail'));
                             }
                         } else {
-                            \Flash::error('The provided password reset code is Invalid');
+                            \Flash::error(t('user::user.password.invalid'));
                         }
                     } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
                         \Flash::error(t('user::user.auth.dunexist'));
@@ -504,23 +500,17 @@ class UserController extends \PublicController
                         return \Redirect::to('login');
                     } else {
                         $activationCode = $user->getActivationCode();
-                        $emailEncode = base64_encode($email);
+                        $emailEncode = $this->base64UrlEncode($email);
                         $activationLink = url().'user/activate/'.$emailEncode.'/'.$activationCode;
 
-                        // create config to mail user activation code
-                        $config = array(
-                            'to'		=> array($email),
-                            'from'		=> \Setting::get('site_mail'),
-                            'name'		=> \Setting::get('site_title'),
-                            'subject'	=> t('user::user.activate.subject'),
-                            'body'		=> 'Please active your account by using following link: <br /><a href="'.$activationLink.'">'.$activationLink.'</a>',
-                        );
-
-                        // sent mail to register user
-                        $mail = Mailer::send($config);
+                        $mail = Mailer::create(array('type' => \Setting::get('transport_mail')));
+                        $mail->to($email, $user->fullname);
+                        $mail->from(\Setting::get('site_mail'), \Setting::get('site_title'));
+                        $mail->subject(t('user::user.activate.subject'));
+                        $mail->body('Please active your account by using following link: <br /><a href="'.$activationLink.'">'.$activationLink.'</a>');
+                        $mail->send();            
 
                         \Flash::success(t('user::user.activate.check'));
-
                         return \Redirect::to('user/activate');
                     }
                 } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
@@ -587,6 +577,28 @@ class UserController extends \PublicController
         }
     }
 
+    /**
+     * base64url variant encoding
+     *
+     * @param $email string
+     * @return string     
+     **/
+    protected function base64UrlEncode($email)
+    {
+        return rtrim(strtr(base64_encode($email), '+/', '-_'), '=');        
+    }
+
+    /**
+     * Decode method for base64url variant encoding
+     *
+     * @param $encodedEmail string
+     * @return string    
+     **/
+    protected function base64UrlDecode($encodedEmail)
+    {        
+        return base64_decode(str_pad(strtr($encodedEmail, '-_', '+/'), strlen($encodedEmail) % 4, '=', STR_PAD_RIGHT));
+    }
+
     protected function validate()
     {
         $rule = array(
@@ -600,10 +612,5 @@ class UserController extends \PublicController
         $v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
 
         return $v;
-    }
-
-    public function after($response)
-    {
-        return parent::after($response);
-    }
+    }    
 }

@@ -5,8 +5,9 @@
 			<h3>Edit "{{ $currentFile['basename'] }}"</h3>
 
 			{{ Form::start(adminUrl("theme/editor/edit/".$currentFile['extension']."/".$currentFile['filename']), 'theme_upload', true, array('class' => 'form')) }}
-			<div class="form-block">			  	
-			    <textarea name="content" id="textEditor">{{ $content }}</textarea>			   
+			<div class="form-block">
+				
+				{{ Form::codemirror('content',  $content, '92%', '500px', array('lineWrapping' => 'true', 'lineNumbers' => 'true', 'mode' => 'javascript')) }}
 			</div> <!-- end of form block -->
 
 			<div class="form-block">
@@ -53,12 +54,3 @@
 		</div> <!-- end of form-right -->
 	</div> <!-- end of form-wrapper -->
 </div> <!-- end of main-form-wrapper -->
-
-<script type="text/javascript">  
-    jQuery(document).ready(function() {  
-        var editor = CodeMirror.fromTextArea(document.getElementById("textEditor"), {
-        	lineWrapping: true,
-        	lineNumbers: true
-        });
-    });
-</script> 

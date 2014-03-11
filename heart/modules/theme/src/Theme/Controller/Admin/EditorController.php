@@ -13,14 +13,6 @@ class EditorController extends \AdminController
     {
         $this->menu->activeParent('appearance');
         $this->template->style('theme.css','theme');
-        $this->template->style(array(
-                        'plugins/codemirror/codemirror.css'
-                    ))
-                    ->script(array(
-                        'plugins/codemirror/codemirror.js',
-                        'plugins/codemirror/css.js',
-                        'plugins/codemirror/javascript.js'
-                    ));
     }
 
     /**

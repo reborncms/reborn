@@ -85,6 +85,10 @@ return array(
 
     'password' => array(
         'fail' => 'Password do not match',
+        'notMatch' => 'New Password doesn\'t matched. Please try again.',
+        'success' => 'Successfully password reset! Please login with your new pasword.',
+        'fail' => 'Failed to reset Password.',
+        'invalid' => 'The provided password reset code is Invalid.',
     ),
 
     'delete' => array(
