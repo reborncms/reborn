@@ -222,7 +222,7 @@ class ErrorHandler
 
         $data['exception']['trace'] = $trace_data;
 
-        return Response::json($data, $status);
+        return \Reborn\Http\Response::json($data, $status);
     }
 
     /**
