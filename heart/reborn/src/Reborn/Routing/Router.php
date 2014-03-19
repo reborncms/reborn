@@ -73,15 +73,7 @@ class Router
 
         $this->mapper = ControllerMap::create();
 
-        require APP.'middlewares.php';
-
-        // If routes file have in the user's content folder, load this route file
-        if (File::is(CONTENT.'routes.php')) {
-            require CONTENT.'routes.php';
-        }
-
-        // Load the Application Main Route File
-        require APP.'routes.php';
+        $this->loadRequiredFiles();
     }
 
     /**
@@ -319,6 +311,36 @@ class Router
             }
 
         }
+    }
+
+    /**
+     * Load required files ({PATH}routes.php, 'middlwares.php', etc.)
+     *
+     * @return void
+     **/
+    protected function loadRequiredFiles()
+    {
+        // Load Route middlewares file from APP Path.
+        require APP.'middlewares.php';
+
+        // If routes file have in the user's content folder, load this route file
+        // This routes is available for specifc site. (eg: main)
+        // Route Priority (1)
+        if (File::is(CONTENT.'routes.php')) {
+            require CONTENT.'routes.php';
+        }
+
+        // Load route file form BASE_CONTENT path.
+        // This routes is available for All Site.
+        // Route Priority (2)
+        if (File::is(BASE_CONTENT.'routes.php')) {
+            require BASE_CONTENT.'routes.php';
+        }
+
+        // Load the Application Main Route File
+        // This routes is available for All Site.
+        // Route Priority (3)
+        require APP.'routes.php';
     }
 
     /**
