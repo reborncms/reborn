@@ -555,7 +555,7 @@ class BlogController extends \AdminController
 
         }
 
-        $lang_list = array_merge(array('none' => '-- Choose Language --'), Config::get('langcodes'));
+        $lang_list = array_merge(array('' => '-- Choose Language --'), Config::get('langcodes'));
 
         $content_editor = (\Setting::get('content_editor')) ? \Setting::get('content_editor') : 'wysiwyg';
 

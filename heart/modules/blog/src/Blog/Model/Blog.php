@@ -28,10 +28,11 @@ class Blog extends \Eloquent
     protected $fillable = array('view_count');
 
     protected $rules = array(
-        'title' => 'required|maxLength:250',
-        'slug' => 'required|maxLength:250',
-        'body' => 'required',
-        'comment_status' => 'alpha',
+        'title'             => 'required|maxLength:250',
+        'slug'              => 'required|maxLength:250',
+        'body'              => 'required',
+        'comment_status'    => 'alpha',
+        'lang'              => 'required'
     );
 
     /**
@@ -199,7 +200,11 @@ class Blog extends \Eloquent
 
     public function getLangListAttribute()
     {
-        return \Blog\Lib\Helper::langList($this->attributes['id']);
+        if(isset($this->attributes['id'])) {
+            return \Blog\Lib\Helper::langList($this->attributes['id']);
+        } else {
+            return \Blog\Lib\Helper::langList($this->attributes['lang_ref']);
+        }
     }
 
     public function getLangFrontAttribute()
