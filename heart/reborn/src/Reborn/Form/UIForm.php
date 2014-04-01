@@ -79,7 +79,7 @@ $ck_jq
 <script type="text/javascript">
     var instance;
 
-    public function update_instance()
+    function update_instance()
     {
         instance = CKEDITOR.currentInstance;
     }
@@ -464,7 +464,7 @@ SCRIPT;
      *
      * @return string
      **/
-    public static function codemirror($name, $value, $width = 600, $height = 400, $js_opts = array(), $attrs = array())
+    public static function codemirror($name, $value = null, $width = 600, $height = 400, $js_opts = array(), $attrs = array())
     {
         $js = global_asset('js', 'codemirror/codemirror.js');
 
