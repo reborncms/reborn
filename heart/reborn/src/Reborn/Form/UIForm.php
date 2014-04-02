@@ -311,8 +311,8 @@ SCRIPT;
      **/
     public static function select2($name, $options, $value = null, $js_opts = array(), $multi = false, $ajax = false, $attrs = array())
     {
-        $js = global_asset('js', 'select2-3.4.5/select2.min.js');
-        $css = global_asset('css', 'select2-3.4.5/select2.css');
+        $js = global_asset('js', 'select2/select2.min.js');
+        $css = global_asset('css', 'select2/select2.css');
 
         $rb = url();
         $jq = $rb.'global/assets/js/jquery-1.9.0.min.js';
