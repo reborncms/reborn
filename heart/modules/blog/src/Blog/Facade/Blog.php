@@ -60,7 +60,7 @@ class Blog
      * Get Blog Posts.
      *
      *
-     * @param  array                                   $options Options to fetch blog posts
+     * @param  array $options Options to fetch blog posts
      * @return Illuminate\Database\Eloquent\Collection
      **/
     public static function posts($options = array())

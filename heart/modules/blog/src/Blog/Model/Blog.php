@@ -102,7 +102,7 @@ class Blog extends \Eloquent
      */
     public function getFeatureImageAttribute()
     {
-        return rbUrl('media/image/'.$this->attributes['attachment']);
+        return url('media/image/'.$this->attributes['attachment']);
     }
 
     /**
