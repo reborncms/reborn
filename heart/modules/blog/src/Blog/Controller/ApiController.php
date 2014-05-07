@@ -32,7 +32,7 @@ class ApiController extends \Api\Controller\ApiController
 	{
 		//To do : Blog Posts by Category, Author, tags
 
-		$conditions = $this->checkInputData(array('category_id', 'id', 'author_id'));
+		$conditions = $this->checkInputData(array('category_id', 'id', 'author_id', 'tag'));
 
 		if (empty($conditions)) {
 
@@ -43,7 +43,6 @@ class ApiController extends \Api\Controller\ApiController
 			$blog = Provider::getPostsBy($conditions, \Input::get('limit'), \Input::get('offset'));
 
 		}
-		
 
 		$data = $this->transform($blog);
 

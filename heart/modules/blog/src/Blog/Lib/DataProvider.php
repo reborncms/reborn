@@ -41,7 +41,16 @@ class DataProvider
 					->with(array('category','author'));
 
 		foreach ($wheres as $key => $value) {
-			$blog->where($key, $value);
+			if ($key == 'tag') {
+
+				$blog_ids = \Tag\Lib\Helper::getObjectIds($value, 'blog');
+				$blog->whereIn('id', $blog_ids);
+
+			} else {
+
+				$blog->where($key, $value);
+
+			}
 		}
 
 		if ($limit != 0) {
