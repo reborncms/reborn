@@ -184,6 +184,23 @@ class Blog extends \Eloquent
         return $this->getTags('arr');
     }
 
+    public function getTagsArrWithLinksAttribute()
+    {
+        $tags = \Tag\Lib\Helper::getTags($this->attributes['id'], 'blog', 'arr');
+
+        $data = array();
+
+        foreach ($tags as $tag) {
+            $data[] = array(
+                'name'  => $tag,
+                'url'   => url('blog/tag/'.$tag)
+            );
+        }
+
+        return $data;
+
+    }
+
     public function getTagsValAttribute()
     {
         return \Tag\Lib\Helper::getTags($this->attributes['id'], 'blog');
@@ -242,10 +259,11 @@ class Blog extends \Eloquent
         if ( \Module::isEnabled('Tag') ) {
 
             if (is_null($this->tags_data)) {
+
                 $tags = \Tag\Lib\Helper::getTags($this->attributes['id'], 'blog', 'arr');
 
                 foreach ($tags as &$tag) {
-                    $tag = '<a href="'.rbUrl('blog/tag/'.$tag).'" class="blog-tag">'.$tag.'</a>';
+                    $tag = '<a href="'.url('blog/tag/'.$tag).'" class="blog-tag">'.$tag.'</a>';
                 }
 
                 $this->tags_data = $tags;
@@ -257,8 +275,6 @@ class Blog extends \Eloquent
 
         return $this->tags_data;
     }
-
-
 
     /**
      * Fill some of requirement in parent __call method

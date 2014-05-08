@@ -2,10 +2,12 @@
 
 namespace Blog\Controller;
 
-use Blog\Lib\DataProvider as Provider;
+use Input;
+use Module;
+use Response;
 use League\Fractal;
 use Blog\Extensions\BlogTransformer;
-use Module, Response;
+use Blog\Lib\DataProvider as Provider;
 
 /**
  * Api Controller for RebornCMS Blog Module
@@ -16,13 +18,6 @@ use Module, Response;
 class ApiController extends \Api\Controller\ApiController
 {
 
-	private $conditions = array();
-
-	public function before()
-	{
-
-	}
-
 	/**
 	 * Get All Blog posts, Posts Collection by Category, Author and Tag
 	 *
@@ -32,15 +27,29 @@ class ApiController extends \Api\Controller\ApiController
 	{
 		//To do : Blog Posts by Category, Author, tags
 
-		$conditions = $this->checkInputData(array('category_id', 'id', 'author_id', 'tag'));
+		$wheres = $this->checkInputData(array('category_id', 'id', 'author_id', 'tag'));
 
-		if (empty($conditions)) {
+		$before_after = $this->checkInputData(array('after_id', 'before_id', 'since', 'until'));
 
-			$blog = Provider::allPublicPosts(\Input::get('limit'), \Input::get('offset'));
+		$limit = (Input::get('limit')) ?: 0;
+
+		$offset = (Input::get('offset')) ?: 0;
+
+		if (empty($wheres) and empty($before_after)) {
+
+			$blog = Provider::allPublicPosts($limit, $offset);
 
 		} else {
 
-			$blog = Provider::getPostsBy($conditions, \Input::get('limit'), \Input::get('offset'));
+			if (!empty($wheres)) {
+				$conditions['wheres'] = $wheres;
+			}
+
+			if (!empty($before_after)) {
+				$conditions['before_after'] = $before_after;
+			}
+
+			$blog = Provider::getPostsBy($conditions, $limit, $offset);
 
 		}
 

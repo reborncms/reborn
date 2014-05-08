@@ -17,13 +17,13 @@ class DataProvider
 		                ->with(array('category','author'))
 		                ->orderBy('created_at', 'desc');
 
-		if ($limit != 0) {
+		if ($limit > 0) {
 
 			$blog->take($limit);
 
 		}
 
-		if ($offset != 0) {
+		if ($offset > 0) {
 
 			$blog->skip($offset);
 
@@ -33,33 +33,63 @@ class DataProvider
 
 	}
 
-	public static function getPostsBy($wheres = array(), $limit = 10, $offset = 0)
+	public static function getPostsBy($conditions = array(), $limit = 10, $offset = 0)
 	{
 
 		$blog = Blog::active()
 					->notOtherLang()
 					->with(array('category','author'));
 
-		foreach ($wheres as $key => $value) {
-			if ($key == 'tag') {
+		if (isset($conditions['wheres'])) {
 
-				$blog_ids = \Tag\Lib\Helper::getObjectIds($value, 'blog');
-				$blog->whereIn('id', $blog_ids);
+			foreach ($conditions['wheres'] as $key => $value) {
 
-			} else {
+				if ($key == 'tag') {
 
-				$blog->where($key, $value);
+					$blog_ids = \Tag\Lib\Helper::getObjectIds($value, 'blog');
+					$blog->whereIn('id', $blog_ids);
 
+				} else {
+
+					$blog->where($key, $value);
+
+				}
 			}
 		}
 
-		if ($limit != 0) {
+		if (isset($conditions['before_after'])) {
+			
+			foreach ($conditions['before_after'] as $key => $value) {
+
+				switch ($key) {
+					case 'since':
+						$blog->where(\DB::raw('UNIX_TIMESTAMP(created_at)'), '>', $value);
+						break;
+
+					case 'until':
+						$blog->where(\DB::raw('UNIX_TIMESTAMP(created_at)'), '<', $value);
+						break;
+					
+					case 'after_id':
+						$blog->where('id', '>', $value);
+						break;
+
+					case 'before_id':
+						$blog->where('id', '<', $value);
+						break;
+				}
+
+			}
+
+		}
+
+		if ($limit > 0) {
 
 			$blog->take($limit);
 
 		}
 
-		if ($offset != 0) {
+		if ($offset > 0) {
 
 			$blog->skip($offset);
 
