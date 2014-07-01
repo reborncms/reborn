@@ -67,9 +67,10 @@ class Router
     {
         $this->app = $app;
         $this->request = $app->request;
-        $this->collection = $app->route_collection;
 
-        $this->admin = Setting::get('adminpanel_url');
+        $this->admin = Setting::get('adminpanel_url', \Config::get('app.adminpanel'));
+        $app->route_collection->setAdminPrefix($this->admin);
+        $this->collection = $app->route_collection;
         $this->mapper = ControllerMap::create();
 
         $this->loadRequiredFiles();

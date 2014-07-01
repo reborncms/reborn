@@ -12,6 +12,12 @@ use Reborn\Http\Request;
  **/
 class RouteCollection
 {
+    /**
+     * Adminpanel route prefix name
+     *
+     * @var string
+     **/
+    protected $admin;
 
     /**
      * Route class collection array
@@ -40,6 +46,17 @@ class RouteCollection
      * @var \Reborn\Routing\Route
      **/
     protected $current;
+
+    /**
+     * Set adminpanel predix
+     *
+     * @param string $prefix
+     * @return  void
+     **/
+    public function setAdminPrefix($prefix)
+    {
+        $this->admin = $prefix;
+    }
 
     /**
      * Create and add a route
@@ -182,7 +199,7 @@ class RouteCollection
     public function crud($path, $controller, $name_prefix, $middlewares = array(), $id_type = 'int')
     {
         if (false !== strpos($path, '@admin')) {
-            $path = str_replace('@admin', \Config::get('app.adminpanel'), $path);
+            $path = str_replace('@admin', $this->admin, $path);
         }
 
         $path = rtrim($path, '/');
@@ -235,7 +252,7 @@ class RouteCollection
     public function group($prefix, \Closure $callback)
     {
         if (false !== strpos($prefix, '@admin')) {
-            $prefix = str_replace('@admin', \Config::get('app.adminpanel'), $prefix);
+            $prefix = str_replace('@admin', $this->admin, $prefix);
         }
 
         $this->group[] = $prefix;
