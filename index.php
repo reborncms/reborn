@@ -34,6 +34,9 @@ ini_set('display_errors', 'On');
 // Change the current dir
 chdir(__DIR__);
 
+// Pre defined for application env
+$_env = 'dev';
+
 /**
  * ---------------------------------------------------------
  * Define BASE Path to this folder
@@ -113,9 +116,6 @@ $app = new Reborn\Cores\Application();
  * ******* You must be set mode is "production" for real running stage. *******
  *
  */
-if (!isset($_env)) {
-	$_env = 'dev';
-}
 $app->setAppEnvironment($_env);
 unset($_env);
 

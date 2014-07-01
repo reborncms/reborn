@@ -17,14 +17,14 @@ use Reborn\Exception\FileNotFoundException;
 class Theme
 {
     /**
-     * variable for the theme name
+     * Variable for the theme name
      *
      * @var string
      **/
     protected $theme;
 
     /**
-     * variable for the theme fodler path
+     * Variable for the theme folder path
      *
      * @var string
      **/
@@ -43,7 +43,7 @@ class Theme
      * @param  \Reborn\Cores\Application $app
      * @param  string                    $name Theme name
      * @param  string                    $path Theme path
-     * @return Object($this)
+     * @return void
      **/
     public function __construct(Application $app, $name, $path)
     {
@@ -52,8 +52,6 @@ class Theme
         $this->theme = $name;
 
         $this->path = $path;
-
-        return $this;
     }
 
     /**
@@ -140,11 +138,12 @@ class Theme
      **/
     public function getLayouts()
     {
-        $all = glob($this->path.$this->theme.DS.'views'.DS.'layout'.DS.'*.html');
+        $path = $this->path.$this->theme.DS.'views'.DS.'layout'.DS;
         $layouts = array();
+        $all = glob($path.'*.html');
 
-        foreach ($all as $s) {
-            $layouts[] = str_replace($this->path.$this->theme.DS.'views'.DS.'layout'.DS, '', $s);
+        foreach ($all as $file) {
+            $layouts[] = str_replace($path, '', $file);
         }
 
         return $layouts;
@@ -250,6 +249,31 @@ class Theme
         }
 
         throw new FileNotFoundException("config.php", 'theme '.$theme);
+    }
+
+    /**
+     * Get the theme options from active theme's options file or given theme name
+     *
+     * @param  string  $name          Theme name, if you set this value is null
+     *                                return options from active theme
+     * @param  boolean $frontend_only Only theme from frontend theme path
+     * @return array|null
+     **/
+    public function option($name = null, $frontend_only = false)
+    {
+        $theme = is_null($name) ? $this->theme : $name;
+
+        if ($frontend_only) {
+            if ($file = $this->findThemeFile($theme, 'options.php')) {
+                return $file;
+            }
+        } else {
+            if (File::is($this->path.$theme.DS.'options.php')) {
+                return require $this->path.$theme.DS.'options.php';
+            }
+        }
+
+        return null;
     }
 
 

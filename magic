@@ -45,7 +45,10 @@ $commands = require __DIR__.'/content/commands/register.php';
  */
 $reborn = new Reborn\Cores\Application();
 
-$application = new Reborn\Console\Application(Reborn\Cores\Version::getAppName(), Reborn\Cores\Version::getVersion());
+$application = new Reborn\Console\Application(
+                        Reborn\Cores\Version::getAppName(),
+                        Reborn\Cores\Version::getVersion()
+                    );
 $application->setRebornApplication($reborn);
 $application->registerForReborn();
 $application->addCommands($commands);

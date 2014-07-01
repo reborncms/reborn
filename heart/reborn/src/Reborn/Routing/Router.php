@@ -70,7 +70,6 @@ class Router
         $this->collection = $app->route_collection;
 
         $this->admin = Setting::get('adminpanel_url');
-
         $this->mapper = ControllerMap::create();
 
         $this->loadRequiredFiles();
@@ -299,7 +298,7 @@ class Router
             }
         }
 
-        if (!Module::has($path)) {
+        if (!is_null($module) and !Module::has($module->name)) {
             $module = Module::get(\Setting::get('default_module'));
         }
 

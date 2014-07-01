@@ -135,7 +135,7 @@ class Route
 
         // Replace Admin Panel Links
         if (false !== strpos($path, '@admin')) {
-            $admin = \Config::get('app.adminpanel');
+            $admin = \Setting::get('adminpanel_url', \Config::get('app.adminpanel'));
             $this->path = str_replace('@admin', $admin, $path);
         } else {
             $this->path = $path;
