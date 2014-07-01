@@ -120,11 +120,9 @@ require __DIR__.DS.'helpers.php';
 require_once SYSTEM.'vendor/autoload.php';
 
 // Call compile file at web request in production mode.
-if ($_env == 'production') {
-    if ((php_sapi_name() !== 'cli') and
-        file_exists($less = STORAGES.'compile.php')) {
-        require $less;
-    }
+if ((php_sapi_name() !== 'cli') and
+    file_exists($less = STORAGES.'compile.php')) {
+    require $less;
 }
 
 // Set Time and Memory for Application Start
