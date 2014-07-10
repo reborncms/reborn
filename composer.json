@@ -1,59 +1,60 @@
 {
-    "name": "reborncms/reborncms",
-    "description": "The PHP 5.4 CMS",
-    "keywords": ["cms, content_manager"],
-    "homepage": "http://reborncms.com",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Reborn CMS Development Team",
-            "email": "reborncms@gmail.com"
-        },
-        {
-            "name": "Myanmar Links Professional Web Development Team",
-            "email": "info@myanmarlinks.net"
-        }
-    ],
-    "require": {
-        "php": ">=5.4.0",
-        "cartalyst/sentry": "2.0.*@dev",
-        "dflydev/markdown": "1.0.*@dev",
-        "illuminate/container": "4.1.*@dev",
-        "illuminate/database": "4.1.*@dev",
-        "illuminate/support": "4.1.*@dev",
-        "leafo/lessphp": "0.3.9",
-        "meenie/munee": "dev-master",
-        "monolog/monolog": "dev-master",
-        "nesbot/carbon": "1.*",
-        "patchwork/utf8": "1.1.*",
-        "swiftmailer/swiftmailer": "4.3.*@dev",
-        "symfony/http-foundation": "2.3.*@dev",
-        "symfony/console": "2.3.*@dev",
-        "tijsverkoyen/akismet": "dev-master",
-        "verbalexpressions/php-verbal-expressions": "dev-master",
-        "league/fractal": "0.7.*",
-        "league/flysystem": "0.4.*"
+  "name": "reborncms/reborncms",
+  "description": "The PHP 5.4 CMS",
+  "keywords": [
+    "cms, content_manager"
+  ],
+  "homepage": "http://reborncms.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Reborn CMS Development Team",
+      "email": "reborncms@gmail.com"
     },
-    "autoload": {
-        "psr-0": {
-            "Reborn": "heart/reborn/src",
-            "": "content/vendor",
-            "": "content/commands"
-        },
-        "classmap": [
-            "content/vendor",
-            "content/commands"
-        ]
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "php magic compile"
-        ],
-        "post-update-cmd": [
-            "php magic compile"
-        ]
-    },
-    "config": {
-            "vendor-dir": "heart/vendor"
+    {
+      "name": "Myanmar Links Professional Web Development Team",
+      "email": "info@myanmarlinks.net"
     }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "cartalyst/sentry": "2.0.*@dev",
+    "dflydev/markdown": "1.0.*@dev",
+    "illuminate/container": "4.1.*@dev",
+    "illuminate/database": "4.1.*@dev",
+    "illuminate/support": "4.1.*@dev",
+    "leafo/lessphp": "0.3.9",
+    "meenie/munee": "dev-master",
+    "monolog/monolog": "dev-master",
+    "nesbot/carbon": "1.*",
+    "patchwork/utf8": "1.1.*",
+    "swiftmailer/swiftmailer": "4.3.*@dev",
+    "symfony/http-foundation": "2.3.*@dev",
+    "symfony/console": "2.3.*@dev",
+    "tijsverkoyen/akismet": "dev-master",
+    "verbalexpressions/php-verbal-expressions": "dev-master",
+    "league/fractal": "0.7.*",
+    "league/flysystem": "0.4.*"
+  },
+  "autoload": {
+    "psr-0": {
+      "Reborn": "heart/reborn/src",
+      "": "content/commands"
+    },
+    "classmap": [
+      "content/vendor",
+      "content/commands"
+    ]
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "php magic compile"
+    ],
+    "post-update-cmd": [
+      "php magic compile"
+    ]
+  },
+  "config": {
+    "vendor-dir": "heart/vendor"
+  }
 }
