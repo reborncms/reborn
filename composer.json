@@ -31,7 +31,8 @@
         "symfony/console": "2.3.*@dev",
         "tijsverkoyen/akismet": "dev-master",
         "verbalexpressions/php-verbal-expressions": "dev-master",
-        "league/fractal": "0.7.*"
+        "league/fractal": "0.7.*",
+        "league/flysystem": "0.4.*"
     },
     "autoload": {
         "psr-0": {
