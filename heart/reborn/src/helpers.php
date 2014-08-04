@@ -625,7 +625,7 @@ if ( ! function_exists('gravatar')) {
      */
     function gravatar($email = '', $size = 50, $name = null, $class= null, $rating = 'g', $default = null, $url_only = false)
     {
-         $base_url 	= '//www.gravatar.com/avatar/';
+         $base_url 	= 'http://www.gravatar.com/avatar/';
          $email = empty($email) ? '00000000000000000000000000000000' : md5(strtolower(trim($email)));
          $size = '?s=' . $size;
          $rating = '&amp;r=' . $rating;

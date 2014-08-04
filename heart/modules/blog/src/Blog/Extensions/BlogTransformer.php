@@ -13,20 +13,25 @@ class BlogTransformer extends TransformerAbstract
     {
 
         return array(
-        	'id' 			=> $blog->id,
+        	'id' 			=> (int)$blog->id,
         	'title' 		=> $blog->title,
         	'slug' 			=> $blog->slug,
         	'url'			=> $blog->url,
-        	'category_id'	=> $blog->category_id,
-        	'category_name'	=> $blog->category_name,
-            'category_url'  => $blog->category_url,
-        	'body'			=> $blog->content,
-        	'excerpt'		=> $blog->excerpt,
-        	'author_id'		=> $blog->author_id,
-        	'author_name'	=> $blog->author_name,
-            'author_url'    => $blog->author_url,
-        	'post_date'		=> $blog->post_date,
-	        'featured_img'  => $blog->feature_image,
+            'body'          => $blog->content,
+            'excerpt'       => $blog->excerpt,
+            'post_date'     => $blog->created_at->timestamp,
+            'featured_img'  => $blog->feature_image,
+            'author'        => array(
+                'id'        => (int)$blog->author_id,
+                'name'      => $blog->author_name,
+                'url'       => $blog->author_url,
+                'avatar'    => $blog->author_avatar_link
+            ),
+            'category'      => array(
+                'id'        => (int)$blog->category_id,
+                'name'      => $blog->category_name,
+                'url'       => $blog->category_url,
+            ),
 	        'tags'			=> $blog->tags_arr_with_links,
 	        'comment_count'	=> $blog->comment_count
         );

@@ -50,7 +50,7 @@ class User extends Base
         if (is_null($img)) {
             $name = $this->getFullnameAttribute();
 
-            return gravatar($this->email, $width, $name, 'g', null, $url_only);
+            return gravatar($this->email, $width, $name, null, 'g', null, $url_only);
         }
 
         return $img;

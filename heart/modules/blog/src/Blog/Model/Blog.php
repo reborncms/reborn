@@ -152,6 +152,14 @@ class Blog extends \Eloquent
     }
 
     /**
+     * Blog post's Author Avatar
+     */
+    public function getAuthorAvatarLinkAttribute()
+    {
+        return $this->author->profileImage(120, true);
+    }
+
+    /**
      * Check Blog post's has Tags?
      *
      * @return boolean
