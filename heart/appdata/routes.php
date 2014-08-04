@@ -2,6 +2,9 @@
 
 require 'asset_routes.php';
 
+//Api Routes
+require 'api_routes.php';
+
 // This is default route for Reborn
 // Don't delete this.
 $defaultModule = \Setting::get('default_module');
