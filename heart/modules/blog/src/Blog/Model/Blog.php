@@ -102,6 +102,9 @@ class Blog extends \Eloquent
      */
     public function getFeatureImageAttribute()
     {
+        if ('' == $this->getHasFeatureImageAttribute()) {
+            return '';
+        }
         return url('media/image/'.$this->attributes['attachment']);
     }
 

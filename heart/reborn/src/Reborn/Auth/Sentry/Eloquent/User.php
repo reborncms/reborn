@@ -37,6 +37,16 @@ class User extends Base
     }
 
     /**
+     * Get Profile Image Url
+     *
+     * @return string
+     **/
+    public function getProfileImageLinkAttribute()
+    {
+        return $this->profileImage(120, true);
+    }
+
+    /**
      * Get user's profile image url.
      *
      * @param  integer $width    mage width. Default is 120

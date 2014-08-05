@@ -7,6 +7,8 @@ use Module;
 use Response;
 use League\Fractal;
 use Blog\Extensions\BlogTransformer;
+use Blog\Extensions\CategoryTransformer;
+use Blog\Extensions\UserTransformer;
 use Blog\Lib\DataProvider as Provider;
 
 /**
@@ -23,11 +25,11 @@ class ApiController extends \Api\Controller\ApiController
 	 *
 	 * @return json
 	 **/
-	public function posts()
+	public function posts($wheres = array())
 	{
 		//To do : Blog Posts by Category, Author, tags
 
-		$wheres = $this->checkInputData(array('category_id', 'id', 'author_id', 'tag'));
+		//$wheres = $this->checkInputData(array('category_id', 'id', 'author_id', 'tag'));
 
 		$before_after = $this->checkInputData(array('after_id', 'before_id', 'since', 'until'));
 
@@ -53,7 +55,7 @@ class ApiController extends \Api\Controller\ApiController
 
 		}
 
-		$data = $this->transform($blog);
+		$data = $this->transform($blog, new BlogTransformer);
 
 		return Response::json(array(
 			'total_items' => count($data),
@@ -78,13 +80,114 @@ class ApiController extends \Api\Controller\ApiController
 
 		$blog = Provider::post($id);
 
-		$data = array($this->transform($blog, 'item'));
+		$data = array($this->transform($blog, new BlogTransformer, 'item'));
 
 		return Response::json(array(
 			'total_items' => count($data),
 			'type'		  => 'post',
 			'items'		  => $data
 		));
+
+	}
+
+	/**
+	 * Get Posts by Post Type
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getByPostType($type)
+	{
+		return $this->posts(array('post_type' => $type));
+	}
+
+	/**
+	 * Get Posts by Category
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getByCategory($category_id)
+	{
+		return $this->posts(array('category_id' => $category_id));
+	}
+
+	/**
+	 * Get Posts by Author
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getByAuthor($author_id)
+	{
+		return $this->posts(array('author_id' => $author_id));
+	}
+
+	/**
+	 * Get Posts by Tag
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getByTags($tag)
+	{
+		//$tag = urldecode($tag);
+		return $this->posts(array('tag' => $tag));
+	}
+
+	/**
+	 * Category List
+	 *
+	 * @return json
+	 **/
+	public function getCategories()
+	{
+		$categories = Provider::getCategories();
+
+		$data = $this->transform($categories, new CategoryTransformer);
+
+		return Response::json(array(
+			'total_items' 	=> count($data),
+			'type'			=> 'categories',
+			'items'			=> $data
+		));
+
+	}
+
+	/**
+	 * Get Author Lists
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getAuthors()
+	{
+		$authors = Provider::getAuthors();
+
+		$data = $this->transform($authors, new UserTransformer);
+
+		return Response::json(array(
+			'total_items' 	=> count($data),
+			'type'			=> 'authors',
+			'items'			=> $data
+		));
+	}
+
+	/**
+	 * Get Tag List
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getTags()
+	{
+		$tags = Provider::getTags()->toArray();
+
+		return Response::json(array(
+			'total_items' 	=> count($tags),
+			'type'			=> 'tags',
+			'items'			=> $tags 
+		));	
 
 	}
 
@@ -107,23 +210,32 @@ class ApiController extends \Api\Controller\ApiController
 	 *
 	 * @return array
 	 **/
-	private function transform($blog, $type = 'collection')
+	private function transform($resources, $class, $type = 'collection')
 	{
 		$fractal = new Fractal\Manager();
 
 		if ($type == 'collection') {
 
-			$resource = new Fractal\Resource\Collection($blog, new BlogTransformer);
+			$resource = new Fractal\Resource\Collection($resources, $class);
 
 		} else {
 
-			$resource = new Fractal\Resource\Item($blog, new BlogTransformer);
+			$resource = new Fractal\Resource\Item($resources, $class);
 
 		}
 
 		$data = $fractal->createData($resource)->toArray();
 
 		return $data['data'];
+	}
+
+	/**
+	 * After Function
+	 *
+	 **/
+	public function after($response)
+	{
+		return $response;
 	}
 
 }

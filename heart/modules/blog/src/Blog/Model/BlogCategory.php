@@ -2,6 +2,8 @@
 
 namespace Blog\Model;
 
+use Blog\Model\Blog;
+
 class BlogCategory extends \Eloquent
 {
     protected $table = 'blog_categories';
@@ -11,6 +13,11 @@ class BlogCategory extends \Eloquent
     protected $multisite = true;
 
     protected static $cat = array();
+
+    public function getPostCountAttribute()
+    {
+        return Blog::where('category_id', $this->attributes['id'])->count();
+    }
 
     public static function cat_stucture()
     {

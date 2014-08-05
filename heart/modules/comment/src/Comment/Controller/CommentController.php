@@ -26,6 +26,7 @@ class CommentController extends \PublicController
             if (\Input::get(\Setting::get('spam_filter')) == '') {
                 $val = self::validate();
                 if ($val->valid()) {
+
                     $comment = new Comment;
                     if (\Auth::check()) {
                         $user = \Auth::getUser();
@@ -57,16 +58,20 @@ class CommentController extends \PublicController
                     $comment->content_id = \Input::get('content_id');
                     $comment->ip_address = \Input::ip();
                     $save = $comment->save();
+                    
                     if ($save) {
                         \Flash::success($msg);
                     } else {
                         \Flash::error(t('comment::comment.message.error.comment_submit'));
                     }
+                    
                 } else {
+
                     //validation Error
                     \Flash::error(t('comment::comment.message.error.validation'));
                     $this->template->set('comment_errors', $val->getErrors);
                     $this->template->set('comment_info', \Input::get('*'));
+
                 }
             } else {
                 \Flash::error(t('comment::comment.message.error.bot'));
@@ -111,8 +116,8 @@ class CommentController extends \PublicController
             );
         } else {
             $rule = array(
-                'name' => 'required|maxLength:20',
-                'email' => 'required|maxLength:20',
+                'name' => 'required|maxLength:100',
+                'email' => 'required|maxLength:100',
                 'message' => 'required'
             );
         }

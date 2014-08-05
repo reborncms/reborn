@@ -50,17 +50,35 @@ class Helper {
 	public static function getObjectIds($tag, $object_name)
 	{
 		$object_ids = array();
+
 		$tag_id = Tag::where('name', $tag)->pluck('id');
-		if ($tag_id == null) {
-			return false;
+
+		if ($tag_id != null) {
+
+			$relations = TagsRelationship::where('tag_id', '=', $tag_id)
+								->where('object_name', '=', $object_name)
+								->get();
+			foreach ($relations as $relation) {
+				$object_ids[] = $relation->object_id;
+			}
+
 		}
-		$relations = TagsRelationship::where('tag_id', '=', $tag_id)
-							->where('object_name', '=', $object_name)
-							->get();
-		foreach ($relations as $relation) {
-			$object_ids[] = $relation->object_id;
-		}
+
 		return $object_ids;
+	}
+
+	/**
+	 * Get Tags by Object
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public static function getObjectTags($object_name)
+	{
+		$tag_ids = array_values(array_unique(TagsRelationship::where('object_name', $object_name)->lists('tag_id')));
+
+		return Tag::whereIn('id', $tag_ids)->get();
+
 	}
 
 	/**

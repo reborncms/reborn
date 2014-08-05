@@ -6,6 +6,8 @@ use Blog\Model\BlogCategory;
 
 use Blog\Model\Blog;
 
+use Reborn\Auth\Sentry\Eloquent\User;
+
 class DataProvider 
 {
 
@@ -47,6 +49,11 @@ class DataProvider
 				if ($key == 'tag') {
 
 					$blog_ids = \Tag\Lib\Helper::getObjectIds($value, 'blog');
+
+					if(empty($blog_ids)) {
+						return array();
+					}
+
 					$blog->whereIn('id', $blog_ids);
 
 				} else {
@@ -99,6 +106,10 @@ class DataProvider
 
 	}
 
+	/**
+	 * Get single blog post
+	 * 
+	 **/
 	public static function post($id)
 	{
 
@@ -108,5 +119,42 @@ class DataProvider
                         ->first();
 
 	}
+
+	/**
+	 * Get Categories
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public static function getCategories()
+	{
+		return BlogCategory::all();	
+	}
+
+	/**
+	 * List of Authors
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public static function getAuthors()
+	{
+		$author_ids = array_values(array_unique(Blog::lists('author_id')));
+
+		return User::whereIn('id', $author_ids)->get();
+
+	}
+
+	/**
+	 * List of Tags
+	 *
+	 * @return void
+	 **/
+	public static function getTags()
+	{
+		return \Tag\Lib\Helper::getObjectTags('blog');
+	}
+
+
 	
 }
