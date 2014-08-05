@@ -198,12 +198,12 @@ class BlogController extends \PublicController
 
         $blog_ids = \Tag\Lib\Helper::getObjectIds($name, 'blog');
 
-        $blog_count = Blog::active()->whereIn('id', $blog_ids)->count();
+       // == To separate no tag and no blog post == /
+       if ($blog_ids == false) {
+           return $this->notFound();
+       }
 
-        // == To separate no tag and no blog post == /
-        if ($blog_ids == false) {
-            return $this->notFound();
-        }
+        $blog_count = Blog::active()->whereIn('id', $blog_ids)->count();
 
         $options = array(
             'total_items'       => $blog_count,
