@@ -107,13 +107,13 @@ class Blog
      **/
     public static function categories($child_tag = 'ul')
     {
-        $url = rbUrl('blog/category');
+        $url = url('blog/category');
 
         $result = '';
 
         foreach (CategoryModel::cat_stucture() as $cat) {
             $result .= '<li>';
-            $result .= '<a href="'. $url.$cat['slug'] .'" >';
+            $result .= '<a href="'. $url. '/' .$cat['slug'] .'" >';
             $result .= $cat['name'];
             $result .= '</a>';
             if (isset($cat['children'])) {
