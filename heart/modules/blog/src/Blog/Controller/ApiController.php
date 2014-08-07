@@ -73,14 +73,13 @@ class ApiController extends \Api\Controller\ApiController
 
 		if (!empty($conditions)) {
 
-			$wheres = $conditions['wheres'];
+			$wheres = isset($conditions['wheres']) ? $conditions['wheres'] : array();
 
-			if (isset($conditions['before_after'])) {
-				$wheres = array_merge($wheres, $conditions['before_after']);
-			}
+			$before_after = isset($conditions['before_after']) ? $conditions['before_after'] : array();
 
-			$response_data['query'] = $wheres;
+			$response_data['query'] = array_merge($wheres, $conditions['before_after']);
 		}
+		
 		$response_data['items'] = $data;
 
 		return Response::json($response_data);
@@ -155,6 +154,39 @@ class ApiController extends \Api\Controller\ApiController
 	{
 		//$tag = urldecode($tag);
 		return $this->posts(array('tag' => $tag));
+	}
+
+	/**
+	 * Get Archives
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	function getArchives($year, $month = null)
+	{
+		$limit = (Input::get('limit')) ?: 0;
+
+		$offset = (Input::get('offset')) ?: 0;
+
+		$blog = Provider::getArchives($year, $month, $limit, $offset);
+
+		$data = $this->transform($blog, new BlogTransformer);
+
+		$response_data['total_items'] = Provider::getArchives($year, $month, $limit, $offset, true);
+		$response_data['type'] = 'posts';
+		$response_data['query']['year'] = $year;
+		if ($month) {
+			$response_data['query']['month'] = $month;
+		}
+		if ($limit) {
+			$response_data['limit'] = $limit;
+		}
+		if ($offset) {
+			$response_data['offset'] = $offset;
+		}
+		$response_data['items'] = $data;
+
+		return Response::json($response_data);
 	}
 
 	/**

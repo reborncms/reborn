@@ -98,11 +98,11 @@ class DataProvider
 
 				switch ($key) {
 					case 'since':
-						$blog->where(\DB::raw('UNIX_TIMESTAMP(created_at)'), '>=', $value);
+						$blog->where(\DB::raw('UNIX_TIMESTAMP(created_at)'), '>', $value);
 						break;
 
 					case 'until':
-						$blog->where(\DB::raw('UNIX_TIMESTAMP(created_at)'), '<=', $value);
+						$blog->where(\DB::raw('UNIX_TIMESTAMP(created_at)'), '<', $value);
 						break;
 					
 					case 'after_id':
@@ -146,6 +146,44 @@ class DataProvider
                         ->where('id', $id)
                         ->first();
 
+	}
+
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public static function getArchives($year, $month = null, $limit = 0, $offset = 0, $count = false)
+	{
+		$blog = Blog::active()
+					->with(array('category', 'author'))
+					->where(\DB::raw('YEAR(created_at)'), $year);
+
+		if ($month) {
+			$blog->where(\DB::raw('MONTH(created_at)'), $month);
+		}
+
+
+		if ($count) {
+
+			return $blog->count();
+
+		}
+
+		if ($limit > 0) {
+
+			$blog->take($limit);
+
+		}
+
+		if ($offset > 0) {
+
+			$blog->skip($offset);
+
+		}
+
+		return $blog->get();
 	}
 
 	/**

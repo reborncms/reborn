@@ -21,6 +21,7 @@ if (\Module::has('api') and \Module::isEnabled('api')) {
         Route::get('tag/{*:tag}/posts', 'Blog\Api::getByTags', 'blog.api.tags.posts');
 
         //By Years and Months
+        Route::get('archives/{int:year}/{int:month}?/posts', 'Blog\Api::getArchives', 'blog.api.archives.posts');
 
         //Categories
         Route::get('categories', 'Blog\Api::getCategories', 'blog.categories');
