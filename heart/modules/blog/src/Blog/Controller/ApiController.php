@@ -57,11 +57,33 @@ class ApiController extends \Api\Controller\ApiController
 
 		$data = $this->transform($blog, new BlogTransformer);
 
-		return Response::json(array(
-			'total_items' => count($data),
-			'type'		  => 'posts',
-			'items'		  => $data
-		));
+		$total_items = (isset($conditions['wheres'])) ? Provider::countBy($conditions['wheres']) : Provider::countBy();
+
+		$response_data['total_items'] = $total_items;
+
+		if ($limit) {
+			$response_data['limit'] = $limit;
+		}
+
+		if ($offset) {
+			$response_data['offset'] = $offset;
+		}
+
+		$response_data['type'] = 'posts';
+
+		if (!empty($conditions)) {
+
+			$wheres = $conditions['wheres'];
+
+			if (isset($conditions['before_after'])) {
+				$wheres = array_merge($wheres, $conditions['before_after']);
+			}
+
+			$response_data['query'] = $wheres;
+		}
+		$response_data['items'] = $data;
+
+		return Response::json($response_data);
 
 	}
 

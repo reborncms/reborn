@@ -35,6 +35,34 @@ class DataProvider
 
 	}
 
+	public static function countBy($conditions = array())
+	{
+		$blog = Blog::active()
+					->notOtherLang();
+
+		foreach ($conditions as $key => $value) {
+
+			if ($key == 'tag') {
+
+				$blog_ids = \Tag\Lib\Helper::getObjectIds($value, 'blog');
+
+				if(empty($blog_ids)) {
+
+					return array();
+				}
+
+				$blog->whereIn('id', $blog_ids);
+
+			} else {
+
+				$blog->where($key, $value);
+
+			}
+		}
+
+		return $blog->count();
+	}
+
 	public static function getPostsBy($conditions = array(), $limit = 10, $offset = 0)
 	{
 
@@ -70,11 +98,11 @@ class DataProvider
 
 				switch ($key) {
 					case 'since':
-						$blog->where(\DB::raw('UNIX_TIMESTAMP(created_at)'), '>', $value);
+						$blog->where(\DB::raw('UNIX_TIMESTAMP(created_at)'), '>=', $value);
 						break;
 
 					case 'until':
-						$blog->where(\DB::raw('UNIX_TIMESTAMP(created_at)'), '<', $value);
+						$blog->where(\DB::raw('UNIX_TIMESTAMP(created_at)'), '<=', $value);
 						break;
 					
 					case 'after_id':
