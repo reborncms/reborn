@@ -20,6 +20,7 @@ Route::group('@admin/user',function () {
     Route::add('edit/{int:uri}/', 'User\Admin\User::edit', 'user_edit');
     Route::get('delete/{int:uri}', 'User\Admin\User::delete', 'user_delete');
     Route::get('activate/{int:id}?', 'User\Admin\User::activate', 'user_admin_activate');
+    Route::post('search', 'User\Admin\User::search', 'user_admin_search');
 });
 
 Route::get('@admin/user/group/', 'User\Admin\Group::index', 'group');

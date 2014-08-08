@@ -1,47 +1,10 @@
-{{ if(count($users) > 0) }}
-<table class="stripe">
-	<thead>
-		<tr>
-			<!-- <th>ID</th> -->
-			<th></th>
-			<th>{{ t('user::user.displayName') }}</th>
-			<th>{{ t('user::user.group') }}</th>
-			<th>{{ t('user::user.email') }}</th>
-			<th>{{ t('user::permission.action') }}</th>
-		</tr>
-	</thead>
-	<tbody>
-	{{ loop($users as $u) }}		
-			<tr>
-				<!-- <td>{{ $u->id }}</td> -->
-				<td width=32>{{ $u->profileImage(42) }}</td>
-				<td>{{ $u->fullname }}</td>
-				<td>{{ implode(', ' , $u->getGroups()->lists('name')) }}</td>
-				<td>{{ $u->email }}</td>
-				<td>
-				<div class="icons-bar">
+<div id="filter-bar">
+	{{ Form::start(adminUrl('user/search'), 'filter-form',false, array('class' => 'form')) }}
+		{{ Form::label('Search User :','keyword') }}
+		{{ Form::input('keyword','','text', array('id' => 'filter-box','class' => 'small thin')) }}
+	{{ Form::end() }}
+</div>
 
-					<a href="{{ url("user/profile/".$u->id) }}" class="ico-btn btn-green tipsy-tip" original-title="{{ t('user::user.view', array('name' => $u->fullname)) }}"><i class="icon-view"></i></a>
-
-					<a href="{{ adminUrl("user/edit/".$u->id) }}" class="ico-btn btn-green tipsy-tip" original-title="{{ t('user::permission.edit') }}"><i class="icon-edit"></i></a>
-
-					{{ if( !$u->activated ) }}
-					<a href="{{ adminUrl("user/activate/".$u->id) }}" class="ico-btn btn-green tipsy-tip" original-title="{{ t('user::user.title.activate') }}"><i class="icon-refreshbutton"></i></a>
-					{{ endif }}
-					
-					{{ if (($currentUser->id != $u->id) AND ($u->id != 1)) }}
-					<a href="{{ adminUrl("user/delete/".$u->id) }}" class="ico-btn btn-red tipsy-tip confirm_delete" original-title="{{ t('user::permission.delete') }}"><i class="icon-remove"></i></a>
-					{{ endif }}
-
-				</div>
-				</td>
-			</tr>
-	{{ endloop }}
-	</tbody>
-</table>
-	{{ if(isset($pagination)) }}
-		{{ $pagination }}
-	{{ endif }}
-{{ else }}
-	<p class="empty">No Users Found!</p>
-{{ endif }}
+<div id="data_table_wrapper" style="clear:both;">
+	{{ $data_table }}
+</div>
