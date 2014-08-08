@@ -29,8 +29,7 @@ class UserController extends \AdminController
     {
         $options = array(
             'total_items'       => \User::count(),
-            'items_per_page'    => 25,
-            'param_name' => 'usrpagi'
+            'items_per_page'    => 25
         );
 
         $pagination = \Pagination::create($options);
