@@ -230,7 +230,7 @@ class Helper
     /**
      * Get Blog Category Level
      *
-     * @return void
+     * @return int
      * @author 
      **/
     public static function getCatLvl($categories, $category)
@@ -241,7 +241,7 @@ class Helper
     }
 
     /**
-     * undocumented function
+     * Check parent and get level
      *
      * @return void
      * @author 

@@ -11,6 +11,7 @@ class BlogTransformer extends TransformerAbstract
 
 	public function transform(Blog $blog)
     {
+        $blog = \Field::get('blog', $blog, 'custom_field');
 
         return array(
         	'id' 			=> (int)$blog->id,
@@ -34,7 +35,8 @@ class BlogTransformer extends TransformerAbstract
                 'url'       => $blog->category_url,
             ),
 	        'tags'			=> $blog->tags_arr_with_links,
-	        'comment_count'	=> $blog->comment_count
+	        'comment_count'	=> $blog->comment_count,
+            'custom_fields' => $blog->custom_field->toArray()
         );
 
     }
