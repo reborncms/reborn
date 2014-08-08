@@ -228,6 +228,48 @@ class Helper
     }
 
     /**
+     * Get Blog Category Level
+     *
+     * @return void
+     * @author 
+     **/
+    public static function getCatLvl($categories, $category)
+    {
+
+        return self::getParentCat($categories, $category, 0);
+
+    }
+
+    /**
+     * undocumented function
+     *
+     * @return void
+     * @author 
+     **/
+    protected static function getParentCat($categories, $category, $level)
+    {
+
+        $parent_cat = array_values(array_filter($categories, function($cat) use($category) {
+
+            return ($cat['id'] == $category['parent_id']);
+            
+        }));
+
+        $parent_cat = $parent_cat[0];
+
+        $level++;
+
+        if ($parent_cat['parent_id'] != 0) {
+
+            return self::getParentCat($categories, $parent_cat, $level);
+
+        } 
+
+        return $level;
+
+    }
+
+    /**
      * Check the post is trashed or not
      *
      * @return bool

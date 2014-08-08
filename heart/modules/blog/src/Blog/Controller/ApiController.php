@@ -10,6 +10,7 @@ use Blog\Extensions\BlogTransformer;
 use Blog\Extensions\CategoryTransformer;
 use Blog\Extensions\UserTransformer;
 use Blog\Lib\DataProvider as Provider;
+use Blog\Lib\Helper as BlogHelper;
 
 /**
  * Api Controller for RebornCMS Blog Module
@@ -197,6 +198,19 @@ class ApiController extends \Api\Controller\ApiController
 	public function getCategories()
 	{
 		$categories = Provider::getCategories();
+
+		foreach ($categories as &$category) {
+
+			if ($category->parent_id == 0) {
+
+				$category->level = 0;
+
+			} else {
+
+				$category->level = BlogHelper::getCatLvl($categories->toArray(), $category->toArray());
+
+			}
+		}
 
 		$data = $this->transform($categories, new CategoryTransformer);
 

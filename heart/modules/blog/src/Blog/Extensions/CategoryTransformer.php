@@ -18,7 +18,7 @@ class CategoryTransformer extends TransformerAbstract
             'slug' => $category->slug,
             'description' => $category->description,
             'parent_id' => $category->parent_id,
-            'order'     => $category->order,
+            'level'     => $category->level,
             'post_count'    => $category->post_count
         );
 
