@@ -24,7 +24,8 @@ class SiteManagerInfo extends \Reborn\Module\AbstractInfo
 	 * @var string
 	 **/
 	protected $displayName = array(
-								'en' => 'Site Manager'
+								'en' => 'Site Manager',
+								'tr' => 'Site Yönetimi'
 								);
 
 	/**
@@ -33,7 +34,8 @@ class SiteManagerInfo extends \Reborn\Module\AbstractInfo
 	 * @var string
 	 **/
 	protected $description = array(
-							'en' => 'Multisite Management Module'
+							'en' => 'Multisite Management Module',
+							'tr' => 'Birden fazla site yönetim modülü'
 							);
 
 	/**

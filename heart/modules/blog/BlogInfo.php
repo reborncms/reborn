@@ -8,14 +8,16 @@ class BlogInfo extends \Reborn\Module\AbstractInfo
 
     protected $displayName = array(
         'en'	=> 'Blog',
-        'my'	=> 'ဘလော့ဂ်'
+        'my'	=> 'ဘလော့ဂ်',
+        'tr'    => 'Blog'
     );
 
     protected $version = '1.21';
 
     protected $description = array(
         'en'	=> 'Manage your blog',
-        'my'	=> 'ဘလော့ဂ် ပို့စ်များစီမံရန်'
+        'my'	=> 'ဘလော့ဂ် ပို့စ်များစီမံရန်',
+        'tr'    => 'Blogunuzu yönetin'
     );
 
     protected $author = 'Nyan Lynn Htut / Li Jia Li';

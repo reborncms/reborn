@@ -10,12 +10,14 @@ class NavigationInfo extends \Reborn\Module\AbstractInfo
 
 	protected $displayName = array(
 								'en' => 'Navigation Manager',
-								'my' => 'Website ၏ navigation များကို စီမံခန့်ခွဲရာနေရာ'
+								'my' => 'Website ၏ navigation များကို စီမံခန့်ခွဲရာနေရာ',
+								'tr' => 'Navigasyon Yönetimi'
 							);
 
 	protected $description = array(
 								'en' => 'Manage navigation link and group for your website.',
-								'my' => 'Website တွင် တစ်နေရာမှ တစ်နေရာသို့ သွားလာရ အဆင်ပြေစေရန် ညွှန်းထားသော navigation link များကို စီမံခန့်ခွဲသည့်နေရာ'
+								'my' => 'Website တွင် တစ်နေရာမှ တစ်နေရာသို့ သွားလာရ အဆင်ပြေစေရန် ညွှန်းထားသော navigation link များကို စီမံခန့်ခွဲသည့်နေရာ',
+								'tr' => 'Navigasyon gruplarını ve linklerini yönetin'
 							);
 
 	protected $author = 'Nyan Lynn Htut';
