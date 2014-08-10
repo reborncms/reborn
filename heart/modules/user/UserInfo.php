@@ -8,14 +8,16 @@ class UserInfo extends \Reborn\Module\AbstractInfo
 
     protected $displayName = array(
         'en' => 'User',
-        'my' => 'အသုံးပြုသူများ'
+        'my' => 'အသုံးပြုသူများ',
+        'tr' => 'Kullanıcılar'
     );
 
     protected $version = '1.1';
 
     protected $description = array(
         'en' => 'User, Group, and Permission managament with Cataclyst\Sentry.',
-        'my' => 'အသုံးပြုသူများ၊ အဖွဲ့နေရာစီမံ ခန့်ခွဲခြင်း နှင့် မော်ဂျူး ခွင့်ပြုချက်များအား လုပ်ဆောင်နိုင်ပါသည်။ Cataclyst\Sentry ကို အသုံးပြုထားသည်။'
+        'my' => 'အသုံးပြုသူများ၊ အဖွဲ့နေရာစီမံ ခန့်ခွဲခြင်း နှင့် မော်ဂျူး ခွင့်ပြုချက်များအား လုပ်ဆောင်နိုင်ပါသည်။ Cataclyst\Sentry ကို အသုံးပြုထားသည်။',
+        'tr' => 'Kullanıcılar, Kullanıcı Grupları ve izinleri yönetin'
     );
 
     protected $author = 'K';

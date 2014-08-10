@@ -24,7 +24,8 @@ class MaintenanceInfo extends \Reborn\Module\AbstractInfo
 	 * @var string
 	 **/
 	protected $displayName = array(
-								'en' => 'Maintenance'
+								'en' => 'Maintenance',
+								'tr' => 'Bakım'
 								);
 
 	/**
@@ -33,7 +34,8 @@ class MaintenanceInfo extends \Reborn\Module\AbstractInfo
 	 * @var string
 	 **/
 	protected $description = array(
-							'en' => 'Manage Cache Files'
+							'en' => 'Manage Cache Files',
+							'tr' => 'Bakım sayfası dosyları'
 							);
 
 	/**
@@ -107,6 +109,6 @@ class MaintenanceInfo extends \Reborn\Module\AbstractInfo
 	 * @var boolean
 	 **/
 	protected $allowCustomfield = false;
-	
+
 
 }

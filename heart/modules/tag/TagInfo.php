@@ -5,17 +5,19 @@ namespace Tag;
 class TagInfo extends \Reborn\Module\AbstractInfo
 {
 	protected $name = 'Tag';
-	
+
 	protected $displayName = array(
 		'en'	=> 'Tag',
 		'my'	=> 'Tag',
+		'tr'	=> 'Etiketler'
 	);
 
 	protected $version = '1.0';
 
 	protected $description = array(
 		'en'	=> 'Manage tags for your content',
-		'my'	=> 'Tag များကို စီမံရန်'
+		'my'	=> 'Tag များကို စီမံရန်',
+		'tr'	=> 'İçerikleriniz için etiketleri yönetin'
 	);
 
 	protected $author = 'Nyan Lynn Htut / Li Jia Li';

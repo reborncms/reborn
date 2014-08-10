@@ -9,11 +9,13 @@ class FieldInfo extends \Reborn\Module\AbstractInfo
     protected $version = '1.0';
 
     protected $displayName = array(
-                                'en' => 'Field'
+                                'en' => 'Field',
+                                'tr' => 'Alanlar'
                                 );
 
     protected $description = array(
-                            'en' => 'Custom Fields Module'
+                            'en' => 'Custom Fields Module',
+                            'tr' => 'Özel alanlar modülü'
                             );
 
     protected $author = 'Nyan Lynn Htut';
