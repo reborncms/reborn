@@ -35,7 +35,7 @@ class SiteManagerInfo extends \Reborn\Module\AbstractInfo
 	 **/
 	protected $description = array(
 							'en' => 'Multisite Management Module',
-							'tr' )> 'Birden fazla site yönetim modülü'
+							'tr' => 'Birden fazla site yönetim modülü'
 							);
 
 	/**
