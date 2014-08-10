@@ -8,14 +8,16 @@ class PagesInfo extends \Reborn\Module\AbstractInfo
 
     protected $displayName = array(
         'en'    => 'Pages',
-        'my'    => 'စာမျက်နှာများ'
+        'my'    => 'စာမျက်နှာများ',
+        'tr'    => 'Sayfalar'
     );
 
     protected $version = '1.1';
 
     protected $description = array(
         'en'    =>'Manage Pages of your website',
-        'my'    =>'သင့် ဝဘ်ဆိုဒ် အတွင်းရှိ စာမျက်နှာများ စီမံရန်'
+        'my'    =>'သင့် ဝဘ်ဆိုဒ် အတွင်းရှိ စာမျက်နှာများ စီမံရန်',
+        'tr'    => 'Web site sayfalarınızı yönetin'
     );
 
     protected $author = 'Li Jia Li';
