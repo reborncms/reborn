@@ -16,6 +16,7 @@ return array(
 	 */
 	'support_langs' => array(
 			'en' => 'English',
+			'tr' => 'Türkçe',
 			'my' => 'Myanmar'
 		),
 
