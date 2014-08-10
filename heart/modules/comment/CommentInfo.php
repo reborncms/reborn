@@ -8,14 +8,16 @@ class CommentInfo extends \Reborn\Module\AbstractInfo
 
     protected $displayName = array(
         'en'	=> 'Comment',
-        'my'	=> 'မှတ်ချက်'
+        'my'	=> 'မှတ်ချက်',
+        'tr'    => 'Yorum'
     );
 
     protected $version = '1.11';
 
     protected $description = array(
         'en'	=> 'Manage Comments',
-        'my'	=> 'မှတ်ချက်များစီမံရန်'
+        'my'	=> 'မှတ်ချက်များစီမံရန်',
+        'tr'    => 'Yorumları Yönetin'
     );
 
     protected $author = 'Naing Lin Aung / Li Jia Li';
