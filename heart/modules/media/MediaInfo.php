@@ -34,11 +34,13 @@ class MediaInfo extends \Reborn\Module\AbstractInfo
     protected $displayName = array(
         'en'    => 'Media Manager',
         'my'    => 'မီဒီယာ စီမံဌာန',
+        'tr'    => 'Medya Yöneticisi'
         );
 
     protected $description = array(
         'en'    => 'Official media manager of RebornCMS',
         'my'    => 'ဖိုင်များ၊ မီဒီယာ ဖိုင်လ်များကို ကိုင်တွယ်စီမံနိုင်မည့် မော်ဂျူး',
+        'tr'    => 'RebornCMS resmi dosya yöneticisi'
         );
 
     protected $sharedData = false;

@@ -8,14 +8,16 @@ class WidgetsInfo extends \Reborn\Module\AbstractInfo
 
     protected $displayName = array(
             'en'	=> 'Widgets',
-            'my'	=> 'Widgets'
+            'my'	=> 'Widgets',
+            'tr'    => 'Araçlar'
     );
 
     protected $version = '1.0';
 
     protected $description = array(
             'en'	=> 'Widgets Manager',
-            'my'	=> 'Widget များစီမံခန့်ခွဲရန်'
+            'my'	=> 'Widget များစီမံခန့်ခွဲရန်',
+            'tr'    => 'Araç Yönetimi'
     );
 
     protected $author = 'Li Jia Li';
