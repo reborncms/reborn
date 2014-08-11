@@ -109,6 +109,19 @@ class Blog extends \Eloquent
     }
 
     /**
+     * Blog post Feature Image without size params
+     */
+    public function getFeatureImageNoSizeAttribute()
+    {
+        if ('' == $this->getHasFeatureImageAttribute()) {
+            return '';
+        }
+        $attachment = explode("/", $this->attributes['attachment']);
+
+        return url('media/image/'.$attachment[0]);
+    }
+
+    /**
      * Blog post Date
      *
      * @param  string $format Date format string

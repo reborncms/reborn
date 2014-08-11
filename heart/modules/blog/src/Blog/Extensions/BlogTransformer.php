@@ -22,7 +22,7 @@ class BlogTransformer extends TransformerAbstract
             'body'          => $blog->content,
             'excerpt'       => $blog->excerpt,
             'post_date'     => $blog->created_at->timestamp,
-            'featured_img'  => $blog->feature_image,
+            'featured_img'  => $blog->feature_image_no_size,
             'post_type'     => $blog->post_type,
             'author'        => array(
                 'id'        => (int)$blog->author_id,
