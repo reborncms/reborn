@@ -11,7 +11,6 @@ class BlogTransformer extends TransformerAbstract
 
 	public function transform(Blog $blog)
     {
-        $blog = \Field::get('blog', $blog, 'custom_field');
 
         $custom_fields = ($blog->custom_field) ? $blog->custom_field->toArray() : array();
 
