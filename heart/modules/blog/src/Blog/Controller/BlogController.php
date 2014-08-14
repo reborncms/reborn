@@ -351,8 +351,6 @@ class BlogController extends \PublicController
 
         $response->headers->set('Content-Type', 'application/rss+xml');
 
-        $response->send();
-
         return $response;
     }
 }
