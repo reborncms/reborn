@@ -19,8 +19,10 @@
         <item>
             <title><![CDATA[{{ $blog->title }}]]></title>
             <description><![CDATA[{{ $blog->excerpt }}]]></description>
+            <content:encoded>
+                <![CDATA[{{ $blog->body }}]]]>
+            </content:encoded>
             <link>{{ $blog->url }}</link>
-            <guid isPermaLink="true">http://www.yourdomain.com/rssfeedfolder/file1.html</guid>
             <pubDate>{{ $blog->created_at }}</pubDate>
         </item>
             {{ endloop }}
