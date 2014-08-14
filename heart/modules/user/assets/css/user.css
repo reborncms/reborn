@@ -26,3 +26,20 @@
 	float: none;
 	margin: 0 5px 0 0;
 }
+
+#filter-bar {
+	padding: 5px;
+	margin-bottom: 10px;
+	position: relative;
+	float: left;
+	width: 80%;
+}
+
+#filter-bar form {
+	border: 0px;
+}
+
+#filter-bar label {
+	width: auto;
+	margin-right: 12px;
+}

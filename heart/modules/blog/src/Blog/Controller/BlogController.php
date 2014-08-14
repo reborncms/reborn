@@ -11,8 +11,22 @@ use Auth,
     Field,
     Setting;
 
+use Blog\Lib\DataProvider as Provider;
+
 class BlogController extends \PublicController
 {
+
+    /**
+     * Data Provider
+     *
+     **/
+    protected $provider;
+
+    public function __construct()
+    {
+        $this->provider = new Provider;
+    }
+
     /**
      * Blog Index
      *
@@ -28,17 +42,7 @@ class BlogController extends \PublicController
 
         $pagination = Pagination::create($options);
 
-        $blogs = Blog::active()
-                        ->notOtherLang()
-                        ->with(array('category','author'))
-                        ->orderBy('created_at', 'desc')
-                        ->skip(\Pagination::offset())
-                        ->take(\Pagination::limit())
-                        ->get();
-
-        if (!$blogs->isEmpty()) {
-            $blogs = Field::getAll('blog', $blogs, 'custom_field');
-        }
+        $blogs = $this->provider->allPublicPosts(Pagination::limit(), Pagination::offset());
 
         $this->template->title('Blog')
                         ->setPartial('index')
@@ -57,10 +61,7 @@ class BlogController extends \PublicController
     {
         $slug = urldecode($slug);
 
-        $blog = Blog::active()
-                        ->with(array('category', 'author'))
-                        ->where('slug', $slug)
-                        ->first();
+        $blog = $this->provider->getPostBySlug($slug);
 
         if ($blog == null) {
             return $this->notFound();
@@ -69,8 +70,6 @@ class BlogController extends \PublicController
         $view_count = (int) $blog->view_count + 1;
 
         $update_view_count = Blog::where('id', '=', $blog->id)->update(array('view_count' => $view_count));
-
-        $blog = Field::get('blog', $blog, 'custom_field');
 
         $this->template->title($blog['title'])
                         ->setPartial('single')
@@ -97,9 +96,7 @@ class BlogController extends \PublicController
 
         $slug = urldecode($slug);
 
-        $blog = Blog::with(array('category', 'author'))
-                        ->where('slug', $slug)
-                        ->first();
+        $blog = $this->provider->getPostBySlug($slug, false);
 
         $blog = Field::get('blog', $blog, 'custom_field');
 
@@ -141,7 +138,7 @@ class BlogController extends \PublicController
         }
 
         $options = array(
-            'total_items'       => Blog::active()->whereIn('category_id', $catIds)->count(),
+            'total_items'       => $this->provider->countWhereIn('category_id', $catIds),
             'items_per_page'    => Setting::get('blog_per_page'),
         );
 
@@ -149,18 +146,10 @@ class BlogController extends \PublicController
 
         //To change back with relation
 
-        $blogs = Blog::active()
-                        ->notOtherLang()
-                        ->with(array('category', 'author'))
-                        ->whereIn('category_id', $catIds)
-                        ->orderBy('created_at', 'desc')
-                        ->skip(Pagination::offset())
-                        ->take(Pagination::limit())
-                        ->get();
-
-        if (!$blogs->isEmpty()) {
-            $blogs = Field::getAll('blog', $blogs, 'custom_field');
-        }
+        $blogs = $this->provider->getPostsWhereIn('category_id', 
+                                                    $catIds, 
+                                                    Pagination::limit(),
+                                                    Pagination::offset());
 
         if (self::checkPartial('category_'.$cat_info->slug)) {
 
@@ -196,34 +185,16 @@ class BlogController extends \PublicController
 
         $name = urldecode($name);
 
-        $blog_ids = \Tag\Lib\Helper::getObjectIds($name, 'blog');
-
-       // == To separate no tag and no blog post == /
-       if ($blog_ids == false) {
-           return $this->notFound();
-       }
-
-        $blog_count = Blog::active()->whereIn('id', $blog_ids)->count();
-
         $options = array(
-            'total_items'       => $blog_count,
+            'total_items'       => $this->provider->countBy(array('tag' => $name)),
             'items_per_page'    => Setting::get('blog_per_page'),
         );
 
         $pagination = Pagination::create($options);
 
-        $blogs = Blog::active()
-                        ->notOtherLang()
-                        ->with(array('category', 'author'))
-                        ->whereIn('id', $blog_ids)
-                        ->skip(\Pagination::offset())
-                        ->take(\Pagination::limit())
-                        ->orderBy('created_at', 'desc')
-                        ->get();
-
-        if (!$blogs->isEmpty()) {
-            $blogs = Field::getAll('blog', $blogs, 'custom_field');
-        }
+        $blogs = $this->provider->getPostsBy(array('wheres' => array('tag' => $name)), 
+                                                Pagination::limit(),
+                                                Pagination::offset());
 
         if (self::checkPartial('tag_'.$name)) {
 
@@ -260,24 +231,16 @@ class BlogController extends \PublicController
         }
 
         $options = array(
-            'total_items'       => Blog::active()->where('author_id', $id)->count(),
+            'total_items'       => $this->provider->countBy(array('author_id'=> $id)),
             'items_per_page'    => Setting::get('blog_per_page'),
         );
 
         $pagination = Pagination::create($options);
 
-        $blogs = Blog::active()
-                        ->notOtherLang()
-                        ->with(array('category','author'))
-                        ->where('author_id', $id)
-                        ->skip(Pagination::offset())
-                        ->take(Pagination::limit())
-                        ->orderBy('created_at', 'desc')
-                        ->get();
+        $blogs = $this->provider->getPostsBy(array('wheres' => array('author_id' => $id)), 
+                                                Pagination::limit(),
+                                                Pagination::offset());
 
-        if (!$blogs->isEmpty()) {
-            $blogs = Field::getAll('blog', $blogs, 'custom_field');
-        }
 
         if (self::checkPartial('author_'.$id)) {
 
@@ -314,54 +277,21 @@ class BlogController extends \PublicController
 
         $month_name = '';
 
-        if (!$month) {
+        $options = array(
+            'total_items'       => $this->provider->getArchives($year, $month, 0, 0, true),
+            'items_per_page'    => Setting::get('blog_per_page'),
+        );
 
-            $blog_count = Blog::active()->where(\DB::raw('YEAR(created_at)'), $year)->count();
+        $pagination = Pagination::create($options);
 
-            $options = array(
-                'total_items'       => $blog_count,
-                'items_per_page'    => Setting::get('blog_per_page'),
-            );
+        $blogs = $this->provider->getArchives($year, $month, Pagination::limit(), 
+                                                            Pagination::offset());
 
-            $pagination = Pagination::create($options);
 
-            $blogs = Blog::active()
-                                ->notOtherLang()
-                                ->with(array('category', 'author'))
-                                ->where(\DB::raw('YEAR(created_at)'), $year)
-                                ->skip(\Pagination::offset())
-                                ->take(\Pagination::limit())
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-        } else {
-
+        if ($month) {
+            
             $month_name = date("F", mktime(0, 0, 0, $month, 10));
 
-            $blog_count = Blog::active()
-                                ->where(\DB::raw('YEAR(created_at)'), $year)
-                                ->where(\DB::raw('MONTH(created_at)'), $month)
-                                ->count();
-
-            $options = array(
-                'total_items'       => $blog_count,
-                'items_per_page'    => \Setting::get('blog_per_page'),
-            );
-
-            $pagination = Pagination::create($options);
-
-            $blogs = Blog::active()
-                                ->notOtherLang()
-                                ->with(array('category', 'author'))
-                                ->where(\DB::raw('YEAR(created_at)'), $year)
-                                ->where(\DB::raw('MONTH(created_at)'), $month)
-                                ->skip(Pagination::offset())
-                                ->take(Pagination::limit())
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-        }
-
-        if (!$blogs->isEmpty()) {
-            $blogs = Field::getAll('blog', $blogs, 'custom_field');
         }
 
         if (self::checkPartial('archives')) {
@@ -420,8 +350,6 @@ class BlogController extends \PublicController
         $response->setContent(htmlspecialchars_decode($content));
 
         $response->headers->set('Content-Type', 'application/rss+xml');
-
-        $response->send();
 
         return $response;
     }

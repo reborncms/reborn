@@ -12,6 +12,8 @@ class BlogTransformer extends TransformerAbstract
 	public function transform(Blog $blog)
     {
 
+        $custom_fields = ($blog->custom_field) ? $blog->custom_field->toArray() : array();
+
         return array(
         	'id' 			=> (int)$blog->id,
         	'title' 		=> $blog->title,
@@ -20,7 +22,7 @@ class BlogTransformer extends TransformerAbstract
             'body'          => $blog->content,
             'excerpt'       => $blog->excerpt,
             'post_date'     => $blog->created_at->timestamp,
-            'featured_img'  => $blog->feature_image,
+            'featured_img'  => $blog->feature_image_no_size,
             'post_type'     => $blog->post_type,
             'author'        => array(
                 'id'        => (int)$blog->author_id,
@@ -34,7 +36,8 @@ class BlogTransformer extends TransformerAbstract
                 'url'       => $blog->category_url,
             ),
 	        'tags'			=> $blog->tags_arr_with_links,
-	        'comment_count'	=> $blog->comment_count
+	        'comment_count'	=> $blog->comment_count,
+            'custom_fields' => $custom_fields
         );
 
     }

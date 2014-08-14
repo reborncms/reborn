@@ -2,7 +2,7 @@
 
 namespace User\Controller\Admin;
 
-use Auth, Field, Module;
+use Auth, Field, Module, Input, Pagination, User, Flash, Redirect;
 
 class UserController extends \AdminController
 {
@@ -15,9 +15,12 @@ class UserController extends \AdminController
     {
         $this->menu->activeParent('user');
         $this->template->style('user.css', 'user');
+        $this->template->script('user.js', 'user');
         $this->template->header = t('user::user.title.usermod');
+        $ajax = $this->request->isAjax();
 
-        if(!Auth::check()) return \Redirect::to(adminUrl('login'));
+        if ($ajax) 
+            $this->template->partialOnly();
     }
 
     /**
@@ -28,14 +31,13 @@ class UserController extends \AdminController
     public function index()
     {
         $options = array(
-            'total_items'       => \User::count(),
-            'items_per_page'    => 25,
-            'param_name' => 'usrpagi'
+            'total_items'       => User::count(),
+            'items_per_page'    => 25
         );
 
-        $pagination = \Pagination::create($options);
+        $pagination = Pagination::create($options);
 
-        $users = \User::findAllWithLimit(\Pagination::limit(), \Pagination::offset());
+        $users = User::findAllWithLimit(Pagination::limit(), Pagination::offset());
 
         $currentUser = Auth::getUser();
 
@@ -45,6 +47,9 @@ class UserController extends \AdminController
                     ->set('pagination', $pagination)
                     ->set('currentUser', $currentUser)
                     ->setPartial('admin/index');
+
+        $data_table = $this->template->partialRender('admin/table');
+        $this->template->set('data_table', $data_table);
     }
 
     /**
@@ -56,7 +61,7 @@ class UserController extends \AdminController
     {
         if (!user_has_access('user.create')) return $this->notFound();
 
-        if (\Input::isPost()) {
+        if (Input::isPost()) {
 
             $rule = array(
                 'email' => 'required|email',
@@ -65,23 +70,23 @@ class UserController extends \AdminController
                 'last_name' => 'required|minLength:2|maxLength:40',
             );
 
-            $v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+            $v = new \Reborn\Form\Validation(Input::get('*'), $rule);
             $e = new \Reborn\Form\ValidationError();
 
             if ($v->fail()) {
                 $e = $v->getErrors();
                 $this->template->set('errors', $e);
             } else {
-                $email = \Input::get('email');
-                $first_name = \Input::get('first_name');
-                $last_name = \Input::get('last_name');
-                $password = \Input::get('password');
-                $confpass = \Input::get('confpass');
-                $groups = (int) \Input::get('group');
-                $adminPanelAccess = (int) \Input::get('admin_access', 0);
+                $email = Input::get('email');
+                $first_name = Input::get('first_name');
+                $last_name = Input::get('last_name');
+                $password = Input::get('password');
+                $confpass = Input::get('confpass');
+                $groups = (int) Input::get('group');
+                $adminPanelAccess = (int) Input::get('admin_access', 0);
 
                 if ($password !== $confpass) {
-                    \Flash::error(t('user::user.password.fail'));
+                    Flash::error(t('user::user.password.fail'));
                 } else {
 
                     try {
@@ -106,11 +111,11 @@ class UserController extends \AdminController
                             Field::save('user', $user);
                         }
 
-                        \Flash::success(t('user::user.create.success'));
+                        Flash::success(t('user::user.create.success'));
 
-                        return \Redirect::toAdmin('user');
+                        return Redirect::toAdmin('user');
                     } catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
-                        \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
+                        Flash::error(sprintf(t('user::user.auth.userexist'), $email));
                     }
                 }
             }
@@ -147,7 +152,7 @@ class UserController extends \AdminController
             $group = $group->id;
         }
 
-        if (\Input::isPost()) {
+        if (Input::isPost()) {
 
             $rule = array(
                 'email' => 'required|email',
@@ -155,18 +160,18 @@ class UserController extends \AdminController
                 'last_name' => 'required|minLength:2|maxLength:40',
             );
 
-            $v = new \Reborn\Form\Validation(\Input::get('*'), $rule);
+            $v = new \Reborn\Form\Validation(Input::get('*'), $rule);
             $e = new \Reborn\Form\ValidationError();
 
             if ($v->fail()) {
                 $e = $v->getErrors();
                 $this->template->set('errors', $e);
             } else {
-                $email = \Input::get('email');
-                $first_name = \Input::get('first_name');
-                $last_name = \Input::get('last_name');
-                $groups = (int) \Input::get('group');
-                $adminPanelAccess = (int) \Input::get('admin_access', 0);
+                $email = Input::get('email');
+                $first_name = Input::get('first_name');
+                $last_name = Input::get('last_name');
+                $groups = (int) Input::get('group');
+                $adminPanelAccess = (int) Input::get('admin_access', 0);
 
                 try {
                     $user->email = $email;
@@ -193,15 +198,15 @@ class UserController extends \AdminController
                         }
 
                         \Event::call('user_edited',array($user));
-                        \Flash::success(t('user::user.edit.success'));
+                        Flash::success(t('user::user.edit.success'));
 
-                        return \Redirect::toAdmin('user');
+                        return Redirect::toAdmin('user');
 
                     } else {
-                        \Flash::error(t('user::user.edit.fail'));
+                        Flash::error(t('user::user.edit.fail'));
                     }
                 } catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
-                   \Flash::error(sprintf(t('user::user.auth.userexist'), $email));
+                   Flash::error(sprintf(t('user::user.auth.userexist'), $email));
                 }
             }
         }
@@ -241,23 +246,23 @@ class UserController extends \AdminController
             $user = Auth::getUserProvider()->findById($id);
 
             if ($user->isActivated()) {
-                \Flash::error(sprintf(t('user::user.activate.admin'), $email));
+                Flash::error(sprintf(t('user::user.activate.admin'), $email));
             } else {
                 $activationCode = $user->getActivationCode();
 
                 if ($user->attemptActivation($activationCode)) {
-                       \Flash::success(t('user::user.activate.success'));
+                       Flash::success(t('user::user.activate.success'));
                 } else {
-                   \Flash::error(t('user::user.activate.admin'));
+                   Flash::error(t('user::user.activate.admin'));
                 }
             }
         } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
-            \Flash::error(t('user::user.auth.dunexist'));
+            Flash::error(t('user::user.auth.dunexist'));
         } catch (\Cartalyst\Sentry\Users\UserAlreadyActivatedException $e) {
-            \Flash::error(t('user::user.auth.admin'));
+            Flash::error(t('user::user.auth.admin'));
         }
 
-        return \Redirect::toAdmin('user');
+        return Redirect::toAdmin('user');
     }
 
     /**
@@ -280,9 +285,42 @@ class UserController extends \AdminController
         $user->delete();
         $user->metadata->delete();
 
-        \Flash::success(t('user::user.delete.success'));
+        Flash::success(t('user::user.delete.success'));
 
-        return \Redirect::toAdmin('user');
+        return Redirect::toAdmin('user');
+    }
+
+    /**
+     * User ajax search
+     *
+     * @return void
+     **/
+    public function search()
+    {
+
+        $keyword = Input::get('keyword');
+
+        if ($keyword) {
+            $users = \User::search($keyword);
+        } else {
+             $options = array(
+                'total_items'       => \User::count(),
+                'items_per_page'    => 25
+            );
+
+            $pagination = Pagination::create($options);
+            $users = \User::findAllWithLimit(Pagination::limit(), Pagination::offset());
+
+            $this->template->set('pagination', $pagination);
+
+        }
+
+        $currentUser = Auth::getUser();
+
+        $this->template->partialOnly()
+             ->set('users', $users)
+             ->set('currentUser', $currentUser)
+             ->setPartial('admin/table');
     }
 
     /**
@@ -295,12 +333,12 @@ class UserController extends \AdminController
         $metadata = is_null($user->metadata) ? new \Reborn\Auth\Sentry\Eloquent\UserMetadata : $user->metadata;
 
         $metadata->user_id = $user->id;
-        $metadata->username = \Input::get('username');
-        $metadata->biography = \Input::get('biography');
-        $metadata->country = \Input::get('country');
-        $metadata->website = \Input::get('website');
-        $metadata->facebook = \Input::get('facebook');
-        $metadata->twitter = \Input::get('twitter');
+        $metadata->username = Input::get('username');
+        $metadata->biography = Input::get('biography');
+        $metadata->country = Input::get('country');
+        $metadata->website = Input::get('website');
+        $metadata->facebook = Input::get('facebook');
+        $metadata->twitter = Input::get('twitter');
 
         return $metadata->save();
     }
@@ -313,28 +351,28 @@ class UserController extends \AdminController
      **/
     protected function setPassword($user)
     {
-        $password = \Input::get('password');
-        $confpass = \Input::get('confpass');
+        $password = Input::get('password');
+        $confpass = Input::get('confpass');
 
         if ($password) {
             $passwordRule = array(
                 'password' => 'required|minLength:6',
             );
-            $validatePassword = new \Reborn\Form\Validation(\Input::get('*'), $passwordRule);
+            $validatePassword = new \Reborn\Form\Validation(Input::get('*'), $passwordRule);
 
             if ($validatePassword->fail()) {
                 $errors = $validatePassword->getErrors();
-                \Flash::error($errors);
+                Flash::error($errors);
 
-                return \Redirect::toAdmin('user/edit/'.$user->id);
+                return Redirect::toAdmin('user/edit/'.$user->id);
             } else {
                 if ($password) {
                     if ($password == $confpass) {
                         $user->password = $password;
                     } else {
-                        \Flash::error(t('user::user.password.fail'));
+                        Flash::error(t('user::user.password.fail'));
 
-                        return \Redirect::toAdmin('user/edit/'.$user->id);
+                        return Redirect::toAdmin('user/edit/'.$user->id);
                     }
                 }
             }

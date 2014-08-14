@@ -15,11 +15,12 @@ Route::group('user',function () {
 });
 
 Route::group('@admin/user',function () {
-    Route::get('{p:usrpagi}?', 'User\Admin\User::index', 'user_admin');
+    Route::get('{p:page}?', 'User\Admin\User::index', 'user_admin');
     Route::add('create', 'User\Admin\User::create', 'user_create');
     Route::add('edit/{int:uri}/', 'User\Admin\User::edit', 'user_edit');
     Route::get('delete/{int:uri}', 'User\Admin\User::delete', 'user_delete');
     Route::get('activate/{int:id}?', 'User\Admin\User::activate', 'user_admin_activate');
+    Route::post('search', 'User\Admin\User::search', 'user_admin_search');
 });
 
 Route::get('@admin/user/group/', 'User\Admin\Group::index', 'group');

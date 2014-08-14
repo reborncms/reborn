@@ -10,6 +10,7 @@ use Blog\Extensions\BlogTransformer;
 use Blog\Extensions\CategoryTransformer;
 use Blog\Extensions\UserTransformer;
 use Blog\Lib\DataProvider as Provider;
+use Blog\Lib\Helper as BlogHelper;
 
 /**
  * Api Controller for RebornCMS Blog Module
@@ -19,6 +20,17 @@ use Blog\Lib\DataProvider as Provider;
  **/
 class ApiController extends \Api\Controller\ApiController
 {
+
+	/**
+	 * Data Provider
+	 *
+	 **/
+	protected $provider;
+
+	public function __construct()
+	{
+		$this->provider = new Provider;
+	}
 
 	/**
 	 * Get All Blog posts, Posts Collection by Category, Author and Tag
@@ -39,7 +51,7 @@ class ApiController extends \Api\Controller\ApiController
 
 		if (empty($wheres) and empty($before_after)) {
 
-			$blog = Provider::allPublicPosts($limit, $offset);
+			$blog = $this->provider->allPublicPosts($limit, $offset);
 
 		} else {
 
@@ -51,13 +63,13 @@ class ApiController extends \Api\Controller\ApiController
 				$conditions['before_after'] = $before_after;
 			}
 
-			$blog = Provider::getPostsBy($conditions, $limit, $offset);
+			$blog = $this->provider->getPostsBy($conditions, $limit, $offset);
 
 		}
 
 		$data = $this->transform($blog, new BlogTransformer);
 
-		$total_items = (isset($conditions['wheres'])) ? Provider::countBy($conditions['wheres']) : Provider::countBy();
+		$total_items = (isset($conditions['wheres'])) ? $this->provider->countBy($conditions['wheres']) : $this->provider->countBy();
 
 		$response_data['total_items'] = $total_items;
 
@@ -77,7 +89,7 @@ class ApiController extends \Api\Controller\ApiController
 
 			$before_after = isset($conditions['before_after']) ? $conditions['before_after'] : array();
 
-			$response_data['query'] = array_merge($wheres, $conditions['before_after']);
+			$response_data['query'] = array_merge($wheres, $before_after);
 		}
 		
 		$response_data['items'] = $data;
@@ -99,7 +111,7 @@ class ApiController extends \Api\Controller\ApiController
 			return $this->notFound();
 		}
 
-		$blog = Provider::post($id);
+		$blog = $this->provider->post($id);
 
 		$data = array($this->transform($blog, new BlogTransformer, 'item'));
 
@@ -168,11 +180,11 @@ class ApiController extends \Api\Controller\ApiController
 
 		$offset = (Input::get('offset')) ?: 0;
 
-		$blog = Provider::getArchives($year, $month, $limit, $offset);
+		$blog = $this->provider->getArchives($year, $month, $limit, $offset);
 
 		$data = $this->transform($blog, new BlogTransformer);
 
-		$response_data['total_items'] = Provider::getArchives($year, $month, $limit, $offset, true);
+		$response_data['total_items'] = $this->provider->getArchives($year, $month, $limit, $offset, true);
 		$response_data['type'] = 'posts';
 		$response_data['query']['year'] = $year;
 		if ($month) {
@@ -196,7 +208,20 @@ class ApiController extends \Api\Controller\ApiController
 	 **/
 	public function getCategories()
 	{
-		$categories = Provider::getCategories();
+		$categories = $this->provider->getCategories();
+
+		foreach ($categories as &$category) {
+
+			if ($category->parent_id == 0) {
+
+				$category->level = 0;
+
+			} else {
+
+				$category->level = BlogHelper::getCatLvl($categories->toArray(), $category->toArray());
+
+			}
+		}
 
 		$data = $this->transform($categories, new CategoryTransformer);
 
@@ -216,7 +241,7 @@ class ApiController extends \Api\Controller\ApiController
 	 **/
 	public function getAuthors()
 	{
-		$authors = Provider::getAuthors();
+		$authors = $this->provider->getAuthors();
 
 		$data = $this->transform($authors, new UserTransformer);
 
@@ -235,7 +260,7 @@ class ApiController extends \Api\Controller\ApiController
 	 **/
 	public function getTags()
 	{
-		$tags = Provider::getTags()->toArray();
+		$tags = $this->provider->getTags()->toArray();
 
 		return Response::json(array(
 			'total_items' 	=> count($tags),
