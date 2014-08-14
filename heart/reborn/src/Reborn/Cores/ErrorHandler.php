@@ -313,7 +313,12 @@ class ErrorHandler
      **/
     protected function getErrorLine($file, $line)
     {
-        $content = \File::getContent($file);
+        try {
+            $content = \File::getContent($file);
+        } catch (\Reborn\Filesystem\FileException $e) {
+            return "<pre>Uknown Content</pre>";
+        }
+
         $lines = explode("\n", $content);
 
         $code = str_replace(array('<?php', '?>'), array('{{ ', ' }}'), $lines[$line - 1]);

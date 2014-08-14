@@ -453,9 +453,10 @@ EOT;
             $frontend = true;
         }
 
+        $allowDefaultModule = false;
+
         // Ask for Allow Default Module if Frontend support
         if ($frontend) {
-            $allowDefaultModule = false;
 
             if ($dialog->askConfirmation(
             $output,
