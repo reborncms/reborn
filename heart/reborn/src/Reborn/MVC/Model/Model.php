@@ -46,6 +46,55 @@ abstract class Model extends BaseModel
     protected $multisite = false;
 
     /**
+     * Get data array list for Form::select().
+     * If you want to add first array is plain text, eg: "-- Select One --"
+     * You should set third parameter with Text value.
+     * <code>
+     *      // Let it be data list is id, name
+     *      // 1. id = 1, name = One
+     *      // 2. id = 2, name = Two
+     *      // First we use without prepend string
+     *      dump(Model::getForSelect());
+     *      // Out put is
+     *      array (
+     *          '1' => 'One',
+     *          '2' => 'Two'
+     *      )
+     *
+     *      // Next we make with -- Select One --
+     *      dump(Model:getForSelect('id', 'name', '-- Select One --'));
+     *      // Output is
+     *      array (
+     *          '' => '-- Select One --',
+     *          '1' => 'One',
+     *          '2' => 'Two'
+     *      )
+     * </code>
+     *
+     * @param string $key Column name for select key. Default is "id"
+     * @param string $value Column name for select value. Default is "name"
+     * @param null|string $text Text for display in select array '--Select One--'
+     * @param mixed $textValue Option value for Text
+     * @return array
+     **/
+    public static function getForSelect($key = 'id', $value = 'name', $text = null, $textValue = null)
+    {
+        $results = array();
+        if (! is_null($text)) {
+            $emptyKey = is_null($textValue) ? '' : $textValue;
+            $results = array($emptyKey => $text);
+        }
+
+        $data = static::all();
+
+        foreach ($data as $d) {
+            $results[$d->{$key}] = $d->{$value};
+        }
+
+        return $results;
+    }
+
+    /**
      * Find a model by its slug key.
      *
      * @param  string                                                $slug
@@ -153,7 +202,7 @@ abstract class Model extends BaseModel
     public function save(array $options = array(), $need_validation = true)
     {
         // check validation if needed
-        if ($need_validation and ! $this->valid()) {
+        if ($need_validation and ! $this->valid()) {dump($this->errors(), true);
             return false;
         }
 
