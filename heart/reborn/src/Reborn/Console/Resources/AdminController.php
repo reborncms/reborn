@@ -98,7 +98,7 @@ class {module}Controller extends \AdminController
         $model = {module}::find($id);
 
         // Return 404 for wrong ID
-        if ( is_null($data) ) return $this->notFound();
+        if ( is_null($model) ) return $this->notFound();
 
         $form = {module}Form::create();
 

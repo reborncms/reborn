@@ -2,12 +2,13 @@
 
 namespace Field;
 
-use Event,
-    Config,
-    Input,
-    Field\Model\Field as FieldModel,
-    Field\Model\FieldGroup as FieldGroupModel,
-    Field\Model\FieldData as FieldDataModel;
+use Event;
+use Config;
+use Input;
+use Field\Model\Field as FieldModel;
+use Field\Model\FieldData as FieldDataModel;
+use Field\Model\FieldGroup as FieldGroupModel;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 /**
  * Field Builder Class
@@ -285,6 +286,13 @@ class Builder
      **/
     public function get($relation, $model, $key = 'extended_fields')
     {
+        // Check Model is Collection
+        // If Model is instance of Collection
+        // return with getAll method
+        if ($model instanceof EloquentCollection) {
+            return $this->getAll($relation, $model, $key);
+        }
+
         $group = $this->getGroupData($relation);
 
         if(is_null($group) || is_null($model)) return $model;
