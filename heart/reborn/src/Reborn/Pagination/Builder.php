@@ -107,15 +107,30 @@ class Builder implements BuilderInterface
 			$this->options($options);
 		}
 
+		$this->init();
+	}
+
+	/**
+	 * Initial Setting method
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
 		if (is_null($this->url)) {
 			$this->url = preg_replace('@(\/page-(\d+))@', '', Uri::current()).'/';
 		} else {
 			$this->url = Uri::create($this->url);
 		}
 
-		$params = $app->request->params;
+		$params = $this->app->request->params;
 
 		$page = isset($params[$this->param_name]) ? $params[$this->param_name] : null;
+
+		// Fallback page number for query value
+		if ( is_null($page) ) {
+			$page = \Input::get($this->param_name);
+		}
 
 		if($page != null){
 			$this->current = (int) str_replace('page-', '', $page);
@@ -160,6 +175,9 @@ class Builder implements BuilderInterface
 					break;
 			}
 		}
+
+		// Re Render init method for config change.
+		$this->init();
 
 		$this->calculateTotalPages();
 
@@ -589,7 +607,7 @@ class Builder implements BuilderInterface
 	 * 		'total_pages'	=> 14,
 	 * 		'total_items'	=> 68,
 	 * 		'item_per_page'	=> 5,
-	 * 		'url'			=> 'http://example.com/blog'
+	 * 		'url'			=> 'http://example.com/blog/'
 	 * 	]
 	 * </code>
 	 *
@@ -600,7 +618,7 @@ class Builder implements BuilderInterface
 		return array(
 			'current_page' => $this->current,
 			'total_pages' => $this->total_pages,
-			'total_items' => $this->total_items,
+			'total_items' => (int) $this->total_items,
 			'item_per_page' => $this->items_per_page,
 			'url' => $this->buildUrl(),
 		);
