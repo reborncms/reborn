@@ -78,6 +78,8 @@ class ModuleCommand extends SfCommand
                 $path.DS.'lang',
                 $path.DS.'lang'.DS.'en',
                 $path.DS.'config',
+                $path.DS.'config'.DS.'dev',
+                $path.DS.'config'.DS.'production',
                 $path.DS.'assets',
                 $path.DS.'assets'.DS.'css',
                 $path.DS.'assets'.DS.'js',
@@ -100,6 +102,7 @@ class ModuleCommand extends SfCommand
 
         $data['src_path'] = $src;
 
+        $this->makeConfig($data, $path);
         $this->makeInfo($data, $path);
         $this->makeInstaller($data, $path);
         $this->makeBootstrap($data, $path);
@@ -107,6 +110,37 @@ class ModuleCommand extends SfCommand
         $this->makeModel($data);
 
         $this->makeRouteFile($data, $path);
+    }
+
+    /**
+     * Generate the config files for Module
+     *
+     * @param  array  $data
+     * @param  string $path
+     * @return void
+     **/
+    protected function makeConfig($data, $path)
+    {
+        $file = __DIR__.DS.'Resources'.DS.'config.php';
+
+        $fileData = File::getContent($file);
+
+        $find = array('module' => $data['module'],
+                    'author' => $data['author'],
+                    'authorEmail' => $data['authorEmail']);
+
+        foreach ($find as $k => $v) {
+            $fileData = str_replace('{'.$k.'}', $v, $fileData);
+        }
+
+        // For Default config file
+        File::write($path.DS.'config', 'config.php', str_replace('{extra}', '', $fileData));
+        // For Development config file
+        File::write($path.DS.'config'.DS.'dev', 'config.php',
+                        str_replace('{extra}', ' for development state', $fileData));
+        // For Production config file
+        File::write($path.DS.'config'.DS.'production', 'config.php',
+                        str_replace('{extra}', ' for production state', $fileData));
     }
 
     /**
