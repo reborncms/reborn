@@ -567,7 +567,7 @@ class Blueprint
         $this->fields[$name]['type'] = 'countryList';
         $this->fields[$name]['info'] = $val['info'];
         $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
-        $this->fields[$name]['html'] = Form::CountryList($name, $val['value']);
+        $this->fields[$name]['html'] = Form::countryList($name, $val['value']);
     }
 
     /** Select Field **/

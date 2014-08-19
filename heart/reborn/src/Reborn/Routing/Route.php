@@ -496,7 +496,7 @@ class Route
                 $pattern = "[0-9]++";
                 break;
             case "hex":
-                $pattern = "[0-9][A-F][a-f]++";
+                $pattern = "[0-9A-Fa-f]++";
                 break;
             case "str":
                 $pattern = "[0-9a-zA-Z\-_]+";

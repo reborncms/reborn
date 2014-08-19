@@ -582,13 +582,15 @@ class Form
     /**
      * Country List Select
      *
+     * @param string $name Field name. Default is country_list
+     * @param  mixed  $value
      * @return string
      **/
-    public static function countryList()
+    public static function countryList($name = 'country_list', $val = null)
     {
         $config = Config::load('country');
 
-        return static::select('country_list', $config[0]);
+        return static::select($name, $config[0], $val);
     }
 
     /**
