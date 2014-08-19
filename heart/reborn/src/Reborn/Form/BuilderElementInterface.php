@@ -16,8 +16,8 @@ interface BuilderElementInterface
      * Form Element Render method interface
      *
      * @param string $name  Form element (field) name
-     * @param array  $value Field's array value
+     * @param array  $param Field's array param value
      */
-    public function render($name, $value);
+    public function render($name, $param);
 
 }

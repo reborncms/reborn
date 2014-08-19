@@ -128,6 +128,18 @@ class Blueprint
         foreach ($elements as $name => $v) {
             $this->addElement($name, $v);
         }
+
+        // Add event binding for extraElement
+        // This is easy to add extraElement from module
+        if (\Event::has('reborn.form.generator.addExtraField')) {
+            $results = \Event::call('reborn.form.generator.addExtraField');
+            foreach ($results as $result) {
+                foreach ($result as $name => $value) {
+                    $this->addElement($name, $value);
+                }
+
+            }
+        }
     }
 
     /**
@@ -385,7 +397,10 @@ class Blueprint
             $this->fields[$name]['info'] = $value['info'];
             $this->labels[$name] = $this->getLabelHtml($value['label'], $name);
 
-            require $this->exElements[$method]['path'];
+            if ( ! class_exists($this->exElements[$method]['class']) ) {
+                require $this->exElements[$method]['path'];
+            }
+
             $callback = new $this->exElements[$method]['class']();
 
             if ($callback instanceof BuilderElementInterface) {
@@ -649,6 +664,7 @@ class Blueprint
      **/
     protected function getLabelHtml($label, $for)
     {
+        if ( is_null($label) ) return '';
         return Form::label($label, $for, array('class' => 'control-label'));
     }
 }

@@ -202,7 +202,7 @@ abstract class Model extends BaseModel
     public function save(array $options = array(), $need_validation = true)
     {
         // check validation if needed
-        if ($need_validation and ! $this->valid()) {dump($this->errors(), true);
+        if ($need_validation and ! $this->valid()) {
             return false;
         }
 

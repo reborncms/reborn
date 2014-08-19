@@ -200,10 +200,7 @@ jQuery(function($) {
 				$('#language-form').submit();
 			}
 		});
-		/*$('#lang').change(function (){
-			$('#language-form').submit();
-		});*/
 	});
 
-}); // end of jQuery
+});
 
