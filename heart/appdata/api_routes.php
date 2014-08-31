@@ -34,4 +34,6 @@ if (\Module::has('api') and \Module::isEnabled('api')) {
 
     });
 
+    require SYSTEM . 'modules/media/api_routes.php';
+
 }
