@@ -189,6 +189,10 @@
 	overflow: hidden;
 }
 
+#folder-wrapper, #file-wrapper {
+	display: inline-block;
+}
+
 /* ===== Detail ===== */
 #detail-file-img {
 	width: 100%;

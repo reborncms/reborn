@@ -14,7 +14,6 @@ use Flash, Input, Event, Redirect, Validation;
  **/
 class FolderController extends \AdminController
 {
-
     /**
      * This method will create folders
      *
@@ -31,20 +30,35 @@ class FolderController extends \AdminController
                 Event::call('media.folder.create', array($saved));
 
                 if ($this->request->isAjax()) {
-                    return $this->returnJson(array('status' => 'success'));
+                    $result = array(
+                            'status'    => 'success',
+                            'data'      => $saved->toArray()
+                        );
+
+                    $result['data']['parent'] = (is_null($saved->folder)) 
+                                                ? t('m.lbl.none')
+                                                : $saved->folder->name;
+
+                    $result['data']['user'] = $saved->user->first_name . ' ' .
+                                                $saved->user->last_name;
+
+                    return $this->returnJson($result);
                 }
 
                 Flash::success(t('media::success.create'));
 
-                return Redirect::toAdmin('media');
+                $redirect = (0 == $folderId) ? '' : 'explore/' . $folderId;
+
+                return Redirect::module($redirect);
+
             } else {
+                if ($this->request->isAjax()) {
+                    return $this->returnJson(array('status' => 'fail'));
+                }
+
                 Flash::error(t('m.error.create'));
             }
             
-        }
-
-        if ($this->request->isAjax()) {
-            $this->template->partialOnly();
         }
 
         $this->template->title(t('m.title.create'))

@@ -19,17 +19,63 @@ $(function(){
 				window.location.reload();
 			}
 		});
-	}	
+	}
 
-	$('#media_create_folder').colorbox({
-		width: "50%",
-		height: "400",
-		href: RB.adminMedia + '/folder/create/' + RB.currentFolder,
-		scroll: false,
-		closeButton: false,
-		onComplete: function () {
-			$.colorbox.resize();
-		}
+	$('#media_create_folder').on('click', function(e){
+		e.preventDefault();
+
+		if ($(this).hasClass('btn-disabled')) { return; }
+
+		var value = {
+			'name': 'RbFolder', 
+			'folder_id': RB.currentFolder,
+			'description': ''
+		};
+
+		var that = $(this);
+
+		var text = that.text();
+
+		$.ajax({
+			type: 'POST',
+			url: SITEURL + ADMIN + '/media/folder/create/' + RB.currentFolder,
+			data: value,
+			beforeSend: function() {
+				that.addClass('btn-disabled');
+				that.text('Loading ...');
+			},
+			success: function(result) {
+
+				if ('fail' == result.status) {
+
+				} else {
+					var data = result.data;
+
+					var folder = "<div class='ff-wrapper droppable f-left folder' id='folder_'"+ result.data['id'] +" data-id='"+result.data['id']+"'>";
+
+						folder += "<div class='ff-actions p-relative'>";
+						folder += "<div class='btns-group p-absolute'>";
+						folder += "<a href='#folder-detail' class='action-detail btn btn-ico btn-dark' title='detail' data-target='folder' data-name='"+data['name']+"' data-desc='"+data['description']+"' data-folder='"+data['parent']+"' data-user='"+data['user']+"'>";
+						folder += "<i class='icon-view'></i></a>";
+						folder += "<a class='action-option btn btn-ico btn-dark' title='options'><i class='icon-arrow-down'></i></a></div>";
+						folder += "<ul class='options p-absolute'>";
+						folder += "<li><a class='action_edits' href='"+SITEURL + ADMIN + '/media/folder/update/'+ data['id'] + "'>Edit</a></li>";
+						folder += "<li><a href='#'>Move</a></li>";
+						folder += "<li><a class='confirm_delete' href='"+SITEURL+ADMIN+'/media/folder/delete/'+data['id']+"'>Delete</a></li>";
+						folder += "</ul></div>";
+
+						folder += "<div class='thumb-body' data-target='folder'>";
+						folder += "<div data-id='"+data['id']+"' class='thumbs folder-thumb' title='"+data['name']+"'></div>";
+						folder += "</div><div class='ff-name'><p>"+data['name']+"</p></div></div>";
+
+					$('#folder-wrapper').append(folder);
+				}
+
+				that.text(text);
+				that.removeClass('btn-disabled');
+			}
+		});
+
 	});
 
 	$('#folder_submit').livequery('click', function(e){
@@ -52,7 +98,7 @@ $(function(){
 	});
 /* ===== Files and Folders actions ===== */
 
-	$('.ff-wrapper').bind('mouseleave', function() {
+	$('.ff-wrapper').on('mouseleave', function() {
 		$(this).find('.options').hide();
 	});
 
@@ -72,7 +118,7 @@ $(function(){
 
 	var selected = {'file':[], 'folder':[]};
 
-	$('.thumb-body').bind('click', function(e){
+	$('.thumb-body').on('click', function(e){
 
 		var parent = $(this).parent();
 
@@ -175,7 +221,7 @@ $(function(){
 
 	});
 
-	$('#media_main_delete').bind('click', function(){
+	$('#media_main_delete').on('click', function(){
 
 		var del = confirm("Are you sure you want to delete selected items ?");
 
@@ -203,7 +249,7 @@ $(function(){
 		}
 	});
 
-	$('.action-option').bind('click', function(){
+	$('.action-option').livequery('click', function(){
 		$(this).parent().parent().find('.options').toggle();
 	});
 
@@ -279,7 +325,7 @@ $(function(){
 	
 
 	/* ===== Main Actions ===== */
-	$('#media_search_btn').bind('click', function(e){
+	$('#media_search_btn').on('click', function(e){
 		e.preventDefault();
 
 		$('#jump-box').fadeOut();
@@ -287,7 +333,7 @@ $(function(){
 		$('#search-box').fadeToggle();
 	});
 
-	$('#media_jump_btn').bind('click', function(e){
+	$('#media_jump_btn').on('click', function(e){
 		e.preventDefault();
 
 		$('#search-box').fadeOut();
@@ -304,7 +350,7 @@ $(function(){
 		$('#m-thumb-body').load(SITEURL + ADMIN + '/media/thumbnail/' + $(this).val() + 'wysiwyg #ajax_wrap');
 	});
 
-	$('#link_ok_btn').bind('click', function(){
+	$('#link_ok_btn').on('click', function(){
 		var value = $('#external_link').val().trim();
 
 		if (!value) {
