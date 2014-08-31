@@ -41,7 +41,7 @@
 		  	<div id="m-thumb-main" class="f-left">
 
 					<div id="m-thumb-body" class="f-left">
-						<div id="ajax_wrap">
+						<div id="ajax_wrap" class='clearfix'>
 
 							{{ loop($images as $file) }}
 
@@ -49,7 +49,13 @@
 									$imgSrc = rbUrl('media/image/'.$file->filename.'/80/60');
 								=}
 
-								<img class='thumb-img f-left' src="{{ $imgSrc }}" alt="{{ $file->alt_text }}" class="m-thumbs f-left" title="{{ $file->name }}" data-name="{{ $file->name }}" data-filename="{{ $file->filename }}" data-width="{{ $file->width }}" data-height="{{ $file->height }}" data-alt="{{ $file->alt_text }}" data-id="{{ $file->id }}">
+								<div class="thumb-wrap f-left">
+									
+									<img class='thumb-img' src="{{ $imgSrc }}" alt="{{ $file->alt_text }}" class="m-thumbs f-left" title="{{ $file->name }}" data-name="{{ $file->name }}" data-filename="{{ $file->filename }}" data-width="{{ $file->width }}" data-height="{{ $file->height }}" data-alt="{{ $file->alt_text }}" data-id="{{ $file->id }}">
+
+									<p class="m-thumb-meta">{{ $file->name }}</p>
+
+								</div> <!-- end of thumb-wrap -->
 
 							{{ endloop }}
 

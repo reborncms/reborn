@@ -66,10 +66,20 @@
 #option-wrap {
 	width: 30%;
 }
+.thumb-wrap {
+	border: 1px solid #f0f0f0;
+	margin: 8px;
+}
 .thumb-img {
-	padding-bottom: 17px;
-	padding-left: 17px;
+	padding: 10px;
 	cursor: pointer;
+}
+.m-thumb-meta {
+	text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	width: 100px;
 }
 
 #option-wrap label {
