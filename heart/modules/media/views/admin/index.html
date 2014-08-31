@@ -8,91 +8,99 @@
 
 	<div class="ff-mix-container clearfix p-relative">
 
-		{{ if (isset($folders) and !$folders->isEmpty()) }}
+		<div id="folder-wrapper" class='clearfix'>
 
-			{{ loop ($folders as $folder) }}
+			{{ if (isset($folders) and !$folders->isEmpty()) }}
 
-			<div class="ff-wrapper droppable f-left folder" id="folder_{{ $folder->id }}" data-id='{{ $folder->id }}'>
+				{{ loop ($folders as $folder) }}
 
-			{= $parent = (is_null($folder->folder)) ? t('m.lbl.none') : $folder->folder->name =}
+				<div class="ff-wrapper droppable f-left folder" id="folder_{{ $folder->id }}" data-id='{{ $folder->id }}'>
 
-				<div class="ff-actions p-relative">
-					<div class="btns-group p-absolute">
-						<a href="#folder-detail" class="action-detail btn btn-ico btn-dark" title="detail"  data-target='folder' data-name='{{ $folder->name }}' data-desc='{{ $folder->description }}' data-folder='{{ $parent }}' data-user='{{ $folder->user->first_name }} {{ $folder->user->last_name }}'>
-							<i class="icon-view"></i>
-						</a>
-						<a class="action-option btn btn-ico btn-dark" title="options"><i class="icon-arrow-down"></i></a>
-					</div> <!-- end of btns-group -->
+				{= $parent = (is_null($folder->folder)) ? t('m.lbl.none') : $folder->folder->name =}
 
-					<ul class="options p-absolute">
-						<li><a class='action_edits' href="{{ admin_url('media/folder/update/'.$folder->id) }}">Edit</a></li>
-						<li><a href="#">Move</a></li>
-						<li><a class='confirm_delete' href="{{ admin_url('media/folder/delete/'.$folder->id) }}">Delete</a></li>
-					</ul> <!-- end of options -->
-				</div> <!-- end of ff-actions -->
+					<div class="ff-actions p-relative">
+						<div class="btns-group p-absolute">
+							<a href="#folder-detail" class="action-detail btn btn-ico btn-dark" title="detail"  data-target='folder' data-name='{{ $folder->name }}' data-desc='{{ $folder->description }}' data-folder='{{ $parent }}' data-user='{{ $folder->user->first_name }} {{ $folder->user->last_name }}'>
+								<i class="icon-view"></i>
+							</a>
+							<a class="action-option btn btn-ico btn-dark" title="options"><i class="icon-arrow-down"></i></a>
+						</div> <!-- end of btns-group -->
 
-				<div class="thumb-body" data-target="folder">
+						<ul class="options p-absolute">
+							<li><a class='action_edits' href="{{ admin_url('media/folder/update/'.$folder->id) }}">Edit</a></li>
+							<li><a href="#">Move</a></li>
+							<li><a class='confirm_delete' href="{{ admin_url('media/folder/delete/'.$folder->id) }}">Delete</a></li>
+						</ul> <!-- end of options -->
+					</div> <!-- end of ff-actions -->
 
-					<div data-id="{{ $folder->id }}" class="thumbs folder-thumb" title="{{ $folder->name }}"></div> <!-- end of folder-thumb -->			
+					<div class="thumb-body" data-target="folder">
 
-				</div> <!-- end of thumb-body -->
+						<div data-id="{{ $folder->id }}" class="thumbs folder-thumb" title="{{ $folder->name }}"></div> <!-- end of folder-thumb -->			
 
-				<div class="ff-name"><p>{{ $folder->name }}</p></div> <!-- end of ff-name -->
-			</div> <!-- end of ff-wrapper -->
+					</div> <!-- end of thumb-body -->
 
-			{{ endloop }}
+					<div class="ff-name"><p>{{ $folder->name }}</p></div> <!-- end of ff-name -->
+				</div> <!-- end of ff-wrapper -->
 
-		{{ endif }}
+				{{ endloop }}
 
-		{{ if (isset($files) and !is_null($files) and !$files->isEmpty()) }}
+			{{ endif }}
 
-			{{ loop ($files as $file) }}
+		</div> <!-- end of folder-wrapper -->
 
-			<div class="ff-wrapper draggable f-left file" id="file_{{ $file->id }}" data-id='{{ $file->id }}'>
+		<div id="file-wrapper" class='clearfix'>
 
-				{= $parent = (is_null($file->folder)) ? t('m.lbl.none') : $file->folder->name =}
+			{{ if (isset($files) and !is_null($files) and !$files->isEmpty()) }}
 
-				<div class="ff-actions p-relative">
-					<div class="btns-group p-absolute">
-						<a href="#file-detail" class="action-detail btn btn-ico btn-dark" title="detail"  data-target='file' data-link="{{ image_url($file->filename) }}" data-name='{{ $file->name }}' data-alt='{{ $file->alt_text }}' data-desc='{{ $file->description }}' data-folder='{{ $parent }}' data-user='{{ $file->user->first_name }} {{ $file->user->last_name }}' data-size='{{ num($file->filesize) }}' data-width='{{ num($file->width) }}' data-height='{{ num($file->height) }}'>
-							<i class="icon-view"></i>
-						</a>
-						<a class="action-option btn btn-ico btn-dark" title="options"><i class="icon-arrow-down"></i></a>
-					</div> <!-- end of btns-group -->
+				{{ loop ($files as $file) }}
 
-					<ul class="options p-absolute">
-						<li><a class='action_edits' href="{{ admin_url('media/file/update/'.$file->id) }}">Edit</a></li>
-						<li><a href="#">Move</a></li>
-						<li><a class='confirm_delete' href="{{ admin_url('media/delete-file/'.$file->id) }}">Delete</a></li>
-					</ul> <!-- end of options -->
+				<div class="ff-wrapper draggable f-left file" id="file_{{ $file->id }}" data-id='{{ $file->id }}'>
 
-				</div> <!-- end of ff-actions -->
+					{= $parent = (is_null($file->folder)) ? t('m.lbl.none') : $file->folder->name =}
 
-				<div class="thumb-body" data-target="file">
-					{{ if ('' == $file->thumb) }}
-						<div class="thumbs" title="{{ $file->name }}" style="background: url('{{ image_url($file->filename, 80, 60) }}') center no-repeat">
-						</div> <!-- end of folder-thumb -->
-					{{ else }}
-						<div class="thumbs {{ $file->thumb }}" title="{{ $file->name }}">
-						</div> <!-- end of folder-thumb -->
-					{{ endif }}
+					<div class="ff-actions p-relative">
+						<div class="btns-group p-absolute">
+							<a href="#file-detail" class="action-detail btn btn-ico btn-dark" title="detail"  data-target='file' data-link="{{ image_url($file->filename) }}" data-name='{{ $file->name }}' data-alt='{{ $file->alt_text }}' data-desc='{{ $file->description }}' data-folder='{{ $parent }}' data-user='{{ $file->user->first_name }} {{ $file->user->last_name }}' data-size='{{ num($file->filesize) }}' data-width='{{ num($file->width) }}' data-height='{{ num($file->height) }}'>
+								<i class="icon-view"></i>
+							</a>
+							<a class="action-option btn btn-ico btn-dark" title="options"><i class="icon-arrow-down"></i></a>
+						</div> <!-- end of btns-group -->
 
-					<div class="ff-name"><p>{{ $file->name }}</p></div> <!-- end of ff-name -->
-				</div> <!-- end of thumb-body -->
+						<ul class="options p-absolute">
+							<li><a class='action_edits' href="{{ admin_url('media/file/update/'.$file->id) }}">Edit</a></li>
+							<li><a href="#">Move</a></li>
+							<li><a class='confirm_delete' href="{{ admin_url('media/delete-file/'.$file->id) }}">Delete</a></li>
+						</ul> <!-- end of options -->
 
-			</div> <!-- end of ff-wrapper -->
+					</div> <!-- end of ff-actions -->
 
-			{{ endloop }}
+					<div class="thumb-body" data-target="file">
+						{{ if ('' == $file->thumb) }}
+							<div class="thumbs" title="{{ $file->name }}" style="background: url('{{ image_url($file->filename, 80, 60) }}') center no-repeat">
+							</div> <!-- end of folder-thumb -->
+						{{ else }}
+							<div class="thumbs {{ $file->thumb }}" title="{{ $file->name }}">
+							</div> <!-- end of folder-thumb -->
+						{{ endif }}
 
-		{{ endif }}
+						<div class="ff-name"><p>{{ $file->name }}</p></div> <!-- end of ff-name -->
+					</div> <!-- end of thumb-body -->
 
-		{{ if (isset($isEmpty)) }}
+				</div> <!-- end of ff-wrapper -->
 
-			<div id="no-index-data">
-				{{ t('media::media.info.noFileFolder') }}
-			</div><!-- end of no-index-data -->
+				{{ endloop }}
 
-		{{ endif }}
+			{{ endif }}
+
+			{{ if (isset($isEmpty)) }}
+
+				<div id="no-index-data">
+					{{ t('media::media.info.noFileFolder') }}
+				</div><!-- end of no-index-data -->
+
+			{{ endif }}
+
+		</div> <!-- end of file-wrapper -->
 
 	</div> <!-- end of ff-mix-container -->
 
