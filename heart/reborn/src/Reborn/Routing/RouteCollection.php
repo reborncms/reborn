@@ -114,6 +114,27 @@ class RouteCollection
     }
 
     /**
+     * Create and add a route with POST method and
+     * skip CRSF for API request.
+     * Note : Most of reborn developer are problem in
+     * API post route with csrf. This is easy way.
+     *
+     * @param  string                $path     Uri path
+     * @param  string|Closure        $callback
+     * @param  string|null           $name     Route name
+     * @param  string                $method   Request method for route
+     * @return \Reborn\Routing\Route
+     **/
+    public function apiPost($path, $callback, $name = null)
+    {
+        $route = $this->add($path, $callback, $name, 'POST');
+        $route->csrf(true); // Skip CSRF
+
+        return $route;
+    }
+
+
+    /**
      * Create and add a route with PUT method
      *
      * @param  string                $path     Uri path

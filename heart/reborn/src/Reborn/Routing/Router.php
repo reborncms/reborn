@@ -124,7 +124,9 @@ class Router
 
             // Route with callback function.
             if ($route->isClosure) {
-                return call_user_func_array($route->callback, $route->params);
+                $params = $route->params;
+                array_unshift($params, $this->app);
+                return call_user_func_array($route->callback, $params);
             }
 
             return $this->callbackController($route);
