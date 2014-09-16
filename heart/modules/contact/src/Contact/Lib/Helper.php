@@ -113,4 +113,23 @@ class Helper
 
         return array('path'=>$path.DS.$attachmentName['savedName'], 'name'=>$attachmentName['savedName']);
     }
+
+    /**
+     * To Get User Group Email
+     *
+     * @param  string $id (Group Id)
+     * @return array
+     * @author RebornCMS Development Team
+     **/
+    public static function getEmail($id)
+    {   
+
+        $sentry = new \Cartalyst\Sentry\Sentry;
+        $name = $sentry->findGroupById($id);
+        $user = \Auth::findAllUsersInGroup($name);
+        foreach ($user as $value) {
+            $result[] = $value->email;
+        }
+        return $result;
+    }    
 }

@@ -29,6 +29,7 @@ return array(
 		'add_des_template' => 'Create a new Email Template',
 		'success_mail_send'=> 'Email is Successfully send',
 		'error_host'	=> 'Connection could not be established with host',
+		'need_email'	=> 'Email or Group is need to send email',
 		'labels'	=> array(
 			'subject'	=> 'Subject',
 			'ip'		=> 'Ip',
@@ -41,6 +42,7 @@ return array(
 			'detail'	=> 'Detail',
 			'send'		=> 'Send',
 			'view'		=> 'View',
-			'duplicate' => 'Duplicate'
+			'duplicate' => 'Duplicate',
+			'group'		=> 'User Group',
 			),
 	);

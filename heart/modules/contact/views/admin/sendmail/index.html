@@ -1,13 +1,21 @@
 {{ Form::start(admin_url('contact/send-mail'),'',true,array('class'=>'form')) }}
 		
 		<div class="form-block first-block" style="margin-top:8px;">
-			{{ Form::label(t('label.email').'<span class="required"></span>', 'email') }}
+			{{ Form::label(t('label.email'), 'email') }}
 			<div class="form-right-block">
 				{{ Form::input('email', isset($mail->email) ? $mail->email : '', 'text', array('placeholder' => 'email@example.com')) }}
 				<span class="msg error">{{ $errors['email'] }}</span>
 			</div> <!-- end of form-right-block -->
 		</div> <!-- end of form block -->
 		
+		<div class="form-block first-block" style="margin-top:8px;">
+			{{ Form::label(t('contact::contact.labels.group'), 'group') }}
+			<div class="form-right-block">
+				{{ Form::select('group', $group) }}
+				<span class="msg error">{{ $errors['group'] }}</span>
+			</div> <!-- end of form-right-block -->
+		</div> <!-- end of form block -->
+
 		<div class="form-block first-block">
 			{{ Form::label(t('contact::contact.labels.subject').'<span class="required"></span>', 'subject') }}
 			<div class="form-right-block send-form">

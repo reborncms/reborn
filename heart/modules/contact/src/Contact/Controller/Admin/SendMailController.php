@@ -26,6 +26,11 @@ class SendMailController extends \AdminController
     public function index($id = null)
     {
         if (!user_has_access('contact.reply')) return $this->notFound();
+        $group = \UserGroup::all();
+        $userGroup = array('0'=>'Select User Group');
+        foreach ($group as $value) {
+            $userGroup[$value->id] = $value->name;
+        }
         $mail =new \stdClass;
         $sendMail = Mailer::create(array('type' => \Setting::get('transport_mail')));
         $reply = Mail::where('id', '=', $id)->first();
@@ -40,58 +45,74 @@ class SendMailController extends \AdminController
             if ($v->valid()) {
 
                 $data = Input::get('*');
+                if (!empty($data['email']) || $data['group'] != 0) {
+                    
+                    $toEmail = array();
+                    $toGroup = array();
 
-                $to = explode(",",$data['email']);
-
-                foreach ($to as $key) {
-
-                    if (!(filter_var($key,FILTER_VALIDATE_EMAIL) !== false)) {
-                            $to_error = $key;
+                    if (!empty($data['email'])) {
+                        $toEmail = explode(",",$data['email']);
                     }
-                }
+                    
+                    if ($data['group'] != 0) {
+                        $toGroup = Helper::getEmail($data['group']);
+                    }
+                    
+                    $to = array_merge($toEmail,$toGroup);
+                    foreach ($to as $key) {
 
-                if (isset($to_error)) {
+                        if (!(filter_var($key,FILTER_VALIDATE_EMAIL) !== false)) {
+                                $to_error = $key;
+                        }
+                    }
 
-                    Flash::error(Translate::get('contact::contact.w_email'));
-                    $mail = (object) Input::get('*');
+                    if (isset($to_error)) {
 
-                } else {
+                        Flash::error(Translate::get('contact::contact.w_email'));
+                        $mail = (object) Input::get('*');
 
-                    $data['name'] = \Setting::get('site_title');
-                    $data['from'] = \Setting::get('sever_mail');
+                    } else {
 
-                    $temp = Helper::getTemplate($data,'reply_template');
+                        $data['name'] = \Setting::get('site_title');
+                        $data['from'] = \Setting::get('sever_mail');
 
-                    $sendMail->to($to);
-                    $sendMail->from($data['from'],$data['name']);
-                    $sendMail->subject($data['subject']);
-                    $sendMail->body($temp);
+                        $temp = Helper::getTemplate($data,'reply_template');
 
-                    if ($data['attachment']) {
-                        $attachment = Helper::mailAttachment('attachment',array('jpg','jpeg','png','gif','txt','pdf','doc','docx','xls','zip','tar','xlsx','ppt','tif','tiff'));
+                        $sendMail->to($to);
+                        $sendMail->from($data['from'],$data['name']);
+                        $sendMail->subject($data['subject']);
+                        $sendMail->body($temp);
 
-                        if (isset($attachment['error'])) {
-                            Flash::error($attachment['error']);
+                        if ($data['attachment']) {
+                            $attachment = Helper::mailAttachment('attachment',array('jpg','jpeg','png','gif','txt','pdf','doc','docx','xls','zip','tar','xlsx','ppt','tif','tiff'));
 
-                            return Redirect::to($referer);
+                            if (isset($attachment['error'])) {
+                                Flash::error($attachment['error']);
+
+                                return Redirect::to($referer);
+                            }
+
+                            $sendMail->attach($attachment['path']);
+                            $data['attachment'] = $attachment['name'];
                         }
 
-                        $sendMail->attach($attachment['path']);
-                        $data['attachment'] = $attachment['name'];
+                        if ($sendMail->send(true)) {
+                            Flash::success(Translate::get('contact::contact.success_mail_send'));
+
+                            Event::call('reply_email_success' ,array($data,$to));
+
+                            return Redirect::toAdmin('contact/send-mail');
+                        } else {
+                            Flash::error($sendMail->getError());
+
+                            return Redirect::toAdmin('contact/send-mail');
+                        }
+
                     }
-
-                    if ($sendMail->send()) {
-                        Flash::success(Translate::get('contact::contact.success_mail_send'));
-
-                        Event::call('reply_email_success' ,array($data,$to));
-
-                        return Redirect::toAdmin('contact/send-mail');
-                    } else {
-                        Flash::error($sendMail->getError());
-
-                        return Redirect::toAdmin('contact/send-mail');
-                    }
-
+                } 
+                else {
+                    $errors['email'] = Translate::get('contact::contact.need_email');
+                    $mail = (object) Input::get('*');
                 }
             } else {
                 $errors = $v->getErrors();
@@ -106,6 +127,7 @@ class SendMailController extends \AdminController
                         'plugins/jquery-ui-timepicker-addon.js',
                         'plugins/jquery.tagsinput.min.js'))
                     ->set('mail',$mail)
+                    ->set('group',$userGroup)
                     ->set('errors',$errors)
                     ->view('admin/sendmail/index');
     }
@@ -119,7 +141,6 @@ class SendMailController extends \AdminController
     protected function validate()
     {
         $rule = array(
-                    'email'  => 'required',
                     'subject'=> 'required|maxLength:50',
                     'message'=> 'required'
                 );
