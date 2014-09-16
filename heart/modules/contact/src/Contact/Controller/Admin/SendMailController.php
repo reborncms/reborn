@@ -96,7 +96,7 @@ class SendMailController extends \AdminController
                             $data['attachment'] = $attachment['name'];
                         }
 
-                        if ($sendMail->send(true)) {
+                        if ($sendMail->send()) {
                             Flash::success(Translate::get('contact::contact.success_mail_send'));
 
                             Event::call('reply_email_success' ,array($data,$to));
