@@ -10,12 +10,14 @@ class AdminInfo extends \Reborn\Module\AbstractInfo
 
 	protected $displayName = array(
 								'en' => 'Admin Dashboard',
-								'my' => 'ထိန်းချုပ်ခန်း မျက်နာစာ'
+								'my' => 'ထိန်းချုပ်ခန်း မျက်နာစာ',
+								'tr' => 'Yönetim Paneli'
 							);
 
 	protected $description = array(
 								'en' => 'Admin Panel Dashboard Module',
-								'my' => 'ထိန်းချုပ်ခန်း မျက်နာစာ'
+								'my' => 'ထိန်းချုပ်ခန်း မျက်နာစာ',
+								'tr' => 'Yönetim Paneli Genel Bakış Modülü'
 							);
 
 	protected $author = 'Nyan Lynn Htut';
