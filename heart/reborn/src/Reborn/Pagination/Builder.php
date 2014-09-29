@@ -178,7 +178,7 @@ class Builder implements BuilderInterface
 
 		// Re Render init method for config change.
 		$this->init();
-
+		
 		$this->calculateTotalPages();
 
 		return $this;
@@ -573,11 +573,13 @@ class Builder implements BuilderInterface
 	 **/
 	protected function buildUrl($with = null)
 	{
-		$url = $this->url;
+		$url = \Reborn\Util\Str::endIs($this->url, '/');
 
 		if (! is_null($with) ) {
-			$url = $this->url.$with;
+			$url = $url.$with;
 		}
+
+		$url = rtrim($url, '/');
 
 		if ( empty($this->query) ) {
 			return $url;

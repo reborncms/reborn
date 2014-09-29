@@ -198,10 +198,11 @@ class Uri
         if ($path == '' || $path =='/') {
             $url = $request->baseUrl();
         } else {
+            $base = $request->baseUrl();
             $path = str_replace(' ', '+', $path);
-            $url = $request->baseUrl().$path;
+            $url = $base.str_replace($base, '', $path);
         }
-
+        
         return $url;
     }
 
