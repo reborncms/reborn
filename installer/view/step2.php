@@ -2,7 +2,7 @@
 
 	include 'header.php';
 ?>
-<h2>Fill your Database Data</h2>
+<h2 class="title_text step_title">Installation : Step 2 - Database Information</h2>
 
 <?php
 	if(isset($error)) {
@@ -12,9 +12,6 @@
 
 <form action="<?php echo $url.'step2'; ?>" method="post">
 	<div class="left">
-		<legend>
-			Database Data
-		</legend>
 		<div class="row">
 			<label for="db">Database Name</label>
 			<input type="text" name="db" id="db">

@@ -26,6 +26,7 @@ a { color: #7B0000; }
     padding: 6px 20px;
     margin-bottom: 0;
     font-size: 16px;
+    font-family: "Abel";
     line-height: 1.5em;
     color: #ffffff;
     text-align: center;
@@ -33,9 +34,9 @@ a { color: #7B0000; }
     cursor: pointer;
     *zoom: 1;
     border: none;
-    border: 1px solid #94B133;
+    border: 1px solid #7b0100;
     text-decoration: none;
-    background-color: #94B133;
+    background-color: #7b0100;
 	background-image: linear-gradient(center top , rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%);
 	background-image: -o-linear-gradient(center top , rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%);
 	background-image: -moz-linear-gradient(center top , rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%);
@@ -55,9 +56,18 @@ a { color: #7B0000; }
 	color: #cfcfcf;
 }
 .info {
-	border: 1px solid #900;
+	background: #B94A48;
 	padding: 10px;
-	color: #f00;
+	font-family: "Abel";
+	color: #fff;
+}
+
+.title_text {
+	font-family: "Abel";
+}
+
+.step_title {
+	font-size: 25px;
 }
 
 table {
@@ -71,8 +81,9 @@ table th, table td {
 }
 table th {
 	text-align: left;
-	font-size: 14px;
+	font-size: 16px;
 	background: #f1f1f1;
+	font-family: "Abel";
 }
 table tr.fail td {
 	color: #f00;
@@ -97,10 +108,12 @@ form {
 	padding: 20px;
 }
 legend {
-	padding-bottom: 10px;
 	margin-bottom: 10px;
-	border-bottom: 1px solid #419FA5;
-	color: #4AABB2;
+	background: #EFEFEF;
+	color: #5E5E5E;
+	width: 100%;
+	padding: 10px;
+	font-family: Abel;
 }
 label {
 	width: 35%;
@@ -108,7 +121,8 @@ label {
 	display: block;
 	padding-top: 8px;
 	color: #636363;
-	font-size: 14px;
+	font-size: 16px;
+	font-family: "Abel";
 }
 input {
 	width: 60%;
@@ -160,8 +174,9 @@ input[type=submit] {
 }
 
 #header {
-	height: 60px;
+	height: 63px;
 	background: #333;
+	border-bottom: 6px solid #7B0100;
 }
 #header h1 a {
 	display: block;
@@ -170,6 +185,13 @@ input[type=submit] {
 	font-size: 28px;
 	padding: 15px 0;
 }
+
+#logo_img {
+	float: left;
+	margin-top: -9px;
+	margin-right: 11px;
+}
+
 #header h1 a span {
 	font-size: 18px;
 	color: #efefef;
@@ -177,12 +199,24 @@ input[type=submit] {
 #content {
 	margin: 20px 0;
 }
+
 .extension {
 	float: right;
 	width: 32%;
 	padding: 12px;
 	border: 1px solid #cdcdcd;
+	background: #f1f1f1;
 }
+
+.extension h2 {
+	padding-bottom: 0px;
+	border-bottom: none;
+}
+
+.extension table {
+	background: #fff;
+}
+
 .left {
 	float: left;
 	width: 48%;

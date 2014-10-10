@@ -2,7 +2,7 @@
 
 	include 'header.php';
 ?>
-	<h2>Directory Path and File Writable Access</h2>
+	<h2 class="title_text step_title">Installation : Step 1 - Directory Path and File Writable Access</h2>
 	<table class="access">
 		<?php $checks = array(); ?>
 
@@ -78,7 +78,7 @@
 	</table>
 
 	<div class="extension">
-		<h2>Extension Check</h2>
+		<h2 class="title_text">Extension Check</h2>
 		<table>
 			<?php
 				if($exts['php']['status']) {
@@ -152,7 +152,7 @@
 	</div>
 
 	<div class="extension" style="margin-top:20px;">
-		<h2>Reborn CMS Requirement</h2>
+		<h2 class="title_text">Reborn CMS Requirement</h2>
 		<table>
 			<tr>
 				<td>PHP</td>
@@ -176,9 +176,9 @@
 		<a href="<?php echo $url.'step2'; ?>" class="btn">Next Step</a>
 		<?php else : ?>
 		<p class="info">
-			- Please try to set manually set permission [chmod (0777) for folder and (0666) for file] for red color lists.
+			- If you got red color list above, please run permission.sh in the root directory.
 			<br>
-			- Check Your PHP Version and Extension.
+			- Check Your PHP Version and Extensions.
 		</p>
 		<?php endif; ?>
 	</div>

@@ -2,7 +2,7 @@
 
 	include 'header.php';
 ?>
-<h2>Fill your User and Site Information</h2>
+<h2 class="title_text step_title">Installation : Step 3 - Admin and Site Information</h2>
 
 <?php
 	if(isset($error)) {
