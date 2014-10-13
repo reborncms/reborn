@@ -10,6 +10,8 @@ use Reborn\Auth\Sentry\Eloquent\User;
 
 use Field;
 
+use Module;
+
 use Blog\Lib\Helper;
 
 class DataProvider 
@@ -46,6 +48,7 @@ class DataProvider
 	  | * getPostsWhereIn
 	  | * getArchives
 	  | * getTrashedPosts
+	  | * searchPostBy
 	  | 
 	  | Helper Functions
 	  | ------------------
@@ -90,6 +93,11 @@ class DataProvider
 
 		}
 
+		if (in_array('withTrashed', $conditions)) {
+
+			$blog = $blog->withTrashed();
+		}
+
 		//dump($blog, true);
 
 		return $blog;
@@ -125,6 +133,17 @@ class DataProvider
 
 		return $this->getCustomFields($blog->get());
 
+	}
+
+	/**
+	 * Get new Blog instance
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function newBlogInstance()
+	{
+		return $this->blog;
 	}
 
 	/**
@@ -243,6 +262,19 @@ class DataProvider
 	}
 
 	/**
+	 * Search post by
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function searchPostBy($term, $field_name)
+	{
+		return $this->blog->with(array('category','author'))
+                        ->where($field_name, 'like', '%'.$term.'%')
+                        ->get();
+	}
+
+	/**
 	 * Get Archives post by year and month
 	 *
 	 * @return void
@@ -336,6 +368,37 @@ class DataProvider
         }
 
         return $blog->get();
+	}
+
+	/**
+	 * Get Posts including trashed posts
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getPostsWithTrashed($wheres = array(), $limit = 10, $offset = 0)
+	{
+		return $this->getPostsBy(array(
+					'instances' => array('withTrashed'),
+					'wheres' => $wheres
+				), $limit, $offset);
+	}
+
+	/**
+	 * Get single post with trashed
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getPostWithTrashed($wheres = array())
+	{
+		$blog = $this->getPostsInstance(array('withTrashed'));
+
+		foreach ($wheres as $key => $value) {
+			$blog->where($key, $value);
+		}
+
+		return $blog->first();
 	}
 
 	/**
@@ -439,10 +502,19 @@ class DataProvider
 	 * Get single blog post
 	 * 
 	 **/
-	public function post($id)
+	public function post($id, $active = true)
 	{
+		if($active == true) {
 
-		$blog = $this->getPostsInstance(array('active', 'embed_data'));
+			$instance = array('active', 'embed_data');
+
+		} else {
+
+			$instance = array();
+
+		}
+
+		$blog = $this->getPostsInstance($instance);
 
 		$blog = $blog->where('id', $id)
              			->first();
@@ -553,10 +625,26 @@ class DataProvider
 	 * @return void
 	 * @author 
 	 **/
-	public function trash($id)
+	public function moveToTrash($id)
 	{
+		if($id instanceof Blog) {
 
-		
+			$blog = $id;
+
+		} else {
+
+			$blog = $this->blog->withTrashed()
+								->where('id', $id)
+								->first();
+		}
+
+		$blog->delete();
+
+		if (Module::isEnabled('comment')) {
+
+		    $comment_delete = \Comment\Lib\Helper::commentDelete($id, 'blog');
+
+		}
 
 	}
 
@@ -566,10 +654,52 @@ class DataProvider
 	 * @return void
 	 * @author 
 	 **/
-	public function delete()
+	public function delete($id)
 	{
 
-		
+		if($id instanceof Blog) {
+
+			$blog = $id;
+
+		} else {
+
+			$blog = $this->blog->withTrashed()
+								->where('id', $id)
+								->first();
+		}
+
+		if ($blog->trashed()) {
+
+			//Delete Custom Fields
+			if (Module::isEnabled('field')) {
+
+			    Field::delete('blog', $blog);
+			}
+
+			$blog->forceDelete();
+
+			//Delete Tag Relations
+			if (Module::isEnabled('tag')) {
+
+			    $tag = \Tag\Model\TagsRelationship::where('object_id', $id)
+			                                    ->where('object_name', 'blog')
+			                                    ->delete();
+
+			}
+
+			//ForceDelete Comments
+			if (Module::isEnabled('comment')) {
+
+			    $comment_delete = \Comment\Lib\Helper::commentDelete($id, 'blog', true);
+
+			}
+
+		} else {
+
+			$this->moveToTrash($blog);
+
+		}
+
 
 	}
 
@@ -733,6 +863,7 @@ class DataProvider
 	/*|--- Check Data Session ---------------------------------------------------------
 	  | 
 	  | * isTrashed
+	  | * langDuplicate
 	  |
 	  |--------------------------------------------------------------------------------
 	 */
@@ -745,6 +876,35 @@ class DataProvider
 	public function isTrashed($id)
 	{
 	    return $this->blog->withTrashed()->find($id)->trashed();
+	}
+
+	/**
+	 * Check Language Duplicate
+	 *
+	 * @return void
+	 * @author
+	 **/
+	public function langDuplicate($lang, $lang_ref)
+	{
+
+	    $check = $this->blog->where('lang', $lang)
+	                    ->where('lang_ref', $lang_ref)
+	                    ->count();
+
+	    $org_post = $this->blog->where('lang', $lang)
+	                    ->where('id', $lang_ref)
+	                    ->count();
+
+	    if ($check or $org_post) {
+
+	        return true;
+
+	    } else {
+
+	        return false;
+
+	    }
+
 	}
 
 	/*|--- Get External Data Lists -----------------------------------------------------

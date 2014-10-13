@@ -18,10 +18,20 @@ use Auth,
     Setting,
     Str;
 
+use Blog\Lib\DataProvider as Provider;
+
 class BlogController extends \AdminController
 {
+    /**
+     * Data Provider
+     *
+     **/
+    protected $provider;
+
     public function before()
     {
+        $this->provider = new Provider;
+
         $this->menu->activeParent('content');
 
         $this->template->style('blog.css','blog');
@@ -36,6 +46,16 @@ class BlogController extends \AdminController
         }
     }
 
+    /*|-------------------------------------------------------------------------------------
+      | Retrive Data Session
+      | --------------------
+      | * index 
+      | * search
+      | * trash 
+      |  
+      |-------------------------------------------------------------------------------------
+     */
+
     /**
      * Blog Index
      *
@@ -45,18 +65,13 @@ class BlogController extends \AdminController
     {
         //Pagination
         $options = array(
-            'total_items'       => Blog::where('lang_ref', null)->count(),
+            'total_items'       => $this->provider->countBy(array('lang_ref' => null)),
             'items_per_page'    => Setting::get('admin_item_per_page'),
         );
 
         $pagination = Pagination::create($options);
 
-        $blogs = Blog::with(array('category','author'))
-                            ->where('lang_ref', null)
-                            ->orderBy('created_at', 'desc')
-                            ->skip(Pagination::offset())
-                            ->take(Pagination::limit())
-                            ->get();
+        $blogs = $this->provider->getAllParentLangPosts(Pagination::limit(), Pagination::offset());
 
         $trash_count = Helper::trashCount();
 
@@ -72,6 +87,88 @@ class BlogController extends \AdminController
     }
 
     /**
+     * Ajax Filter Search
+     *
+     * @return void
+     **/
+    public function search()
+    {
+
+        $term = Input::get('term');
+
+        if ($term) {
+
+            $result = $this->provider->searchPostBy($term, 'title');
+
+            $this->template->set('list_type', 'search');
+
+        } else {
+
+            $options = array(
+                'total_items'       => $this->provider->countBy(array('lang_ref' => null)),
+                'items_per_page'    => Setting::get('admin_item_per_page'),
+            );
+
+            $pagination = Pagination::create($options);
+
+            $result = $this->provider->getAllParentLangPosts(Pagination::limit(), Pagination::offset());
+
+            $this->template->set('pagination', $pagination)
+                             ->set('list_type', 'index');
+
+        }
+
+        $this->template->partialOnly()
+             ->set('blogs', $result)
+             ->setPartial('admin/table');
+    }
+
+    /**
+     * View Trash
+     *
+     * @return void
+     * @author
+     **/
+    public function trash()
+    {
+
+        $trash_count = $this->provider->trashCount();
+
+        $options = array(
+            'total_items'       => $trash_count,
+            'items_per_page'    => Setting::get('admin_item_per_page'),
+        );
+
+        $pagination = Pagination::create($options);
+
+        $blogs = $this->provider->getTrashedPosts(Pagination::limit(), Pagination::offset());
+
+        $this->template->title(t('blog::blog.title_main'))
+                        ->setPartial('admin/index')
+                        ->set('pagination', $pagination)
+                        ->set('blogs',$blogs)
+                        ->set('trash_count', $trash_count)
+                        ->set('list_type', 'trash');
+
+        $data_table = $this->template->partialRender('admin/table');
+        $this->template->set('data_table', $data_table);
+
+    }
+
+
+    /*|-------------------------------------------------------------------------------------
+      | Data Session (Full Data Session)
+      | --------------------
+      | * create
+      | * edit
+      | * multilang
+      | * autosave
+      | * delete
+      |
+      |-------------------------------------------------------------------------------------
+     */
+
+    /**
      * Blog Create
      *
      * @return void
@@ -84,29 +181,21 @@ class BlogController extends \AdminController
 
         }
 
-        $blog = new Blog();
+        $blog = $this->provider->newBlogInstance();
 
         if (Input::isPost()) {
 
-            if (Input::get('id') != '') {
+            if (Input::get('id')) {
 
-                $blog = self::setValues('edit', Input::get('id'));
+              $blog = $this->provider->update(Input::get('id'), Input::get('*'));
 
             } else {
 
-                $blog = self::setValues('create');
+              $blog = $this->provider->create(Input::get('*'));
 
             }
 
-            if ($blog->save()) {
-
-                Helper::tagSave($blog->id, Input::get('blog_tag'));
-
-                if (Module::isEnabled('field')) {
-
-                    Field::save('blog', $blog);
-
-                }
+            if ($blog) {
 
                 Event::call('reborn.blog.create');
                 Flash::success(t('blog::blog.create_success'));
@@ -137,17 +226,9 @@ class BlogController extends \AdminController
 
         if (Input::isPost()) {
 
-                $blog = self::setValues('edit', Input::get('id'));
+                $blog = $this->provider->update(Input::get('id'), Input::get('*'));
 
-                if ($blog->save()) {
-
-                    Helper::tagSave($blog->id, Input::get('blog_tag'));
-
-                    if (Module::isEnabled('field')) {
-
-                        Field::update('blog', $blog);
-
-                    }
+                if ($blog) {
 
                     Flash::success(t('blog::blog.edit_success'));
 
@@ -166,7 +247,7 @@ class BlogController extends \AdminController
 
             } else {
 
-                $blog = Blog::find($id);
+                $blog = $this->provider->post($id, false);
 
                 if (empty($blog)) {
                     return $this->notFound();
@@ -195,9 +276,10 @@ class BlogController extends \AdminController
     {
         if ($id != null) {
 
-            $blog = Blog::find($id);
+            $blog = $this->provider->post($id, false);
 
             if (empty($blog)) {
+                
                 return $this->notFound();
 
             }
@@ -206,21 +288,13 @@ class BlogController extends \AdminController
 
         if (Input::isPost()) {
 
-            $blog = self::setValues('create');
-
-            $langDup = Helper::langDuplicate(\Input::get('lang'), \Input::get('lang_ref'));
+            $langDup = $this->provider->langDuplicate(\Input::get('lang'), \Input::get('lang_ref'));
 
             if (!$langDup) {
 
-                if ($blog->save()) {
+                $blog = $this->provider->create(Input::get('*'));
 
-                    Helper::tagSave($blog->id, \Input::get('blog_tag'));
-
-                    if (Module::isEnabled('field')) {
-
-                        Field::save('blog', $blog);
-
-                    }
+                if ($blog) {
 
                     Flash::success(t('blog::blog.create_success'));
 
@@ -228,12 +302,14 @@ class BlogController extends \AdminController
 
                 } else {
 
+                    $blog = Input::get('*');
                     Flash::error(t('blog::blog.create_error'));
 
                 }
 
             } else {
 
+                $blog = Input::get('*');
                 $lang = Config::get('langcodes.'.Input::get('lang'));
                 Flash::error($lang.' article for this post is already exist.');
 
@@ -242,10 +318,142 @@ class BlogController extends \AdminController
         }
 
         self::formEle($blog);
+
         $this->template->title('Another Language')
                         ->set('method', 'multilang');
 
     }
+
+    /**
+     * Autosave Posts
+     *
+     * @return json
+     **/
+    public function autosave()
+    {
+        $ajax = $this->request->isAjax();
+
+        if ($ajax) {
+
+            if (Input::isPost()) {
+
+                if ((Input::get('title') == '' ) and
+                    (Input::get('slug') == '') and
+                    (Input::get('body') == ''))  {
+                    return $this->returnJson(array('status' => 'no_save'));
+
+                } elseif ($this->provider->langDuplicate(\Input::get('lang'), \Input::get('lang_ref'))) {
+                    return $this->returnJson(array(
+                            'status'    => 'no_save',
+                            'msg'       => 'Language already exist.'
+                        ));
+
+                } else {
+
+                    if (Input::get('id') == '') {
+
+                        $blog = $this->provider->create(Input::get('*'));
+
+                    } else {
+
+                        // update
+                        $blog = $this->provider->update(Input::get('id'), Input::get('*'));
+
+                    }
+
+                    if ($blog) {
+
+                        return $this->returnJson(array(
+                            'status' => 'save',
+                            'post_id' => $blog->id,
+                            'time' => sprintf(t('blog::blog.autosave_on'), date('d - M - Y H:i A', time()))));
+                        
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return Redirect::to(adminUrl('blog'));
+    }
+
+    /**
+     * Delete Blog
+     *
+     * @return void
+     **/
+    public function delete($id = 0)
+    {
+
+        $ids = ($id) ? array($id) : \Input::get('action_to');
+
+        $blogs = array();
+
+        foreach ($ids as $id) {
+
+            if ($blog = $this->provider->getPostWithTrashed(array('id' => $id))) {
+
+                if ($blog->trashed()) {
+
+                    // only delete when force Delete
+                    $this->provider->delete($blog);
+
+                    $redirect_url = 'blog/trash';
+
+                } else {
+
+                    $this->provider->moveToTrash($blog);
+
+                    $redirect_url = 'blog';
+
+                }
+
+                $blogs[] = "success";
+
+            } else {
+
+              return $this->notFound();
+
+            }
+
+        }
+
+        if (!empty($blogs)) {
+
+            if (count($blogs) == 1) {
+
+                Flash::success(t('blog::blog.delete_success'));
+
+            } else {
+
+                Flash::success(t('blog::blog.delete_success_many'));
+
+            }
+
+            Event::call('reborn.blog.delete');
+
+        } else {
+
+            Flash::error(t('blog::blog.delete_error'));
+
+        }
+
+        return Redirect::to(adminUrl($redirect_url));
+
+    }
+
+    /*|-------------------------------------------------------------------------------------
+      | Partial Data Update Session
+      | ---------------------------
+      | * changeStatus
+      | * publish
+      | * restore
+      |
+      |-------------------------------------------------------------------------------------
+     */
 
     /**
      * Change Blog Status
@@ -259,7 +467,7 @@ class BlogController extends \AdminController
 
         }
 
-        $blog = Blog::find($id);
+        $blog = $this->provider->post($id, false);
 
         if ($blog->status == 'draft') {
 
@@ -300,7 +508,7 @@ class BlogController extends \AdminController
 
         }
 
-        $blog = Blog::find($id);
+        $blog = $this->provider->post($id, false);
 
         $blog->created_at = new \DateTime();
         $blog->updated_at = new \DateTime();
@@ -329,7 +537,7 @@ class BlogController extends \AdminController
 
         }
 
-        $restore = Blog::withTrashed()->where('id', $id)->restore();
+        $restore = $this->provider->restore($id);
 
         if (Module::isEnabled('comment')) {
 
@@ -351,94 +559,15 @@ class BlogController extends \AdminController
 
     }
 
-    /**
-     * Delete Blog
-     *
-     * @return void
-     **/
-    public function delete($id = 0)
-    {
-
-        $ids = ($id) ? array($id) : \Input::get('action_to');
-
-        $blogs = array();
-
-        foreach ($ids as $id) {
-
-            if ($blog = Blog::withTrashed()->where('id', $id)->first()) {
-
-                if ($blog->trashed()) {
-
-                    // only delete when force Delete
-                    if (Module::isEnabled('field')) {
-
-                        Field::delete('blog', $blog);
-                    }
-
-                    $blog->forceDelete();
-
-                    //Also soft deleted to comment and tag
-                    if (Module::isEnabled('tag')) {
-
-                        $tag = \Tag\Model\TagsRelationship::where('object_id', $id)
-                                                        ->where('object_name', 'blog')
-                                                        ->delete();
-
-                    }
-
-                    if (Module::isEnabled('comment')) {
-
-                        $comment_delete = \Comment\Lib\Helper::commentDelete($id, 'blog', true);
-
-                    }
-
-                    $redirect_url = 'blog/trash';
-
-                } else {
-
-                    $blog->delete();
-
-                    if (Module::isEnabled('comment')) {
-
-                        $comment_delete = \Comment\Lib\Helper::commentDelete($id, 'blog');
-
-                    }
-
-                    $redirect_url = 'blog';
-
-                    //solft delete tag and comments
-
-                }
-
-                $blogs[] = "success";
-
-            }
-
-        }
-
-        if (!empty($blogs)) {
-
-            if (count($blogs) == 1) {
-
-                Flash::success(t('blog::blog.delete_success'));
-
-            } else {
-
-                Flash::success(t('blog::blog.delete_success_many'));
-
-            }
-
-            Event::call('reborn.blog.delete');
-
-        } else {
-
-            Flash::error(t('blog::blog.delete_error'));
-
-        }
-
-        return Redirect::to(adminUrl($redirect_url));
-
-    }
+    /*|-------------------------------------------------------------------------------------
+      | Editor Plugin Methods
+      | ---------------------------
+      | * postLinks
+      | * searchLists
+      | 
+      |
+      |-------------------------------------------------------------------------------------
+     */
 
     /**
      * Get Post links for Editor Plugin
@@ -529,6 +658,63 @@ class BlogController extends \AdminController
 
     }
 
+    /*|-------------------------------------------------------------------------------------
+      | Extra sidekick Methods
+      | ---------------------------
+      | * checkSlug
+      | 
+      |-------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Ajax Check slug
+     *
+     * @return void
+     **/
+    public function checkSlug()
+    {
+        $slug = Input::get('slug');
+
+        if ($slug == "") {
+
+            return "*** This Field is required.";
+
+        } else {
+
+            $id = (int) Input::get('id');
+
+            if ($id != '') {
+
+                //page edit check slug
+                $data = Blog::where('slug', '=', $slug)->where('id', '!=', $id)->get();
+
+            } else {
+
+                //page create check slug
+                $data = Blog::where('slug', '=', $slug)->get();
+
+            }
+
+            if (count($data) > 0) {
+
+                return t('validation.slug_duplicate');
+
+            }
+
+        }
+
+        $this->template->partialOnly();
+
+    }
+
+    /*|-------------------------------------------------------------------------------------
+      | Internal Helper functions
+      | ---------------------------
+      | * formEle
+      | 
+      |-------------------------------------------------------------------------------------
+     */
+
     /**
      * Set JS and Style to Template
      *
@@ -576,317 +762,6 @@ class BlogController extends \AdminController
                             'plugins/jquery-ui-timepicker-addon.js',
                             'plugins/jquery.tagsinput.min.js',
                             'form.js'));
-
-    }
-
-    /**
-     * Set Form Values of Create and Edit Blog
-     *
-     * @return boolean
-     **/
-    protected function setValues($method, $id = null)
-    {
-
-        if ($method == 'create') {
-
-            $blog = new Blog;
-
-        } else {
-
-            $blog = Blog::find($id);
-
-        }
-
-        if (Input::get('author_id') == 0) {
-
-            $author = Auth::getUser()->id;
-
-        } else {
-
-            $author = Input::get('author_id');
-
-        }
-
-        $button_save = Input::get('blog_save');
-
-        if ($button_save !== null) {
-
-            $status = ($button_save == t('global.save') || $button_save == t('global.publish')) ? 'live' : 'draft';
-            $blog->status = $status;
-
-        }
-
-        //if excerpt is empty get some part from body
-        if (Input::get('excerpt') == '') {
-
-            $body_text = Input::get('body');
-
-            if (\Input::get('editor_type') == 'markdown') {
-                $body_text = markdown_extra($body_text);
-            } else {
-                $body_text = html_entity_decode($body_text);
-            }
-
-            $excerpt = Str::words(strip_tags($body_text), Setting::get('excerpt_length'));
-
-        } else {
-
-            $excerpt = Input::get('excerpt');
-
-        }
-
-        $slug = (Input::get('slug') == '') ? 'untitled' : \Input::get('slug');
-
-        $id = Input::get('id');
-
-        $slug_check = Helper::slugDuplicateCheck($slug, $id);
-
-        if ($slug_check) {
-
-            do {
-
-                $slug = Str::increment($slug);
-                $check = Helper::slugDuplicateCheck($slug, $id);
-
-            } while ($check);
-
-        }
-
-        $blog->title = (Input::get('title') == '') ? 'Untitled' : \Input::get('title');
-        $blog->slug = $slug;
-        $blog->category_id = Input::get('category_id');
-        $blog->excerpt = $excerpt;
-        $blog->post_type = Input::get('post_type');
-        $blog->body = Input::get('body');
-        $blog->author_id = $author;
-
-        if (Module::get('blog', 'db_version') >= 1.21) {
-            $blog->editor_type = Input::get('editor_type');
-        }
-
-        if (Module::get('blog', 'db_version') >= 1.1) {
-
-            //Check if this lang is already exist
-
-            $lang = Input::get('lang');
-
-            $lang_ref = Input::get('lang_ref');
-
-            $blog->lang = $lang;
-
-            if ($lang_ref) {
-
-                $blog->lang_ref = $lang_ref;
-
-            }
-
-        }
-
-        $blog->comment_status = Input::get('comment_status');
-
-        if (Input::get('sch_type') != null) {
-
-            if (Input::get('sch_type') == 'manual') {
-
-                $blog->created_at = new \DateTime(Input::get('date'));
-
-            } else {
-
-                if ($method == 'create') {
-
-                    $blog->created_at = new \DateTime();
-
-                }
-
-            }
-
-        }
-
-        if ($method == 'edit') {
-
-            $blog->updated_at = new \DateTime();
-
-        }
-
-        // Remove Base Url from Attachment
-        $blog->attachment = remove_base_url(Input::get('attachment'));
-        //type
-        return $blog;
-
-    }
-
-    /**
-     * Ajax Check slug
-     *
-     * @return void
-     **/
-    public function checkSlug()
-    {
-        $slug = Input::get('slug');
-
-        if ($slug == "") {
-            return "*** This Field is required.";
-
-        } else {
-
-            $id = (int) Input::get('id');
-
-            if ($id != '') {
-
-                //page edit check slug
-                $data = Blog::where('slug', '=', $slug)->where('id', '!=', $id)->get();
-
-            } else {
-
-                //page create check slug
-                $data = Blog::where('slug', '=', $slug)->get();
-
-            }
-
-            if (count($data) > 0) {
-
-                $error_msg = t('validation.slug_duplicate');
-
-                return $error_msg;
-
-            }
-
-        }
-
-        $this->template->partialOnly();
-
-    }
-
-    /**
-     * Ajax Filter Search
-     *
-     * @return void
-     **/
-    public function search()
-    {
-
-        $term = Input::get('term');
-
-        if ($term) {
-
-            $result = Blog::with(array('category','author'))
-                        ->where('title', 'like', '%'.$term.'%')
-                        ->get();
-
-        } else {
-
-            $options = array(
-                'total_items'       => Blog::count(),
-                'items_per_page'    => Setting::get('admin_item_per_page'),
-            );
-
-            $pagination = Pagination::create($options);
-
-            $result = Blog::with(array('category','author'))
-                                ->where('lang_ref', null)
-                                ->skip(\Pagination::offset())
-                                ->take(\Pagination::limit())
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-
-            $this->template->set('pagination', $pagination);
-
-        }
-
-        $this->template->partialOnly()
-             ->set('blogs', $result)
-             ->setPartial('admin/table')
-             ->set('list_type', 'search');
-    }
-
-    /**
-     * Autosave Posts
-     *
-     * @return json
-     **/
-    public function autosave()
-    {
-        $ajax = $this->request->isAjax();
-
-        if ($ajax) {
-
-            if (Input::isPost()) {
-
-                if ((Input::get('title') == '' ) and
-                    (Input::get('slug') == '') and
-                    (Input::get('body') == ''))  {
-                    return $this->returnJson(array('status' => 'no_save'));
-
-                } elseif (Helper::langDuplicate(Input::get('lang'), Input::get('lang_ref'))) {
-                    return $this->returnJson(array(
-                            'status'	=> 'no_save',
-                            'msg'		=> 'Language already exist.'
-                        ));
-
-                } else {
-
-                    if (Input::get('id') == '') {
-
-                        $blog = self::setValues('create');
-
-                    } else {
-
-                        // update
-                        $blog = self::setValues('edit', Input::get('id'));
-
-                    }
-
-                    if ($blog->save()) {
-                        return $this->returnJson(array(
-                            'status' => 'save',
-                            'post_id' => $blog->id,
-                            'time' => sprintf(t('blog::blog.autosave_on'), date('d - M - Y H:i A', time()))));
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        return Redirect::to(adminUrl('blog'));
-    }
-
-    /**
-     * View Trash
-     *
-     * @return void
-     * @author
-     **/
-    public function trash()
-    {
-
-        $trash_count = Helper::trashCount();
-
-        $options = array(
-            'total_items'       => $trash_count,
-            'items_per_page'    => Setting::get('admin_item_per_page'),
-        );
-
-        $pagination = Pagination::create($options);
-
-        $blogs = Blog::with(array('category','author'))
-                            ->onlyTrashed()
-                            ->orderBy('deleted_at', 'desc')
-                            ->skip(Pagination::offset())
-                            ->take(Pagination::limit())
-                            ->get();
-
-        $this->template->title(t('blog::blog.title_main'))
-                        ->setPartial('admin/index')
-                        ->set('pagination', $pagination)
-                        ->set('blogs',$blogs)
-                        ->set('trash_count', $trash_count)
-                        ->set('list_type', 'trash');
-
-        $data_table = $this->template->partialRender('admin/table');
-        $this->template->set('data_table', $data_table);
 
     }
 

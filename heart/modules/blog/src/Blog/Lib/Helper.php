@@ -202,7 +202,7 @@ class Helper
     }
 
     /**
-     * Check Language Duplicate
+     * Check Language Duplicate --> moved to DataProvider
      *
      * @return void
      * @author
