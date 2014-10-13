@@ -1,7 +1,12 @@
 {{ if(Module::get('blog', 'db_version') < 1.1) }}
 <div class="msg-box msg-warning">*** Please upgrade Blog Module. Click <a href="{{ adminUrl('module') }}">here</a> to upgrade.</div>
 {{ endif }}
-{{ if ($list_type != 'trash') }}
+
+{{ if ($list_type == 'category') }}
+	<h4>Category - {{ $category_name }}</h4>
+{{ endif }}
+
+{{ if ($list_type != 'category' and $list_type != 'trash') }}
 	<div id="filter-bar">
 		{{ Form::start(adminUrl('blog/search'), 'filter-form',false, array('class' => 'form')) }}
 			{{ Form::label(t('blog::blog.filter_search').' :','term') }}

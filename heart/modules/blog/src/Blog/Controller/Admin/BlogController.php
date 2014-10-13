@@ -73,7 +73,7 @@ class BlogController extends \AdminController
 
         $blogs = $this->provider->getAllParentLangPosts(Pagination::limit(), Pagination::offset());
 
-        $trash_count = Helper::trashCount();
+        $trash_count = $this->provider->trashCount();
 
         $this->template->title(t('blog::blog.title_main'))
                         ->setPartial('admin/index')
@@ -81,6 +81,43 @@ class BlogController extends \AdminController
                         ->set('blogs',$blogs)
                         ->set('trash_count', $trash_count)
                         ->set('list_type', 'index');
+
+        $data_table = $this->template->partialRender('admin/table');
+        $this->template->set('data_table', $data_table);
+    }
+
+    /**
+     * Blog List by Category
+     *
+     * @return void
+     * @author 
+     **/
+    public function category($category_id)
+    {
+        $options = array(
+            'total_items'       => $this->provider->countBy(array('lang_ref' => null, 'category_id' => $category_id)),
+            'items_per_page'    => Setting::get('admin_item_per_page'),
+        );
+
+        $pagination = Pagination::create($options);
+
+        $blogs = $this->provider->getPostsBy(array(
+            'instances' => array('notOtherLang', 'order'),
+            'wheres'    => array('category_id' => $category_id)
+        ));
+
+        if (count($blogs) > 0) {
+            $this->template->category_name = $blogs[0]->category->name;
+        }
+
+        $trash_count = $this->provider->trashCount();
+
+        $this->template->title(t('blog::blog.title_main'))
+                        ->setPartial('admin/index')
+                        ->set('pagination', $pagination)
+                        ->set('blogs',$blogs)
+                        ->set('trash_count', $trash_count)
+                        ->set('list_type', 'category');
 
         $data_table = $this->template->partialRender('admin/table');
         $this->template->set('data_table', $data_table);

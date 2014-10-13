@@ -10,6 +10,8 @@
 
     \Route::add('{p:page}?', 'Blog\Admin\Blog::index', 'admin_blog_index');
 
+    \Route::add('category/{int:category_id}/{p:page}?', 'Blog\Admin\Blog::category', 'admin_blog_list_category');
+
     \Route::add('create', 'Blog\Admin\Blog::create', 'admin_blog_create');
 
     \Route::add('edit/{int:id}?', 'Blog\Admin\Blog::edit', 'admin_blog_edit');

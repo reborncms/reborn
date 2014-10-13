@@ -27,6 +27,8 @@
 			{= $date = date_create($blog->created_at) =}
 			<tr>
 				<td class="checkbox">{{ Form::checkbox('action_to[]', $blog->id, false, array('id' => 'action'.$a)) }}</td>
+
+				<!-- Blog Title -->
 				<td style="width:22%;">
 					<span class="bg-title">
 						{{ if ($list_type != 'trash') }}
@@ -51,9 +53,10 @@
 					</span>
 				</td>
 
+				<!-- Language -->
 				<td>
 
-					{{ if ($list_type != 'trash' and count($blog->lang_list) > 1) }}
+					{{ if ($list_type != 'trash' and $list_type != 'search' and count($blog->lang_list) > 1) }}
 						<div class="multi_lang">
 							{{ loop ($blog->lang_list as $lang) }}
 								<li>
@@ -69,22 +72,31 @@
 						{{ Config::get('langcodes.'.$blog_lang) }}
 					{{ endif }}
 				</td>
-
+				
+				<!-- Category -->
 				<td>
 					{{ if (!isset($blog->category->name)) }}
 						Untitled
 					{{ else }}
-						{{ $blog->category->name }}
+						<a href="{{ admin_url('blog/category/'.$blog->category->id) }}">
+							{{ $blog->category->name }}
+						</a>
 					{{ endif }}
 				</td>
+
+				<!-- Author -->
 				<td>
 					<a href="{{ url('user/profile/'.$blog->author->id) }}">{{ $blog->author_name }}</a>
 				</td>
+
+				<!-- comment count -->
 				{{ if ($list_type != 'trash') }}
 					<td style="text-align:center;">
 						<a href="{{ admin_url('comment') }}">{{ $blog->comment_count }}</a>
 					</td>
 				{{ endif }}
+
+				<!-- Created at -->
 				<td>
 					{{ if ($blog->created_at > date('Y-m-d H:i:s')) }}
 						{{ t('blog::blog.schedule_label').' '. num(date_format($date, 'Y-m-d h:i a')) }}
@@ -92,12 +104,16 @@
 						{{ num(date_format($date, 'Y-m-d h:i a')) }}
 					{{ endif }}
 				</td>
+
+				<!-- Deleted at (trash) -->
 				{{ if ($list_type == 'trash') }}
 					<td>
 						{= $dl_date = date_create($blog->deleted_at) =}
 						{{ num(date_format($dl_date, 'Y-m-d h:i a')) }}
 					</td>
 				{{ endif }}
+
+				<!-- Actions -->
 				<td>
 					<div class="icons-bar">
 						{{ if ($list_type != 'trash') }}

@@ -270,7 +270,7 @@ class Helper
     }
 
     /**
-     * Check the post is trashed or not
+     * Check the post is trashed or not --> moved to Provider
      *
      * @return bool
      **/
@@ -280,7 +280,7 @@ class Helper
     }
 
     /**
-     * Get count of Trashed Posts
+     * Get count of Trashed Posts --> moved to Provider
      *
      * @return int
      **/
