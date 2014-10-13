@@ -64,13 +64,19 @@ class PagesController extends \PublicController
                                ->metadata('og:url', rbUrl($query->uri), 'og')
                                ->setPartial('index');
 
-            $segments = explode("/", $uri);
+            $home_page = \Setting::get('home_page');
 
-            foreach ($segments as $key => $val) {
-                $u = Pages::where('slug', '=', $val)->select('uri', 'title')->first();
+            $this->template->breadcrumb('Home', url());
 
-                $this->template->breadcrumb('Home', rbUrl())
-                            ->breadcrumb($u->title, rbUrl($u->uri));
+            if ($uri != $home_page) {
+
+                $segments = explode("/", $uri);
+
+                foreach ($segments as $key => $val) {
+                    $u = Pages::where('slug', '=', $val)->select('uri', 'title')->first();
+
+                    $this->template->breadcrumb($u->title, url($u->uri));
+                }
             }
         }
 
