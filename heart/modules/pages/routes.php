@@ -22,6 +22,10 @@
 
 \Route::post('@admin/pages/order', 'Pages\Admin\Pages::order', 'admin_pages_order');
 
+\Route::add('@admin/pages/change-home-page', 'Pages\Admin\Pages::changeHomePage', 'admin_change_home');
+
+\Route::add('@admin/pages/add-lang/{int:id}', 'Pages\Admin\Pages::duplicate', 'admin_add_page_lang');
+
 // --- Front End -- //
 
 \Route::add('pages/preview/{*:slug}', 'Pages\Pages::preview', 'pages_preview');

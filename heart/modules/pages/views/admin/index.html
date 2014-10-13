@@ -1,4 +1,14 @@
 <div id="page_index_wrapper">
+	{{ ifset($home_page) }}
+		<div id="home_page">
+			<div id="current_home">Current Home Page : <div id="home_title">
+				<h4><a href="{{ url($home_page->uri) }}">{{ $home_page->title }}</a></h4>
+			</div></div>
+			<div id="home_actions">
+				<a href="#" id="edit_home_page">Change Home Page</a>
+			</div>
+		</div>
+	{{ endif }}
 	<div class="alert" id="ajax-alert"><a href="#" class="close">&times;</a></div>
 	<div id="page_list">
 		<ol class="sortable no-list">
@@ -67,5 +77,15 @@
 		$(this).siblings('ol').slideToggle();
 		$(this).toggleClass('icon-circleplus');
 		$(this).toggleClass('icon-circleminus');
+	});
+
+	$('#edit_home_page').click(function(e){
+		e.preventDefault();
+		var url = SITEURL + ADMIN + '/pages/change-home-page'
+
+		$.ajax(url).done(function(data){
+			$('#home_title').html(data);
+		});
+
 	});
 </script>

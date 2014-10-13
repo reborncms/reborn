@@ -4,6 +4,7 @@ namespace Pages\Controller\Admin;
 
 use Pages\Model\Pages;
 use Reborn\MVC\View\Theme as Theme;
+use Pages\Lib\Helper;
 
 class PagesController extends \AdminController
 {
@@ -24,6 +25,16 @@ class PagesController extends \AdminController
     public function index()
     {
         $all = Pages::pageStructure();
+
+        if (\Setting::get('default_module') == 'pages') {
+
+            $home_setting = \Setting::get('home_page');
+
+            $home_page = Pages::where('uri', $home_setting)->first(array('id', 'title', 'slug', 'uri'));
+
+            $this->template->set('home_page', $home_page);
+
+        }
 
         $this->template->title('Manage Your Pages')
                     ->set('pages', $all)
@@ -114,12 +125,13 @@ class PagesController extends \AdminController
     {
 
         if (!user_has_access('pages.create')) {
-                return $this->notFound();
+            return $this->notFound();
         }
 
         $val_errors = new \Reborn\Form\ValidationError();
 
         $page = Pages::find($id);
+
         self::formElements();
         $this->template->title('Add new Page')
                     ->set('method','create')
@@ -379,18 +391,14 @@ class PagesController extends \AdminController
     protected function formElements()
     {
         $layout_list = self::layoutList();
+        $this->template->lang_list = array_merge(array('' => '-- Choose Language --'), \Config::get('langcodes'));
         $content_editor = (\Setting::get('content_editor')) ? \Setting::get('content_editor') : 'wysiwyg';
         $this->template->set('content_editor', $content_editor);
         $this->template->style(array(
                     'form.css',
-                    //'plugins/codemirror/codemirror.css'
                 ))
                 ->script(array(
                     'form.js',
-                    //'plugins/jquery.colorbox.js',
-                    //'plugins/codemirror/codemirror.js',
-                    //'plugins/codemirror/css.js',
-                    //'plugins/codemirror/javascript.js'
                 ))
                 ->set('layoutList', $layout_list);
     }
@@ -438,7 +446,6 @@ class PagesController extends \AdminController
             $page->page_order = $order;
             $page->parent_id = null;
             $page->uri = $page->slug;
-            //dump($page);
             if (isset($page_order['children'])) {
                 self::orderChild($page_order['children'],$id);
             }
@@ -451,6 +458,29 @@ class PagesController extends \AdminController
         $this->template->setPartial('admin/index')
                     ->set('pages', $get_pages)
                     ->partialOnly();
+    }
+
+    /**
+     * Change Home Page
+     *
+     * @return string
+     **/
+    public function changeHomePage()
+    {
+        if ($new_home = \Input::get('home_page')) {
+
+            \Setting::set('home_page', $new_home);
+            \Flash::success("Successfully set home page !!!");
+            return \Redirect::to('admin/pages');
+
+        } else {
+
+            return \Form::start('admin/pages/change-home-page', 'change_home_form').
+                    \Form::select('home_page', Helper::parentPages(), \Setting::get('home_page')).
+                    \Form::submit('submit', 'Set Home Page', array('class' => 'btn btn-green')).
+                    \Form::end();
+
+        }
     }
 
     /**

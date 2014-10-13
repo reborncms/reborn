@@ -78,4 +78,30 @@ form .form_action {
 	width:auto;
 }
 
+#home_page {
+	padding: 10px;
+	margin-bottom: 15px;
+	background: #272727;
+	color: #FFF;
+	overflow: hidden;
+	width: 88%;
+}
+
+#home_title {
+	margin-top: 12px;
+}
+
+#home_page a {
+	color:#e2e2e2;
+}
+
+#current_home {
+	float:left;
+}
+
+#home_actions {
+	float:right;
+	margin-right: 10px;
+}
+
 
