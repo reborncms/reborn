@@ -644,6 +644,20 @@ class Blueprint
     }
 
     /**
+     * Add Media Thumbnail Form Element 
+     *
+     * @return void
+     * @author 
+     **/
+    protected function addThumbnail($name, $val)
+    {
+        $this->fields[$name]['type'] = 'thumbnail';
+        $this->fields[$name]['info'] = $val['info'];
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
+        $this->fields[$name]['html'] = Form::thumbnail($name, $val['value']);
+    }
+
+    /**
      * Add Form Button.
      */
     protected function addButton($name, $val)
