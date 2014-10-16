@@ -1034,3 +1034,17 @@ if (!function_exists('jquery')) {
         return  '<script src="//ajax.googleapis.com/ajax/libs/jquery/'.$version.'/jquery.min.js"></script>';
     }
 }
+
+if (!function_exists('body_id')) {
+    /**
+     * Get application request's body id for designer.
+     * 
+     * @return  string ID format is 'module-controller-action'
+     */
+    function body_id()
+    {
+        $app = Facade::getApplication();
+
+        return $app['var.body_id'];
+    }
+}

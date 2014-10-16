@@ -71,11 +71,30 @@ class ControllerResolver
                 return $response;
             }
 
+            // Make Application Request's Body ID (for customize class or id name in html)
+            $this->makeRequestBodyId();
+
             return $this->callController($module, $controller, $action, $params);
         } else {
             // Class doesn't exit, so we throw HTTPNotFound
             throw new HttpNotFoundException("Request Class is not found!");
         }
+    }
+
+    /**
+     * Make body id for request action.
+     * 
+     * @return void
+     */
+    protected function makeRequestBodyId()
+    {
+        $module = $this->route->module;
+        $ctrl = str_replace('\\', '-', $this->route->controller);
+        $action = $this->route->action;
+
+        $id = strtolower($module.'-'.$ctrl.'-'.$action);
+
+        $this->app['var.body_id'] = $id;
     }
 
     /**
@@ -93,7 +112,7 @@ class ControllerResolver
         // Prevent Direct call the actionCaller
         $this->checkActionIsActionCaller($action);
 
-        // Set current request(module, controller, action and paramas)
+        // Set current request(module, controller, action and params)
         // to Request Object
         $this->setRequestParameters($module, $controller, $action, $params);
 
