@@ -3,6 +3,7 @@
 namespace Reborn\Routing;
 
 use Reborn\Http\Request;
+use Reborn\Exception\NotImplementedException;
 
 /**
  * Route Middleware Class
@@ -52,6 +53,13 @@ class Middleware
         // If callback is string, this is object and call the run() method
         if (is_string($callback)) {
             $ins = new $callback;
+
+            if ($ins instanceof MiddlewareInterface) {
+                return $ins->run($request, $route, $param);                
+            } else {
+                $msg = "Middleware instance [$callback] must be implement of MiddlewareInterface";
+                throw new NotImplementedException($msg);
+            }
 
             return $ins->run($request, $route, $param);
         }
