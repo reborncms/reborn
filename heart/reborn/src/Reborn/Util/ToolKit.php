@@ -114,4 +114,14 @@ class ToolKit
 
         return $results;
     }
+
+    /**
+     * Ger month list array from language file
+     * 
+     * @return  array
+     */
+    public static function months()
+    {
+        return \Translate::get('datetimes.months');
+    }
 }

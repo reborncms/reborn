@@ -7,6 +7,7 @@ use Reborn\Http\Uri;
 use Reborn\Util\Str;
 use Reborn\Util\Html;
 use Reborn\Util\Flash;
+use Reborn\Util\Toolkit;
 
 /**
  * Form class for Reborn CMS
@@ -560,6 +561,53 @@ class Form
         $selbox .= '</select>';
 
         return $selbox;
+    }
+
+    /**
+     * Get month list select box
+     * 
+     * @param string $name
+     * @param null|int $value
+     * @param array $attrs
+     * @return  string
+     */
+    public static function selectMonth($name, $value = null, $attrs = array())
+    {
+        $months = Toolkit::months();
+
+        $lists = array();
+
+        foreach ($months as $key => $val) {
+            $key = $key + 1;
+            $lists[$key] = $val;
+        }
+
+        return static::select($name, $lists, static::getValue($name, $value), $attrs);
+    }
+
+    /**
+     * Get year list select box
+     * 
+     * @param string $name
+     * @param int $start Start year value for select range
+     * @param null|int $end End year value for select range
+     * @param null|int $value
+     * @param array $attrs
+     * @return  string
+     */
+    public static function selectYear($name, $start, $end = null, $value = null, $attrs = array())
+    {
+        $end = is_null($end) ? (int) date('Y') : $end;
+
+        $years = range($start, $end);
+        
+        $lists = array();
+
+        foreach ($years as $y) {
+            $lists[$y] = $y;
+        }
+
+        return static::select($name, $lists, static::getValue($name, $value), $attrs);
     }
 
     /**

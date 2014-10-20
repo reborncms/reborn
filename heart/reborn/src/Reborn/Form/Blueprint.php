@@ -618,6 +618,27 @@ class Blueprint
         $this->fields[$name]['html'] = UIForm::select2Ajax($name, $val['url'], $val['value'], $js_opts, $multi, $val['attr']);
     }
 
+    /** Month List Select Field **/
+    protected function addMonth($name, $val)
+    {
+        $this->fields[$name]['type'] = 'select';
+        $this->fields[$name]['info'] = $val['info'];
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
+        $this->fields[$name]['html'] = Form::selectMonth($name, $val['value'], $val['attr']);
+    }
+
+    /** Year List Select Field **/
+    protected function addYear($name, $val)
+    {
+        $start = $val['start'];
+        $end = isset($val['end']) ? $val['end'] : null;
+        
+        $this->fields[$name]['type'] = 'select';
+        $this->fields[$name]['info'] = $val['info'];
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
+        $this->fields[$name]['html'] = Form::selectYear($name, $start, $end, $val['value'], $val['attr']);
+    }
+
     /** Number Field **/
     protected function addNumber($name, $val)
     {
