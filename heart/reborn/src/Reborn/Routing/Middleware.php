@@ -54,14 +54,12 @@ class Middleware
         if (is_string($callback)) {
             $ins = new $callback;
 
-            if ($ins instanceof MiddlewareInterface) {
-                return $ins->run($request, $route, $param);                
-            } else {
+            if ( ! $ins instanceof MiddlewareInterface) {
                 $msg = "Middleware instance [$callback] must be implement of MiddlewareInterface";
                 throw new NotImplementedException($msg);
             }
 
-            return $ins->run($request, $route, $param);
+            return $ins->run($request, $route, $param);                
         }
 
         // Callback is Closure

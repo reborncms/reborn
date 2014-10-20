@@ -11,7 +11,7 @@ Reborn CMS Version2.0 (beta 2)
 
 [Reborn CMS](http://reborncms.com) is lightweight and open source Content Management System.
 Reborn base on [MVC (Model View Controller)](http://www.en.wikipedia.org/wiki/Model-view-controller) structure and Modular System.
-Reborn is created and maintain by [Myanmar Links](http://www.myanmarlinks.net).
+Reborn is created and maintain by [Reborn Development Team](http://reborncms.com).
 
 
 Requirements
