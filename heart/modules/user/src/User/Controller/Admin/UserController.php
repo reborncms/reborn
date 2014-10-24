@@ -110,7 +110,7 @@ class UserController extends \AdminController
                         if (Module::isEnabled('field')) {
                             Field::save('user', $user);
                         }
-
+                        \Event::call('user_create',array($user));
                         Flash::success(t('user::user.create.success'));
 
                         return Redirect::toAdmin('user');
