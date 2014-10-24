@@ -2,7 +2,7 @@
 
 namespace User\Controller\Admin;
 
-use Auth, Field, Module, Input, Pagination, User, Flash, Redirect;
+use Auth, Field, Module, Input, Pagination, User, Flash, Redirect, Event;
 
 class UserController extends \AdminController
 {
@@ -110,7 +110,8 @@ class UserController extends \AdminController
                         if (Module::isEnabled('field')) {
                             Field::save('user', $user);
                         }
-                        \Event::call('user_create',array($user));
+
+                        Event::call('user_created', array($user));
                         Flash::success(t('user::user.create.success'));
 
                         return Redirect::toAdmin('user');
@@ -197,7 +198,7 @@ class UserController extends \AdminController
                             Field::update('user', $user);
                         }
 
-                        \Event::call('user_edited',array($user));
+                        Event::call('user_edited',array($user));
                         Flash::success(t('user::user.edit.success'));
 
                         return Redirect::toAdmin('user');
@@ -276,7 +277,7 @@ class UserController extends \AdminController
 
         $user = \User::findBy('id', $uri);
 
-        \Event::call('user_deleted',array($user));
+        Event::call('user_deleted',array($user));
 
         if (Module::isEnabled('field')) {
             Field::delete('user', $user);
