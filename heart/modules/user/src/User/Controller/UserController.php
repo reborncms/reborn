@@ -169,7 +169,7 @@ class UserController extends \PublicController
                             }
 
                             \Flash::success(t('user::user.profile.success'));
-                            Event::call('reborn.user.edit',$user);
+                            Event::call('reborn.user.edit',array($user));
                             return \Redirect::to('user/profile/'.$user->id);
                         }
 
