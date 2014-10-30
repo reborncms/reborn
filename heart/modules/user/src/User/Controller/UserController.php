@@ -2,7 +2,7 @@
 
 namespace User\Controller;
 
-use Auth, Field, Module, Mailer, Hash;
+use Auth, Field, Module, Mailer, Hash , Event;
 
 class UserController extends \PublicController
 {
@@ -115,7 +115,7 @@ class UserController extends \PublicController
     {
         if(!Auth::check()) return \Redirect::to('login');
 
-        \Event::call('reborn.user.logout');
+        Event::call('reborn.user.logout');
         Auth::logout();
 
         \Flash::success(t('user::user.logout'));
@@ -169,7 +169,7 @@ class UserController extends \PublicController
                             }
 
                             \Flash::success(t('user::user.profile.success'));
-
+                            Event::call('reborn.user.edit');
                             return \Redirect::to('user/profile/'.$user->id);
                         }
 
