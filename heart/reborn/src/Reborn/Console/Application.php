@@ -39,7 +39,7 @@ class Application extends BaseApplication
      **/
     public function registerForReborn()
     {
-        foreach ( $this->getDefaultCommands() as $command ) {
+        foreach ( $this->getRebornDefaultCommands() as $command ) {
             $this->add($command);
         }
     }
@@ -49,7 +49,7 @@ class Application extends BaseApplication
      *
      * @return array
      **/
-    public function getDefaultCommands()
+    public function getRebornDefaultCommands()
     {
         return array(
             'module'                        => new ModuleCommand,

@@ -2,8 +2,8 @@
 
 namespace Reborn\Console;
 
+use Config;
 use Reborn\Util\Str;
-use Reborn\Config\Config;
 use Reborn\Filesystem\File;
 use Symfony\Component\Console\Command\Command as SfCommand;
 use Symfony\Component\Console\Input\InputInterface;
