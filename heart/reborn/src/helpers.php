@@ -487,7 +487,7 @@ if (! function_exists('assetPath')) {
                 $path = $finder->path('img', $module);
                 break;
             default :
-                $path = $finder->path(null, $module);
+                $path = $finder->path($type, $module);
                 break;
         }
 
