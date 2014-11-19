@@ -269,6 +269,20 @@ if (! function_exists('remove_base_url')) {
     }
 }
 
+if ( ! function_exists('route_url')) {
+     /**
+     * Helper function for the url generate by route name.
+     *
+     * @param  string $name Route name.
+     * @param array $param Route's parameter
+     * @return string
+     **/
+    function route_url($name, $param = array())
+    {        
+        return url(\Route::getUrlByRouteName($name, $param));
+    }
+}
+
 if (! function_exists('url')) {
     /**
      * Helper function for the Uri::create().
