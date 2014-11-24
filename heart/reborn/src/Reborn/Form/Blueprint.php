@@ -675,7 +675,9 @@ class Blueprint
         $this->fields[$name]['type'] = 'thumbnail';
         $this->fields[$name]['info'] = $val['info'];
         $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
-        $this->fields[$name]['html'] = Form::thumbnail($name, $val['value']);
+        // Form thumbnail need to get value at first.
+        $value = Form::getValue($name, $val['value']);
+        $this->fields[$name]['html'] = Form::thumbnail($name, $value);
     }
 
     /**

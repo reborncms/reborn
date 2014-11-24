@@ -678,7 +678,7 @@ class Form
      * @param  mixed  $value
      * @return mixed
      **/
-    protected static function getValue($name, $value = null)
+    public static function getValue($name, $value = null)
     {
         $result = null;
 
