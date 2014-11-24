@@ -10,3 +10,5 @@
 
 \Route::add('@admin/tag/delete/{int:id}?', 'Tag\Admin\Tag::delete', 'admin_tag_delete');
 
+\Route::get('@admin/tag/autocomplete', 'Tag\Admin\Tag::autocomplete', 'admin_tag_autocomplete');
+
