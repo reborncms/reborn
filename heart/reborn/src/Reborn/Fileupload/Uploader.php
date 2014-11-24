@@ -162,7 +162,9 @@ class Uploader
 
         if (is_array($ins->files)) {
             foreach ($ins->files as $file) {
-                $ins->fileUpload[] = new FileUpload($file, $ins->config);
+                if (! is_null($file)) {
+                    $ins->fileUpload[] = new FileUpload($file, $ins->config);   
+                }
             }
         } else {
             $ins->fileUpload = new FileUpload($ins->files, $ins->config);
