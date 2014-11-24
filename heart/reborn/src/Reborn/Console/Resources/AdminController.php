@@ -139,7 +139,7 @@ class {module}Controller extends \AdminController
         Flash::success('Successfully deleted.');
 
         // Redirect to model admin index page
-        return Redirect::model();
+        return Redirect::module();
     }
 
     /**
