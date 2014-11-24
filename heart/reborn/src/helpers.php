@@ -38,19 +38,28 @@ if (! function_exists('dump')) {
         $file = $backtrace[0]['file'];
         $line = $backtrace[0]['line'];
 
-        echo '<pre style="border: 1px dashed #71CF4D; padding: 5px 10px; background: #F2F2F2; margin: 10px 15px;">';
-        if ($title) {
-            echo '<h2 style="color: #565656; margin: 0px; padding-bottom: 5px; font-size: 13px; font-weight: normal;">Dump Title : '.$title.'</h2>';
+        $isCli = (php_sapi_name() === 'cli');
+
+        if ( ! $isCli) {
+            echo '<pre style="border: 1px dashed #71CF4D; padding: 5px 10px; background: #F2F2F2; margin: 10px 15px;">';
+            if ($title) {
+                echo '<h2 style="color: #565656; margin: 0px; padding-bottom: 5px; font-size: 13px; font-weight: normal;">Dump Title : '.$title.'</h2>';
+            }
+            echo '<h3 style="color: #990000; margin-top: 0px; padding-bottom: 5px; border-bottom: 1px dashed #999; font-size: 13px; font-weight: normal;">';
+            echo 'Dump at &raquo; <span style="color: #000099;">'.$file.'</span> ';
+            echo 'line number <span style="color: #009900;">'.$line.'</span>.</h3>';
         }
-        echo '<h3 style="color: #990000; margin-top: 0px; padding-bottom: 5px; border-bottom: 1px dashed #999; font-size: 13px; font-weight: normal;">';
-        echo 'Dump at &raquo; <span style="color: #000099;">'.$file.'</span> ';
-        echo 'line number <span style="color: #009900;">'.$line.'</span>.</h3>';
+
+        
         if ($export) {
             var_export($value);
         } else {
             var_dump($value);
         }
-        echo '</pre>';
+
+        if ( ! $isCli) {
+            echo '</pre>';
+        }
         if ($die) {
             die;
         }
@@ -257,6 +266,20 @@ if (! function_exists('remove_base_url')) {
     function remove_base_url($url)
     {
         return str_replace(url(), '', $url);
+    }
+}
+
+if ( ! function_exists('route_url')) {
+     /**
+     * Helper function for the url generate by route name.
+     *
+     * @param  string $name Route name.
+     * @param array $param Route's parameter
+     * @return string
+     **/
+    function route_url($name, $param = array())
+    {        
+        return url(\Route::getUrlByRouteName($name, $param));
     }
 }
 
@@ -478,7 +501,7 @@ if (! function_exists('assetPath')) {
                 $path = $finder->path('img', $module);
                 break;
             default :
-                $path = $finder->path(null, $module);
+                $path = $finder->path($type, $module);
                 break;
         }
 

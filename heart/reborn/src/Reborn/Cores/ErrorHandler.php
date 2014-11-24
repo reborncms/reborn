@@ -120,14 +120,20 @@ class ErrorHandler
     /**
      * Get Message for Console Output
      *
-     * @param  \Exception $e
+     * @param  \Exception|string $e
      * @return string
      **/
     protected function getMessageForConsole($e)
     {
-        $msg = "\n============ Exception from [ ".get_class($e)." ] ============ \n\n";
-        $msg .= "\t".$e->getMessage();
-        $msg .= "\n\n============ Exception from [ ".get_class($e)." ] ============ \n\n";
+        if ( $e instanceof \Exception) {
+            $msg = "\n============ Exception from [ ".get_class($e)." ] ============ \n\n";
+            $msg .= "\t".$e->getMessage();    
+            $msg .= "\n\n============ Exception from [ ".get_class($e)." ] ============ \n\n";
+        } else {
+            $msg = "\n============ PHP Error ============ \n\n";
+            $msg .= "\t".$e;    
+            $msg .= "\n\n============ PHP Error ============ \n\n";
+        }
 
         return $msg;
     }
@@ -309,19 +315,26 @@ class ErrorHandler
      *
      * @param  string  $file
      * @param  integer $line
+     * @param boolean $cli
      * @return string
      **/
-    protected function getErrorLine($file, $line)
+    protected function getErrorLine($file, $line, $cli = false)
     {
         try {
             $content = \File::getContent($file);
+            $lines = explode("\n", $content);
+
+            $code = str_replace(array('<?php', '?>'), array('{{ ', ' }}'), $lines[$line - 1]);
         } catch (\Reborn\Filesystem\FileException $e) {
-            return "<pre>Uknown Content</pre>";
+            $code = "<pre>Uknown Content</pre>";
         }
 
-        $lines = explode("\n", $content);
-
-        $code = str_replace(array('<?php', '?>'), array('{{ ', ' }}'), $lines[$line - 1]);
+        
+        if ($cli) {
+            $file = str_replace(BASE, '[CMS]/', $file);
+            $code = "Error in $file line no : $line\n" . $code;
+            return ltrim($code);
+        }
 
         return '<pre>'.ltrim($code).'</pre>';
     }
@@ -333,6 +346,16 @@ class ErrorHandler
     {
         if ($this->app['env'] == 'production') {
             return null;
+        }
+
+        // Return message only if run in cli mode.
+        if ( $this->app->runInCli() ) {
+            $code = $this->getErrorLine($errfile, $errline, true);
+            $msg = $this->getMessageForConsole(str_replace(array("<pre>", "</pre>"), "", $code));
+            $writer = new \Symfony\Component\Console\Output\ConsoleOutput();
+
+            $writer->writeln("<error>".$msg."</error>");
+            exit;
         }
 
         $code = $this->getErrorLine($errfile, $errline);

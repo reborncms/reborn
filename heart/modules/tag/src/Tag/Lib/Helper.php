@@ -73,11 +73,19 @@ class Helper {
 	 * @return void
 	 * @author 
 	 **/
-	public static function getObjectTags($object_name)
+	public static function getObjectTags($object_name, $order = false, $orderType = 'asc')
 	{
 		$tag_ids = array_values(array_unique(TagsRelationship::where('object_name', $object_name)->lists('tag_id')));
 
-		return Tag::whereIn('id', $tag_ids)->get();
+		$tags = Tag::whereIn('id', $tag_ids);
+
+		if ($order == true) {
+
+			$tags->orderBy('name', $orderType);
+			
+		}
+
+		return $tags->get();
 
 	}
 
