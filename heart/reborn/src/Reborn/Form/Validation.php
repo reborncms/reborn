@@ -64,24 +64,25 @@ class Validation
      * 10) - numeric [Input value is Numeric(0-9)]
      * 11) - emptyOrNumeric [Input value empty string or Numeric(0-9)]
      * 12) - integer [Input value is Integer value]
-     * 13) - email [Input value is Valid Email]
-     * 14) - url [Input value is Valid URL]
-     * 15) - ip [Input value is Valid IP address]
-     * 16) - between [Input value is Between first and last value eg:between:5,7]
-     * 17) - equal [Input value is Equal with given value or field name eg:equal:9]
-     * 18) - color [Input value is valid 6-digits color hexadecimal code eg:#efefef]
-     * 19) - patterm [Input value is valid regex pattern eg:"/\d{4}-\d{2}-\d{2}/"]
-     * 20) - unique [Input value is unique in mysql database. eg: unique:tablename.keyname]
-     * 21) - type [Input value's type must be $type. eg: type:string [string,array,float]
-     * 22) - boolean [Input value type must be boolean. [0, 1, on, off, true, false]
-     * 23) - image [Input value must be allow Image type. (eg: image:jpg,png)]
-     * 24) - fileType [Input value must be allow File Type. (eg: fileType:pdf,zip)]
-     * 25) - fileSize [Input value's maximum file size limit (eg: fileSize:2MB)]
-     * 26) - before [Input date must be before date (eg: before:10/22/2013)]
-     * 27) - after [Input date must be after date (eg: after:10/22/2013)]
-     * 28) - honeypot [Spam filter honey pot filed's validation]
-     * 29) - lat [Valid rule for latitude -90 to +90]
-     * 30) - long [Valid rule for longitude -180 to +180]
+     * 13) - float [Input value is Float value]
+     * 14) - email [Input value is Valid Email]
+     * 15) - url [Input value is Valid URL]
+     * 16) - ip [Input value is Valid IP address]
+     * 17) - between [Input value is Between first and last value eg:between:5,7]
+     * 18) - equal [Input value is Equal with given value or field name eg:equal:9]
+     * 19) - color [Input value is valid 6-digits color hexadecimal code eg:#efefef]
+     * 20) - patterm [Input value is valid regex pattern eg:"/\d{4}-\d{2}-\d{2}/"]
+     * 21) - unique [Input value is unique in mysql database. eg: unique:tablename.keyname]
+     * 22) - type [Input value's type must be $type. eg: type:string [string,array]
+     * 23) - boolean [Input value type must be boolean. [0, 1, on, off, true, false]
+     * 24) - image [Input value must be allow Image type. (eg: image:jpg,png)]
+     * 25) - fileType [Input value must be allow File Type. (eg: fileType:pdf,zip)]
+     * 26) - fileSize [Input value's maximum file size limit (eg: fileSize:2MB)]
+     * 27) - before [Input date must be before date (eg: before:10/22/2013)]
+     * 28) - after [Input date must be after date (eg: after:10/22/2013)]
+     * 29) - honeypot [Spam filter honey pot filed's validation]
+     * 30) - lat [Valid rule for latitude -90 to +90]
+     * 31) - long [Valid rule for longitude -180 to +180]
      *
      * @var array
      **/
@@ -98,6 +99,7 @@ class Validation
                 'numeric',
                 'emptyOrNumeric',
                 'integer',
+                'float',
                 'email',
                 'url',
                 'ip',
@@ -595,6 +597,11 @@ class Validation
         return filter_var($value, FILTER_VALIDATE_INT) !== false;
     }
 
+    protected function validFloat($value)
+    {
+        return is_float($value)
+    }
+
     protected function validEmail($value)
     {
         return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
@@ -667,10 +674,6 @@ class Validation
 
             case 'array':
                 return is_array($value);
-                break;
-
-            case 'float':
-                return filter_var($value, FILTER_VALIDATE_FLOAT);
                 break;
 
             default:
