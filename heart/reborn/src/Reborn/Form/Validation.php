@@ -599,7 +599,7 @@ class Validation
 
     protected function validFloat($value)
     {
-        return is_float($value)
+        return is_float($value);
     }
 
     protected function validEmail($value)
