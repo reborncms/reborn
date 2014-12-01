@@ -12,6 +12,8 @@ use Field;
 
 use Module;
 
+use Input;
+
 use Blog\Lib\Helper;
 
 class DataProvider 
