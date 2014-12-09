@@ -36,6 +36,14 @@ class UserInstaller extends \Reborn\Module\AbstractInstaller
             );
             \Setting::add($data);
         }
+
+        if ( $v < '2.0') {
+            \Schema::table('users', function($table) {
+                $table->string('api_activation_code')->nullable();
+                $table->string('auth_api_token')->nullable();
+                $table->timestamp('api_login_at');
+            });
+        }
     }
 
 }

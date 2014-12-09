@@ -4,6 +4,7 @@ namespace Reborn\Auth;
 
 interface AuthProviderInterface
 {
+    const AUTH_HEADER_KEY = "X-Authorize-Token";
     /**
      * Registers a user by giving the required credentials
      * and an optional flag for whether to activate the user.
@@ -37,6 +38,13 @@ interface AuthProviderInterface
      * @return boolean
      **/
     public function check();
+
+    /**
+     * Login method for API request
+     * 
+     * @return boolean
+     */
+    public function loginForApi(array $credentials);
 
     /**
      * See if a user has access to the passed permission(s).

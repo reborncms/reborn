@@ -10,6 +10,10 @@ use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Hashing\BcryptHasher;
 use Cartalyst\Sentry\Cookies\NativeCookie;
 use Cartalyst\Sentry\Throttling\Eloquent\Provider;
+use Cartalyst\Sentry\Users\LoginRequiredException;
+use Cartalyst\Sentry\Users\PasswordRequiredException;
+use Cartalyst\Sentry\Users\UserNotFoundException;
+use Cartalyst\Sentry\Users\UserNotActivatedException;
 
 /**
  * Reborn Auth Provider with Sentry2.
@@ -47,6 +51,13 @@ class AuthSentryProvider implements AuthProviderInterface, UserInterface
      * @var \Cartalyst\Sentry\Groups\ProviderInterface
      **/
     protected $group_provider;
+
+    /**
+     * Logged in is request from api.
+     * 
+     * @var boolean
+     */
+    protected $api_loggedin = false;
 
     /**
      * Create AuthProvider instance.
@@ -116,7 +127,14 @@ class AuthSentryProvider implements AuthProviderInterface, UserInterface
      **/
     public function logout()
     {
-        $this->auth->logout();
+        if ( $this->api_loggedin )
+        {
+            $this->apiLogout();
+        }
+        else
+        {
+            $this->auth->logout();
+        }
     }
 
     /**
@@ -126,7 +144,173 @@ class AuthSentryProvider implements AuthProviderInterface, UserInterface
      **/
     public function check()
     {
-        return $this->auth->check();
+        if ( $this->auth->check()) {
+            return true;
+        }
+
+        if ( $this->checkWithHeaderKeyRequest()) {
+            $this->api_loggedin = true;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check user is loggedin or not with Header key
+     * @return boolean
+     */
+    public function checkWithHeaderKeyRequest()
+    {
+        $token = $this->app->request->headers->get(static::AUTH_HEADER_KEY);
+
+        if ( is_null($token)) {
+            return false;
+        }
+
+        $user = $this->getUserProvider()->findBy('auth_api_token', $token);
+
+        if ( is_null($user) || ! $user->isActivated()) {
+            return false;
+        }
+
+        // If throttling is enabled we check it's status
+        if( $this->auth->getThrottleProvider()->isEnabled())
+        {
+            // Check the throttle status
+            $throttle = $this->auth->getThrottleProvider()->findByUser( $user );
+
+            if( $throttle->isBanned() or $throttle->isSuspended())
+            {
+                return false;
+            }
+        }
+
+        $this->auth->setUser($user);
+
+        return true;
+    }
+
+    /**
+     * Login for api request
+     * 
+     * @return boolean
+     * @throws \Cartalyst\Sentry\Throttling\UserBannedException
+     * @throws \Cartalyst\Sentry\Throttling\UserSuspendedException
+     * @throws \Cartalyst\Sentry\Users\LoginRequiredException
+     * @throws \Cartalyst\Sentry\Users\PasswordRequiredException
+     * @throws \Cartalyst\Sentry\Users\UserNotFoundException
+     * @throws \Cartalyst\Sentry\Users\UserNotActivatedException
+     */
+    public function loginForApi(array $credentials)
+    {
+        if ( $this->check()) {
+            return $this->auth->getUser();
+        }
+
+        // We'll default to the login name field, but fallback to a hard-coded
+        // 'login' key in the array that was passed.
+        $loginName = $this->getUserProvider()->getEmptyUser()->getLoginName();
+        $loginCredentialKey = (isset($credentials[$loginName])) ? $loginName : 'login';
+
+        if (empty($credentials[$loginCredentialKey]))
+        {
+            throw new LoginRequiredException("The [$loginCredentialKey] attribute is required.");
+        }
+
+        if (empty($credentials['password']))
+        {
+            throw new PasswordRequiredException('The password attribute is required.');
+        }
+
+        // If the user did the fallback 'login' key for the login code which
+        // did not match the actual login name, we'll adjust the array so the
+        // actual login name is provided.
+        if ($loginCredentialKey !== $loginName)
+        {
+            $credentials[$loginName] = $credentials[$loginCredentialKey];
+            unset($credentials[$loginCredentialKey]);
+        }
+
+        $throttleProvider = $this->auth->getThrottleProvider();
+
+        // If throttling is enabled, we'll firstly check the throttle.
+        // This will tell us if the user is banned before we even attempt
+        // to authenticate them
+        if ($throttlingEnabled = $throttleProvider->isEnabled())
+        {
+            $ipAddress = $this->auth->getIpAddress();
+            $loginName = $credentials[$loginName];
+
+            if ($throttle = $throttleProvider->findByUserLogin($loginName, $ipAddress))
+            {
+                $throttle->check();
+            }
+        }
+
+        try
+        {
+            $user = $this->getUserProvider()->findByCredentials($credentials);
+        }
+        catch (UserNotFoundException $e)
+        {
+            if ($throttlingEnabled and isset($throttle))
+            {
+                $throttle->addLoginAttempt();
+            }
+
+            throw $e;
+        }
+
+        if ($throttlingEnabled and isset($throttle))
+        {
+            $throttle->clearLoginAttempts();
+        }
+
+        if ( is_null($user)) 
+        {
+            return false;
+        }
+
+        if ( ! $user->isActivated())
+        {
+            $login = $user->getLogin();
+            throw new UserNotActivatedException("Cannot login user [$login] as they are not activated.");
+        }
+
+        $user->clearResetPassword();
+
+        $user->recordApiLogin();
+
+        $this->auth->setUser($user);
+
+        $this->api_loggedin = true;
+
+        return $user;
+    }
+
+    /**
+     * Logout for API login user
+     * 
+     * @return void
+     */
+    public function apiLogout()
+    {
+        $request = $this->app->request;
+        $token = $request->headers->get(static::AUTH_HEADER_KEY);
+
+        if ( is_null($token)) {
+            return $this->auth->logout();
+        }
+
+        $user = $this->getUserProvider()->findBy('auth_api_token', $token);
+
+        if ( ! is_null($user)) {
+            $user->cleanApiLoginToken();
+        }
+
+        return $this->auth->logout();
     }
 
     /**

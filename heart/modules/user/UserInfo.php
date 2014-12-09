@@ -12,7 +12,7 @@ class UserInfo extends \Reborn\Module\AbstractInfo
         'tr' => 'Kullanıcılar'
     );
 
-    protected $version = '1.1';
+    protected $version = '2.0';
 
     protected $description = array(
         'en' => 'User, Group, and Permission managament with Cataclyst\Sentry.',
@@ -20,11 +20,11 @@ class UserInfo extends \Reborn\Module\AbstractInfo
         'tr' => 'Kullanıcılar, Kullanıcı Grupları ve izinleri yönetin'
     );
 
-    protected $author = 'K';
+    protected $author = 'K / Nyan Lynn Htut';
 
-    protected $authorUrl = 'http://khay.me';
+    protected $authorUrl = 'http://www.reborncms.com';
 
-    protected $authorEmail = 'khayusaki@gmail.com';
+    protected $authorEmail = 'reborncms@gmail.com';
 
     protected $frontendSupprot = true;
 
