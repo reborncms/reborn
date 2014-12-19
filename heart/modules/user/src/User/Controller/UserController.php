@@ -120,7 +120,7 @@ class UserController extends \PublicController
 
         \Flash::success(t('user::user.logout'));
 
-        return \Redirect::back();
+        return \Redirect::to('login');
     }
 
     /**
