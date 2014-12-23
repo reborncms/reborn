@@ -89,7 +89,7 @@ class SendMailController extends \AdminController
                             if (isset($attachment['error'])) {
                                 Flash::error($attachment['error']);
 
-                                return Redirect::to($referer);
+                                return Redirect::toAdmin('contact/send-mail');
                             }
 
                             $sendMail->attach($attachment['path']);

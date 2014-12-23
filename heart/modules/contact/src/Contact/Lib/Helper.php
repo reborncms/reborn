@@ -3,7 +3,7 @@
 namespace Contact\Lib;
 
 use Contact\Model\EmailTemplate as Etemplate;
-use Reborn\Fileupload\Uploader as Upload;
+use Reborn\Fileupload\Uploader as Uploader;
 
 class Helper
 {
@@ -98,20 +98,24 @@ class Helper
     {
 
         if ($path == null) {
-            $path = UPLOAD.'contact_attachment';
+            $path = UPLOAD.'contact_attachment/';
         }
+        
+        $uploader = Uploader::initialize(
+                $name,
+                array('encName'=>true,'path'=> $path, 'createDir' => true, 'allowedExt'=>$ext)
+            );
+        
 
-        $uploadError = Upload::uploadInit($name, array('path'=> $path, 'createDir' => true, 'allowedExt'=>$ext));
+        $uploaded = $uploader->upload();
 
-        if ($uploadError) {
-            $result['error'] = $uploadError['errors']['0'];
-
+        if (isset($uploaded['error'])) {
+            $result['error'] = $uploaded['error'];
             return $result;
+
         }
 
-        $attachmentName = Upload::upload($name);
-
-        return array('path'=>$path.DS.$attachmentName['savedName'], 'name'=>$attachmentName['savedName']);
+        return array('path'=>$path.DS.$uploaded['savedName'], 'name'=>$uploaded['savedName']);
     }
 
     /**
