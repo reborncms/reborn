@@ -115,11 +115,13 @@ class FileUpload
      *
      * @return
      **/
-    public static function initialize($file = null, Array $config = null)
+    public function initialize($file = null, Array $config = null)
     {
 
-        $ins = (is_null(static::$instance)) ? new static($file, $config)
-                     : static::$instance;
+        /*$ins = (is_null(static::$instance)) ? new static($file, $config)
+                     : static::$instance;*/
+        
+        $ins = $this;
 
         Event::call('reborn.fileupload.initialize', array($ins));
 
@@ -166,7 +168,7 @@ class FileUpload
         }
 
         if (! $ins->checkExtension()) {
-            $ins->error[] = 5;     // File type is not allowed to be uploaded
+            $ins->error[] = 11;     // File type is not allowed to be uploaded
             $ins->fail = true;
         }
 
@@ -308,7 +310,7 @@ class FileUpload
     {
 
         if ($this->config['encName']) {
-            $hashed = hash('md5', $this->fileInfo['originBaseName']);
+            $hashed = hash('md5', time() .$this->fileInfo['originBaseName']);
 
             $this->fileInfo['savedBaseName'] = $hashed;
 
