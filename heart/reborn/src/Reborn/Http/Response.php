@@ -61,24 +61,33 @@ class Response extends SymfonyResponse
     }
 
     /**
-     * Make BinaryFileResponse for File Download.
+     * Make BinaryFileResponse for File.
      *
      * @param  string                                               $file    The file to stream
      * @param  string                                               $name    Name of the file
      * @param  array                                                $headers An array of response headers
+     * @param  boolean                                              $inline  Files Show or Download
      * @param  boolean                                              $public  Files are public by default
      * @param  boolean                                              $prepare Response::prepare() by default
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      **/
-    public static function binary($file, $name, $headers = array(), $public = true, $prepare = true)
+    public static function binary($file, $name, $headers = array(), $inline = false, $public = true, $prepare = true)
     {
         $response = new BinaryFileResponse($file, 200, $headers, $public);
 
         $response->trustXSendfileTypeHeader();
 
-        $response->setContentDisposition(
+        if($inline){
+            
+            $response->setContentDisposition(
+                        ResponseHeaderBag::DISPOSITION_INLINE, $name
+                    );
+        }else{
+
+            $response->setContentDisposition(
                         ResponseHeaderBag::DISPOSITION_ATTACHMENT, $name
                     );
+        }
 
         if ($prepare) {
             $response->prepare(Facade::getApplication()->request);
