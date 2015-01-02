@@ -54,7 +54,7 @@ class ContactController extends \PublicController
                         return Redirect::to($referer);
                     }
 
-                    $mail->attach($attachment['path']);
+                    $mail->attach($attachment['path'],$attachment['realName']);
                     $data['attachment'] = $attachment['name'];
                 }
 

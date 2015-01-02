@@ -114,8 +114,11 @@ class Helper
             return $result;
 
         }
-
-        return array('path'=>$path.DS.$uploaded['savedName'], 'name'=>$uploaded['savedName']);
+        
+        return array('path'=>$path.DS.$uploaded['savedName'],
+                     'name'=>$uploaded['savedName'], 
+                     'realName' => $uploaded['originName']
+                    );
     }
 
     /**

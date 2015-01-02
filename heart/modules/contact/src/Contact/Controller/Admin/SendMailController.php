@@ -92,7 +92,7 @@ class SendMailController extends \AdminController
                                 return Redirect::toAdmin('contact/send-mail');
                             }
 
-                            $sendMail->attach($attachment['path']);
+                            $sendMail->attach($attachment['path'],$attachment['realName']);
                             $data['attachment'] = $attachment['name'];
                         }
 
