@@ -40,12 +40,12 @@
 
 	$('#setting_choose').fancySelect();
 
-	var org_value = $('#setting_choose').val();
+	/*var org_value = $('#setting_choose').val();*/
 
 	$('#setting_choose').on('change', function(){
 		var val = $('#setting_choose').val();
 
-		if (org_value == val) {
+		if (val == window.location.href) {
 			return false;
 		} else {
 			return window.location.href = val;
