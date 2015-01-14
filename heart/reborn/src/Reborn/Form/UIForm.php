@@ -249,7 +249,7 @@ dp;
      * @param  string $url   Tag ajax URL. (Deafult is adminUrl('tag/autocomplete'))
      * @return string
      **/
-    public static function tags($name, $value = null, $attrs = array(), $url = null)
+    public static function tags($name, $value = null, $attrs = array(), $js_opts = array(), $url = null)
     {
         $js = global_asset('js', 'jquery.tagsinput.min.js');
         $css = global_asset('css', 'jquery.tagsinput_custom.css');
@@ -257,6 +257,12 @@ dp;
         $rb = url();
         $jq = $rb.'global/assets/js/jquery-1.9.0.min.js';
 
+        $tags_opts = \Reborn\Util\ToolKit::jsEncode($js_opts);
+
+        if ($tags_opts) {
+            $tags_opts = rtrim(ltrim($tags_opts,'{'),'}').',';
+        }
+        
         if (is_null($url)) {
             $url = adminUrl('tag/autocomplete');
         }
@@ -275,7 +281,8 @@ $tag_script = <<<SCRIPT
     $(function () {
         $('#$name').tagsInput({
             width:'auto',
-            autocomplete_url: '$url'
+            autocomplete_url: '$url',
+            $tags_opts
         });
     });
 })(jQuery);

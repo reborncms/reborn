@@ -558,7 +558,8 @@ class Blueprint
         $this->fields[$name]['info'] = $val['info'];
         $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
         $url = isset($val['url']) ? $val['url'] : null;
-        $this->fields[$name]['html'] = UIForm::tags($name, $val['value'], $val['attr'], $url);
+        $js_opts = (isset($val['js_opts'])) ? $val['js_opts'] : array();
+        $this->fields[$name]['html'] = UIForm::tags($name, $val['value'], $val['attr'],  $js_opts, $url);
     }
 
     /** Country List Field **/
