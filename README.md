@@ -50,21 +50,11 @@ Thanks for opensource packages.
 * [meenie/munee](http://mun.ee)
 * [patchwork/utf8](https://packagist.org/packages/patchwork/utf8)
 * [verbalexpressions/php-verbal-expressions](https://packagist.org/packages/verbalexpressions/php-verbal-expressions)
+* [league/fractal](http://fractal.thephpleague.com/)
+* [league/flysystem](http://flysystem.thephpleague.com/)
 
 License
 ------------
 
 Reborn is MIT License. You can see details of license at license.txt.
 
-
-Development Team & Contributors
-------------
-
-* Soe Thiha Naung - Project Adviser ([Website](http://soethiha.me/))
-* Nyan Lynn Htut - Lead Developer ([Twitter](http://www.twitter.com/nyanlynnhtut))
-* Li Jia Li - Core Module Developer ([Website](http://www.dragonvirus.com/))
-* Yan Naing - Core Module Developer ([Twitter](http://www.twitter.com/Mr_YanNaing))
-* K - Core Module Developer ([Website](http://khay.me))
-* Thet Paing Oo - Developer ([Twitter](http://www.twitter.com/mgthetpaing))
-* Naing Lin Aung - Contributor ([Website](http://www.m0rris.com/))
-* Hein Zaw Htet - Contributor ([Website](http://www.myanmarwebdev.com/))
