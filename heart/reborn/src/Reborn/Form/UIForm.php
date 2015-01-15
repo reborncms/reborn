@@ -260,7 +260,7 @@ dp;
         $tags_opts = \Reborn\Util\ToolKit::jsEncode($js_opts);
 
         if ($tags_opts) {
-            $tags_opts = rtrim(ltrim($tags_opts,'{'),'}').',';
+            $tags_opts = rtrim(ltrim($tags_opts,'{'),'}');
         }
         
         if (is_null($url)) {
