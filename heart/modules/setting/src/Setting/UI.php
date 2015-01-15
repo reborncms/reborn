@@ -151,7 +151,7 @@ class UI
         $class = $v['require'] ? 'required' : '';
         $class = isset($v['class']) ? $v['class'].' '.$class : $class;
         $value = $v['value'] ? $v['value'] : $v['default'];
-        $attrs = isset($v['attrs']) ? $v['attrs'] : array(0);
+        $attrs = isset($v['attrs']) ? $v['attrs'] : array();
 
         $attrs = array_merge(array('class' => $class), $attrs);
 

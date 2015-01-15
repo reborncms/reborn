@@ -2,7 +2,7 @@
 	<h3 id="setting-title">{{ $title }}</h3>
 
 	{{ Form::start(adminUrl('setting'), 'setting_chooser') }}
-		{{ Form::select('setting_choose', $lists, \Uri::current().'/') }}
+		{{ Form::select('setting_choose', $lists, \Uri::current()) }}
 	{{ Form::end() }}
 </div>
 
