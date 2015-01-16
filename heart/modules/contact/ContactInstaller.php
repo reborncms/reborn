@@ -145,6 +145,24 @@ class ContactInstaller extends \Reborn\Module\AbstractInstaller
 	{
 		\Schema::drop($prefix.'contact');
 		\Schema::drop($prefix.'email_template');
+
+		\Setting::remove('transport_mail');
+
+        \Setting::remove('smtp_host');
+
+        \Setting::remove('smtp_port');
+
+        \Setting::remove('smtp_username');
+
+        \Setting::remove('smtp_password');
+
+        \Setting::remove('sendmail_path');
+
+        \Setting::remove('contact_template');
+
+        \Setting::remove('reply_template');
+
+        \Setting::remove('attach_field');
 	}
 
 	public function upgrade($v, $prefix = null)
@@ -159,6 +177,11 @@ class ContactInstaller extends \Reborn\Module\AbstractInstaller
 				'module'	=> 'Contact'
 				);
 		    \Setting::add($data);
+	    }
+	    if ($v == '1.1') {
+			 \Schema::table($prefix.'contact', function ($table) {
+                $table->text('attachment_name');
+            });
 	    }
 	}
 

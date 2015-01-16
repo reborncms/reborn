@@ -2,15 +2,22 @@
 
 namespace Contact\Controller\Admin;
 
+use Contact\Lib\Helper;
 use Contact\Model\Mail as Mail;
-use Event, Flash, Input, Pagination, Redirect, Translate;
+use Contact\Extensions\Table\InboxTable;
+use Event, Flash, Input, Pagination, Redirect, Setting, Translate;
 
+/**
+ * Contact Inbox Controller
+ * @package Contact\Contact
+ * @author RebornCMS Developement Team <reborncms@gmail.com>
+ */
 class ContactController extends \AdminController
 {
     public function before()
     {
         $this->menu->activeParent(\Module::get('contact', 'uri'));
-        $this->template->style('contact.css', 'contact');
+        $this->template->script('contact.js','contact');
     }
 
     /**
@@ -24,7 +31,7 @@ class ContactController extends \AdminController
 
         $options = array(
             'total_items'	=> Mail::count(),
-            'items_per_page'=> \Setting::get('admin_item_per_page'),
+            'items_per_page'=> Setting::get('admin_item_per_page'),
             );
 
         $pagination = Pagination::create($options);
@@ -38,16 +45,20 @@ class ContactController extends \AdminController
                             ->orderBy('id','desc')
                             ->get();
 
-        $this->template->title(Translate::get('contact::contact.inbox'))
-                    ->breadcrumb(Translate::get('contact::contact.all_con'))
-                    ->set('mails', $result)
+        $table = InboxTable::create($result);
+        
+
+        $this->template->title(t('contact::contact.inbox'))
+                    ->breadcrumb(t('contact::contact.all_con'))
+                    ->set('table', $table)
                     ->set('pagination',$pagination)
-                    ->view('admin\inbox\index');
+                    ->view('admin\inbox\table');
     }
 
     /**
      * Show detail Email to Admin
      *
+     * @param string $id
      * @package Contact\Controller
      * @author RebornCMS Development Team
      **/
@@ -69,7 +80,11 @@ class ContactController extends \AdminController
 
             }
 
-        $this->template->title(Translate::get('contact::contact.title'))
+        if ($this->request->isAjax()) {
+            $this->template->partialOnly();
+        }
+
+        $this->template->title(t('contact::contact.title'))
                     ->breadcrumb($mail->subject)
                     ->set('mail',$mail)
                     ->set('field',$temp->extended_fields)
@@ -104,16 +119,34 @@ class ContactController extends \AdminController
 
         if (!empty($mails)) {
             if (count($mails) == 1) {
-                Flash::success(Translate::get('contact::contact.mail_delete'));
+                Flash::success(t('contact::contact.mail_delete'));
             } else {
-                Flash::success(Translate::get('contact::contact.mails_delete'));
+                Flash::success(t('contact::contact.mails_delete'));
             }
         } else {
-            Flash::error(Translate::get('contact::contact.template_error'));
+            Flash::error(t('contact::contact.template_error'));
         }
         Event::call('email_receive_delete', array(true));
 
         return Redirect::toAdmin('contact');
+    }
+
+    /**
+     * Attachement Download from Inbox
+     * @param  int $id [mail id]
+     * @return
+     */
+    public function download($id)
+    {
+        $data = Helper::getAttachment($id);
+
+        if (empty($data)) {
+           return $this->notFound();
+        }else {
+   
+            return \Response::binary($data['0'], $data['1']);
+            
+        }
     }
 
 }

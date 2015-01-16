@@ -3,15 +3,53 @@
 namespace Contact\Controller;
 
 use Contact\Model\Mail as Mail;
-use Contact\Model\EmailTemplate as Etemplate;
 use Contact\Lib\Helper;
-use Event, Flash, Input, Mailer, Redirect, Translate;
+use Config, Event, Flash, Input, Mailer, Redirect, Setting, Translate;
 
+/**
+ * Contact Controller
+ * @package Contact\Contact
+ * @author RebornCMS Developement Team <reborncms@gmail.com>
+ */
 class ContactController extends \PublicController
 {
+    /**
+     * Mailer
+     */
+    protected $mail;
+
+    /**
+     * Check Attachment field
+     */
+    protected $hasAttach;
+
+    /**
+     * Input Data
+     * @var array
+     */
+    protected $data = array();
+
+    /**
+     * Other New Field of Contact
+     * @var array
+     */
+    protected $fields = array();
+
     public function before()
     {
-        $this->template->header = Translate::get('contact::contact.title');
+        $this->template->header = t('contact::contact.title');
+
+        $this->mail = Mailer::create(array('type' => \Setting::get('transport_mail')));
+
+        $this->hasAttach = Setting::get('attach_field');
+
+        $model = new Mail;
+
+        if (\Module::isEnabled('field')) {
+
+            $this->fields = \Field::getForm('contact', $model);
+
+        }
     }
 
     /**
@@ -24,55 +62,62 @@ class ContactController extends \PublicController
     {
 
         $errors = new \Reborn\Form\ValidationError();
-        $hasAttach = \Setting::get('attach_field');
-        $mail = Mailer::create(array('type' => \Setting::get('transport_mail')));
+        
+        
+
         if (Input::isPost()) {
+
             $referer = Input::server('HTTP_REFERER');
 
             $v = $this->validate();
+
             $widget = Input::get('widget');
+
             if ($v->valid()) {
 
-                $data = Input::get('*');
+                $this->data = Input::get('*');
 
-                $data['ip'] = Input::ip();
+                $this->data['ip'] = Input::ip();
 
-                $temp = Helper::getTemplate($data,'contact_template');
+                $temp = Helper::getTemplate($this->data,'contact_template');
 
-                $mail->to(\Setting::get('site_mail'), \Setting::get('site_title'));
+                $this->mail->to(Setting::get('site_mail'), Setting::get('site_title'));
 
-                $mail->from($data['email'], $data['name']);
-                $mail->subject($data['subject']);
-                $mail->body($temp);
+                $this->mail->from($this->data['email'], $this->data['name']);
+                $this->mail->subject($this->data['subject']);
+                $this->mail->body($temp);
 
-                if ($data['attachment']) {
-                    $attachment = Helper::mailAttachment('attachment',array('jpg','jpeg','png','gif','txt','pdf','doc','docx','xls','zip','tar','xlsx','ppt','tif','tiff'));
+                $attach = $this->checkAttachment();
 
-                    if (isset($attachment['error'])) {
-                        Flash::error($attachment['error']);
+                if (isset($attach['error'])) {
+                    Flash::error($attachment['error']);
 
-                        return Redirect::to($referer);
-                    }
-
-                    $mail->attach($attachment['path'],$attachment['realName']);
-                    $data['attachment'] = $attachment['name'];
+                    return Redirect::to($referer);
                 }
 
-                if ($mail->send()) {
-                    Flash::success(Translate::get('contact::contact.success_mail_send'));
-                    $this->getData($data);
+                if ($this->mail->send()) {
+
+                    Flash::success(t('contact::contact.success_mail_send'));
+
+                    $this->getData();
+
                     Event::call('receive_mail_success',array($data));
 
                     return Redirect::to($referer);
+
                 } else {
-                    Flash::error($mail->getError());
+
+                    Flash::error($this->mail->getError());
 
                     return Redirect::to($referer);
                 }
 
             } else {
+
                 $errors = $v->getErrors();
-                $mail = (object) Input::get('*');
+
+                $this->mail = (object) Input::get('*');
+
                 if ($widget == true) {
 
                         Flash::error($errors->toArray());
@@ -83,18 +128,40 @@ class ContactController extends \PublicController
             }
 
         }
-        $model = new Mail;
-        $fields = array();
-        if (\Module::isEnabled('field')) {
-            $fields = \Field::getForm('contact', $model);
-        }
-        $this->template->title(Translate::get('contact::contact.title'))
-                    ->breadcrumb(Translate::get('contact::contact.p_title'))
-                    ->set('mail',$mail)
+
+        
+        $this->template->title(t('contact::contact.title'))
+                    ->breadcrumb(t('contact::contact.p_title'))
+                    ->set('mail',$this->mail)
                     ->set('errors',$errors)
-                    ->set('hasAttach',$hasAttach)
-                    ->set('custom_field', $fields)
+                    ->set('hasAttach',$this->hasAttach)
+                    ->set('custom_field', $this->fields)
                     ->view('index');
+    }
+
+
+    /**
+     * Check Attachment for Mail
+     * @return array
+     */
+    public function checkAttachment()
+    {
+        if ($this->data['attachment']) {
+
+            $attachment = Helper::mailAttachment('attachment', Config::get('contact::contact.attachment_ext'));
+
+            if (isset($attachment['error'])) {
+
+                return array('error' => $attachment['error']);
+            }
+
+            $this->mail->attach($attachment['path'],$attachment['realName']);
+            $this->data['attachment'] = $attachment['name'];
+            $this->data['attachment_name'] = $attachment['realName'];
+
+        }
+
+        return array('success'=>'success');
     }
 
     /**
@@ -103,17 +170,22 @@ class ContactController extends \PublicController
      * @package Contact\Controller
      * @author RebornCMS Development Team
      **/
-    public function getData($result)
+    public function getData()
     {
         $get = new Mail;
-        $get->name = $result['name'];
-        $get->email = $result['email'];
-        $get->subject = $result['subject'];
-        $get->message = $result['message'];
-        $get->ip = $result['ip'];
-        if (isset($result['attachment'])) {
-            $get->attachment = $result['attachment'];
+
+        $get->name = $this->data['name'];
+        $get->email = $this->data['email'];
+        $get->subject = $this->data['subject'];
+        $get->message = $this->data['message'];
+        $get->ip = $this->data['ip'];
+
+        if (isset($this->data['attachment'])) {
+
+            $get->attachment = $this->data['attachment'];
+            $get->attachment_name = $this->data['attachment_name'];
         }
+
         if ($get->save()) {
             if (\Module::isEnabled('field')) {
 

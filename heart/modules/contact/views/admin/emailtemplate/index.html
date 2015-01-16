@@ -1,19 +1,4 @@
 {{ if(count($templates) > 0) }}
-
-<script type="text/javascript">
-	$(function(){
-		$('.email-template').on('click', function() {
-			var url = $(this).attr('href');
-
-			$(this).colorbox({
-				width:"80%", 
-				height:"80%",
-				href: url
-			});
-		});
-		
-	});
-</script>
 {{ Form::start(ADMIN_URL.'/contact/email-template/delete') }}
 <table class="stripe">
 	<thead>

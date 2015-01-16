@@ -59,7 +59,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 				),
 			'transport_mail' => array(
 				'type'	=> 'select',
-				'options' => array('mail'=>'Mail','smtp'=>'SMTPmail','sendmail'=>'Sendmail')
+				'options' => \Config::get('contact::contact.transport_mail')
 				),
 			'smtp_host' => array(
 				'type' => 'text'
@@ -87,7 +87,7 @@ class Bootstrap extends \Reborn\Module\AbstractBootstrap
 				),
 			'attach_field' => array(
 				'type' => 'select',
-				'options' => array('yes'=>'YES','no'=>'NO')
+				'options' => \Config::get('contact::contact.attachment_opt')
 				)
 			);
 		}

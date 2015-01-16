@@ -1,0 +1,19 @@
+<div style="margin-top:10px;">
+{{ if($table->isEmpty()) }}
+	<div id="no-index-data">
+		{{ t('contact::contact.no_mail') }}
+	</div>
+{{ else }}
+	{{ Form::start(admin_url('contact/delete')) }}
+
+	{{ $table->build() }}
+
+	<div class="button-wrapper" id="delete_select">
+		{{ Form::submit('submit_delete', t('global.delete_selected'), array('class' => 'confirm_delete btn btn-red', 'disabled' => 'disabled')) }}
+	</div>
+	{{ Form::end() }}
+	{{ if($pagination)}}
+		{{ $pagination }}
+	{{ endif }}
+{{ endif }}
+</div>

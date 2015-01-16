@@ -2,20 +2,47 @@
 
 namespace Contact\Controller\Admin;
 
-use Contact\Model\Mail as Mail;
+use Contact\Model\Mail;
 use Contact\Lib\Helper;
-use Event, Flash, Input, Mailer, Redirect, Translate;
+use Contact\Extensions\Form\SendMailForm;
 
+use Config, Event, Flash, Input, Mailer, Redirect, Setting, Translate;
+
+/**
+ * Contat Admin Send Mail Controller 
+ *
+ * @package Contact\Controller
+ * @author RebornCMS Development Team <reborncms@gmail.com>
+ */
 class SendMailController extends \AdminController
 {
+    /**
+     * Input Data
+     * @var array
+     */
+    protected $data = array();
 
+    /**
+     * mail receiver $to
+     * @var array
+     */
+    protected $to = array();
+
+    /**
+     * Mailer
+     */
+    protected $mail;
+
+
+    /**
+     * before function 
+     */
     public function before()
     {
         $this->menu->activeParent(\Module::get('contact', 'uri'));
         $this->template->header = Translate::get('contact::contact.title');
-        $this->template->style('contact.css', 'contact');
-        $this->template->script('contact.js','contact');
-    }
+        $this->mail = Mailer::create(array('type' => \Setting::get('transport_mail')));
+    }   
 
     /**
      * Sending Email to User,guest or other
@@ -26,127 +53,129 @@ class SendMailController extends \AdminController
     public function index($id = null)
     {
         if (!user_has_access('contact.reply')) return $this->notFound();
-        $group = \UserGroup::all();
-        $userGroup = array('0'=>'Select User Group');
-        foreach ($group as $value) {
-            $userGroup[$value->id] = $value->name;
+
+        $form = SendMailForm::create('','default',array('enctype'=>'multipart/form-data'));
+
+        /* check reply mail */
+        if ($id) {
+            $reply = Mail::where('id', '=', $id)->first();
+            $this->data['email'] = $reply->email;
         }
-        $mail =new \stdClass;
-        $sendMail = Mailer::create(array('type' => \Setting::get('transport_mail')));
-        $reply = Mail::where('id', '=', $id)->first();
-        if ($reply) {
-            $mail->email = $reply->email;
-        }
-        $errors = new \Reborn\Form\ValidationError();
-        if (Input::isPost()) {
 
-            $v = $this->validate();
+        if ($form->valid()) {
 
-            if ($v->valid()) {
+            $this->data = Input::get('*');
 
-                $data = Input::get('*');
-                if (!empty($data['email']) || $data['group'] != 0) {
-                    
-                    $toEmail = array();
-                    $toGroup = array();
+            if (!empty($this->data['email']) || $this->data['group'] != 0) {
 
-                    if (!empty($data['email'])) {
-                        $toEmail = explode(",",$data['email']);
-                    }
-                    
-                    if ($data['group'] != 0) {
-                        $toGroup = Helper::getEmail($data['group']);
-                    }
-                    
-                    $to = array_merge($toEmail,$toGroup);
-                    foreach ($to as $key) {
+                if ($this->checkEmail()) {
 
-                        if (!(filter_var($key,FILTER_VALIDATE_EMAIL) !== false)) {
-                                $to_error = $key;
+                    $this->data['name'] = Setting::get('site_title');
+                    $this->data['from'] = Setting::get('sever_mail');
+
+                    $temp = Helper::selectTemplate($this->data, Setting::get('reply_template'));
+
+                    $this->mail->to($this->to);
+                    $this->mail->from($this->data['from'],$this->data['name']);
+                    $this->mail->subject($this->data['subject']);
+                    $this->mail->body($temp);
+
+                    $attach = $this->checkAttachment();
+
+                    if (!isset($attach['error'])) {
+
+                        if ($this->mail->send(true)) {
+
+                            Flash::success(t('contact::contact.success_mail_send'));
+
+                            Event::call('reply_email_success' ,array($this->data,$this->to));
+
+                            return Redirect::toAdmin('contact/send-mail');
+
+                        } else {
+
+                            Flash::error($this->mail->getError());
+
+                            return Redirect::toAdmin('contact/send-mail');
                         }
-                    }
-
-                    if (isset($to_error)) {
-
-                        Flash::error(Translate::get('contact::contact.w_email'));
-                        $mail = (object) Input::get('*');
-
                     } else {
 
-                        $data['name'] = \Setting::get('site_title');
-                        $data['from'] = \Setting::get('sever_mail');
-
-                        $temp = Helper::getTemplate($data,'reply_template');
-
-                        $sendMail->to($to);
-                        $sendMail->from($data['from'],$data['name']);
-                        $sendMail->subject($data['subject']);
-                        $sendMail->body($temp);
-
-                        if ($data['attachment']) {
-                            $attachment = Helper::mailAttachment('attachment',array('jpg','jpeg','png','gif','txt','pdf','doc','docx','xls','zip','tar','xlsx','ppt','tif','tiff'));
-
-                            if (isset($attachment['error'])) {
-                                Flash::error($attachment['error']);
-
-                                return Redirect::toAdmin('contact/send-mail');
-                            }
-
-                            $sendMail->attach($attachment['path'],$attachment['realName']);
-                            $data['attachment'] = $attachment['name'];
-                        }
-
-                        if ($sendMail->send()) {
-                            Flash::success(Translate::get('contact::contact.success_mail_send'));
-
-                            Event::call('reply_email_success' ,array($data,$to));
-
-                            return Redirect::toAdmin('contact/send-mail');
-                        } else {
-                            Flash::error($sendMail->getError());
-
-                            return Redirect::toAdmin('contact/send-mail');
-                        }
-
+                        Flash::error($attach['error']);
                     }
-                } 
-                else {
-                    $errors['email'] = Translate::get('contact::contact.need_email');
-                    $mail = (object) Input::get('*');
-                }
-            } else {
-                $errors = $v->getErrors();
-                $mail = (object) Input::get('*');
-            }
+                    
+                } else {
 
+                    Flash::error(t('contact::contact.w_email'));
+                }
+
+            } else {
+
+                Flash::error(t('contact::contact.need_email'));
+            }
         }
+
+        $form->provider($this->data);
+
         $this->template->title(Translate::get('contact::contact.s_mail'))
                     ->breadcrumb(Translate::get('contact::contact.p_title'))
-                    ->style('plugins/jquery.tagsinput_custom.css')
-                    ->script(array(
-                        'plugins/jquery-ui-timepicker-addon.js',
-                        'plugins/jquery.tagsinput.min.js'))
-                    ->set('mail',$mail)
-                    ->set('group',$userGroup)
-                    ->set('errors',$errors)
-                    ->view('admin/sendmail/index');
+                    ->view('admin/form', compact('form'));
     }
 
     /**
-     * Validation Email
-     *
-     * @package Contact\Controller
-     * @author RebornCMS Development Team
-     **/
-    protected function validate()
+     * check Email is vaid for Sending Mail and add receiver mail
+     * @return boolean
+     */
+    public function checkEmail()
     {
-        $rule = array(
-                    'subject'=> 'required|maxLength:50',
-                    'message'=> 'required'
-                );
+        $toEmail = array();
+        $toGroup = array();
 
-        $v = new \Reborn\Form\Validation(Input::get('*'), $rule);
+        if (!empty($this->data['email'])) {
+            $toEmail = explode(",",$this->data['email']);
+        }
+        
+        if ($this->data['group'] != 0) {
+            $toGroup = Helper::getEmail($this->data['group']);
+        }
+        
+        $this->to = array_merge($toEmail,$toGroup);
 
-        return $v;
+        foreach ($this->to as $key) {
+
+            if (!(filter_var($key,FILTER_VALIDATE_EMAIL) !== false)) {
+
+                    $to_error = $key;
+            }
+        }
+
+        if (isset($to_error)) {
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check Attachment for Mail
+     * @return array
+     */
+    public function checkAttachment()
+    {
+        if ($this->data['attachment']) {
+
+            $attachment = Helper::mailAttachment('attachment', Config::get('contact::contact.attachment_ext'));
+
+            if (isset($attachment['error'])) {
+
+                return array('error' => $attachment['error']);
+            }
+
+            $this->mail->attach($attachment['path'],$attachment['realName']);
+            $this->data['attachment'] = $attachment['name'];
+
+        }
+
+        return array('success'=>'success');
     }
 }

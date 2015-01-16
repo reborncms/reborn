@@ -6,7 +6,7 @@ class ContactInfo extends \Reborn\Module\AbstractInfo
 {
 	protected $name = 'Contact';
 
-	protected $version = '1.1';
+	protected $version = '1.2';
 
 	protected $description = array(
 		'en' => 'Contact Module is used for contact mail, reply mail, inbox and email template.',
@@ -16,9 +16,9 @@ class ContactInfo extends \Reborn\Module\AbstractInfo
 
 	protected $author = 'Thet Paing Oo';
 
-	protected $authorUrl = 'http://www.myanmarlinks.net';
+	protected $authorUrl = 'http://www.reborncms.com';
 
-	protected $authorEmail = 'gaara.desert91@gmail.com';
+	protected $authorEmail = 'reborncms@gmail.com';
 
 	protected $frontendSupport = true;
 

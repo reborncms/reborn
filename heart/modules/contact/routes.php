@@ -1,25 +1,31 @@
 <?php
 
-Route::get('@admin/contact/{p:page}?', 'Contact\Admin\Contact::index');
+// Admin Inbox 
+Route::group('@admin/contact/', function() {
 
-Route::add('@admin/contact/detail/{int:id}','Contact\Admin\Contact::detail');
+	Route::get('{p:page}?', 'Contact\Admin\Contact::index', 'inboxAdminView');
+	Route::add('detail/{int:id}', 'Contact\Admin\Contact::detail', 'detailAdminView');
+	Route::get('download/{int:id}', 'Contact\Admin\Contact::download', 'attachentAdminDownload');
+    Route::add('delete/{int:id}?', 'Contact\Admin\Contact::delete', 'inboxAdminDelete');
 
-Route::add('@admin/contact/delete/{int:id}?','Contact\Admin\Contact::delete');
+});
 
-Route::add('@admin/contact/send-mail/{int:id}?','Contact\Admin\SendMail::index');
+// Admin Send Mail
+Route::add('@admin/contact/send-mail/{int:id}?', 'Contact\Admin\SendMail::index', 'mailAdminSend');
 
-Route::get('@admin/contact/email-template/{p:page}?', 'Contact\Admin\EmailTemplate::index');
+// Admin Email Template
+Route::group('@admin/contact/email-template/', function() {
 
-Route::add('@admin/contact/email-template/delete/{int:id}?','Contact\Admin\EmailTemplate::delete');
+	Route::get('{p:page}?', 'Contact\Admin\EmailTemplate::index', 'emailtemplateAdmin');
+	Route::add('create', 'Contact\Admin\EmailTemplate::create', 'emailtemplateAdminCreate');
+	Route::add('check-name', 'Contact\Admin\EmailTemplate::checkName', 'emailtemplateAdminCheckName');
+	Route::add('view/{int:id}', 'Contact\Admin\EmailTemplate::view', 'emailtemplateAdminView');
+	Route::add('edit/{int:id}', 'Contact\Admin\EmailTemplate::edit', 'emailtemplateAdminEdit');
+	Route::add('duplicate/{int:id}', 'Contact\Admin\EmailTemplate::duplicate', 'emailtemplateAdminDuplicate');
+	Route::add('delete/{int:id}?', 'Contact\Admin\EmailTemplate::delete', 'emailtemplateAdminDelete');
 
-Route::add('@admin/contact/email-template/duplicate/{int:id}','Contact\Admin\EmailTemplate::duplicate');
+});
 
-Route::add('@admin/contact/email-template/view/{int:id}','Contact\Admin\EmailTemplate::view');
+/* Contact FrontEnd */
 
-Route::add('@admin/contact/email-template/edit/{int:id}','Contact\Admin\EmailTemplate::edit');
-
-Route::add('@admin/contact/email-template/create','Contact\Admin\EmailTemplate::create');
-
-/* add frontend route */
-
-Route::add('contact','Contact\Contact::index' , 'fornted_contact');
+Route::add('contact', 'Contact\Contact::index' , 'contactFrontEnd');
