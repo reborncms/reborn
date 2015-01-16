@@ -122,6 +122,12 @@ class Router
                 $this->checkCSRF();
             }
 
+            $module = Module::get($route->module);
+
+            if (!is_null($module) and !$module->isEnabled()) {
+                return $this->callMissing($request_uri);
+            }
+
             // Route with callback function.
             if ($route->isClosure) {
                 $params = $route->params;
@@ -140,6 +146,16 @@ class Router
             return $this->callbackController($route);
         }
 
+        // Get Missing Route
+        return $this->callMissing($request_uri);
+    }
+
+    /**
+     * Call Missing Route
+     * @param  string $request_uri
+     */
+    protected function callMissing($request_uri)
+    {
         // Get Missing Route
         if ($route = $this->collection->getMissing($request_uri, $this->request)) {
             // Check CSRF protection
