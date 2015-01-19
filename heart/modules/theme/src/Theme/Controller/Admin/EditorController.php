@@ -138,7 +138,16 @@ class EditorController extends \AdminController
     {
         $di = new \RecursiveDirectoryIterator($themePath);
 
-        foreach (new \RecursiveIteratorIterator($di) as $filename => $file) {
+        $folders = new \RecursiveCallbackFilterIterator($di, function ($file, $key, $iterator)
+                    {
+                        // Skip hidden files and directories.
+                        if ($file->getFilename()[0] !== '.') {
+                            return TRUE;
+                        }
+                        return $file->isFile();
+                    });
+
+        foreach (new \RecursiveIteratorIterator($folders) as $filename => $file) {
 
             $fileInfo = pathinfo($filename);
 
