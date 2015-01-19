@@ -7,4 +7,4 @@ Route::get('@admin/theme/delete/{alnum:name}/', 'Theme\Admin\Theme::delete', 'th
 Route::add('@admin/theme/upload/', 'Theme\Admin\Theme::upload', 'theme_upload');
 
 Route::get('@admin/theme/editor/', 'Theme\Admin\Editor::index', 'theme_editor');
-Route::add('@admin/theme/editor/edit/{alnum:ext}/{alpha:file}', 'Theme\Admin\Editor::edit', 'editor_edit');
+Route::add('@admin/theme/editor/edit/{alnum:ext}/{*:file}', 'Theme\Admin\Editor::edit', 'editor_edit');
