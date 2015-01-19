@@ -41,7 +41,7 @@ class Theme
         } else {
             $info['screenshot'] = 'heart/modules/theme/assets/img/screenshot.png';
         }
-
+        $info['themePath'] = $handler->findTheme($theme);
         return $info;
     }
 

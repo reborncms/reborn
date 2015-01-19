@@ -3,7 +3,7 @@
 namespace Theme\Controller\Admin;
 
 use \Theme\Model\Theme as Theme;
-use Reborn\Util\Uploader as Upload;
+use Reborn\Fileupload\Uploader;
 
 class ThemeController extends \AdminController
 {
@@ -71,8 +71,11 @@ class ThemeController extends \AdminController
         $themes = Theme::all();
 
         if (array_key_exists($name,$themes)) {
-            if (is_dir(THEMES.$name)) {
-                $delete = \Dir::delete(THEMES.$name);
+
+            $data = $themes[$name];
+
+            if (is_dir($data['themePath'])) {
+                $delete = \Dir::delete($data['themePath']);
 
                 if ($delete) {
                     \Flash::success(\Translate::get('theme::theme.delete.success'));
@@ -88,6 +91,7 @@ class ThemeController extends \AdminController
 
         return \Redirect::to(ADMIN_URL.'/theme');
     }
+
 
     /**
      * Upload new theme with .zip format
@@ -113,7 +117,7 @@ class ThemeController extends \AdminController
             }
 
             $config = array(
-                'savePath' => $tmp_path,
+                'path' => $tmp_path,
                 'createDir' => true,
                 'allowedExt' => array('zip')
             );
@@ -127,31 +131,27 @@ class ThemeController extends \AdminController
 
             if ($v->valid()) {
 
-                if (Upload::isSuccess()) {
-                    Upload::initialize('file', $config);
+                $uploader = Uploader::initialize(
+                        'file',
+                        $config
+                    );
+                
 
-                    $data = Upload::upload('file');
-                    $data[0]['status'] = 'success';
-                } else {
-                    $v = Upload::errors();
-                    $data[0]['status'] = 'fail';
-                    $error = '';
-                    foreach ($v[0] as $k => $s) {
-                        if (is_int($k)) {
-                            $error .= $s.' ';
-                        }
-                    }
-                    $data[0]['errors'] = $error;
+                $uploaded = $uploader->upload();
 
-                    \Flash::error($error);
+                if (isset($uploaded['error'])) {
+                    \Flash::error($uploaded['error']);
 
                     return \Redirect::toAdmin('theme/upload');
+
                 }
 
                 try {
-                    $zip_file = $tmp_path.$data[0]['savedName'];
+                    $zip_file = $tmp_path.$uploaded['savedName'];
 
-                    $filename = str_replace('.zip', '', $data[0]['savedName']);
+                    chmod($zip_file, 777);
+
+                    $filename = str_replace('.zip', '', $uploaded['savedName']);
 
                     // create object
                     $zip = new \ZipArchive() ;
@@ -169,6 +169,13 @@ class ThemeController extends \AdminController
 
                     // close archive
                     $zip->close();
+
+                    // chmod to theme
+                    $theme = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($extract_path.DS.$filename));
+
+                    foreach($theme as $item) {
+                        chmod($item, 0777);
+                    }
 
                     \File::delete($zip_file);
                     \Flash::success(sprintf(t('theme::theme.upload.success'),$filename));
