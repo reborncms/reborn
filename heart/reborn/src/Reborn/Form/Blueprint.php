@@ -582,6 +582,18 @@ class Blueprint
         $this->fields[$name]['html'] = Form::select($name, $options, $val['value'], $val['attr']);
     }
 
+    /** Country list select box with Select2 JS **/
+    protected function addSelect2Country($name, $val)
+    {
+        $this->fields[$name]['type'] = 'select2';
+        $this->fields[$name]['info'] = $val['info'];
+        $this->labels[$name] = $this->getLabelHtml($val['label'], $name);
+        $multi = (isset($val['multi'])) ? $val['multi'] : false;
+        $ajax = (isset($val['ajax'])) ? $val['ajax'] : false;
+        $js_opts = (isset($val['js_opts'])) ? $val['js_opts'] : array();
+        $this->fields[$name]['html'] = UIForm::select2Country($name, $val['value'], $js_opts, $multi, $ajax, $val['attr']);
+    }
+
     /** Select Box with Select2 JS **/
     protected function addSelect2($name, $val)
     {

@@ -462,6 +462,33 @@ SCRIPT;
     }
 
     /**
+     * Country list with select2 js
+     * 
+     * @param  string  $name    Name of the select element
+     * @param  mixed   $value   Value for select2 element
+     * @param  array   $js_opts Options for select2 js script
+     * @param  boolean $multi   Use multiple select.
+     * @param  boolean $ajax    Use Ajax Select
+     * @param  array   $attrs   HTML Attributes
+     * 
+     * @return string
+     */
+    public static function select2Country($name = 'country_list', $val = null, $js_opts = array(), $multi = false, $ajax = false, $attrs = array())
+    {
+        $options = Config::load('country');
+
+        // Add w-200 class for select2 box width
+        // Css code at .w-200 at global/css/select2/select2.css
+        if ( isset($attrs['class'])) {
+            $attrs['class'] = $attrs['class'].' w-200';
+        } else {
+            $attrs['class'] = 'w-200';
+        }
+        
+        return static::select2($name, $options[0], $val, $js_opts, $multi, $ajax, $attrs);
+    }
+
+    /**
      * Code Mirror 
      *
      * @param string $name Name of the Code Form
