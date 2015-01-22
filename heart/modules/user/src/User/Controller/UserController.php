@@ -92,6 +92,7 @@ class UserController extends \PublicController
                 } catch (\Cartalyst\Sentry\Users\UserNotActivatedException $e) {
                     \Flash::error(t('user::user.login.activate'));
                 } catch (\Cartalyst\Sentry\Throttling\UserSuspendedException $e) {
+                    $throttle = new \Cartalyst\Sentry\Throttling\Eloquent\Throttle;
                     $time = $throttle->getSuspensionTime();
                     \Flash::error(sprintf(t('user::user.login.suspended'), $time));
                 } catch (\Cartalyst\Sentry\Throttling\UserBannedException $e) {
