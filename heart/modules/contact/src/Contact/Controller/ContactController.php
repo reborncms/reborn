@@ -146,7 +146,7 @@ class ContactController extends \PublicController
      */
     public function checkAttachment()
     {
-        if ($this->data['attachment']) {
+        if (isset($this->data['attachment']) && $this->data['attachment']) {
 
             $attachment = Helper::mailAttachment('attachment', Config::get('contact::contact.attachment_ext'));
 
