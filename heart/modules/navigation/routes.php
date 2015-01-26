@@ -19,4 +19,4 @@ Route::add('@admin/navigation/group',
 			'Navigation\Admin\Navigation::group', 'nav_group');
 
 Route::add('@admin/navigation/group-create',
-			'Navigation\Admin\Navigation::groupCreate', 'nav_group');
+			'Navigation\Admin\Navigation::groupCreate', 'nav_group_create');
