@@ -277,6 +277,13 @@ class UserController extends \AdminController
 
         $user = \User::findBy('id', $uri);
 
+        if (array_key_exists('superuser', $user->getPermissions())){
+
+            Flash::error(t('user::user.delete.fail'));
+
+            return Redirect::toAdmin('user');
+        }
+
         Event::call('user_deleted',array($user));
 
         if (Module::isEnabled('field')) {

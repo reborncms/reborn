@@ -135,6 +135,13 @@ class GroupController extends \AdminController
     public function delete($uri)
     {
         if (!user_has_access('user.group.delete')) return $this->notFound();
+
+        if ($uri == '1') {
+             \Flash::error(t('user::group.delete.fail'));
+
+            return \Redirect::toAdmin('user/group');
+        }
+        
         \UserGroup::delete($uri);
 
         \Flash::success(\Translate::get('user::group.delete.success'));
