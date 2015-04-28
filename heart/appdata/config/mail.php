@@ -9,7 +9,7 @@ return array(
 
 	/**
 	 * Mail Driver Type
-	 * Supported Driver : "smtp", "sendmail", "mail"
+	 * Supported Driver : "smtp", "sendmail", "mandrill", "mail"
 	 *
 	 */
 	'type' => function() {
@@ -83,5 +83,13 @@ return array(
 	'receive_mail' => function() {
 		return Setting::get('site_mail', Auth::getSuperuserEmail());
 	},
+
+	/**
+	 * Mandrill Service
+	 */
+	'mandrill' => [
+		'username' => '', // Set mandrill username (email)
+		'password' => '', // Set mandrill api key
+	]
 
 );

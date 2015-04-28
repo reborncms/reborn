@@ -126,6 +126,10 @@ class Manager
                 $transport = $this->getSendmailTransport($config);
                 break;
 
+            case 'mandrill' :
+                $transport = $this->getMandrillTransport($config);
+                break;
+                
             default:
                 $transport = $this->getMailTransport();
                 break;
@@ -135,10 +139,26 @@ class Manager
     }
 
     /**
+     * Get SMTP Transport fot Mandrill
+     *
+     * @param  array $config
+     * @return \Swift_SmtpTransport
+     */
+    protected function getMandrillTransport($config)
+    {
+        $man = $config['mandrill'];
+        $transport = Swift_SmtpTransport::newInstance('smtp.mandrillapp.com', 587);
+        $transport->setUsername($man['username']);
+        $transport->setPassword($man['password']);
+
+        return $transport;
+    }
+
+    /**
      * Get SwiftMail Transport instance for SMTP
      *
      * @param  array                    $config
-     * @return \Swift_SendmailTransport
+     * @return \Swift_SmtpTransport
      **/
     protected function getSmtpTransport($config)
     {
