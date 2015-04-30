@@ -5,6 +5,7 @@ return array(
 			'mail'		=>	'Mail',
 			'sendmail'	=>	'Sendmail',
 			'smtp'		=>	'SMTPmail',
+			'mandrill'	=>	'Mandrill SMTP'
 			),
 		'attachment_opt' => array(
 			'yes'		=>	'YES',
