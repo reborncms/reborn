@@ -88,8 +88,8 @@ return array(
 	 * Mandrill Service
 	 */
 	'mandrill' => [
-		'username' => '', // Set mandrill username (email)
-		'password' => '', // Set mandrill api key
+		'username' => Setting::get('smtp_username'), // Set mandrill username (email)
+		'password' => Setting::get('smtp_password'), // Set mandrill api key
 	]
 
 );

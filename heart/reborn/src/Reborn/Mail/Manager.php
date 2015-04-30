@@ -148,8 +148,12 @@ class Manager
     {
         $man = $config['mandrill'];
         $transport = Swift_SmtpTransport::newInstance('smtp.mandrillapp.com', 587);
-        $transport->setUsername($man['username']);
-        $transport->setPassword($man['password']);
+
+        $username = isset($man['username']) ? $man['username'] : Setting::get('smtp_username') ;
+        $password = isset($man['password']) ? $man['password'] : Setting::get('smtp_password') ;
+
+        $transport->setUsername($username);
+        $transport->setPassword($password);
 
         return $transport;
     }

@@ -37,6 +37,24 @@
 	$mail->body('Email testing message body');
 	$mail->send();
 
+## Usage with Mandrill
+
+	$mandrill = array(
+		'type' => 'mandrill',
+		'mandrill' => [
+			'username' => 'lynnhtut87@gmail.com',
+			'password' => '3wtX38YdRBlK4XPur6CYWQ'
+		]
+	);
+	$mail = Mailer::create($mandrill);
+	$mail->to('gaara.desert91@gmail.com', 'Thet Paing Oo');
+	$mail->cc('tannaing@gmail.com', 'Yan Naing');
+	$mail->from('lynnhtut87@gmail.com', 'Lynn Htut');
+	$mail->subject('Email Testing Subject');
+	$mail->body('Email testing message body');
+	$mail->send();
+
+
 ## Mail testing at local
 
 	If you want to test mail at local, you can use `Mailer::send(true)`
