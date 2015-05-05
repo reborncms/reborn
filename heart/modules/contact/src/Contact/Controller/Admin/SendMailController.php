@@ -84,7 +84,7 @@ class SendMailController extends \AdminController
 
                     if (!isset($attach['error'])) {
 
-                        if ($this->mail->send(true)) {
+                        if ($this->mail->send()) {
 
                             Flash::success(t('contact::contact.success_mail_send'));
 
